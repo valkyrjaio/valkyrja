@@ -15,8 +15,6 @@ namespace Valkyrja\View\Throwable\Exception;
 
 /**
  * Class InvalidConfigPath.
- *
- * @author Melech Mizrachi
  */
 class InvalidConfigPath extends InvalidArgumentException
 {

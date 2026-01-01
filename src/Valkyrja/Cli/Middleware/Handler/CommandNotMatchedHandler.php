@@ -23,8 +23,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract as
 /**
  * Class CommandNotMatchedHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<CommandNotMatchedMiddlewareContract>
  */
 class CommandNotMatchedHandler extends Handler implements Contract

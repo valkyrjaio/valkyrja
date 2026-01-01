@@ -18,8 +18,6 @@ use Valkyrja\Notification\Entity\Contract\NotifiableUserContract;
 
 /**
  * Interface NotificationContract.
- *
- * @author Melech Mizrachi
  */
 interface NotifierContract
 {

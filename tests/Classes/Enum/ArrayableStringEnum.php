@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\JsonSerializable;
 
 /**
  * Enum class to use to test Arrayable String Backed Enum.
- *
- * @author Melech Mizrachi
  */
 enum ArrayableStringEnum: string implements ArrayableContract, JsonSerializableContract
 {

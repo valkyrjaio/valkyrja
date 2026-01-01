@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Enum\RequestMethod as RequestMethodEnum;
 
 /**
  * Attribute RequestMethod.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestMethod

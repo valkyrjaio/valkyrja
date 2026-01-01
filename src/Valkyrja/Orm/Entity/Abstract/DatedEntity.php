@@ -18,8 +18,6 @@ use Valkyrja\Orm\Entity\Trait\DatedFields;
 
 /**
  * Class DatedEntity.
- *
- * @author Melech Mizrachi
  */
 abstract class DatedEntity extends Entity implements Contract
 {

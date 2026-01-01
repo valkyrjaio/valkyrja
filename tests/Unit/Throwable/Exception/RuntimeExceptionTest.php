@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 
 /**
  * Test the runtime exception class.
- *
- * @author Melech Mizrachi
  */
 class RuntimeExceptionTest extends TestCase
 {

@@ -23,8 +23,6 @@ use Vonage\SMS\Message\SMS;
 
 /**
  * Class VonageSms.
- *
- * @author Melech Mizrachi
  */
 class VonageMessenger implements Contract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Tests\Classes\Support;
 
 /**
  * Class ProvidedClass.
- *
- * @author Melech Mizrachi
  */
 class ProvidedClass
 {

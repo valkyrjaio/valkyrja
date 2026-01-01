@@ -26,8 +26,6 @@ use const PHP_VERSION;
 
 /**
  * Class VersionCommand.
- *
- * @author Melech Mizrachi
  */
 class VersionCommand
 {

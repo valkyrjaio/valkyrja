@@ -27,8 +27,6 @@ use function time;
 
 /**
  * Class InMemoryFilesystem.
- *
- * @author Melech Mizrachi
  */
 class InMemoryFilesystem implements Contract
 {

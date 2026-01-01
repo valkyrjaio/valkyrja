@@ -24,8 +24,6 @@ use Valkyrja\Validation\Rule\Is\Required;
 
 /**
  * Struct TestJsonRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum JsonRequestStructEnum implements RequestStructContract
 {

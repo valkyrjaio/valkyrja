@@ -21,8 +21,6 @@ use function is_int;
 
 /**
  * Class GreaterThan.
- *
- * @author Melech Mizrachi
  */
 class GreaterThan extends Rule
 {

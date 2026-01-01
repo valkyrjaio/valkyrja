@@ -28,8 +28,6 @@ use function sprintf;
 /**
  * Class Vlid.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<string>
  */
 class Vlid extends Type implements Contract

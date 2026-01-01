@@ -22,8 +22,6 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 
 /**
  * Command class to test commands.
- *
- * @author Melech Mizrachi
  */
 class CommandClass
 {

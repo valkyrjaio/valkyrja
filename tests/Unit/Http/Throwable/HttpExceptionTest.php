@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the HttpException class.
- *
- * @author Melech Mizrachi
  */
 class HttpExceptionTest extends TestCase
 {

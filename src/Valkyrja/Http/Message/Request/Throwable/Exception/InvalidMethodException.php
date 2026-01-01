@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Request\Throwable\Exception;
 
 /**
  * Class InvalidMethodException.
- *
- * @author Melech Mizrachi
  */
 class InvalidMethodException extends InvalidArgumentException
 {

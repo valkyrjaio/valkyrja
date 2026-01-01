@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 /**
  * Class HelpOptionParameter.
- *
- * @author Melech Mizrachi
  */
 class HelpOptionParameter extends OptionParameter
 {

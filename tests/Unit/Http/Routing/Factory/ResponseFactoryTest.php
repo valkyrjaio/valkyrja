@@ -25,8 +25,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ResponseFactory service.
- *
- * @author Melech Mizrachi
  */
 class ResponseFactoryTest extends TestCase
 {

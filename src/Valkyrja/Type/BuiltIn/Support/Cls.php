@@ -23,8 +23,6 @@ use function is_a;
 
 /**
  * Class Cls.
- *
- * @author Melech Mizrachi
  */
 class Cls
 {

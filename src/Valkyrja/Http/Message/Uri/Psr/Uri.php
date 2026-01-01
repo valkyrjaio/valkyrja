@@ -20,8 +20,6 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
 /**
  * Class Uri.
- *
- * @author Melech Mizrachi
  */
 class Uri implements UriInterface
 {

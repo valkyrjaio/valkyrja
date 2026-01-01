@@ -23,8 +23,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestRouteMatchedMiddlewareChanged.
- *
- * @author Melech Mizrachi
  */
 class RouteMatchedMiddlewareChangedClass implements RouteMatchedMiddlewareContract
 {

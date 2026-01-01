@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Path.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Path

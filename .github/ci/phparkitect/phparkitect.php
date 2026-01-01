@@ -24,6 +24,7 @@ use Arkitect\Expression\ForClasses\IsNotAbstract;
 use Arkitect\Expression\ForClasses\IsNotEnum;
 use Arkitect\Expression\ForClasses\IsNotTrait;
 use Arkitect\Expression\ForClasses\IsTrait;
+use Arkitect\Expression\ForClasses\NotContainDocBlockLike;
 use Arkitect\Expression\ForClasses\NotHaveNameMatching;
 use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
@@ -40,6 +41,16 @@ return static function (Config $config): void {
 
     $srcRules  = [];
     $testRules = [];
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new ResideInOneOfTheseNamespaces('*'))
+                      ->should(new NotContainDocBlockLike('@author'))
+                      ->because('All classes should NOT have an author');
+
+    $testRules[] = Rule::allClasses()
+                       ->that(new ResideInOneOfTheseNamespaces('*'))
+                       ->should(new NotContainDocBlockLike('@author'))
+                       ->because('All classes should NOT have an author');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveAttribute(Attribute::class))

@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Throwable\Exception;
 
 /**
  * Exception EntityNotFoundException.
- *
- * @author Melech Mizrachi
  */
 class EntityNotFoundException extends NotFoundException
 {

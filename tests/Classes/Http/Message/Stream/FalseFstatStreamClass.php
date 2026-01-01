@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Stream\Stream;
 
 /**
  * Class FalseFstatStreamClass.
- *
- * @author Melech Mizrachi
  */
 class FalseFstatStreamClass extends Stream
 {

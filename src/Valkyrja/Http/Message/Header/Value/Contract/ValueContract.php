@@ -24,8 +24,6 @@ use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 /**
  * Class ValueContract.
  *
- * @author Melech Mizrachi
- *
  * @see    https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
  *
  * @extends ArrayAccess<int, ComponentContract>

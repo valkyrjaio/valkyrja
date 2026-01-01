@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the OptionParameter class.
- *
- * @author Melech Mizrachi
  */
 class OptionParameterTest extends TestCase
 {

@@ -24,8 +24,6 @@ use function is_string;
 /**
  * Class JsonObject.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<object>
  */
 class JsonObject extends Type implements Contract

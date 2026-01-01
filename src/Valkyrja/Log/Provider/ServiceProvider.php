@@ -31,8 +31,6 @@ use function date;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

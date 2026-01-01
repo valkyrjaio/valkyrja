@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Throwable\Exception;
 
 /**
  * Exception InvalidCurrentAuthenticationException.
- *
- * @author Melech Mizrachi
  */
 class InvalidCurrentAuthenticationException extends InvalidAuthenticationException
 {

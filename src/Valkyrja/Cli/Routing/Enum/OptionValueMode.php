@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Routing\Enum;
 
 /**
  * Enum OptionValueMode.
- *
- * @author Melech Mizrachi
  */
 enum OptionValueMode
 {

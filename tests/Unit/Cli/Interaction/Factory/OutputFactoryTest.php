@@ -28,8 +28,6 @@ use function fopen;
 
 /**
  * Test the OutputFactory class.
- *
- * @author Melech Mizrachi
  */
 class OutputFactoryTest extends TestCase
 {

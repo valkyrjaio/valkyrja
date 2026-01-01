@@ -17,8 +17,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
  * Interface RetrievalContract.
- *
- * @author Melech Mizrachi
  */
 interface RetrievalContract
 {

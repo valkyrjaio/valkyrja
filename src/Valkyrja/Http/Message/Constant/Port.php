@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Constant;
 
 /**
  * Constant Port.
- *
- * @author Melech Mizrachi
  */
 final class Port
 {

@@ -46,8 +46,6 @@ use function rawurldecode;
 
 /**
  * Class Router.
- *
- * @author Melech Mizrachi
  */
 class Router implements Contract
 {

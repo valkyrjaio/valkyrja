@@ -49,8 +49,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

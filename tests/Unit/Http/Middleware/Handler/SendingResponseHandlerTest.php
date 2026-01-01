@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 
 /**
  * Test the sending response handler.
- *
- * @author Melech Mizrachi
  */
 class SendingResponseHandlerTest extends HandlerTestCase
 {

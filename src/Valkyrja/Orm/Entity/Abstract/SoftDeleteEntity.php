@@ -18,8 +18,6 @@ use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
 
 /**
  * Class SoftDeleteEntity.
- *
- * @author Melech Mizrachi
  */
 abstract class SoftDeleteEntity extends Entity implements Contract
 {

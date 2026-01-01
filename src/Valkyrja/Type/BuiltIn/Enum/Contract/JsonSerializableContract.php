@@ -19,8 +19,6 @@ use UnitEnum;
 
 /**
  * Interface JsonSerializableContract.
- *
- * @author Melech Mizrachi
  */
 interface JsonSerializableContract extends PhpJsonSerializable, UnitEnum
 {

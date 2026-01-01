@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Argument\Argument;
 
 /**
  * Class ArgumentFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class ArgumentFactory
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Api\Constant;
 
 /**
  * Constant Status.
- *
- * @author Melech Mizrachi
  */
 final class Status
 {

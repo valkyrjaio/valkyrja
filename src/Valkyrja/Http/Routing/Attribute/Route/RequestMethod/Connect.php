@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as ParentAttribute;
 
 /**
  * Attribute Connect.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class Connect extends ParentAttribute

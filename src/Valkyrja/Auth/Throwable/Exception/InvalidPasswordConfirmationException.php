@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Throwable\Exception;
 
 /**
  * Exception InvalidPasswordConfirmationException.
- *
- * @author Melech Mizrachi
  */
 class InvalidPasswordConfirmationException extends InvalidArgumentException
 {

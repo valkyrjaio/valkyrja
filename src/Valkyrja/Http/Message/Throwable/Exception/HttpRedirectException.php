@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 /**
  * Class HttpRedirectException.
- *
- * @author Melech Mizrachi
  */
 class HttpRedirectException extends HttpException
 {

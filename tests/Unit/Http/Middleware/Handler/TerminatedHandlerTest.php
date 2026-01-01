@@ -19,8 +19,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 
 /**
  * Test the terminated handler.
- *
- * @author Melech Mizrachi
  */
 class TerminatedHandlerTest extends HandlerTestCase
 {

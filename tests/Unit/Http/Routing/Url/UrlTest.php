@@ -25,8 +25,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Class UrlTest.
- *
- * @author Melech Mizrachi
  */
 class UrlTest extends TestCase
 {

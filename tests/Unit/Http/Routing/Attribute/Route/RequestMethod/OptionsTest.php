@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Options attribute.
- *
- * @author Melech Mizrachi
  */
 class OptionsTest extends TestCase
 {

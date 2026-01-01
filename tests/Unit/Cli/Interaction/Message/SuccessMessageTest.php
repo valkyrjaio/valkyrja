@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the SuccessMessage class.
- *
- * @author Melech Mizrachi
  */
 class SuccessMessageTest extends TestCase
 {

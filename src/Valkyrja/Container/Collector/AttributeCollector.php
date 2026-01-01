@@ -22,8 +22,6 @@ use Valkyrja\Container\Collector\Contract\CollectorContract as Contract;
 
 /**
  * Class AttributeCollector.
- *
- * @author Melech Mizrachi
  */
 class AttributeCollector implements Contract
 {

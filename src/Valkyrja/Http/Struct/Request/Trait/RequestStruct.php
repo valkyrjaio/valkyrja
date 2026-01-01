@@ -20,8 +20,6 @@ use Valkyrja\Validation\Validator\Validator;
 
 /**
  * Trait RequestStruct.
- *
- * @author Melech Mizrachi
  */
 trait RequestStruct
 {

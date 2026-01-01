@@ -15,8 +15,6 @@ namespace Valkyrja\Tests\Classes\Cli\Middleware\Trait;
 
 /**
  * Trait MiddlewareCounter.
- *
- * @author Melech Mizrachi
  */
 trait MiddlewareCounterTrait
 {

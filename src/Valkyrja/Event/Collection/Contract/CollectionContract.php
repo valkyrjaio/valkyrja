@@ -20,8 +20,6 @@ use Valkyrja\Event\Data\Data;
 
 /**
  * Interface CollectionContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectionContract extends ListenerProviderInterface
 {

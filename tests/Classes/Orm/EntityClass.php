@@ -17,8 +17,6 @@ use Valkyrja\Orm\Entity\Abstract\Entity as AbstractEntity;
 
 /**
  * Model class to use to test abstract model.
- *
- * @author Melech Mizrachi
  */
 class EntityClass extends AbstractEntity
 {

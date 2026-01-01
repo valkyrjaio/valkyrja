@@ -21,8 +21,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Interface ApplicationContract.
- *
- * @author Melech Mizrachi
  */
 interface ApplicationContract
 {

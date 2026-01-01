@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Routing\Data;
 
 /**
  * Class Data.
- *
- * @author Melech Mizrachi
  */
 readonly class Data
 {

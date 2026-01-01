@@ -17,8 +17,6 @@ use Valkyrja\Type\Data\Cast;
 
 /**
  * Interface CastableModelContract.
- *
- * @author Melech Mizrachi
  */
 interface CastableModelContract extends ModelContract
 {

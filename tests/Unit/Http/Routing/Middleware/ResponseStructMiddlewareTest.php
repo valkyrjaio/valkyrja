@@ -26,8 +26,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Class ResponseStructMiddlewareTest.
- *
- * @author Melech Mizrachi
  */
 class ResponseStructMiddlewareTest extends TestCase
 {

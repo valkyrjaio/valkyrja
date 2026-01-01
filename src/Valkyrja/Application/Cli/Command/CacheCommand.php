@@ -34,8 +34,6 @@ use const LOCK_EX;
 
 /**
  * Class CacheCommand.
- *
- * @author Melech Mizrachi
  */
 class CacheCommand
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Manager;
 
 /**
  * Class S3FlysystemFilesystem.
- *
- * @author Melech Mizrachi
  */
 class S3FlysystemFilesystem extends FlysystemFilesystem
 {

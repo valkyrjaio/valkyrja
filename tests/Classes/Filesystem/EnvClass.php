@@ -17,8 +17,6 @@ use Valkyrja\Application\Env\Env as AppEnv;
 
 /**
  * Class EnvClass.
- *
- * @author Melech Mizrachi
  */
 class EnvClass extends AppEnv
 {

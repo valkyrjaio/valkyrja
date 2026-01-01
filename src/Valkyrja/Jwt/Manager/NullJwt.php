@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class NullJwt.
- *
- * @author Melech Mizrachi
  */
 class NullJwt implements Contract
 {

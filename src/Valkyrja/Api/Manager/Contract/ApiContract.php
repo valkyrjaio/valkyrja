@@ -20,8 +20,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
  * Interface ApiContract.
- *
- * @author Melech Mizrachi
  */
 interface ApiContract
 {

@@ -20,8 +20,6 @@ use function substr;
 
 /**
  * Abstract Class HeadersFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class HeaderFactory
 {

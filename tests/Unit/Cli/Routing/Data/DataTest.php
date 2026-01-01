@@ -21,8 +21,6 @@ use function serialize;
 
 /**
  * Test the Data service.
- *
- * @author Melech Mizrachi
  */
 class DataTest extends TestCase
 {

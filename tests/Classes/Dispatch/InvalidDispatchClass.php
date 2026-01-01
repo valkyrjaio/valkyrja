@@ -17,8 +17,6 @@ use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 
 /**
  * Invalid dispatch class to test with.
- *
- * @author Melech Mizrachi
  */
 class InvalidDispatchClass extends Dispatch
 {

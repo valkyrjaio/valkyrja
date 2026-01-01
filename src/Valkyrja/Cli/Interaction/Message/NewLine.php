@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
 /**
  * Class NewLine.
- *
- * @author Melech Mizrachi
  */
 class NewLine extends Message
 {

@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the listener attribute.
- *
- * @author Melech Mizrachi
  */
 class ListenerTest extends TestCase
 {

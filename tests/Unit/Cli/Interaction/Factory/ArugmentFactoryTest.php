@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ArgumentFactory class.
- *
- * @author Melech Mizrachi
  */
 class ArugmentFactoryTest extends TestCase
 {

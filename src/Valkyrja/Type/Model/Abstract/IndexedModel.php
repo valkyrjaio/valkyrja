@@ -18,8 +18,6 @@ use Valkyrja\Type\Model\Trait\Indexable;
 
 /**
  * Class IndexedModel.
- *
- * @author Melech Mizrachi
  */
 abstract class IndexedModel extends Model implements Contract
 {

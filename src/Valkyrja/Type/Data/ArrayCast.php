@@ -18,8 +18,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Data ArrayCast.
- *
- * @author Melech Mizrachi
  */
 class ArrayCast extends Cast
 {

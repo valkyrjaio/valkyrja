@@ -18,8 +18,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Singleton class.
- *
- * @author Melech Mizrachi
  */
 class SingletonClass implements ServiceContract
 {

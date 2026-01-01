@@ -15,8 +15,6 @@ namespace Valkyrja\Validation\Rule\Contract;
 
 /**
  * Interface RuleContract.
- *
- * @author Melech Mizrachi
  */
 interface RuleContract
 {

@@ -20,8 +20,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface EnumContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<static>
  */
 interface EnumContract extends TypeContract, UnitEnum

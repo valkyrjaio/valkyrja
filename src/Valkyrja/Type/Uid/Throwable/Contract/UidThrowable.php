@@ -17,8 +17,6 @@ use Valkyrja\Type\Throwable\Contract\Throwable;
 
 /**
  * Class UidThrowable.
- *
- * @author Melech Mizrachi
  */
 interface UidThrowable extends Throwable
 {

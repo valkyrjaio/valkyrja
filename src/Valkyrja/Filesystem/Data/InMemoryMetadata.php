@@ -16,8 +16,6 @@ namespace Valkyrja\Filesystem\Data;
 /**
  * Class InMemoryMetadata.
  *
- * @author Melech Mizrachi
- *
  * @psalm-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
  *
  * @phpstan-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}

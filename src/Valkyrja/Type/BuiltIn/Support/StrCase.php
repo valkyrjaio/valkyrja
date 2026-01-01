@@ -21,8 +21,6 @@ use function ucwords;
 
 /**
  * Class StrCase.
- *
- * @author Melech Mizrachi
  */
 class StrCase
 {

@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Input\Input;
 
 /**
  * Class InputFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class InputFactory
 {

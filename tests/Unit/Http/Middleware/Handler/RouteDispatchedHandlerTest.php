@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 
 /**
  * Test the route dispatched handler.
- *
- * @author Melech Mizrachi
  */
 class RouteDispatchedHandlerTest extends HandlerTestCase
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Entity\Contract;
 
 /**
  * Interface SoftDeleteEntityContract.
- *
- * @author Melech Mizrachi
  */
 interface SoftDeleteEntityContract extends EntityContract
 {

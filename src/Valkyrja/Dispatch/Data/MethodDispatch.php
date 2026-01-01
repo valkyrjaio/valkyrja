@@ -22,8 +22,6 @@ use function is_string;
 
 /**
  * Class MethodDispatch.
- *
- * @author Melech Mizrachi
  */
 class MethodDispatch extends ClassDispatch implements Contract
 {

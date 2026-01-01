@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Throwable\Exception;
 
 /**
  * Class InvalidDispatchCapabilityException.
- *
- * @author Melech Mizrachi
  */
 class InvalidDispatchCapabilityException extends InvalidArgumentException
 {

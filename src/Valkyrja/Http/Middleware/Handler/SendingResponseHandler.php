@@ -23,8 +23,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract as 
 /**
  * Class SendingResponseHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<SendingResponseMiddlewareContract>
  */
 class SendingResponseHandler extends Handler implements Contract

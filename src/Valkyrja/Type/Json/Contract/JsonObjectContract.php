@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface JsonObjectContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<object>
  */
 interface JsonObjectContract extends TypeContract

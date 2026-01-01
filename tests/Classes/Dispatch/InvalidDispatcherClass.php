@@ -17,8 +17,6 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 /**
  * Invalid dispatcher class to test with.
- *
- * @author Melech Mizrachi
  */
 class InvalidDispatcherClass
 {

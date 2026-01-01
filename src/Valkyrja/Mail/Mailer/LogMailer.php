@@ -22,8 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class LogMailer.
- *
- * @author Melech Mizrachi
  */
 class LogMailer implements Contract
 {

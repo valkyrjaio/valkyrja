@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message\Contract;
 
 /**
  * Interface AnswerContract.
- *
- * @author Melech Mizrachi
  */
 interface AnswerContract extends MessageContract
 {

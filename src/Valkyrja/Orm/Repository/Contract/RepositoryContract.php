@@ -19,8 +19,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 /**
  * Interface RepositoryContract.
  *
- * @author Melech Mizrachi
- *
  * @template T of EntityContract
  */
 interface RepositoryContract

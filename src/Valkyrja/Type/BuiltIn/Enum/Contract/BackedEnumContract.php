@@ -20,8 +20,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface BackedEnumContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<static>
  */
 interface BackedEnumContract extends TypeContract

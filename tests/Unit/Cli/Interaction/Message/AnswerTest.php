@@ -22,8 +22,6 @@ use function str_contains;
 
 /**
  * Test the ErrorMessage class.
- *
- * @author Melech Mizrachi
  */
 class AnswerTest extends TestCase
 {

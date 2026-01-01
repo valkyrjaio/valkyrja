@@ -17,8 +17,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Interface LockAttemptContract.
- *
- * @author Melech Mizrachi
  */
 interface LockAttemptContract
 {

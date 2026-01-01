@@ -25,8 +25,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Collector service.
- *
- * @author Melech Mizrachi
  */
 class CollectorTest extends TestCase
 {

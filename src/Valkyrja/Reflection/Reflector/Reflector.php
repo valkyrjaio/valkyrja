@@ -33,8 +33,6 @@ use function is_callable;
 
 /**
  * Class Reflection.
- *
- * @author Melech Mizrachi
  */
 class Reflector implements Contract
 {

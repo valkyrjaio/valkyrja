@@ -17,8 +17,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface CollectorContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectorContract
 {

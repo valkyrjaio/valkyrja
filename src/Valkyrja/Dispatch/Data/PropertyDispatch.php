@@ -18,8 +18,6 @@ use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract as Contract;
 
 /**
  * Class PropertyDispatch.
- *
- * @author Melech Mizrachi
  */
 class PropertyDispatch extends ClassDispatch implements Contract
 {

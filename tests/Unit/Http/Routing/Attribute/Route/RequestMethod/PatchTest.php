@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Patch attribute.
- *
- * @author Melech Mizrachi
  */
 class PatchTest extends TestCase
 {

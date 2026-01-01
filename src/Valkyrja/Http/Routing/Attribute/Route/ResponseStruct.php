@@ -18,8 +18,6 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract as RoutingResp
 
 /**
  * Attribute ResponseStruct.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class ResponseStruct

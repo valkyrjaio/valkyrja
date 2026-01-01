@@ -23,8 +23,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class LogCache.
- *
- * @author Melech Mizrachi
  */
 class LogCache implements Contract
 {

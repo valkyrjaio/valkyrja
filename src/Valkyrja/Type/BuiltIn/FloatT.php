@@ -27,8 +27,6 @@ use function is_string;
 /**
  * Class FloatT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<float>
  */
 class FloatT extends Type implements Contract

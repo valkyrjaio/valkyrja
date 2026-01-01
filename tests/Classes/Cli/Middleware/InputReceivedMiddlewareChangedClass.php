@@ -22,8 +22,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestInputReceivedMiddlewareChanged.
- *
- * @author Melech Mizrachi
  */
 class InputReceivedMiddlewareChangedClass implements InputReceivedMiddlewareContract
 {

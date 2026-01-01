@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface FloatContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<float>
  */
 interface FloatContract extends TypeContract

@@ -19,8 +19,6 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 
 /**
  * Interface ArgumentParameterContract.
- *
- * @author Melech Mizrachi
  */
 interface ArgumentParameterContract extends ParameterContract
 {

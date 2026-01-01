@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Trace attribute.
- *
- * @author Melech Mizrachi
  */
 class TraceTest extends TestCase
 {

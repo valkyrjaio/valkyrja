@@ -17,8 +17,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
  * Interface UserRecoveryCodeContract.
- *
- * @author Melech Mizrachi
  */
 interface UserRecoveryCodeContract extends EntityContract
 {

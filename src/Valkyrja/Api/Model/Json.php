@@ -21,8 +21,6 @@ use Valkyrja\Type\Model\Abstract\Model;
 
 /**
  * Class Json.
- *
- * @author Melech Mizrachi
  */
 class Json extends Model implements Contract
 {

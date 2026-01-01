@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Constant;
 
 /**
  * Class ConfigName.
- *
- * @author Melech Mizrachi
  */
 final class ConfigName
 {

@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Argument class.
- *
- * @author Melech Mizrachi
  */
 class ArgumentTest extends TestCase
 {

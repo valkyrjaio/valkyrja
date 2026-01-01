@@ -27,8 +27,6 @@ use function is_string;
 /**
  * Class IntT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<int>
  */
 class IntT extends Type implements Contract

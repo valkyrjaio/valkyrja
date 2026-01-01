@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Directory support class.
- *
- * @author Melech Mizrachi
  */
 class DirectoryTest extends TestCase
 {

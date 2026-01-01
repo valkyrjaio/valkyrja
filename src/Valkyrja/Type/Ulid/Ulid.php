@@ -28,8 +28,6 @@ use function sprintf;
 /**
  * Class Ulid.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<string>
  */
 class Ulid extends Type implements Contract

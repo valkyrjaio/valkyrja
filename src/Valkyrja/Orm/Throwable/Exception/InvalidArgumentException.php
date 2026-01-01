@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArg
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends ThrowableInvalidArgumentException implements Throwable
 {

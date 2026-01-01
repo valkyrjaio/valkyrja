@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 /**
  * Interface StoreContract.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  */
 interface StoreContract

@@ -30,8 +30,6 @@ use function is_string;
 
 /**
  * Class Value.
- *
- * @author Melech Mizrachi
  */
 class Value implements Contract
 {

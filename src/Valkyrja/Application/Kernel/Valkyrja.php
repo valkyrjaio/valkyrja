@@ -29,8 +29,6 @@ use Valkyrja\Http\Routing\Data\Data as HttpData;
 
 /**
  * Class Valkyrja.
- *
- * @author Melech Mizrachi
  */
 class Valkyrja implements ApplicationContract
 {

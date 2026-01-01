@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract as Contract;
 
 /**
  * Class PlainOutput.
- *
- * @author Melech Mizrachi
  */
 class PlainOutput extends Output implements Contract
 {

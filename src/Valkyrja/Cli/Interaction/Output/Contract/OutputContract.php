@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 
 /**
  * Interface OutputContract.
- *
- * @author Melech Mizrachi
  */
 interface OutputContract
 {

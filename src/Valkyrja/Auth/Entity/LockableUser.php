@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Trait\LockableUserTrait;
 
 /**
  * Entity LockableUser.
- *
- * @author Melech Mizrachi
  */
 class LockableUser extends User implements Contract
 {

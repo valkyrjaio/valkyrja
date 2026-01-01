@@ -26,8 +26,6 @@ use function count;
 
 /**
  * Class ArgumentParameter.
- *
- * @author Melech Mizrachi
  */
 class ArgumentParameter extends Parameter implements Contract
 {

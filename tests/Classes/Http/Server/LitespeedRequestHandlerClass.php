@@ -19,8 +19,6 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class LitespeedRequestHandler.
- *
- * @author Melech Mizrachi
  */
 class LitespeedRequestHandlerClass extends RequestHandler
 {

@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Time support class.
- *
- * @author Melech Mizrachi
  */
 class TimeTest extends TestCase
 {

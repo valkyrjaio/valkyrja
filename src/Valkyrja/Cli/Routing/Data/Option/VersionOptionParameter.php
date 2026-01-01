@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 /**
  * Class VersionOptionParameter.
- *
- * @author Melech Mizrachi
  */
 class VersionOptionParameter extends OptionParameter
 {

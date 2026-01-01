@@ -24,8 +24,6 @@ use function method_exists;
 
 /**
  * Test the Indexable model.
- *
- * @author Melech Mizrachi
  */
 class IndexableModelTest extends TestCase
 {

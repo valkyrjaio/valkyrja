@@ -18,8 +18,6 @@ use Valkyrja\Log\Enum\LogLevel;
 
 /**
  * Interface LoggerContract.
- *
- * @author Melech Mizrachi
  */
 interface LoggerContract
 {

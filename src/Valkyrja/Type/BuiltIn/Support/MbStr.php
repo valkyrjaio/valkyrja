@@ -24,8 +24,6 @@ use const MB_CASE_TITLE;
 
 /**
  * Class MbStr.
- *
- * @author Melech Mizrachi
  */
 class MbStr extends Str
 {

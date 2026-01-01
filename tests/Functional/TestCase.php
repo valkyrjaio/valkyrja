@@ -23,8 +23,6 @@ use Valkyrja\Tests\EnvClass;
 
 /**
  * Test case for functional tests.
- *
- * @author Melech Mizrachi
  */
 class TestCase extends PHPUnitTestCase
 {

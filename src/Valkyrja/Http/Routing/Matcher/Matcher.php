@@ -30,8 +30,6 @@ use function preg_match;
 
 /**
  * Class Matcher.
- *
- * @author Melech Mizrachi
  */
 class Matcher implements Contract
 {

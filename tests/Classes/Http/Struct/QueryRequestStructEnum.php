@@ -24,8 +24,6 @@ use Valkyrja\Validation\Rule\Is\Required;
 
 /**
  * Struct TestQueryRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum QueryRequestStructEnum implements RequestStructContract
 {

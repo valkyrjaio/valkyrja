@@ -29,8 +29,6 @@ use Valkyrja\Orm\Repository\Repository;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

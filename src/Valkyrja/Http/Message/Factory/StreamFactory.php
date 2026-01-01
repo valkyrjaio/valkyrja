@@ -20,8 +20,6 @@ use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 /**
  * Abstract Class StreamFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class StreamFactory
 {

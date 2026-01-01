@@ -19,8 +19,6 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class SessionCloseRequestHandler.
- *
- * @author Melech Mizrachi
  */
 class SessionCloseRequestHandlerClass extends RequestHandler
 {

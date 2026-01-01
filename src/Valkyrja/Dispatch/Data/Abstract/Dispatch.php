@@ -22,8 +22,6 @@ use function get_object_vars;
 
 /**
  * Abstract Class Dispatch.
- *
- * @author Melech Mizrachi
  */
 abstract class Dispatch implements Contract
 {

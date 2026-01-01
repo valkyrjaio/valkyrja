@@ -20,8 +20,6 @@ use Valkyrja\Orm\Enum\WhereType;
 
 /**
  * Class NotWhere.
- *
- * @author Melech Mizrachi
  */
 readonly class NotWhere extends Where
 {

@@ -17,8 +17,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 
 /**
  * Class Data.
- *
- * @author Melech Mizrachi
  */
 readonly class Data
 {

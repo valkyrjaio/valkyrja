@@ -20,8 +20,6 @@ use Valkyrja\Http\Routing\Data\Data as HttpData;
 
 /**
  * Class AppData.
- *
- * @author Melech Mizrachi
  */
 readonly class Data
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface MailableUserContract.
- *
- * @author Melech Mizrachi
  */
 interface MailableUserContract extends UserContract
 {

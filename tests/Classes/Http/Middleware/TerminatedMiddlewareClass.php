@@ -21,8 +21,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestTerminatedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class TerminatedMiddlewareClass implements TerminatedMiddlewareContract
 {

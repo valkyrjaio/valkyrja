@@ -20,8 +20,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
 /**
  * Class NullLogger.
- *
- * @author Melech Mizrachi
  */
 class NullLogger implements Contract
 {

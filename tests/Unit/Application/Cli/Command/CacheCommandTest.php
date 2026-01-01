@@ -27,8 +27,6 @@ use const LOCK_EX;
 
 /**
  * Test the ClearCacheCommand service.
- *
- * @author Melech Mizrachi
  */
 class CacheCommandTest extends TestCase
 {

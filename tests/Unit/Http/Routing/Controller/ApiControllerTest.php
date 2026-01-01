@@ -29,8 +29,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the Controller service.
- *
- * @author Melech Mizrachi
  */
 class ApiControllerTest extends TestCase
 {

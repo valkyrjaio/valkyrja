@@ -80,8 +80,6 @@ use Valkyrja\View\Template\Contract\TemplateContract;
 
 /**
  * Test the Application service.
- *
- * @author Melech Mizrachi
  */
 class ApplicationTest extends TestCase
 {

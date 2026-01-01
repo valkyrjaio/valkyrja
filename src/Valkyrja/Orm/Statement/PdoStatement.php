@@ -29,8 +29,6 @@ use function is_string;
 
 /**
  * Class PdoStatement.
- *
- * @author Melech Mizrachi
  */
 class PdoStatement implements Contract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 
 /**
  * Attribute Alias.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Alias

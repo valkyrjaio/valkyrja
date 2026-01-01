@@ -17,8 +17,6 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 
 /**
  * Class CryptException.
- *
- * @author Melech Mizrachi
  */
 class CryptException extends RuntimeException
 {

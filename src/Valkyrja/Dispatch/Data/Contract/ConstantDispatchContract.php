@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Data\Contract;
 
 /**
  * Interface ConstantDispatchContract.
- *
- * @author Melech Mizrachi
  */
 interface ConstantDispatchContract extends DispatchContract
 {

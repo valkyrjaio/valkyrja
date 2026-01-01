@@ -25,8 +25,6 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 /**
  * Class OrmStore.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  *
  * @implements Contract<U>

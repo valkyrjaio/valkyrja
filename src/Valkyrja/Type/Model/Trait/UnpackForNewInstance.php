@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Trait;
 
 /**
  * Trait UnpackForNewInstance.
- *
- * @author Melech Mizrachi
  */
 trait UnpackForNewInstance
 {

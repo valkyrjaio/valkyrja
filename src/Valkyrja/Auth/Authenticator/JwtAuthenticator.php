@@ -30,8 +30,6 @@ use function is_string;
 /**
  * Class JwtAuthenticator.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  *
  * @extends Authenticator<U>

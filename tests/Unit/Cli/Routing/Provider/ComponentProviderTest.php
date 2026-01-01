@@ -23,8 +23,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Component service.
- *
- * @author Melech Mizrachi
  */
 class ComponentProviderTest extends TestCase
 {

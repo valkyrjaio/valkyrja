@@ -24,8 +24,6 @@ use Valkyrja\Orm\Statement\NullStatement;
 
 /**
  * Class InMemoryManager.
- *
- * @author Melech Mizrachi
  */
 class InMemoryManager implements Contract
 {

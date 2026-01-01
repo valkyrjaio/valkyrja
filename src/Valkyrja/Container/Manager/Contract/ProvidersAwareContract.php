@@ -17,8 +17,6 @@ use Valkyrja\Container\Provider\Provider;
 
 /**
  * Interface ProvidersAwareContract.
- *
- * @author Melech Mizrachi
  */
 interface ProvidersAwareContract
 {

@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Message\Enum;
 /**
  * Enum RequestMethod.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.rfc-editor.org/rfc/rfc9110.html#name-method-definitions
  */
 enum RequestMethod: string

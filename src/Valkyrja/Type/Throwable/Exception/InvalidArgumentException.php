@@ -18,8 +18,6 @@ use Valkyrja\Type\Throwable\Contract\Throwable;
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends Exception implements Throwable
 {

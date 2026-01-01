@@ -21,8 +21,6 @@ use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 
 /**
  * Class Collection.
- *
- * @author Melech Mizrachi
  */
 class Collection implements Contract
 {

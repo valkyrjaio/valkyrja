@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface ColumnContract.
- *
- * @author Melech Mizrachi
  */
 interface ColumnContract
 {

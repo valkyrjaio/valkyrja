@@ -26,8 +26,6 @@ use function is_string;
 /**
  * Class Collection.
  *
- * @author Melech Mizrachi
- *
  * @phpstan-import-type RequestMethodList from Contract
  * @phpstan-import-type RequestMethodRouteList from Contract
  *

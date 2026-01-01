@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the GlobalVariableDispatch.
- *
- * @author Melech Mizrachi
  */
 class GlobalVariableDispatchTest extends TestCase
 {

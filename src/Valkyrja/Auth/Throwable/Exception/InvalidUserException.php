@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Throwable\Exception;
 
 /**
  * Exception InvalidUserException.
- *
- * @author Melech Mizrachi
  */
 class InvalidUserException extends InvalidArgumentException
 {

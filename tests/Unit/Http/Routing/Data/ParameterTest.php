@@ -21,8 +21,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Test the Parameter service.
- *
- * @author Melech Mizrachi
  */
 class ParameterTest extends TestCase
 {

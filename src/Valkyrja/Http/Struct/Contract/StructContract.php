@@ -18,8 +18,6 @@ use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
 
 /**
  * Interface StructContract.
- *
- * @author Melech Mizrachi
  */
 interface StructContract extends UnitEnum, ArrayableContract
 {

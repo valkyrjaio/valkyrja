@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
 
 /**
  * Class with attributes used for unit testing.
- *
- * @author Melech Mizrachi
  */
 // Testing valid class attributes that will be attached to the constructor
 #[Listener(AttributesCollectorTest::VALUE1, 'Attributed2ClassValue1')]

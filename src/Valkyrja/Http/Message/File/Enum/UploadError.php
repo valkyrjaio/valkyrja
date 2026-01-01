@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Enum;
 
 /**
  * Enum UploadError.
- *
- * @author Melech Mizrachi
  */
 enum UploadError: int
 {

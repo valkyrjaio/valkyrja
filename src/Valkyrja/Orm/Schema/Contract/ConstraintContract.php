@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface ConstraintContract.
- *
- * @author Melech Mizrachi
  */
 interface ConstraintContract
 {

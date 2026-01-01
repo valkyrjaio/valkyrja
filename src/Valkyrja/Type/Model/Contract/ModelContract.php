@@ -21,8 +21,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface ModelContract.
  *
- * @author Melech Mizrachi
- *
  * @extends ArrayAccess<string, mixed>
  * @extends TypeContract<static>
  */

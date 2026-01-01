@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface ObjectContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<object>
  */
 interface ObjectContract extends TypeContract

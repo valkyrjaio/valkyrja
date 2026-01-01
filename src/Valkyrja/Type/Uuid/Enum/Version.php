@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Uuid\Enum;
 
 /**
  * Enum Version.
- *
- * @author Melech Mizrachi
  */
 enum Version: int
 {

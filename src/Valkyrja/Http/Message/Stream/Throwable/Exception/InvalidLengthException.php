@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
 /**
  * Class InvalidLengthException.
- *
- * @author Melech Mizrachi
  */
 class InvalidLengthException extends InvalidArgumentException
 {

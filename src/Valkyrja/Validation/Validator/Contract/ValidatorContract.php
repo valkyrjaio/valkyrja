@@ -17,8 +17,6 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 
 /**
  * Interface ValidateContract.
- *
- * @author Melech Mizrachi
  */
 interface ValidatorContract
 {

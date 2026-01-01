@@ -17,8 +17,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Interface ServiceContract.
- *
- * @author Melech Mizrachi
  */
 interface ServiceContract
 {

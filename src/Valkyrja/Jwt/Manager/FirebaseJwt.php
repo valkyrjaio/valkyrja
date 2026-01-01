@@ -23,8 +23,6 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 
 /**
  * Class RsFirebaseJwt.
- *
- * @author Melech Mizrachi
  */
 class FirebaseJwt implements Contract
 {

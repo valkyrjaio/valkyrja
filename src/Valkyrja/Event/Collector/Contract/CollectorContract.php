@@ -17,8 +17,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 
 /**
  * Interface CollectorContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectorContract
 {

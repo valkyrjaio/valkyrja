@@ -20,8 +20,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface CommandMatchedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface CommandMatchedMiddlewareContract
 {

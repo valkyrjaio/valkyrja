@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
  * Class QuestionFormatter.
- *
- * @author Melech Mizrachi
  */
 class QuestionFormatter extends Formatter
 {

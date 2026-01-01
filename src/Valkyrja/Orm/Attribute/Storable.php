@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Storable.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Storable

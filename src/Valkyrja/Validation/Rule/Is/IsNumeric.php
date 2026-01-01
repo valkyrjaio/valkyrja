@@ -20,8 +20,6 @@ use function is_numeric;
 
 /**
  * Class IsNumeric.
- *
- * @author Melech Mizrachi
  */
 class IsNumeric extends Rule
 {

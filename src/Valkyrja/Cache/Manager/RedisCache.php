@@ -21,8 +21,6 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 /**
  * Class RedisCache.
- *
- * @author Melech Mizrachi
  */
 class RedisCache implements Contract
 {

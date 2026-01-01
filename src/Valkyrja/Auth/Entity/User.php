@@ -20,8 +20,6 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
 
 /**
  * Entity User.
- *
- * @author Melech Mizrachi
  */
 class User extends Entity implements Contract
 {

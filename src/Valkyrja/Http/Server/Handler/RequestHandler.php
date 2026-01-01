@@ -54,8 +54,6 @@ use const PHP_SAPI;
 
 /**
  * Class RequestHandler.
- *
- * @author Melech Mizrachi
  */
 class RequestHandler implements Contract
 {

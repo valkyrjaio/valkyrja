@@ -25,8 +25,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract as Contract;
 
 /**
  * Class Output.
- *
- * @author Melech Mizrachi
  */
 class Output implements Contract
 {

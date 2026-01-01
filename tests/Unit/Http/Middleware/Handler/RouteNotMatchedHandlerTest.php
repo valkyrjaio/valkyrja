@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\RouteNotMatchedMiddlewareClass;
 
 /**
  * Test the route not matched handler.
- *
- * @author Melech Mizrachi
  */
 class RouteNotMatchedHandlerTest extends HandlerTestCase
 {

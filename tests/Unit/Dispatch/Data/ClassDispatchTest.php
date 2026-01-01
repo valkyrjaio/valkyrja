@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ClassDispatch.
- *
- * @author Melech Mizrachi
  */
 class ClassDispatchTest extends TestCase
 {

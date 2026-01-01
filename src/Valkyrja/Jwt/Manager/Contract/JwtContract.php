@@ -15,8 +15,6 @@ namespace Valkyrja\Jwt\Manager\Contract;
 
 /**
  * Interface JwtContract.
- *
- * @author Melech Mizrachi
  */
 interface JwtContract
 {

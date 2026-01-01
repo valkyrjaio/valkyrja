@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface BoolContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<bool>
  */
 interface BoolContract extends TypeContract

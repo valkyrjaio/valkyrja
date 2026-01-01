@@ -20,8 +20,6 @@ use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 
 /**
  * Interface QueryBuilderFactoryContract.
- *
- * @author Melech Mizrachi
  */
 interface QueryBuilderFactoryContract
 {

@@ -21,8 +21,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class Cache.
- *
- * @author Melech Mizrachi
  */
 class Tagger implements Contract
 {

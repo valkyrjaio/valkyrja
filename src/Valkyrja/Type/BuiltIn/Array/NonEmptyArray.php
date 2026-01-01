@@ -18,8 +18,6 @@ use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class NonEmptyArray.
- *
- * @author Melech Mizrachi
  */
 class NonEmptyArray extends ArrayT
 {

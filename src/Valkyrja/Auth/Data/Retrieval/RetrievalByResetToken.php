@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
  * Class RetrievalByResetToken.
- *
- * @author Melech Mizrachi
  */
 class RetrievalByResetToken implements Contract
 {

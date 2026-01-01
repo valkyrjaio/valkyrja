@@ -19,8 +19,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Class UnlockAttempt.
- *
- * @author Melech Mizrachi
  */
 class UnlockAttempt implements Contract
 {

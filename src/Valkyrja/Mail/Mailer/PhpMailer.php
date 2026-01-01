@@ -21,8 +21,6 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
 /**
  * Class PhpMailer.
- *
- * @author Melech Mizrachi
  */
 class PhpMailer implements Contract
 {

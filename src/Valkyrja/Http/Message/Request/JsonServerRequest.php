@@ -33,8 +33,6 @@ use function array_key_exists;
 
 /**
  * Class JsonServerRequest.
- *
- * @author Melech Mizrachi
  */
 class JsonServerRequest extends ServerRequest implements Contract
 {

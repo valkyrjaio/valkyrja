@@ -19,8 +19,6 @@ use Valkyrja\Dispatch\Data\Contract\CallableDispatchContract as Contract;
 
 /**
  * Class CallableDispatch.
- *
- * @author Melech Mizrachi
  */
 class CallableDispatch extends Dispatch implements Contract
 {

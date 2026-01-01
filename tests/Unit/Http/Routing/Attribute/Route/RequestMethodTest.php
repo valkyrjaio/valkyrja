@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the RequestMethod attribute.
- *
- * @author Melech Mizrachi
  */
 class RequestMethodTest extends TestCase
 {

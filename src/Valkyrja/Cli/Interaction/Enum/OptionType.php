@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Enum;
 
 /**
  * Enum OptionType.
- *
- * @author Melech Mizrachi
  */
 enum OptionType
 {

@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Delete attribute.
- *
- * @author Melech Mizrachi
  */
 class DeleteTest extends TestCase
 {

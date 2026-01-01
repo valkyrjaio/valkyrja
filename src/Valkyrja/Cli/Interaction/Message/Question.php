@@ -27,8 +27,6 @@ use function is_callable;
 
 /**
  * Class Question.
- *
- * @author Melech Mizrachi
  */
 class Question extends Message implements Contract
 {

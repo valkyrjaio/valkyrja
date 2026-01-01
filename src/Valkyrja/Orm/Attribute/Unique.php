@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Unique.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class Unique

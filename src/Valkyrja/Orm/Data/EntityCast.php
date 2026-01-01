@@ -20,8 +20,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Data EntityCast.
- *
- * @author Melech Mizrachi
  */
 class EntityCast extends Cast
 {

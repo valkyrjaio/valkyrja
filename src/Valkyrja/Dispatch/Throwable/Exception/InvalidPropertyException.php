@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Throwable\Exception;
 
 /**
  * Class InvalidPropertyException.
- *
- * @author Melech Mizrachi
  */
 class InvalidPropertyException extends InvalidArgumentException
 {

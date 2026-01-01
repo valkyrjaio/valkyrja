@@ -25,8 +25,6 @@ use function trait_exists;
 
 /**
  * Test case for unit tests.
- *
- * @author Melech Mizrachi
  */
 abstract class TestCase extends PHPUnitTestCase
 {

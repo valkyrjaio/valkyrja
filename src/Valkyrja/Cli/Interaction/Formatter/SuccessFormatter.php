@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
  * Class SuccessFormatter.
- *
- * @author Melech Mizrachi
  */
 class SuccessFormatter extends Formatter
 {

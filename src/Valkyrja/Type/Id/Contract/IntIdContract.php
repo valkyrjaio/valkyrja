@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface IntIdContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<int>
  */
 interface IntIdContract extends TypeContract

@@ -27,8 +27,6 @@ use Vonage\Client\Credentials\CredentialsInterface as VonageCredentials;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Session\Throwable\Exception;
 
 /**
  * Class InvalidCsrfToken.
- *
- * @author Melech Mizrachi
  */
 class InvalidCsrfToken extends InvalidArgumentException
 {

@@ -18,8 +18,6 @@ use Valkyrja\Type\Model\Throwable\Contract\Throwable;
 
 /**
  * Class Exception.
- *
- * @author Melech Mizrachi
  */
 class Exception extends ExceptionClass implements Throwable
 {

@@ -19,8 +19,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
 /**
  * Interface InputReceivedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface InputReceivedMiddlewareContract
 {

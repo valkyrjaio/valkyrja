@@ -18,8 +18,6 @@ use Valkyrja\Orm\Data\EntityCast as ParentEntityCast;
 
 /**
  * Attribute EntityCast.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_PARAMETER)]
 class EntityCast extends ParentEntityCast

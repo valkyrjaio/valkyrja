@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Throwable\Exception;
 
 /**
  * Exception InvalidRegistrationException.
- *
- * @author Melech Mizrachi
  */
 class InvalidRegistrationException extends InvalidArgumentException
 {

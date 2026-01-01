@@ -17,8 +17,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Interface ForgotPasswordAttemptContract.
- *
- * @author Melech Mizrachi
  */
 interface ForgotPasswordAttemptContract
 {

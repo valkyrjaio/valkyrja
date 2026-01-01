@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as ParentAttribute;
 
 /**
  * Attribute Patch.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class Patch extends ParentAttribute

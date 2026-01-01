@@ -17,8 +17,6 @@ use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
 /**
  * Constant ConfigValue.
- *
- * @author Melech Mizrachi
  */
 final class ConfigValue
 {

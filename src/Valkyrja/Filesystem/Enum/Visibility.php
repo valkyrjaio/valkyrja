@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Enum;
 
 /**
  * Enum Visibility.
- *
- * @author Melech Mizrachi
  */
 enum Visibility: string
 {

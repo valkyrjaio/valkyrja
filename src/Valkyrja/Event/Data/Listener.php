@@ -21,8 +21,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract as Contract;
 
 /**
  * Class Listener.
- *
- * @author Melech Mizrachi
  */
 class Listener implements Contract
 {

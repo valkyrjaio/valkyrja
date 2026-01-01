@@ -17,8 +17,6 @@ use Valkyrja\Type\Model\Contract\ModelContract;
 
 /**
  * Interface JsonDataContract.
- *
- * @author Melech Mizrachi
  */
 interface JsonDataContract extends ModelContract
 {

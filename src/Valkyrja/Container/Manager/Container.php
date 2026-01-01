@@ -25,8 +25,6 @@ use function class_exists;
 
 /**
  * Class Container.
- *
- * @author Melech Mizrachi
  */
 class Container implements Contract
 {

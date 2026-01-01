@@ -22,8 +22,6 @@ use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV2Exception;
  *
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
  * A more precise version of a ULID where time must be down to the microsecond, and  80 bits of randomness is required.
- *
- * @author Melech Mizrachi
  */
 class VlidV2 extends Vlid
 {

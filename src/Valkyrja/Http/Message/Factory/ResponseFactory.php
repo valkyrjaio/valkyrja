@@ -30,8 +30,6 @@ use Valkyrja\Http\Message\Uri\Uri;
 
 /**
  * Class ResponseFactory.
- *
- * @author Melech Mizrachi
  */
 class ResponseFactory implements Contract
 {

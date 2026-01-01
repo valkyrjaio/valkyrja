@@ -19,8 +19,6 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class FastCgiRequestHandler.
- *
- * @author Melech Mizrachi
  */
 class FastCgiRequestHandlerClass extends RequestHandler
 {

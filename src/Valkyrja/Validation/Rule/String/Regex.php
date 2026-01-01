@@ -21,8 +21,6 @@ use function preg_match;
 
 /**
  * Class Regex.
- *
- * @author Melech Mizrachi
  */
 class Regex extends Rule
 {

@@ -18,8 +18,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Data OriginalCast.
- *
- * @author Melech Mizrachi
  */
 class OriginalCast extends Cast
 {

@@ -20,8 +20,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract as Contract;
 
 /**
  * Class StreamOutput.
- *
- * @author Melech Mizrachi
  */
 class StreamOutput extends Output implements Contract
 {

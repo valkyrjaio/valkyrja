@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 /**
  * Class InvalidDirectoryException.
- *
- * @author Melech Mizrachi
  */
 class InvalidDirectoryException extends InvalidArgumentException
 {

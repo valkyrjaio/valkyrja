@@ -22,8 +22,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 
 /**
  * Test the throwable caught handler.
- *
- * @author Melech Mizrachi
  */
 class ThrowableCaughtHandlerTest extends HandlerTestCase
 {

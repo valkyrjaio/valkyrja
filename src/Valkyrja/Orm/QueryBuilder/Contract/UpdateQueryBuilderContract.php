@@ -17,8 +17,6 @@ use Valkyrja\Orm\Data\Value;
 
 /**
  * Interface UpdateQueryBuilderContract.
- *
- * @author Melech Mizrachi
  */
 interface UpdateQueryBuilderContract extends QueryBuilderContract
 {

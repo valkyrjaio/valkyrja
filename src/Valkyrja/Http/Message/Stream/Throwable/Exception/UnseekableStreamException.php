@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
 /**
  * Class UnseekableStreamException.
- *
- * @author Melech Mizrachi
  */
 class UnseekableStreamException extends RuntimeException
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Jwt\Data;
 
 /**
  * Class EdDsaKey.
- *
- * @author Melech Mizrachi
  */
 class EdDsaKey
 {

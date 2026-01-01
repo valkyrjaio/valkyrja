@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Collection class.
- *
- * @author Melech Mizrachi
  */
 class CollectionTest extends TestCase
 {

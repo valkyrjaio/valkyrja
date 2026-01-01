@@ -15,8 +15,6 @@ namespace Valkyrja\Container\Throwable\Exception;
 
 /**
  * Class InvalidContextException.
- *
- * @author Melech Mizrachi
  */
 class InvalidContextException extends InvalidArgumentException
 {

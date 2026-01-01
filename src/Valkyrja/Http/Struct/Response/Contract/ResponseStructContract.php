@@ -17,8 +17,6 @@ use Valkyrja\Http\Struct\Contract\StructContract;
 
 /**
  * Interface ResponseStructContract.
- *
- * @author Melech Mizrachi
  */
 interface ResponseStructContract extends StructContract
 {

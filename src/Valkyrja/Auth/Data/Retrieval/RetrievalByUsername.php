@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
  * Class RetrievalByUsername.
- *
- * @author Melech Mizrachi
  */
 class RetrievalByUsername implements Contract
 {

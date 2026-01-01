@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
 /**
  * Class UnsupportedOffsetSetException.
- *
- * @author Melech Mizrachi
  */
 class UnsupportedOffsetSetException extends UnsupportedMethodException
 {

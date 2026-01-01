@@ -25,8 +25,6 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 /**
  * Interface RouteContract.
- *
- * @author Melech Mizrachi
  */
 interface RouteContract
 {

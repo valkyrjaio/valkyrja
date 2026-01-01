@@ -17,8 +17,6 @@ use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 
 /**
  * Interface DispatcherContract.
- *
- * @author Melech Mizrachi
  */
 interface DispatcherContract
 {

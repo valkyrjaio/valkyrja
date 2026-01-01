@@ -19,8 +19,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Service class.
- *
- * @author Melech Mizrachi
  */
 #[Service(self::class)]
 class ServiceClass implements Contract

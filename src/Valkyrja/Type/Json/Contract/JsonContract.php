@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface JsonContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<array<string|int, mixed>>
  */
 interface JsonContract extends TypeContract

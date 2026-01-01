@@ -17,8 +17,6 @@ use Valkyrja\Notification\Constant\UserField;
 
 /**
  * Trait NotifiableUserTrait.
- *
- * @author Melech Mizrachi
  */
 trait NotifiableUserTrait
 {

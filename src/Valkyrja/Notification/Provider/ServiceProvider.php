@@ -26,8 +26,6 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

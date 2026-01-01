@@ -19,8 +19,6 @@ use Valkyrja\Orm\Enum\SortOrder;
 
 /**
  * Class OrderBy.
- *
- * @author Melech Mizrachi
  */
 readonly class OrderBy implements Stringable
 {

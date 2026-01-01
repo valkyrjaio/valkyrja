@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 
 /**
  * Abstract Class Controller.
- *
- * @author Melech Mizrachi
  */
 abstract class Controller
 {

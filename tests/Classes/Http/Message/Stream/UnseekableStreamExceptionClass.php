@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Stream\Stream;
 
 /**
  * Class UnseekableStreamExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class UnseekableStreamExceptionClass extends Stream
 {

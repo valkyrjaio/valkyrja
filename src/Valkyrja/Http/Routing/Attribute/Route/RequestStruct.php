@@ -18,8 +18,6 @@ use Valkyrja\Http\Struct\Request\Contract\RequestStructContract as RoutingReques
 
 /**
  * Attribute RequestStruct.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestStruct

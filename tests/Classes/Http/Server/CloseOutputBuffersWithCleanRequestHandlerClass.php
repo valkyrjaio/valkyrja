@@ -17,8 +17,6 @@ use Override;
 
 /**
  * Class CloseOutputBuffersRequestHandler.
- *
- * @author Melech Mizrachi
  */
 class CloseOutputBuffersWithCleanRequestHandlerClass extends CloseOutputBuffersRequestHandlerClass
 {

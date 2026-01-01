@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Post attribute.
- *
- * @author Melech Mizrachi
  */
 class PostTest extends TestCase
 {

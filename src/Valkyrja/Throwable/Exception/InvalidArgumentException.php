@@ -20,8 +20,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends PhpInvalidArgumentException implements Throwable
 {

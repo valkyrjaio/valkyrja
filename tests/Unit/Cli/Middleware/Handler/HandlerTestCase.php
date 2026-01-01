@@ -23,8 +23,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * The Handler test case.
- *
- * @author Melech Mizrachi
  */
 class HandlerTestCase extends TestCase
 {

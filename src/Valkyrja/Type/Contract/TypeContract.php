@@ -18,8 +18,6 @@ use JsonSerializable;
 /**
  * Interface TypeContract.
  *
- * @author Melech Mizrachi
- *
  * @template T
  */
 interface TypeContract extends JsonSerializable

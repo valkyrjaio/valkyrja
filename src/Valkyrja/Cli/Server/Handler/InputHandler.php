@@ -45,8 +45,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Class InputHandler.
- *
- * @author Melech Mizrachi
  */
 class InputHandler implements Contract
 {

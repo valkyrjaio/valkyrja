@@ -20,8 +20,6 @@ use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
 /**
  * Interface RequestStructContract.
- *
- * @author Melech Mizrachi
  */
 interface RequestStructContract extends StructContract
 {

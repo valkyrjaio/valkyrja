@@ -24,8 +24,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Class ViewRouteNotMatchedMiddlewareTest.
- *
- * @author Melech Mizrachi
  */
 class ViewRouteNotMatchedMiddlewareTest extends TestCase
 {

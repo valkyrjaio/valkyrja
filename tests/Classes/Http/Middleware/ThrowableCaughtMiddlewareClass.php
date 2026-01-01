@@ -22,8 +22,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestThrowableCaughtMiddleware.
- *
- * @author Melech Mizrachi
  */
 class ThrowableCaughtMiddlewareClass implements ThrowableCaughtMiddlewareContract
 {

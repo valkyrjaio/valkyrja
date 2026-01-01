@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
  * Class MoveUploadedFileClass.
- *
- * @author Melech Mizrachi
  */
 class MoveUploadedFileClass extends UploadedFile
 {

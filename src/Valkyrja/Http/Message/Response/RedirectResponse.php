@@ -27,8 +27,6 @@ use Valkyrja\Http\Message\Uri\Uri;
 
 /**
  * Class RedirectResponse.
- *
- * @author Melech Mizrachi
  */
 class RedirectResponse extends Response implements Contract
 {

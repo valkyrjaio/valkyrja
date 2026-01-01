@@ -34,8 +34,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Class JsonResponse.
- *
- * @author Melech Mizrachi
  */
 class JsonResponse extends Response implements Contract
 {

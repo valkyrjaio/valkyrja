@@ -17,8 +17,6 @@ use Valkyrja\Orm\Data\Value;
 
 /**
  * Interface InsertQueryBuilderContract.
- *
- * @author Melech Mizrachi
  */
 interface InsertQueryBuilderContract extends QueryBuilderContract
 {

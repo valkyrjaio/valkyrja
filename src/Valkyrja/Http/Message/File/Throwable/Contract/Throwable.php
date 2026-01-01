@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Throwable\Contract\Throwable as Contract;
 
 /**
  * Interface Throwable.
- *
- * @author Melech Mizrachi
  */
 interface Throwable extends Contract
 {

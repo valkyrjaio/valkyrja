@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class Email.
- *
- * @author Melech Mizrachi
  */
 class Email extends Rule
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface SchemaContract.
- *
- * @author Melech Mizrachi
  */
 interface SchemaContract
 {

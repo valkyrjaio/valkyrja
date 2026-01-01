@@ -26,8 +26,6 @@ use function is_string;
 
 /**
  * Abstract Class UploadedFileFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class UploadedFileFactory
 {

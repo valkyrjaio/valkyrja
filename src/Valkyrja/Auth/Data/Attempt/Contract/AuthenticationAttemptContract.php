@@ -17,8 +17,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Interface AuthenticationAttemptContract.
- *
- * @author Melech Mizrachi
  */
 interface AuthenticationAttemptContract
 {

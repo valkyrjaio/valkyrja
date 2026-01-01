@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Server\Support;
 
 /**
  * Class Exiter.
- *
- * @author Melech Mizrachi
  */
 class Exiter
 {

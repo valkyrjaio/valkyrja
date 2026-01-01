@@ -20,8 +20,6 @@ use function is_bool;
 
 /**
  * Class IsBool.
- *
- * @author Melech Mizrachi
  */
 class IsBool extends Rule
 {

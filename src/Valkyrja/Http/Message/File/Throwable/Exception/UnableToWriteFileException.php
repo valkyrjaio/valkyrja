@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 /**
  * Class UnableToWriteFileException.
- *
- * @author Melech Mizrachi
  */
 class UnableToWriteFileException extends RuntimeException
 {

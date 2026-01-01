@@ -21,8 +21,6 @@ use Valkyrja\Http\Routing\Attribute\Route\Path;
 
 /**
  * Controller class to test routes.
- *
- * @author Melech Mizrachi
  */
 #[Path('/controller')]
 #[Name('controller')]

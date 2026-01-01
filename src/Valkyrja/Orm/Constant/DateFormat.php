@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Constant;
 
 /**
  * Constant DateFormat.
- *
- * @author Melech Mizrachi
  */
 final class DateFormat
 {

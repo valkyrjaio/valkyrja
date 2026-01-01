@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
  * Class InvalidDirectoryExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class InvalidDirectoryExceptionClass extends UploadedFile
 {

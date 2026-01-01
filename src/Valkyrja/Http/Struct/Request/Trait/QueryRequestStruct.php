@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Trait QueryRequestStruct.
- *
- * @author Melech Mizrachi
  */
 trait QueryRequestStruct
 {

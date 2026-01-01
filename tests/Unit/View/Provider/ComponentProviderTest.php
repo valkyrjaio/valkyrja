@@ -19,8 +19,6 @@ use Valkyrja\View\Provider\ServiceProvider;
 
 /**
  * Test the Component service.
- *
- * @author Melech Mizrachi
  */
 class ComponentProviderTest extends TestCase
 {

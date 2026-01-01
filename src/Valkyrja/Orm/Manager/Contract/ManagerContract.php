@@ -20,8 +20,6 @@ use Valkyrja\Orm\Statement\Contract\StatementContract;
 
 /**
  * Interface ManagerContract.
- *
- * @author Melech Mizrachi
  */
 interface ManagerContract
 {

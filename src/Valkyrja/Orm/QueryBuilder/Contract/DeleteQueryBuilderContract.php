@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\QueryBuilder\Contract;
 
 /**
  * Interface DeleteQueryBuilderContract.
- *
- * @author Melech Mizrachi
  */
 interface DeleteQueryBuilderContract extends QueryBuilderContract
 {

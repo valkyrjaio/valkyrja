@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Test the invalid argument exception class.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentExceptionTest extends TestCase
 {

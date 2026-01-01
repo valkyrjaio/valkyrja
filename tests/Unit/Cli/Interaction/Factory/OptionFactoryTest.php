@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the OptionFactory class.
- *
- * @author Melech Mizrachi
  */
 class OptionFactoryTest extends TestCase
 {

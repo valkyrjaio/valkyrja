@@ -17,8 +17,6 @@ use Valkyrja\Filesystem\Enum\Visibility;
 
 /**
  * Interface FilesystemContract.
- *
- * @author Melech Mizrachi
  */
 interface FilesystemContract
 {

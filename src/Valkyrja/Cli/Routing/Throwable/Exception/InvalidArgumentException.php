@@ -18,8 +18,6 @@ use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgum
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends CliInvalidArgumentException implements Throwable
 {

@@ -28,8 +28,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the route attribute.
- *
- * @author Melech Mizrachi
  */
 class RouteTest extends TestCase
 {

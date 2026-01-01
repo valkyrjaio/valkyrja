@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Head attribute.
- *
- * @author Melech Mizrachi
  */
 class HeadTest extends TestCase
 {

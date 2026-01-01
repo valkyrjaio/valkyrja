@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Enum;
 
 /**
  * Enum TextColor.
- *
- * @author Melech Mizrachi
  */
 enum TextColor: int
 {

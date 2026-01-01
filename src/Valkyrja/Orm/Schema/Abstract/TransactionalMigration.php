@@ -18,8 +18,6 @@ use Throwable;
 
 /**
  * Abstract Class TransactionalMigration.
- *
- * @author Melech Mizrachi
  */
 abstract class TransactionalMigration extends Migration
 {

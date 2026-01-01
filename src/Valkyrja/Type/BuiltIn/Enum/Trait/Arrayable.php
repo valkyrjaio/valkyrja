@@ -17,8 +17,6 @@ use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 /**
  * Trait Arrayable.
- *
- * @author Melech Mizrachi
  */
 trait Arrayable
 {

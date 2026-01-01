@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface NullContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<null>
  */
 interface NullContract extends TypeContract

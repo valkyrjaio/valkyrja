@@ -25,8 +25,6 @@ use const PREG_SET_ORDER;
 /**
  * Abstract Class CookieFactory.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.php.net/manual/en/reserved.variables.cookies.php
  */
 abstract class CookieFactory

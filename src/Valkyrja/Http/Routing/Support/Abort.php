@@ -22,8 +22,6 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
 /**
  * Class Abort.
- *
- * @author Melech Mizrachi
  */
 class Abort
 {

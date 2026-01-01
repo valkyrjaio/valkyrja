@@ -24,8 +24,6 @@ use function is_string;
 /**
  * Class ArrayT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<array<array-key, mixed>>
  */
 class ArrayT extends Type implements Contract

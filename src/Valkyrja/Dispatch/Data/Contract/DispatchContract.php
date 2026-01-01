@@ -19,8 +19,6 @@ use Stringable;
 
 /**
  * Interface DispatchContract.
- *
- * @author Melech Mizrachi
  */
 interface DispatchContract extends JsonSerializable, Stringable
 {

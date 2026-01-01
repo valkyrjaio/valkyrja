@@ -20,8 +20,6 @@ use Valkyrja\Validation\Validator\Contract\ValidatorContract as Contract;
 
 /**
  * Class Validate.
- *
- * @author Melech Mizrachi
  */
 class Validator implements Contract
 {

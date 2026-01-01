@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ConstantDispatch.
- *
- * @author Melech Mizrachi
  */
 class ConstantDispatchTest extends TestCase
 {

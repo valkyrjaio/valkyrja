@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface UuidContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<string>
  */
 interface UuidContract extends TypeContract

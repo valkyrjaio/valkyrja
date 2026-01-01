@@ -21,8 +21,6 @@ use function strlen;
 
 /**
  * Class OptionFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class OptionFactory
 {

@@ -19,8 +19,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Class ForgotPasswordAttempt.
- *
- * @author Melech Mizrachi
  */
 class ForgotPasswordAttempt implements Contract
 {

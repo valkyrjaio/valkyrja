@@ -19,8 +19,6 @@ use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
 /**
  * Class Rule.
- *
- * @author Melech Mizrachi
  */
 abstract class Rule implements Contract
 {

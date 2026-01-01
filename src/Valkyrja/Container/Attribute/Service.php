@@ -18,8 +18,6 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 
 /**
  * Attribute Service.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Service

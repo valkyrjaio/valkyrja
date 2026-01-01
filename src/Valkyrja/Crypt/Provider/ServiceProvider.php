@@ -23,8 +23,6 @@ use Valkyrja\Crypt\Manager\SodiumCrypt;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

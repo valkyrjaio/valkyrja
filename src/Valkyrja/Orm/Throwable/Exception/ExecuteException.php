@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Throwable\Exception;
 
 /**
  * Exception ExecuteException.
- *
- * @author Melech Mizrachi
  */
 class ExecuteException extends RuntimeException
 {

@@ -21,8 +21,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
 
 /**
  * Controller class to test invalid routes.
- *
- * @author Melech Mizrachi
  */
 class InvalidControllerClass
 {

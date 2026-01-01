@@ -26,8 +26,6 @@ use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 
 /**
  * Attribute Route.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends Model

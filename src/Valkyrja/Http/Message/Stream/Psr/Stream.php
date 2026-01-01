@@ -22,8 +22,6 @@ use const SEEK_SET;
 
 /**
  * Class Stream.
- *
- * @author Melech Mizrachi
  */
 class Stream implements StreamInterface
 {

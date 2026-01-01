@@ -17,8 +17,6 @@ use Valkyrja\Auth\Entity\Contract\MailableUserContract;
 
 /**
  * Interface NotifiableUserContract.
- *
- * @author Melech Mizrachi
  */
 interface NotifiableUserContract extends MailableUserContract
 {

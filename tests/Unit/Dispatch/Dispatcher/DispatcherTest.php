@@ -38,8 +38,6 @@ use const PHP_VERSION;
 
 /**
  * Test the dispatcher.
- *
- * @author Melech Mizrachi
  */
 class DispatcherTest extends TestCase
 {

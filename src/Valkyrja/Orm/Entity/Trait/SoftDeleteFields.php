@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Entity\Trait;
 
 /**
  * Trait SoftDeleteFields.
- *
- * @author Melech Mizrachi
  */
 trait SoftDeleteFields
 {

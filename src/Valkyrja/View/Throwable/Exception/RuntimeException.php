@@ -18,8 +18,6 @@ use Valkyrja\View\Throwable\Contract\Throwable;
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends ThrowableRuntimeException implements Throwable
 {

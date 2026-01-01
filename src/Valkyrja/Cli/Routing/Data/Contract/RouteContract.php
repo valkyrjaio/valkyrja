@@ -22,8 +22,6 @@ use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 /**
  * Interface RouteContract.
- *
- * @author Melech Mizrachi
  */
 interface RouteContract
 {

@@ -32,8 +32,6 @@ use Valkyrja\View\Renderer\TwigRenderer;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 
 /**
  * Interface EmptyOutputContract.
- *
- * @author Melech Mizrachi
  */
 interface EmptyOutputContract extends OutputContract
 {

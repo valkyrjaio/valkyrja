@@ -25,8 +25,6 @@ use Valkyrja\View\Throwable\Exception\RuntimeException;
 
 /**
  * Test the View exceptions.
- *
- * @author Melech Mizrachi
  */
 class ExceptionsTest extends TestCase
 {

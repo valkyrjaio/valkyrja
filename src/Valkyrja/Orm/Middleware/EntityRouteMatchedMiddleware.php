@@ -35,8 +35,6 @@ use function is_string;
 
 /**
  * Class EntityRouteMatchedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
 {

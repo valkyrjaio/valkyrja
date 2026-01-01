@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
 /**
  * Interface QuestionContract.
- *
- * @author Melech Mizrachi
  */
 interface QuestionContract extends MessageContract
 {

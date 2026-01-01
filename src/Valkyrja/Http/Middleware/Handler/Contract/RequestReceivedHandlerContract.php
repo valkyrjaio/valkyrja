@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 /**
  * Interface RequestReceivedHandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @extends HandlerContract<RequestReceivedMiddlewareContract>
  */
 interface RequestReceivedHandlerContract extends HandlerContract

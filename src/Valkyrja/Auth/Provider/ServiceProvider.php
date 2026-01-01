@@ -38,8 +38,6 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

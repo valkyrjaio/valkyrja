@@ -24,8 +24,6 @@ use function method_exists;
 
 /**
  * Test the ExposableIndexableModel model.
- *
- * @author Melech Mizrachi
  */
 class ExposableIndexableModelTest extends TestCase
 {

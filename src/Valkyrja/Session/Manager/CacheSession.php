@@ -25,8 +25,6 @@ use function session_start;
 
 /**
  * Class CacheSession.
- *
- * @author Melech Mizrachi
  */
 class CacheSession extends PhpSession
 {

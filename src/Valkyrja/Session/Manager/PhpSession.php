@@ -32,8 +32,6 @@ use const PHP_SESSION_ACTIVE;
 
 /**
  * Class PhpSession.
- *
- * @author Melech Mizrachi
  */
 class PhpSession extends NullSession
 {

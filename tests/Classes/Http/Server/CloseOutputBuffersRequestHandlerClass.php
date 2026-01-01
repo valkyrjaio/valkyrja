@@ -20,8 +20,6 @@ use function ob_start;
 
 /**
  * Class CloseOutputBuffersRequestHandler.
- *
- * @author Melech Mizrachi
  */
 class CloseOutputBuffersRequestHandlerClass extends RequestHandler
 {

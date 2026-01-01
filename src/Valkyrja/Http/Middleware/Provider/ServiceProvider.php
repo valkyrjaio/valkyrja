@@ -43,8 +43,6 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

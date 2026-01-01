@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class PgsqlManager.
- *
- * @author Melech Mizrachi
  */
 class PgsqlManager extends PdoManager
 {

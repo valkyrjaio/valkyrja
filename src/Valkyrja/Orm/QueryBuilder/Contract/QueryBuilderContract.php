@@ -20,8 +20,6 @@ use Valkyrja\Orm\Data\WhereGroup;
 
 /**
  * Interface QueryBuilderContract.
- *
- * @author Melech Mizrachi
  */
 interface QueryBuilderContract extends Stringable
 {

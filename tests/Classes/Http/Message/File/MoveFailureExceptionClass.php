@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
  * Class MoveFailureExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class MoveFailureExceptionClass extends UploadedFile
 {

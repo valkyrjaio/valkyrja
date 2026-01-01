@@ -25,8 +25,6 @@ use function strtolower;
 
 /**
  * Trait MessageTrait.
- *
- * @author Melech Mizrachi
  */
 trait Message
 {

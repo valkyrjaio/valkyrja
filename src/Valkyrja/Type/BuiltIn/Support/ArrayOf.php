@@ -21,8 +21,6 @@ use function getType;
 
 /**
  * Class ArrayOf.
- *
- * @author Melech Mizrachi
  */
 class ArrayOf
 {

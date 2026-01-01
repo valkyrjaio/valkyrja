@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Trait;
 
 /**
  * Trait Indexable.
- *
- * @author Melech Mizrachi
  */
 trait Indexable
 {

@@ -19,8 +19,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Attribute Cast.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class ArrayCast extends Cast

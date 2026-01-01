@@ -20,8 +20,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Class TypeError.
- *
- * @author Melech Mizrachi
  */
 class TypeError extends PhpTypeError implements Throwable
 {

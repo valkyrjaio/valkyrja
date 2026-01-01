@@ -27,8 +27,6 @@ use function is_string;
 /**
  * Class SessionAuthenticator.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  *
  * @extends Authenticator<U>

@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute NotNull.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class NotNull

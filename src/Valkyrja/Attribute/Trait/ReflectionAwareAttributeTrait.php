@@ -17,8 +17,6 @@ use Reflector;
 
 /**
  * Trait ReflectionAwareAttributeTrait.
- *
- * @author Melech Mizrachi
  */
 trait ReflectionAwareAttributeTrait
 {

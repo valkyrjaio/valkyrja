@@ -19,8 +19,6 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
 /**
  * Class NullSms.
- *
- * @author Melech Mizrachi
  */
 class NullMessenger implements Contract
 {

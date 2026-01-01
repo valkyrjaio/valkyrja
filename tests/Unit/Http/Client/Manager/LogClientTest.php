@@ -23,8 +23,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the LogClient service.
- *
- * @author Melech Mizrachi
  */
 class LogClientTest extends TestCase
 {

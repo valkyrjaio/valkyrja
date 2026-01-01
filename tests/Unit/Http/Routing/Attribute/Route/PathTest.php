@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Path attribute.
- *
- * @author Melech Mizrachi
  */
 class PathTest extends TestCase
 {

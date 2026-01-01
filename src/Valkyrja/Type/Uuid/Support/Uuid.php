@@ -27,8 +27,6 @@ use function strlen;
 
 /**
  * Class Uuid.
- *
- * @author Melech Mizrachi
  */
 class Uuid extends Uid
 {

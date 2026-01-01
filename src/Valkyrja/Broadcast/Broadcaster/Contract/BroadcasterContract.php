@@ -17,8 +17,6 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
 /**
  * Interface BroadcasterContract.
- *
- * @author Melech Mizrachi
  */
 interface BroadcasterContract
 {

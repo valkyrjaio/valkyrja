@@ -22,8 +22,6 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract as Contract;
 
 /**
  * Class SqlQueryBuilder.
- *
- * @author Melech Mizrachi
  */
 abstract class SqlQueryBuilder implements Contract
 {

@@ -29,8 +29,6 @@ use function is_a;
 
 /**
  * Class RequestStructMiddleware.
- *
- * @author Melech Mizrachi
  */
 class RequestStructMiddleware implements RouteMatchedMiddlewareContract
 {

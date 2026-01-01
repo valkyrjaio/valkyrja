@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
 /**
  * Class InvalidStreamException.
- *
- * @author Melech Mizrachi
  */
 class InvalidStreamException extends InvalidArgumentException
 {

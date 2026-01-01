@@ -33,8 +33,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Router service.
- *
- * @author Melech Mizrachi
  */
 class RouterTest extends TestCase
 {

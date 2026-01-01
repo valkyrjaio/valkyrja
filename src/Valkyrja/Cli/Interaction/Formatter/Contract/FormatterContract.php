@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
  * Interface FormatterContract.
- *
- * @author Melech Mizrachi
  */
 interface FormatterContract
 {

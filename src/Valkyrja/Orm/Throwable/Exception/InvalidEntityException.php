@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Throwable\Exception;
 
 /**
  * Exception InvalidEntityException.
- *
- * @author Melech Mizrachi
  */
 class InvalidEntityException extends InvalidArgumentException
 {

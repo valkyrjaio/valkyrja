@@ -18,8 +18,6 @@ use JsonSerializable;
 
 /**
  * Trait EnhancedEnumSupport.
- *
- * @author Melech Mizrachi
  */
 trait EnhancedEnumSupport
 {

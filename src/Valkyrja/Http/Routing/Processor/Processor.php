@@ -23,8 +23,6 @@ use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
 /**
  * Class Processor.
- *
- * @author Melech Mizrachi
  */
 class Processor implements Contract
 {

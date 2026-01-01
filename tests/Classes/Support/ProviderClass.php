@@ -17,8 +17,6 @@ use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 /**
  * Class ProviderClass.
- *
- * @author Melech Mizrachi
  */
 class ProviderClass implements ProviderContract
 {

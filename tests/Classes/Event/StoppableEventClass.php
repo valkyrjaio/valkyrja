@@ -17,8 +17,6 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * Class to test events for unit testing.
- *
- * @author Melech Mizrachi
  */
 class StoppableEventClass extends DispatchCollectableEventClass implements StoppableEventInterface
 {

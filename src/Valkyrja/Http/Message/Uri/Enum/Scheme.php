@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Enum;
 
 /**
  * Enum Scheme.
- *
- * @author Melech Mizrachi
  */
 enum Scheme: string
 {

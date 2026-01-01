@@ -21,8 +21,6 @@ use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
 /**
  * Abstract Class Notify.
- *
- * @author Melech Mizrachi
  */
 class Notify implements Contract
 {

@@ -17,8 +17,6 @@ use Throwable as PhpThrowable;
 
 /**
  * Interface Throwable.
- *
- * @author Melech Mizrachi
  */
 interface Throwable extends PhpThrowable
 {

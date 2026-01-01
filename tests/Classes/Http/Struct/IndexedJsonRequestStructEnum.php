@@ -25,8 +25,6 @@ use Valkyrja\Validation\Rule\Is\Required;
 
 /**
  * Struct TestIndexedJsonRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum IndexedJsonRequestStructEnum: int implements RequestStructContract
 {

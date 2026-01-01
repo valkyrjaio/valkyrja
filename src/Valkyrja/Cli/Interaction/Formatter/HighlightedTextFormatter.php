@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
  * Class HighlightedTextFormatter.
- *
- * @author Melech Mizrachi
  */
 class HighlightedTextFormatter extends Formatter
 {

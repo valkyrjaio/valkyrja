@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as ParentExceptio
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends ParentException implements Throwable
 {

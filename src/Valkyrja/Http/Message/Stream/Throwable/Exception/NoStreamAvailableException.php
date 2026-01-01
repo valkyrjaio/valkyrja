@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
 /**
  * Class NoStreamAvailableException.
- *
- * @author Melech Mizrachi
  */
 class NoStreamAvailableException extends RuntimeException
 {

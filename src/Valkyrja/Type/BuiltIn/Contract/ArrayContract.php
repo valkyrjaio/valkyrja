@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface ArrayContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<array<array-key, mixed>>
  */
 interface ArrayContract extends TypeContract

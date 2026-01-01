@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 /**
  * Trait UserFields.
- *
- * @author Melech Mizrachi
  */
 trait UserFields
 {

@@ -33,8 +33,6 @@ use function str_contains;
 
 /**
  * Trait StreamHelpers.
- *
- * @author Melech Mizrachi
  */
 trait StreamHelpers
 {

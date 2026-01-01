@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 /**
  * Class SilentOptionParameter.
- *
- * @author Melech Mizrachi
  */
 class SilentOptionParameter extends OptionParameter
 {

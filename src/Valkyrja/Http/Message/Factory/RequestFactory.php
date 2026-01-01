@@ -29,8 +29,6 @@ use function sprintf;
 
 /**
  * Abstract Class RequestFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class RequestFactory
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Data\Contract;
 
 /**
  * Interface GlobalVariableDispatchContract.
- *
- * @author Melech Mizrachi
  */
 interface GlobalVariableDispatchContract extends DispatchContract
 {

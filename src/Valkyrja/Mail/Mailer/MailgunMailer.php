@@ -22,8 +22,6 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
 /**
  * Class MailgunMailer.
- *
- * @author Melech Mizrachi
  */
 class MailgunMailer implements Contract
 {

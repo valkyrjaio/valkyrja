@@ -20,8 +20,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract as Contract;
 
 /**
  * Class FileOutput.
- *
- * @author Melech Mizrachi
  */
 class FileOutput extends Output implements Contract
 {

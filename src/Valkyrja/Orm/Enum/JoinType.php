@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Enum;
 
 /**
  * Enum JoinType.
- *
- * @author Melech Mizrachi
  */
 enum JoinType: string
 {

@@ -21,8 +21,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestRouteMatchedHandler.
- *
- * @author Melech Mizrachi
  */
 class RouteMatchedHandlerClass extends RouteMatchedHandler
 {

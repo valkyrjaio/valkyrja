@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 /**
  * Class InvalidUploadedFileException.
- *
- * @author Melech Mizrachi
  */
 class InvalidUploadedFileException extends InvalidArgumentException
 {

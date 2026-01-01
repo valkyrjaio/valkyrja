@@ -32,8 +32,6 @@ use Valkyrja\View\Renderer\TwigRenderer;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

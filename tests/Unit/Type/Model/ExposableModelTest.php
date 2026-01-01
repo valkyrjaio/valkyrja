@@ -27,8 +27,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the Exposable model.
- *
- * @author Melech Mizrachi
  */
 class ExposableModelTest extends TestCase
 {

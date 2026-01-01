@@ -17,8 +17,6 @@ use Valkyrja\Notification\Data\Contract\NotifyContract;
 
 /**
  * Interface FactoryContract.
- *
- * @author Melech Mizrachi
  */
 interface FactoryContract
 {

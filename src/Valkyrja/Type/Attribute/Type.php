@@ -18,8 +18,6 @@ use Valkyrja\Type\Contract\TypeContract;
 
 /**
  * Attribute Type.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Type

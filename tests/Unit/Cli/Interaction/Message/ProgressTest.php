@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Progress class.
- *
- * @author Melech Mizrachi
  */
 class ProgressTest extends TestCase
 {

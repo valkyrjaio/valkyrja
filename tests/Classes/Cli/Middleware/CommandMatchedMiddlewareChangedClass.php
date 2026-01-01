@@ -23,8 +23,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestCommandMatchedMiddlewareChanged.
- *
- * @author Melech Mizrachi
  */
 class CommandMatchedMiddlewareChangedClass implements CommandMatchedMiddlewareContract
 {

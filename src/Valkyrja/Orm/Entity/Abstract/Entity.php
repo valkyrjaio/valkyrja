@@ -35,8 +35,6 @@ use function is_string;
 /**
  * Class Entity.
  *
- * @author Melech Mizrachi
- *
  * @psalm-import-type StorableValue from Contract
  *
  * @phpstan-import-type StorableValue from Contract

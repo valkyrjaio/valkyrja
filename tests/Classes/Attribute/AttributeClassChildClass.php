@@ -18,8 +18,6 @@ use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 
 /**
  * Attribute child class used for unit testing.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClassChildClass extends AttributeClass

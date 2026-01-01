@@ -17,8 +17,6 @@ use function function_exists;
 
 /**
  * Abstract Class ServerFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class ServerFactory
 {

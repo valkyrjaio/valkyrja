@@ -15,8 +15,6 @@ namespace Valkyrja\Log\Enum;
 
 /**
  * Enum LogLevel.
- *
- * @author Melech Mizrachi
  */
 enum LogLevel: string
 {

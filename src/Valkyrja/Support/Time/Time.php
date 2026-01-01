@@ -15,8 +15,6 @@ namespace Valkyrja\Support\Time;
 
 /**
  * Class Time.
- *
- * @author Melech Mizrachi
  */
 class Time
 {

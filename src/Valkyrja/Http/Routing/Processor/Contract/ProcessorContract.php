@@ -17,8 +17,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface ProcessorContract.
- *
- * @author Melech Mizrachi
  */
 interface ProcessorContract
 {

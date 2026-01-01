@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Middleware\Constant;
 
 /**
  * Class EnvName.
- *
- * @author Melech Mizrachi
  */
 final class EnvName
 {

@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Repository.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Repository

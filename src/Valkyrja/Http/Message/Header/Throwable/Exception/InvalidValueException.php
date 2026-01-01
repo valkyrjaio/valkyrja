@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
 /**
  * Class InvalidValueException.
- *
- * @author Melech Mizrachi
  */
 class InvalidValueException extends InvalidArgumentException
 {

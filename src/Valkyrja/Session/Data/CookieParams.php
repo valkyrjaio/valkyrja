@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Enum\SameSite;
 
 /**
  * Class CookieParams.
- *
- * @author Melech Mizrachi
  */
 class CookieParams
 {

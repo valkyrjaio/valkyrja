@@ -15,8 +15,6 @@ namespace Valkyrja\Session\Throwable\Exception;
 
 /**
  * Class SessionIdFailure.
- *
- * @author Melech Mizrachi
  */
 class SessionIdFailure extends RuntimeException
 {

@@ -20,8 +20,6 @@ namespace Valkyrja\Http\Message\Constant;
  * to either the client or the server, depending on who sends and who
  * receives the entity.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 final class HeaderName

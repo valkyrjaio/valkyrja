@@ -15,8 +15,6 @@ namespace Valkyrja\Event\Constant;
 
 /**
  * Class EnvName.
- *
- * @author Melech Mizrachi
  */
 final class EnvName
 {

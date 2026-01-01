@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\JsonSerializable;
 
 /**
  * Enum class to use to test Arrayable Enum.
- *
- * @author Melech Mizrachi
  */
 enum ArrayableEnum implements ArrayableContract, JsonSerializableContract
 {

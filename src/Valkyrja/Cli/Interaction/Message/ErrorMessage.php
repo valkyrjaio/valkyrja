@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\ErrorFormatter;
 
 /**
  * Class ErrorMessage.
- *
- * @author Melech Mizrachi
  */
 class ErrorMessage extends Message
 {

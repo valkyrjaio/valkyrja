@@ -18,8 +18,6 @@ use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
 
 /**
  * Attribute class used for unit testing.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClass

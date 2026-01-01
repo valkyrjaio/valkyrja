@@ -27,8 +27,6 @@ use function sprintf;
 /**
  * Class UuidV5.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<string>
  */
 class UuidV5 extends Type implements Contract

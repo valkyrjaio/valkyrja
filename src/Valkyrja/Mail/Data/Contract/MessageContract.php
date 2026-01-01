@@ -15,8 +15,6 @@ namespace Valkyrja\Mail\Data\Contract;
 
 /**
  * Interface MessageContract.
- *
- * @author Melech Mizrachi
  */
 interface MessageContract
 {

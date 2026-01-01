@@ -42,8 +42,6 @@ use const FILTER_VALIDATE_EMAIL;
 
 /**
  * Class Str.
- *
- * @author Melech Mizrachi
  */
 class Str
 {

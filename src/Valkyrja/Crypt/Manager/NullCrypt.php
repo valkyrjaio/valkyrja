@@ -19,8 +19,6 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 
 /**
  * Class NullCrypt.
- *
- * @author Melech Mizrachi
  */
 class NullCrypt implements CryptContract
 {

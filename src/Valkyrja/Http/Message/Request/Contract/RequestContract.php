@@ -32,8 +32,6 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
  * Requests are considered immutable; all methods that might change state MUST
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
- *
- * @author Melech Mizrachi
  */
 interface RequestContract extends MessageContract
 {

@@ -38,8 +38,6 @@ use Valkyrja\Container\Provider\Provider;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

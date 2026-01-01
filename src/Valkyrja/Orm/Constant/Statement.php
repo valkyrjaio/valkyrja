@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Constant;
 
 /**
  * Constant Statement.
- *
- * @author Melech Mizrachi
  */
 final class Statement
 {

@@ -23,8 +23,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Dispatcher service.
- *
- * @author Melech Mizrachi
  */
 class DispatcherTest extends TestCase
 {

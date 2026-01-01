@@ -18,8 +18,6 @@ use Valkyrja\Type\Vlid\Throwable\Contract\VlidThrowable;
 
 /**
  * Class InvalidVlidException.
- *
- * @author Melech Mizrachi
  */
 class InvalidVlidException extends InvalidUidException implements VlidThrowable
 {

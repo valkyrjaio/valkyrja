@@ -32,8 +32,6 @@ use function unpack;
  * Class Ulid.
  *
  * @see    https://github.com/ulid/spec
- *
- * @author Melech Mizrachi
  */
 class Ulid extends Uid
 {

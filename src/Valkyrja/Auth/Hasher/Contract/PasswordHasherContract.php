@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Hasher\Contract;
 
 /**
  * Interface PasswordHasherContract.
- *
- * @author Melech Mizrachi
  */
 interface PasswordHasherContract
 {

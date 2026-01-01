@@ -21,8 +21,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 /**
  * Interface RouteDispatchedHandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @extends HandlerContract<RouteDispatchedMiddlewareContract>
  */
 interface RouteDispatchedHandlerContract extends HandlerContract

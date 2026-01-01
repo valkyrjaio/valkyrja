@@ -19,8 +19,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 
 /**
  * Interface DispatcherContract.
- *
- * @author Melech Mizrachi
  */
 interface DispatcherContract extends EventDispatcherInterface
 {

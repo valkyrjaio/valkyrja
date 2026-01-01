@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Interface ClientContract.
- *
- * @author Melech Mizrachi
  */
 interface ClientContract
 {

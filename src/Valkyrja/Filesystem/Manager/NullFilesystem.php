@@ -19,8 +19,6 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
 
 /**
  * Class NullFilesystem.
- *
- * @author Melech Mizrachi
  */
 class NullFilesystem implements Contract
 {

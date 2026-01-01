@@ -24,8 +24,6 @@ use function array_map;
 
 /**
  * Class FlysystemFilesystem.
- *
- * @author Melech Mizrachi
  */
 class FlysystemFilesystem implements Contract
 {

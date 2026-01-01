@@ -28,8 +28,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Arr.
- *
- * @author Melech Mizrachi
  */
 class Arr
 {

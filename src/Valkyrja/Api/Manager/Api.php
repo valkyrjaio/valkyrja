@@ -33,8 +33,6 @@ use function strtolower;
 
 /**
  * Class Api.
- *
- * @author Melech Mizrachi
  */
 class Api implements Contract
 {

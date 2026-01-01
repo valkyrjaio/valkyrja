@@ -15,8 +15,6 @@ namespace Valkyrja\Container\Throwable\Exception;
 
 /**
  * Class InvalidServiceIdException.
- *
- * @author Melech Mizrachi
  */
 class InvalidServiceIdException extends InvalidArgumentException
 {

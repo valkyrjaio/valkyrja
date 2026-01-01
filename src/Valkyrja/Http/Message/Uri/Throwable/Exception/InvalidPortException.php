@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
 /**
  * Class InvalidPortException.
- *
- * @author Melech Mizrachi
  */
 class InvalidPortException extends InvalidArgumentException
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message\Contract;
 
 /**
  * Interface ProgressContract.
- *
- * @author Melech Mizrachi
  */
 interface ProgressContract extends MessageContract
 {

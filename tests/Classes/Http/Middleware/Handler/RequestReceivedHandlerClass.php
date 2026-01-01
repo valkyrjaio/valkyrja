@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 
 /**
  * Class TestRequestReceivedHandler.
- *
- * @author Melech Mizrachi
  */
 class RequestReceivedHandlerClass extends RequestReceivedHandler
 {

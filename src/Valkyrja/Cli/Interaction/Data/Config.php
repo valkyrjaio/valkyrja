@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Data;
 
 /**
  * Class Config.
- *
- * @author Melech Mizrachi
  */
 class Config
 {

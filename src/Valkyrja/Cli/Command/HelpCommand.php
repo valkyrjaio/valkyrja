@@ -44,8 +44,6 @@ use function is_string;
 
 /**
  * Class HelpCommand.
- *
- * @author Melech Mizrachi
  */
 class HelpCommand
 {

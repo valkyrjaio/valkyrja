@@ -17,8 +17,6 @@ use Valkyrja\Cache\Manager\Contract\CacheContract;
 
 /**
  * Interface TaggerContract.
- *
- * @author Melech Mizrachi
  */
 interface TaggerContract
 {

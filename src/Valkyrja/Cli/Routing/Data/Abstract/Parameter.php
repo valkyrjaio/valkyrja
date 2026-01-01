@@ -19,8 +19,6 @@ use Valkyrja\Type\Data\Cast;
 
 /**
  * Abstract Class Parameter.
- *
- * @author Melech Mizrachi
  */
 abstract class Parameter implements Contract
 {

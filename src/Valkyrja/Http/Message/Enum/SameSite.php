@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Enum;
 
 /**
  * Enum SameSite.
- *
- * @author Melech Mizrachi
  */
 enum SameSite: string
 {

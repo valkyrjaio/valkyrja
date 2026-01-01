@@ -43,8 +43,6 @@ use const LOCK_EX;
 
 /**
  * Test the App service.
- *
- * @author Melech Mizrachi
  */
 class AppTest extends TestCase
 {

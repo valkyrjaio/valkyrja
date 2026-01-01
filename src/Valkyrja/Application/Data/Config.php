@@ -18,8 +18,6 @@ use Valkyrja\Container\Provider\Provider;
 
 /**
  * Class AppConfig.
- *
- * @author Melech Mizrachi
  */
 class Config
 {

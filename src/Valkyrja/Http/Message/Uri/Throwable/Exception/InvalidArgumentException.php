@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Uri\Throwable\Contract\Throwable;
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends ParentException implements Throwable
 {

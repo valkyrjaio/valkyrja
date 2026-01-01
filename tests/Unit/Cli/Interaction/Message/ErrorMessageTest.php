@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ErrorMessage class.
- *
- * @author Melech Mizrachi
  */
 class ErrorMessageTest extends TestCase
 {

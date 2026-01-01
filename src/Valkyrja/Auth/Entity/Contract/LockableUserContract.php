@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface LockableUserContract.
- *
- * @author Melech Mizrachi
  */
 interface LockableUserContract extends UserContract
 {

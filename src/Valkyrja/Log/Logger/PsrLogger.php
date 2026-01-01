@@ -21,8 +21,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
 /**
  * Class PsrLogger.
- *
- * @author Melech Mizrachi
  */
 class PsrLogger implements Contract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends ThrowableRuntimeException implements Throwable
 {

@@ -21,8 +21,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestSendingResponseMiddleware.
- *
- * @author Melech Mizrachi
  */
 class SendingResponseMiddlewareClass implements SendingResponseMiddlewareContract
 {

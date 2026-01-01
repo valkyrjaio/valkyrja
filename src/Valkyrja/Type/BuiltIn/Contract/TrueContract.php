@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface TrueContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<true>
  */
 interface TrueContract extends TypeContract

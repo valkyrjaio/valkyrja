@@ -19,8 +19,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface RouterContract.
- *
- * @author Melech Mizrachi
  */
 interface RouterContract
 {

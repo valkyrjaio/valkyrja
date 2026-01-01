@@ -18,8 +18,6 @@ use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArg
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends HttpInvalidArgumentException implements Throwable
 {

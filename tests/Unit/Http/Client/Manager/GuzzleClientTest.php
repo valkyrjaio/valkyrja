@@ -29,8 +29,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the GuzzleClient service.
- *
- * @author Melech Mizrachi
  */
 class GuzzleClientTest extends TestCase
 {

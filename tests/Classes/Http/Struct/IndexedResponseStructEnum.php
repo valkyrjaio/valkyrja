@@ -18,8 +18,6 @@ use Valkyrja\Http\Struct\Response\Trait\ResponseStruct;
 
 /**
  * Struct TestResponseStruct.
- *
- * @author Melech Mizrachi
  */
 enum IndexedResponseStructEnum: int implements Contract
 {

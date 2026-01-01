@@ -17,8 +17,6 @@ use Valkyrja\Tests\Unit\Attribute\Collector\CollectorTest;
 
 /**
  * Class with attributes used for unit testing.
- *
- * @author Melech Mizrachi
  */
 #[AttributeClass(CollectorTest::VALUE1)]
 #[AttributeClass(CollectorTest::VALUE2)]

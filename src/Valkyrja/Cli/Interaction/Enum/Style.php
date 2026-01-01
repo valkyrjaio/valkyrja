@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Enum;
 
 /**
  * Enum Style.
- *
- * @author Melech Mizrachi
  */
 enum Style: int
 {

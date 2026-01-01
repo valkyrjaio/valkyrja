@@ -18,8 +18,6 @@ use Valkyrja\Mail\Data\Contract\MessageContract as Contract;
 
 /**
  * Class Message.
- *
- * @author Melech Mizrachi
  */
 class Message implements Contract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Request\Contract;
 
 /**
  * Class JsonRequestContract.
- *
- * @author Melech Mizrachi
  */
 interface JsonServerRequestContract extends ServerRequestContract
 {

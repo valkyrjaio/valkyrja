@@ -15,8 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Enum\Contract;
 
 /**
  * Interface ArrayableContract.
- *
- * @author Melech Mizrachi
  */
 interface ArrayableContract
 {

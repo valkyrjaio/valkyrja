@@ -25,8 +25,6 @@ use function is_string;
 
 /**
  * Class ListBashCommand.
- *
- * @author Melech Mizrachi
  */
 class ListBashCommand
 {

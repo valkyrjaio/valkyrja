@@ -31,8 +31,6 @@ use function is_string;
 
 /**
  * Abtract Class PdoManager.
- *
- * @author Melech Mizrachi
  */
 abstract class PdoManager implements Contract
 {

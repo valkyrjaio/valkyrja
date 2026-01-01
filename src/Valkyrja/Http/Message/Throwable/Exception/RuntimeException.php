@@ -18,8 +18,6 @@ use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends HttpRuntimeException implements Throwable
 {

@@ -22,8 +22,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestCommandMatchedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class CommandMatchedMiddlewareClass implements CommandMatchedMiddlewareContract
 {

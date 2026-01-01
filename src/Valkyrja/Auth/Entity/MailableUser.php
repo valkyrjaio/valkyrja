@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 
 /**
  * Entity MailableUser.
- *
- * @author Melech Mizrachi
  */
 class MailableUser extends User implements Contract
 {

@@ -26,8 +26,6 @@ use Valkyrja\Type\Model\Abstract\CastableModel as AbstractModel;
 /**
  * Model class to use to test Castable model.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class CastableModelClass extends AbstractModel

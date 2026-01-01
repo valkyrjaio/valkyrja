@@ -31,8 +31,6 @@ use function constant;
 
 /**
  * Class Dispatcher.
- *
- * @author Melech Mizrachi
  */
 class Dispatcher implements Contract
 {

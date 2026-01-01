@@ -22,8 +22,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
 /**
  * Class NoCacheMiddleware.
- *
- * @author Melech Mizrachi
  */
 class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
 {

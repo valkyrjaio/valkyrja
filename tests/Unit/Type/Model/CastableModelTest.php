@@ -45,8 +45,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the castable model.
- *
- * @author Melech Mizrachi
  */
 class CastableModelTest extends TestCase
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface LastOnlineUserContract.
- *
- * @author Melech Mizrachi
  */
 interface LastOnlineUserContract extends UserContract
 {

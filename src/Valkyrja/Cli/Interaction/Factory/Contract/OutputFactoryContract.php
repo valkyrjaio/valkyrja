@@ -23,8 +23,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 
 /**
  * Interface OutputFactoryContract.
- *
- * @author Melech Mizrachi
  */
 interface OutputFactoryContract
 {

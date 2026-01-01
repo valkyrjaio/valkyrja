@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Throwable\Exception;
 
 /**
  * Class InvalidMethodTypeException.
- *
- * @author Melech Mizrachi
  */
 class InvalidMethodTypeException extends InvalidArgumentException
 {

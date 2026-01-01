@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Message\Constant;
 /**
  * Constant ContentType.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.iana.org/assignments/media-types/media-types.xhtml
  */
 final class ContentType

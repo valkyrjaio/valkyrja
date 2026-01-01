@@ -24,8 +24,6 @@ use function sprintf;
 
 /**
  * Class Formatter.
- *
- * @author Melech Mizrachi
  */
 class Formatter implements Contract
 {

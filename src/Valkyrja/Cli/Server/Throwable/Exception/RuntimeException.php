@@ -18,8 +18,6 @@ use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends CliRuntimeException implements Throwable
 {

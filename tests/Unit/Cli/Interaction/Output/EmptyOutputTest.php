@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the EmptyOutput class.
- *
- * @author Melech Mizrachi
  */
 class EmptyOutputTest extends TestCase
 {

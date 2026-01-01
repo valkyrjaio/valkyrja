@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Provider class and Provides trait.
- *
- * @author Melech Mizrachi
  */
 class ProvidesTest extends TestCase
 {

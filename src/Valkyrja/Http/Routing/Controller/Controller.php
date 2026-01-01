@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Abstract Class Controller.
- *
- * @author Melech Mizrachi
  */
 abstract class Controller
 {

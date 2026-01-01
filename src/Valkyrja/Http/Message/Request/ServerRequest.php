@@ -34,8 +34,6 @@ use const ARRAY_FILTER_USE_KEY;
 
 /**
  * Class ServerRequest.
- *
- * @author Melech Mizrachi
  */
 class ServerRequest extends Request implements Contract
 {
