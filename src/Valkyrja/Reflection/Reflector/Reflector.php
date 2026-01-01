@@ -31,9 +31,6 @@ use function class_exists;
 use function interface_exists;
 use function is_callable;
 
-/**
- * Class Reflection.
- */
 class Reflector implements Contract
 {
     /**

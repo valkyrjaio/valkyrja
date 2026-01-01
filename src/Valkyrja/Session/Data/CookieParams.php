@@ -15,9 +15,6 @@ namespace Valkyrja\Session\Data;
 
 use Valkyrja\Http\Message\Enum\SameSite;
 
-/**
- * Class CookieParams.
- */
 class CookieParams
 {
     public function __construct(

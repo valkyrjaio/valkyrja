@@ -26,9 +26,6 @@ use function is_string;
 use function preg_match;
 use function random_bytes;
 
-/**
- * Class NullSession.
- */
 class NullSession implements Contract
 {
     /**

@@ -30,9 +30,6 @@ use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Manager\PhpSession;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

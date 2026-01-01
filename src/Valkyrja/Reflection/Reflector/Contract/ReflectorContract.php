@@ -23,9 +23,6 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 
-/**
- * Interface ReflectionContract.
- */
 interface ReflectorContract
 {
     /**

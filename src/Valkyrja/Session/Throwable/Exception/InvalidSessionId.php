@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Throwable\Exception;
 
-/**
- * Class InvalidSessionId.
- */
 class InvalidSessionId extends InvalidArgumentException
 {
 }
