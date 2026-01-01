@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Model;
 
 use Override;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Model\Contract\Json as Contract;
+use Valkyrja\Api\Model\Contract\JsonContract as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Abstract\Model;
 

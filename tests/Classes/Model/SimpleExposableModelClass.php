@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
-use Valkyrja\Type\Model\Contract\ExposableModel as Contract;
+use Valkyrja\Type\Model\Contract\ExposableModelContract as Contract;
 use Valkyrja\Type\Model\Trait\Exposable;
 
 /**

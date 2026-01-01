@@ -15,10 +15,10 @@ namespace Valkyrja\Attribute\Provider;
 
 use Override;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Attribute\Collector\Contract\Collector as CollectorContract;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 /**
  * Class ServiceProvider.
@@ -52,16 +52,16 @@ final class ServiceProvider extends Provider
     /**
      * Publish the attributes service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishAttributes(Container $container): void
+    public static function publishAttributes(ContainerContract $container): void
     {
         $container->setSingleton(
             CollectorContract::class,
             new Collector(
-                $container->getSingleton(Reflector::class),
+                $container->getSingleton(ReflectorContract::class),
             )
         );
     }

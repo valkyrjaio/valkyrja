@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Cli\Command;
 
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Support\Directory\Directory;
 
@@ -35,7 +35,7 @@ class ClearCacheCommand
         description: 'Clear config cache',
         helpText: new Message('A command to clear the config cache.'),
     )]
-    public function run(Env $env, OutputFactory $outputFactory): Output
+    public function run(Env $env, OutputFactoryContract $outputFactory): OutputContract
     {
         /** @var non-empty-string $cacheFilepath */
         $cacheFilepath = $env::APP_CACHE_FILE_PATH;

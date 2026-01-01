@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
-use Valkyrja\Cli\Interaction\Message\Contract\Answer as Contract;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract as Contract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
@@ -46,7 +46,7 @@ class Answer extends Message implements Contract
         protected $validationCallable = null,
         protected bool $hasBeenAnswered = false,
         string $text = '%s',
-        Formatter|null $formatter = null,
+        FormatterContract|null $formatter = null,
         array $allowedResponses = []
     ) {
         if ($this->validationCallable !== null && ! is_callable($this->validationCallable)) {

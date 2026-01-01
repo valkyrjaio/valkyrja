@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Redirect;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\RedirectResponse as HttpRedirectResponse;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 
 use function trim;
 
@@ -30,13 +30,13 @@ use function trim;
  *
  * @author Melech Mizrachi
  */
-class RedirectTrailingSlashMiddleware implements RequestReceivedMiddleware
+class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
+    public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {
         if ($this->shouldRedirectRequest($request)) {
             $uri = $this->createBeforeRedirectUri($request->getUri());
@@ -50,11 +50,11 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddleware
     /**
      * Determine if a request should be redirected.
      *
-     * @param ServerRequest $request
+     * @param ServerRequestContract $request
      *
      * @return bool
      */
-    protected function shouldRedirectRequest(ServerRequest $request): bool
+    protected function shouldRedirectRequest(ServerRequestContract $request): bool
     {
         $pathSeparator = '/';
         // Get the request path
@@ -66,11 +66,11 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddleware
     /**
      * Create a Uri to redirect to.
      *
-     * @param Uri $uri
+     * @param UriContract $uri
      *
-     * @return Uri
+     * @return UriContract
      */
-    protected function createBeforeRedirectUri(Uri $uri): Uri
+    protected function createBeforeRedirectUri(UriContract $uri): UriContract
     {
         return new HttpUri(
             path: '/' . trim($uri->getPath(), '/'),
@@ -82,11 +82,11 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddleware
     /**
      * Create a RedirectResponse for the before action.
      *
-     * @param Uri $uri
+     * @param UriContract $uri
      *
-     * @return RedirectResponse
+     * @return RedirectResponseContract
      */
-    protected function createBeforeRedirectResponse(Uri $uri): RedirectResponse
+    protected function createBeforeRedirectResponse(UriContract $uri): RedirectResponseContract
     {
         return HttpRedirectResponse::createFromUri(uri: $uri);
     }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,11 +24,11 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class CommandNotMatchedMiddlewareClass implements CommandNotMatchedMiddleware
+class CommandNotMatchedMiddlewareClass implements CommandNotMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function commandNotMatched(Input $input, Output $output, CommandNotMatchedHandler $handler): Output
+    public function commandNotMatched(InputContract $input, OutputContract $output, CommandNotMatchedHandlerContract $handler): OutputContract
     {
         $this->updateCounter();
 

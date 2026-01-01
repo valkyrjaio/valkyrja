@@ -17,7 +17,8 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
@@ -37,9 +38,9 @@ use Valkyrja\Tests\Unit\TestCase;
  */
 class RouterTest extends TestCase
 {
-    public static function dispatch(): Response
+    public static function dispatch(): ResponseContract
     {
-        return new \Valkyrja\Http\Message\Response\Response(statusCode: StatusCode::I_AM_A_TEAPOT);
+        return new Response(statusCode: StatusCode::I_AM_A_TEAPOT);
     }
 
     public static function invalidDispatch(): string

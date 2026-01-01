@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract as Contract;
 
 /**
  * Class SqlSelectQueryBuilder.

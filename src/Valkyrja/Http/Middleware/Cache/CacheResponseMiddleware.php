@@ -15,15 +15,15 @@ namespace Valkyrja\Http\Middleware\Cache;
 
 use Override;
 use Throwable;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Throwable\Exception\RuntimeException;
@@ -39,10 +39,10 @@ use function unserialize;
  *
  * @author Melech Mizrachi
  */
-class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMiddleware
+class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
 {
     public function __construct(
-        protected Filesystem $filesystem = new InMemoryFilesystem(),
+        protected FilesystemContract $filesystem = new InMemoryFilesystem(),
         protected bool $debug = false
     ) {
     }
@@ -51,7 +51,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
      * @inheritDoc
      */
     #[Override]
-    public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
+    public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {
         $filesystem = $this->filesystem;
 
@@ -84,7 +84,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
 
                 // Ensure a valid response before returning it
                 if (
-                    $response instanceof Response
+                    $response instanceof ResponseContract
                     && $response->getStatusCode()->value < StatusCode::INTERNAL_SERVER_ERROR->value
                 ) {
                     return $response;
@@ -103,7 +103,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
      * @inheritDoc
      */
     #[Override]
-    public function terminated(ServerRequest $request, Response $response, TerminatedHandler $handler): void
+    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
     {
         $this->filesystem->write(
             $this->getCachePathForRequest($request),
@@ -126,11 +126,11 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
     /**
      * Get a hashed version of the request path.
      *
-     * @param ServerRequest $request
+     * @param ServerRequestContract $request
      *
      * @return string
      */
-    protected function getHashedPath(ServerRequest $request): string
+    protected function getHashedPath(ServerRequestContract $request): string
     {
         return md5($request->getUri()->getPath());
     }
@@ -138,7 +138,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
     /**
      * Get the cache path for a request.
      */
-    protected function getCachePathForRequest(ServerRequest $request): string
+    protected function getCachePathForRequest(ServerRequestContract $request): string
     {
         return Directory::cachePath('response/' . $this->getHashedPath($request));
     }

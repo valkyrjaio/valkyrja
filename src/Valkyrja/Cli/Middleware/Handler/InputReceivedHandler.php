@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract as Contract;
 
 /**
  * Class InputReceivedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<InputReceivedMiddleware>
+ * @extends Handler<InputReceivedMiddlewareContract>
  */
 class InputReceivedHandler extends Handler implements Contract
 {
@@ -33,7 +33,7 @@ class InputReceivedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function inputReceived(Input $input): Input|Output
+    public function inputReceived(InputContract $input): InputContract|OutputContract
     {
         $next = $this->next;
 

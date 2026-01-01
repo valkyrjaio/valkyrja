@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Uri\Psr;
 
 use Override;
 use Psr\Http\Message\UriInterface;
-use Valkyrja\Http\Message\Uri\Contract\Uri as ValkyrjaUri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract as ValkyrjaUri;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
 /**

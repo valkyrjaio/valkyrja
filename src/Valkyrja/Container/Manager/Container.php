@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Manager;
 
 use Override;
-use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Manager\Contract\Container as Contract;
+use Valkyrja\Container\Manager\Contract\ContainerContract as Contract;
 use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
@@ -49,7 +49,7 @@ class Container implements Contract
     /**
      * The services.
      *
-     * @var array<class-string<Service>, class-string<Service>>
+     * @var array<class-string<ServiceContract>, class-string<ServiceContract>>
      */
     protected array $services = [];
 
@@ -137,17 +137,17 @@ class Container implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string          $id      The service id
-     * @param class-string<Service> $service The service
+     * @param class-string                  $id      The service id
+     * @param class-string<ServiceContract> $service The service
      */
     #[Override]
     public function bind(string $id, string $service): static
     {
-        assert(is_a($service, Service::class, true));
+        assert(is_a($service, ServiceContract::class, true));
 
         $id = $this->getServiceIdInternal($id);
 
-        /** @var class-string<Service> $id */
+        /** @var class-string<ServiceContract> $id */
         $this->services[$id] = $service;
 
         return $this;
@@ -172,8 +172,8 @@ class Container implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string          $id        The service id
-     * @param class-string<Service> $singleton The singleton service
+     * @param class-string                  $id        The service id
+     * @param class-string<ServiceContract> $singleton The singleton service
      */
     #[Override]
     public function bindSingleton(string $id, string $singleton): static
@@ -302,7 +302,7 @@ class Container implements Contract
 
         // If the service is in the container
         if ($this->isServiceInternal($id)) {
-            /** @var class-string<Service> $id */
+            /** @var class-string<ServiceContract> $id */
             // Return the made service
             // @phpstan-ignore-next-line
             return $this->getServiceWithoutChecks($id, $arguments);
@@ -346,11 +346,11 @@ class Container implements Contract
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
     #[Override]
-    public function getService(string $id, array $arguments = []): Service
+    public function getService(string $id, array $arguments = []): ServiceContract
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
-        /** @var class-string<Service> $id */
+        /** @var class-string<ServiceContract> $id */
 
         return $this->getServiceWithoutChecks($id, $arguments);
     }
@@ -491,7 +491,7 @@ class Container implements Contract
         }
 
         if (isset($this->services[$id])) {
-            /** @var class-string<Service> $id */
+            /** @var class-string<ServiceContract> $id */
             return $this->instances[$id] = $this->getServiceWithoutChecks($id);
         }
 
@@ -501,12 +501,12 @@ class Container implements Contract
     /**
      * Get a service from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string<Service>   $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
+     * @param class-string<ServiceContract> $id        The service id
+     * @param array<array-key, mixed>       $arguments [optional] The arguments
      *
-     * @return Service
+     * @return ServiceContract
      */
-    protected function getServiceWithoutChecks(string $id, array $arguments = []): Service
+    protected function getServiceWithoutChecks(string $id, array $arguments = []): ServiceContract
     {
         $service = $this->services[$id];
 

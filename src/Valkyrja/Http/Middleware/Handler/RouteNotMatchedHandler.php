@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as Contract;
 
 /**
  * Class RouteNotMatchedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<RouteNotMatchedMiddleware>
+ * @extends Handler<RouteNotMatchedMiddlewareContract>
  */
 class RouteNotMatchedHandler extends Handler implements Contract
 {
@@ -33,7 +33,7 @@ class RouteNotMatchedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function routeNotMatched(ServerRequest $request, Response $response): Response
+    public function routeNotMatched(ServerRequestContract $request, ResponseContract $response): ResponseContract
     {
         $next = $this->next;
 

@@ -17,10 +17,10 @@ use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\Manager\Contract\Jwt;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 
@@ -38,7 +38,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Jwt::class         => [self::class, 'publishJwt'],
+            JwtContract::class => [self::class, 'publishJwt'],
             FirebaseJwt::class => [self::class, 'publishFirebaseJwt'],
             NullJwt::class     => [self::class, 'publishNullJwt'],
         ];
@@ -51,7 +51,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Jwt::class,
+            JwtContract::class,
             FirebaseJwt::class,
             NullJwt::class,
         ];
@@ -60,14 +60,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the jwt service.
      */
-    public static function publishJwt(Container $container): void
+    public static function publishJwt(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Jwt> $default */
+        /** @var class-string<JwtContract> $default */
         $default = $env::JWT_DEFAULT;
 
         $container->setSingleton(
-            Jwt::class,
+            JwtContract::class,
             $container->getSingleton($default),
         );
     }
@@ -75,7 +75,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the jwt service.
      */
-    public static function publishFirebaseJwt(Container $container): void
+    public static function publishFirebaseJwt(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var Algorithm $algorithm */
@@ -110,7 +110,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the jwt service.
      */
-    public static function publishNullJwt(Container $container): void
+    public static function publishNullJwt(ContainerContract $container): void
     {
         $container->setSingleton(
             NullJwt::class,

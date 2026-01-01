@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
-use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
 
 /**
  * Class Message.
@@ -29,7 +29,7 @@ class Message implements Contract
      */
     public function __construct(
         protected string $text,
-        protected Formatter|null $formatter = null
+        protected FormatterContract|null $formatter = null
     ) {
     }
 
@@ -79,7 +79,7 @@ class Message implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getFormatter(): Formatter|null
+    public function getFormatter(): FormatterContract|null
     {
         return $this->formatter;
     }
@@ -88,7 +88,7 @@ class Message implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withFormatter(Formatter|null $formatter): static
+    public function withFormatter(FormatterContract|null $formatter): static
     {
         $new = clone $this;
 

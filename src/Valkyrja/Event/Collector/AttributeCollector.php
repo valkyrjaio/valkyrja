@@ -15,13 +15,13 @@ namespace Valkyrja\Event\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Collector\Contract\Collector;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
-use Valkyrja\Event\Collector\Contract\Collector as Contract;
-use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Listener as Model;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 /**
  * Class AttributeCollector.
@@ -31,8 +31,8 @@ use Valkyrja\Reflection\Reflector\Contract\Reflector;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected Collector $attributes,
-        protected Reflector $reflection,
+        protected CollectorContract $attributes,
+        protected ReflectorContract $reflection,
     ) {
     }
 
@@ -67,14 +67,14 @@ class AttributeCollector implements Contract
      *
      * @throws ReflectionException
      *
-     * @return Listener
+     * @return ListenerContract
      */
-    protected function setListenerProperties(Attribute $attribute): Listener
+    protected function setListenerProperties(Attribute $attribute): ListenerContract
     {
         $dispatch     = $attribute->getDispatch();
         $dependencies = [];
 
-        if ($dispatch instanceof MethodDispatch) {
+        if ($dispatch instanceof MethodDispatchContract) {
             $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
 
             $dependencies = $this->reflection->getDependencies($methodReflection);
@@ -94,11 +94,11 @@ class AttributeCollector implements Contract
     /**
      * Get a listener from an attribute.
      *
-     * @param Listener $attribute The attribute
+     * @param ListenerContract $attribute The attribute
      *
-     * @return Listener
+     * @return ListenerContract
      */
-    protected function getListenerFromAttribute(Listener $attribute): Listener
+    protected function getListenerFromAttribute(ListenerContract $attribute): ListenerContract
     {
         return new Model(
             eventId: $attribute->getEventId(),

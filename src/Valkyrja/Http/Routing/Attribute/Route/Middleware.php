@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
  * Attribute Middleware.
@@ -29,7 +29,7 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 class Middleware
 {
     /**
-     * @param class-string<RouteMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|SendingResponseMiddleware|TerminatedMiddleware> $name
+     * @param class-string<RouteMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|SendingResponseMiddlewareContract|TerminatedMiddlewareContract> $name
      */
     public function __construct(
         public string $name

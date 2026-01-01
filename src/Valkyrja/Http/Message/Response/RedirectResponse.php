@@ -16,12 +16,12 @@ namespace Valkyrja\Http\Message\Response;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponse as Contract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract as Contract;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Uri\Contract\Uri as UriContract;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Uri;
 
@@ -116,7 +116,7 @@ class RedirectResponse extends Response implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function secure(string $path, ServerRequest $request): static
+    public function secure(string $path, ServerRequestContract $request): static
     {
         $uri = new Uri(
             scheme: Scheme::HTTPS,
@@ -131,7 +131,7 @@ class RedirectResponse extends Response implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function back(ServerRequest $request): static
+    public function back(ServerRequestContract $request): static
     {
         $refererHeaderLine = $request->getHeaderLine('Referer') ?: '/';
 
@@ -155,12 +155,12 @@ class RedirectResponse extends Response implements Contract
     /**
      * Determine if a uri is internal.
      *
-     * @param ServerRequest $request
-     * @param UriContract   $uri
+     * @param ServerRequestContract $request
+     * @param UriContract           $uri
      *
      * @return bool
      */
-    protected function isInternalUri(ServerRequest $request, UriContract $uri): bool
+    protected function isInternalUri(ServerRequestContract $request, UriContract $uri): bool
     {
         // Get the host of the uri
         $host = $uri->getHost();

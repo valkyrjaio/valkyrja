@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -25,12 +25,16 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class RouteDispatchedMiddlewareClass implements RouteDispatchedMiddleware
+class RouteDispatchedMiddlewareClass implements RouteDispatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function routeDispatched(ServerRequest $request, Response $response, Route $route, RouteDispatchedHandler $handler): Response
-    {
+    public function routeDispatched(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        RouteContract $route,
+        RouteDispatchedHandlerContract $handler
+    ): ResponseContract {
         $this->updateCounter();
 
         return $handler->routeDispatched($request, $response, $route);

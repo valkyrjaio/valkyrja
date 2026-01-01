@@ -19,8 +19,8 @@ use Override;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster as Contract;
-use Valkyrja\Broadcast\Data\Contract\Message;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -49,7 +49,7 @@ class PusherBroadcaster implements Contract
      * @throws PusherException
      */
     #[Override]
-    public function send(Message $message): void
+    public function send(MessageContract $message): void
     {
         $this->pusher->trigger(
             $message->getChannel(),
@@ -61,13 +61,13 @@ class PusherBroadcaster implements Contract
     /**
      * Get the message text.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @throws JsonException On json decode failure
      *
      * @return string
      */
-    protected function getMessageText(Message $message): string
+    protected function getMessageText(MessageContract $message): string
     {
         $this->prepareMessage($message);
 
@@ -77,13 +77,13 @@ class PusherBroadcaster implements Contract
     /**
      * Prepare a message that has data.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @throws JsonException On json decode failure
      *
      * @return void
      */
-    protected function prepareMessage(Message $message): void
+    protected function prepareMessage(MessageContract $message): void
     {
         $data = $message->getData();
 

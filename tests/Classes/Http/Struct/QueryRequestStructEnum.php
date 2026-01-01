@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Rule\Is\IsString;
@@ -27,7 +27,7 @@ use Valkyrja\Validation\Rule\Is\Required;
  *
  * @author Melech Mizrachi
  */
-enum QueryRequestStructEnum implements RequestStruct
+enum QueryRequestStructEnum implements RequestStructContract
 {
     use QueryRequestStruct;
 
@@ -39,7 +39,7 @@ enum QueryRequestStructEnum implements RequestStruct
      * @inheritDoc
      */
     #[Override]
-    public static function getValidationRules(ServerRequest $request): array|null
+    public static function getValidationRules(ServerRequestContract $request): array|null
     {
         $first  = $request->getParsedBodyParam(self::first->name);
         $second = $request->getParsedBodyParam(self::second->name);

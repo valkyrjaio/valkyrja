@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
 use Throwable;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -25,14 +26,18 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddleware
+class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
-    {
+    public function throwableCaught(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        Throwable $exception,
+        ThrowableCaughtHandlerContract $handler
+    ): ResponseContract {
         $this->updateCounter();
 
-        return new \Valkyrja\Http\Message\Response\Response();
+        return new Response();
     }
 }

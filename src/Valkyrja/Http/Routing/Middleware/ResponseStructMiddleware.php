@@ -14,30 +14,34 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Middleware;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\JsonResponse;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 /**
  * Class StructRouteDispatchedMiddleware.
  *
  * @author Melech Mizrachi
  */
-class ResponseStructMiddleware implements RouteDispatchedMiddleware
+class ResponseStructMiddleware implements RouteDispatchedMiddlewareContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function routeDispatched(ServerRequest $request, Response $response, Route $route, RouteDispatchedHandler $handler): Response
-    {
+    public function routeDispatched(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        RouteContract $route,
+        RouteDispatchedHandlerContract $handler
+    ): ResponseContract {
         $responseStruct = $route->getResponseStruct();
 
-        if ($responseStruct !== null && $response instanceof JsonResponse) {
+        if ($responseStruct !== null && $response instanceof JsonResponseContract) {
             $response = $this->updateJsonWithResponseStruct($response, $responseStruct);
         }
 
@@ -47,12 +51,12 @@ class ResponseStructMiddleware implements RouteDispatchedMiddleware
     /**
      * Update the Json in a response with a given response struct.
      *
-     * @param JsonResponse                 $response       The json response
-     * @param class-string<ResponseStruct> $responseStruct The response struct
+     * @param JsonResponseContract                 $response       The json response
+     * @param class-string<ResponseStructContract> $responseStruct The response struct
      *
-     * @return JsonResponse
+     * @return JsonResponseContract
      */
-    protected function updateJsonWithResponseStruct(JsonResponse $response, string $responseStruct): JsonResponse
+    protected function updateJsonWithResponseStruct(JsonResponseContract $response, string $responseStruct): JsonResponseContract
     {
         $data = $response->getBodyAsJson();
 

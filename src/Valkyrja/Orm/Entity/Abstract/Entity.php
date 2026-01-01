@@ -15,12 +15,12 @@ namespace Valkyrja\Orm\Entity\Abstract;
 
 use JsonException;
 use Override;
-use Valkyrja\Orm\Entity\Contract\Entity as Contract;
-use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Entity\Contract\EntityContract as Contract;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Trait\Castable;
@@ -63,7 +63,7 @@ abstract class Entity extends Model implements Contract
     /**
      * The repository.
      *
-     * @var class-string<Repository>|null
+     * @var class-string<RepositoryContract>|null
      */
     protected static string|null $repository = null;
 
@@ -286,10 +286,10 @@ abstract class Entity extends Model implements Contract
      */
     protected function internalGetTypeValueForDataStore(Cast $cast, mixed $value): mixed
     {
-        /** @var class-string<Type> $type */
+        /** @var class-string<TypeContract> $type */
         $type = $cast->type;
 
-        if ($value instanceof Type) {
+        if ($value instanceof TypeContract) {
             return $value->asFlatValue();
         }
 

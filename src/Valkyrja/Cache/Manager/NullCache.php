@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Manager;
 
 use Override;
-use Valkyrja\Cache\Manager\Contract\Cache as Contract;
-use Valkyrja\Cache\Tagger\Contract\Tagger;
+use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
+use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 /**
@@ -133,7 +133,7 @@ class NullCache implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getTagger(string ...$tags): Tagger
+    public function getTagger(string ...$tags): TaggerContract
     {
         return TagClass::make($this, ...$tags);
     }

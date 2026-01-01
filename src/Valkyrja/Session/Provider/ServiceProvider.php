@@ -15,16 +15,16 @@ namespace Valkyrja\Session\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cache\Manager\Contract\Cache;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
-use Valkyrja\Session\Manager\Contract\Session;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\CookieSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
@@ -44,13 +44,13 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class       => [self::class, 'publishSession'],
-            PhpSession::class    => [self::class, 'publishPhpSession'],
-            NullSession::class   => [self::class, 'publishNullSession'],
-            CacheSession::class  => [self::class, 'publishCacheSession'],
-            CookieSession::class => [self::class, 'publishCookieSession'],
-            LogSession::class    => [self::class, 'publishLogSession'],
-            CookieParams::class  => [self::class, 'publishCookieParams'],
+            SessionContract::class => [self::class, 'publishSession'],
+            PhpSession::class      => [self::class, 'publishPhpSession'],
+            NullSession::class     => [self::class, 'publishNullSession'],
+            CacheSession::class    => [self::class, 'publishCacheSession'],
+            CookieSession::class   => [self::class, 'publishCookieSession'],
+            LogSession::class      => [self::class, 'publishLogSession'],
+            CookieParams::class    => [self::class, 'publishCookieParams'],
         ];
     }
 
@@ -61,7 +61,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Session::class,
+            SessionContract::class,
             PhpSession::class,
             NullSession::class,
             CacheSession::class,
@@ -74,7 +74,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the cookie params service.
      */
-    public static function publishCookieParams(Container $container): void
+    public static function publishCookieParams(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $path */
@@ -106,14 +106,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the session service.
      */
-    public static function publishSession(Container $container): void
+    public static function publishSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Session> $default */
+        /** @var class-string<SessionContract> $default */
         $default = $env::SESSION_DEFAULT;
 
         $container->setSingleton(
-            Session::class,
+            SessionContract::class,
             $container->getSingleton($default),
         );
     }
@@ -121,7 +121,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the php session service.
      */
-    public static function publishPhpSession(Container $container): void
+    public static function publishPhpSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string|null $sessionId */
@@ -142,7 +142,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null session service.
      */
-    public static function publishNullSession(Container $container): void
+    public static function publishNullSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string|null $sessionId */
@@ -162,7 +162,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the cache session service.
      */
-    public static function publishCacheSession(Container $container): void
+    public static function publishCacheSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string|null $sessionId */
@@ -173,7 +173,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             CacheSession::class,
             new CacheSession(
-                cache: $container->getSingleton(Cache::class),
+                cache: $container->getSingleton(CacheContract::class),
                 cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
@@ -184,7 +184,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the cookie session service.
      */
-    public static function publishCookieSession(Container $container): void
+    public static function publishCookieSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string|null $sessionId */
@@ -195,8 +195,8 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             CookieSession::class,
             new CookieSession(
-                crypt: $container->getSingleton(Crypt::class),
-                request: $container->getSingleton(ServerRequest::class),
+                crypt: $container->getSingleton(CryptContract::class),
+                request: $container->getSingleton(ServerRequestContract::class),
                 cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
@@ -207,7 +207,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the log session service.
      */
-    public static function publishLogSession(Container $container): void
+    public static function publishLogSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string|null $sessionId */
@@ -218,7 +218,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             LogSession::class,
             new LogSession(
-                logger: $container->getSingleton(Logger::class),
+                logger: $container->getSingleton(LoggerContract::class),
                 cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,

@@ -15,10 +15,10 @@ namespace Valkyrja\Http\Routing\Support;
 
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
 /**
  * Class Abort.
@@ -31,11 +31,11 @@ class Abort
      * Abort with a 400.
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param Response|null                $response [optional] The response to send
+     * @param ResponseContract|null        $response [optional] The response to send
      *
      * @return never
      */
-    public static function abort400(array|null $headers = null, Response|null $response = null): never
+    public static function abort400(array|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST, $headers, $response);
     }
@@ -44,11 +44,11 @@ class Abort
      * Abort with a 404.
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param Response|null                $response [optional] The response to send
+     * @param ResponseContract|null        $response [optional] The response to send
      *
      * @return never
      */
-    public static function abort404(array|null $headers = null, Response|null $response = null): never
+    public static function abort404(array|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND, $headers, $response);
     }
@@ -57,11 +57,11 @@ class Abort
      * Abort with a 405.
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param Response|null                $response [optional] The response to send
+     * @param ResponseContract|null        $response [optional] The response to send
      *
      * @return never
      */
-    public static function abort405(array|null $headers = null, Response|null $response = null): never
+    public static function abort405(array|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED, $headers, $response);
     }
@@ -70,11 +70,11 @@ class Abort
      * Abort with a 413.
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param Response|null                $response [optional] The response to send
+     * @param ResponseContract|null        $response [optional] The response to send
      *
      * @return never
      */
-    public static function abort413(array|null $headers = null, Response|null $response = null): never
+    public static function abort413(array|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE, $headers, $response);
     }
@@ -85,7 +85,7 @@ class Abort
      * @param StatusCode|null              $statusCode [optional] The status code
      * @param string|null                  $message    [optional] The message
      * @param array<string, string[]>|null $headers    [optional] The headers
-     * @param Response|null                $response   [optional] The response to send
+     * @param ResponseContract|null        $response   [optional] The response to send
      *
      * @return never
      */
@@ -93,7 +93,7 @@ class Abort
         StatusCode|null $statusCode = null,
         string|null $message = null,
         array|null $headers = null,
-        Response|null $response = null
+        ResponseContract|null $response = null
     ): never {
         throw new HttpException($statusCode, $message, $headers, $response);
     }
@@ -101,7 +101,7 @@ class Abort
     /**
      * Redirect to a given uri, and abort.
      *
-     * @param Uri|null                     $uri        [optional] The URI to redirect to
+     * @param UriContract|null             $uri        [optional] The URI to redirect to
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
@@ -110,7 +110,7 @@ class Abort
      * @return never
      */
     public static function redirect(
-        Uri|null $uri = null,
+        UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
     ): never {

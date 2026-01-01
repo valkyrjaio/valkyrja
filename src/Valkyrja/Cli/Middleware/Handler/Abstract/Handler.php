@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler\Abstract;
 
 use Override;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\Handler as Contract;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\HandlerContract as Contract;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 use function array_merge;
 
@@ -34,7 +34,7 @@ use function array_merge;
  * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
  * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though
  *
- * @template Middleware of InputReceivedMiddleware|CommandMatchedMiddleware|CommandNotMatchedMiddleware|CommandDispatchedMiddleware|ThrowableCaughtMiddleware|ExitedMiddleware
+ * @template Middleware of InputReceivedMiddlewareContract|CommandMatchedMiddlewareContract|CommandNotMatchedMiddlewareContract|CommandDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
  *
  * @implements Contract<Middleware>
  */

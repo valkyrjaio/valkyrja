@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Valkyrja\Http\Message\File\Contract\UploadedFile;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile as HttpUploadedFile;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
@@ -51,7 +51,7 @@ abstract class UploadedFileFactory
          * @var mixed     $value
          */
         foreach ($files as $key => $value) {
-            if ($value instanceof UploadedFile) {
+            if ($value instanceof UploadedFileContract) {
                 $normalized[$key] = $value;
 
                 continue;
@@ -75,7 +75,7 @@ abstract class UploadedFileFactory
         return $normalized;
     }
 
-    public static function fromPsr(UploadedFileInterface $file): UploadedFile
+    public static function fromPsr(UploadedFileInterface $file): UploadedFileContract
     {
         return new HttpUploadedFile(
             stream: StreamFactory::fromPsr($file->getStream()),
@@ -89,12 +89,12 @@ abstract class UploadedFileFactory
     /**
      * @param UploadedFileInterface ...$files
      *
-     * @return UploadedFile[]
+     * @return UploadedFileContract[]
      */
     public static function fromPsrArray(UploadedFileInterface ...$files): array
     {
         return array_map(
-            static fn (UploadedFileInterface $file): UploadedFile => UploadedFileFactory::fromPsr($file),
+            static fn (UploadedFileInterface $file): UploadedFileContract => UploadedFileFactory::fromPsr($file),
             $files,
         );
     }
@@ -108,9 +108,9 @@ abstract class UploadedFileFactory
      *
      * @throws InvalidArgumentException
      *
-     * @return UploadedFile|UploadedFile[]
+     * @return UploadedFileContract|UploadedFileContract[]
      */
-    public static function createUploadedFileFromSpec(array $value): UploadedFile|array
+    public static function createUploadedFileFromSpec(array $value): UploadedFileContract|array
     {
         $tmpName = $value['tmp_name'] ?? null;
 
@@ -141,7 +141,7 @@ abstract class UploadedFileFactory
      *
      * @throws InvalidArgumentException
      *
-     * @return UploadedFile[]
+     * @return UploadedFileContract[]
      *
      * @psalm-suppress InvalidReturnType Cannot do recursive return type
      * @psalm-suppress InvalidReturnStatement Cannot do recursive return type

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Reflection\Provider;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Reflection\Reflector\Contract\Reflector as ReflectorContract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
 /**
@@ -51,11 +51,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the reflection service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishReflection(Container $container): void
+    public static function publishReflection(ContainerContract $container): void
     {
         $container->setSingleton(
             ReflectorContract::class,

@@ -16,7 +16,7 @@ namespace Valkyrja\Type\BuiltIn;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\SerializedObject as Contract;
+use Valkyrja\Type\BuiltIn\Contract\SerializedObjectContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 
 use function is_string;

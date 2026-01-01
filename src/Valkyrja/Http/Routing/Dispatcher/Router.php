@@ -15,30 +15,30 @@ namespace Valkyrja\Http\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatcherContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router as Contract;
-use Valkyrja\Http\Routing\Matcher\Contract\Matcher as MatcherContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as Contract;
+use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 
@@ -58,7 +58,7 @@ class Router implements Contract
         protected ContainerContract $container = new Container(),
         protected DispatcherContract $dispatcher = new Dispatcher(),
         protected MatcherContract $matcher = new Matcher(),
-        protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
+        protected ResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),
         protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),
@@ -72,13 +72,13 @@ class Router implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatch(ServerRequest $request): Response
+    public function dispatch(ServerRequestContract $request): ResponseContract
     {
         // Attempt to match the route
         $matchedRoute = $this->attemptToMatchRoute($request);
 
         // If the route was not matched a response returned
-        if ($matchedRoute instanceof Response) {
+        if ($matchedRoute instanceof ResponseContract) {
             // Dispatch RouteNotMatchedMiddleware
             return $this->routeNotMatchedHandler->routeNotMatched(
                 request: $request,
@@ -96,7 +96,7 @@ class Router implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchRoute(ServerRequest $request, Route $route): Response
+    public function dispatchRoute(ServerRequestContract $request, RouteContract $route): ResponseContract
     {
         // The route has been matched
         $this->routeMatched($route);
@@ -108,12 +108,12 @@ class Router implements Contract
         );
 
         // If the return value after middleware is a response return it
-        if ($routeAfterMiddleware instanceof Response) {
+        if ($routeAfterMiddleware instanceof ResponseContract) {
             return $routeAfterMiddleware;
         }
 
         // Set the route after middleware has potentially modified it in the service container
-        $this->container->setSingleton(Route::class, $routeAfterMiddleware);
+        $this->container->setSingleton(RouteContract::class, $routeAfterMiddleware);
 
         $dispatch  = $routeAfterMiddleware->getDispatch();
         $arguments = $dispatch->getArguments();
@@ -124,7 +124,7 @@ class Router implements Contract
             arguments: $arguments
         );
 
-        if (! $response instanceof Response) {
+        if (! $response instanceof ResponseContract) {
             throw new InvalidRouteNameException('Dispatch must be a valid response');
         }
 
@@ -138,13 +138,13 @@ class Router implements Contract
     /**
      * Match a route, or a response if no route exists, from a given server request.
      *
-     * @param ServerRequest $request The request
+     * @param ServerRequestContract $request The request
      *
      * @throws HttpException
      *
-     * @return Route|Response
+     * @return RouteContract|ResponseContract
      */
-    protected function attemptToMatchRoute(ServerRequest $request): Route|Response
+    protected function attemptToMatchRoute(ServerRequestContract $request): RouteContract|ResponseContract
     {
         // Decode the request uri
         /** @var non-empty-string $requestPath */
@@ -177,11 +177,11 @@ class Router implements Contract
     /**
      * Do various stuff after the route has been matched.
      *
-     * @param Route $route The route
+     * @param RouteContract $route The route
      *
      * @return void
      */
-    protected function routeMatched(Route $route): void
+    protected function routeMatched(RouteContract $route): void
     {
         $this->routeMatchedHandler->add(...$route->getRouteMatchedMiddleware());
         $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
@@ -190,6 +190,6 @@ class Router implements Contract
         $this->terminatedHandler->add(...$route->getTerminatedMiddleware());
 
         // Set the found route in the service container
-        $this->container->setSingleton(Route::class, $route);
+        $this->container->setSingleton(RouteContract::class, $route);
     }
 }

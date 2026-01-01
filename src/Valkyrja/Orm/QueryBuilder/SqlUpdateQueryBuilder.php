@@ -17,14 +17,14 @@ use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 
 /**
  * Class SqlUpdateQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilder
+class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilderContract
 {
     /** @var Value[] */
     protected array $values = [];

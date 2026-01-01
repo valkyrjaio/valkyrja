@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Provider;
 
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Mail\Mailer\Contract\Mailer;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Notification\Factory\ContainerFactory;
-use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Notifier\Contract\Notifier as NotifierContract;
+use Valkyrja\Notification\Factory\Contract\FactoryContract;
+use Valkyrja\Notification\Notifier\Contract\NotifierContract;
 use Valkyrja\Notification\Notifier\Notifier;
-use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 
 /**
  * Class ServiceProvider.
@@ -39,7 +39,7 @@ final class ServiceProvider extends Provider
     {
         return [
             NotifierContract::class => [self::class, 'publishNotifier'],
-            Factory::class          => [self::class, 'publishFactory'],
+            FactoryContract::class  => [self::class, 'publishFactory'],
         ];
     }
 
@@ -51,26 +51,26 @@ final class ServiceProvider extends Provider
     {
         return [
             NotifierContract::class,
-            Factory::class,
+            FactoryContract::class,
         ];
     }
 
     /**
      * Publish the notifier service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishNotifier(Container $container): void
+    public static function publishNotifier(ContainerContract $container): void
     {
         $container->setSingleton(
             NotifierContract::class,
             new Notifier(
-                $container->getSingleton(Factory::class),
-                $container->getSingleton(Broadcaster::class),
-                $container->getSingleton(Mailer::class),
-                $container->getSingleton(Messenger::class),
+                $container->getSingleton(FactoryContract::class),
+                $container->getSingleton(BroadcasterContract::class),
+                $container->getSingleton(MailerContract::class),
+                $container->getSingleton(MessengerContract::class),
             )
         );
     }
@@ -78,14 +78,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the factory service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishFactory(Container $container): void
+    public static function publishFactory(ContainerContract $container): void
     {
         $container->setSingleton(
-            Factory::class,
+            FactoryContract::class,
             new ContainerFactory(
                 $container,
             )

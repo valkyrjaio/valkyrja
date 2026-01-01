@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data\Retrieval;
 
 use Override;
-use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval as Contract;
-use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract as Contract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
  * Class RetrievalById.
@@ -35,7 +35,7 @@ class RetrievalById implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<User> $user The user
+     * @param class-string<UserContract> $user The user
      *
      * @psalm-suppress LessSpecificImplementedReturnType
      */

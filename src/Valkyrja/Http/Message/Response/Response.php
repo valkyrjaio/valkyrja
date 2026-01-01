@@ -17,9 +17,9 @@ use InvalidArgumentException;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Value\Contract\Cookie;
-use Valkyrja\Http\Message\Response\Contract\Response as Contract;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract as Contract;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Trait\Message;
@@ -66,7 +66,7 @@ class Response implements Contract
     /**
      * NativeResponse constructor.
      *
-     * @param Stream                  $body       [optional] The body
+     * @param StreamContract          $body       [optional] The body
      * @param StatusCode              $statusCode [optional] The status
      * @param array<string, string[]> $headers    [optional] The headers
      *
@@ -74,7 +74,7 @@ class Response implements Contract
      * @throws InvalidStreamException
      */
     public function __construct(
-        Stream $body = new HttpStream(),
+        StreamContract $body = new HttpStream(),
         protected StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
     ) {
@@ -140,7 +140,7 @@ class Response implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withCookie(Cookie $cookie): static
+    public function withCookie(CookieContract $cookie): static
     {
         return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie);
     }
@@ -149,7 +149,7 @@ class Response implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withoutCookie(Cookie $cookie): static
+    public function withoutCookie(CookieContract $cookie): static
     {
         return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie->delete());
     }

@@ -15,18 +15,18 @@ namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as Contract;
 
 /**
  * Class ExceptionHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<ThrowableCaughtMiddleware>
+ * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
 class ThrowableCaughtHandler extends Handler implements Contract
 {
@@ -34,7 +34,7 @@ class ThrowableCaughtHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception): Response
+    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $exception): ResponseContract
     {
         $next = $this->next;
 

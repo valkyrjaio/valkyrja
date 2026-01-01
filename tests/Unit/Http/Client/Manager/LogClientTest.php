@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -34,7 +34,7 @@ class LogClientTest extends TestCase
      */
     public function testSendRequest(): void
     {
-        $logger = $this->createMock(Logger::class);
+        $logger = $this->createMock(LoggerContract::class);
 
         $client  = new LogClient($logger);
         $request = new Request();

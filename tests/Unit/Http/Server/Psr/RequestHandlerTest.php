@@ -18,7 +18,7 @@ use Throwable;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response as ResponseContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;

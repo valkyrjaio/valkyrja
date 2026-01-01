@@ -16,7 +16,7 @@ namespace Valkyrja\Log\Logger;
 use Override;
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Logger\Contract\Logger as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
 /**
  * Class NullLogger.

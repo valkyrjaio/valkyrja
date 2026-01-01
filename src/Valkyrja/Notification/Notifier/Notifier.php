@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Notifier;
 
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Mail\Data\Message as MailMessage;
-use Valkyrja\Mail\Mailer\Contract\Mailer;
-use Valkyrja\Notification\Data\Contract\Notify;
-use Valkyrja\Notification\Entity\Contract\NotifiableUser;
-use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Notifier\Contract\Notifier as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
+use Valkyrja\Notification\Data\Contract\NotifyContract;
+use Valkyrja\Notification\Entity\Contract\NotifiableUserContract;
+use Valkyrja\Notification\Factory\Contract\FactoryContract;
+use Valkyrja\Notification\Notifier\Contract\NotifierContract as Contract;
 use Valkyrja\Sms\Data\Message as SmsMessage;
-use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_string;
@@ -38,21 +38,21 @@ class Notifier implements Contract
     /**
      * The mail recipients.
      *
-     * @var array<int, array{email: string, name: string, user?: NotifiableUser}>
+     * @var array<int, array{email: string, name: string, user?: NotifiableUserContract}>
      */
     protected array $mailRecipients = [];
 
     /**
      * The SMS recipients.
      *
-     * @var array<int, array{to: non-empty-string, from: non-empty-string, text: non-empty-string, user?: NotifiableUser}>
+     * @var array<int, array{to: non-empty-string, from: non-empty-string, text: non-empty-string, user?: NotifiableUserContract}>
      */
     protected array $smsRecipients = [];
 
     /**
      * The broadcast events.
      *
-     * @var array<int, array{event: string, user?: NotifiableUser}>
+     * @var array<int, array{event: string, user?: NotifiableUserContract}>
      */
     protected array $broadcastEvents = [];
 
@@ -60,10 +60,10 @@ class Notifier implements Contract
      * Notification constructor.
      */
     public function __construct(
-        protected Factory $factory,
-        protected Broadcaster $broadcaster,
-        protected Mailer $mailer,
-        protected Messenger $sms,
+        protected FactoryContract $factory,
+        protected BroadcasterContract $broadcaster,
+        protected MailerContract $mailer,
+        protected MessengerContract $sms,
     ) {
     }
 
@@ -71,7 +71,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function createNotification(string $name, array $data = []): Notify
+    public function createNotification(string $name, array $data = []): NotifyContract
     {
         return $this->factory->createNotification($name, $data);
     }
@@ -123,7 +123,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function addUserRecipient(NotifiableUser $user): static
+    public function addUserRecipient(NotifiableUserContract $user): static
     {
         $this->addSmsUserRecipient($user);
         $this->addMailUserRecipient($user);
@@ -136,7 +136,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function notify(Notify $notify): void
+    public function notify(NotifyContract $notify): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 
@@ -159,7 +159,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function notifyUser(Notify $notify, NotifiableUser $user): void
+    public function notifyUser(NotifyContract $notify, NotifiableUserContract $user): void
     {
         $this->addUserRecipient($user);
         $this->notify($notify);
@@ -169,7 +169,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function notifyUsers(Notify $notify, NotifiableUser ...$users): void
+    public function notifyUsers(NotifyContract $notify, NotifiableUserContract ...$users): void
     {
         foreach ($users as $user) {
             $this->addUserRecipient($user);
@@ -193,11 +193,11 @@ class Notifier implements Contract
     /**
      * Add a user as an broadcast recipient.
      *
-     * @param NotifiableUser $user The user
+     * @param NotifiableUserContract $user The user
      *
      * @return void
      */
-    protected function addBroadcastUserRecipient(NotifiableUser $user): void
+    protected function addBroadcastUserRecipient(NotifiableUserContract $user): void
     {
         /** @var mixed $secretId */
         $secretId = $user::hasSecretIdField()
@@ -215,11 +215,11 @@ class Notifier implements Contract
     /**
      * Add a user as a mail recipient.
      *
-     * @param NotifiableUser $user The user
+     * @param NotifiableUserContract $user The user
      *
      * @return void
      */
-    protected function addMailUserRecipient(NotifiableUser $user): void
+    protected function addMailUserRecipient(NotifiableUserContract $user): void
     {
         $email = $user->__get($user::getEmailField());
         $name  = $user::hasNameField()
@@ -244,11 +244,11 @@ class Notifier implements Contract
     /**
      * Add a user as an SMS recipient.
      *
-     * @param NotifiableUser $user The user
+     * @param NotifiableUserContract $user The user
      *
      * @return void
      */
-    protected function addSmsUserRecipient(NotifiableUser $user): void
+    protected function addSmsUserRecipient(NotifiableUserContract $user): void
     {
         /** @var mixed $phoneNumber */
         $phoneNumber = $user::hasPhoneNumberField()
@@ -268,11 +268,11 @@ class Notifier implements Contract
     /**
      * Send a notification by broadcast.
      *
-     * @param Notify $notify The notification
+     * @param NotifyContract $notify The notification
      *
      * @return void
      */
-    protected function notifyByBroadcast(Notify $notify): void
+    protected function notifyByBroadcast(NotifyContract $notify): void
     {
         foreach ($this->broadcastEvents as $broadcastEvent) {
             $message = new BroadcastMessage();
@@ -287,11 +287,11 @@ class Notifier implements Contract
     /**
      * Send a notification by mail.
      *
-     * @param Notify $notify The notification
+     * @param NotifyContract $notify The notification
      *
      * @return void
      */
-    protected function notifyByMail(Notify $notify): void
+    protected function notifyByMail(NotifyContract $notify): void
     {
         foreach ($this->mailRecipients as $mailRecipient) {
             $message = new MailMessage(
@@ -308,11 +308,11 @@ class Notifier implements Contract
     /**
      * Send a notification by SMS.
      *
-     * @param Notify $notify The notification
+     * @param NotifyContract $notify The notification
      *
      * @return void
      */
-    protected function notifyBySms(Notify $notify): void
+    protected function notifyBySms(NotifyContract $notify): void
     {
         foreach ($this->smsRecipients as $smsRecipient) {
             $message = new SmsMessage(

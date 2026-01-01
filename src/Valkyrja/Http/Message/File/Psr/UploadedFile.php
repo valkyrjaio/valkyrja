@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\File\Psr;
 use Override;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Valkyrja\Http\Message\File\Contract\UploadedFile as ValkyrjaUploadedFile;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract as ValkyrjaUploadedFile;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 /**

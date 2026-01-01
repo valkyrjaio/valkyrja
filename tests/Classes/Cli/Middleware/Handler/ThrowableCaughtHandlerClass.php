@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Cli\Middleware\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 
 /**
@@ -40,7 +40,7 @@ class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(Input $input, Output $output, Throwable $exception): Output
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception): OutputContract
     {
         $this->count++;
 

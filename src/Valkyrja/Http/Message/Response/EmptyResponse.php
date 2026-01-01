@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Response;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\EmptyResponse as Contract;
+use Valkyrja\Http\Message\Response\Contract\EmptyResponseContract as Contract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;

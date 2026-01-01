@@ -15,15 +15,15 @@ namespace Valkyrja\Http\Middleware\Handler\Abstract;
 
 use Override;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\Handler as Contract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\HandlerContract as Contract;
 
 use function array_merge;
 
@@ -35,7 +35,7 @@ use function array_merge;
  * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
  * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though
  *
- * @template Middleware of RequestReceivedMiddleware|SendingResponseMiddleware|RouteMatchedMiddleware|RouteNotMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|TerminatedMiddleware
+ * @template Middleware of RequestReceivedMiddlewareContract|SendingResponseMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|TerminatedMiddlewareContract
  *
  * @implements Contract<Middleware>
  */

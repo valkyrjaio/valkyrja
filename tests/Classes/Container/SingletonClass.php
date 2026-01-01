@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Contract\Service;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Contract\ServiceContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Singleton class.
  *
  * @author Melech Mizrachi
  */
-class SingletonClass implements Service
+class SingletonClass implements ServiceContract
 {
-    public static function make(Container $container, array $arguments = []): static
+    public static function make(ContainerContract $container, array $arguments = []): static
     {
         return new self();
     }

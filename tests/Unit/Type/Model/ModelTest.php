@@ -20,8 +20,8 @@ use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\ModelInvalidIssetMethodClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\Contract\Type;
-use Valkyrja\Type\Model\Contract\Model as Contract;
+use Valkyrja\Type\Contract\TypeContract;
+use Valkyrja\Type\Model\Contract\ModelContract as Contract;
 use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function json_encode;
@@ -62,7 +62,7 @@ class ModelTest extends TestCase
         self::assertTrue(method_exists(Contract::class, 'jsonSerialize'));
         self::assertTrue(method_exists(Contract::class, '__toString'));
         self::isA(ArrayAccess::class, Contract::class);
-        self::isA(Type::class, Contract::class);
+        self::isA(TypeContract::class, Contract::class);
     }
 
     public function testHas(): void

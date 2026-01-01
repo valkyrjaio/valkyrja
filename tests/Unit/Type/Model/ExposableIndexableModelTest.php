@@ -17,8 +17,8 @@ use Valkyrja\Tests\Classes\Model\ExposedIndexableModelClass;
 use Valkyrja\Tests\Classes\Model\IndexableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Model\Contract\ExposableIndexedModel as Contract;
-use Valkyrja\Type\Model\Contract\IndexedModel as ModelContract;
+use Valkyrja\Type\Model\Contract\ExposableIndexedModelContract as Contract;
+use Valkyrja\Type\Model\Contract\IndexedModelContract as ModelContract;
 
 use function method_exists;
 

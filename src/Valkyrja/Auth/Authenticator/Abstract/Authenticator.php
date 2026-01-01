@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Authenticator\Abstract;
 
 use Override;
-use Valkyrja\Auth\Authenticator\Contract\Authenticator as Contract;
-use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
+use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract as Contract;
+use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttemptContract;
 use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
-use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 
 /**
@@ -29,26 +29,26 @@ use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @implements Contract<U>
  */
 abstract class Authenticator implements Contract
 {
-    /** @var User|null */
-    protected User|null $current = null;
-    /** @var User|null */
-    protected User|null $impersonated = null;
+    /** @var UserContract|null */
+    protected UserContract|null $current = null;
+    /** @var UserContract|null */
+    protected UserContract|null $impersonated = null;
 
     /**
-     * @param Store<U>        $store  The store
-     * @param class-string<U> $entity The user entity
+     * @param StoreContract<U> $store  The store
+     * @param class-string<U>  $entity The user entity
      */
     public function __construct(
-        protected Store $store,
-        protected PasswordHasher $hasher,
+        protected StoreContract $store,
+        protected PasswordHasherContract $hasher,
         protected string $entity,
-        protected AuthenticatedUsers $authenticatedUsers = new AuthenticatedUsersData(),
+        protected AuthenticatedUsersContract $authenticatedUsers = new AuthenticatedUsersData(),
     ) {
     }
 
@@ -65,10 +65,10 @@ abstract class Authenticator implements Contract
     /**
      * Get the current authenticated user if one exists.
      *
-     * @return User|null
+     * @return UserContract|null
      */
     #[Override]
-    public function getAuthenticated(): User|null
+    public function getAuthenticated(): UserContract|null
     {
         $id = $this->authenticatedUsers->getCurrent();
 
@@ -85,10 +85,10 @@ abstract class Authenticator implements Contract
     /**
      * Get the current impersonated user if one exists.
      *
-     * @return User|null
+     * @return UserContract|null
      */
     #[Override]
-    public function getImpersonated(): User|null
+    public function getImpersonated(): UserContract|null
     {
         $id = $this->authenticatedUsers->getImpersonated();
 
@@ -106,7 +106,7 @@ abstract class Authenticator implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getAuthenticatedUsers(): AuthenticatedUsers
+    public function getAuthenticatedUsers(): AuthenticatedUsersContract
     {
         return $this->authenticatedUsers;
     }
@@ -115,7 +115,7 @@ abstract class Authenticator implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function setAuthenticatedUsers(AuthenticatedUsers $authenticatedUsers): static
+    public function setAuthenticatedUsers(AuthenticatedUsersContract $authenticatedUsers): static
     {
         $this->authenticatedUsers = $authenticatedUsers;
 
@@ -126,7 +126,7 @@ abstract class Authenticator implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function authenticate(AuthenticationAttempt $attempt): User
+    public function authenticate(AuthenticationAttemptContract $attempt): UserContract
     {
         $user = $this->store->retrieve($attempt->getRetrieval(), $this->entity);
 

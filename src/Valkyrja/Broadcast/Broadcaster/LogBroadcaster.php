@@ -15,9 +15,9 @@ namespace Valkyrja\Broadcast\Broadcaster;
 
 use JsonException;
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster as Contract;
-use Valkyrja\Broadcast\Data\Contract\Message;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Data\Contract\MessageContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -31,7 +31,7 @@ class LogBroadcaster implements Contract
      * LogBroadcaster constructor.
      */
     public function __construct(
-        protected Logger $logger
+        protected LoggerContract $logger
     ) {
     }
 
@@ -41,7 +41,7 @@ class LogBroadcaster implements Contract
      * @throws JsonException
      */
     #[Override]
-    public function send(Message $message): void
+    public function send(MessageContract $message): void
     {
         $this->logger->info(static::class . ' Send');
         $this->logger->info('Channel:');

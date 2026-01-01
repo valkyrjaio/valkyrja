@@ -15,11 +15,11 @@ namespace Valkyrja\Http\Routing\Controller;
 
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Manager\Contract\Api;
+use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\JsonResponse;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
@@ -30,9 +30,9 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 abstract class ApiController extends Controller
 {
     public function __construct(
-        protected Api $api,
-        ServerRequest $request,
-        ResponseFactory $responseFactory,
+        protected ApiContract $api,
+        ServerRequestContract $request,
+        ResponseFactoryContract $responseFactory,
     ) {
         parent::__construct(
             request: $request,
@@ -50,7 +50,7 @@ abstract class ApiController extends Controller
      * @param string[]|null           $errors     [optional] The errors
      * @param string[]|null           $warnings   [optional] The warnings
      *
-     * @return JsonResponse
+     * @return JsonResponseContract
      */
     public function createApiJsonResponse(
         array $data = [],
@@ -59,7 +59,7 @@ abstract class ApiController extends Controller
         StatusCode|null $statusCode = null,
         array|null $errors = null,
         array|null $warnings = null
-    ): JsonResponse {
+    ): JsonResponseContract {
         $json = $this->api->jsonFromArray($data);
 
         $json->setMessage($message);
@@ -81,7 +81,7 @@ abstract class ApiController extends Controller
      * @param string[]|null   $errors     [optional] The errors
      * @param string[]|null   $warnings   [optional] The warnings
      *
-     * @return JsonResponse
+     * @return JsonResponseContract
      */
     public function getExceptionResponse(
         Throwable $exception,
@@ -90,7 +90,7 @@ abstract class ApiController extends Controller
         StatusCode|null $statusCode = null,
         array|null $errors = null,
         array|null $warnings = null
-    ): JsonResponse {
+    ): JsonResponseContract {
         return $this->createApiJsonResponse(
             [
                 'traceCode' => ThrowableHandler::getTraceCode($exception),

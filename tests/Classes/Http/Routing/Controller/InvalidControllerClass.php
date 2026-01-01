@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
 
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
@@ -35,8 +35,8 @@ class InvalidControllerClass
     // Testing an invalid middleware
     #[Middleware(RequestReceivedMiddlewareClass::class)]
     public function invalidMiddlewareTest(
-        ResponseFactory $responseFactory
-    ): Response {
+        ResponseFactoryContract $responseFactory
+    ): ResponseContract {
         return $responseFactory->createResponse(
             content: 'invalidMiddlewareTest'
         );

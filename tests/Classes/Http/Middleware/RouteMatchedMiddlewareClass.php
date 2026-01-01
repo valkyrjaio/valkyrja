@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -25,11 +25,11 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class RouteMatchedMiddlewareClass implements RouteMatchedMiddleware
+class RouteMatchedMiddlewareClass implements RouteMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function routeMatched(ServerRequest $request, Route $route, RouteMatchedHandler $handler): Route|Response
+    public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
         $this->updateCounter();
 

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\QueryBuilder\Factory;
 
 use Override;
-use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract;
+use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
+use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
+use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
+use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract as Contract;
 use Valkyrja\Orm\QueryBuilder\SqlDeleteQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlInsertQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlSelectQueryBuilder;
@@ -35,7 +35,7 @@ class SqlQueryBuilderFactory implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function select(string $table): SelectQueryBuilder
+    public function select(string $table): SelectQueryBuilderContract
     {
         return new SqlSelectQueryBuilder(from: $table);
     }
@@ -44,7 +44,7 @@ class SqlQueryBuilderFactory implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function insert(string $table): InsertQueryBuilder
+    public function insert(string $table): InsertQueryBuilderContract
     {
         return new SqlInsertQueryBuilder(from: $table);
     }
@@ -53,7 +53,7 @@ class SqlQueryBuilderFactory implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function update(string $table): UpdateQueryBuilder
+    public function update(string $table): UpdateQueryBuilderContract
     {
         return new SqlUpdateQueryBuilder(from: $table);
     }
@@ -62,7 +62,7 @@ class SqlQueryBuilderFactory implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function delete(string $table): DeleteQueryBuilder
+    public function delete(string $table): DeleteQueryBuilderContract
     {
         return new SqlDeleteQueryBuilder(from: $table);
     }

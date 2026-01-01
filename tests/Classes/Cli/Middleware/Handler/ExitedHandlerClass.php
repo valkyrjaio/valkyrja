@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 
 /**
@@ -39,7 +39,7 @@ class ExitedHandlerClass extends ExitedHandler
      * @inheritDoc
      */
     #[Override]
-    public function exited(Input $input, Output $output): void
+    public function exited(InputContract $input, OutputContract $output): void
     {
         $this->count++;
 

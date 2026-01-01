@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Event;
 
-use Valkyrja\Event\Contract\DispatchCollectableEvent;
+use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
 /**
  * Class to test events for unit testing.
  *
  * @author Melech Mizrachi
  */
-class DispatchCollectableEventClass implements DispatchCollectableEvent
+class DispatchCollectableEventClass implements DispatchCollectableEventContract
 {
     protected array $dispatches = [];
 

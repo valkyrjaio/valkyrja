@@ -15,14 +15,14 @@ namespace Valkyrja\Crypt\Manager;
 
 use Override;
 use stdClass;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 
 /**
  * Class NullCrypt.
  *
  * @author Melech Mizrachi
  */
-class NullCrypt implements Crypt
+class NullCrypt implements CryptContract
 {
     /**
      * @inheritDoc

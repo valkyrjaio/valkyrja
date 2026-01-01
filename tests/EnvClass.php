@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 use Valkyrja\Application\Env\Env as AppEnv;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 
 /**
@@ -52,7 +52,7 @@ class EnvClass extends AppEnv
      *
      ************************************************************/
 
-    /** @var class-string<Filesystem> */
+    /** @var class-string<FilesystemContract> */
     public const string FILESYSTEM_DEFAULT = InMemoryFilesystem::class;
 
     /************************************************************

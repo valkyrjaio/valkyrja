@@ -16,14 +16,14 @@ namespace Valkyrja\Http\Client\Provider;
 use GuzzleHttp\Client as Guzzle;
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Http\Client\Manager\Contract\Client;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Client\Manager\NullClient;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class ServiceProvider.
@@ -39,11 +39,11 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Client::class       => [self::class, 'publishClient'],
-            GuzzleClient::class => [self::class, 'publishGuzzleClient'],
-            Guzzle::class       => [self::class, 'publishGuzzle'],
-            LogClient::class    => [self::class, 'publishLogClient'],
-            NullClient::class   => [self::class, 'publishNullClient'],
+            ClientContract::class => [self::class, 'publishClient'],
+            GuzzleClient::class   => [self::class, 'publishGuzzleClient'],
+            Guzzle::class         => [self::class, 'publishGuzzle'],
+            LogClient::class      => [self::class, 'publishLogClient'],
+            NullClient::class     => [self::class, 'publishNullClient'],
         ];
     }
 
@@ -54,7 +54,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Client::class,
+            ClientContract::class,
             GuzzleClient::class,
             Guzzle::class,
             LogClient::class,
@@ -65,14 +65,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the client service.
      */
-    public static function publishClient(Container $container): void
+    public static function publishClient(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Client> $default */
+        /** @var class-string<ClientContract> $default */
         $default = $env::HTTP_CLIENT_DEFAULT;
 
         $container->setSingleton(
-            Client::class,
+            ClientContract::class,
             $container->getSingleton($default)
         );
     }
@@ -80,13 +80,13 @@ final class ServiceProvider extends Provider
     /**
      * Publish the GuzzleClient service.
      */
-    public static function publishGuzzleClient(Container $container): void
+    public static function publishGuzzleClient(ContainerContract $container): void
     {
         $container->setSingleton(
             GuzzleClient::class,
             new GuzzleClient(
                 client: $container->getSingleton(Guzzle::class),
-                responseFactory: $container->getSingleton(ResponseFactory::class),
+                responseFactory: $container->getSingleton(ResponseFactoryContract::class),
             )
         );
     }
@@ -94,12 +94,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the LogClient service.
      */
-    public static function publishLogClient(Container $container): void
+    public static function publishLogClient(ContainerContract $container): void
     {
         $container->setSingleton(
             LogClient::class,
             new LogClient(
-                logger: $container->getSingleton(Logger::class),
+                logger: $container->getSingleton(LoggerContract::class),
             )
         );
     }
@@ -107,7 +107,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the NullClient service.
      */
-    public static function publishNullClient(Container $container): void
+    public static function publishNullClient(ContainerContract $container): void
     {
         $container->setSingleton(
             NullClient::class,
@@ -118,7 +118,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the Guzzle service.
      */
-    public static function publishGuzzle(Container $container): void
+    public static function publishGuzzle(ContainerContract $container): void
     {
         $container->setSingleton(
             Guzzle::class,

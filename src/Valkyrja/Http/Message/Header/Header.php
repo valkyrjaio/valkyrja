@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header;
 
 use Override;
-use Valkyrja\Http\Message\Header\Contract\Header as Contract;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract as Contract;
 use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
-use Valkyrja\Http\Message\Header\Value\Contract\Value;
+use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 use Valkyrja\Http\Message\Header\Value\Value as HeaderValue;
 
 use function array_filter;
@@ -69,7 +69,7 @@ class Header implements Contract
     /**
      * The values.
      *
-     * @var Value[]
+     * @var ValueContract[]
      */
     protected array $values = [];
 
@@ -81,10 +81,10 @@ class Header implements Contract
     protected int $position = 0;
 
     /**
-     * @param string       $name
-     * @param Value|string ...$values
+     * @param string               $name
+     * @param ValueContract|string ...$values
      */
-    public function __construct(string $name, Value|string ...$values)
+    public function __construct(string $name, ValueContract|string ...$values)
     {
         $this->rewind();
         $this->updateName($name);
@@ -157,7 +157,7 @@ class Header implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withValues(Value|string ...$values): static
+    public function withValues(ValueContract|string ...$values): static
     {
         $new = clone $this;
 
@@ -170,7 +170,7 @@ class Header implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedValues(Value|string ...$values): static
+    public function withAddedValues(ValueContract|string ...$values): static
     {
         $new = $this->withValues(...$values);
 
@@ -236,7 +236,7 @@ class Header implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function offsetGet(mixed $offset): Value
+    public function offsetGet(mixed $offset): ValueContract
     {
         return $this->values[$offset];
     }
@@ -272,7 +272,7 @@ class Header implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function current(): Value
+    public function current(): ValueContract
     {
         return $this->values[$this->position];
     }
@@ -316,14 +316,14 @@ class Header implements Contract
     /**
      * Map string values to Value objects.
      *
-     * @param Value|string ...$values
+     * @param ValueContract|string ...$values
      *
-     * @return Value[]
+     * @return ValueContract[]
      */
-    protected function mapToValue(Value|string ...$values): array
+    protected function mapToValue(ValueContract|string ...$values): array
     {
         return array_map(
-            static fn (Value|string $value): Value => is_string($value) ? HeaderValue::fromValue($value) : $value,
+            static fn (ValueContract|string $value): ValueContract => is_string($value) ? HeaderValue::fromValue($value) : $value,
             $values
         );
     }
@@ -342,7 +342,7 @@ class Header implements Contract
         $this->normalizedName = strtolower($name);
     }
 
-    protected function updateValues(Value|string ...$values): void
+    protected function updateValues(ValueContract|string ...$values): void
     {
         $this->assertHeaderValues(...$values);
         $this->values = $this->mapToValue(...$values);
@@ -363,7 +363,7 @@ class Header implements Contract
      */
     protected function valuesToString(): string
     {
-        $filteredValues = array_filter($this->values, static fn (Value $value): bool => $value->__toString() !== '');
+        $filteredValues = array_filter($this->values, static fn (ValueContract $value): bool => $value->__toString() !== '');
 
         return implode(',', $filteredValues);
     }
@@ -371,11 +371,11 @@ class Header implements Contract
     /**
      * Filter header values.
      *
-     * @param Value|string ...$values Header values
+     * @param ValueContract|string ...$values Header values
      *
-     * @return array<array-key, Value|string>
+     * @return array<array-key, ValueContract|string>
      */
-    protected function assertHeaderValues(Value|string ...$values): array
+    protected function assertHeaderValues(ValueContract|string ...$values): array
     {
         foreach ($values as $value) {
             HeaderSecurity::assertValid((string) $value);

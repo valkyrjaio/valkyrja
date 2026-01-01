@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Store;
 
 use Override;
-use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Store\Contract\Store as Contract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
 use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
 
 /**
@@ -25,7 +25,7 @@ use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @implements Contract<U>
  */
@@ -45,7 +45,7 @@ class InMemoryStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(Retrieval $retrieval, string $user): User|null
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
     {
         $retrievalFields = $retrieval->getRetrievalFields($user);
 
@@ -56,7 +56,7 @@ class InMemoryStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function create(User $user): void
+    public function create(UserContract $user): void
     {
         $this->users[] = clone $user;
     }
@@ -65,7 +65,7 @@ class InMemoryStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function update(User $user): void
+    public function update(UserContract $user): void
     {
         $existingUser = $this->retrieve(new RetrievalById($user->getIdValue()), $user::class);
 
@@ -84,7 +84,7 @@ class InMemoryStore implements Contract
      *
      * @return bool
      */
-    protected function filterUsers(array $retrievalFields, User $user): bool
+    protected function filterUsers(array $retrievalFields, UserContract $user): bool
     {
         $match = null;
 
@@ -109,7 +109,7 @@ class InMemoryStore implements Contract
      *
      * @return U|null
      */
-    protected function getUserViaRetrievalFields(array $retrievalFields): User|null
+    protected function getUserViaRetrievalFields(array $retrievalFields): UserContract|null
     {
         $users = $this->users;
 
@@ -120,7 +120,7 @@ class InMemoryStore implements Contract
              *
              * @return bool
              */
-            fn (User $user): bool => $this->filterUsers($retrievalFields, $user)
+            fn (UserContract $user): bool => $this->filterUsers($retrievalFields, $user)
         );
 
         return $filteredUsers[0] ?? null;

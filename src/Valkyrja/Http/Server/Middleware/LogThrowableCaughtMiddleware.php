@@ -15,21 +15,21 @@ namespace Valkyrja\Http\Server\Middleware;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class LogExceptionMiddleware.
  *
  * @author Melech Mizrachi
  */
-class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
+class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     public function __construct(
-        protected Logger $logger,
+        protected LoggerContract $logger,
     ) {
     }
 
@@ -37,8 +37,12 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
-    {
+    public function throwableCaught(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        Throwable $exception,
+        ThrowableCaughtHandlerContract $handler
+    ): ResponseContract {
         $url        = $request->getUri()->getPath();
         $logMessage = "Http Server Error\nUrl: $url";
 

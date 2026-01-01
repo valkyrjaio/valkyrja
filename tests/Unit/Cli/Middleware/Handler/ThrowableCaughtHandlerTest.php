@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Exception;
 use Override;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ThrowableCaughtHandlerClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
@@ -71,7 +71,7 @@ class ThrowableCaughtHandlerTest extends HandlerTestCase
         self::assertSame(1, $handler->getCount());
         self::assertSame(1, ThrowableCaughtMiddlewareChangedClass::getCounter());
         self::assertNotSame($this->output, $before);
-        self::assertInstanceOf(Output::class, $before);
+        self::assertInstanceOf(OutputContract::class, $before);
     }
 
     /**
@@ -96,7 +96,7 @@ class ThrowableCaughtHandlerTest extends HandlerTestCase
         self::assertSame(1, ThrowableCaughtMiddlewareChangedClass::getCounter());
         self::assertSame(1, ThrowableCaughtMiddlewareClass::getCounter());
         self::assertNotSame($this->output, $before);
-        self::assertInstanceOf(Output::class, $before);
+        self::assertInstanceOf(OutputContract::class, $before);
     }
 
     /**

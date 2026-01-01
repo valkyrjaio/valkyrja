@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Model\Trait;
 
 use Closure;
-use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 
 use function is_array;
@@ -115,7 +115,7 @@ trait Castable
             return null;
         }
 
-        /** @var class-string<Type<mixed>> $type */
+        /** @var class-string<TypeContract<mixed>> $type */
         $type = $cast->type;
 
         $typeInstance = ($value instanceof $type)
@@ -134,11 +134,11 @@ trait Castable
     /**
      * Modify the cast value before returning it.
      *
-     * @param Type $type The type
+     * @param TypeContract $type The type
      *
-     * @return Type
+     * @return TypeContract
      */
-    protected function internalModifyCastPropertyValue(Type $type): Type
+    protected function internalModifyCastPropertyValue(TypeContract $type): TypeContract
     {
         return $type;
     }

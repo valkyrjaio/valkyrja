@@ -14,27 +14,27 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Store;
 
 use Override;
-use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Store\Contract\Store as Contract;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
-use Valkyrja\Orm\Manager\Contract\Manager;
-use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 
 /**
  * Class OrmStore.
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @implements Contract<U>
  */
 class OrmStore implements Contract
 {
     public function __construct(
-        protected Manager $orm,
+        protected ManagerContract $orm,
     ) {
     }
 
@@ -42,9 +42,9 @@ class OrmStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(Retrieval $retrieval, string $user): User|null
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
     {
-        /** @var Repository<U> $repository */
+        /** @var RepositoryContract<U> $repository */
         $repository = $this->orm->createRepository($user);
 
         $where = [];
@@ -65,7 +65,7 @@ class OrmStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function create(User $user): void
+    public function create(UserContract $user): void
     {
         $repository = $this->orm->createRepository($user::class);
 
@@ -76,7 +76,7 @@ class OrmStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function update(User $user): void
+    public function update(UserContract $user): void
     {
         $repository = $this->orm->createRepository($user::class);
 

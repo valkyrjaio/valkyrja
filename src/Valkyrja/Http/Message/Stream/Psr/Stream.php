@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Stream\Psr;
 
 use Override;
 use Psr\Http\Message\StreamInterface;
-use Valkyrja\Http\Message\Stream\Contract\Stream as ValkyrjaStreamContract;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract as ValkyrjaStreamContract;
 use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 use const SEEK_SET;

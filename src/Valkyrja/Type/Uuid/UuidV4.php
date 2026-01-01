@@ -18,7 +18,7 @@ use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
-use Valkyrja\Type\Uuid\Contract\UuidV4 as Contract;
+use Valkyrja\Type\Uuid\Contract\UuidV4Contract as Contract;
 use Valkyrja\Type\Uuid\Support\UuidV4 as Helper;
 
 use function gettype;

@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Data;
 
 use JsonSerializable;
 use Override;
-use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Enum\CastType;
 
 use function assert;
@@ -30,26 +30,26 @@ class Cast implements JsonSerializable
     /**
      * The type.
      *
-     * @var class-string<Type<mixed>>
+     * @var class-string<TypeContract<mixed>>
      */
     public string $type;
 
     /**
-     * @param CastType|class-string<Type<mixed>> $type The type
+     * @param CastType|class-string<TypeContract<mixed>> $type The type
      */
     public function __construct(
         CastType|string $type,
         public bool $convert = true,
         public bool $isArray = false
     ) {
-        /** @var class-string<Type> $type */
+        /** @var class-string<TypeContract> $type */
         $type = ($type instanceof CastType)
             ? $type->value
             : $type;
 
         $this->type = $type;
 
-        assert(is_a($this->type, Type::class, true));
+        assert(is_a($this->type, TypeContract::class, true));
     }
 
     /**

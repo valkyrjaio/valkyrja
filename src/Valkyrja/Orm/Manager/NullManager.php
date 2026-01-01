@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Manager;
 
 use Override;
-use Valkyrja\Orm\Manager\Contract\Manager as Contract;
-use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
+use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
-use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository as OrmRepository;
-use Valkyrja\Orm\Statement\Contract\Statement;
+use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 
 /**
@@ -33,7 +33,7 @@ class NullManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function createRepository(string $entity): Repository
+    public function createRepository(string $entity): RepositoryContract
     {
         return new OrmRepository($this, $entity);
     }
@@ -42,7 +42,7 @@ class NullManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function createQueryBuilder(): QueryBuilderFactory
+    public function createQueryBuilder(): QueryBuilderFactoryContract
     {
         return new SqlQueryBuilderFactory();
     }
@@ -77,7 +77,7 @@ class NullManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function prepare(string $query): Statement
+    public function prepare(string $query): StatementContract
     {
         return new NullStatement();
     }
@@ -86,7 +86,7 @@ class NullManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function query(string $query): Statement
+    public function query(string $query): StatementContract
     {
         return new NullStatement();
     }

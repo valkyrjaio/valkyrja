@@ -16,19 +16,19 @@ namespace Valkyrja\Application\Entry;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandler;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Factory\RequestFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
-use Valkyrja\Throwable\Handler\Contract\ThrowableHandler as ThrowableHandlerContract;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 use function define;
@@ -46,7 +46,7 @@ class App
      *
      * @param non-empty-string $dir The directory
      */
-    public static function start(string $dir, Env $env): Application
+    public static function start(string $dir, Env $env): ApplicationContract
     {
         static::defaultExceptionHandler();
         static::appStart();
@@ -71,7 +71,7 @@ class App
 
         self::bootstrapThrowableHandler($app, $container);
 
-        $handler = $container->getSingleton(RequestHandler::class);
+        $handler = $container->getSingleton(RequestHandlerContract::class);
         $request = static::getRequest();
         $handler->run($request);
     }
@@ -92,7 +92,7 @@ class App
 
         self::bootstrapThrowableHandler($app, $container);
 
-        $handler = $container->getSingleton(InputHandler::class);
+        $handler = $container->getSingleton(InputHandlerContract::class);
         $input   = static::getInput();
         $handler->run($input);
     }
@@ -129,7 +129,7 @@ class App
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
      */
-    public static function app(Env $env): Application
+    public static function app(Env $env): ApplicationContract
     {
         /** @var non-empty-string $cacheFilepath */
         $cacheFilepath = $env::APP_CACHE_FILE_PATH;
@@ -189,7 +189,7 @@ class App
     /**
      * Bootstrap throwable handler.
      */
-    protected static function bootstrapThrowableHandler(Application $app, Container $container): void
+    protected static function bootstrapThrowableHandler(ApplicationContract $app, ContainerContract $container): void
     {
         $errorHandler = static::getThrowableHandler();
 
@@ -216,7 +216,7 @@ class App
     /**
      * Get the request.
      */
-    protected static function getRequest(): ServerRequest
+    protected static function getRequest(): ServerRequestContract
     {
         return RequestFactory::fromGlobals();
     }
@@ -224,7 +224,7 @@ class App
     /**
      * Get the input.
      */
-    protected static function getInput(): Input
+    protected static function getInput(): InputContract
     {
         return InputFactory::fromGlobals();
     }

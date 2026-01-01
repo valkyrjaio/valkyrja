@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 
 /**
@@ -39,7 +39,7 @@ class TerminatedHandlerClass extends TerminatedHandler
      * @inheritDoc
      */
     #[Override]
-    public function terminated(ServerRequest $request, Response $response): void
+    public function terminated(ServerRequestContract $request, ResponseContract $response): void
     {
         $this->count++;
 

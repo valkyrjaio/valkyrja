@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Schema\Abstract;
 
 use Override;
-use Valkyrja\Orm\Manager\Contract\Manager;
-use Valkyrja\Orm\Schema\Contract\Migration as Contract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\Orm\Schema\Contract\MigrationContract as Contract;
 
 /**
  * Abstract Class Migration.
@@ -28,7 +28,7 @@ abstract class Migration implements Contract
      * Migration constructor.
      */
     public function __construct(
-        protected Manager $orm
+        protected ManagerContract $orm
     ) {
     }
 

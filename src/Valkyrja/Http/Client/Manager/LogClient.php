@@ -15,11 +15,11 @@ namespace Valkyrja\Http\Client\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
-use Valkyrja\Http\Message\Request\Contract\Request;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
+use Valkyrja\Http\Message\Request\Contract\RequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
@@ -30,7 +30,7 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 class LogClient implements Contract
 {
     public function __construct(
-        protected Logger $logger,
+        protected LoggerContract $logger,
     ) {
     }
 
@@ -40,7 +40,7 @@ class LogClient implements Contract
      * @throws JsonException
      */
     #[Override]
-    public function sendRequest(Request $request): Response
+    public function sendRequest(RequestContract $request): ResponseContract
     {
         $optionsString = Obj::toString($request);
 

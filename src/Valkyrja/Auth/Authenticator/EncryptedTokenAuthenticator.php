@@ -14,36 +14,36 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Authenticator;
 
 use Override;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
-use Valkyrja\Auth\Store\Contract\Store;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Class EncryptedTokenAuthenticator.
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @extends TokenAuthenticator<U>
  */
 class EncryptedTokenAuthenticator extends TokenAuthenticator
 {
     /**
-     * @param Store<U>        $store  The store
-     * @param class-string<U> $entity The user entity
+     * @param StoreContract<U> $store  The store
+     * @param class-string<U>  $entity The user entity
      */
     public function __construct(
-        protected Crypt $crypt,
-        ServerRequest $request,
-        Store $store,
-        PasswordHasher $hasher,
+        protected CryptContract $crypt,
+        ServerRequestContract $request,
+        StoreContract $store,
+        PasswordHasherContract $hasher,
         string $entity,
-        AuthenticatedUsers|null $authenticatedUsers = null,
+        AuthenticatedUsersContract|null $authenticatedUsers = null,
         string $headerName = HeaderName::AUTHORIZATION,
     ) {
         parent::__construct(
@@ -61,10 +61,10 @@ class EncryptedTokenAuthenticator extends TokenAuthenticator
      *
      * @param string $token The token
      *
-     * @return AuthenticatedUsers|null
+     * @return AuthenticatedUsersContract|null
      */
     #[Override]
-    protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsers|null
+    protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {
         $decryptedToken = $this->crypt->decrypt($token);
 

@@ -16,14 +16,14 @@ namespace Valkyrja\Auth\Authenticator;
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
-use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Jwt\Manager\Contract\Jwt;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
 use function is_string;
 
@@ -32,23 +32,23 @@ use function is_string;
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @extends Authenticator<U>
  */
 class JwtAuthenticator extends Authenticator
 {
     /**
-     * @param Store<U>        $store  The store
-     * @param class-string<U> $entity The user entity
+     * @param StoreContract<U> $store  The store
+     * @param class-string<U>  $entity The user entity
      */
     public function __construct(
-        protected Jwt $jwt,
-        protected ServerRequest $request,
-        Store $store,
-        PasswordHasher $hasher,
+        protected JwtContract $jwt,
+        protected ServerRequestContract $request,
+        StoreContract $store,
+        PasswordHasherContract $hasher,
         string $entity,
-        AuthenticatedUsers|null $authenticatedUsers = null,
+        AuthenticatedUsersContract|null $authenticatedUsers = null,
         protected string $headerName = HeaderName::AUTHORIZATION,
     ) {
         parent::__construct(
@@ -62,9 +62,9 @@ class JwtAuthenticator extends Authenticator
     /**
      * Attempt to get the authenticated users from the request.
      *
-     * @return AuthenticatedUsers|null
+     * @return AuthenticatedUsersContract|null
      */
-    protected function getAuthenticatedUsersFromRequest(): AuthenticatedUsers|null
+    protected function getAuthenticatedUsersFromRequest(): AuthenticatedUsersContract|null
     {
         $headerLine = $this->request->getHeaderLine(HeaderName::AUTHORIZATION);
 
@@ -86,9 +86,9 @@ class JwtAuthenticator extends Authenticator
      *
      * @param string $token The token
      *
-     * @return AuthenticatedUsers|null
+     * @return AuthenticatedUsersContract|null
      */
-    protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsers|null
+    protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {
         $jwtPayload = $this->jwt->decode($token);
         $users      = $jwtPayload['users'] ?? null;
@@ -102,8 +102,8 @@ class JwtAuthenticator extends Authenticator
             ['allowed_classes' => true]
         );
 
-        if (! $unserializedUsers instanceof AuthenticatedUsers) {
-            throw new InvalidAuthenticationException('Invalid token structure. Expecting ' . AuthenticatedUsers::class);
+        if (! $unserializedUsers instanceof AuthenticatedUsersContract) {
+            throw new InvalidAuthenticationException('Invalid token structure. Expecting ' . AuthenticatedUsersContract::class);
         }
 
         return $unserializedUsers;

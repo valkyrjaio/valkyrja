@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container;
 
 use Valkyrja\Container\Attribute\Service;
-use Valkyrja\Container\Contract\Service as Contract;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Contract\ServiceContract as Contract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Service class.
@@ -26,16 +26,16 @@ use Valkyrja\Container\Manager\Contract\Container;
 class ServiceClass implements Contract
 {
     public function __construct(
-        public Container $container,
+        public ContainerContract $container,
     ) {
     }
 
-    public static function make(Container $container, array $arguments = []): static
+    public static function make(ContainerContract $container, array $arguments = []): static
     {
         return new self($container);
     }
 
-    public function getContainer(): Container
+    public function getContainer(): ContainerContract
     {
         return $this->container;
     }

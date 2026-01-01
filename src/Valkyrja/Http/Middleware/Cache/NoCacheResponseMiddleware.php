@@ -15,17 +15,17 @@ namespace Valkyrja\Http\Middleware\Cache;
 
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
 /**
  * Class NoCacheMiddleware.
  *
  * @author Melech Mizrachi
  */
-class NoCacheResponseMiddleware implements SendingResponseMiddleware
+class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
 {
     /** @var non-empty-string[] */
     protected array $expires = ['Sun, 01 Jan 2014 00:00:00 GMT'];
@@ -40,7 +40,7 @@ class NoCacheResponseMiddleware implements SendingResponseMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function sendingResponse(ServerRequest $request, Response $response, SendingResponseHandler $handler): Response
+    public function sendingResponse(ServerRequestContract $request, ResponseContract $response, SendingResponseHandlerContract $handler): ResponseContract
     {
         return $handler->sendingResponse(
             $request,

@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Cache\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Predis\Client;
-use Valkyrja\Cache\Manager\Contract\Cache as Contract;
+use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Provider\ServiceProvider;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -69,7 +69,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogCache(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogCache($this->container);
 

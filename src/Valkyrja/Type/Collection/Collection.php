@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Collection;
 
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\Collection\Contract\Collection as Contract;
+use Valkyrja\Type\Collection\Contract\CollectionContract as Contract;
 
 use function array_keys;
 use function count;

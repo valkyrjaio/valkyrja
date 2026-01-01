@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
 use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
 use Valkyrja\Throwable\Exception\RuntimeException;
 

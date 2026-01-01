@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Redirect;
 
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Redirect\RedirectTrailingSlashMiddleware;
@@ -47,10 +47,10 @@ class RedirectTrailingSlashMiddlewareTest extends TestCase
         $result3 = $middleware->requestReceived($request3, $handler);
         $result4 = $middleware->requestReceived($request4, $handler);
 
-        self::assertInstanceOf(RedirectResponse::class, $result);
-        self::assertInstanceOf(RedirectResponse::class, $result2);
-        self::assertInstanceOf(RedirectResponse::class, $result3);
-        self::assertInstanceOf(RedirectResponse::class, $result4);
+        self::assertInstanceOf(RedirectResponseContract::class, $result);
+        self::assertInstanceOf(RedirectResponseContract::class, $result2);
+        self::assertInstanceOf(RedirectResponseContract::class, $result3);
+        self::assertInstanceOf(RedirectResponseContract::class, $result4);
         self::assertSame('/test', $result->getUri()->__toString());
         self::assertSame('/test?test=foo', $result2->getUri()->__toString());
         self::assertSame('/test#test', $result3->getUri()->__toString());

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
-use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
+use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
-use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
@@ -31,7 +31,7 @@ use function count;
  */
 class ArgumentParameter extends Parameter implements Contract
 {
-    /** @var Argument[] */
+    /** @var ArgumentContract[] */
     protected array $arguments = [];
 
     /**
@@ -109,7 +109,7 @@ class ArgumentParameter extends Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withArguments(Argument ...$arguments): static
+    public function withArguments(ArgumentContract ...$arguments): static
     {
         $new = clone $this;
 
@@ -122,7 +122,7 @@ class ArgumentParameter extends Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedArguments(Argument ...$arguments): static
+    public function withAddedArguments(ArgumentContract ...$arguments): static
     {
         $new = clone $this;
 

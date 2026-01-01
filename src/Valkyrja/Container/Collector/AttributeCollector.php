@@ -15,10 +15,10 @@ namespace Valkyrja\Container\Collector;
 
 use Override;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
-use Valkyrja\Container\Collector\Contract\Collector as Contract;
+use Valkyrja\Container\Collector\Contract\CollectorContract as Contract;
 
 /**
  * Class AttributeCollector.

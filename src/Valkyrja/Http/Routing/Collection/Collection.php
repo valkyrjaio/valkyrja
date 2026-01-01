@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Routing\Collection;
 
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 
@@ -39,7 +39,7 @@ class Collection implements Contract
     /**
      * The routes.
      *
-     * @var array<string, Route|string>
+     * @var array<string, RouteContract|string>
      */
     protected array $routes = [];
 
@@ -65,7 +65,7 @@ class Collection implements Contract
     {
         return new Data(
             routes: array_map(
-                static fn (Route|string $route): string => ! is_string($route)
+                static fn (RouteContract|string $route): string => ! is_string($route)
                     ? serialize($route)
                     : $route,
                 $this->routes
@@ -90,7 +90,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function add(Route $route): void
+    public function add(RouteContract $route): void
     {
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
@@ -102,7 +102,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $path, RequestMethod|null $method = null): Route|null
+    public function get(string $path, RequestMethod|null $method = null): RouteContract|null
     {
         return $this->getStatic($path, $method)
             ?? $this->getDynamic($path, $method);
@@ -140,7 +140,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getStatic(string $path, RequestMethod|null $method = null): Route|null
+    public function getStatic(string $path, RequestMethod|null $method = null): RouteContract|null
     {
         return $this->getOfType($this->static, $path, $method);
     }
@@ -167,7 +167,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null
+    public function getDynamic(string $regex, RequestMethod|null $method = null): RouteContract|null
     {
         return $this->getOfType($this->dynamic, $regex, $method);
     }
@@ -194,7 +194,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getByName(string $name): Route|null
+    public function getByName(string $name): RouteContract|null
     {
         $named = $this->routes[$name] ?? null;
 
@@ -217,11 +217,11 @@ class Collection implements Contract
     /**
      * Set a route to its request methods.
      *
-     * @param Route $route The route
+     * @param RouteContract $route The route
      *
      * @return void
      */
-    protected function setRouteToRequestMethods(Route $route): void
+    protected function setRouteToRequestMethods(RouteContract $route): void
     {
         foreach ($route->getRequestMethods() as $requestMethod) {
             $this->setRouteToRequestMethod($route, $requestMethod);
@@ -231,12 +231,12 @@ class Collection implements Contract
     /**
      * Set the route to the request method.
      *
-     * @param Route         $route         The route
+     * @param RouteContract $route         The route
      * @param RequestMethod $requestMethod The request method
      *
      * @return void
      */
-    protected function setRouteToRequestMethod(Route $route, RequestMethod $requestMethod): void
+    protected function setRouteToRequestMethod(RouteContract $route, RequestMethod $requestMethod): void
     {
         $name  = $route->getName();
         $regex = $route->getRegex();
@@ -259,9 +259,9 @@ class Collection implements Contract
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
      *
-     * @return Route|null
+     * @return RouteContract|null
      */
-    protected function getOfType(array $type, string $path, RequestMethod|null $method = null): Route|null
+    protected function getOfType(array $type, string $path, RequestMethod|null $method = null): RouteContract|null
     {
         if ($method === null) {
             return $this->getAnyOfType($type, $path);
@@ -282,9 +282,9 @@ class Collection implements Contract
      * @param RequestMethodList $type The type [static|dynamic]
      * @param string            $path The path
      *
-     * @return Route|null
+     * @return RouteContract|null
      */
-    protected function getAnyOfType(array $type, string $path): Route|null
+    protected function getAnyOfType(array $type, string $path): RouteContract|null
     {
         return $this->getOfType($type, $path, RequestMethod::GET)
             ?? $this->getOfType($type, $path, RequestMethod::HEAD)
@@ -337,7 +337,7 @@ class Collection implements Contract
      * @param RequestMethodList  $type   The type [static|dynamic]
      * @param RequestMethod|null $method [optional] The request method
      *
-     * @return RequestMethodRouteList|array<string, Route>
+     * @return RequestMethodRouteList|array<string, RouteContract>
      */
     protected function allOfType(array $type, RequestMethod|null $method = null): array
     {
@@ -366,9 +366,9 @@ class Collection implements Contract
     /**
      * Ensure an array is an array of routes.
      *
-     * @param array<string, string|Route> $routesArray The routes array
+     * @param array<string, string|RouteContract> $routesArray The routes array
      *
-     * @return array<string, Route>
+     * @return array<string, RouteContract>
      */
     protected function ensureRoutes(array $routesArray): array
     {
@@ -381,11 +381,11 @@ class Collection implements Contract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param Route|string $route The route
+     * @param RouteContract|string $route The route
      *
-     * @return Route
+     * @return RouteContract
      */
-    protected function ensureRoute(Route|string $route): Route
+    protected function ensureRoute(RouteContract|string $route): RouteContract
     {
         if (is_string($route) && isset($this->routes[$route])) {
             $route = $this->routes[$route];
@@ -394,7 +394,7 @@ class Collection implements Contract
         if (is_string($route)) {
             $unserializedRoute = unserialize($route, ['allowed_classes' => true]);
 
-            if (! $unserializedRoute instanceof Route) {
+            if (! $unserializedRoute instanceof RouteContract) {
                 throw new InvalidArgumentException('Invalid object serialized.');
             }
 

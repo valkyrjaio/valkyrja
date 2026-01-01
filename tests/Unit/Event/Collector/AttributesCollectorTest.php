@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Event\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector as AttributesAttributes;
-use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 use Valkyrja\Event\Collector\AttributeCollector;
-use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
@@ -74,7 +74,7 @@ class AttributesCollectorTest extends TestCase
         self::assertCount(6, $attributes);
 
         foreach ($attributes as $attribute) {
-            self::assertInstanceOf(Listener::class, $attribute);
+            self::assertInstanceOf(ListenerContract::class, $attribute);
         }
 
         self::assertSame(self::VALUE1, $attributes[0]->getEventId());
@@ -94,14 +94,14 @@ class AttributesCollectorTest extends TestCase
         self::assertCount(6, $attributes);
 
         foreach ($attributes as $attribute) {
-            self::assertInstanceOf(Listener::class, $attribute);
+            self::assertInstanceOf(ListenerContract::class, $attribute);
         }
 
         self::assertSame(self::VALUE1, $attributes[0]->getEventId());
-        self::assertInstanceOf(ClassDispatch::class, $attributes[0]->getDispatch());
+        self::assertInstanceOf(ClassDispatchContract::class, $attributes[0]->getDispatch());
 
         self::assertSame(self::VALUE2, $attributes[1]->getEventId());
-        self::assertInstanceOf(ClassDispatch::class, $attributes[1]->getDispatch());
+        self::assertInstanceOf(ClassDispatchContract::class, $attributes[1]->getDispatch());
 
         self::assertSame(self::VALUE1, $attributes[2]->getEventId());
         self::assertSame(self::VALUE2, $attributes[3]->getEventId());

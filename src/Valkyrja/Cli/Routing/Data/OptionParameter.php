@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
-use Valkyrja\Cli\Interaction\Option\Contract\Option;
+use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as Contract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
@@ -39,7 +39,7 @@ class OptionParameter extends Parameter implements Contract
      * @param non-empty-string|null $defaultValue     The default value
      * @param non-empty-string[]    $shortNames       The short names
      * @param non-empty-string[]    $validValues      The valid values
-     * @param Option[]              $options          The options
+     * @param OptionContract[]      $options          The options
      */
     public function __construct(
         string $name,
@@ -239,7 +239,7 @@ class OptionParameter extends Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withOptions(Option ...$options): static
+    public function withOptions(OptionContract ...$options): static
     {
         $new = clone $this;
 
@@ -260,7 +260,7 @@ class OptionParameter extends Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedOptions(Option ...$options): static
+    public function withAddedOptions(OptionContract ...$options): static
     {
         $new = clone $this;
 

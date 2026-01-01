@@ -19,9 +19,9 @@ use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
@@ -43,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Filesystem::class               => [self::class, 'publishFilesystem'],
+            FilesystemContract::class       => [self::class, 'publishFilesystem'],
             FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
             LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
             FlysystemLocalAdapter::class    => [self::class, 'publishFlysystemLocalAdapter'],
@@ -61,7 +61,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Filesystem::class,
+            FilesystemContract::class,
             FlysystemFilesystem::class,
             LocalFlysystemFilesystem::class,
             FlysystemLocalAdapter::class,
@@ -75,14 +75,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the filesystem service.
      */
-    public static function publishFilesystem(Container $container): void
+    public static function publishFilesystem(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Filesystem> $default */
+        /** @var class-string<FilesystemContract> $default */
         $default = $env::FILESYSTEM_DEFAULT;
 
         $container->setSingleton(
-            Filesystem::class,
+            FilesystemContract::class,
             $container->getSingleton($default),
         );
     }
@@ -90,10 +90,10 @@ final class ServiceProvider extends Provider
     /**
      * Publish the flysystem filesystem service.
      */
-    public static function publishFlysystemFilesystem(Container $container): void
+    public static function publishFlysystemFilesystem(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Filesystem> $default */
+        /** @var class-string<FilesystemContract> $default */
         $default = $env::FLYSYSTEM_FILESYSTEM_DEFAULT;
 
         $container->setSingleton(
@@ -105,7 +105,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the local flysystem filesystem service.
      */
-    public static function publishLocalFlysystemFilesystem(Container $container): void
+    public static function publishLocalFlysystemFilesystem(ContainerContract $container): void
     {
         $container->setSingleton(
             LocalFlysystemFilesystem::class,
@@ -120,7 +120,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the flysystem local adapter service.
      */
-    public static function publishFlysystemLocalAdapter(Container $container): void
+    public static function publishFlysystemLocalAdapter(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $path */
@@ -137,7 +137,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the s3 flysystem filesystem service.
      */
-    public static function publishS3FlysystemFilesystem(Container $container): void
+    public static function publishS3FlysystemFilesystem(ContainerContract $container): void
     {
         $container->setSingleton(
             S3FlysystemFilesystem::class,
@@ -152,7 +152,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the flysystem s3 adapter service.
      */
-    public static function publishFlysystemAwsS3Adapter(Container $container): void
+    public static function publishFlysystemAwsS3Adapter(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $key */
@@ -193,7 +193,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the in memory filesystem service.
      */
-    public static function publishInMemoryFilesystem(Container $container): void
+    public static function publishInMemoryFilesystem(ContainerContract $container): void
     {
         $container->setSingleton(
             InMemoryFilesystem::class,
@@ -204,7 +204,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null filesystem service.
      */
-    public static function publishNullFilesystem(Container $container): void
+    public static function publishNullFilesystem(ContainerContract $container): void
     {
         $container->setSingleton(
             NullFilesystem::class,

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Argument;
 
 use Override;
-use Valkyrja\Cli\Interaction\Argument\Contract\Argument as Contract;
+use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract as Contract;
 
 /**
  * Class Argument.

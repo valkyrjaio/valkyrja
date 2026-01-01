@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
 
@@ -37,7 +37,7 @@ class LogExceptionMiddlewareTest extends TestCase
         $handler    = new ThrowableCaughtHandler();
         $exception  = new Exception();
 
-        $logger = self::createStub(Logger::class);
+        $logger = self::createStub(LoggerContract::class);
 
         $middleware = new LogThrowableCaughtMiddleware(logger: $logger);
 

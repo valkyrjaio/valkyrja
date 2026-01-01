@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Data;
 
-use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Provider;
 
 /**
@@ -24,12 +24,12 @@ use Valkyrja\Container\Provider\Provider;
 class Config
 {
     /**
-     * @param class-string[]           $aliases
-     * @param class-string<Service>[]  $services
-     * @param class-string<Provider>[] $providers
-     * @param class-string[]           $listeners
-     * @param class-string[]           $commands
-     * @param class-string[]           $controllers
+     * @param class-string[]                  $aliases
+     * @param class-string<ServiceContract>[] $services
+     * @param class-string<Provider>[]        $providers
+     * @param class-string[]                  $listeners
+     * @param class-string[]                  $commands
+     * @param class-string[]                  $controllers
      */
     public function __construct(
         public array $aliases = [],

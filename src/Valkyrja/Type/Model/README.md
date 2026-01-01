@@ -936,11 +936,11 @@ in other modules.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Contract\IndexedModel;
+use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Trait\Indexable;
 use Valkyrja\Type\Model\Abstract\Model;
 
-class BasicModel extends Model implements IndexedModel
+class BasicModel extends Model implements IndexedModelContract
 {
     use Indexable;
 

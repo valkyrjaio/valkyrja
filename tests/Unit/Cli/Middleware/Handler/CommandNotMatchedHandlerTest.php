@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandNotMatchedHandlerClass;
@@ -56,7 +56,7 @@ class CommandNotMatchedHandlerTest extends HandlerTestCase
         self::assertSame(1, $handler->getCount());
         self::assertSame(1, CommandNotMatchedMiddlewareChangedClass::getCounter());
         self::assertNotSame($this->output, $before);
-        self::assertInstanceOf(Output::class, $before);
+        self::assertInstanceOf(OutputContract::class, $before);
     }
 
     /**
@@ -81,7 +81,7 @@ class CommandNotMatchedHandlerTest extends HandlerTestCase
         self::assertSame(1, CommandNotMatchedMiddlewareChangedClass::getCounter());
         self::assertSame(1, CommandNotMatchedMiddlewareClass::getCounter());
         self::assertNotSame($this->output, $before);
-        self::assertInstanceOf(Output::class, $before);
+        self::assertInstanceOf(OutputContract::class, $before);
     }
 
     /**

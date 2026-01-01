@@ -19,7 +19,7 @@ use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\StreamFactory;
-use Valkyrja\Http\Message\Response\Contract\Response as ValkyrjaResponseContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract as ValkyrjaResponseContract;
 use Valkyrja\Http\Message\Response\Response as ValkyrjaResponse;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 

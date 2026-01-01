@@ -16,11 +16,11 @@ namespace Valkyrja\Auth\Authenticator;
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
-use Valkyrja\Auth\Store\Contract\Store;
-use Valkyrja\Session\Manager\Contract\Session;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 
 use function is_string;
 
@@ -29,22 +29,22 @@ use function is_string;
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @extends Authenticator<U>
  */
 class SessionAuthenticator extends Authenticator
 {
     /**
-     * @param Store<U>        $store  The store
-     * @param class-string<U> $entity The user entity
+     * @param StoreContract<U> $store  The store
+     * @param class-string<U>  $entity The user entity
      */
     public function __construct(
-        protected Session $session,
-        Store $store,
-        PasswordHasher $hasher,
+        protected SessionContract $session,
+        StoreContract $store,
+        PasswordHasherContract $hasher,
         string $entity,
-        AuthenticatedUsers|null $authenticatedUsers = null,
+        AuthenticatedUsersContract|null $authenticatedUsers = null,
         protected string $sessionId = SessionId::AUTHENTICATED_USERS,
     ) {
         parent::__construct(
@@ -58,9 +58,9 @@ class SessionAuthenticator extends Authenticator
     /**
      * Attempt to get the authenticated users from the session.
      *
-     * @return AuthenticatedUsers|null
+     * @return AuthenticatedUsersContract|null
      */
-    protected function getAuthenticatedUsersFromSession(): AuthenticatedUsers|null
+    protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract|null
     {
         $sessionSerializedUsers = $this->session->get($this->sessionId);
 
@@ -73,7 +73,7 @@ class SessionAuthenticator extends Authenticator
             ['allowed_classes' => true]
         );
 
-        if (! $sessionUsers instanceof AuthenticatedUsers) {
+        if (! $sessionUsers instanceof AuthenticatedUsersContract) {
             return null;
         }
 

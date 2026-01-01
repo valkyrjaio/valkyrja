@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Notification\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
-use Valkyrja\Mail\Mailer\Contract\Mailer;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Notification\Factory\ContainerFactory;
-use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Notifier\Contract\Notifier as Contract;
+use Valkyrja\Notification\Factory\Contract\FactoryContract;
+use Valkyrja\Notification\Notifier\Contract\NotifierContract as Contract;
 use Valkyrja\Notification\Notifier\Notifier;
 use Valkyrja\Notification\Provider\ServiceProvider;
-use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -39,10 +39,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishNotifier(): void
     {
-        $this->container->setSingleton(Factory::class, self::createStub(Factory::class));
-        $this->container->setSingleton(Broadcaster::class, self::createStub(Broadcaster::class));
-        $this->container->setSingleton(Mailer::class, self::createStub(Mailer::class));
-        $this->container->setSingleton(Messenger::class, self::createStub(Messenger::class));
+        $this->container->setSingleton(FactoryContract::class, self::createStub(FactoryContract::class));
+        $this->container->setSingleton(BroadcasterContract::class, self::createStub(BroadcasterContract::class));
+        $this->container->setSingleton(MailerContract::class, self::createStub(MailerContract::class));
+        $this->container->setSingleton(MessengerContract::class, self::createStub(MessengerContract::class));
 
         ServiceProvider::publishNotifier($this->container);
 
@@ -53,6 +53,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         ServiceProvider::publishFactory($this->container);
 
-        self::assertInstanceOf(ContainerFactory::class, $this->container->getSingleton(Factory::class));
+        self::assertInstanceOf(ContainerFactory::class, $this->container->getSingleton(FactoryContract::class));
     }
 }

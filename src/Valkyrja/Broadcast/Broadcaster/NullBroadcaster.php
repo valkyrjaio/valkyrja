@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Broadcaster;
 
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster as Contract;
-use Valkyrja\Broadcast\Data\Contract\Message;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
 /**
  * Class NullBroadcaster.
@@ -28,7 +28,7 @@ class NullBroadcaster implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function send(Message $message): void
+    public function send(MessageContract $message): void
     {
     }
 }

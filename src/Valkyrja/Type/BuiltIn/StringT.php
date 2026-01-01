@@ -16,7 +16,7 @@ namespace Valkyrja\Type\BuiltIn;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\StringT as Contract;
+use Valkyrja\Type\BuiltIn\Contract\StringContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Str as Helper;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatch\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\Contract\PropertyDispatch as Contract;
+use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract as Contract;
 
 /**
  * Class PropertyDispatch.

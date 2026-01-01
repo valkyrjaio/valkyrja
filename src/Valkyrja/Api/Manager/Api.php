@@ -16,16 +16,16 @@ namespace Valkyrja\Api\Manager;
 use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Manager\Contract\Api as Contract;
-use Valkyrja\Api\Model\Contract\Json;
-use Valkyrja\Api\Model\Contract\JsonData;
+use Valkyrja\Api\Manager\Contract\ApiContract as Contract;
+use Valkyrja\Api\Model\Contract\JsonContract;
+use Valkyrja\Api\Model\Contract\JsonDataContract;
 use Valkyrja\Api\Model\Json as JsonModel;
 use Valkyrja\Api\Model\JsonData as JsonDataModel;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Response\Contract\JsonResponse;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 use function end;
 use function explode;
@@ -42,7 +42,7 @@ class Api implements Contract
      * Api constructor.
      */
     public function __construct(
-        protected ResponseFactory $responseFactory,
+        protected ResponseFactoryContract $responseFactory,
         protected bool $debug = false
     ) {
     }
@@ -51,7 +51,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromException(Throwable $exception): Json
+    public function jsonFromException(Throwable $exception): JsonContract
     {
         $json = $this->getJsonModel();
 
@@ -82,7 +82,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromException(Throwable $exception): JsonResponse
+    public function jsonResponseFromException(Throwable $exception): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromException($exception));
     }
@@ -91,7 +91,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromObject(object $object): Json
+    public function jsonFromObject(object $object): JsonContract
     {
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
@@ -107,7 +107,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromObject(object $object): JsonResponse
+    public function jsonResponseFromObject(object $object): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromObject($object));
     }
@@ -116,7 +116,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromObjects(object ...$objects): Json
+    public function jsonFromObjects(object ...$objects): JsonContract
     {
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
@@ -136,7 +136,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromObjects(object ...$objects): JsonResponse
+    public function jsonResponseFromObjects(object ...$objects): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromObjects(...$objects));
     }
@@ -145,7 +145,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromArray(array $array): Json
+    public function jsonFromArray(array $array): JsonContract
     {
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
@@ -161,7 +161,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromArray(array $array): JsonResponse
+    public function jsonResponseFromArray(array $array): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromArray($array));
     }
@@ -170,7 +170,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromEntity(Entity $entity): Json
+    public function jsonFromEntity(EntityContract $entity): JsonContract
     {
         return $this->jsonFromObject($entity);
     }
@@ -179,7 +179,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromEntity(Entity $entity): JsonResponse
+    public function jsonResponseFromEntity(EntityContract $entity): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromEntity($entity));
     }
@@ -188,7 +188,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromEntities(Entity ...$entities): Json
+    public function jsonFromEntities(EntityContract ...$entities): JsonContract
     {
         return $this->jsonFromObjects(...$entities);
     }
@@ -197,7 +197,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromEntities(Entity ...$entities): JsonResponse
+    public function jsonResponseFromEntities(EntityContract ...$entities): JsonResponseContract
     {
         return $this->getResponseFromModel($this->jsonFromEntities(...$entities));
     }
@@ -205,11 +205,11 @@ class Api implements Contract
     /**
      * Get a JSON response from a JSON model.
      *
-     * @param Json $json The json model
+     * @param JsonContract $json The json model
      *
-     * @return JsonResponse
+     * @return JsonResponseContract
      */
-    protected function getResponseFromModel(Json $json): JsonResponse
+    protected function getResponseFromModel(JsonContract $json): JsonResponseContract
     {
         return $this->responseFactory->createJsonResponse($json->asArray());
     }
@@ -217,9 +217,9 @@ class Api implements Contract
     /**
      * Get JSON model.
      *
-     * @return Json
+     * @return JsonContract
      */
-    protected function getJsonModel(): Json
+    protected function getJsonModel(): JsonContract
     {
         return new JsonModel();
     }
@@ -227,9 +227,9 @@ class Api implements Contract
     /**
      * Get JSON data model.
      *
-     * @return JsonData
+     * @return JsonDataContract
      */
-    protected function getJsonDataModel(): JsonData
+    protected function getJsonDataModel(): JsonDataContract
     {
         return new JsonDataModel();
     }
@@ -237,12 +237,12 @@ class Api implements Contract
     /**
      * Set item keys from object.
      *
-     * @param object   $object
-     * @param JsonData $jsonData
+     * @param object           $object
+     * @param JsonDataContract $jsonData
      *
      * @return void
      */
-    protected function setItemKeysFromObject(object $object, JsonData $jsonData): void
+    protected function setItemKeysFromObject(object $object, JsonDataContract $jsonData): void
     {
         $className = $this->getClassNameFromObject($object);
 

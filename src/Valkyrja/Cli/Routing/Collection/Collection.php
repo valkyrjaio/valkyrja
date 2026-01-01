@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Collection;
 
 use Override;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection as Contract;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 
@@ -26,7 +26,7 @@ use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
  */
 class Collection implements Contract
 {
-    /** @var array<string, Route> */
+    /** @var array<string, RouteContract> */
     protected array $commands = [];
 
     /**
@@ -49,7 +49,7 @@ class Collection implements Contract
         foreach ($data->commands as $id => $commandSerialized) {
             $command = unserialize($commandSerialized, ['allowed_classes' => true]);
 
-            if (! $command instanceof Route) {
+            if (! $command instanceof RouteContract) {
                 throw new RuntimeException('Invalid command unserialized');
             }
 
@@ -61,7 +61,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function add(Route ...$commands): static
+    public function add(RouteContract ...$commands): static
     {
         foreach ($commands as $command) {
             $this->commands[$command->getName()] = $command;
@@ -74,7 +74,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $name): Route|null
+    public function get(string $name): RouteContract|null
     {
         return $this->commands[$name]
             ?? null;

@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Manager;
 
 use Override;
 use Random\RandomException;
-use Valkyrja\Session\Manager\Contract\Session as Contract;
+use Valkyrja\Session\Manager\Contract\SessionContract as Contract;
 use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailure;

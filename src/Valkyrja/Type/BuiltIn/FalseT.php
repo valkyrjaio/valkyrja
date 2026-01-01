@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\FalseT as Contract;
+use Valkyrja\Type\BuiltIn\Contract\FalseContract as Contract;
 
 /**
  * Class FalseT.

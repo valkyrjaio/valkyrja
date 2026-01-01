@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 
 /**
  * Attribute Alias.
@@ -24,7 +24,7 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Alias
 {
-    public ClassDispatch $dispatch;
+    public ClassDispatchContract $dispatch;
 
     /**
      * @param class-string $serviceId The service id to attach to
@@ -34,7 +34,7 @@ class Alias
     ) {
     }
 
-    public function withDispatch(ClassDispatch $dispatch): static
+    public function withDispatch(ClassDispatchContract $dispatch): static
     {
         $new = clone $this;
 

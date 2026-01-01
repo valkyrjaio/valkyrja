@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Middleware;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Class ViewRouteNotMatchedMiddleware.
  *
  * @author Melech Mizrachi
  */
-class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
+class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddlewareContract
 {
     /**
      * The errors template directory.
@@ -36,7 +36,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
     protected string $errorsTemplateDir = 'errors';
 
     public function __construct(
-        protected Renderer $renderer,
+        protected RendererContract $renderer,
     ) {
     }
 
@@ -44,7 +44,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function routeNotMatched(ServerRequest $request, Response $response, RouteNotMatchedHandler $handler): Response
+    public function routeNotMatched(ServerRequestContract $request, ResponseContract $response, RouteNotMatchedHandlerContract $handler): ResponseContract
     {
         $statusCode = $response->getStatusCode();
 

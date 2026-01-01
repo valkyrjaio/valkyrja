@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributesContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
@@ -33,28 +33,28 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Collection\Collection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection as CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
-use Valkyrja\Http\Routing\Collector\Contract\Collector as CollectorContract;
+use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Matcher\Contract\Matcher as MatcherContract;
+use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
-use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
+use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Provider\ServiceProvider;
-use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
+use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the ServiceProviderTest.
@@ -125,7 +125,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(SendingResponseHandlerContract::class, new SendingResponseHandler());
         $container->setSingleton(TerminatedHandlerContract::class, new TerminatedHandler());
         $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
-        $container->setSingleton(Dispatcher::class, self::createStub(Dispatcher::class));
+        $container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
         $container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
 
@@ -199,7 +199,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
-        $container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
         self::assertFalse($container->has(UrlContract::class));
 
@@ -215,7 +215,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $container->setSingleton(AttributesContract::class, self::createStub(AttributesContract::class));
-        $container->setSingleton(Reflector::class, self::createStub(Reflector::class));
+        $container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
         $container->setSingleton(ProcessorContract::class, self::createStub(ProcessorContract::class));
 
         self::assertFalse($container->has(CollectorContract::class));
@@ -286,7 +286,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(Renderer::class, self::createStub(Renderer::class));
+        $container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
         self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
 

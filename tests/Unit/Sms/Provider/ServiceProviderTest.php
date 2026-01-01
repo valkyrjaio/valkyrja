@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Sms\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
@@ -83,7 +83,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogSms(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogSms($this->container);
 

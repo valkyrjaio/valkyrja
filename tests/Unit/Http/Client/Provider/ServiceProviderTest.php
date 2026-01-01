@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Client\Provider\ServiceProvider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -52,7 +52,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishGuzzleClient(): void
     {
         $this->container->setSingleton(Guzzle::class, self::createStub(Guzzle::class));
-        $this->container->setSingleton(ResponseFactory::class, self::createStub(ResponseFactory::class));
+        $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
         ServiceProvider::publishGuzzleClient($this->container);
 
@@ -64,7 +64,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogClient(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogClient($this->container);
 

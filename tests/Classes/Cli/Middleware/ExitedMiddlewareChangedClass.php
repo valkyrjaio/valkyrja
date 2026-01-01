@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,14 +24,13 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class ExitedMiddlewareChangedClass implements ExitedMiddleware
+class ExitedMiddlewareChangedClass implements ExitedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function exited(Input $input, Output $output, ExitedHandler $handler): void
+    public function exited(InputContract $input, OutputContract $output, ExitedHandlerContract $handler): void
     {
         $this->updateCounter();
-
         // Don't call the handler to simulate early exit
     }
 }

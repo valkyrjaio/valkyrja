@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\JsonRequestStruct;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Rule\Is\IsString;
@@ -28,7 +28,7 @@ use Valkyrja\Validation\Rule\Is\Required;
  *
  * @author Melech Mizrachi
  */
-enum IndexedJsonRequestStructEnum: int implements RequestStruct
+enum IndexedJsonRequestStructEnum: int implements RequestStructContract
 {
     use JsonRequestStruct;
 
@@ -40,7 +40,7 @@ enum IndexedJsonRequestStructEnum: int implements RequestStruct
      * @inheritDoc
      */
     #[Override]
-    public static function getValidationRules(JsonServerRequest|ServerRequest $request): array|null
+    public static function getValidationRules(JsonServerRequestContract|ServerRequestContract $request): array|null
     {
         self::ensureJsonRequest($request);
 

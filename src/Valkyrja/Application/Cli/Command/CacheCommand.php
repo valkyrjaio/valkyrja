@@ -16,18 +16,18 @@ namespace Valkyrja\Application\Cli\Command;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
-use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollectionContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpCollectionContract;
 use Valkyrja\Support\Directory\Directory;
 
 use const LOCK_EX;
@@ -47,13 +47,13 @@ class CacheCommand
         helpText: new Message('A command to cache the config.'),
     )]
     public function run(
-        Container $container,
+        ContainerContract $container,
         CliCollectionContract $cliCollection,
         EventCollection $eventCollection,
         HttpCollectionContract $routerCollection,
         Env $env,
-        OutputFactory $outputFactory
-    ): Output {
+        OutputFactoryContract $outputFactory
+    ): OutputContract {
         /** @var non-empty-string $cacheFilepath */
         $cacheFilepath = $env::APP_CACHE_FILE_PATH;
         $cacheFilename = Directory::basePath($cacheFilepath);

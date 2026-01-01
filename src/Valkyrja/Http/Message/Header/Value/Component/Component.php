@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value\Component;
 
 use Override;
-use Valkyrja\Http\Message\Header\Value\Component\Contract\Component as Contract;
+use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract as Contract;
 
 use function explode;
 

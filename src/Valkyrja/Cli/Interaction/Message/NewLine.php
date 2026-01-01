@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
 /**
  * Class NewLine.
@@ -23,7 +23,7 @@ use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 class NewLine extends Message
 {
     public function __construct(
-        Formatter|null $formatter = null
+        FormatterContract|null $formatter = null
     ) {
         parent::__construct("\n", $formatter);
     }

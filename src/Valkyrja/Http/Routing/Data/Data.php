@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data;
 
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class Data.
@@ -27,9 +27,9 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
 readonly class Data
 {
     /**
-     * @param array<string, Route|string> $routes
-     * @param RequestArray                $static
-     * @param RequestArray                $dynamic
+     * @param array<string, RouteContract|string> $routes
+     * @param RequestArray                        $static
+     * @param RequestArray                        $dynamic
      */
     public function __construct(
         public array $routes = [],

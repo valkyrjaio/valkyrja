@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Manager;
 
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 
 /**
@@ -27,7 +27,7 @@ class LogSession extends PhpSession
      * LogSession constructor.
      */
     public function __construct(
-        protected Logger $logger,
+        protected LoggerContract $logger,
         CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null

@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Request;
 use JsonException;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Struct\Contract\Struct;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct as Contract;
+use Valkyrja\Http\Struct\Contract\StructContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract as Contract;
 use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedParsedBodyRequestStructEnum;
@@ -45,7 +45,7 @@ class RequestStructTest extends TestCase
         self::assertMethodExists(Contract::class, 'validate');
         self::assertMethodExists(Contract::class, 'getDataFromRequest');
         self::assertMethodExists(Contract::class, 'determineIfRequestContainsExtraData');
-        self::assertIsA(Struct::class, Contract::class);
+        self::assertIsA(StructContract::class, Contract::class);
     }
 
     /**

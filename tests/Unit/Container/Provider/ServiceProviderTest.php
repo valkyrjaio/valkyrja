@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Collector\AttributeCollector;
-use Valkyrja\Container\Collector\Contract\Collector as CollectorContract;
+use Valkyrja\Container\Collector\Contract\CollectorContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Provider\ServiceProvider;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
@@ -43,7 +43,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAnnotator(): void
     {
-        $this->container->setSingleton(Collector::class, self::createStub(Collector::class));
+        $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
 
         ServiceProvider::publishAttributesCollector($this->container);
 

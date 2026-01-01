@@ -15,8 +15,8 @@ namespace Valkyrja\Broadcast\Broadcaster;
 
 use Override;
 use Pusher\Pusher;
-use Valkyrja\Broadcast\Data\Contract\Message;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Broadcast\Data\Contract\MessageContract;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 /**
@@ -31,7 +31,7 @@ class CryptPusherBroadcaster extends PusherBroadcaster
      */
     public function __construct(
         Pusher $pusher,
-        protected Crypt $crypt
+        protected CryptContract $crypt
     ) {
         parent::__construct($pusher);
     }
@@ -42,7 +42,7 @@ class CryptPusherBroadcaster extends PusherBroadcaster
      * @throws CryptException On a crypt failure
      */
     #[Override]
-    protected function prepareMessage(Message $message): void
+    protected function prepareMessage(MessageContract $message): void
     {
         parent::prepareMessage($message);
 

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,15 +25,15 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class InputReceivedMiddlewareChangedClass implements InputReceivedMiddleware
+class InputReceivedMiddlewareChangedClass implements InputReceivedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function inputReceived(Input $input, InputReceivedHandler $handler): Input|Output
+    public function inputReceived(InputContract $input, InputReceivedHandlerContract $handler): InputContract|OutputContract
     {
         $this->updateCounter();
 
         // Return an output instead of calling the handler to simulate early exit
-        return new \Valkyrja\Cli\Interaction\Output\Output();
+        return new Output();
     }
 }

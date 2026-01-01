@@ -15,12 +15,12 @@ namespace Valkyrja\Container\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Collector\AttributeCollector;
-use Valkyrja\Container\Collector\Contract\Collector;
-use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Collector\Contract\CollectorContract;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
 /**
@@ -37,8 +37,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Collector::class => [self::class, 'publishAttributesCollector'],
-            Data::class      => [self::class, 'publishData'],
+            CollectorContract::class => [self::class, 'publishAttributesCollector'],
+            Data::class              => [self::class, 'publishData'],
         ];
     }
 
@@ -49,7 +49,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Collector::class,
+            CollectorContract::class,
             Data::class,
         ];
     }
@@ -57,10 +57,10 @@ final class ServiceProvider extends Provider
     /**
      * Publish the attributes service.
      */
-    public static function publishAttributesCollector(Container $container): void
+    public static function publishAttributesCollector(ContainerContract $container): void
     {
         $container->setSingleton(
-            Collector::class,
+            CollectorContract::class,
             new AttributeCollector(
                 $container->getSingleton(AttributeCollectorContract::class)
             )
@@ -70,17 +70,17 @@ final class ServiceProvider extends Provider
     /**
      * Publish the data service.
      */
-    public static function publishData(Container $container): void
+    public static function publishData(ContainerContract $container): void
     {
         $config = $container->getSingleton(Config::class);
 
-        $collector = $container->getSingleton(Collector::class);
+        $collector = $container->getSingleton(CollectorContract::class);
 
         foreach ($collector->getServices(...$config->services) as $service) {
             $class = $service->dispatch->getClass();
 
-            if (! is_a($class, Service::class, true)) {
-                throw new InvalidArgumentException("Class for $class must implement " . Service::class);
+            if (! is_a($class, ServiceContract::class, true)) {
+                throw new InvalidArgumentException("Class for $class must implement " . ServiceContract::class);
             }
 
             if ($service->isSingleton) {

@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\TrueT as Contract;
+use Valkyrja\Type\BuiltIn\Contract\TrueContract as Contract;
 
 /**
  * Class TrueT.

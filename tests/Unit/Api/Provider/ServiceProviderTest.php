@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Api\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Api\Manager\Api;
-use Valkyrja\Api\Manager\Contract\Api as Contract;
+use Valkyrja\Api\Manager\Contract\ApiContract as Contract;
 use Valkyrja\Api\Provider\ServiceProvider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishApi(): void
     {
-        $this->container->setSingleton(ResponseFactory::class, self::createStub(ResponseFactory::class));
+        $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
         ServiceProvider::publishApi($this->container);
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Data;
 
 use Override;
-use Valkyrja\Sms\Data\Contract\Message as Contract;
+use Valkyrja\Sms\Data\Contract\MessageContract as Contract;
 
 /**
  * Class Message.

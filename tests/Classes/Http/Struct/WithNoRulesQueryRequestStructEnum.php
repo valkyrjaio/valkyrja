@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
 
 /**
@@ -21,7 +21,7 @@ use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
  *
  * @author Melech Mizrachi
  */
-enum WithNoRulesQueryRequestStructEnum implements RequestStruct
+enum WithNoRulesQueryRequestStructEnum implements RequestStructContract
 {
     use QueryRequestStruct;
 

@@ -18,7 +18,7 @@ use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\HtmlResponse as Contract;
+use Valkyrja\Http\Message\Response\Contract\HtmlResponseContract as Contract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 

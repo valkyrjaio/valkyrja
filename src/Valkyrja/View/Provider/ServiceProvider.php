@@ -19,13 +19,13 @@ use Twig\Error\LoaderError;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Support\Directory\Directory;
-use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
@@ -44,7 +44,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Renderer::class                => [self::class, 'publishRenderer'],
+            RendererContract::class        => [self::class, 'publishRenderer'],
             PhpRenderer::class             => [self::class, 'publishPhpRenderer'],
             OrkaRenderer::class            => [self::class, 'publishOrkaRenderer'],
             TwigRenderer::class            => [self::class, 'publishTwigRenderer'],
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Renderer::class,
+            RendererContract::class,
             PhpRenderer::class,
             OrkaRenderer::class,
             TwigRenderer::class,
@@ -72,14 +72,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the renderer service.
      */
-    public static function publishRenderer(Container $container): void
+    public static function publishRenderer(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Renderer> $default */
+        /** @var class-string<RendererContract> $default */
         $default = $env::VIEW_DEFAULT_RENDERER;
 
         $container->setSingleton(
-            Renderer::class,
+            RendererContract::class,
             $container->getSingleton($default)
         );
     }
@@ -87,7 +87,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the renderer service.
      */
-    public static function publishPhpRenderer(Container $container): void
+    public static function publishPhpRenderer(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $dir */
@@ -110,7 +110,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the renderer service.
      */
-    public static function publishOrkaRenderer(Container $container): void
+    public static function publishOrkaRenderer(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $debug */
@@ -136,7 +136,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the renderer service.
      */
-    public static function publishTwigRenderer(Container $container): void
+    public static function publishTwigRenderer(ContainerContract $container): void
     {
         $container->setSingleton(
             TwigRenderer::class,
@@ -151,7 +151,7 @@ final class ServiceProvider extends Provider
      *
      * @throws LoaderError
      */
-    public static function publishTwigEnvironment(Container $container): void
+    public static function publishTwigEnvironment(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $debug */
@@ -196,13 +196,13 @@ final class ServiceProvider extends Provider
     /**
      * Publish the response factory service.
      */
-    public static function publishResponseFactory(Container $container): void
+    public static function publishResponseFactory(ContainerContract $container): void
     {
         $container->setSingleton(
             ResponseFactoryContract::class,
             new ResponseFactory(
                 $container->getSingleton(HttpMessageResponseFactory::class),
-                $container->getSingleton(Renderer::class)
+                $container->getSingleton(RendererContract::class)
             )
         );
     }

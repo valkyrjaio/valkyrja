@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\StreamInterface;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
  */
 abstract class StreamFactory
 {
-    public static function fromPsr(StreamInterface $stream): Stream
+    public static function fromPsr(StreamInterface $stream): StreamContract
     {
         $stream->rewind();
         $contents = $stream->getContents();

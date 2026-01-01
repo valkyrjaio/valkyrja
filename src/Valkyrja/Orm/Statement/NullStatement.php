@@ -15,8 +15,8 @@ namespace Valkyrja\Orm\Statement;
 
 use Override;
 use Valkyrja\Orm\Data\Value;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Statement\Contract\Statement as Contract;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
 
 /**
  * Class NullStatement.
@@ -56,7 +56,7 @@ class NullStatement implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function fetch(string|null $entity = null): Entity|array
+    public function fetch(string|null $entity = null): EntityContract|array
     {
         return [];
     }

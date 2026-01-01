@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Abstract;
 
 use Override;
-use Valkyrja\Type\Contract\Type as Contract;
+use Valkyrja\Type\Contract\TypeContract as Contract;
 
 /**
  * Class Type.

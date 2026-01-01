@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,11 +24,11 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class TerminatedMiddlewareClass implements TerminatedMiddleware
+class TerminatedMiddlewareClass implements TerminatedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function terminated(ServerRequest $request, Response $response, TerminatedHandler $handler): void
+    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
     {
         $this->updateCounter();
 

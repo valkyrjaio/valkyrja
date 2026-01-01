@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager;
 
 use Override;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 
@@ -34,8 +34,8 @@ class CookieSession extends PhpSession
      * CookieSession constructor.
      */
     public function __construct(
-        protected Crypt $crypt,
-        protected ServerRequest $request,
+        protected CryptContract $crypt,
+        protected ServerRequestContract $request,
         CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null

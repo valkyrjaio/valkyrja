@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
-use Valkyrja\Cli\Interaction\Message\Contract\Answer;
-use Valkyrja\Cli\Interaction\Message\Contract\Question as Contract;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
+use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function fgets;
@@ -33,14 +33,14 @@ use function is_callable;
 class Question extends Message implements Contract
 {
     /**
-     * @param non-empty-string                $text     The text
-     * @param callable(Output, Answer):Output $callable The callable
+     * @param non-empty-string                                        $text     The text
+     * @param callable(OutputContract, AnswerContract):OutputContract $callable The callable
      */
     public function __construct(
         string $text,
         protected $callable,
-        protected Answer $answer,
-        Formatter|null $formatter = new QuestionFormatter()
+        protected AnswerContract $answer,
+        FormatterContract|null $formatter = new QuestionFormatter()
     ) {
         if (! is_callable($this->callable)) {
             throw new InvalidArgumentException('$callable must be a valid callable');
@@ -75,7 +75,7 @@ class Question extends Message implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getAnswer(): Answer
+    public function getAnswer(): AnswerContract
     {
         return $this->answer;
     }
@@ -84,7 +84,7 @@ class Question extends Message implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAnswer(Answer $answer): static
+    public function withAnswer(AnswerContract $answer): static
     {
         $new = clone $this;
 
@@ -97,7 +97,7 @@ class Question extends Message implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function ask(): Answer
+    public function ask(): AnswerContract
     {
         $answer = $this->answer;
         $handle = $this->fopen(filename: 'php://stdin', mode: 'rb');

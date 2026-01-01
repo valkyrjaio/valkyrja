@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Command;
 
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 use function is_string;
 
@@ -32,7 +32,7 @@ class ListBashCommand
 {
     public const string NAME = 'list:bash';
 
-    #[RouteAttribute(
+    #[Route(
         name: self::NAME,
         description: 'List all commands for bash completion',
         helpText: new Message('A command to list all the commands present within the Cli component for bash completion.'),
@@ -47,7 +47,7 @@ class ListBashCommand
             ),
         ]
     )]
-    public function run(Route $route, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(RouteContract $route, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
     {
         $output = $outputFactory
             ->createOutput();
@@ -59,11 +59,11 @@ class ListBashCommand
         if (is_string($namespace)) {
             $colonAt = strpos($namespace, ':');
 
-            $routes = array_filter($routes, static fn (Route $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
+            $routes = array_filter($routes, static fn (RouteContract $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
         }
 
         $routesForBash = array_map(
-            static fn (Route $route): string => $colonAt !== false ? substr($route->getName(), $colonAt + 1) : $route->getName(),
+            static fn (RouteContract $route): string => $colonAt !== false ? substr($route->getName(), $colonAt + 1) : $route->getName(),
             $routes
         );
 

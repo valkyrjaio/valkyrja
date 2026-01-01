@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Controller;
 
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 
 /**
  * Abstract Class Controller.
@@ -24,8 +24,8 @@ use Valkyrja\Cli\Interaction\Input\Contract\Input;
 abstract class Controller
 {
     public function __construct(
-        protected Input $input,
-        protected OutputFactory $outputFactory,
+        protected InputContract $input,
+        protected OutputFactoryContract $outputFactory,
     ) {
     }
 }

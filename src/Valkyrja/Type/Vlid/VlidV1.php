@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid;
 
-use Valkyrja\Type\Vlid\Contract\VlidV1 as Contract;
+use Valkyrja\Type\Vlid\Contract\VlidV1Contract as Contract;
 use Valkyrja\Type\Vlid\Support\VlidV1 as Helper;
 
 /**

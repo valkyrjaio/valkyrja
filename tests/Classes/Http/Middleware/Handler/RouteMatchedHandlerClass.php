@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestRouteMatchedHandler.
@@ -40,7 +40,7 @@ class RouteMatchedHandlerClass extends RouteMatchedHandler
      * @inheritDoc
      */
     #[Override]
-    public function routeMatched(ServerRequest $request, Route $route): Route|Response
+    public function routeMatched(ServerRequestContract $request, RouteContract $route): RouteContract|ResponseContract
     {
         $this->count++;
 

@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
-use Valkyrja\Cli\Interaction\Output\Contract\Output as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract as Contract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionAskManipulationClass;

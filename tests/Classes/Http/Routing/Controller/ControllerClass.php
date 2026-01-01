@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
 
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
@@ -51,9 +52,9 @@ class ControllerClass
     public const string PARAMETERS_PARAMETER_NAME = 'name';
 
     #[Route(path: self::WELCOME_PATH, name: self::WELCOME_NAME)]
-    public function welcome(): Response
+    public function welcome(): ResponseContract
     {
-        return \Valkyrja\Http\Message\Response\Response::create('welcome');
+        return Response::create('welcome');
     }
 
     #[Get]
@@ -68,10 +69,10 @@ class ControllerClass
     #[RequestStruct(IndexedJsonRequestStructEnum::class)]
     #[ResponseStruct(ResponseStructEnum::class)]
     public function parameters(
-        ResponseFactory $responseFactory,
+        ResponseFactoryContract $responseFactory,
         #[Parameter(name: self::PARAMETERS_PARAMETER_NAME, regex: Regex::ALPHA)]
         string $name,
-    ): Response {
+    ): ResponseContract {
         return $responseFactory->createResponse(
             content: "parameters$name"
         );

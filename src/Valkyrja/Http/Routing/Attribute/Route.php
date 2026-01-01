@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch as MethodDispatchContract;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Routing\Data\Contract\Parameter;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Route as ParentRoute;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 /**
  * Attribute Route.
@@ -36,18 +36,18 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
 class Route extends ParentRoute
 {
     /**
-     * @param non-empty-string                          $path                      The path
-     * @param non-empty-string                          $name                      The name
-     * @param non-empty-string|null                     $regex                     The regex
-     * @param RequestMethod[]                           $requestMethods            The request methods
-     * @param Parameter[]                               $parameters                The parameters
-     * @param class-string<RouteMatchedMiddleware>[]    $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddleware>[] $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddleware>[] $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddleware>[] $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddleware>[]      $terminatedMiddleware      The terminated middleware
-     * @param class-string<RequestStruct>|null          $requestStruct             The request struct
-     * @param class-string<ResponseStruct>|null         $responseStruct            The response struct
+     * @param non-empty-string                                  $path                      The path
+     * @param non-empty-string                                  $name                      The name
+     * @param non-empty-string|null                             $regex                     The regex
+     * @param RequestMethod[]                                   $requestMethods            The request methods
+     * @param ParameterContract[]                               $parameters                The parameters
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
+     * @param class-string<RequestStructContract>|null          $requestStruct             The request struct
+     * @param class-string<ResponseStructContract>|null         $responseStruct            The response struct
      */
     public function __construct(
         protected string $path,

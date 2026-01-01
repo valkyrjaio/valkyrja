@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Reflection\Reflector;
 
 use ReflectionException;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Reflection\ReflectableClass;
@@ -137,6 +137,6 @@ class ReflectorTest extends TestCase
         $reflection   = $reflector->forClassMethod(ReflectableClass::class, 'test');
         $dependencies = $reflector->getDependencies($reflection);
 
-        self::assertSame(['container' => Container::class], $dependencies);
+        self::assertSame(['container' => ContainerContract::class], $dependencies);
     }
 }

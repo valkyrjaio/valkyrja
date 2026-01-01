@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Data;
 
-use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 
 /**
  * Class Data.
@@ -25,8 +25,8 @@ readonly class Data
     /**
      * The listeners.
      *
-     * @param array<class-string, string[]>  $events
-     * @param array<string, Listener|string> $listeners
+     * @param array<class-string, string[]>          $events
+     * @param array<string, ListenerContract|string> $listeners
      */
     public function __construct(
         public array $events = [],

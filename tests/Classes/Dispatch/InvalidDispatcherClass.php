@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Dispatch;
 
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 /**
  * Invalid dispatcher class to test with.
@@ -31,16 +31,16 @@ class InvalidDispatcherClass
     /**
      * The application.
      *
-     * @var Application
+     * @var ApplicationContract
      */
-    protected Application $app;
+    protected ApplicationContract $app;
 
     /**
      * InvalidContainerClass constructor.
      *
-     * @param Application $application The application
+     * @param ApplicationContract $application The application
      */
-    public function __construct(Application $application)
+    public function __construct(ApplicationContract $application)
     {
         $this->app = $application;
     }

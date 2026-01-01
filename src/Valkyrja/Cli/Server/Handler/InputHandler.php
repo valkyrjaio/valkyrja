@@ -18,17 +18,17 @@ use Throwable;
 use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Data\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as ExitedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler as InputReceivedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
@@ -36,12 +36,12 @@ use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandler as Contract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract as Contract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Class InputHandler.
@@ -67,12 +67,12 @@ class InputHandler implements Contract
     /**
      * Handle the input.
      *
-     * @param Input $input The input
+     * @param InputContract $input The input
      *
-     * @return Output
+     * @return OutputContract
      */
     #[Override]
-    public function handle(Input $input): Output
+    public function handle(InputContract $input): OutputContract
     {
         try {
             $this->setIsInteractive($input);
@@ -93,7 +93,7 @@ class InputHandler implements Contract
         }
 
         // Set the returned output in the container
-        $this->container->setSingleton(Output::class, $output);
+        $this->container->setSingleton(OutputContract::class, $output);
 
         return $output;
     }
@@ -101,13 +101,13 @@ class InputHandler implements Contract
     /**
      * Handle exiting the handler.
      *
-     * @param Input  $input  The input
-     * @param Output $output The output
+     * @param InputContract  $input  The input
+     * @param OutputContract $output The output
      *
      * @return void
      */
     #[Override]
-    public function exit(Input $input, Output $output): void
+    public function exit(InputContract $input, OutputContract $output): void
     {
         // Dispatch the exited middleware
         $this->exitedHandler->exited($input, $output);
@@ -116,12 +116,12 @@ class InputHandler implements Contract
     /**
      * Run the handler.
      *
-     * @param Input $input
+     * @param InputContract $input
      *
      * @return void
      */
     #[Override]
-    public function run(Input $input): void
+    public function run(InputContract $input): void
     {
         $output = $this->handle($input);
 
@@ -141,11 +141,11 @@ class InputHandler implements Contract
     /**
      * Set the interactivity.
      *
-     * @param Input $input The input
+     * @param InputContract $input The input
      *
      * @return void
      */
-    protected function setIsInteractive(Input $input): void
+    protected function setIsInteractive(InputContract $input): void
     {
         if (
             $input->hasOption(NoInteractionOptionParameter::SHORT_NAME)
@@ -158,11 +158,11 @@ class InputHandler implements Contract
     /**
      * Set whether output is quiet.
      *
-     * @param Input $input The input
+     * @param InputContract $input The input
      *
      * @return void
      */
-    protected function setIsQuiet(Input $input): void
+    protected function setIsQuiet(InputContract $input): void
     {
         if (
             $input->hasOption(QuietOptionParameter::SHORT_NAME)
@@ -175,11 +175,11 @@ class InputHandler implements Contract
     /**
      * Set whether the output is entirely silent.
      *
-     * @param Input $input The input
+     * @param InputContract $input The input
      *
      * @return void
      */
-    protected function setIsSilent(Input $input): void
+    protected function setIsSilent(InputContract $input): void
     {
         if (
             $input->hasOption(SilentOptionParameter::SHORT_NAME)
@@ -192,25 +192,25 @@ class InputHandler implements Contract
     /**
      * Dispatch the input via the router.
      *
-     * @param Input $input The input
+     * @param InputContract $input The input
      *
-     * @return Output
+     * @return OutputContract
      */
-    protected function dispatchRouter(Input $input): Output
+    protected function dispatchRouter(InputContract $input): OutputContract
     {
         // Set the request object in the container
-        $this->container->setSingleton(Input::class, $input);
+        $this->container->setSingleton(InputContract::class, $input);
 
         // Dispatch the before input received middleware
         $inputAfterMiddleware = $this->inputReceivedHandler->inputReceived($input);
 
         // If the return value after middleware is a response return it
-        if ($inputAfterMiddleware instanceof Output) {
+        if ($inputAfterMiddleware instanceof OutputContract) {
             return $inputAfterMiddleware;
         }
 
         // Set the returned request in the container
-        $this->container->setSingleton(Input::class, $inputAfterMiddleware);
+        $this->container->setSingleton(InputContract::class, $inputAfterMiddleware);
 
         return $this->router->dispatch($inputAfterMiddleware);
     }
@@ -218,12 +218,12 @@ class InputHandler implements Contract
     /**
      * Get an output from a throwable.
      *
-     * @param Input     $input     The input
-     * @param Throwable $throwable The throwable
+     * @param InputContract $input     The input
+     * @param Throwable     $throwable The throwable
      *
-     * @return Output
+     * @return OutputContract
      */
-    protected function getOutputFromThrowable(Input $input, Throwable $throwable): Output
+    protected function getOutputFromThrowable(InputContract $input, Throwable $throwable): OutputContract
     {
         $commandName = $input->getCommandName();
 

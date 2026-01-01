@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Request\Trait;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Trait QueryRequestStruct.
@@ -27,7 +27,7 @@ trait QueryRequestStruct
     /**
      * @inheritDoc
      */
-    protected static function getOnlyParamsFromRequest(ServerRequest $request, string|int ...$values): array
+    protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
         return $request->onlyQueryParams(...$values);
     }
@@ -35,7 +35,7 @@ trait QueryRequestStruct
     /**
      * @inheritDoc
      */
-    protected static function getExceptParamsFromRequest(ServerRequest $request, string|int ...$values): array
+    protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
         return $request->exceptQueryParams(...$values);
     }

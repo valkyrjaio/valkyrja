@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
 /**
@@ -40,7 +40,7 @@ class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception): Response
+    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $exception): ResponseContract
     {
         $this->count++;
 

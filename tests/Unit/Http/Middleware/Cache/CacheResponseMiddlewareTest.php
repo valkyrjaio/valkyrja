@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
-use Valkyrja\Http\Message\Request\Contract\Request;
+use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
@@ -36,7 +36,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $container  = new Container();
         $filesystem = new InMemoryFilesystem();
 
-        $container->setSingleton(Filesystem::class, $filesystem);
+        $container->setSingleton(FilesystemContract::class, $filesystem);
         $container->setCallable(CacheResponseMiddleware::class, static fn () => new CacheResponseMiddleware($filesystem));
 
         $beforeHandler = new RequestReceivedHandler($container);
@@ -52,7 +52,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $terminatedHandler->terminated($request, $response);
 
         // Ensure the initial request doesn't get any cached response
-        self::assertInstanceOf(Request::class, $beforeResponse);
+        self::assertInstanceOf(RequestContract::class, $beforeResponse);
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
@@ -60,7 +60,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseAfterTerminated = $beforeHandler->requestReceived($request);
 
         // Test that a subsequent request gets a response from cache
-        self::assertInstanceOf(Response::class, $beforeResponseAfterTerminated);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
 
         // Write a bad cache
         $filesystem->write($this->getCachePathForRequest($request), 'bad-cache-test');
@@ -71,7 +71,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseWithBadCache = $beforeHandler->requestReceived($request);
 
         // Test that a subsequent request gets a request when the cached response is not valid
-        self::assertInstanceOf(Request::class, $beforeResponseWithBadCache);
+        self::assertInstanceOf(RequestContract::class, $beforeResponseWithBadCache);
 
         $terminatedHandler = new TerminatedHandler($container);
         $terminatedHandler->add(CacheResponseMiddleware::class);
@@ -84,7 +84,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseAfterTerminatedAfterBadCache = $beforeHandler->requestReceived($request);
 
         // Test that cache got reset successfully
-        self::assertInstanceOf(Response::class, $beforeResponseAfterTerminatedAfterBadCache);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminatedAfterBadCache);
 
         // Freeze time to a time much later than ttl
         Time::freeze(Time::get() + 1801);
@@ -95,7 +95,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseAfterTtlExpired = $beforeHandler->requestReceived($request);
 
         // Ensure the initial request doesn't get any cached response
-        self::assertInstanceOf(Request::class, $beforeResponseAfterTtlExpired);
+        self::assertInstanceOf(RequestContract::class, $beforeResponseAfterTtlExpired);
 
         // Unfreeze for future tests
         Time::unfreeze();
@@ -118,14 +118,14 @@ class CacheResponseMiddlewareTest extends TestCase
         $middleware->terminated($request, $response, $terminatedHandler);
 
         // Ensure the initial request doesn't get any cached response
-        self::assertInstanceOf(Request::class, $beforeResponse);
+        self::assertInstanceOf(RequestContract::class, $beforeResponse);
 
         $beforeHandler = new RequestReceivedHandler();
 
         $beforeResponseAfterTerminated = $middleware->requestReceived($request, $beforeHandler);
 
         // Test that a subsequent request gets a response from cache
-        self::assertInstanceOf(Response::class, $beforeResponseAfterTerminated);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
 
         // Write a bad cache
         $filesystem->write($this->getCachePathForRequest($request), 'bad-cache-test');
@@ -135,14 +135,14 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseWithBadCache = $middleware->requestReceived($request, $beforeHandler);
 
         // Test that a subsequent request gets a request when the cached response is not valid
-        self::assertInstanceOf(Request::class, $beforeResponseWithBadCache);
+        self::assertInstanceOf(RequestContract::class, $beforeResponseWithBadCache);
 
         $middleware->terminated($request, $response, $terminatedHandler);
 
         $beforeResponseAfterTerminatedAfterBadCache = $middleware->requestReceived($request, $beforeHandler);
 
         // Test that cache got reset successfully
-        self::assertInstanceOf(Response::class, $beforeResponseAfterTerminatedAfterBadCache);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminatedAfterBadCache);
 
         // Freeze time to a time much later than ttl
         Time::freeze(Time::get() + 1801);
@@ -150,7 +150,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeResponseAfterTtlExpired = $middleware->requestReceived($request, $beforeHandler);
 
         // Ensure the initial request doesn't get any cached response
-        self::assertInstanceOf(Request::class, $beforeResponseAfterTtlExpired);
+        self::assertInstanceOf(RequestContract::class, $beforeResponseAfterTtlExpired);
 
         // Unfreeze for future tests
         Time::unfreeze();

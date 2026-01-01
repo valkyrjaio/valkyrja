@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Request\Trait;
 
-use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
 
 /**
@@ -30,7 +30,7 @@ trait JsonRequestStruct
      * @inheritDoc
      */
     protected static function getOnlyParamsFromRequest(
-        JsonServerRequest|ServerRequest $request,
+        JsonServerRequestContract|ServerRequestContract $request,
         string|int ...$values
     ): array {
         static::ensureJsonRequest($request);
@@ -42,7 +42,7 @@ trait JsonRequestStruct
      * @inheritDoc
      */
     protected static function getExceptParamsFromRequest(
-        JsonServerRequest|ServerRequest $request,
+        JsonServerRequestContract|ServerRequestContract $request,
         string|int ...$values
     ): array {
         static::ensureJsonRequest($request);
@@ -53,15 +53,15 @@ trait JsonRequestStruct
     /**
      * Ensure the request is a JsonRequest.
      *
-     * @param JsonServerRequest|ServerRequest $request The request
+     * @param JsonServerRequestContract|ServerRequestContract $request The request
      *
      * @return void
      *
-     * @psalm-assert JsonServerRequest        $request
+     * @psalm-assert JsonServerRequestContract                $request
      */
-    protected static function ensureJsonRequest(JsonServerRequest|ServerRequest $request): void
+    protected static function ensureJsonRequest(JsonServerRequestContract|ServerRequestContract $request): void
     {
-        if (! is_a($request, JsonServerRequest::class)) {
+        if (! is_a($request, JsonServerRequestContract::class)) {
             throw new InvalidArgumentException('JsonServerRequest is required for this to work.');
         }
     }

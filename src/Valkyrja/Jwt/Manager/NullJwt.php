@@ -15,7 +15,7 @@ namespace Valkyrja\Jwt\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

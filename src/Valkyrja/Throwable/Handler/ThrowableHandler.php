@@ -15,7 +15,7 @@ namespace Valkyrja\Throwable\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Throwable\Handler\Contract\ThrowableHandler as Contract;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract as Contract;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;

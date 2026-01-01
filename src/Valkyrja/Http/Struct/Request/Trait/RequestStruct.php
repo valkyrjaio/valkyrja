@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Request\Trait;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
-use Valkyrja\Validation\Validator\Contract\Validator as ValidatorContract;
+use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
 /**
@@ -30,7 +30,7 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getDataFromRequest(ServerRequest $request): array
+    public static function getDataFromRequest(ServerRequestContract $request): array
     {
         return static::getOnlyParamsFromRequest($request, ...static::values());
     }
@@ -38,7 +38,7 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function determineIfRequestContainsExtraData(ServerRequest $request): bool
+    public static function determineIfRequestContainsExtraData(ServerRequestContract $request): bool
     {
         return ! empty(static::getExceptParamsFromRequest($request, ...static::values()));
     }
@@ -46,7 +46,7 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequest $request): array|null
+    public static function getValidationRules(ServerRequestContract $request): array|null
     {
         return null;
     }
@@ -54,7 +54,7 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function validate(ServerRequest $request): ValidatorContract
+    public static function validate(ServerRequestContract $request): ValidatorContract
     {
         return new Validator(static::getValidationRules($request) ?? []);
     }
@@ -62,20 +62,20 @@ trait RequestStruct
     /**
      * Get only the specified request params.
      *
-     * @param ServerRequest $request   The request
-     * @param string|int    ...$values The values
+     * @param ServerRequestContract $request   The request
+     * @param string|int            ...$values The values
      *
      * @return array
      */
-    abstract protected static function getOnlyParamsFromRequest(ServerRequest $request, string|int ...$values): array;
+    abstract protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 
     /**
      * Get all request params except the ones specified.
      *
-     * @param ServerRequest $request   The request
-     * @param string|int    ...$values The values
+     * @param ServerRequestContract $request   The request
+     * @param string|int            ...$values The values
      *
      * @return array
      */
-    abstract protected static function getExceptParamsFromRequest(ServerRequest $request, string|int ...$values): array;
+    abstract protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 }

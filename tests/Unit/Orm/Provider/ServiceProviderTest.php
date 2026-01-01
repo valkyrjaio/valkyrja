@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Orm\Provider;
 
 use PDO;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Entity\Abstract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager as Contract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
 use Valkyrja\Orm\Manager\InMemoryManager;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
@@ -52,7 +52,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMysqlManager(): void
     {
-        $this->container->setCallable(PDO::class, static fn (Container $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:'));
+        $this->container->setCallable(
+            PDO::class,
+            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+        );
 
         ServiceProvider::publishMysqlManager($this->container);
 
@@ -61,7 +64,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPgsqlManager(): void
     {
-        $this->container->setCallable(PDO::class, static fn (Container $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:'));
+        $this->container->setCallable(
+            PDO::class,
+            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+        );
 
         ServiceProvider::publishPgsqlManager($this->container);
 

@@ -15,10 +15,10 @@ namespace Valkyrja\Http\Routing\Factory;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as Contract;
-use Valkyrja\Http\Routing\Url\Contract\Url;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
+use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as Contract;
+use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
 /**
  * Class ResponseFactory.
@@ -29,7 +29,7 @@ class ResponseFactory implements Contract
 {
     public function __construct(
         protected HttpMessageResponseFactory $responseFactory,
-        protected Url $url
+        protected UrlContract $url
     ) {
     }
 
@@ -42,7 +42,7 @@ class ResponseFactory implements Contract
         array|null $data = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): RedirectResponse {
+    ): RedirectResponseContract {
         $url = $this->url->getUrl($name, $data);
 
         return $this->responseFactory->createRedirectResponse($url, $statusCode, $headers);
