@@ -30,6 +30,7 @@ use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
 use Valkyrja\Application\Provider\Provider as ComponentProvider;
+use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Type\Abstract\Type;
@@ -61,6 +62,11 @@ return static function (Config $config): void {
                       ->that(new ResideInOneOfTheseNamespaces('*Attribute\\'))
                       ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Attribute\\'))
                       ->should(new HaveAttribute(Attribute::class))
+                      ->because('All non-attributes should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new NotResideInTheseNamespaces('*Attribute\\*'))
+                      ->should(new NotHaveAttribute(Attribute::class))
                       ->because('All non-attributes should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
