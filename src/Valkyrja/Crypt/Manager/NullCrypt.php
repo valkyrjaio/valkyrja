@@ -17,9 +17,6 @@ use Override;
 use stdClass;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 
-/**
- * Class NullCrypt.
- */
 class NullCrypt implements CryptContract
 {
     /**

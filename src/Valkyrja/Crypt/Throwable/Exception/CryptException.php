@@ -15,9 +15,6 @@ namespace Valkyrja\Crypt\Throwable\Exception;
 
 use Valkyrja\Throwable\Exception\RuntimeException;
 
-/**
- * Class CryptException.
- */
 class CryptException extends RuntimeException
 {
 }

@@ -16,9 +16,6 @@ namespace Valkyrja\Crypt\Provider;
 use Override;
 use Valkyrja\Application\Provider\Provider;
 
-/**
- * Class Component.
- */
 class ComponentProvider extends Provider
 {
     /**

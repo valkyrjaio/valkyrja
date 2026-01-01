@@ -15,9 +15,6 @@ namespace Valkyrja\Crypt\Manager\Contract;
 
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
-/**
- * Interface CryptContract.
- */
 interface CryptContract
 {
     /**
