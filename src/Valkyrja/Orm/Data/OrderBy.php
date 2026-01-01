@@ -17,9 +17,6 @@ use Override;
 use Stringable;
 use Valkyrja\Orm\Enum\SortOrder;
 
-/**
- * Class OrderBy.
- */
 readonly class OrderBy implements Stringable
 {
     /**

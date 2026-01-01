@@ -18,9 +18,6 @@ use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 
-/**
- * Interface QueryBuilderFactoryContract.
- */
 interface QueryBuilderFactoryContract
 {
     /**

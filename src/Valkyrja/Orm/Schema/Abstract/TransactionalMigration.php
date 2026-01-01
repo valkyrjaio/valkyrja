@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Schema\Abstract;
 use Override;
 use Throwable;
 
-/**
- * Abstract Class TransactionalMigration.
- */
 abstract class TransactionalMigration extends Migration
 {
     /**

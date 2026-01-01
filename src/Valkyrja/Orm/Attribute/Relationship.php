@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\Attribute;
 
 use Attribute;
 
-/**
- * Attribute Relationship.
- */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Relationship
 {

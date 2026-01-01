@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Entity\Trait;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Support\Helpers;
 
-/**
- * Trait Dateable.
- */
 trait Dateable
 {
     /**

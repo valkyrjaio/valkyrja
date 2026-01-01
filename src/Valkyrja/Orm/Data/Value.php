@@ -20,8 +20,6 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use function is_array;
 
 /**
- * Class Value.
- *
  * @psalm-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null
  *
  * @phpstan-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null

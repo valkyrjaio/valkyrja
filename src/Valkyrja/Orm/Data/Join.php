@@ -20,9 +20,6 @@ use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Orm\Enum\JoinType;
 
-/**
- * Class Join.
- */
 readonly class Join implements Stringable
 {
     /**

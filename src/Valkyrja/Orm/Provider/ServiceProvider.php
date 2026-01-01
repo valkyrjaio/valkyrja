@@ -27,9 +27,6 @@ use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Repository\Repository;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

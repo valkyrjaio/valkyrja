@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Constant;
 
-/**
- * Constant DateFormat.
- */
 final class DateFormat
 {
     public const string DEFAULT     = 'm-d-Y H:i:s T';

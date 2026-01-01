@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Enum;
 
-/**
- * Enum JoinType.
- */
 enum JoinType: string
 {
     case DEFAULT    = '';

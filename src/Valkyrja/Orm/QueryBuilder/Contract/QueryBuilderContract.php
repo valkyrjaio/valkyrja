@@ -18,9 +18,6 @@ use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Data\WhereGroup;
 
-/**
- * Interface QueryBuilderContract.
- */
 interface QueryBuilderContract extends Stringable
 {
     /**

@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Entity\Abstract;
 use Valkyrja\Orm\Entity\Contract\SoftDeleteEntityContract as Contract;
 use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
 
-/**
- * Class SoftDeleteEntity.
- */
 abstract class SoftDeleteEntity extends Entity implements Contract
 {
     use SoftDeleteFields;

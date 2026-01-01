@@ -18,9 +18,6 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
 
-/**
- * Class OrWhere.
- */
 readonly class OrWhere extends Where
 {
     public function __construct(

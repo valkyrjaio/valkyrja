@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\Manager;
 
 use Valkyrja\Orm\Manager\Abstract\PdoManager;
 
-/**
- * Class MysqlManager.
- */
 class MysqlManager extends PdoManager
 {
 }

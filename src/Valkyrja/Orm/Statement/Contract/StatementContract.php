@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Statement\Contract;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 
-/**
- * Interface StatementContract.
- */
 interface StatementContract
 {
     /**

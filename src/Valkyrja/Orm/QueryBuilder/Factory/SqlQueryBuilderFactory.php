@@ -24,9 +24,6 @@ use Valkyrja\Orm\QueryBuilder\SqlInsertQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlSelectQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlUpdateQueryBuilder;
 
-/**
- * Class SqlQueryBuilderFactory.
- */
 class SqlQueryBuilderFactory implements Contract
 {
     /**

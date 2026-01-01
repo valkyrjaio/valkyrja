@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entity\Trait;
 
-/**
- * Trait DatedFields.
- */
 trait DatedFields
 {
     use Dateable;

@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\Attribute;
 
 use Attribute;
 
-/**
- * Attribute PrimaryKey.
- */
 #[Attribute]
 class PrimaryKey
 {

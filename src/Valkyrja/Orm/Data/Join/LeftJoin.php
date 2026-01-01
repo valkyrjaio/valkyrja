@@ -18,9 +18,6 @@ use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Orm\Enum\JoinType;
 
-/**
- * Class LeftJoin.
- */
 readonly class LeftJoin extends Join
 {
     /**

@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\QueryBuilder\Contract;
 
 use Valkyrja\Orm\Data\Value;
 
-/**
- * Interface InsertQueryBuilderContract.
- */
 interface InsertQueryBuilderContract extends QueryBuilderContract
 {
     /**

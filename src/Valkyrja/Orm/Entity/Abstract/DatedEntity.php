@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Entity\Abstract;
 use Valkyrja\Orm\Entity\Contract\DatedEntityContract as Contract;
 use Valkyrja\Orm\Entity\Trait\DatedFields;
 
-/**
- * Class DatedEntity.
- */
 abstract class DatedEntity extends Entity implements Contract
 {
     use DatedFields;

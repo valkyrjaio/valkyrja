@@ -27,9 +27,6 @@ use function is_bool;
 use function is_int;
 use function is_string;
 
-/**
- * Class PdoStatement.
- */
 class PdoStatement implements Contract
 {
     /**
