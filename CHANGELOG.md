@@ -1,6 +1,16 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.10.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.11.0...master)
+
+## [v25.11.0](https://github.com/valkyrjaio/valkyrja/compare/v25.10.0...v25.11.0) - 2025-12-31
+
+* [CI] Add phparkitect rule to disallow [@author](https://github.com/author) annotation by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/295
+* [All] Update ComponentProvider to remove alias by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/296
+* [CI] Update phpcodesniffer to include tests directory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/297
+* [CI] Add a NotHaveAttribute expression for phparkitect by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/284
+* [Documentation] Update build status badges to a table format by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/176
+* [Application] Update the cache and clear cache commands by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/299
+* [Type] Update the true and false type tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/300
 
 ## [v25.10.0](https://github.com/valkyrjaio/valkyrja/compare/v25.9.1...v25.10.0) - 2025-12-31
 
