@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Sms\Data\Contract\MessageContract;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
-/**
- * Class NullSms.
- */
 class NullMessenger implements Contract
 {
     /**

@@ -21,9 +21,6 @@ use Vonage\Client as Vonage;
 use Vonage\Client\Exception\Exception as ClientException;
 use Vonage\SMS\Message\SMS;
 
-/**
- * Class VonageSms.
- */
 class VonageMessenger implements Contract
 {
     /**

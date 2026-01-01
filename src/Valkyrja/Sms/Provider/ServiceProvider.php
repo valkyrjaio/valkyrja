@@ -26,9 +26,6 @@ use Vonage\Client as Vonage;
 use Vonage\Client\Credentials\Basic;
 use Vonage\Client\Credentials\CredentialsInterface as VonageCredentials;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**
