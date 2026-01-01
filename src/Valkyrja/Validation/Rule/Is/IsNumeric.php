@@ -18,9 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_numeric;
 
-/**
- * Class IsNumeric.
- */
 class IsNumeric extends Rule
 {
     #[Override]

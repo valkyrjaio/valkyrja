@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 
-/**
- * Class Lowercase.
- */
 class Lowercase extends Rule
 {
     #[Override]

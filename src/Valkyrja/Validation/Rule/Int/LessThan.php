@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_int;
 
-/**
- * Class LessThan.
- */
 class LessThan extends Rule
 {
     public function __construct(

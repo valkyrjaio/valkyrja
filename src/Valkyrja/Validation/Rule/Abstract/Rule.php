@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Validation\Rule\Contract\RuleContract as Contract;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-/**
- * Class Rule.
- */
 abstract class Rule implements Contract
 {
     public function __construct(
