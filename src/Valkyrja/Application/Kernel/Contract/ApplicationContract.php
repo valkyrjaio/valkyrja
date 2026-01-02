@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Kernel\Contract;
 
-use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -48,11 +46,6 @@ interface ApplicationContract
            \_/ \__,_|_|_|\_\\__, |_| _/ |\__,_|
                             |___/   |__/
         TEXT;
-
-    /**
-     * Setup the application.
-     */
-    public function setup(ContainerContract $container, Env $env, Config|Data $configData = new Config(), bool $force = false): void;
 
     /**
      * Add a component to the application.

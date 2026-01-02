@@ -106,43 +106,6 @@ class ApplicationTest extends TestCase
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($config, $container->getSingleton(Config::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
-
-        $env2       = new Env();
-        $config2    = new Config();
-        $container2 = new Container();
-
-        $application->setup(
-            container: $container2,
-            env: $env2,
-            configData: $config2
-        );
-
-        // Ensure setup isn't run twice
-        self::assertSame($container, $application->getContainer());
-        self::assertNotSame($container2, $application->getContainer());
-        self::assertTrue($container->has(Config::class));
-        self::assertSame($env, $application->getEnv());
-        self::assertSame($env, $container->getSingleton(Env::class));
-        self::assertSame($config, $container->getSingleton(Config::class));
-
-        $env3       = new Env();
-        $config3    = new Config();
-        $container3 = new Container();
-
-        $application->setup(
-            container: $container3,
-            env: $env3,
-            configData: $config3,
-            force: true,
-        );
-
-        // Ensure setup is run, and config and env are overridden when setup is forced
-        self::assertNotSame($container, $application->getContainer());
-        self::assertSame($container3, $application->getContainer());
-        self::assertTrue($container3->has(Config::class));
-        self::assertSame($env3, $application->getEnv());
-        self::assertSame($env3, $container3->getSingleton(Env::class));
-        self::assertSame($config3, $container3->getSingleton(Config::class));
     }
 
     /**
@@ -173,57 +136,6 @@ class ApplicationTest extends TestCase
         self::assertSame($data->cli, $container->getSingleton(CliData::class));
         self::assertSame($data->http, $container->getSingleton(HttpData::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
-
-        $env2       = new Env();
-        $data2      = new Data();
-        $container2 = new Container();
-
-        $application->setup(
-            container: $container2,
-            env: $env2,
-            configData: $data2
-        );
-
-        // Ensure setup isn't run twice
-        self::assertSame($container, $application->getContainer());
-        self::assertNotSame($container2, $application->getContainer());
-        self::assertNotTrue($container2->has(Config::class));
-        self::assertTrue($container->has(ContainerData::class));
-        self::assertTrue($container->has(EventData::class));
-        self::assertTrue($container->has(CliData::class));
-        self::assertTrue($container->has(HttpData::class));
-        self::assertSame($env, $application->getEnv());
-        self::assertSame($env, $container->getSingleton(Env::class));
-        self::assertSame($data->container, $container->getSingleton(ContainerData::class));
-        self::assertSame($data->event, $container->getSingleton(EventData::class));
-        self::assertSame($data->cli, $container->getSingleton(CliData::class));
-        self::assertSame($data->http, $container->getSingleton(HttpData::class));
-
-        $env3       = new Env();
-        $data3      = new Data();
-        $container3 = new Container();
-
-        $application->setup(
-            container: $container3,
-            env: $env3,
-            configData: $data3,
-            force: true,
-        );
-
-        // Ensure setup is run, and data and env are overridden when setup is forced
-        self::assertNotSame($container, $application->getContainer());
-        self::assertSame($container3, $application->getContainer());
-        self::assertNotTrue($container3->has(Config::class));
-        self::assertTrue($container3->has(ContainerData::class));
-        self::assertTrue($container3->has(EventData::class));
-        self::assertTrue($container3->has(CliData::class));
-        self::assertTrue($container3->has(HttpData::class));
-        self::assertSame($env3, $application->getEnv());
-        self::assertSame($env3, $container3->getSingleton(Env::class));
-        self::assertSame($data3->container, $container3->getSingleton(ContainerData::class));
-        self::assertSame($data3->event, $container3->getSingleton(EventData::class));
-        self::assertSame($data3->cli, $container3->getSingleton(CliData::class));
-        self::assertSame($data3->http, $container3->getSingleton(HttpData::class));
     }
 
     /**
