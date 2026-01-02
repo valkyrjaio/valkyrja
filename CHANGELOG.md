@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.15.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.15.1...master)
+
+## [v25.15.1](https://github.com/valkyrjaio/valkyrja/compare/v25.15.0...v25.15.1) - 2026-01-02
+
+* [Type] Remove unused attributes to avoid confusion by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/313
+* [Orm] Remove unused attributes to avoid confusion by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/314
+* [Type] Remove unused model attributes to avoid confusion by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/315
 
 ## [v25.15.0](https://github.com/valkyrjaio/valkyrja/compare/v25.14.0...v25.15.0) - 2026-01-02
 
