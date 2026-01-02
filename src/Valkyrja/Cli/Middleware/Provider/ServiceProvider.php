@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -33,6 +34,9 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
@@ -45,12 +49,15 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputReceivedHandlerContract::class   => [self::class, 'publishInputReceivedHandler'],
-            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
-            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
-            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
-            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
-            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
+            InputReceivedHandlerContract::class            => [self::class, 'publishInputReceivedHandler'],
+            ThrowableCaughtHandlerContract::class          => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class             => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class          => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class          => [self::class, 'publishRouteDispatchedHandler'],
+            ExitedHandlerContract::class                   => [self::class, 'publishExitedHandler'],
+            CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
+            CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
+            CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
         ];
     }
 
@@ -67,6 +74,9 @@ final class ServiceProvider extends Provider
             RouteMatchedHandlerContract::class,
             RouteNotMatchedHandlerContract::class,
             ExitedHandlerContract::class,
+            CheckForHelpOptionsMiddleware::class,
+            CheckForVersionOptionsMiddleware::class,
+            CheckGlobalInteractionOptionsMiddleware::class,
         ];
     }
 
@@ -194,5 +204,45 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
+    }
+
+    /**
+     * Publish the CheckForHelpOptionsMiddleware service.
+     */
+    public static function publishCheckForHelpOptionsMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            CheckForHelpOptionsMiddleware::class,
+            new CheckForHelpOptionsMiddleware(
+                env: $container->getSingleton(Env::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the CheckForVersionOptionsMiddleware service.
+     */
+    public static function publishCheckForVersionOptionsMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            CheckForVersionOptionsMiddleware::class,
+            new CheckForVersionOptionsMiddleware(
+                env: $container->getSingleton(Env::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the CheckGlobalInteractionOptionsMiddleware service.
+     */
+    public static function publishCheckGlobalInteractionOptionsMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            CheckGlobalInteractionOptionsMiddleware::class,
+            new CheckGlobalInteractionOptionsMiddleware(
+                config: $container->getSingleton(Config::class),
+                env: $container->getSingleton(Env::class)
+            )
+        );
     }
 }

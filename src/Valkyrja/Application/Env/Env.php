@@ -29,12 +29,22 @@ use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
+use Valkyrja\Cli\Command\HelpCommand;
+use Valkyrja\Cli\Command\ListCommand;
+use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware as CliOutputThrowableCaughtMiddleware;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
@@ -51,6 +61,9 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpR
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract as HttpSendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract as HttpTerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware as HttpViewThrowableCaughtMiddleware;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
@@ -140,6 +153,8 @@ class Env
     /** @var bool */
     public const bool APP_ADD_EVENT_LISTENERS = true;
     /** @var non-empty-string */
+    public const string APP_CLI_DEFAULT_COMMAND_NAME = ListCommand::NAME;
+    /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';
     /** @var non-empty-string */
     public const string APP_CACHE_FILE_PATH = '/storage/framework/cache/cache.php';
@@ -217,6 +232,25 @@ class Env
 
     /************************************************************
      *
+     * Cli component env variables.
+     *
+     ************************************************************/
+
+    /** @var non-empty-string */
+    public const string CLI_HELP_COMMAND_NAME = HelpCommand::NAME;
+    /** @var non-empty-string */
+    public const string CLI_HELP_OPTION_NAME = HelpOptionParameter::NAME;
+    /** @var non-empty-string */
+    public const string CLI_HELP_OPTION_SHORT_NAME = HelpOptionParameter::SHORT_NAME;
+    /** @var non-empty-string */
+    public const string CLI_VERSION_COMMAND_NAME = VersionCommand::NAME;
+    /** @var non-empty-string */
+    public const string CLI_VERSION_OPTION_NAME = VersionOptionParameter::NAME;
+    /** @var non-empty-string */
+    public const string CLI_VERSION_OPTION_SHORT_NAME = VersionOptionParameter::SHORT_NAME;
+
+    /************************************************************
+     *
      * Cli Interaction component env variables.
      *
      ************************************************************/
@@ -235,7 +269,11 @@ class Env
      ************************************************************/
 
     /** @var class-string<InputReceivedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [];
+    public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [
+        CheckForHelpOptionsMiddleware::class,
+        CheckForVersionOptionsMiddleware::class,
+        CheckGlobalInteractionOptionsMiddleware::class,
+    ];
     /** @var class-string<RouteMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
     /** @var class-string<RouteNotMatchedMiddlewareContract>[] */
@@ -243,7 +281,10 @@ class Env
     /** @var class-string<RouteDispatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
     /** @var class-string<ThrowableCaughtMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [];
+    public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [
+        CliLogThrowableCaughtMiddleware::class,
+        CliOutputThrowableCaughtMiddleware::class,
+    ];
     /** @var class-string<ExitedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_EXITED = [];
 
@@ -303,11 +344,16 @@ class Env
     /** @var class-string<HttpRouteDispatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [];
     /** @var class-string<HttpThrowableCaughtMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [];
+    public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [
+        HttpLogThrowableCaughtMiddleware::class,
+        HttpViewThrowableCaughtMiddleware::class,
+    ];
     /** @var class-string<HttpRouteMatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_MATCHED = [];
     /** @var class-string<HttpRouteNotMatchedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [];
+    public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [
+        ViewRouteNotMatchedMiddleware::class,
+    ];
     /** @var class-string<HttpSendingResponseMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_SENDING_RESPONSE = [];
     /** @var class-string<HttpTerminatedMiddlewareContract>[] */

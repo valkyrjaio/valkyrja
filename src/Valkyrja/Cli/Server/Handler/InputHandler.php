@@ -15,7 +15,6 @@ namespace Valkyrja\Cli\Server\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Data\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
@@ -32,10 +31,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract as Contract;
@@ -67,17 +62,6 @@ class InputHandler implements Contract
     public function handle(InputContract $input): OutputContract
     {
         try {
-            $this->setIsInteractive($input);
-            $this->setIsQuiet($input);
-            $this->setIsSilent($input);
-
-            if (
-                $input->hasOption(VersionOptionParameter::SHORT_NAME)
-                || $input->hasOption(VersionOptionParameter::NAME)
-            ) {
-                $input = $input->withCommandName(VersionCommand::NAME);
-            }
-
             $output = $this->dispatchRouter($input);
         } catch (Throwable $throwable) {
             $output = $this->getOutputFromThrowable($input, $throwable);
@@ -128,57 +112,6 @@ class InputHandler implements Contract
         }
 
         Exiter::exit($exitCode);
-    }
-
-    /**
-     * Set the interactivity.
-     *
-     * @param InputContract $input The input
-     *
-     * @return void
-     */
-    protected function setIsInteractive(InputContract $input): void
-    {
-        if (
-            $input->hasOption(NoInteractionOptionParameter::SHORT_NAME)
-            || $input->hasOption(NoInteractionOptionParameter::NAME)
-        ) {
-            $this->interactionConfig->isInteractive = false;
-        }
-    }
-
-    /**
-     * Set whether output is quiet.
-     *
-     * @param InputContract $input The input
-     *
-     * @return void
-     */
-    protected function setIsQuiet(InputContract $input): void
-    {
-        if (
-            $input->hasOption(QuietOptionParameter::SHORT_NAME)
-            || $input->hasOption(QuietOptionParameter::NAME)
-        ) {
-            $this->interactionConfig->isQuiet = true;
-        }
-    }
-
-    /**
-     * Set whether the output is entirely silent.
-     *
-     * @param InputContract $input The input
-     *
-     * @return void
-     */
-    protected function setIsSilent(InputContract $input): void
-    {
-        if (
-            $input->hasOption(SilentOptionParameter::SHORT_NAME)
-            || $input->hasOption(SilentOptionParameter::NAME)
-        ) {
-            $this->interactionConfig->isSilent = true;
-        }
     }
 
     /**

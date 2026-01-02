@@ -89,7 +89,7 @@ class App
         self::bootstrapThrowableHandler($app, $container);
 
         $handler = $container->getSingleton(InputHandlerContract::class);
-        $input   = static::getInput();
+        $input   = static::getInput(env: $env);
         $handler->run($input);
     }
 
@@ -234,8 +234,15 @@ class App
     /**
      * Get the input.
      */
-    protected static function getInput(): InputContract
+    protected static function getInput(Env $env): InputContract
     {
-        return InputFactory::fromGlobals();
+        /** @var non-empty-string $commandName */
+        $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME;
+
+        $input = InputFactory::fromGlobals(
+            commandName: $commandName
+        );
+
+        return $input;
     }
 }

@@ -33,6 +33,30 @@ class InputFactoryTest extends TestCase
         self::assertEmpty($input->getOptions());
     }
 
+    public function testApplicationName(): void
+    {
+        $_SERVER['argv'] = [];
+
+        $input = InputFactory::fromGlobals(applicationName: 'test');
+
+        self::assertSame('test', $input->getCaller());
+        self::assertSame('list', $input->getCommandName());
+        self::assertEmpty($input->getArguments());
+        self::assertEmpty($input->getOptions());
+    }
+
+    public function testCommandName(): void
+    {
+        $_SERVER['argv'] = [];
+
+        $input = InputFactory::fromGlobals(commandName: 'test');
+
+        self::assertSame('valkyrja', $input->getCaller());
+        self::assertSame('test', $input->getCommandName());
+        self::assertEmpty($input->getArguments());
+        self::assertEmpty($input->getOptions());
+    }
+
     public function testFromGlobals(): void
     {
         $_SERVER['argv'] = [

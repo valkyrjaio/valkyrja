@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Dispatcher;
 
 use Override;
-use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
@@ -25,7 +24,6 @@ use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\Question;
-use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -40,7 +38,6 @@ use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
@@ -147,20 +144,6 @@ class Router implements Contract
 
         // Return the command if it was found
         if ($command !== null) {
-            if (
-                $input->hasOption(HelpOptionParameter::NAME)
-                || $input->hasOption(HelpOptionParameter::SHORT_NAME)
-            ) {
-                $command = $this->collection->get(name: HelpCommand::NAME);
-                $input   = $input->withOptions(
-                    new Option('command', $commandName),
-                );
-
-                if ($command === null) {
-                    throw new RuntimeException('Help command does not exist');
-                }
-            }
-
             return $this->addParametersToCommand($input, $command);
         }
 
