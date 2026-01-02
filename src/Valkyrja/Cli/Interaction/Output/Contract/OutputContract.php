@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Writer\Contract\WriterContract;
 
 interface OutputContract
 {
@@ -86,6 +87,31 @@ interface OutputContract
      * @return static
      */
     public function writeMessages(): static;
+
+    /**
+     * Write a message.
+     *
+     * @param MessageContract $message The message
+     *
+     * @return static
+     */
+    public function writeMessage(MessageContract $message): static;
+
+    /**
+     * Get the writers.
+     *
+     * @return WriterContract[]
+     */
+    public function getWriters(): array;
+
+    /**
+     * Create a new output with the specified writers.
+     *
+     * @param WriterContract ...$writers The writers
+     *
+     * @return static
+     */
+    public function withWriters(WriterContract ...$writers): static;
 
     /**
      * Determine whether this output should be interactive.

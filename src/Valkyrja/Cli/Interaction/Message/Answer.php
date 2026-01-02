@@ -40,7 +40,7 @@ class Answer extends Message implements Contract
         protected string $defaultResponse,
         protected $validationCallable = null,
         protected bool $hasBeenAnswered = false,
-        string $text = '%s',
+        string $text = 'You answered: `%s`',
         FormatterContract|null $formatter = null,
         array $allowedResponses = []
     ) {
