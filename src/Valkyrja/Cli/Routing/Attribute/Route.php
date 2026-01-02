@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Routing\Attribute;
 
 use Attribute;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
@@ -28,14 +28,14 @@ use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 class Route extends Model
 {
     /**
-     * @param non-empty-string                                    $name                        The name
-     * @param non-empty-string                                    $description                 The description
-     * @param MessageContract                                     $helpText                    The help text
-     * @param class-string<CommandMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<CommandDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[]   $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]            $exitedMiddleware            The exited middleware
-     * @param ParameterContract[]                                 $parameters                  The parameters
+     * @param non-empty-string                                  $name                        The name
+     * @param non-empty-string                                  $description                 The description
+     * @param MessageContract                                   $helpText                    The help text
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware   The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware            The exited middleware
+     * @param ParameterContract[]                               $parameters                  The parameters
      */
     public function __construct(
         protected string $name,

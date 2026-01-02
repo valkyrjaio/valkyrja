@@ -16,26 +16,26 @@ namespace Valkyrja\Cli\Middleware\Handler;
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
- * @extends Handler<CommandMatchedMiddlewareContract>
+ * @extends Handler<RouteDispatchedMiddlewareContract>
  */
-class CommandMatchedHandler extends Handler implements Contract
+class RouteDispatchedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function commandMatched(InputContract $input, RouteContract $command): RouteContract|OutputContract
+    public function routeDispatched(InputContract $input, OutputContract $output, RouteContract $route): OutputContract
     {
         $next = $this->next;
 
         return $next !== null
-            ? $this->getMiddleware($next)->commandMatched($input, $command, $this)
-            : $command;
+            ? $this->getMiddleware($next)->routeDispatched($input, $output, $route, $this)
+            : $output;
     }
 }

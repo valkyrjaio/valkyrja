@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
-use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -46,13 +46,13 @@ class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
-    public function testPublishCommandDispatchedHandler(): void
+    public function testPublishRouteDispatchedHandler(): void
     {
-        ServiceProvider::publishCommandDispatchedHandler($this->container);
+        ServiceProvider::publishRouteDispatchedHandler($this->container);
 
         self::assertInstanceOf(
-            CommandDispatchedHandler::class,
-            $this->container->getSingleton(CommandDispatchedHandlerContract::class)
+            RouteDispatchedHandler::class,
+            $this->container->getSingleton(RouteDispatchedHandlerContract::class)
         );
     }
 
@@ -66,23 +66,23 @@ class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
-    public function testPublishCommandMatchedHandler(): void
+    public function testPublishRouteMatchedHandler(): void
     {
-        ServiceProvider::publishCommandMatchedHandler($this->container);
+        ServiceProvider::publishRouteMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            CommandMatchedHandler::class,
-            $this->container->getSingleton(CommandMatchedHandlerContract::class)
+            RouteMatchedHandler::class,
+            $this->container->getSingleton(RouteMatchedHandlerContract::class)
         );
     }
 
-    public function testPublishCommandNotMatchedHandler(): void
+    public function testPublishRouteNotMatchedHandler(): void
     {
-        ServiceProvider::publishCommandNotMatchedHandler($this->container);
+        ServiceProvider::publishRouteNotMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            CommandNotMatchedHandler::class,
-            $this->container->getSingleton(CommandNotMatchedHandlerContract::class)
+            RouteNotMatchedHandler::class,
+            $this->container->getSingleton(RouteNotMatchedHandlerContract::class)
         );
     }
 

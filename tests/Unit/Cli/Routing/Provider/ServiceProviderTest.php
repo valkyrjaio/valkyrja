@@ -18,10 +18,10 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
@@ -64,9 +64,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishRouter(): void
     {
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
-        $this->container->setSingleton(CommandMatchedHandlerContract::class, self::createStub(CommandMatchedHandlerContract::class));
-        $this->container->setSingleton(CommandNotMatchedHandlerContract::class, self::createStub(CommandNotMatchedHandlerContract::class));
-        $this->container->setSingleton(CommandDispatchedHandlerContract::class, self::createStub(CommandDispatchedHandlerContract::class));
+        $this->container->setSingleton(RouteMatchedHandlerContract::class, self::createStub(RouteMatchedHandlerContract::class));
+        $this->container->setSingleton(RouteNotMatchedHandlerContract::class, self::createStub(RouteNotMatchedHandlerContract::class));
+        $this->container->setSingleton(RouteDispatchedHandlerContract::class, self::createStub(RouteDispatchedHandlerContract::class));
         $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
         $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));

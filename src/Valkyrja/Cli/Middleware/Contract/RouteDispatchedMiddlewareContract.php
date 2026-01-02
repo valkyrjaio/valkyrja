@@ -11,20 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\Handler\Contract;
+namespace Valkyrja\Cli\Middleware\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-/**
- * @extends HandlerContract<CommandMatchedMiddlewareContract>
- */
-interface CommandMatchedHandlerContract extends HandlerContract
+interface RouteDispatchedMiddlewareContract
 {
     /**
-     * Middleware handler for after a command has been matched but before it has been dispatched.
+     * Middleware handler for after a route is dispatched.
      */
-    public function commandMatched(InputContract $input, RouteContract $command): RouteContract|OutputContract;
+    public function routeDispatched(
+        InputContract $input,
+        OutputContract $output,
+        RouteContract $route,
+        RouteDispatchedHandlerContract $handler
+    ): OutputContract;
 }

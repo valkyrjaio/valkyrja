@@ -27,15 +27,15 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
@@ -59,9 +59,9 @@ class Router implements Contract
         protected CollectionContract $collection = new Collection(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
-        protected CommandMatchedHandlerContract $commandMatchedHandler = new CommandMatchedHandler(),
-        protected CommandNotMatchedHandlerContract $commandNotMatchedHandler = new CommandNotMatchedHandler(),
-        protected CommandDispatchedHandlerContract $commandDispatchedHandler = new CommandDispatchedHandler(),
+        protected RouteMatchedHandlerContract $commandMatchedHandler = new RouteMatchedHandler(),
+        protected RouteNotMatchedHandlerContract $commandNotMatchedHandler = new RouteNotMatchedHandler(),
+        protected RouteDispatchedHandlerContract $commandDispatchedHandler = new RouteDispatchedHandler(),
         protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
     ) {
     }
@@ -78,7 +78,7 @@ class Router implements Contract
         // If the command was not matched an output returned
         if ($matchedCommand instanceof OutputContract) {
             // Dispatch RouteNotMatchedMiddleware
-            return $this->commandNotMatchedHandler->commandNotMatched(
+            return $this->commandNotMatchedHandler->routeNotMatched(
                 input: $input,
                 output: $matchedCommand
             );
@@ -100,9 +100,9 @@ class Router implements Contract
         $this->commandMatched($command);
 
         // Dispatch the RouteMatchedMiddleware
-        $commandAfterMiddleware = $this->commandMatchedHandler->commandMatched(
+        $commandAfterMiddleware = $this->commandMatchedHandler->routeMatched(
             input: $input,
-            command: $command
+            route: $command
         );
 
         // If the return value after middleware is an output return it
@@ -126,10 +126,10 @@ class Router implements Contract
             throw new RuntimeException('All commands must return an output');
         }
 
-        return $this->commandDispatchedHandler->commandDispatched(
+        return $this->commandDispatchedHandler->routeDispatched(
             input: $input,
             output: $output,
-            command: $commandAfterMiddleware
+            route: $commandAfterMiddleware
         );
     }
 

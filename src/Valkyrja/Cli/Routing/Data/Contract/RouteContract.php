@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
@@ -155,14 +155,14 @@ interface RouteContract
     /**
      * Get the command matched middleware.
      *
-     * @return class-string<CommandMatchedMiddlewareContract>[]
+     * @return class-string<RouteMatchedMiddlewareContract>[]
      */
     public function getCommandMatchedMiddleware(): array;
 
     /**
      * Create a new command with the specified command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -171,7 +171,7 @@ interface RouteContract
     /**
      * Create a new command with added command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -180,14 +180,14 @@ interface RouteContract
     /**
      * Get the command dispatched middleware.
      *
-     * @return class-string<CommandDispatchedMiddlewareContract>[]
+     * @return class-string<RouteDispatchedMiddlewareContract>[]
      */
     public function getCommandDispatchedMiddleware(): array;
 
     /**
      * Create a new command with the specified command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -196,7 +196,7 @@ interface RouteContract
     /**
      * Create a new command with added command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */

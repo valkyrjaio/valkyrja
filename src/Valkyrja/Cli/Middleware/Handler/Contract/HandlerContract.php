@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
- * @template Middleware of InputReceivedMiddlewareContract|CommandMatchedMiddlewareContract|CommandNotMatchedMiddlewareContract|CommandDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
+ * @template Middleware of InputReceivedMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
  */
 interface HandlerContract
 {

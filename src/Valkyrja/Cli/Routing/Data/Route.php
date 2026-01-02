@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
@@ -34,14 +34,14 @@ class Route implements Contract
     protected array $options = [];
 
     /**
-     * @param non-empty-string                                    $name                        The name
-     * @param non-empty-string                                    $description                 The description
-     * @param MessageContract                                     $helpText                    The help text
-     * @param class-string<CommandMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<CommandDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[]   $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]            $exitedMiddleware            The exited middleware
-     * @param ParameterContract[]                                 $parameters                  The parameters
+     * @param non-empty-string                                  $name                        The name
+     * @param non-empty-string                                  $description                 The description
+     * @param MessageContract                                   $helpText                    The help text
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware   The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware            The exited middleware
+     * @param ParameterContract[]                               $parameters                  The parameters
      */
     public function __construct(
         protected string $name,
@@ -248,7 +248,7 @@ class Route implements Contract
     /**
      * Get the command matched middleware.
      *
-     * @return class-string<CommandMatchedMiddlewareContract>[]
+     * @return class-string<RouteMatchedMiddlewareContract>[]
      */
     #[Override]
     public function getCommandMatchedMiddleware(): array
@@ -259,7 +259,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -276,7 +276,7 @@ class Route implements Contract
     /**
      * Create a new command with added command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -293,7 +293,7 @@ class Route implements Contract
     /**
      * Get the command dispatched middleware.
      *
-     * @return class-string<CommandDispatchedMiddlewareContract>[]
+     * @return class-string<RouteDispatchedMiddlewareContract>[]
      */
     #[Override]
     public function getCommandDispatchedMiddleware(): array
@@ -304,7 +304,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -321,7 +321,7 @@ class Route implements Contract
     /**
      * Create a new command with added command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */

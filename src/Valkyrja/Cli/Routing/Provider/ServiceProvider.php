@@ -17,10 +17,10 @@ use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
@@ -82,9 +82,9 @@ final class ServiceProvider extends Provider
     public static function publishRouter(ContainerContract $container): void
     {
         $throwableCaughtHandler   = $container->getSingleton(ThrowableCaughtHandlerContract::class);
-        $commandMatchedHandler    = $container->getSingleton(CommandMatchedHandlerContract::class);
-        $commandNotMatchedHandler = $container->getSingleton(CommandNotMatchedHandlerContract::class);
-        $commandDispatchedHandler = $container->getSingleton(CommandDispatchedHandlerContract::class);
+        $commandMatchedHandler    = $container->getSingleton(RouteMatchedHandlerContract::class);
+        $commandNotMatchedHandler = $container->getSingleton(RouteNotMatchedHandlerContract::class);
+        $commandDispatchedHandler = $container->getSingleton(RouteDispatchedHandlerContract::class);
         $exitedHandler            = $container->getSingleton(ExitedHandlerContract::class);
 
         $container->setSingleton(

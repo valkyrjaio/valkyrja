@@ -29,11 +29,11 @@ use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
@@ -236,11 +236,11 @@ class Env
 
     /** @var class-string<InputReceivedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [];
-    /** @var class-string<CommandMatchedMiddlewareContract>[] */
+    /** @var class-string<RouteMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
-    /** @var class-string<CommandNotMatchedMiddlewareContract>[] */
+    /** @var class-string<RouteNotMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [];
-    /** @var class-string<CommandDispatchedMiddlewareContract>[] */
+    /** @var class-string<RouteDispatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
     /** @var class-string<ThrowableCaughtMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [];

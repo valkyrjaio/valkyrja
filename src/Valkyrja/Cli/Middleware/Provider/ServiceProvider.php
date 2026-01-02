@@ -15,23 +15,23 @@ namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -45,12 +45,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputReceivedHandlerContract::class     => [self::class, 'publishInputReceivedHandler'],
-            ThrowableCaughtHandlerContract::class   => [self::class, 'publishThrowableCaughtHandler'],
-            CommandMatchedHandlerContract::class    => [self::class, 'publishCommandMatchedHandler'],
-            CommandNotMatchedHandlerContract::class => [self::class, 'publishCommandNotMatchedHandler'],
-            CommandDispatchedHandlerContract::class => [self::class, 'publishCommandDispatchedHandler'],
-            ExitedHandlerContract::class            => [self::class, 'publishExitedHandler'],
+            InputReceivedHandlerContract::class   => [self::class, 'publishInputReceivedHandler'],
+            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
+            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
         ];
     }
 
@@ -62,10 +62,10 @@ final class ServiceProvider extends Provider
     {
         return [
             InputReceivedHandlerContract::class,
-            CommandDispatchedHandlerContract::class,
+            RouteDispatchedHandlerContract::class,
             ThrowableCaughtHandlerContract::class,
-            CommandMatchedHandlerContract::class,
-            CommandNotMatchedHandlerContract::class,
+            RouteMatchedHandlerContract::class,
+            RouteNotMatchedHandlerContract::class,
             ExitedHandlerContract::class,
         ];
     }
@@ -98,15 +98,15 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishCommandDispatchedHandler(ContainerContract $container): void
+    public static function publishRouteDispatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<CommandDispatchedMiddlewareContract>[] $middleware */
+        /** @var class-string<RouteDispatchedMiddlewareContract>[] $middleware */
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_DISPATCHED;
 
         $container->setSingleton(
-            CommandDispatchedHandlerContract::class,
-            $handler = new CommandDispatchedHandler($container)
+            RouteDispatchedHandlerContract::class,
+            $handler = new RouteDispatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -140,15 +140,15 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishCommandMatchedHandler(ContainerContract $container): void
+    public static function publishRouteMatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<CommandMatchedMiddlewareContract>[] $middleware */
+        /** @var class-string<RouteMatchedMiddlewareContract>[] $middleware */
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_MATCHED;
 
         $container->setSingleton(
-            CommandMatchedHandlerContract::class,
-            $handler = new CommandMatchedHandler($container)
+            RouteMatchedHandlerContract::class,
+            $handler = new RouteMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -161,15 +161,15 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishCommandNotMatchedHandler(ContainerContract $container): void
+    public static function publishRouteNotMatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<CommandNotMatchedMiddlewareContract>[] $middleware */
+        /** @var class-string<RouteNotMatchedMiddlewareContract>[] $middleware */
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_NOT_MATCHED;
 
         $container->setSingleton(
-            CommandNotMatchedHandlerContract::class,
-            $handler = new CommandNotMatchedHandler($container)
+            RouteNotMatchedHandlerContract::class,
+            $handler = new RouteNotMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
