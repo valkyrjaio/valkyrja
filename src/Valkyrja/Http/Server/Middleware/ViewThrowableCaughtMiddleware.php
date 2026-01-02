@@ -48,7 +48,7 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
     ): ResponseContract {
         $statusCode = $response->getStatusCode();
 
-        return $this->viewResponseFactory->createResponseFromView(
+        $response = $this->viewResponseFactory->createResponseFromView(
             template: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
             data: [
                 'exception' => $exception,
@@ -57,5 +57,7 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
             ],
             statusCode: $statusCode
         );
+
+        return $handler->throwableCaught($request, $response, $exception);
     }
 }
