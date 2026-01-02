@@ -17,6 +17,7 @@ use Override;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Enum\InvalidReferenceMode;
 
 interface ContainerContract extends ContainerInterface, ProvidersAwareContract
 {
@@ -138,16 +139,30 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Get a service from the container.
      *
      * @template T of object
+     * @template Mode of InvalidReferenceMode
+     *
+     * @param class-string<T>         $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
+     * @param Mode                    $mode      [optional] The invalid reference mode
+     *
+     * @return (Mode is InvalidReferenceMode::NEW_INSTANCE_OR_NULL|InvalidReferenceMode::NULL ? T|null : T)
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
+     */
+    #[Override]
+    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object|null;
+
+    /**
+     * Get an aliased service from the container.
+     *
+     * @template T of object
      *
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
      * @return T
-     *
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    #[Override]
-    public function get(string $id, array $arguments = []): object;
+    public function getAliased(string $id, array $arguments = []): object;
 
     /**
      * Get a service bound to a callable from the container.
@@ -169,7 +184,7 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ServiceContract
+     * @return T
      */
     public function getService(string $id, array $arguments = []): ServiceContract;
 

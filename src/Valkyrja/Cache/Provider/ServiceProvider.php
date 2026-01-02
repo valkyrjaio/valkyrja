@@ -125,7 +125,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             LogCache::class,
             new LogCache(
-                logger: $container->get($logger),
+                logger: $container->getSingleton($logger),
                 prefix: $prefix
             )
         );
