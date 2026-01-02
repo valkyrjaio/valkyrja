@@ -254,15 +254,6 @@ class Container implements Contract
     /**
      * @inheritDoc
      *
-     * @template T of object
-     * @template Mode of InvalidReferenceMode
-     *
-     * @param class-string<T>         $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     * @param Mode                    $mode      [optional] The invalid reference mode
-     *
-     * @return (Mode is InvalidReferenceMode::NEW_INSTANCE_OR_NULL|InvalidReferenceMode::NULL ? T|null : T)
-     *
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress ImplementedReturnTypeMismatch
