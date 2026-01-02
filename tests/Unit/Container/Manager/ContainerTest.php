@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use AssertionError;
+use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -60,7 +62,7 @@ class ContainerTest extends TestCase
 
     public function testBind(): void
     {
-        $container = $this->container;
+        $container = new Container();
         $id        = ServiceClass::class;
 
         $container->bind($id, $id);
@@ -77,8 +79,6 @@ class ContainerTest extends TestCase
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved
         self::assertNotSame($service, $container->get($id));
-
-        self::assertInstanceOf($id, $container->getService($id));
         self::assertNotSame($service, $container->getService($id));
     }
 
@@ -93,8 +93,7 @@ class ContainerTest extends TestCase
 
         self::assertTrue($container->has($alias));
         self::assertTrue($container->isAlias($alias));
-        self::assertTrue($container->isService($alias));
-
+        self::assertFalse($container->isService($alias));
         self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isDeferred($id));
@@ -104,8 +103,8 @@ class ContainerTest extends TestCase
         // A bound service should return a new instance each time it is retrieved
         self::assertNotSame($service, $container->get($alias));
 
-        self::assertInstanceOf($id, $container->getService($alias));
-        self::assertNotSame($service, $container->getService($alias));
+        self::assertInstanceOf($id, $container->getAliased($alias));
+        self::assertNotSame($service, $container->getAliased($alias));
     }
 
     public function testBindSingleton(): void
@@ -128,8 +127,6 @@ class ContainerTest extends TestCase
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound singleton should return the same instance each time it is retrieved
         self::assertSame($service, $container->get($id));
-
-        self::assertInstanceOf($id, $container->getSingleton($id));
         self::assertSame($service, $container->getSingleton($id));
     }
 
@@ -181,7 +178,42 @@ class ContainerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
+        $this->container->getSingleton(ServiceClass::class);
+    }
+
+    public function testGetNonExistentInvalidSingleton(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->container->getSingleton(self::class);
+    }
+
+    public function testGetNonExistentCallable(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->getCallable(self::class);
+    }
+
+    public function testGetNonExistentAliased(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->getAliased(self::class);
+    }
+
+    public function testGetNonExistentService(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->getService(ServiceClass::class);
+    }
+
+    public function testGetNonExistentInvalidService(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->getService(self::class);
     }
 
     public function testGetData(): void
@@ -212,5 +244,82 @@ class ContainerTest extends TestCase
         self::assertEmpty($data->providers);
         self::assertEmpty($data->services);
         self::assertEmpty($data->singletons);
+    }
+
+    public function testNullInvalidReferenceMode(): void
+    {
+        $container = new Container();
+
+        $object = $container->get(ServiceClass::class, mode: InvalidReferenceMode::NULL);
+
+        self::assertNull($object);
+    }
+
+    public function testNewInstanceOrNullInvalidReferenceMode(): void
+    {
+        $container = new Container();
+
+        $object = $container->get(SingletonClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
+
+        self::assertInstanceOf(SingletonClass::class, $object);
+    }
+
+    public function testNewInstanceOrThrowInvalidReferenceMode(): void
+    {
+        $container = new Container();
+
+        $object = $container->get(SingletonClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+
+        self::assertInstanceOf(SingletonClass::class, $object);
+    }
+
+    public function testNewInstanceOrNullInvalidReferenceModeWithCaughtThrowable(): void
+    {
+        $container = new Container();
+
+        // Will fail because this requires the container as the first argument, but no arguments passed
+        $object = $container->get(ServiceClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
+
+        self::assertNull($object);
+    }
+
+    public function testNewInstanceOrThrowInvalidReferenceModeWithCaughtThrowable(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $container = new Container();
+
+        // Will fail because this requires the container as the first argument, but no arguments passed
+        $container->get(ServiceClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+    }
+
+    /**
+     * This mode should always throw an exception if the service isn't found in the container.
+     */
+    public function testThrowExceptionInvalidReferenceMode(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $container = new Container();
+
+        $container->get(ServiceClass::class, mode: InvalidReferenceMode::THROW_EXCEPTION);
+    }
+
+    public function testNewInstanceNullInvalidReferenceMode(): void
+    {
+        $container = new Container();
+
+        $object = $container->get(Throwable::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
+
+        self::assertNull($object);
+    }
+
+    public function testNewInstanceThrowInvalidReferenceMode(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $container = new Container();
+
+        $container->get(Throwable::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
     }
 }
