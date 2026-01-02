@@ -48,34 +48,8 @@ class Valkyrja implements ApplicationContract
      */
     protected ContainerContract $container;
 
-    /**
-     * Whether the application was setup.
-     */
-    protected bool $setup = false;
-
     public function __construct(ContainerContract $container, Env $env, Config|Data $configData = new Config())
     {
-        $this->setup(
-            container: $container,
-            env: $env,
-            configData: $configData
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function setup(ContainerContract $container, Env $env, Config|Data $configData = new Config(), bool $force = false): void
-    {
-        // If the application was already setup, no need to do it again
-        if ($this->setup && ! $force) {
-            return;
-        }
-
-        // Avoid re-setting up the app later
-        $this->setup = true;
-
         $this->setEnv(env: $env);
         $this->setContainer($container);
 
