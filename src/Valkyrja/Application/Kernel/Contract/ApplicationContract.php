@@ -51,14 +51,8 @@ interface ApplicationContract
 
     /**
      * Setup the application.
-     *
-     * @param Env         $env        The env to use
-     * @param Config|Data $configData The config to use
-     * @param bool        $force      [optional] Whether to force a setup
-     *
-     * @return void
      */
-    public function setup(Env $env, Config|Data $configData = new Config(), bool $force = false): void;
+    public function setup(ContainerContract $container, Env $env, Config|Data $configData = new Config(), bool $force = false): void;
 
     /**
      * Add a component to the application.

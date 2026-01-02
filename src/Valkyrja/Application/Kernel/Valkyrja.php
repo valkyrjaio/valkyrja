@@ -22,7 +22,6 @@ use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
-use Valkyrja\Container\Manager\Container as ContainerManager;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
@@ -54,16 +53,20 @@ class Valkyrja implements ApplicationContract
      */
     protected bool $setup = false;
 
-    public function __construct(Env $env, Config|Data $configData = new Config())
+    public function __construct(ContainerContract $container, Env $env, Config|Data $configData = new Config())
     {
-        $this->setup(env: $env, configData: $configData);
+        $this->setup(
+            container: $container,
+            env: $env,
+            configData: $configData
+        );
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function setup(Env $env, Config|Data $configData = new Config(), bool $force = false): void
+    public function setup(ContainerContract $container, Env $env, Config|Data $configData = new Config(), bool $force = false): void
     {
         // If the application was already setup, no need to do it again
         if ($this->setup && ! $force) {
@@ -74,8 +77,7 @@ class Valkyrja implements ApplicationContract
         $this->setup = true;
 
         $this->setEnv(env: $env);
-
-        $this->bootstrapContainer();
+        $this->setContainer($container);
 
         if ($configData instanceof Config) {
             $this->bootstrapConfig(config: $configData);
@@ -348,16 +350,6 @@ class Valkyrja implements ApplicationContract
     protected function bootstrapData(Data $data): void
     {
         $this->data = $data;
-    }
-
-    /**
-     * Create the container.
-     */
-    protected function bootstrapContainer(): void
-    {
-        $container = new ContainerManager();
-
-        $this->setContainer($container);
     }
 
     /**
