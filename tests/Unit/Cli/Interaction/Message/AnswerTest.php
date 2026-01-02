@@ -38,12 +38,13 @@ class AnswerTest extends TestCase
     public function testText(): void
     {
         $defaultResponse = 'text';
+        $fullText        = "You answered: `$defaultResponse`";
         $formatter       = new HighlightedTextFormatter();
 
         $message = new Answer(defaultResponse: $defaultResponse, formatter: $formatter);
 
-        self::assertSame($defaultResponse, $message->getText());
-        self::assertSame($formatter->formatText($defaultResponse), $message->getFormattedText());
+        self::assertSame($fullText, $message->getText());
+        self::assertSame($formatter->formatText($fullText), $message->getFormattedText());
     }
 
     public function testDefaultResponse(): void
@@ -52,7 +53,7 @@ class AnswerTest extends TestCase
         $defaultResponse2 = 'text2';
         $formatter        = new HighlightedTextFormatter();
 
-        $message = new Answer(defaultResponse: $defaultResponse, formatter: $formatter);
+        $message = new Answer(defaultResponse: $defaultResponse, text: '%s', formatter: $formatter);
 
         self::assertSame($defaultResponse, $message->getDefaultResponse());
         self::assertContains($defaultResponse, $message->getAllowedResponses());
@@ -81,7 +82,7 @@ class AnswerTest extends TestCase
         $userResponse    = 'user text';
         $formatter       = new HighlightedTextFormatter();
 
-        $message = new Answer(defaultResponse: $defaultResponse, formatter: $formatter);
+        $message = new Answer(defaultResponse: $defaultResponse, text: '%s', formatter: $formatter);
 
         self::assertSame($defaultResponse, $message->getUserResponse());
         self::assertFalse($message->hasBeenAnswered());
