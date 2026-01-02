@@ -41,6 +41,8 @@ class OutputTest extends TestCase
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertFalse($output->hasWrittenMessage());
         self::assertFalse($output->hasUnwrittenMessage());
+        self::assertNotEmpty($output->getWriters());
+        self::assertCount(1, $output->getWriters());
     }
 
     public function testInteractive(): void
@@ -89,6 +91,20 @@ class OutputTest extends TestCase
 
         self::assertNotSame($output, $output2);
         self::assertSame(ExitCode::AUTO_EXIT, $output2->getExitCode());
+    }
+
+    public function testWriters(): void
+    {
+        $output = new Output();
+
+        $writers = $output->getWriters();
+
+        self::assertCount(1, $writers);
+
+        $output2 = $output->withWriters();
+
+        self::assertNotSame($output, $output2);
+        self::assertEmpty($output2->getWriters());
     }
 
     public function testMessage(): void
