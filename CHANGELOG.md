@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.12.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.13.0...master)
+
+## [v25.13.0](https://github.com/valkyrjaio/valkyrja/compare/v25.12.0...v25.13.0) - 2026-01-01
+
+* [Cli] Add Interaction writer to handle writing complex messages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/309
 
 ## [v25.12.0](https://github.com/valkyrjaio/valkyrja/compare/v25.11.0...v25.12.0) - 2026-01-01
 
