@@ -22,6 +22,7 @@ use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -136,7 +137,13 @@ class App
             $configData = static::getConfig();
         }
 
-        return new Valkyrja(env: $env, configData: $configData);
+        $container = static::getContainer();
+
+        return new Valkyrja(
+            container: $container,
+            env: $env,
+            configData: $configData
+        );
     }
 
     /**
@@ -206,6 +213,14 @@ class App
     protected static function getThrowableHandler(): ThrowableHandlerContract
     {
         return new WhoopsThrowableHandler();
+    }
+
+    /**
+     * Get the container.
+     */
+    protected static function getContainer(): ContainerContract
+    {
+        return new Container();
     }
 
     /**

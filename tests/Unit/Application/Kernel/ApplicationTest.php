@@ -44,6 +44,7 @@ use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Container\Collector\Contract\CollectorContract as ContainerCollector;
 use Valkyrja\Container\Data\Data as ContainerData;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Event\Collector\Contract\CollectorContract as EventCollector;
@@ -89,52 +90,55 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationWithConfig(): void
     {
-        $env    = new Env();
-        $config = new Config();
+        $env       = new Env();
+        $config    = new Config();
+        $container = new Container();
 
         $application = new Valkyrja(
+            container: $container,
             env: $env,
             configData: $config
         );
 
-        $container = $application->getContainer();
-
+        self::assertSame($container, $application->getContainer());
         self::assertTrue($container->has(Config::class));
         self::assertSame($env, $application->getEnv());
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($config, $container->getSingleton(Config::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
 
-        $env2    = new Env();
-        $config2 = new Config();
+        $env2       = new Env();
+        $config2    = new Config();
+        $container2 = new Container();
 
         $application->setup(
+            container: $container2,
             env: $env2,
             configData: $config2
         );
 
-        $container2 = $application->getContainer();
-
         // Ensure setup isn't run twice
-        self::assertSame($container, $container2);
-        self::assertTrue($container2->has(Config::class));
+        self::assertSame($container, $application->getContainer());
+        self::assertNotSame($container2, $application->getContainer());
+        self::assertTrue($container->has(Config::class));
         self::assertSame($env, $application->getEnv());
-        self::assertSame($env, $container2->getSingleton(Env::class));
-        self::assertSame($config, $container2->getSingleton(Config::class));
+        self::assertSame($env, $container->getSingleton(Env::class));
+        self::assertSame($config, $container->getSingleton(Config::class));
 
-        $env3    = new Env();
-        $config3 = new Config();
+        $env3       = new Env();
+        $config3    = new Config();
+        $container3 = new Container();
 
         $application->setup(
+            container: $container3,
             env: $env3,
             configData: $config3,
             force: true,
         );
 
-        $container3 = $application->getContainer();
-
-        // Ensure setup is run, and config and env are overriden when setup is forced
-        self::assertNotSame($container, $container3);
+        // Ensure setup is run, and config and env are overridden when setup is forced
+        self::assertNotSame($container, $application->getContainer());
+        self::assertSame($container3, $application->getContainer());
         self::assertTrue($container3->has(Config::class));
         self::assertSame($env3, $application->getEnv());
         self::assertSame($env3, $container3->getSingleton(Env::class));
@@ -146,16 +150,17 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationWithData(): void
     {
-        $env  = new Env();
-        $data = new Data();
+        $env       = new Env();
+        $data      = new Data();
+        $container = new Container();
 
         $application = new Valkyrja(
+            container: $container,
             env: $env,
             configData: $data
         );
 
-        $container = $application->getContainer();
-
+        self::assertSame($container, $application->getContainer());
         self::assertNotTrue($container->has(Config::class));
         self::assertTrue($container->has(ContainerData::class));
         self::assertTrue($container->has(EventData::class));
@@ -169,43 +174,45 @@ class ApplicationTest extends TestCase
         self::assertSame($data->http, $container->getSingleton(HttpData::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
 
-        $env2  = new Env();
-        $data2 = new Data();
+        $env2       = new Env();
+        $data2      = new Data();
+        $container2 = new Container();
 
         $application->setup(
+            container: $container2,
             env: $env2,
             configData: $data2
         );
 
-        $container2 = $application->getContainer();
-
         // Ensure setup isn't run twice
-        self::assertSame($container, $container2);
+        self::assertSame($container, $application->getContainer());
+        self::assertNotSame($container2, $application->getContainer());
         self::assertNotTrue($container2->has(Config::class));
-        self::assertTrue($container2->has(ContainerData::class));
-        self::assertTrue($container2->has(EventData::class));
-        self::assertTrue($container2->has(CliData::class));
-        self::assertTrue($container2->has(HttpData::class));
+        self::assertTrue($container->has(ContainerData::class));
+        self::assertTrue($container->has(EventData::class));
+        self::assertTrue($container->has(CliData::class));
+        self::assertTrue($container->has(HttpData::class));
         self::assertSame($env, $application->getEnv());
-        self::assertSame($env, $container2->getSingleton(Env::class));
-        self::assertSame($data->container, $container2->getSingleton(ContainerData::class));
-        self::assertSame($data->event, $container2->getSingleton(EventData::class));
-        self::assertSame($data->cli, $container2->getSingleton(CliData::class));
-        self::assertSame($data->http, $container2->getSingleton(HttpData::class));
+        self::assertSame($env, $container->getSingleton(Env::class));
+        self::assertSame($data->container, $container->getSingleton(ContainerData::class));
+        self::assertSame($data->event, $container->getSingleton(EventData::class));
+        self::assertSame($data->cli, $container->getSingleton(CliData::class));
+        self::assertSame($data->http, $container->getSingleton(HttpData::class));
 
-        $env3  = new Env();
-        $data3 = new Data();
+        $env3       = new Env();
+        $data3      = new Data();
+        $container3 = new Container();
 
         $application->setup(
+            container: $container3,
             env: $env3,
             configData: $data3,
             force: true,
         );
 
-        $container3 = $application->getContainer();
-
-        // Ensure setup is run, and data and env are overriden when setup is forced
-        self::assertNotSame($container, $container3);
+        // Ensure setup is run, and data and env are overridden when setup is forced
+        self::assertNotSame($container, $application->getContainer());
+        self::assertSame($container3, $application->getContainer());
         self::assertNotTrue($container3->has(Config::class));
         self::assertTrue($container3->has(ContainerData::class));
         self::assertTrue($container3->has(EventData::class));
@@ -230,6 +237,7 @@ class ApplicationTest extends TestCase
         $data = new Data();
 
         $application = new Valkyrja(
+            container: new Container(),
             env: $env,
             configData: $data
         );
@@ -242,19 +250,20 @@ class ApplicationTest extends TestCase
      */
     public function testEnsureDefaultComponents(): void
     {
-        $env    = new class extends Env {
+        $env       = new class extends Env {
             /** @var class-string<Provider>[] */
             public const array APP_COMPONENTS = [];
         };
-        $config = new Config();
+        $config    = new Config();
+        $container = new Container();
 
         $application = new Valkyrja(
+            container: $container,
             env: $env,
             configData: $config
         );
 
-        $container = $application->getContainer();
-
+        self::assertSame($container, $application->getContainer());
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(Config::class));
         self::assertTrue($container->has(ApplicationContract::class));
@@ -327,6 +336,7 @@ class ApplicationTest extends TestCase
         $config = new Config();
 
         new Valkyrja(
+            container: new Container(),
             env: $env,
             configData: $config
         );
@@ -341,24 +351,25 @@ class ApplicationTest extends TestCase
      */
     public function testCustomComponents(): void
     {
-        $env    = new class extends Env {
+        $env       = new class extends Env {
             /** @var class-string<Provider>[] */
             public const array APP_COMPONENTS = [];
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [];
         };
-        $config = new Config();
+        $config    = new Config();
+        $container = new Container();
 
         $application = new Valkyrja(
+            container: $container,
             env: $env,
             configData: $config
         );
 
-        $container = $application->getContainer();
-
+        self::assertSame($container, $application->getContainer());
         self::assertFalse($container->has(TemplateContract::class));
 
-        $env2    = new class extends Env {
+        $env2       = new class extends Env {
             /** @var class-string<Provider>[] */
             public const array APP_COMPONENTS = [];
             /** @var class-string<Provider>[] */
@@ -366,15 +377,16 @@ class ApplicationTest extends TestCase
                 ViewComponentProvider::class,
             ];
         };
-        $config2 = new Config();
+        $config2    = new Config();
+        $container2 = new Container();
 
         $application2 = new Valkyrja(
+            container: $container2,
             env: $env2,
             configData: $config2
         );
 
-        $container2 = $application2->getContainer();
-
+        self::assertSame($container2, $application2->getContainer());
         self::assertTrue($container2->has(RendererContract::class));
     }
 }
