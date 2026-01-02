@@ -32,7 +32,7 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContra
     {
         $commandName = $input->getCommandName();
 
-        $output->withAddedMessages(
+        $output = $output->withMessages(
             new Message('Cli Server Error:'),
             new NewLine(),
             new Message("Url: $commandName"),
@@ -44,6 +44,6 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContra
             new Message('Trace: ' . $exception->getTraceAsString()),
         );
 
-        return $output;
+        return $handler->throwableCaught($input, $output, $exception);
     }
 }

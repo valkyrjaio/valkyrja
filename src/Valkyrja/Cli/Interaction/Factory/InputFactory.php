@@ -18,22 +18,24 @@ use Valkyrja\Cli\Interaction\Input\Input;
 abstract class InputFactory
 {
     /**
-     * @param non-empty-string[]|null $args  The arguments
-     * @param class-string<Input>     $class The Input class to return
+     * @param non-empty-string[]|null $args            The arguments
+     * @param class-string<Input>     $class           The Input class to return
+     * @param non-empty-string        $applicationName The default application name (this will be overridden by the actual entry point)
+     * @param non-empty-string        $commandName     The default command name to use in case one was not passed in
      *
      * @return Input
      */
     public static function fromGlobals(
         array|null $args = null,
         string $class = Input::class,
+        string $applicationName = 'valkyrja',
+        string $commandName = 'list',
     ): Input {
         $args ??= $_SERVER['argv'] ?? [];
 
         /** @var non-empty-string[] $args */
-        $applicationName = 'valkyrja';
-        $commandName     = 'list';
-        $arguments       = [];
-        $options         = [];
+        $arguments = [];
+        $options   = [];
 
         $input = new $class();
 

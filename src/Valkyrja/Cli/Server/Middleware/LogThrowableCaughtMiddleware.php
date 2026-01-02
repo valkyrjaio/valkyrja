@@ -39,6 +39,6 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 
         $this->logger->exception($exception, $logMessage);
 
-        return $output;
+        return $handler->throwableCaught($input, $output, $exception);
     }
 }
