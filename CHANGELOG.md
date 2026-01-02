@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.14.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.15.0...master)
+
+## [v25.15.0](https://github.com/valkyrjaio/valkyrja/compare/v25.14.0...v25.15.0) - 2026-01-02
+
+* [Container] Simplify the container and add invalid reference mode by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/312
 
 ## [v25.14.0](https://github.com/valkyrjaio/valkyrja/compare/v25.13.0...v25.14.0) - 2026-01-01
 
