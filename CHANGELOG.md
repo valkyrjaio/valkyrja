@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.13.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.14.0...master)
+
+## [v25.14.0](https://github.com/valkyrjaio/valkyrja/compare/v25.13.0...v25.14.0) - 2026-01-01
+
+* [Application] Update Application Kernel to require a Container by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/310
+* [Application] Deprecate and remove Application setup method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/311
 
 ## [v25.13.0](https://github.com/valkyrjaio/valkyrja/compare/v25.12.0...v25.13.0) - 2026-01-01
 
