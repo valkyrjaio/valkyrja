@@ -1,6 +1,17 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.11.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.12.0...master)
+
+## [v25.12.0](https://github.com/valkyrjaio/valkyrja/compare/v25.11.0...v25.12.0) - 2026-01-01
+
+* [All] Remove redundant dockblocks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/301
+* [All] Remove redundant constructor docblocks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/302
+* [Throwable] Rename the ThrowableHandler to WhoopsThrowableHandler by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/303
+* [Annotation] Remove class from deprecated component by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/304
+* [Container] Remove unused constant names. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/305
+* [Event] Remove unused constant names. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/306
+* [Http] Remove unused constant names. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/307
+* [Cli] Rename command middleware to route middleware for consistency by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/308
 
 ## [v25.11.0](https://github.com/valkyrjaio/valkyrja/compare/v25.10.0...v25.11.0) - 2025-12-31
 
