@@ -37,7 +37,7 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
         $commandName = $input->getCommandName();
         $logMessage  = "Cli Server Error\nUrl: $commandName";
 
-        $this->logger->exception($throwable, $logMessage);
+        $this->logger->throwable($throwable, $logMessage);
 
         return $handler->throwableCaught($input, $output, $throwable);
     }
