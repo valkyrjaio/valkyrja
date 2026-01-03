@@ -26,5 +26,5 @@ interface ThrowableCaughtHandlerContract extends HandlerContract
     /**
      * Middleware handler for after a throwable has been caught during dispatch.
      */
-    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $exception): ResponseContract;
+    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $throwable): ResponseContract;
 }

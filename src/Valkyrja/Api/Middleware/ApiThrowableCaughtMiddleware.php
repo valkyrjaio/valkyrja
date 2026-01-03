@@ -39,11 +39,11 @@ class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,
-        Throwable $exception,
+        Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): ResponseContract {
         $json = $this->api->jsonFromArray([
-            'traceCode' => WhoopsThrowableHandler::getTraceCode($exception),
+            'traceCode' => WhoopsThrowableHandler::getTraceCode($throwable),
         ]);
 
         $json->setStatus(Status::ERROR);
