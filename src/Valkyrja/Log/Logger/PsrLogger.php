@@ -111,15 +111,15 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function exception(Throwable $exception, string $message, array $context = []): void
+    public function throwable(Throwable $throwable, string $message, array $context = []): void
     {
-        $traceCode  = $this->getExceptionTraceCode($exception);
+        $traceCode  = $this->getExceptionTraceCode($throwable);
         $logMessage = "\nTrace Code: $traceCode"
-            . "\nException Message: {$exception->getMessage()}"
+            . "\nException Message: {$throwable->getMessage()}"
             . "\nMessage: $message"
             . "\nStack Trace:"
             . "\n=================================="
-            . "\n{$exception->getTraceAsString()}"
+            . "\n{$throwable->getTraceAsString()}"
             . "\n==================================\n";
 
         $this->error($logMessage, $context);

@@ -110,13 +110,13 @@ interface LoggerContract
     public function log(LogLevel $level, string $message, array $context = []): void;
 
     /**
-     * Log an exception or throwable.
+     * Log a throwable.
      *
-     * @param Throwable               $exception The exception
+     * @param Throwable               $throwable The throwable
      * @param string                  $message   The message
      * @param array<array-key, mixed> $context   [optional] The context
      *
      * @return void
      */
-    public function exception(Throwable $exception, string $message, array $context = []): void;
+    public function throwable(Throwable $throwable, string $message, array $context = []): void;
 }

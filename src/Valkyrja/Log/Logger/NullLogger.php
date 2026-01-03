@@ -96,7 +96,7 @@ class NullLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function exception(Throwable $exception, string $message, array $context = []): void
+    public function throwable(Throwable $throwable, string $message, array $context = []): void
     {
     }
 }
