@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.15.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.16.0...master)
+
+## [v25.16.0](https://github.com/valkyrjaio/valkyrja/compare/v25.15.1...v25.16.0) - 2026-01-03
+
+* [Cli] Add missing interaction tests. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/316
+* [Cli] Remove options checks from handler and router and move to middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/317
+* [Http] Fix throwable caught middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/318
 
 ## [v25.15.1](https://github.com/valkyrjaio/valkyrja/compare/v25.15.0...v25.15.1) - 2026-01-02
 
