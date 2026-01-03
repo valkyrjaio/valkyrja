@@ -30,12 +30,12 @@ class ThrowableCaughtHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $exception): ResponseContract
+    public function throwableCaught(ServerRequestContract $request, ResponseContract $response, Throwable $throwable): ResponseContract
     {
         $next = $this->next;
 
         return $next !== null
-            ? $this->getMiddleware($next)->throwableCaught($request, $response, $exception, $this)
+            ? $this->getMiddleware($next)->throwableCaught($request, $response, $throwable, $this)
             : $response;
     }
 }

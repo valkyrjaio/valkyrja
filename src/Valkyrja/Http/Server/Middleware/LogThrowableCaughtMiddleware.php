@@ -35,14 +35,14 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,
-        Throwable $exception,
+        Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): ResponseContract {
         $url        = $request->getUri()->getPath();
         $logMessage = "Http Server Error\nUrl: $url";
 
-        $this->logger->exception($exception, $logMessage);
+        $this->logger->exception($throwable, $logMessage);
 
-        return $handler->throwableCaught($request, $response, $exception);
+        return $handler->throwableCaught($request, $response, $throwable);
     }
 }

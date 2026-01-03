@@ -30,11 +30,11 @@ class ThrowableCaughtMiddlewareClass implements ThrowableCaughtMiddlewareContrac
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,
-        Throwable $exception,
+        Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): ResponseContract {
         $this->updateCounter();
 
-        return $handler->throwableCaught($request, $response, $exception);
+        return $handler->throwableCaught($request, $response, $throwable);
     }
 }
