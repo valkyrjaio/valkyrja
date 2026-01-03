@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Logger\Contract;
 
+use Override;
 use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
@@ -25,6 +26,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function debug(string|Stringable $message, array $context = []): void;
 
     /**
@@ -32,6 +34,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function info(string|Stringable $message, array $context = []): void;
 
     /**
@@ -39,6 +42,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function notice(string|Stringable $message, array $context = []): void;
 
     /**
@@ -46,6 +50,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function warning(string|Stringable $message, array $context = []): void;
 
     /**
@@ -53,6 +58,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function error(string|Stringable $message, array $context = []): void;
 
     /**
@@ -60,6 +66,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function critical(string|Stringable $message, array $context = []): void;
 
     /**
@@ -67,6 +74,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function alert(string|Stringable $message, array $context = []): void;
 
     /**
@@ -74,6 +82,7 @@ interface LoggerContract extends LoggerInterface
      *
      * @param array<array-key, mixed> $context [optional] The context
      */
+    #[Override]
     public function emergency(string|Stringable $message, array $context = []): void;
 
     /**
@@ -81,7 +90,10 @@ interface LoggerContract extends LoggerInterface
      *
      * @param LogLevel                $level   The log level
      * @param array<array-key, mixed> $context [optional] The context
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType This is fine, we want the type hinting here
      */
+    #[Override]
     public function log($level, string|Stringable $message, array $context = []): void;
 
     /**
