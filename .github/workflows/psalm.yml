@@ -34,7 +34,7 @@ jobs:
           filters: |
             files:
               - '.github/ci/psalm/**'
-              - '.github/ci/suggested/**'
+              - '.github/ci/root-and-suggested/**'
               - '.github/workflows/psalm.yml'
               - 'bin/valkyrja'
               - 'functions/**/*.php'
@@ -70,7 +70,7 @@ jobs:
         with:
           composer-options: --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/suggested
+          working-directory: .github/ci/root-and-suggested
 
       - name: Run Psalm with Shepherd
         if: steps.changes.outputs.files == 'true'

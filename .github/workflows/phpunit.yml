@@ -37,7 +37,7 @@ jobs:
           filters: |
             files:
               - '.github/ci/phpunit/**'
-              - '.github/ci/suggested/**'
+              - '.github/ci/root-and-suggested/**'
               - '.github/workflows/phpunit.yml'
               - 'bin/valkyrja'
               - 'functions/**/*.php'
@@ -74,7 +74,7 @@ jobs:
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/suggested
+          working-directory: .github/ci/root-and-suggested
 
       - name: Make build logs dir
         if: steps.changes.outputs.files == 'true'
