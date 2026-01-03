@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Throwable\Handler;
 
 use Override;
-use Throwable;
-use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract as Contract;
+use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -23,7 +22,7 @@ use Whoops\Util\Misc;
 
 use const E_ALL;
 
-class WhoopsThrowableHandler implements Contract
+class WhoopsThrowableHandler extends ThrowableHandler
 {
     /**
      * Whether debug is enabled or not.
@@ -33,12 +32,7 @@ class WhoopsThrowableHandler implements Contract
     public static bool $enabled = false;
 
     /**
-     * Enable debug mode.
-     *
-     * @param int  $errorReportingLevel [optional] The error reporting level
-     * @param bool $displayErrors       [optional] Whether to display errors
-     *
-     * @return void
+     * @inheritDoc
      */
     #[Override]
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
@@ -78,18 +72,5 @@ class WhoopsThrowableHandler implements Contract
 
         // That's it! Register Whoops and throw a dummy exception:
         $run->register();
-    }
-
-    /**
-     * Get trace code for a throwable/exception.
-     *
-     * @param Throwable $throwable The exception/throwable
-     *
-     * @return string
-     */
-    #[Override]
-    public static function getTraceCode(Throwable $throwable): string
-    {
-        return md5($throwable->getTraceAsString());
     }
 }

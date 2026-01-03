@@ -18,6 +18,7 @@ use Psr\Log\LoggerInterface;
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
+use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 class PsrLogger implements Contract
 {
@@ -113,7 +114,7 @@ class PsrLogger implements Contract
     #[Override]
     public function throwable(Throwable $throwable, string $message, array $context = []): void
     {
-        $traceCode  = $this->getExceptionTraceCode($throwable);
+        $traceCode  = ThrowableHandler::getTraceCode($throwable);
         $logMessage = "\nTrace Code: $traceCode"
             . "\nException Message: {$throwable->getMessage()}"
             . "\nMessage: $message"
@@ -123,17 +124,5 @@ class PsrLogger implements Contract
             . "\n==================================\n";
 
         $this->error($logMessage, $context);
-    }
-
-    /**
-     * Get exception trace code.
-     *
-     * @param Throwable $exception The exception
-     *
-     * @return string
-     */
-    protected function getExceptionTraceCode(Throwable $exception): string
-    {
-        return md5($exception::class . $exception->getTraceAsString());
     }
 }

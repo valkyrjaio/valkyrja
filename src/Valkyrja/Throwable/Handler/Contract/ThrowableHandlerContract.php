@@ -30,9 +30,9 @@ interface ThrowableHandlerContract
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void;
 
     /**
-     * Get trace code for a throwable/exception.
+     * Get trace code for a throwable.
      *
-     * @param Throwable $throwable The exception/throwable
+     * @param Throwable $throwable The throwable
      *
      * @return string
      */
