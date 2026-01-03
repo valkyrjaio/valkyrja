@@ -19,6 +19,8 @@ interface Throwable extends PhpThrowable
 {
     /**
      * Get trace code unique to the exception being thrown.
+     *
+     * @returns non-empty-string
      */
     public function getTraceCode(): string;
 }

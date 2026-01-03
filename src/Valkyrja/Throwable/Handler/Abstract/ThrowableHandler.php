@@ -11,21 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Throwable\Error;
+namespace Valkyrja\Throwable\Handler\Abstract;
 
 use Override;
-use TypeError as PhpTypeError;
-use Valkyrja\Throwable\Contract\Throwable;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Throwable;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 
-class TypeError extends PhpTypeError implements Throwable
+use function md5;
+
+abstract class ThrowableHandler implements ThrowableHandlerContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getTraceCode(): string
+    public static function getTraceCode(Throwable $throwable): string
     {
-        return ThrowableHandler::getTraceCode($this);
+        return md5($throwable::class . $throwable->getTraceAsString());
     }
 }

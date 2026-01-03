@@ -16,7 +16,7 @@ namespace Valkyrja\Throwable\Exception;
 use Exception as PhpException;
 use Override;
 use Valkyrja\Throwable\Contract\Throwable;
-use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
+use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 class Exception extends PhpException implements Throwable
 {
@@ -26,6 +26,6 @@ class Exception extends PhpException implements Throwable
     #[Override]
     public function getTraceCode(): string
     {
-        return WhoopsThrowableHandler::getTraceCode($this);
+        return ThrowableHandler::getTraceCode($this);
     }
 }

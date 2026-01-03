@@ -16,7 +16,7 @@ namespace Valkyrja\Throwable\Exception;
 use InvalidArgumentException as PhpInvalidArgumentException;
 use Override;
 use Valkyrja\Throwable\Contract\Throwable;
-use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
+use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 class InvalidArgumentException extends PhpInvalidArgumentException implements Throwable
 {
@@ -26,6 +26,6 @@ class InvalidArgumentException extends PhpInvalidArgumentException implements Th
     #[Override]
     public function getTraceCode(): string
     {
-        return WhoopsThrowableHandler::getTraceCode($this);
+        return ThrowableHandler::getTraceCode($this);
     }
 }

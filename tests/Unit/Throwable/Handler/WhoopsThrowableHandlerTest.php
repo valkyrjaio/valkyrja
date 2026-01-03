@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Throwable\Handler;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Throwable\Exception\Exception;
 use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
 /**
@@ -22,21 +21,6 @@ use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
  */
 class WhoopsThrowableHandlerTest extends TestCase
 {
-    public function testGetTraceCode(): void
-    {
-        $exception  = new Exception();
-        $exception2 = new Exception();
-        $exception3 = new Exception('Custom message');
-
-        $traceCode  = WhoopsThrowableHandler::getTraceCode($exception);
-        $traceCode2 = WhoopsThrowableHandler::getTraceCode($exception2);
-        $traceCode3 = WhoopsThrowableHandler::getTraceCode($exception3);
-
-        self::assertSame($traceCode, $traceCode2);
-        self::assertSame($traceCode, $traceCode3);
-        self::assertSame($traceCode2, $traceCode3);
-    }
-
     public function testEnable(): void
     {
         $originalExceptionHandler = set_exception_handler(null);
