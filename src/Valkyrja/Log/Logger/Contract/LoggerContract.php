@@ -13,110 +13,93 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Logger\Contract;
 
+use Override;
+use Psr\Log\LoggerInterface;
+use Stringable;
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
 
-interface LoggerContract
+interface LoggerContract extends LoggerInterface
 {
     /**
      * Log a debug message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function debug(string $message, array $context = []): void;
+    #[Override]
+    public function debug(string|Stringable $message, array $context = []): void;
 
     /**
      * Log an info message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function info(string $message, array $context = []): void;
+    #[Override]
+    public function info(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a notice message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function notice(string $message, array $context = []): void;
+    #[Override]
+    public function notice(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a warning message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function warning(string $message, array $context = []): void;
+    #[Override]
+    public function warning(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a error message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function error(string $message, array $context = []): void;
+    #[Override]
+    public function error(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a critical message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function critical(string $message, array $context = []): void;
+    #[Override]
+    public function critical(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a alert message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function alert(string $message, array $context = []): void;
+    #[Override]
+    public function alert(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a emergency message.
      *
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
-     *
-     * @return void
      */
-    public function emergency(string $message, array $context = []): void;
+    #[Override]
+    public function emergency(string|Stringable $message, array $context = []): void;
 
     /**
      * Log a message.
      *
      * @param LogLevel                $level   The log level
-     * @param string                  $message The message
      * @param array<array-key, mixed> $context [optional] The context
      *
-     * @return void
+     * @psalm-suppress MoreSpecificImplementedParamType This is fine, we want the type hinting here
      */
-    public function log(LogLevel $level, string $message, array $context = []): void;
+    #[Override]
+    public function log($level, string|Stringable $message, array $context = []): void;
 
     /**
      * Log a throwable.
      *
-     * @param Throwable               $throwable The throwable
-     * @param string                  $message   The message
-     * @param array<array-key, mixed> $context   [optional] The context
-     *
-     * @return void
+     * @param array<array-key, mixed> $context [optional] The context
      */
-    public function throwable(Throwable $throwable, string $message, array $context = []): void;
+    public function throwable(Throwable $throwable, string|Stringable $message, array $context = []): void;
 }

@@ -15,12 +15,12 @@ namespace Valkyrja\Log\Logger;
 
 use Override;
 use Psr\Log\LoggerInterface;
+use Stringable;
 use Throwable;
-use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
+use Valkyrja\Log\Logger\Abstract\Logger;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
-class PsrLogger implements Contract
+class PsrLogger extends Logger
 {
     public function __construct(
         protected LoggerInterface $logger
@@ -31,7 +31,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function debug(string $message, array $context = []): void
+    public function debug(string|Stringable $message, array $context = []): void
     {
         $this->logger->debug($message, $context);
     }
@@ -40,7 +40,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function info(string $message, array $context = []): void
+    public function info(string|Stringable $message, array $context = []): void
     {
         $this->logger->info($message, $context);
     }
@@ -49,7 +49,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function notice(string $message, array $context = []): void
+    public function notice(string|Stringable $message, array $context = []): void
     {
         $this->logger->notice($message, $context);
     }
@@ -58,7 +58,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function warning(string $message, array $context = []): void
+    public function warning(string|Stringable $message, array $context = []): void
     {
         $this->logger->warning($message, $context);
     }
@@ -67,7 +67,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function error(string $message, array $context = []): void
+    public function error(string|Stringable $message, array $context = []): void
     {
         $this->logger->error($message, $context);
     }
@@ -76,7 +76,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function critical(string $message, array $context = []): void
+    public function critical(string|Stringable $message, array $context = []): void
     {
         $this->logger->critical($message, $context);
     }
@@ -85,7 +85,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function alert(string $message, array $context = []): void
+    public function alert(string|Stringable $message, array $context = []): void
     {
         $this->logger->alert($message, $context);
     }
@@ -94,7 +94,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function emergency(string $message, array $context = []): void
+    public function emergency(string|Stringable $message, array $context = []): void
     {
         $this->logger->emergency($message, $context);
     }
@@ -103,16 +103,7 @@ class PsrLogger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function log(LogLevel $level, string $message, array $context = []): void
-    {
-        $this->logger->log($level->value, $message, $context);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function throwable(Throwable $throwable, string $message, array $context = []): void
+    public function throwable(Throwable $throwable, string|Stringable $message, array $context = []): void
     {
         $traceCode  = ThrowableHandler::getTraceCode($throwable);
         $logMessage = "\nTrace Code: $traceCode"
