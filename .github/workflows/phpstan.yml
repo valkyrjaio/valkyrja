@@ -34,7 +34,7 @@ jobs:
           filters: |
             files:
               - '.github/ci/phpstan/**'
-              - '.github/ci/suggested/**'
+              - '.github/ci/root-and-suggested/**'
               - '.github/workflows/phpstan.yml'
               - 'bin/valkyrja'
               - 'functions/**/*.php'
@@ -70,7 +70,7 @@ jobs:
         with:
           composer-options: --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/suggested
+          working-directory: .github/ci/root-and-suggested
 
       - name: Run PHPStan
         if: steps.changes.outputs.files == 'true'
