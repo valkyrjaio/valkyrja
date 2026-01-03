@@ -38,10 +38,10 @@ class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception): OutputContract
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable): OutputContract
     {
         $this->count++;
 
-        return parent::throwableCaught($input, $output, $exception);
+        return parent::throwableCaught($input, $output, $throwable);
     }
 }

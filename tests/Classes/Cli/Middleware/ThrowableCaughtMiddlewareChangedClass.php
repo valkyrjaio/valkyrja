@@ -28,7 +28,7 @@ class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddleware
 {
     use MiddlewareCounterTrait;
 
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $this->updateCounter();
 

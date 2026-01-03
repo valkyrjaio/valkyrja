@@ -30,12 +30,12 @@ class ThrowableCaughtHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception): OutputContract
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable): OutputContract
     {
         $next = $this->next;
 
         return $next !== null
-            ? $this->getMiddleware($next)->throwableCaught($input, $output, $exception, $this)
+            ? $this->getMiddleware($next)->throwableCaught($input, $output, $throwable, $this)
             : $output;
     }
 }

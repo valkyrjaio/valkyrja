@@ -28,7 +28,7 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContra
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $commandName = $input->getCommandName();
 
@@ -37,13 +37,13 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContra
             new NewLine(),
             new Message("Url: $commandName"),
             new NewLine(),
-            new Message('Message: ' . $exception->getMessage()),
+            new Message('Message: ' . $throwable->getMessage()),
             new NewLine(),
-            new Message('Line: ' . ((string) $exception->getLine())),
+            new Message('Line: ' . ((string) $throwable->getLine())),
             new NewLine(),
-            new Message('Trace: ' . $exception->getTraceAsString()),
+            new Message('Trace: ' . $throwable->getTraceAsString()),
         );
 
-        return $handler->throwableCaught($input, $output, $exception);
+        return $handler->throwableCaught($input, $output, $throwable);
     }
 }
