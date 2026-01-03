@@ -112,8 +112,8 @@ jobs:
     strategy:
       matrix:
         paths:
-          - name: Root
-            command: root-outdated-check
+          - name: Root and Suggested Packages
+            command: root-and-suggested-outdated-check
           - name: Churn
             command: churn-outdated-check
           - name: PHPArkitect
@@ -132,8 +132,6 @@ jobs:
             command: psalm-outdated-check
           - name: Rector
             command: rector-outdated-check
-          - name: Suggested Packages
-            command: suggested-outdated-check
 
     name: "Check ${{ matrix.paths.name }} Composer For Outdated Direct Dependencies"
 
