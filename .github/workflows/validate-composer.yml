@@ -49,8 +49,8 @@ jobs:
           - name: Rector
             path: .github/ci/rector
             options: '--no-check-publish'
-          - name: Suggested Packages
-            path: .github/ci/suggested
+          - name: Root and Suggested Packages
+            path: .github/ci/root-and-suggested
             options: '--no-check-publish'
 
     name: Composer ${{ matrix.paths.name }}
