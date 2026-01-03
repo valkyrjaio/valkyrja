@@ -23,7 +23,7 @@
   },
   "require-dev"       : {
     "filp/whoops"     : "^2.18.4",
-    "monolog/monolog" : "^3.9.0",
+    "monolog/monolog" : "^3.10.0",
     "psr/log"         : "^2.0.0 || ^3.0.2"
   },
   "autoload"          : {
