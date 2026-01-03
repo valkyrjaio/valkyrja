@@ -32,13 +32,13 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $commandName = $input->getCommandName();
         $logMessage  = "Cli Server Error\nUrl: $commandName";
 
-        $this->logger->exception($exception, $logMessage);
+        $this->logger->exception($throwable, $logMessage);
 
-        return $handler->throwableCaught($input, $output, $exception);
+        return $handler->throwableCaught($input, $output, $throwable);
     }
 }

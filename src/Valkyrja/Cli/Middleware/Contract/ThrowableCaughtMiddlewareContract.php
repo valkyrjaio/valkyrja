@@ -26,7 +26,7 @@ interface ThrowableCaughtMiddlewareContract
     public function throwableCaught(
         InputContract $input,
         OutputContract $output,
-        Throwable $exception,
+        Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): OutputContract;
 }
