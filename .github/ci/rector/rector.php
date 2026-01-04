@@ -11,14 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Rector\CodingStyle\Rector\Stmt\RemoveUselessAliasInUseStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 
-return RectorConfig
-    ::configure()
+$rector = RectorConfig::configure();
+
+return $rector
     ->withParallel()
     ->withImportNames(removeUnusedImports: true)
     ->withAutoloadPaths([
@@ -36,4 +38,5 @@ return RectorConfig
         AddOverrideAttributeToOverriddenMethodsRector::class,
         ExplicitNullableParamTypeRector::class,
         NewMethodCallWithoutParenthesesRector::class,
+        RemoveUselessAliasInUseStatementRector::class,
     ]);
