@@ -92,7 +92,15 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $aliasUseLastName = Strings::after($useName, '\\', -1) ?? $useName;
 
             foreach ($node->stmts as $compareStmt) {
-                if ($compareStmt instanceof Node\Stmt\Class_ && strtolower($compareStmt->name->toString()) === strtolower($aliasUseLastName)) {
+                if (
+                    (
+                        $compareStmt instanceof Node\Stmt\Class_
+                        || $compareStmt instanceof Node\Stmt\Interface_
+                        || $compareStmt instanceof Node\Stmt\Trait_
+                    )
+                    && $compareStmt?->name?->name !== null
+                    && strtolower($compareStmt->name->name ?? '') === strtolower($aliasUseLastName)
+                ) {
                     continue 2;
                 }
 
@@ -134,9 +142,9 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $this->modifyImplements($allNode, $aliasName, $aliasUseLastName);
             }
 
-            if ($aliasName === 'ReflectionContract') {
-                file_put_contents(__DIR__ . 'propertytypehintexample.json', json_encode($node));
-            }
+            // if ($aliasName === 'PhpThrowable') {
+            //     file_put_contents(__DIR__ . 'interfaceexample.json', json_encode($node));
+            // }
         }
 
         if ($hasChanged) {
