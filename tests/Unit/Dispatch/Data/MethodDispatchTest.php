@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use stdClass;
-use Valkyrja\Dispatch\Data\MethodDispatch as Dispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
@@ -26,8 +26,8 @@ class MethodDispatchTest extends TestCase
 {
     public function testFromCallableOrArray(): void
     {
-        $dispatch  = Dispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'method']);
-        $dispatch2 = Dispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'staticMethod']);
+        $dispatch  = MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'method']);
+        $dispatch2 = MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'staticMethod']);
 
         self::assertSame('method', $dispatch->getMethod());
         self::assertSame(InvalidDispatcherClass::class, $dispatch->getClass());
@@ -41,28 +41,28 @@ class MethodDispatchTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Dispatch::fromCallableOrArray('str_replace');
+        MethodDispatch::fromCallableOrArray('str_replace');
     }
 
     public function testFromCallableOrArrayEmpty(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Dispatch::fromCallableOrArray([]);
+        MethodDispatch::fromCallableOrArray([]);
     }
 
     public function testFromCallableOrArrayInvalidArrayClassNotString(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Dispatch::fromCallableOrArray([new stdClass()]);
+        MethodDispatch::fromCallableOrArray([new stdClass()]);
     }
 
     public function testFromCallableOrArrayInvalidArrayMissingMethod(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Dispatch::fromCallableOrArray([InvalidDispatcherClass::class]);
+        MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class]);
     }
 
     public function testMethod(): void
@@ -71,7 +71,7 @@ class MethodDispatchTest extends TestCase
         $method  = 'TEST';
         $method2 = 'TEST2';
 
-        $dispatch = new Dispatch(class: $class, method: $method);
+        $dispatch = new MethodDispatch(class: $class, method: $method);
 
         self::assertSame($method, $dispatch->getMethod());
 
@@ -88,7 +88,7 @@ class MethodDispatchTest extends TestCase
     {
         $class    = InvalidDispatcherClass::class;
         $method   = 'TEST';
-        $dispatch = new Dispatch(class: $class, method: $method);
+        $dispatch = new MethodDispatch(class: $class, method: $method);
 
         self::assertFalse($dispatch->isStatic());
 

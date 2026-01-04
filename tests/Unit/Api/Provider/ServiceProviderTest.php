@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Api\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Api\Manager\Api;
-use Valkyrja\Api\Manager\Contract\ApiContract as Contract;
+use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Provider\ServiceProvider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -37,6 +37,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishApi($this->container);
 
-        self::assertInstanceOf(Api::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Api::class, $this->container->getSingleton(ApiContract::class));
     }
 }

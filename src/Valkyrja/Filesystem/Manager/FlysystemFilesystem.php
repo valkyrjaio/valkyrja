@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Manager;
 
 use League\Flysystem\FilesystemException;
-use League\Flysystem\FilesystemOperator as FlysystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 use Override;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 
 use function array_map;
 
-class FlysystemFilesystem implements Contract
+class FlysystemFilesystem implements FilesystemContract
 {
     public function __construct(
-        protected FlysystemInterface $flysystem
+        protected FilesystemOperator $flysystem
     ) {
     }
 
@@ -300,7 +300,7 @@ class FlysystemFilesystem implements Contract
     /**
      * @inheritDoc
      */
-    public function getFlysystem(): FlysystemInterface
+    public function getFlysystem(): FilesystemOperator
     {
         return $this->flysystem;
     }

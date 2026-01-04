@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
-use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
+use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
  *
  * @property string $protected
  */
-class UnpackForNewInstanceModelClass extends AbstractModel
+class UnpackForNewInstanceModelClass extends Model
 {
     use PrivatePropertyTrait;
     use UnpackForNewInstance;

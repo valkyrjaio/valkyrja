@@ -17,7 +17,7 @@ use Override;
 use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Ulid\Contract\UlidContract as Contract;
+use Valkyrja\Type\Ulid\Contract\UlidContract;
 use Valkyrja\Type\Ulid\Support\Ulid as Helper;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
@@ -28,7 +28,7 @@ use function sprintf;
 /**
  * @extends Type<string>
  */
-class Ulid extends Type implements Contract
+class Ulid extends Type implements UlidContract
 {
     /**
      * @throws InvalidUlidException

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Provider\ComponentProvider;
-use Valkyrja\Http\Routing\Provider\ServiceProvider as RoutingServiceProvider;
+use Valkyrja\Http\Routing\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -25,7 +25,7 @@ class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
-        self::assertContains(RoutingServiceProvider::class, ComponentProvider::getContainerProviders());
+        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders());
     }
 
     public function testGetCliControllers(): void

@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Message\Response\RedirectResponse as HttpRedirectResponse;
+use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 
@@ -59,7 +59,7 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContra
      */
     protected function createBeforeRedirectUri(UriContract $uri): UriContract
     {
-        return new HttpUri(
+        return new Uri(
             path: '/' . trim($uri->getPath(), '/'),
             query: $uri->getQuery(),
             fragment: $uri->getFragment()
@@ -71,6 +71,6 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContra
      */
     protected function createBeforeRedirectResponse(UriContract $uri): RedirectResponseContract
     {
-        return HttpRedirectResponse::createFromUri(uri: $uri);
+        return RedirectResponse::createFromUri(uri: $uri);
     }
 }

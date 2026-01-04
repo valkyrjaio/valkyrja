@@ -21,14 +21,14 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Notification\Data\Contract\NotifyContract;
 use Valkyrja\Notification\Entity\Contract\NotifiableUserContract;
 use Valkyrja\Notification\Factory\Contract\FactoryContract;
-use Valkyrja\Notification\Notifier\Contract\NotifierContract as Contract;
+use Valkyrja\Notification\Notifier\Contract\NotifierContract;
 use Valkyrja\Sms\Data\Message as SmsMessage;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_string;
 
-class Notifier implements Contract
+class Notifier implements NotifierContract
 {
     /**
      * The mail recipients.

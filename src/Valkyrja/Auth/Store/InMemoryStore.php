@@ -17,15 +17,15 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
 
 /**
  * @template U of UserContract
  *
- * @implements Contract<U>
+ * @implements StoreContract<U>
  */
-class InMemoryStore implements Contract
+class InMemoryStore implements StoreContract
 {
     /**
      * InMemoryStore construct.

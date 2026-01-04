@@ -19,12 +19,12 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
 /**
  * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
-class ThrowableCaughtHandler extends Handler implements Contract
+class ThrowableCaughtHandler extends Handler implements ThrowableCaughtHandlerContract
 {
     /**
      * @inheritDoc

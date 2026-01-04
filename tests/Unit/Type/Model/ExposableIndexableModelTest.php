@@ -17,8 +17,8 @@ use Valkyrja\Tests\Classes\Model\ExposedIndexableModelClass;
 use Valkyrja\Tests\Classes\Model\IndexableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Model\Contract\ExposableIndexedModelContract as Contract;
-use Valkyrja\Type\Model\Contract\IndexedModelContract as ModelContract;
+use Valkyrja\Type\Model\Contract\ExposableIndexedModelContract;
+use Valkyrja\Type\Model\Contract\IndexedModelContract;
 
 use function method_exists;
 
@@ -29,9 +29,9 @@ class ExposableIndexableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'asExposedIndexedArray'));
-        self::assertTrue(method_exists(Contract::class, 'asExposedChangedIndexedArray'));
-        self::isA(ModelContract::class, Contract::class);
+        self::assertTrue(method_exists(ExposableIndexedModelContract::class, 'asExposedIndexedArray'));
+        self::assertTrue(method_exists(ExposableIndexedModelContract::class, 'asExposedChangedIndexedArray'));
+        self::isA(IndexedModelContract::class, ExposableIndexedModelContract::class);
     }
 
     public function testGetExposable(): void

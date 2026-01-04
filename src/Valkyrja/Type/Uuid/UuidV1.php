@@ -18,7 +18,7 @@ use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
-use Valkyrja\Type\Uuid\Contract\UuidV1Contract as Contract;
+use Valkyrja\Type\Uuid\Contract\UuidV1Contract;
 use Valkyrja\Type\Uuid\Support\UuidV1 as Helper;
 
 use function gettype;
@@ -28,7 +28,7 @@ use function sprintf;
 /**
  * @extends Type<string>
  */
-class UuidV1 extends Type implements Contract
+class UuidV1 extends Type implements UuidV1Contract
 {
     /**
      * @throws InvalidUlidException

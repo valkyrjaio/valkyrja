@@ -38,7 +38,7 @@ use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract as Contract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Container\Manager\Container;
@@ -48,7 +48,7 @@ use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 use function in_array;
 
-class Router implements Contract
+class Router implements RouterContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),

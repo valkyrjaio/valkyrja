@@ -18,12 +18,12 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 
 /**
  * @extends Handler<ExitedMiddlewareContract>
  */
-class ExitedHandler extends Handler implements Contract
+class ExitedHandler extends Handler implements ExitedHandlerContract
 {
     /**
      * @inheritDoc

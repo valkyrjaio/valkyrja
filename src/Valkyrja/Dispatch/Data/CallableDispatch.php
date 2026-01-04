@@ -15,9 +15,9 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
-use Valkyrja\Dispatch\Data\Contract\CallableDispatchContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\CallableDispatchContract;
 
-class CallableDispatch extends Dispatch implements Contract
+class CallableDispatch extends Dispatch implements CallableDispatchContract
 {
     /** @var callable */
     protected $callable;

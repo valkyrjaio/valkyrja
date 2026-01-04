@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Filesystem;
 
-use Valkyrja\Application\Env\Env as AppEnv;
+use Valkyrja\Application\Env\Env;
 
 /**
  * Class EnvClass.
  */
-class EnvClass extends AppEnv
+class EnvClass extends Env
 {
     /************************************************************
      *

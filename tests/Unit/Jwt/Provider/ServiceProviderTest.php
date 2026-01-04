@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Jwt\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Jwt\Provider\ServiceProvider;
@@ -39,7 +39,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishJwt($this->container);
 
-        self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(JwtContract::class));
     }
 
     public function testPublishFirebaseJwt(): void

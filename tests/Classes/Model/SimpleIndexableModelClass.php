@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
-use Valkyrja\Type\Model\Contract\IndexedModelContract as Contract;
+use Valkyrja\Type\Model\Abstract\Model;
+use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Trait\Indexable;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Type\Model\Trait\Indexable;
  *
  * @property string $protected
  */
-class SimpleIndexableModelClass extends AbstractModel implements Contract
+class SimpleIndexableModelClass extends Model implements IndexedModelContract
 {
     use Indexable;
 }

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends Model
@@ -41,7 +41,7 @@ class Route extends Model
         protected string $name,
         protected string $description,
         protected MessageContract $helpText,
-        protected MethodDispatchContract $dispatch = new DefaultDispatch(self::class, '__construct'),
+        protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, '__construct'),
         protected array $commandMatchedMiddleware = [],
         protected array $commandDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],

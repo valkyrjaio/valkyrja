@@ -19,11 +19,11 @@ use Override;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class PusherBroadcaster implements Contract
+class PusherBroadcaster implements BroadcasterContract
 {
     public function __construct(
         protected Pusher $pusher

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data\Attempt;
 
 use Override;
-use Valkyrja\Auth\Data\Attempt\Contract\UnlockAttemptContract as Contract;
+use Valkyrja\Auth\Data\Attempt\Contract\UnlockAttemptContract;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
-class UnlockAttempt implements Contract
+class UnlockAttempt implements UnlockAttemptContract
 {
     public function __construct(
         protected RetrievalContract $retrieval,

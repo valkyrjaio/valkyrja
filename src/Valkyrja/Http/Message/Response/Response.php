@@ -18,15 +18,15 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
-use Valkyrja\Http\Message\Response\Contract\ResponseContract as Contract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Trait\Message;
 
 use function sprintf;
 
-class Response implements Contract
+class Response implements ResponseContract
 {
     use Message;
 
@@ -67,7 +67,7 @@ class Response implements Contract
      * @throws InvalidStreamException
      */
     public function __construct(
-        StreamContract $body = new HttpStream(),
+        StreamContract $body = new Stream(),
         protected StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
     ) {
@@ -86,7 +86,7 @@ class Response implements Contract
         StatusCode|null $statusCode = null,
         array|null $headers = null
     ): static {
-        $stream = new HttpStream();
+        $stream = new Stream();
         $stream->write($content ?? static::DEFAULT_CONTENT);
         $stream->rewind();
 

@@ -16,9 +16,9 @@ namespace Valkyrja\Orm\Statement;
 use Override;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
-use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
+use Valkyrja\Orm\Statement\Contract\StatementContract;
 
-class NullStatement implements Contract
+class NullStatement implements StatementContract
 {
     /**
      * @inheritDoc

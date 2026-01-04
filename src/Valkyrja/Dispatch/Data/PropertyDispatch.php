@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatch\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract;
 
-class PropertyDispatch extends ClassDispatch implements Contract
+class PropertyDispatch extends ClassDispatch implements PropertyDispatchContract
 {
     /**
      * @param class-string                               $class        The class name

@@ -19,7 +19,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Override;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
@@ -27,7 +27,7 @@ use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-class GuzzleClient implements Contract
+class GuzzleClient implements ClientContract
 {
     public function __construct(
         protected Client $client,

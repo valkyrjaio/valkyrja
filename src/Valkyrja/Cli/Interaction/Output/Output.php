@@ -16,11 +16,11 @@ namespace Valkyrja\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Output\Contract\OutputContract as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Writer\Contract\WriterContract;
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
 
-class Output implements Contract
+class Output implements OutputContract
 {
     /**
      * The unwritten messages.

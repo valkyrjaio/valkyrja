@@ -18,12 +18,12 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 
 /**
  * @extends Handler<TerminatedMiddlewareContract>
  */
-class TerminatedHandler extends Handler implements Contract
+class TerminatedHandler extends Handler implements TerminatedHandlerContract
 {
     /**
      * @inheritDoc

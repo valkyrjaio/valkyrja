@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Id;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Id\Contract\StringIdContract as Contract;
+use Valkyrja\Type\Id\Contract\StringIdContract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function is_float;
@@ -26,7 +26,7 @@ use function is_string;
 /**
  * @extends Type<string>
  */
-class StringId extends Type implements Contract
+class StringId extends Type implements StringIdContract
 {
     public function __construct(string $subject)
     {

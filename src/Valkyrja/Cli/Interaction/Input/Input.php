@@ -15,10 +15,10 @@ namespace Valkyrja\Cli\Interaction\Input;
 
 use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
-use Valkyrja\Cli\Interaction\Input\Contract\InputContract as Contract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
-class Input implements Contract
+class Input implements InputContract
 {
     /**
      * @param non-empty-string   $caller      The caller (application name)

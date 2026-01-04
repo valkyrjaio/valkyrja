@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Type;
 
-use Valkyrja\Type\Abstract\Type as AbstractType;
+use Valkyrja\Type\Abstract\Type;
 
 /**
  * Type class to use to test abstract type.
  */
-class TypeClass extends AbstractType
+class TypeClass extends Type
 {
     public function __construct(mixed $subject)
     {

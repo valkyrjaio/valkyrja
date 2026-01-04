@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Message\Response\Response as HttpResponse;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
@@ -103,7 +103,7 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      */
     protected function getExtraDataErrorResponse(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract
     {
-        return new HttpResponse(
+        return new Response(
             statusCode: StatusCode::PAYLOAD_TOO_LARGE,
         );
     }
@@ -136,7 +136,7 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
         ValidatorContract $validate,
         string $struct
     ): ResponseContract {
-        return new HttpResponse(
+        return new Response(
             statusCode: StatusCode::BAD_REQUEST,
         );
     }

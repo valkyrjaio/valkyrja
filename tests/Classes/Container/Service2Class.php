@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container;
 
 use Valkyrja\Container\Attribute\Alias;
-use Valkyrja\Container\Contract\ServiceContract as Contract;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Service class.
  */
 #[Alias(ServiceClass::class)]
-class Service2Class implements Contract
+class Service2Class implements ServiceContract
 {
     public function __construct(
         public ContainerContract $container,

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\ClassDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Event\Data\Contract\ListenerContract as Contract;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 
-class Listener implements Contract
+class Listener implements ListenerContract
 {
     /**
      * @param class-string     $eventId The event class name
@@ -28,7 +28,7 @@ class Listener implements Contract
     public function __construct(
         protected string $eventId,
         protected string $name,
-        protected ClassDispatchContract|MethodDispatchContract $dispatch = new DefaultDispatch(self::class),
+        protected ClassDispatchContract|MethodDispatchContract $dispatch = new ClassDispatch(self::class),
     ) {
     }
 

@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 class Messages extends Message
 {
-    /** @var Contract[] */
+    /** @var MessageContract[] */
     protected array $messages = [];
 
     public function __construct(
-        Contract ...$messages
+        MessageContract ...$messages
     ) {
         parent::__construct(' ');
 
@@ -41,7 +41,7 @@ class Messages extends Message
         $text = implode(
             '',
             array_map(
-                static fn (Contract $message) => $message->getText(),
+                static fn (MessageContract $message) => $message->getText(),
                 $this->messages
             )
         );
@@ -64,7 +64,7 @@ class Messages extends Message
         $text = implode(
             '',
             array_map(
-                static fn (Contract $message) => $message->getFormattedText(),
+                static fn (MessageContract $message) => $message->getFormattedText(),
                 $this->messages
             )
         );

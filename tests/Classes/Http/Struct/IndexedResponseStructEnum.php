@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
-use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract as Contract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 use Valkyrja\Http\Struct\Response\Trait\ResponseStruct;
 
 /**
  * Struct TestResponseStruct.
  */
-enum IndexedResponseStructEnum: int implements Contract
+enum IndexedResponseStructEnum: int implements ResponseStructContract
 {
     use ResponseStruct;
 

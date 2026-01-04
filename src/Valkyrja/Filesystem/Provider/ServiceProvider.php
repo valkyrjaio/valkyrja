@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Provider;
 
-use Aws\S3\S3Client as AwsS3Client;
-use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
-use League\Flysystem\Filesystem as Flysystem;
-use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
+use Aws\S3\S3Client;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -41,9 +41,9 @@ final class ServiceProvider extends Provider
             FilesystemContract::class       => [self::class, 'publishFilesystem'],
             FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
             LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
-            FlysystemLocalAdapter::class    => [self::class, 'publishFlysystemLocalAdapter'],
+            LocalFilesystemAdapter::class   => [self::class, 'publishFlysystemLocalAdapter'],
             S3FlysystemFilesystem::class    => [self::class, 'publishS3FlysystemFilesystem'],
-            FlysystemAwsS3Adapter::class    => [self::class, 'publishFlysystemAwsS3Adapter'],
+            AwsS3V3Adapter::class           => [self::class, 'publishFlysystemAwsS3Adapter'],
             InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
             NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
         ];
@@ -59,9 +59,9 @@ final class ServiceProvider extends Provider
             FilesystemContract::class,
             FlysystemFilesystem::class,
             LocalFlysystemFilesystem::class,
-            FlysystemLocalAdapter::class,
+            LocalFilesystemAdapter::class,
             S3FlysystemFilesystem::class,
-            FlysystemAwsS3Adapter::class,
+            AwsS3V3Adapter::class,
             InMemoryFilesystem::class,
             NullFilesystem::class,
         ];
@@ -105,8 +105,8 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             LocalFlysystemFilesystem::class,
             new LocalFlysystemFilesystem(
-                new Flysystem(
-                    $container->getSingleton(FlysystemLocalAdapter::class),
+                new Filesystem(
+                    $container->getSingleton(LocalFilesystemAdapter::class),
                 )
             ),
         );
@@ -122,8 +122,8 @@ final class ServiceProvider extends Provider
         $path = $env::FILESYSTEM_FLYSYSTEM_LOCAL_PATH;
 
         $container->setSingleton(
-            FlysystemLocalAdapter::class,
-            new FlysystemLocalAdapter(
+            LocalFilesystemAdapter::class,
+            new LocalFilesystemAdapter(
                 location: Directory::basePath(path: $path)
             )
         );
@@ -137,8 +137,8 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             S3FlysystemFilesystem::class,
             new S3FlysystemFilesystem(
-                new Flysystem(
-                    $container->getSingleton(FlysystemAwsS3Adapter::class),
+                new Filesystem(
+                    $container->getSingleton(AwsS3V3Adapter::class),
                 )
             ),
         );
@@ -175,9 +175,9 @@ final class ServiceProvider extends Provider
         ];
 
         $container->setSingleton(
-            FlysystemAwsS3Adapter::class,
-            new FlysystemAwsS3Adapter(
-                client: new AwsS3Client($clientConfig),
+            AwsS3V3Adapter::class,
+            new AwsS3V3Adapter(
+                client: new S3Client($clientConfig),
                 bucket: $bucket,
                 prefix: $prefix,
                 options: $options

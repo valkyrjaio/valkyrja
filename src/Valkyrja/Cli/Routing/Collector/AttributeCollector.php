@@ -27,8 +27,8 @@ use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as Contract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract as ArgumentContract;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as OptionContract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
@@ -229,7 +229,7 @@ class AttributeCollector implements Contract
         );
     }
 
-    protected function convertArgumentAttributeToData(ArgumentContract $parameter): ArgumentParameter
+    protected function convertArgumentAttributeToData(ArgumentParameterContract $parameter): ArgumentParameter
     {
         return new ArgumentParameter(
             name: $parameter->getName(),
@@ -240,7 +240,7 @@ class AttributeCollector implements Contract
         );
     }
 
-    protected function convertOptionAttributeToData(OptionContract $parameter): OptionParameter
+    protected function convertOptionAttributeToData(OptionParameterContract $parameter): OptionParameter
     {
         return new OptionParameter(
             name: $parameter->getName(),

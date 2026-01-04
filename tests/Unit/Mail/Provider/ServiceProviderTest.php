@@ -18,7 +18,7 @@ use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
@@ -43,7 +43,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishMailer($this->container);
 
-        self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(MailerContract::class));
     }
 
     /**

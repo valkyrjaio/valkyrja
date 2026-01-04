@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
 
-class SqlInsertQueryBuilder extends SqlQueryBuilder implements Contract
+class SqlInsertQueryBuilder extends SqlQueryBuilder implements InsertQueryBuilderContract
 {
     /** @var Value[] */
     protected array $values = [];

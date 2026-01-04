@@ -18,12 +18,12 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
 /**
  * @extends Handler<RouteNotMatchedMiddlewareContract>
  */
-class RouteNotMatchedHandler extends Handler implements Contract
+class RouteNotMatchedHandler extends Handler implements RouteNotMatchedHandlerContract
 {
     /**
      * @inheritDoc

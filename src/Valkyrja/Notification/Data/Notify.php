@@ -16,10 +16,10 @@ namespace Valkyrja\Notification\Data;
 use Override;
 use Valkyrja\Broadcast\Data\Contract\MessageContract as BroadcastMessage;
 use Valkyrja\Mail\Data\Contract\MessageContract as MailMessage;
-use Valkyrja\Notification\Data\Contract\NotifyContract as Contract;
+use Valkyrja\Notification\Data\Contract\NotifyContract;
 use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
-class Notify implements Contract
+class Notify implements NotifyContract
 {
     /**
      * The broadcast adapter to use for this notification.

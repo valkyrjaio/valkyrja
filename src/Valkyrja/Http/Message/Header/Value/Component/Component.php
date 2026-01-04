@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value\Component;
 
 use Override;
-use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract as Contract;
+use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 
 use function explode;
 
@@ -22,7 +22,7 @@ use function explode;
  * @phpstan-consistent-constructor
  *  Will be overridden if need be
  */
-class Component implements Contract
+class Component implements ComponentContract
 {
     /**
      * Deliminator to use for token and text.

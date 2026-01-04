@@ -34,7 +34,7 @@ use Valkyrja\Type\BuiltIn\StringT;
 use Valkyrja\Type\BuiltIn\TrueT;
 use Valkyrja\Type\Json\Json;
 use Valkyrja\Type\Json\JsonObject;
-use Valkyrja\Type\Model\Contract\CastableModelContract as Contract;
+use Valkyrja\Type\Model\Contract\CastableModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_decode;
@@ -50,8 +50,8 @@ class CastableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'getCastings'));
-        self::isA(ModelContract::class, Contract::class);
+        self::assertTrue(method_exists(CastableModelContract::class, 'getCastings'));
+        self::isA(ModelContract::class, CastableModelContract::class);
     }
 
     /**

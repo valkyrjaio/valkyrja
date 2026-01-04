@@ -15,9 +15,9 @@ namespace Valkyrja\View\Renderer;
 
 use Override;
 use Valkyrja\Throwable\Exception\RuntimeException;
-use Valkyrja\View\Renderer\Contract\RendererContract as Contract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
-use Valkyrja\View\Template\Template as DefaultTemplate;
+use Valkyrja\View\Template\Template;
 use Valkyrja\View\Throwable\Exception\InvalidConfigPath;
 
 use function explode;
@@ -30,7 +30,7 @@ use function trim;
 use const DIRECTORY_SEPARATOR;
 use const EXTR_SKIP;
 
-class PhpRenderer implements Contract
+class PhpRenderer implements RendererContract
 {
     /**
      * @param array<string, string> $paths The paths
@@ -81,7 +81,7 @@ class PhpRenderer implements Contract
     #[Override]
     public function createTemplate(string $name, array $variables = []): TemplateContract
     {
-        return new DefaultTemplate(
+        return new Template(
             renderer: $this,
             name: $name,
             variables: $variables

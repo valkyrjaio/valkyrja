@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests;
 
-use Valkyrja\Application\Env\Env as AppEnv;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 
 /**
  * Class EnvClass.
  */
-class EnvClass extends AppEnv
+class EnvClass extends Env
 {
     /************************************************************
      *

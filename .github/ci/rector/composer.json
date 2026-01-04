@@ -9,6 +9,11 @@
     "fix"   : "vendor/bin/rector",
     "check" : "vendor/bin/rector --dry-run"
   },
+  "autoload"          : {
+    "psr-4" : {
+      "Valkyrja\\Rector\\" : "Rector"
+    }
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

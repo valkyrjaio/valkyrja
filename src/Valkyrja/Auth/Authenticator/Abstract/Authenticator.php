@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Authenticator\Abstract;
 
 use Override;
-use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract as Contract;
+use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttemptContract;
-use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
+use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -27,9 +27,9 @@ use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 /**
  * @template U of UserContract
  *
- * @implements Contract<U>
+ * @implements AuthenticatorContract<U>
  */
-abstract class Authenticator implements Contract
+abstract class Authenticator implements AuthenticatorContract
 {
     /** @var UserContract|null */
     protected UserContract|null $current = null;
@@ -44,7 +44,7 @@ abstract class Authenticator implements Contract
         protected StoreContract $store,
         protected PasswordHasherContract $hasher,
         protected string $entity,
-        protected AuthenticatedUsersContract $authenticatedUsers = new AuthenticatedUsersData(),
+        protected AuthenticatedUsersContract $authenticatedUsers = new AuthenticatedUsers(),
     ) {
     }
 

@@ -17,7 +17,7 @@ use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollection;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -68,7 +68,7 @@ class CliTest extends TestCase
         $application = Cli::app($env);
         $container   = $application->getContainer();
 
-        $cli = $container->getSingleton(CliCollection::class);
+        $cli = $container->getSingleton(CollectionContract::class);
 
         $cli->add(
             new Route(

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Abstract;
 
 use Override;
-use Valkyrja\Type\Contract\TypeContract as Contract;
+use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * @implements Contract<T>
+ * @implements TypeContract<T>
  *
  * @template T
  */
-abstract class Type implements Contract
+abstract class Type implements TypeContract
 {
     /**
      * @var T

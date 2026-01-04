@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Data;
 
 use Override;
-use Valkyrja\Mail\Data\Contract\MessageContract as Contract;
+use Valkyrja\Mail\Data\Contract\MessageContract;
 
-class Message implements Contract
+class Message implements MessageContract
 {
     /**
      * The recipients.

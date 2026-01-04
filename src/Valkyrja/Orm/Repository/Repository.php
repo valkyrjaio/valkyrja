@@ -18,14 +18,14 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
-use Valkyrja\Orm\Repository\Contract\RepositoryContract as Contract;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 
 /**
  * @template T of EntityContract
  *
- * @implements Contract<T>
+ * @implements RepositoryContract<T>
  */
-class Repository implements Contract
+class Repository implements RepositoryContract
 {
     /**
      * @param class-string<T> $entity

@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Data;
 use Override;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
@@ -25,7 +25,7 @@ use Valkyrja\Type\Data\Cast;
 use function count;
 use function in_array;
 
-class OptionParameter extends Parameter implements Contract
+class OptionParameter extends Parameter implements OptionParameterContract
 {
     /**
      * @param non-empty-string      $name             The names

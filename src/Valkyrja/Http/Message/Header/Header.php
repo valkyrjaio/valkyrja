@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header;
 
 use Override;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract as Contract;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
-use Valkyrja\Http\Message\Header\Value\Value as HeaderValue;
+use Valkyrja\Http\Message\Header\Value\Value;
 
 use function array_filter;
 use function array_map;
@@ -31,7 +31,7 @@ use function is_string;
 use function str_contains;
 use function strtolower;
 
-class Header implements Contract
+class Header implements HeaderContract
 {
     /**
      * Deliminator between name and values.
@@ -312,7 +312,7 @@ class Header implements Contract
     protected function mapToValue(ValueContract|string ...$values): array
     {
         return array_map(
-            static fn (ValueContract|string $value): ValueContract => is_string($value) ? HeaderValue::fromValue($value) : $value,
+            static fn (ValueContract|string $value): ValueContract => is_string($value) ? Value::fromValue($value) : $value,
             $values
         );
     }

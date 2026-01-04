@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Collection;
 
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Type\Collection\Contract\CollectionContract;
 
 use function array_keys;
 use function count;
@@ -25,9 +25,9 @@ use function in_array;
  * @template K of array-key
  * @template T of string|int|float|bool|array|object|null
  *
- * @implements Contract<K, T>
+ * @implements CollectionContract<K, T>
  */
-class Collection implements Contract
+class Collection implements CollectionContract
 {
     /**
      * The collection of items.

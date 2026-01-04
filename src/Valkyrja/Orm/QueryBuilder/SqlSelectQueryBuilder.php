@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
 
-class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
+class SqlSelectQueryBuilder extends SqlQueryBuilder implements SelectQueryBuilderContract
 {
     /** @var non-empty-string[] */
     protected array $columns = ['*'];

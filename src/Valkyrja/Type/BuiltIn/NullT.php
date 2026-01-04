@@ -15,12 +15,12 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\NullContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\NullContract;
 
 /**
  * @extends Type<null>
  */
-class NullT extends Type implements Contract
+class NullT extends Type implements NullContract
 {
     public function __construct()
     {

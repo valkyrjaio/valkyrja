@@ -24,7 +24,7 @@ use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
@@ -32,7 +32,7 @@ class ListCommand
 {
     public const string NAME = 'http:list';
 
-    #[RouteAttribute(
+    #[Route(
         name: self::NAME,
         description: 'List all routes',
         helpText: new Message('A command to list all the routes present within the Http component.'),

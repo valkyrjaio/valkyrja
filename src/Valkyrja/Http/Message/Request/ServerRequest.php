@@ -18,13 +18,13 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract as Contract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_filter;
 use function array_key_exists;
@@ -32,7 +32,7 @@ use function in_array;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class ServerRequest extends Request implements Contract
+class ServerRequest extends Request implements ServerRequestContract
 {
     /**
      * The attributes.
@@ -56,9 +56,9 @@ class ServerRequest extends Request implements Contract
      * @throws InvalidArgumentException
      */
     public function __construct(
-        UriContract $uri = new HttpUri(),
+        UriContract $uri = new Uri(),
         RequestMethod $method = RequestMethod::GET,
-        StreamContract $body = new HttpStream(stream: PhpWrapper::input),
+        StreamContract $body = new Stream(stream: PhpWrapper::input),
         array $headers = [],
         protected array $server = [],
         protected array $cookies = [],

@@ -17,8 +17,8 @@ use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpCollection;
-use Valkyrja\Http\Routing\Data\Route as HttpRoute;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -60,10 +60,10 @@ class HttpTest extends TestCase
         $application = Http::app($env);
         $container   = $application->getContainer();
 
-        $http = $container->getSingleton(HttpCollection::class);
+        $http = $container->getSingleton(CollectionContract::class);
 
         $http->add(
-            new HttpRoute(
+            new Route(
                 path: '/version',
                 name: 'version',
                 dispatch: MethodDispatch::fromCallableOrArray([self::class, 'routeCallback'])

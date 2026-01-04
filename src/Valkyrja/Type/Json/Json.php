@@ -16,15 +16,15 @@ namespace Valkyrja\Type\Json;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Support\Arr as Helper;
-use Valkyrja\Type\Json\Contract\JsonContract as Contract;
+use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Json\Contract\JsonContract;
 
 use function is_string;
 
 /**
  * @extends Type<array<string|int, mixed>>
  */
-class Json extends Type implements Contract
+class Json extends Type implements JsonContract
 {
     /**
      * @param array<string|int, mixed> $subject The json
@@ -43,7 +43,7 @@ class Json extends Type implements Contract
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
-            return new static(Helper::fromString($value));
+            return new static(Arr::fromString($value));
         }
 
         return new static((array) $value);
@@ -66,6 +66,6 @@ class Json extends Type implements Contract
     #[Override]
     public function asFlatValue(): string
     {
-        return Helper::toString($this->subject);
+        return Arr::toString($this->subject);
     }
 }

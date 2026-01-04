@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Id;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Id\Contract\IdContract as Contract;
+use Valkyrja\Type\Id\Contract\IdContract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function is_float;
@@ -25,7 +25,7 @@ use function is_string;
 /**
  * @extends Type<string|int>
  */
-class Id extends Type implements Contract
+class Id extends Type implements IdContract
 {
     public function __construct(string|int $subject)
     {

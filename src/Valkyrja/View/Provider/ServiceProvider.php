@@ -16,7 +16,7 @@ namespace Valkyrja\View\Provider;
 use Override;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
+use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -153,7 +153,7 @@ final class ServiceProvider extends Provider
         $debug = $env::APP_DEBUG_MODE;
         /** @var array<string, string> $paths */
         $paths = $env::VIEW_TWIG_PATHS;
-        /** @var class-string<TwigExtensionInterface>[] $extensions */
+        /** @var class-string<ExtensionInterface>[] $extensions */
         $extensions = $env::VIEW_TWIG_EXTENSIONS;
         /** @var non-empty-string $compiledDir */
         $compiledDir = $env::VIEW_TWIG_COMPILED_PATH;

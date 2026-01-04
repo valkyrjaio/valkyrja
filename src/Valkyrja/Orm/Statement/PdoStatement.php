@@ -19,7 +19,7 @@ use PDOStatement as Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
-use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
+use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_array;
@@ -27,7 +27,7 @@ use function is_bool;
 use function is_int;
 use function is_string;
 
-class PdoStatement implements Contract
+class PdoStatement implements StatementContract
 {
     public function __construct(
         protected Statement $statement

@@ -17,9 +17,9 @@ use Override;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Mail\Data\Contract\MessageContract;
-use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 
-class PhpMailer implements Contract
+class PhpMailer implements MailerContract
 {
     public function __construct(
         protected PHPMailerClient $phpMailer

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Struct\Response;
 
 use Valkyrja\Http\Struct\Contract\StructContract;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract as Contract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
@@ -26,8 +26,8 @@ class ResponseStructTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertMethodExists(Contract::class, 'getStructuredData');
-        self::assertIsA(StructContract::class, Contract::class);
+        self::assertMethodExists(ResponseStructContract::class, 'getStructuredData');
+        self::assertIsA(StructContract::class, ResponseStructContract::class);
     }
 
     public function testStruct(): void

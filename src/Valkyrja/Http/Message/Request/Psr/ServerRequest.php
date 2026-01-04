@@ -17,17 +17,17 @@ use Override;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\Factory\UploadedFileFactory;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract as ValkyrjaUploadedFile;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Psr\UploadedFile;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract as ValkyrjaRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
 
 /**
- * @property ValkyrjaRequest $request
+ * @property ServerRequestContract $request
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
-    public function __construct(ValkyrjaRequest $request)
+    public function __construct(ServerRequestContract $request)
     {
         parent::__construct($request);
     }
@@ -109,7 +109,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         $uploadedFiles = [];
 
         foreach ($valkyrjaUploadedFiles as $valkyrjaUploadedFile) {
-            if (! $valkyrjaUploadedFile instanceof ValkyrjaUploadedFile) {
+            if (! $valkyrjaUploadedFile instanceof UploadedFileContract) {
                 throw new RuntimeException('Invalid uploaded file');
             }
 

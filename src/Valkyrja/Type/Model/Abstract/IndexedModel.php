@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Abstract;
 
-use Valkyrja\Type\Model\Contract\IndexedModelContract as Contract;
+use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Trait\Indexable;
 
-abstract class IndexedModel extends Model implements Contract
+abstract class IndexedModel extends Model implements IndexedModelContract
 {
     use Indexable;
 }

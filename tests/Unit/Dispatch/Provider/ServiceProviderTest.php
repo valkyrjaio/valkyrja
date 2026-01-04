@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatch\Provider;
 
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -30,6 +30,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         ServiceProvider::publishDispatcher($this->container);
 
-        self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));
     }
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Client\Provider;
 
-use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Client\Manager\NullClient;
@@ -41,7 +41,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishClient($this->container);
 
-        self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(ClientContract::class));
     }
 
     /**
@@ -49,7 +49,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishGuzzleClient(): void
     {
-        $this->container->setSingleton(Guzzle::class, self::createStub(Guzzle::class));
+        $this->container->setSingleton(Client::class, self::createStub(Client::class));
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
         ServiceProvider::publishGuzzleClient($this->container);
@@ -83,6 +83,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         ServiceProvider::publishGuzzle($this->container);
 
-        self::assertInstanceOf(Guzzle::class, $this->container->getSingleton(Guzzle::class));
+        self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
     }
 }

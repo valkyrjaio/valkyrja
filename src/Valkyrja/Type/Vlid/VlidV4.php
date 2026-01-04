@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid;
 
-use Valkyrja\Type\Vlid\Contract\VlidV4Contract as Contract;
+use Valkyrja\Type\Vlid\Contract\VlidV4Contract;
 use Valkyrja\Type\Vlid\Support\VlidV4 as Helper;
 
-class VlidV4 extends Vlid implements Contract
+class VlidV4 extends Vlid implements VlidV4Contract
 {
     public function __construct(string|null $subject = null)
     {

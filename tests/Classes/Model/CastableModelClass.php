@@ -21,14 +21,14 @@ use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Data\OriginalArrayCast;
 use Valkyrja\Type\Data\OriginalCast;
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\Abstract\CastableModel as AbstractModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 /**
  * Model class to use to test Castable model.
  *
  * @property string $protected
  */
-class CastableModelClass extends AbstractModel
+class CastableModelClass extends CastableModel
 {
     public const ARRAY_PROPERTY                   = 'array';
     public const ARRAY_ARRAY_PROPERTY             = 'arrayArray';

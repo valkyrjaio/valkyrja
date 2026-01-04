@@ -17,7 +17,7 @@ use JsonException;
 use stdClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function serialize;
@@ -35,7 +35,7 @@ class ObjectTest extends TestCase
             public string $foo = 'bar';
         };
 
-        self::assertSame('{"foo":"bar"}', Helper::toString($value));
+        self::assertSame('{"foo":"bar"}', Obj::toString($value));
     }
 
     /**
@@ -43,7 +43,7 @@ class ObjectTest extends TestCase
      */
     public function testFromString(): void
     {
-        $value = Helper::fromString('{"foo":"bar"}');
+        $value = Obj::fromString('{"foo":"bar"}');
 
         self::assertSame('bar', $value->foo);
     }
@@ -55,14 +55,14 @@ class ObjectTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        Helper::fromString('"validbutnotobject"');
+        Obj::fromString('"validbutnotobject"');
     }
 
     public function testToSerializedString(): void
     {
         $value = ModelClass::fromArray(['public' => 'test']);
 
-        self::assertSame(serialize($value), Helper::toSerializedString($value));
+        self::assertSame(serialize($value), Obj::toSerializedString($value));
     }
 
     public function testFromSerializedString(): void
@@ -71,7 +71,7 @@ class ObjectTest extends TestCase
         $stdClass->foo = 'bar';
 
         $serialized = serialize($stdClass);
-        $value      = Helper::fromSerializedString($serialized);
+        $value      = Obj::fromSerializedString($serialized);
 
         self::assertInstanceOf(stdClass::class, $value);
         self::assertSame('bar', $value->foo);
@@ -83,7 +83,7 @@ class ObjectTest extends TestCase
 
         $serialized = serialize('validstring');
 
-        Helper::fromSerializedString($serialized);
+        Obj::fromSerializedString($serialized);
     }
 
     public function testFromSerializedStringWithNoAllowedClasses(): void
@@ -91,7 +91,7 @@ class ObjectTest extends TestCase
         error_reporting(1);
 
         $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
-        $value      = Helper::fromSerializedString($serialized);
+        $value      = Obj::fromSerializedString($serialized);
 
         // No values should be accessible and should all be null
         self::assertNull($value->public);
@@ -100,7 +100,7 @@ class ObjectTest extends TestCase
     public function testFromSerializedStringWithNullAllowedClasses(): void
     {
         $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
-        $value      = Helper::fromSerializedString($serialized, null);
+        $value      = Obj::fromSerializedString($serialized, null);
 
         self::assertSame('test', $value->public);
     }
@@ -108,7 +108,7 @@ class ObjectTest extends TestCase
     public function testFromSerializedStringWithAllowedClasses(): void
     {
         $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
-        $value      = Helper::fromSerializedString($serialized, [ModelClass::class]);
+        $value      = Obj::fromSerializedString($serialized, [ModelClass::class]);
 
         self::assertInstanceOf(ModelClass::class, $value);
         self::assertSame('test', $value->public);
@@ -118,13 +118,13 @@ class ObjectTest extends TestCase
     {
         $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
         // Only public properties
-        $publicOnlyProperties = Helper::getAllProperties($value, false, false);
+        $publicOnlyProperties = Obj::getAllProperties($value, false, false);
         // All public and protected
-        $includeProtectedProperties = Helper::getAllProperties($value, includePrivate: false);
+        $includeProtectedProperties = Obj::getAllProperties($value, includePrivate: false);
         // All public and private
-        $includePrivateProperties = Helper::getAllProperties($value, includeProtected: false);
+        $includePrivateProperties = Obj::getAllProperties($value, includeProtected: false);
         // All public, protected, and private
-        $allProperties = Helper::getAllProperties($value);
+        $allProperties = Obj::getAllProperties($value);
 
         self::assertSame(['public' => 'test'], $publicOnlyProperties);
         self::assertSame(['public' => 'test', 'protected' => 'foo'], $includeProtectedProperties);
@@ -187,7 +187,7 @@ class ObjectTest extends TestCase
             }
         };
 
-        $toDeepArray = Helper::toDeepArray($value);
+        $toDeepArray = Obj::toDeepArray($value);
 
         self::assertIsArray($toDeepArray['first']);
         self::assertIsArray($toDeepArray['first']['second']);
@@ -224,10 +224,10 @@ class ObjectTest extends TestCase
         };
         $default = 'default';
 
-        $result        = Helper::getValueDotNotation($value, 'first.second.third.foo', $default);
-        $resultDefault = Helper::getValueDotNotation($value, 'first.second.non_existent', $default);
+        $result        = Obj::getValueDotNotation($value, 'first.second.third.foo', $default);
+        $resultDefault = Obj::getValueDotNotation($value, 'first.second.non_existent', $default);
 
-        $resultDefaultNonArray = Helper::getValueDotNotation($value, 'notobject.nonexistent', $default);
+        $resultDefaultNonArray = Obj::getValueDotNotation($value, 'notobject.nonexistent', $default);
 
         self::assertSame($value->first->second->third->foo, $result);
         self::assertSame($default, $resultDefault);

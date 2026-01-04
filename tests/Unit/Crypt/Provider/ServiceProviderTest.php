@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Crypt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Crypt\Manager\Contract\CryptContract as Contract;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Crypt\Provider\ServiceProvider;
@@ -37,7 +37,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishCrypt($this->container);
 
-        self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(CryptContract::class));
     }
 
     public function testPublishSodiumCrypt(): void

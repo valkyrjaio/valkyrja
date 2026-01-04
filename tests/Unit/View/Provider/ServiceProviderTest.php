@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\DebugExtension;
-use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
+use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Tests\EnvClass;
@@ -25,7 +25,7 @@ use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
 use Valkyrja\View\Provider\ServiceProvider;
-use Valkyrja\View\Renderer\Contract\RendererContract as Contract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
@@ -47,7 +47,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishRenderer($this->container);
 
-        self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(RendererContract::class));
     }
 
     public function testPublishPhpRenderer(): void
@@ -88,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
                 public const array VIEW_TWIG_PATHS = [
                     'namespace' => EnvClass::APP_DIR . '/storage',
                 ];
-                /** @var class-string<TwigExtensionInterface>[] */
+                /** @var class-string<ExtensionInterface>[] */
                 public const array VIEW_TWIG_EXTENSIONS = [
                     DebugExtension::class,
                 ];
@@ -106,7 +106,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishResponseFactory(): void
     {
         $this->container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
-        $this->container->setSingleton(Contract::class, self::createStub(Contract::class));
+        $this->container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
         ServiceProvider::publishResponseFactory($this->container);
 

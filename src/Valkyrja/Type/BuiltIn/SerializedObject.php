@@ -16,15 +16,15 @@ namespace Valkyrja\Type\BuiltIn;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\SerializedObjectContract as Contract;
-use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
+use Valkyrja\Type\BuiltIn\Contract\SerializedObjectContract;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function is_string;
 
 /**
  * @extends Type<object>
  */
-class SerializedObject extends Type implements Contract
+class SerializedObject extends Type implements SerializedObjectContract
 {
     /**
      * Allowed classes for serialization of object type properties.
@@ -57,7 +57,7 @@ class SerializedObject extends Type implements Contract
             /** @var class-string[] $allowedClasses */
             $allowedClasses = static::ALLOWED_CLASSES;
 
-            return new static(Helper::fromSerializedString($value, $allowedClasses));
+            return new static(Obj::fromSerializedString($value, $allowedClasses));
         }
 
         return new static((object) $value);
@@ -80,7 +80,7 @@ class SerializedObject extends Type implements Contract
     #[Override]
     public function asFlatValue(): string
     {
-        return Helper::toSerializedString($this->subject);
+        return Obj::toSerializedString($this->subject);
     }
 
     /**

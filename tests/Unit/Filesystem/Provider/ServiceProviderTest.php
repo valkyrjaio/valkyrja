@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Provider;
 
-use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
-use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
@@ -45,7 +45,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishFilesystem($this->container);
 
-        self::assertInstanceOf(FlysystemFilesystem::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(FlysystemFilesystem::class, $this->container->getSingleton(FilesystemContract::class));
     }
 
     /**
@@ -67,7 +67,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishLocalFlysystemFilesystem(): void
     {
         $this->container->setSingleton(Env::class, new EnvClass());
-        $this->container->setSingleton(FlysystemLocalAdapter::class, self::createStub(FlysystemLocalAdapter::class));
+        $this->container->setSingleton(LocalFilesystemAdapter::class, self::createStub(LocalFilesystemAdapter::class));
 
         ServiceProvider::publishLocalFlysystemFilesystem($this->container);
 
@@ -79,7 +79,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new EnvClass());
         ServiceProvider::publishFlysystemLocalAdapter($this->container);
 
-        self::assertInstanceOf(FlysystemLocalAdapter::class, $this->container->getSingleton(FlysystemLocalAdapter::class));
+        self::assertInstanceOf(LocalFilesystemAdapter::class, $this->container->getSingleton(LocalFilesystemAdapter::class));
     }
 
     /**
@@ -88,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishS3FlysystemFilesystem(): void
     {
         $this->container->setSingleton(Env::class, new EnvClass());
-        $this->container->setSingleton(FlysystemAwsS3Adapter::class, self::createStub(FlysystemAwsS3Adapter::class));
+        $this->container->setSingleton(AwsS3V3Adapter::class, self::createStub(AwsS3V3Adapter::class));
 
         ServiceProvider::publishS3FlysystemFilesystem($this->container);
 
@@ -100,7 +100,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new EnvClass());
         ServiceProvider::publishFlysystemAwsS3Adapter($this->container);
 
-        self::assertInstanceOf(FlysystemAwsS3Adapter::class, $this->container->getSingleton(FlysystemAwsS3Adapter::class));
+        self::assertInstanceOf(AwsS3V3Adapter::class, $this->container->getSingleton(AwsS3V3Adapter::class));
     }
 
     public function testPublishInMemoryFilesystem(): void

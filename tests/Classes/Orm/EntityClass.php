@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Orm;
 
-use Valkyrja\Orm\Entity\Abstract\Entity as AbstractEntity;
+use Valkyrja\Orm\Entity\Abstract\Entity;
 
 /**
  * Model class to use to test abstract model.
  */
-class EntityClass extends AbstractEntity
+class EntityClass extends Entity
 {
     /**
      * A property to test with.

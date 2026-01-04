@@ -20,7 +20,7 @@ use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Factory\StreamFactory;
-use Valkyrja\Http\Message\Request\Contract\RequestContract as ValkyrjaRequest;
+use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
 use Valkyrja\Http\Message\Uri\Uri as ValkyrjaUri;
@@ -30,7 +30,7 @@ use function is_array;
 class Request implements RequestInterface
 {
     public function __construct(
-        protected ValkyrjaRequest $request,
+        protected RequestContract $request,
     ) {
     }
 

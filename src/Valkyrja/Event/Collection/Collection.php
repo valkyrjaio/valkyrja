@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Override;
-use Valkyrja\Event\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Data\Listener as Model;
+use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
 use function is_string;
 
-class Collection implements Contract
+class Collection implements CollectionContract
 {
     /**
      * The events.
@@ -266,7 +266,7 @@ class Collection implements Contract
         if (is_string($listener)) {
             $unserializedListener = unserialize($listener, ['allowed_classes' => true]);
 
-            if (! $unserializedListener instanceof Model) {
+            if (! $unserializedListener instanceof Listener) {
                 throw new InvalidArgumentException('Invalid object serialized.');
             }
 

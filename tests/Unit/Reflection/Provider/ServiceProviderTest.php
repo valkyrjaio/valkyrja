@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Reflection\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Reflection\Provider\ServiceProvider;
-use Valkyrja\Reflection\Reflector\Contract\ReflectorContract as Contract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -37,6 +37,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishReflection($this->container);
 
-        self::assertInstanceOf(Reflector::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Reflector::class, $this->container->getSingleton(ReflectorContract::class));
     }
 }

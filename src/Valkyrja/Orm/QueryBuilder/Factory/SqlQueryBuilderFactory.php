@@ -18,13 +18,13 @@ use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
-use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\SqlDeleteQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlInsertQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlSelectQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlUpdateQueryBuilder;
 
-class SqlQueryBuilderFactory implements Contract
+class SqlQueryBuilderFactory implements QueryBuilderFactoryContract
 {
     /**
      * @inheritDoc

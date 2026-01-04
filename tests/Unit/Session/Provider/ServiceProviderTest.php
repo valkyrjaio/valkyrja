@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
-use Valkyrja\Session\Manager\Contract\SessionContract as Contract;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\CookieSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
@@ -46,7 +46,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishSession($this->container);
 
-        self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(SessionContract::class));
     }
 
     public function testPublishPhpSession(): void

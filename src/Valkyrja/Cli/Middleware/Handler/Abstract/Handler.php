@@ -20,7 +20,7 @@ use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\HandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\HandlerContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
@@ -32,9 +32,9 @@ use function array_merge;
  *
  * @template Middleware of InputReceivedMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
  *
- * @implements Contract<Middleware>
+ * @implements HandlerContract<Middleware>
  */
-abstract class Handler implements Contract
+abstract class Handler implements HandlerContract
 {
     /** @var array<array-key, class-string<Middleware>> */
     protected array $middleware = [];

@@ -17,10 +17,10 @@ use JsonException;
 use Override;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Data\Contract\MessageContract;
-use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class LogMailer implements Contract
+class LogMailer implements MailerContract
 {
     public function __construct(
         protected LoggerContract $logger

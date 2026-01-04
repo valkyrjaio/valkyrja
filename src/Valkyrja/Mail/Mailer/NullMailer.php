@@ -15,9 +15,9 @@ namespace Valkyrja\Mail\Mailer;
 
 use Override;
 use Valkyrja\Mail\Data\Contract\MessageContract;
-use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 
-class NullMailer implements Contract
+class NullMailer implements MailerContract
 {
     /**
      * @inheritDoc

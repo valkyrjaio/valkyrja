@@ -18,11 +18,11 @@ use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\HtmlResponseContract as Contract;
+use Valkyrja\Http\Message\Response\Contract\HtmlResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 
-class HtmlResponse extends Response implements Contract
+class HtmlResponse extends Response implements HtmlResponseContract
 {
     /**
      * @param string                  $xml        The html

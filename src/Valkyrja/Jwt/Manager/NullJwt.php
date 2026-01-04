@@ -15,10 +15,10 @@ namespace Valkyrja\Jwt\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class NullJwt implements Contract
+class NullJwt implements JwtContract
 {
     /**
      * @inheritDoc

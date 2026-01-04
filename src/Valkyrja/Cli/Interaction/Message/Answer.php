@@ -15,14 +15,14 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
-use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
 use function is_callable;
 use function sprintf;
 
-class Answer extends Message implements Contract
+class Answer extends Message implements AnswerContract
 {
     /** @var non-empty-string */
     protected string $userResponse;

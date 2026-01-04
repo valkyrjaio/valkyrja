@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Http\Message;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Trait\Message;
 
 /**
@@ -29,7 +29,7 @@ class MessageClass
      * @param array<string, string[]> $headers
      */
     public function __construct(
-        protected StreamContract $stream = new HttpStream(),
+        protected StreamContract $stream = new Stream(),
         protected ProtocolVersion $protocol = ProtocolVersion::V1_1,
         array $headers = [],
         string|null $testHeader = null,

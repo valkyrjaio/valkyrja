@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Stream;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Stream\Contract\StreamContract as Contract;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -35,7 +35,7 @@ use function stream_get_meta_data;
 
 use const SEEK_SET;
 
-class Stream implements Contract
+class Stream implements StreamContract
 {
     use StreamHelpers;
 

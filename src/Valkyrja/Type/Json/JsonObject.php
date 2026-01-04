@@ -16,15 +16,15 @@ namespace Valkyrja\Type\Json;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
-use Valkyrja\Type\Json\Contract\JsonObjectContract as Contract;
+use Valkyrja\Type\BuiltIn\Support\Obj;
+use Valkyrja\Type\Json\Contract\JsonObjectContract;
 
 use function is_string;
 
 /**
  * @extends Type<object>
  */
-class JsonObject extends Type implements Contract
+class JsonObject extends Type implements JsonObjectContract
 {
     public function __construct(object $subject)
     {
@@ -40,7 +40,7 @@ class JsonObject extends Type implements Contract
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
-            return new static(Helper::fromString($value));
+            return new static(Obj::fromString($value));
         }
 
         return new static((object) $value);
@@ -63,7 +63,7 @@ class JsonObject extends Type implements Contract
     #[Override]
     public function asFlatValue(): string
     {
-        return Helper::toString($this->subject);
+        return Obj::toString($this->subject);
     }
 
     /**

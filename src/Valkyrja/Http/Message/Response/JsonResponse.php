@@ -19,7 +19,7 @@ use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\JsonResponseContract as Contract;
+use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
@@ -32,7 +32,7 @@ use function sprintf;
 
 use const JSON_THROW_ON_ERROR;
 
-class JsonResponse extends Response implements Contract
+class JsonResponse extends Response implements JsonResponseContract
 {
     /**
      * The default data to set.

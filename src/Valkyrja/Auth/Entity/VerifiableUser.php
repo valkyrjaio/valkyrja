@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity;
 
-use Valkyrja\Auth\Entity\Contract\VerifiableUserContract as Contract;
+use Valkyrja\Auth\Entity\Contract\VerifiableUserContract;
 use Valkyrja\Auth\Entity\Trait\MailableUserFields;
 use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 use Valkyrja\Auth\Entity\Trait\VerifiableUserFields;
 use Valkyrja\Auth\Entity\Trait\VerifiableUserTrait;
 
-class VerifiableUser extends User implements Contract
+class VerifiableUser extends User implements VerifiableUserContract
 {
     use MailableUserFields;
     use MailableUserTrait;

@@ -15,12 +15,12 @@ namespace Valkyrja\Dispatch\Data\Abstract;
 
 use JsonException;
 use Override;
-use Valkyrja\Dispatch\Data\Contract\DispatchContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function get_object_vars;
 
-abstract class Dispatch implements Contract
+abstract class Dispatch implements DispatchContract
 {
     /**
      * @inheritDoc

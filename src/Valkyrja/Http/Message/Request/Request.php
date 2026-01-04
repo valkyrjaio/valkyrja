@@ -16,19 +16,19 @@ namespace Valkyrja\Http\Message\Request;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Request\Contract\RequestContract as Contract;
+use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Trait\Message;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 
 use function preg_match;
 
-class Request implements Contract
+class Request implements RequestContract
 {
     use Message;
 
@@ -48,9 +48,9 @@ class Request implements Contract
      * @throws InvalidArgumentException
      */
     public function __construct(
-        protected UriContract $uri = new HttpUri(),
+        protected UriContract $uri = new Uri(),
         protected RequestMethod $method = RequestMethod::GET,
-        StreamContract $body = new HttpStream(PhpWrapper::input),
+        StreamContract $body = new Stream(PhpWrapper::input),
         array $headers = []
     ) {
         $this->setBody($body);

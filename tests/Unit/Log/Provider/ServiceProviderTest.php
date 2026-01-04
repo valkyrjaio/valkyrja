@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Log\Provider;
 
-use Monolog\Logger as Monolog;
+use Monolog\Logger;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Log\Provider\ServiceProvider;
@@ -39,7 +39,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishLogger($this->container);
 
-        self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(LoggerContract::class));
     }
 
     /**
@@ -59,18 +59,18 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLoggerInterface(): void
     {
-        $this->container->setSingleton(Monolog::class, self::createStub(Monolog::class));
+        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLoggerInterface($this->container);
 
-        self::assertInstanceOf(Monolog::class, $this->container->getSingleton(LoggerInterface::class));
+        self::assertInstanceOf(Logger::class, $this->container->getSingleton(LoggerInterface::class));
     }
 
     public function testPublishMonolog(): void
     {
         ServiceProvider::publishMonolog($this->container);
 
-        self::assertInstanceOf(Monolog::class, $this->container->getSingleton(Monolog::class));
+        self::assertInstanceOf(Logger::class, $this->container->getSingleton(Logger::class));
     }
 
     public function testPublishNullLogger(): void

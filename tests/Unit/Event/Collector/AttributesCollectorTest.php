@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Collector;
 
 use ReflectionException;
-use Valkyrja\Attribute\Collector\Collector as AttributesAttributes;
+use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Data\Contract\ListenerContract;
@@ -53,7 +53,7 @@ class AttributesCollectorTest extends TestCase
     protected function setUp(): void
     {
         $this->class = new AttributeCollector(
-            new AttributesAttributes(),
+            new Collector(),
             new Reflector()
         );
     }

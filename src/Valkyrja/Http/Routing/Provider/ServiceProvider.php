@@ -26,7 +26,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Http\Routing\Collection\Collection as HttpRoutingCollection;
+use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
@@ -129,7 +129,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             CollectionContract::class,
-            $collection = new HttpRoutingCollection()
+            $collection = new Collection()
         );
 
         if ($container->isSingleton(Data::class)) {

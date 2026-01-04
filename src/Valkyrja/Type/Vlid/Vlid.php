@@ -18,7 +18,7 @@ use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
-use Valkyrja\Type\Vlid\Contract\VlidContract as Contract;
+use Valkyrja\Type\Vlid\Contract\VlidContract;
 use Valkyrja\Type\Vlid\Support\Vlid as Helper;
 
 use function gettype;
@@ -28,7 +28,7 @@ use function sprintf;
 /**
  * @extends Type<string>
  */
-class Vlid extends Type implements Contract
+class Vlid extends Type implements VlidContract
 {
     /**
      * @throws InvalidArgumentException

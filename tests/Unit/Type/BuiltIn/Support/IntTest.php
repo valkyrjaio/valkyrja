@@ -14,25 +14,25 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Integer as Helper;
+use Valkyrja\Type\BuiltIn\Support\Integer;
 
 class IntTest extends TestCase
 {
     public function testLessThan(): void
     {
-        self::assertTrue(Helper::lessThan(2, 10));
-        self::assertFalse(Helper::lessThan(2, 0));
+        self::assertTrue(Integer::lessThan(2, 10));
+        self::assertFalse(Integer::lessThan(2, 0));
     }
 
     public function testGreaterThan(): void
     {
-        self::assertTrue(Helper::greaterThan(10, 2));
-        self::assertFalse(Helper::greaterThan(0, 2));
+        self::assertTrue(Integer::greaterThan(10, 2));
+        self::assertFalse(Integer::greaterThan(0, 2));
     }
 
     public function testDivisible(): void
     {
-        self::assertTrue(Helper::divisible(4, 2));
-        self::assertFalse(Helper::divisible(4, 3));
+        self::assertTrue(Integer::divisible(4, 2));
+        self::assertFalse(Integer::divisible(4, 3));
     }
 }

@@ -17,7 +17,7 @@ use PDO;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Entity\Abstract\Entity;
-use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\InMemoryManager;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
@@ -45,7 +45,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishManager($this->container);
 
-        self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(ManagerContract::class));
     }
 
     public function testPublishMysqlManager(): void

@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
-use Valkyrja\Http\Struct\Request\Contract\RequestStructContract as RoutingRequestStruct;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestStruct
 {
     /**
-     * @param class-string<RoutingRequestStruct> $name
+     * @param class-string<RequestStructContract> $name
      */
     public function __construct(
         public string $name

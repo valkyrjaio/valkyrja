@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\FloatContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\FloatContract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function is_array;
@@ -27,7 +27,7 @@ use function is_string;
 /**
  * @extends Type<float>
  */
-class FloatT extends Type implements Contract
+class FloatT extends Type implements FloatContract
 {
     public function __construct(float $subject)
     {

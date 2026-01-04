@@ -16,13 +16,13 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Enum\Support;
 use Valkyrja\Tests\Classes\Enum\ArrayableEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableIntEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableStringEnum;
-use Valkyrja\Tests\Classes\Enum\EnumClass as TestEnum;
+use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 class EnumTest extends TestCase
 {
-    protected const TestEnum VALUE = TestEnum::club;
+    protected const EnumClass VALUE = EnumClass::club;
 
     public function testNames(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\View\Template;
 use Override;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\View\Renderer\Contract\RendererContract;
-use Valkyrja\View\Template\Contract\TemplateContract as Contract;
+use Valkyrja\View\Template\Contract\TemplateContract;
 
 use function array_merge;
 use function htmlentities;
@@ -24,7 +24,7 @@ use function is_string;
 
 use const ENT_QUOTES;
 
-class Template implements Contract
+class Template implements TemplateContract
 {
     /**
      * The layout template.

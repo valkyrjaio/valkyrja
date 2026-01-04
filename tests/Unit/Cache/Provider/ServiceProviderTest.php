@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cache\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Predis\Client;
-use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
@@ -40,7 +40,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishCache($this->container);
 
-        self::assertInstanceOf(RedisCache::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(RedisCache::class, $this->container->getSingleton(CacheContract::class));
     }
 
     /**

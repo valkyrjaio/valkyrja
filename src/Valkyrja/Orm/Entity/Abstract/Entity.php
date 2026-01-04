@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Entity\Abstract;
 
 use JsonException;
 use Override;
-use Valkyrja\Orm\Entity\Contract\EntityContract as Contract;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
@@ -33,11 +33,11 @@ use function is_int;
 use function is_string;
 
 /**
- * @psalm-import-type StorableValue from Contract
+ * @psalm-import-type StorableValue from EntityContract
  *
- * @phpstan-import-type StorableValue from Contract
+ * @phpstan-import-type StorableValue from EntityContract
  */
-abstract class Entity extends Model implements Contract
+abstract class Entity extends Model implements EntityContract
 {
     use Castable;
     use ProtectedExposable;

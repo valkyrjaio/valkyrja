@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Interaction\Factory;
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract as Contract;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
@@ -29,7 +29,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
-class OutputFactory implements Contract
+class OutputFactory implements OutputFactoryContract
 {
     public function __construct(
         protected Config $config = new Config()

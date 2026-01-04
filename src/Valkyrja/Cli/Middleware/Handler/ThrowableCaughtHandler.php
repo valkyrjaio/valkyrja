@@ -19,12 +19,12 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
 /**
  * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
-class ThrowableCaughtHandler extends Handler implements Contract
+class ThrowableCaughtHandler extends Handler implements ThrowableCaughtHandlerContract
 {
     /**
      * @inheritDoc

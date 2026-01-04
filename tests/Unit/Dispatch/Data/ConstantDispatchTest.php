@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
-use Valkyrja\Dispatch\Data\ConstantDispatch as Dispatch;
+use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -31,7 +31,7 @@ class ConstantDispatchTest extends TestCase
         $constant  = 'TEST';
         $constant2 = 'TEST2';
 
-        $dispatch = new Dispatch(constant: $constant);
+        $dispatch = new ConstantDispatch(constant: $constant);
 
         self::assertSame($constant, $dispatch->getConstant());
 
@@ -52,7 +52,7 @@ class ConstantDispatchTest extends TestCase
         $constant = 'TEST';
         $class    = InvalidDispatcherClass::class;
 
-        $dispatch = new Dispatch(constant: $constant);
+        $dispatch = new ConstantDispatch(constant: $constant);
 
         self::assertNull($dispatch->getClass());
 

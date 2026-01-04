@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory as DefaultOutputFactory;
+use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
@@ -79,7 +79,7 @@ final class ServiceProvider extends Provider
 
         $container->setSingleton(
             OutputFactoryContract::class,
-            new DefaultOutputFactory(
+            new OutputFactory(
                 config: $config
             )
         );

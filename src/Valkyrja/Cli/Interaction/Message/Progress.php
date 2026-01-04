@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
-use Valkyrja\Cli\Interaction\Message\Contract\ProgressContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\ProgressContract;
 
-class Progress extends Message implements Contract
+class Progress extends Message implements ProgressContract
 {
     /**
      * @param non-empty-string $text The text

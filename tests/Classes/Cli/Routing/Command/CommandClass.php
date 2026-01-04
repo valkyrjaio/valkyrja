@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Cli\Routing\Command;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
@@ -32,7 +32,7 @@ class CommandClass
     /** @var non-empty-string */
     public const string HELP_TEXT = 'A test command';
 
-    #[RouteAttribute(
+    #[Route(
         name: self::NAME,
         description: self::DESCRIPTION,
         helpText: new Message(self::HELP_TEXT),

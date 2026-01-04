@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Client\Provider;
 
-use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Client;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -36,7 +36,7 @@ final class ServiceProvider extends Provider
         return [
             ClientContract::class => [self::class, 'publishClient'],
             GuzzleClient::class   => [self::class, 'publishGuzzleClient'],
-            Guzzle::class         => [self::class, 'publishGuzzle'],
+            Client::class         => [self::class, 'publishGuzzle'],
             LogClient::class      => [self::class, 'publishLogClient'],
             NullClient::class     => [self::class, 'publishNullClient'],
         ];
@@ -51,7 +51,7 @@ final class ServiceProvider extends Provider
         return [
             ClientContract::class,
             GuzzleClient::class,
-            Guzzle::class,
+            Client::class,
             LogClient::class,
             NullClient::class,
         ];
@@ -80,7 +80,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             GuzzleClient::class,
             new GuzzleClient(
-                client: $container->getSingleton(Guzzle::class),
+                client: $container->getSingleton(Client::class),
                 responseFactory: $container->getSingleton(ResponseFactoryContract::class),
             )
         );
@@ -111,13 +111,13 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the Guzzle service.
+     * Publish the Client service.
      */
     public static function publishGuzzle(ContainerContract $container): void
     {
         $container->setSingleton(
-            Guzzle::class,
-            new Guzzle()
+            Client::class,
+            new Client()
         );
     }
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Manager;
 
 use Override;
 use Random\RandomException;
-use Valkyrja\Session\Manager\Contract\SessionContract as Contract;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
@@ -26,7 +26,7 @@ use function is_string;
 use function preg_match;
 use function random_bytes;
 
-class NullSession implements Contract
+class NullSession implements SessionContract
 {
     /**
      * The session id.

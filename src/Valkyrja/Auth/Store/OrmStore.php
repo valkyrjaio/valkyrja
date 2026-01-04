@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Store;
 use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -25,9 +25,9 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 /**
  * @template U of UserContract
  *
- * @implements Contract<U>
+ * @implements StoreContract<U>
  */
-class OrmStore implements Contract
+class OrmStore implements StoreContract
 {
     public function __construct(
         protected ManagerContract $orm,

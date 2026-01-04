@@ -24,7 +24,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Throwable\Exception\RuntimeException;
 use Valkyrja\Dispatch\Data\CallableDispatch;
 use Valkyrja\Dispatch\Data\ClassDispatch;
@@ -36,7 +36,7 @@ use Valkyrja\Reflection\Reflector\Reflector as ReflectorReflector;
 
 use function is_callable;
 
-class Collector implements Contract
+class Collector implements CollectorContract
 {
     /**
      * Default flags for the getAttributes() method.

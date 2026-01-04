@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data\Attempt;
 
 use Override;
-use Valkyrja\Auth\Data\Attempt\Contract\ResetPasswordAttemptContract as Contract;
+use Valkyrja\Auth\Data\Attempt\Contract\ResetPasswordAttemptContract;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByResetToken;
 
-class ResetPasswordAttempt implements Contract
+class ResetPasswordAttempt implements ResetPasswordAttemptContract
 {
     public function __construct(
         protected RetrievalByResetToken $retrieval,

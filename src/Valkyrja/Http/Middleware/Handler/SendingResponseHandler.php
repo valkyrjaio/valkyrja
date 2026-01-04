@@ -18,12 +18,12 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
 /**
  * @extends Handler<SendingResponseMiddlewareContract>
  */
-class SendingResponseHandler extends Handler implements Contract
+class SendingResponseHandler extends Handler implements SendingResponseHandlerContract
 {
     /**
      * @inheritDoc

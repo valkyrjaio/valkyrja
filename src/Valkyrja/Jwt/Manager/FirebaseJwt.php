@@ -19,9 +19,9 @@ use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
-class FirebaseJwt implements Contract
+class FirebaseJwt implements JwtContract
 {
     public function __construct(
         protected OpenSSLAsymmetricKey|OpenSSLCertificate|string $encodeKey,

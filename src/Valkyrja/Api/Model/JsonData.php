@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Model;
 
 use Override;
-use Valkyrja\Api\Model\Contract\JsonDataContract as Contract;
+use Valkyrja\Api\Model\Contract\JsonDataContract;
 use Valkyrja\Type\Model\Abstract\Model;
 
-class JsonData extends Model implements Contract
+class JsonData extends Model implements JsonDataContract
 {
     /**
      * The item.

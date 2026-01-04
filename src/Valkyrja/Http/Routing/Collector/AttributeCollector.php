@@ -40,7 +40,7 @@ use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
-use Valkyrja\Reflection\Reflector\Contract\ReflectorContract as ReflectionContract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
 use function array_column;
@@ -50,7 +50,7 @@ class AttributeCollector implements Contract
 {
     public function __construct(
         protected AttributeContract $attributes = new Collector(),
-        protected ReflectionContract $reflection = new Reflector(),
+        protected ReflectorContract $reflection = new Reflector(),
         protected ProcessorContract $processor = new Processor()
     ) {
     }
