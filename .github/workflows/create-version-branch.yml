@@ -8,7 +8,66 @@ permissions:
   contents: write
 
 jobs:
+  check-composer:
+    strategy:
+      matrix:
+        paths:
+          - name: Root and Suggested Packages
+            command: root-and-suggested-outdated-check-major-release
+          - name: Churn
+            command: churn-outdated-check-major-release
+          - name: PHPArkitect
+            command: phparkitect-outdated-check-major-release
+          - name: PHP Code Sniffer
+            command: phpcodesniffer-outdated-check-major-release
+          - name: PHP CS Fixer
+            command: phpcsfixer-outdated-check-major-release
+          - name: PHP Metrics
+            command: phpmetrics-outdated-check-major-release
+          - name: PHPStan
+            command: phparkitect-outdated-check-major-release
+          - name: PHPUnit
+            command: phpunit-outdated-check-major-release
+          - name: Psalm
+            command: psalm-outdated-check-major-release
+          - name: Rector
+            command: rector-outdated-check-major-release
+
+    name: "Check ${{ matrix.paths.name }} Composer For Outdated Direct Dependencies"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+
+      - name: Check Composer For Updates
+        env:
+          COMPOSER_NAME: ${{ matrix.paths.name }}
+          COMPOSER_COMMAND: ${{ matrix.paths.command }}
+        run: |
+          output=$(eval "composer ${COMPOSER_COMMAND}" 2>&1)
+          if [[ "$output" == *"All your direct dependencies are up to date"* ]]; then
+            echo "$output"
+            echo "Proceeding..."
+
+            exit 0
+          else
+            echo "Composer dependencies must be updated before releasing. People rely on us to be on latest"
+            echo "$output"
+
+            exit 1
+          fi
+
   get-version:
+    needs: check-composer
+
     name: Get Version
 
     runs-on: ubuntu-latest
