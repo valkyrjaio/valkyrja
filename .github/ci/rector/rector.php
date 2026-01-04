@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use Rector\CodingStyle\Rector\Stmt\RemoveUselessAliasInUseStatementRector;
+use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
@@ -39,4 +40,5 @@ return $rector
         ExplicitNullableParamTypeRector::class,
         NewMethodCallWithoutParenthesesRector::class,
         RemoveUselessAliasInUseStatementRector::class,
+        SeparateMultiUseImportsRector::class,
     ]);
