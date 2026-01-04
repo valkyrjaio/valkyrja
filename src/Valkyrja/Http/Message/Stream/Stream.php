@@ -363,15 +363,11 @@ class Stream implements Contract
     //         $this->rewind();
     //     }
     // }
-
     /**
      * Seek the stream resource.
      *
      * @param resource $stream
-     * @param int      $offset
-     * @param int      $whence
      *
-     * @return int
      */
     protected function seekStream($stream, int $offset, int $whence = SEEK_SET): int
     {
@@ -442,8 +438,6 @@ class Stream implements Contract
      * Close a stream.
      *
      * @param resource $stream The stream
-     *
-     * @return bool
      */
     protected function closeStream($stream): bool
     {

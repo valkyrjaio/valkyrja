@@ -35,8 +35,6 @@ trait UriHelpers
      * Filter a scheme.
      *
      * @param string $scheme The scheme
-     *
-     * @return Scheme
      */
     protected static function filterScheme(string $scheme): Scheme
     {
@@ -69,8 +67,6 @@ trait UriHelpers
      * @param int|null $port The port
      *
      * @throws InvalidPortException
-     *
-     * @return void
      */
     protected function validatePort(int|null $port = null): void
     {
@@ -95,8 +91,6 @@ trait UriHelpers
      * @param string $path The path
      *
      * @throws InvalidPathException
-     *
-     * @return string
      */
     protected function filterPath(string $path): string
     {
@@ -117,8 +111,6 @@ trait UriHelpers
      * @param string $path The path
      *
      * @throws InvalidPathException
-     *
-     * @return void
      */
     protected function validatePath(string $path): void
     {
@@ -137,8 +129,6 @@ trait UriHelpers
      * @param string $query The query
      *
      * @throws InvalidQueryException
-     *
-     * @return string
      */
     protected function filterQuery(string $query): string
     {
@@ -155,8 +145,6 @@ trait UriHelpers
      * @param string $query The query
      *
      * @throws InvalidQueryException
-     *
-     * @return void
      */
     protected function validateQuery(string $query): void
     {
@@ -171,8 +159,6 @@ trait UriHelpers
      * Filter a fragment.
      *
      * @param string $fragment The fragment
-     *
-     * @return string
      */
     protected function filterFragment(string $fragment): string
     {
@@ -187,8 +173,6 @@ trait UriHelpers
      * Validate a fragment.
      *
      * @param string $fragment The fragment
-     *
-     * @return void
      */
     protected function validateFragment(string $fragment): void
     {
@@ -196,8 +180,6 @@ trait UriHelpers
 
     /**
      * Determine whether this uri is on a standard port for the scheme.
-     *
-     * @return bool
      */
     protected function isStandardPort(): bool
     {
@@ -214,8 +196,6 @@ trait UriHelpers
 
     /**
      * Is standard HTTP port.
-     *
-     * @return bool
      */
     protected function isStandardUnsecurePort(): bool
     {
@@ -224,8 +204,6 @@ trait UriHelpers
 
     /**
      * Is standard HTTPS port.
-     *
-     * @return bool
      */
     protected function isStandardSecurePort(): bool
     {
@@ -236,8 +214,6 @@ trait UriHelpers
      * Add scheme to uri.
      *
      * @param string $uri The uri
-     *
-     * @return string
      */
     protected function addSchemeToUri(string $uri): string
     {
@@ -252,8 +228,6 @@ trait UriHelpers
      * Add authority to uri.
      *
      * @param string $uri The uri
-     *
-     * @return string
      */
     protected function addAuthorityToUri(string $uri): string
     {
@@ -268,8 +242,6 @@ trait UriHelpers
      * Add path to uri.
      *
      * @param string $uri The uri
-     *
-     * @return string
      */
     protected function addPathToUri(string $uri): string
     {
@@ -288,8 +260,6 @@ trait UriHelpers
      * Add query to uri.
      *
      * @param string $uri The uri
-     *
-     * @return string
      */
     protected function addQueryToUri(string $uri): string
     {
@@ -304,8 +274,6 @@ trait UriHelpers
      * Add fragment to uri.
      *
      * @param string $uri The uri
-     *
-     * @return string
      */
     protected function addFragmentToUri(string $uri): string
     {

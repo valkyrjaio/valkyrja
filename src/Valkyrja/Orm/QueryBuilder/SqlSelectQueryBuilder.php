@@ -155,8 +155,6 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 
     /**
      * Get the GROUP BY part of a query statement.
-     *
-     * @return string
      */
     protected function getGroupByQuery(): string
     {
@@ -167,8 +165,6 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 
     /**
      * Get the ORDER BY part of a query statement.
-     *
-     * @return string
      */
     protected function getOrderByQuery(): string
     {
@@ -179,8 +175,6 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 
     /**
      * Get the LIMIT part of a query statement.
-     *
-     * @return string
      */
     protected function getLimitQuery(): string
     {
@@ -191,8 +185,6 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 
     /**
      * Get the OFFSET part of a query statement.
-     *
-     * @return string
      */
     protected function getOffsetQuery(): string
     {
@@ -203,8 +195,6 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 
     /**
      * Determine whether this is a count statement.
-     *
-     * @return bool
      */
     protected function isCount(): bool
     {

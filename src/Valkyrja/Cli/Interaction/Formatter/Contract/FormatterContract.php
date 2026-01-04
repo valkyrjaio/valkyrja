@@ -21,8 +21,6 @@ interface FormatterContract
 {
     /**
      * Get the style.
-     *
-     * @return Style|null
      */
     public function getStyle(): Style|null;
 
@@ -30,15 +28,11 @@ interface FormatterContract
      * Create a new Formatter with the specified style.
      *
      * @param Style|null $style The style
-     *
-     * @return static
      */
     public function withStyle(Style|null $style): static;
 
     /**
      * Get the text color.
-     *
-     * @return TextColor|null
      */
     public function getTextColor(): TextColor|null;
 
@@ -46,15 +40,11 @@ interface FormatterContract
      * Create a new Formatter with the specified text color.
      *
      * @param TextColor|null $textColor The text color
-     *
-     * @return static
      */
     public function withTextColor(TextColor|null $textColor): static;
 
     /**
      * Get the background color.
-     *
-     * @return BackgroundColor|null
      */
     public function getBackgroundColor(): BackgroundColor|null;
 
@@ -62,8 +52,6 @@ interface FormatterContract
      * Create a new Formatter with the specified background color.
      *
      * @param BackgroundColor|null $backgroundColor The background color
-     *
-     * @return static
      */
     public function withBackgroundColor(BackgroundColor|null $backgroundColor): static;
 

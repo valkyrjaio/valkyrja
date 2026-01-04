@@ -28,15 +28,11 @@ interface ParameterContract
      * Create a new Parameter with the specified name.
      *
      * @param non-empty-string $name The name
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
     /**
      * Get the cast.
-     *
-     * @return Cast|null
      */
     public function getCast(): Cast|null;
 
@@ -44,8 +40,6 @@ interface ParameterContract
      * Create a new Parameter with the specified cast.
      *
      * @param Cast|null $cast The cast
-     *
-     * @return static
      */
     public function withCast(Cast|null $cast = null): static;
 
@@ -60,8 +54,6 @@ interface ParameterContract
      * Create a new Parameter with the specified description.
      *
      * @param non-empty-string $description The description
-     *
-     * @return static
      */
     public function withDescription(string $description): static;
 
@@ -81,15 +73,11 @@ interface ParameterContract
 
     /**
      * Determine if the values are valid.
-     *
-     * @return bool
      */
     public function areValuesValid(): bool;
 
     /**
      * Validate the values.
-     *
-     * @return static
      */
     public function validateValues(): static;
 }

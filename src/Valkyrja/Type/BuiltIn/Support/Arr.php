@@ -37,8 +37,6 @@ class Arr
      * @param non-empty-string                                $separator    [optional] The separator
      *
      * @phpstan-param ArrayAccess<string, mixed>|array<string, mixed> $subject      The subject
-     *
-     * @return mixed
      */
     public static function getValueDotNotation(
         ArrayAccess|array $subject,
@@ -145,7 +143,6 @@ class Arr
     /**
      * Filter empty strings.
      *
-     * @param Stringable|string ...$strings
      *
      * @return array<Stringable|string>
      */

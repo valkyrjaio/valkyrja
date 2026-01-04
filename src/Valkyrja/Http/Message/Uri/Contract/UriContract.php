@@ -66,8 +66,6 @@ interface UriContract extends Stringable
      * If the scheme is present, and the value does not match
      * 'https', this method MUST return false.
      * If no scheme is present, this method MUST return false.
-     *
-     * @return bool
      */
     public function isSecure(): bool;
 
@@ -169,8 +167,6 @@ interface UriContract extends Stringable
      * this method MUST return an empty string.
      * if no port is present, a host is present, and a scheme is present,
      * this method MUST return only the host component.
-     *
-     * @return string
      */
     public function getHostPort(): string;
 
@@ -197,8 +193,6 @@ interface UriContract extends Stringable
      * If a scheme is present, a host is not present, and a port
      * is either present or not, this method MUST return an
      * empty string.
-     *
-     * @return string
      */
     public function getSchemeHostPort(): string;
 
@@ -419,8 +413,6 @@ interface UriContract extends Stringable
      * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
-     *
-     * @return string
      */
     public function __toString(): string;
 }

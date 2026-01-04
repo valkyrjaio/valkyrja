@@ -55,8 +55,6 @@ class HttpRedirectException extends HttpException
 
     /**
      * Get the uri to redirect to for this exception.
-     *
-     * @return UriContract
      */
     public function getUri(): UriContract
     {

@@ -46,8 +46,6 @@ class StrCase
      * Convert a string to title case.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function toTitleCase(string $subject): string
     {
@@ -94,8 +92,6 @@ class StrCase
      * Convert a string to upper case.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function toUpperCase(string $subject): string
     {
@@ -119,8 +115,6 @@ class StrCase
      *
      * @param string      $subject   The subject
      * @param string|null $delimiter [optional] The delimiter
-     *
-     * @return string
      */
     public static function toCapitalized(string $subject, string|null $delimiter = null): string
     {
@@ -148,8 +142,6 @@ class StrCase
      *
      * @param string      $subject   The subject
      * @param string|null $delimiter [optional] The delimiter
-     *
-     * @return string
      */
     public static function toCapitalizedWords(string $subject, string|null $delimiter = null): string
     {
@@ -172,8 +164,6 @@ class StrCase
      * Convert a string to snake case.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function toSnakeCase(string $subject): string
     {
@@ -209,8 +199,6 @@ class StrCase
      * Convert a string to slug.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function toSlug(string $subject): string
     {
@@ -246,8 +234,6 @@ class StrCase
      * Convert a string to studly case.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function toStudlyCase(string $subject): string
     {
@@ -271,8 +257,6 @@ class StrCase
      * Convert a string's first character to upper case.
      *
      * @param string $subject The subject
-     *
-     * @return string
      */
     public static function ucFirstLetter(string $subject): string
     {

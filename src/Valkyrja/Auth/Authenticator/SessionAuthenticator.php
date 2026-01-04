@@ -53,8 +53,6 @@ class SessionAuthenticator extends Authenticator
 
     /**
      * Attempt to get the authenticated users from the session.
-     *
-     * @return AuthenticatedUsersContract|null
      */
     protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract|null
     {

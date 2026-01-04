@@ -29,8 +29,6 @@ interface PasswordHasherContract
      *
      * @param string $password       The plain text password
      * @param string $hashedPassword The hashed password
-     *
-     * @return bool
      */
     public function confirmPassword(string $password, string $hashedPassword): bool;
 }

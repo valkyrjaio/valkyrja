@@ -60,8 +60,6 @@ abstract class Authenticator implements Contract
 
     /**
      * Get the current authenticated user if one exists.
-     *
-     * @return UserContract|null
      */
     #[Override]
     public function getAuthenticated(): UserContract|null
@@ -80,8 +78,6 @@ abstract class Authenticator implements Contract
 
     /**
      * Get the current impersonated user if one exists.
-     *
-     * @return UserContract|null
      */
     #[Override]
     public function getImpersonated(): UserContract|null

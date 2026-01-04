@@ -162,9 +162,7 @@ class LogCache implements Contract
     /**
      * Get key.
      *
-     * @param string $key
      *
-     * @return string
      */
     protected function getKey(string $key): string
     {

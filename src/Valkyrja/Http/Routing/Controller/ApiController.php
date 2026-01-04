@@ -44,8 +44,6 @@ abstract class ApiController extends Controller
      * @param StatusCode|null         $statusCode [optional] The status code
      * @param string[]|null           $errors     [optional] The errors
      * @param string[]|null           $warnings   [optional] The warnings
-     *
-     * @return JsonResponseContract
      */
     public function createApiJsonResponse(
         array $data = [],
@@ -75,8 +73,6 @@ abstract class ApiController extends Controller
      * @param StatusCode|null $statusCode [optional] The status code
      * @param string[]|null   $errors     [optional] The errors
      * @param string[]|null   $warnings   [optional] The warnings
-     *
-     * @return JsonResponseContract
      */
     public function getExceptionResponse(
         Throwable $exception,

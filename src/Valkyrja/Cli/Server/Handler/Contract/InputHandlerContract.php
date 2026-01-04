@@ -22,8 +22,6 @@ interface InputHandlerContract
      * Handle the input.
      *
      * @param InputContract $input The input
-     *
-     * @return OutputContract
      */
     public function handle(InputContract $input): OutputContract;
 
@@ -32,17 +30,13 @@ interface InputHandlerContract
      *
      * @param InputContract  $input  The input
      * @param OutputContract $output The output
-     *
-     * @return void
      */
     public function exit(InputContract $input, OutputContract $output): void;
 
     /**
      * Run the handler.
      *
-     * @param InputContract $input
      *
-     * @return void
      */
     public function run(InputContract $input): void;
 }

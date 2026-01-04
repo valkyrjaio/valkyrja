@@ -172,8 +172,6 @@ class Notifier implements Contract
 
     /**
      * Reset all the recipient arrays.
-     *
-     * @return void
      */
     protected function resetRecipients(): void
     {
@@ -186,8 +184,6 @@ class Notifier implements Contract
      * Add a user as an broadcast recipient.
      *
      * @param NotifiableUserContract $user The user
-     *
-     * @return void
      */
     protected function addBroadcastUserRecipient(NotifiableUserContract $user): void
     {
@@ -208,8 +204,6 @@ class Notifier implements Contract
      * Add a user as a mail recipient.
      *
      * @param NotifiableUserContract $user The user
-     *
-     * @return void
      */
     protected function addMailUserRecipient(NotifiableUserContract $user): void
     {
@@ -237,8 +231,6 @@ class Notifier implements Contract
      * Add a user as an SMS recipient.
      *
      * @param NotifiableUserContract $user The user
-     *
-     * @return void
      */
     protected function addSmsUserRecipient(NotifiableUserContract $user): void
     {
@@ -261,8 +253,6 @@ class Notifier implements Contract
      * Send a notification by broadcast.
      *
      * @param NotifyContract $notify The notification
-     *
-     * @return void
      */
     protected function notifyByBroadcast(NotifyContract $notify): void
     {
@@ -280,8 +270,6 @@ class Notifier implements Contract
      * Send a notification by mail.
      *
      * @param NotifyContract $notify The notification
-     *
-     * @return void
      */
     protected function notifyByMail(NotifyContract $notify): void
     {
@@ -301,8 +289,6 @@ class Notifier implements Contract
      * Send a notification by SMS.
      *
      * @param NotifyContract $notify The notification
-     *
-     * @return void
      */
     protected function notifyBySms(NotifyContract $notify): void
     {

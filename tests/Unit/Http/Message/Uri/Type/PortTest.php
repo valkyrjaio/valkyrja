@@ -45,8 +45,6 @@ class PortTest extends TestCase
 
     /**
      * @param int $portNum The port to test
-     *
-     * @return void
      */
     #[DataProvider('validPortsProvider')]
     public function testValidPorts(int $portNum): void
@@ -77,8 +75,6 @@ class PortTest extends TestCase
 
     /**
      * @param int $portNum The port to test
-     *
-     * @return void
      */
     #[DataProvider('invalidPortsProvider')]
     public function testInvalidPorts(int $portNum): void

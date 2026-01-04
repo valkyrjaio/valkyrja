@@ -35,8 +35,6 @@ interface StoreContract
      * Create a new user.
      *
      * @param U $user The user
-     *
-     * @return void
      */
     public function create(UserContract $user): void;
 
@@ -44,8 +42,6 @@ interface StoreContract
      * Update a given user.
      *
      * @param U $user The user
-     *
-     * @return void
      */
     public function update(UserContract $user): void;
 }

@@ -47,8 +47,6 @@ final class ServiceProvider extends Provider
      * Publish the dispatcher service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishDispatcher(ContainerContract $container): void
     {

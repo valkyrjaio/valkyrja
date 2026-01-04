@@ -130,8 +130,6 @@ class CookieSession extends PhpSession
      * Update the cache session.
      *
      * @throws CryptException
-     *
-     * @return void
      */
     protected function updateCookieSession(): void
     {

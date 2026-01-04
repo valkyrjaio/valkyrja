@@ -86,8 +86,6 @@ class Matcher implements Contract
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
-     *
-     * @return RouteContract|null
      */
     protected function matchDynamicFromArray(array $routes, string $path): RouteContract|null
     {
@@ -110,8 +108,6 @@ class Matcher implements Contract
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
-     *
-     * @return RouteContract|null
      */
     protected function matchDynamicFromRouteOrArray(RouteContract|array $route, string $path, string $regex): RouteContract|null
     {
@@ -135,8 +131,6 @@ class Matcher implements Contract
      * @param array<int|non-empty-string, string> $matches The regex matches
      *
      * @throws InvalidRoutePathException
-     *
-     * @return RouteContract
      */
     protected function processArguments(RouteContract $route, array $matches): RouteContract
     {

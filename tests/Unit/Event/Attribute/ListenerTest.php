@@ -42,20 +42,14 @@ class ListenerTest extends TestCase
 
     /**
      * Setup the test.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->class = new Listener(self::VALUE, self::NAME);
     }
 
     /**
      * Test the getEventId and setEventId methods.
-     *
-     * @return void
      */
     public function testEventId(): void
     {

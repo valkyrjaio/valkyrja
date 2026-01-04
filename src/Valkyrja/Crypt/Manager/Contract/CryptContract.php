@@ -20,9 +20,7 @@ interface CryptContract
     /**
      * Determine if an encrypted message is valid.
      *
-     * @param string $encrypted
      *
-     * @return bool
      */
     public function isValidEncryptedMessage(string $encrypted): bool;
 
@@ -33,8 +31,6 @@ interface CryptContract
      * @param string|null $key     The encryption key
      *
      * @throws CryptException On any failure
-     *
-     * @return string
      */
     public function encrypt(string $message, string|null $key = null): string;
 
@@ -45,8 +41,6 @@ interface CryptContract
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
-     *
-     * @return string
      */
     public function decrypt(string $encrypted, string|null $key = null): string;
 
@@ -57,8 +51,6 @@ interface CryptContract
      * @param string|null             $key   The encryption key
      *
      * @throws CryptException On any failure
-     *
-     * @return string
      */
     public function encryptArray(array $array, string|null $key = null): string;
 
@@ -81,8 +73,6 @@ interface CryptContract
      * @param string|null $key    The encryption key
      *
      * @throws CryptException On any failure
-     *
-     * @return string
      */
     public function encryptObject(object $object, string|null $key = null): string;
 
@@ -93,8 +83,6 @@ interface CryptContract
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
-     *
-     * @return object
      */
     public function decryptObject(string $encrypted, string|null $key = null): object;
 }

@@ -80,8 +80,6 @@ abstract class Model implements Contract
      * @see https://psalm.dev/r/309e3a322e
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return static
      */
     #[Override]
     public static function fromArray(array $properties): static
@@ -121,8 +119,6 @@ abstract class Model implements Contract
      * Get a new static instance.
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return static
      */
     protected static function internalGetNew(array $properties): static
     {
@@ -131,8 +127,6 @@ abstract class Model implements Contract
 
     /**
      * Whether to set the original properties array.
-     *
-     * @return bool
      */
     protected static function shouldSetOriginalProperties(): bool
     {
@@ -237,8 +231,6 @@ abstract class Model implements Contract
      * Determine whether the model has a property.
      *
      * @param string $property The property
-     *
-     * @return bool
      */
     #[Override]
     public function hasProperty(string $property): bool
@@ -382,8 +374,6 @@ abstract class Model implements Contract
      *
      * @param array<string, mixed>               $properties  The properties to set
      * @param Closure(string, mixed): mixed|null $modifyValue [optional] The closure to modify the value before setting
-     *
-     * @return void
      */
     protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void
     {
@@ -407,8 +397,6 @@ abstract class Model implements Contract
      *
      * @param string $property The property
      * @param mixed  $value    The value
-     *
-     * @return void
      */
     protected function internalSetIfPropertyExists(string $property, mixed $value): void
     {
@@ -420,8 +408,6 @@ abstract class Model implements Contract
 
     /**
      * Set that original properties have been set.
-     *
-     * @return void
      */
     protected function internalSetOriginalPropertiesSetProperty(): void
     {
@@ -433,8 +419,6 @@ abstract class Model implements Contract
      *
      * @param string $property The property
      * @param string $type     The type (get|set|isset)
-     *
-     * @return string
      */
     protected function internalGetPropertyTypeMethodName(string $property, string $type): string
     {
@@ -446,8 +430,6 @@ abstract class Model implements Contract
      * Determine if a property type method exists.
      *
      * @param string $methodName The method name
-     *
-     * @return bool
      */
     protected function internalDoesPropertyTypeMethodExist(string $methodName): bool
     {
@@ -460,8 +442,6 @@ abstract class Model implements Contract
      *
      * @param string $name  The property name
      * @param mixed  $value The value
-     *
-     * @return void
      */
     protected function internalSetOriginalProperty(string $name, mixed $value): void
     {
@@ -485,8 +465,6 @@ abstract class Model implements Contract
      * Remove internal model properties from an array of properties.
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return void
      */
     protected function internalRemoveInternalProperties(array &$properties): void
     {
@@ -568,8 +546,6 @@ abstract class Model implements Contract
      * Get a property's value for jsonSerialize.
      *
      * @param string $property The property
-     *
-     * @return mixed
      */
     protected function internalGetJsonPropertyValue(string $property): mixed
     {

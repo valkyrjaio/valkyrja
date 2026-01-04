@@ -73,8 +73,6 @@ class MailgunMailer implements Contract
      * @param BatchMessage                                   $mailgunMessage The mailgun batch message
      * @param string                                         $method         The method to call
      * @param array<int, array{email: string, name: string}> $recipients     The recipients
-     *
-     * @return void
      */
     protected function setRecipients(BatchMessage $mailgunMessage, string $method, array $recipients): void
     {
@@ -88,8 +86,6 @@ class MailgunMailer implements Contract
      *
      * @param BatchMessage                                  $mailgunMessage The mailgun batch message
      * @param array<int, array{path: string, name: string}> $attachments    The attachments
-     *
-     * @return void
      */
     protected function addAttachments(BatchMessage $mailgunMessage, array $attachments): void
     {

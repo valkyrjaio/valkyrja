@@ -17,8 +17,6 @@ interface CallableDispatchContract extends DispatchContract
 {
     /**
      * Get the callable.
-     *
-     * @return callable
      */
     public function getCallable(): callable;
 
@@ -26,8 +24,6 @@ interface CallableDispatchContract extends DispatchContract
      * Create a new dispatch with the specified callable.
      *
      * @param callable $callable The callable
-     *
-     * @return static
      */
     public function withCallable(callable $callable): static;
 
@@ -42,8 +38,6 @@ interface CallableDispatchContract extends DispatchContract
      * Create a new dispatch with the specified arguments.
      *
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return static
      */
     public function withArguments(array|null $arguments = null): static;
 
@@ -58,8 +52,6 @@ interface CallableDispatchContract extends DispatchContract
      * Create a new dispatch with the specified dependencies.
      *
      * @param array<non-empty-string, class-string>|null $dependencies The dependencies
-     *
-     * @return static
      */
     public function withDependencies(array|null $dependencies = null): static;
 }

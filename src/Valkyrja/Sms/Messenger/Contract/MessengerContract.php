@@ -21,8 +21,6 @@ interface MessengerContract
      * Send a message.
      *
      * @param MessageContract $message The message to send
-     *
-     * @return void
      */
     public function send(MessageContract $message): void;
 }

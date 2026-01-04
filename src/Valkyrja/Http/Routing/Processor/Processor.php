@@ -29,8 +29,6 @@ class Processor implements Contract
      * @param RouteContract $route The route
      *
      * @throws InvalidRoutePathException
-     *
-     * @return RouteContract
      */
     #[Override]
     public function route(RouteContract $route): RouteContract
@@ -52,8 +50,6 @@ class Processor implements Contract
      * @param RouteContract $route The route
      *
      * @throws InvalidRoutePathException
-     *
-     * @return RouteContract
      */
     protected function modifyRegex(RouteContract $route): RouteContract
     {
@@ -83,8 +79,6 @@ class Processor implements Contract
      *
      * @param ParameterContract $parameter The parameter
      * @param string            $regex     The regex
-     *
-     * @return ParameterContract
      */
     protected function processParameterInRegex(ParameterContract $parameter, string $regex): ParameterContract
     {
@@ -105,8 +99,6 @@ class Processor implements Contract
      * @param string            $regex     The regex
      *
      * @throws InvalidRoutePathException
-     *
-     * @return string
      */
     protected function replaceParameterNameInRegex(RouteContract $route, ParameterContract $parameter, string $regex): string
     {

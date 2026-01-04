@@ -57,8 +57,6 @@ class HttpException extends RuntimeException
 
     /**
      * Get the status code for this exception.
-     *
-     * @return StatusCode
      */
     public function getStatusCode(): StatusCode
     {
@@ -77,8 +75,6 @@ class HttpException extends RuntimeException
 
     /**
      * Get the response for this exception.
-     *
-     * @return ResponseContract|null
      */
     public function getResponse(): ResponseContract|null
     {

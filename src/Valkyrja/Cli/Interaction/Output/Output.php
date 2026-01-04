@@ -304,8 +304,6 @@ class Output implements Contract
      * Write a message through a writer.
      *
      * @param MessageContract $message The message
-     *
-     * @return static
      */
     protected function writeMessageViaWriter(MessageContract $message): static
     {
@@ -322,8 +320,6 @@ class Output implements Contract
      * Set a message as written.
      *
      * @param MessageContract $message The message
-     *
-     * @return void
      */
     protected function setMessageAsWritten(MessageContract $message): void
     {
@@ -334,8 +330,6 @@ class Output implements Contract
      * Output a message.
      *
      * @param MessageContract $message The message
-     *
-     * @return void
      */
     protected function outputMessage(MessageContract $message): void
     {

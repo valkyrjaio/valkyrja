@@ -19,33 +19,25 @@ interface JsonDataContract extends ModelContract
 {
     /**
      * Get the item.
-     *
-     * @return object|null
      */
     public function getItem(): object|null;
 
     /**
      * Set the item.
      *
-     * @param object|null $item
      *
-     * @return static
      */
     public function setItem(object|null $item = null): static;
 
     /**
      * Get the item key.
-     *
-     * @return string
      */
     public function getItemKey(): string;
 
     /**
      * Set the item key.
      *
-     * @param string $itemKey
      *
-     * @return static
      */
     public function setItemKey(string $itemKey): static;
 
@@ -60,40 +52,30 @@ interface JsonDataContract extends ModelContract
      * Set the items.
      *
      * @param object[]|null $items
-     *
-     * @return static
      */
     public function setItems(array|null $items = null): static;
 
     /**
      * Get the items key.
-     *
-     * @return string
      */
     public function getItemsKey(): string;
 
     /**
      * Set the items key.
      *
-     * @param string $itemsKey
      *
-     * @return static
      */
     public function setItemsKey(string $itemsKey): static;
 
     /**
      * Get the total.
-     *
-     * @return int|null
      */
     public function getTotal(): int|null;
 
     /**
      * Set the total.
      *
-     * @param int|null $total
      *
-     * @return static
      */
     public function setTotal(int|null $total = null): static;
 
@@ -108,8 +90,6 @@ interface JsonDataContract extends ModelContract
      * Set the messages.
      *
      * @param string[]|null $messages
-     *
-     * @return static
      */
     public function setMessages(array|null $messages = null): static;
 
@@ -124,8 +104,6 @@ interface JsonDataContract extends ModelContract
      * Set the data.
      *
      * @param array<array-key, mixed>|null $data
-     *
-     * @return static
      */
     public function setData(array|null $data = null): static;
 }

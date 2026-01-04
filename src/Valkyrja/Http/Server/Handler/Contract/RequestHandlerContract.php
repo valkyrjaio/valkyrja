@@ -22,17 +22,13 @@ interface RequestHandlerContract
      * Handle a request.
      *
      * @param ServerRequestContract $request The request
-     *
-     * @return ResponseContract
      */
     public function handle(ServerRequestContract $request): ResponseContract;
 
     /**
      * Send the response.
      *
-     * @param ResponseContract $response
      *
-     * @return static
      */
     public function send(ResponseContract $response): static;
 
@@ -41,8 +37,6 @@ interface RequestHandlerContract
      *
      * @param ServerRequestContract $request  The request
      * @param ResponseContract      $response The response
-     *
-     * @return void
      */
     public function terminate(ServerRequestContract $request, ResponseContract $response): void;
 
@@ -50,8 +44,6 @@ interface RequestHandlerContract
      * Run the kernel.
      *
      * @param ServerRequestContract $request The request
-     *
-     * @return void
      */
     public function run(ServerRequestContract $request): void;
 }

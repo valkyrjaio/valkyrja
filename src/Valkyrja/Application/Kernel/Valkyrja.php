@@ -84,8 +84,6 @@ class Valkyrja implements ApplicationContract
 
     /**
      * @inheritDoc
-     *
-     * @return Env
      */
     #[Override]
     public function getEnv(): Env

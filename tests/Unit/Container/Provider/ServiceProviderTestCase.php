@@ -67,8 +67,6 @@ abstract class ServiceProviderTestCase extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->container = new Container();
 
         $this->container->setSingleton(Env::class, new Env());

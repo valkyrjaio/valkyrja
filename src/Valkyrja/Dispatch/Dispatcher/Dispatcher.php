@@ -58,8 +58,6 @@ class Dispatcher implements Contract
      *
      * @param MethodDispatch                      $dispatch  The dispatch
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return mixed
      */
     protected function dispatchClassMethod(MethodDispatch $dispatch, array|null $arguments = null): mixed
     {
@@ -84,8 +82,6 @@ class Dispatcher implements Contract
      * Dispatch a class property.
      *
      * @param PropertyDispatch $dispatch The dispatch
-     *
-     * @return mixed
      */
     protected function dispatchClassProperty(PropertyDispatch $dispatch): mixed
     {
@@ -104,8 +100,6 @@ class Dispatcher implements Contract
      * Dispatch a constant.
      *
      * @param ConstantDispatch $dispatch The dispatch
-     *
-     * @return mixed
      */
     protected function dispatchConstant(ConstantDispatch $dispatch): mixed
     {
@@ -122,8 +116,6 @@ class Dispatcher implements Contract
      *
      * @param ClassDispatch                       $dispatch  The dispatch
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return mixed
      */
     protected function dispatchClass(ClassDispatch $dispatch, array|null $arguments = null): mixed
     {
@@ -140,8 +132,6 @@ class Dispatcher implements Contract
      *
      * @param CallableDispatch                    $dispatch  The dispatch
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return mixed
      */
     protected function dispatchCallable(CallableDispatch $dispatch, array|null $arguments = null): mixed
     {
@@ -156,8 +146,6 @@ class Dispatcher implements Contract
      * Dispatch a variable.
      *
      * @param GlobalVariableDispatch $dispatch The dispatch
-     *
-     * @return mixed
      */
     protected function dispatchVariable(GlobalVariableDispatch $dispatch): mixed
     {
@@ -253,8 +241,6 @@ class Dispatcher implements Contract
      * Get argument value.
      *
      * @param mixed $argument The argument
-     *
-     * @return mixed
      */
     protected function getArgumentValue(mixed $argument): mixed
     {

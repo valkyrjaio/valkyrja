@@ -37,11 +37,9 @@ class UuidV7 extends Uuid
     /**
      * Generate a v7 UUID.
      *
-     * @param string|null $node
      *
      * @throws RandomException
      *
-     * @return string
      */
     public static function generate(string|null $node = null): string
     {

@@ -89,8 +89,6 @@ class AttributeCollector implements Contract
      * @param Route $route The attribute
      *
      * @throws ReflectionException
-     *
-     * @return Route
      */
     protected function setRouteProperties(Route $route): Route
     {

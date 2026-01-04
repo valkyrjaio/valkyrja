@@ -29,8 +29,6 @@ interface ListenerContract
      * Create a new listener with the specified event class name.
      *
      * @param class-string $eventId The event class name
-     *
-     * @return static
      */
     public function withEventId(string $eventId): static;
 
@@ -45,15 +43,11 @@ interface ListenerContract
      * Create a new listener with the specified unique name.
      *
      * @param non-empty-string $name A unique name for the listener
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
     /**
      * Get the dispatch.
-     *
-     * @return ClassDispatchContract|MethodDispatchContract
      */
     public function getDispatch(): ClassDispatchContract|MethodDispatchContract;
 
@@ -61,8 +55,6 @@ interface ListenerContract
      * Create new listener with the specified dispatch.
      *
      * @param ClassDispatchContract|MethodDispatchContract $dispatch The dispatch
-     *
-     * @return static
      */
     public function withDispatch(ClassDispatchContract|MethodDispatchContract $dispatch): static;
 }

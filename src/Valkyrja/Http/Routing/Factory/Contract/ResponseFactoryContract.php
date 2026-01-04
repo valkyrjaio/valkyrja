@@ -25,8 +25,6 @@ interface ResponseFactoryContract
      * @param array<string, string|int>|null $data       [optional] The data for dynamic routes
      * @param StatusCode|null                $statusCode [optional] The response status code
      * @param array<string, string[]>|null   $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponseContract
      */
     public function createRouteRedirectResponse(
         string $name,

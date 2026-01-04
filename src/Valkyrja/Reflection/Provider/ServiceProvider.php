@@ -47,8 +47,6 @@ final class ServiceProvider extends Provider
      * Publish the reflection service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishReflection(ContainerContract $container): void
     {

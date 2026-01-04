@@ -22,28 +22,12 @@ use Stringable;
  */
 interface ComponentContract extends JsonSerializable, Stringable
 {
-    /**
-     * @return string
-     */
     public function getToken(): string;
 
-    /**
-     * @param string $token
-     *
-     * @return static
-     */
     public function withToken(string $token): static;
 
-    /**
-     * @return string|null
-     */
     public function getText(): string|null;
 
-    /**
-     * @param string|null $text
-     *
-     * @return static
-     */
     public function withText(string|null $text = null): static;
 
     /**
@@ -52,8 +36,5 @@ interface ComponentContract extends JsonSerializable, Stringable
     #[Override]
     public function jsonSerialize(): string;
 
-    /**
-     * @return string
-     */
     public function __toString(): string;
 }

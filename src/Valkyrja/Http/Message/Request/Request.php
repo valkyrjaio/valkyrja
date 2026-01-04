@@ -170,8 +170,6 @@ class Request implements Contract
      * @param string $requestTarget The request target
      *
      * @throws InvalidRequestTargetException
-     *
-     * @return void
      */
     protected function validateRequestTarget(string $requestTarget): void
     {

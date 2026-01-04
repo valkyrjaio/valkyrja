@@ -37,8 +37,6 @@ class InMemoryStoreTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->store = new InMemoryStore([]);
 
         $this->user           = new UserEntity();

@@ -55,8 +55,6 @@ class InputHandler implements Contract
      * Handle the input.
      *
      * @param InputContract $input The input
-     *
-     * @return OutputContract
      */
     #[Override]
     public function handle(InputContract $input): OutputContract
@@ -79,8 +77,6 @@ class InputHandler implements Contract
      *
      * @param InputContract  $input  The input
      * @param OutputContract $output The output
-     *
-     * @return void
      */
     #[Override]
     public function exit(InputContract $input, OutputContract $output): void
@@ -92,9 +88,7 @@ class InputHandler implements Contract
     /**
      * Run the handler.
      *
-     * @param InputContract $input
      *
-     * @return void
      */
     #[Override]
     public function run(InputContract $input): void
@@ -118,8 +112,6 @@ class InputHandler implements Contract
      * Dispatch the input via the router.
      *
      * @param InputContract $input The input
-     *
-     * @return OutputContract
      */
     protected function dispatchRouter(InputContract $input): OutputContract
     {
@@ -145,8 +137,6 @@ class InputHandler implements Contract
      *
      * @param InputContract $input     The input
      * @param Throwable     $throwable The throwable
-     *
-     * @return OutputContract
      */
     protected function getOutputFromThrowable(InputContract $input, Throwable $throwable): OutputContract
     {

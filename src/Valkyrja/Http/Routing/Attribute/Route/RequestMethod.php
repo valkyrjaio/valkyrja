@@ -22,9 +22,6 @@ class RequestMethod
     /** @var RequestMethodEnum[] */
     public array $requestMethods = [];
 
-    /**
-     * @param RequestMethodEnum ...$requestMethods
-     */
     public function __construct(RequestMethodEnum ...$requestMethods)
     {
         $this->requestMethods = $requestMethods;

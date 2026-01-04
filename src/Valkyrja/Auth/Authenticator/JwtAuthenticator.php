@@ -57,8 +57,6 @@ class JwtAuthenticator extends Authenticator
 
     /**
      * Attempt to get the authenticated users from the request.
-     *
-     * @return AuthenticatedUsersContract|null
      */
     protected function getAuthenticatedUsersFromRequest(): AuthenticatedUsersContract|null
     {
@@ -81,8 +79,6 @@ class JwtAuthenticator extends Authenticator
      * Attempt to get the authenticated users from the token.
      *
      * @param string $token The token
-     *
-     * @return AuthenticatedUsersContract|null
      */
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {

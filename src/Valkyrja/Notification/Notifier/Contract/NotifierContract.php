@@ -23,8 +23,6 @@ interface NotifierContract
      *
      * @param class-string<NotifyContract> $name The notification name
      * @param array<array-key, mixed>      $data [optional] The data to add to the notification
-     *
-     * @return NotifyContract
      */
     public function createNotification(string $name, array $data = []): NotifyContract;
 
@@ -33,8 +31,6 @@ interface NotifierContract
      *
      * @param string $email The email
      * @param string $name  [optional] The name
-     *
-     * @return static
      */
     public function addMailRecipient(string $email, string $name = ''): static;
 
@@ -42,8 +38,6 @@ interface NotifierContract
      * Add an SMS recipient to send a notification to.
      *
      * @param non-empty-string $phoneNumber The phone number
-     *
-     * @return static
      */
     public function addSmsRecipient(string $phoneNumber): static;
 
@@ -51,17 +45,13 @@ interface NotifierContract
      * Add a broadcast event to send a notification to.
      *
      * @param string $event The event
-     *
-     * @return static
      */
     public function addBroadcastEvent(string $event): static;
 
     /**
      * Add a User recipient to send a notification to.
      *
-     * @param NotifiableUserContract $user
      *
-     * @return static
      */
     public function addUserRecipient(NotifiableUserContract $user): static;
 
@@ -69,8 +59,6 @@ interface NotifierContract
      * Send a notification to recipients.
      *
      * @param NotifyContract $notify The notification to send
-     *
-     * @return void
      */
     public function notify(NotifyContract $notify): void;
 
@@ -79,8 +67,6 @@ interface NotifierContract
      *
      * @param NotifyContract         $notify The notification to send
      * @param NotifiableUserContract $user   The user to notify
-     *
-     * @return void
      */
     public function notifyUser(NotifyContract $notify, NotifiableUserContract $user): void;
 
@@ -89,8 +75,6 @@ interface NotifierContract
      *
      * @param NotifyContract         $notify   The notification to send
      * @param NotifiableUserContract ...$users The users to notify
-     *
-     * @return void
      */
     public function notifyUsers(NotifyContract $notify, NotifiableUserContract ...$users): void;
 }

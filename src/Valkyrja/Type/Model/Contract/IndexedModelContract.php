@@ -65,8 +65,6 @@ interface IndexedModelContract extends ModelContract
      * Set properties from an array of properties.
      *
      * @param array<int, mixed> $properties The properties
-     *
-     * @return static
      */
     public static function fromIndexedArray(array $properties): static;
 
@@ -74,8 +72,6 @@ interface IndexedModelContract extends ModelContract
      * Set properties from an array of properties.
      *
      * @param array<int, mixed> $properties The properties
-     *
-     * @return void
      */
     public function updateIndexedProperties(array $properties): void;
 
@@ -83,8 +79,6 @@ interface IndexedModelContract extends ModelContract
      * Get a new model with new properties.
      *
      * @param array<int, mixed> $properties The properties to modify
-     *
-     * @return static
      */
     public function withIndexedProperties(array $properties): static;
 

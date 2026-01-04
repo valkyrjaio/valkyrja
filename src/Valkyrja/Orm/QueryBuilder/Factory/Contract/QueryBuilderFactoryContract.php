@@ -24,8 +24,6 @@ interface QueryBuilderFactoryContract
      * Create a select query builder.
      *
      * @param non-empty-string $table The table
-     *
-     * @return SelectQueryBuilderContract
      */
     public function select(string $table): SelectQueryBuilderContract;
 
@@ -33,8 +31,6 @@ interface QueryBuilderFactoryContract
      * Create an insert query builder.
      *
      * @param non-empty-string $table The table
-     *
-     * @return InsertQueryBuilderContract
      */
     public function insert(string $table): InsertQueryBuilderContract;
 
@@ -42,8 +38,6 @@ interface QueryBuilderFactoryContract
      * Create an update query builder.
      *
      * @param non-empty-string $table The table
-     *
-     * @return UpdateQueryBuilderContract
      */
     public function update(string $table): UpdateQueryBuilderContract;
 
@@ -51,8 +45,6 @@ interface QueryBuilderFactoryContract
      * Create a delete query builder.
      *
      * @param non-empty-string $table The table
-     *
-     * @return DeleteQueryBuilderContract
      */
     public function delete(string $table): DeleteQueryBuilderContract;
 }

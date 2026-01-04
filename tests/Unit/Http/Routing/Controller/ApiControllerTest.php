@@ -37,8 +37,6 @@ class ApiControllerTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $request         = new ServerRequest();
         $responseFactory = new ResponseFactory();
         $api             = new Api($responseFactory);

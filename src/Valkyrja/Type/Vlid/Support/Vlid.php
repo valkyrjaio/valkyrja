@@ -64,8 +64,6 @@ class Vlid extends Ulid
      * @throws InvalidArgumentException
      * @throws RandomException
      * @throws RuntimeException
-     *
-     * @return string
      */
     final public static function v1(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -81,8 +79,6 @@ class Vlid extends Ulid
      * @throws InvalidArgumentException
      * @throws RandomException
      * @throws RuntimeException
-     *
-     * @return string
      */
     final public static function v2(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -98,8 +94,6 @@ class Vlid extends Ulid
      * @throws InvalidArgumentException
      * @throws RandomException
      * @throws RuntimeException
-     *
-     * @return string
      */
     final public static function v3(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -115,8 +109,6 @@ class Vlid extends Ulid
      * @throws InvalidArgumentException
      * @throws RandomException
      * @throws RuntimeException
-     *
-     * @return string
      */
     final public static function v4(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -145,8 +137,6 @@ class Vlid extends Ulid
      * Format a time with random bytes.
      *
      * @param string $time The time
-     *
-     * @return string
      */
     #[Override]
     protected static function formatTimeWithRandomBytes(string $time): string

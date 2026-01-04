@@ -28,8 +28,6 @@ interface OptionContract
      * Create a new Option with the specified name.
      *
      * @param non-empty-string $name The name
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
@@ -44,15 +42,11 @@ interface OptionContract
      * Create a new Option with the specified value.
      *
      * @param non-empty-string|null $value The value
-     *
-     * @return static
      */
     public function withValue(string|null $value): static;
 
     /**
      * Get the option type.
-     *
-     * @return OptionType
      */
     public function getType(): OptionType;
 
@@ -60,8 +54,6 @@ interface OptionContract
      * Create a new Option with the specified type.
      *
      * @param OptionType $type The option type
-     *
-     * @return static
      */
     public function withType(OptionType $type): static;
 }

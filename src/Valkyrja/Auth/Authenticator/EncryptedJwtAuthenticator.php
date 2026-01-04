@@ -62,8 +62,6 @@ class EncryptedJwtAuthenticator extends JwtAuthenticator
      * Attempt to get the authenticated users from the token.
      *
      * @param string $token The token
-     *
-     * @return AuthenticatedUsersContract|null
      */
     #[Override]
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null

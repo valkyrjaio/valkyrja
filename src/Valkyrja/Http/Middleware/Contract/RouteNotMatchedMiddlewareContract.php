@@ -24,8 +24,6 @@ interface RouteNotMatchedMiddlewareContract
      *
      * @param ServerRequestContract $request  The request
      * @param ResponseContract      $response The response
-     *
-     * @return ResponseContract
      */
     public function routeNotMatched(ServerRequestContract $request, ResponseContract $response, RouteNotMatchedHandlerContract $handler): ResponseContract;
 }

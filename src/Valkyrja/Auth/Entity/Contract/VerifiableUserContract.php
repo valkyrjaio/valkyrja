@@ -17,8 +17,6 @@ interface VerifiableUserContract extends MailableUserContract
 {
     /**
      * Get the verified flag field.
-     *
-     * @return string
      */
     public static function getIsVerifiedField(): string;
 }

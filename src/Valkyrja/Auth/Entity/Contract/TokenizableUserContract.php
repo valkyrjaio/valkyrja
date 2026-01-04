@@ -17,8 +17,6 @@ interface TokenizableUserContract extends UserContract
 {
     /**
      * Get the session id.
-     *
-     * @return string
      */
     public static function getTokenSessionId(): string;
 
@@ -26,15 +24,11 @@ interface TokenizableUserContract extends UserContract
      * Set the tokenized user.
      *
      * @param string $token The tokenized user
-     *
-     * @return void
      */
     public static function setTokenized(string $token): void;
 
     /**
      * Get the user as a token.
-     *
-     * @return string|null
      */
     public static function asTokenized(): string|null;
 

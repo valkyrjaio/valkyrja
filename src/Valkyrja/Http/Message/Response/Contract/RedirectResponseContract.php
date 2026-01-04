@@ -25,8 +25,6 @@ interface RedirectResponseContract extends ResponseContract
      * @param UriContract|null             $uri        [optional] The uri to redirect to
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return static
      */
     public static function createFromUri(
         UriContract|null $uri = null,
@@ -36,8 +34,6 @@ interface RedirectResponseContract extends ResponseContract
 
     /**
      * Get the uri.
-     *
-     * @return UriContract
      */
     public function getUri(): UriContract;
 
@@ -45,8 +41,6 @@ interface RedirectResponseContract extends ResponseContract
      * Set the uri.
      *
      * @param UriContract $uri The uri
-     *
-     * @return static
      */
     public function withUri(UriContract $uri): static;
 
@@ -55,8 +49,6 @@ interface RedirectResponseContract extends ResponseContract
      *
      * @param string                $path    The path
      * @param ServerRequestContract $request The request
-     *
-     * @return static
      */
     public function secure(string $path, ServerRequestContract $request): static;
 
@@ -64,8 +56,6 @@ interface RedirectResponseContract extends ResponseContract
      * Redirect back to the referer.
      *
      * @param ServerRequestContract $request The request
-     *
-     * @return static
      */
     public function back(ServerRequestContract $request): static;
 

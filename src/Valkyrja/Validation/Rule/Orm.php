@@ -40,8 +40,6 @@ class Orm
      * @param mixed                        $subject The subject
      * @param class-string<EntityContract> $entity  The entity to check for uniqueness
      * @param non-empty-string|null        $field   The field to ensure is unique
-     *
-     * @return void
      */
     public function ormUnique(mixed $subject, string $entity, string|null $field = null): void
     {
@@ -64,8 +62,6 @@ class Orm
      * @param mixed                        $subject The subject
      * @param class-string<EntityContract> $entity  The entity to check for uniqueness
      * @param non-empty-string|null        $field   The field to ensure is unique
-     *
-     * @return void
      */
     public function ormExists(mixed $subject, string $entity, string|null $field = null): void
     {

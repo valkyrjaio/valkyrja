@@ -25,8 +25,6 @@ final class Port
      * Check if a port is valid.
      *
      * @param int|null $port [optional] The port
-     *
-     * @return bool
      */
     public static function isValid(int|null $port = null): bool
     {

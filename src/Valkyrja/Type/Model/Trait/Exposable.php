@@ -115,8 +115,6 @@ trait Exposable
      * Remove internal model properties from an array of properties.
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return void
      */
     protected function internalRemoveInternalProperties(array &$properties): void
     {

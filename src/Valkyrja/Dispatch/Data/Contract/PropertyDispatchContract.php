@@ -26,15 +26,11 @@ interface PropertyDispatchContract extends ClassDispatchContract
      * Create a new dispatch with the specified property.
      *
      * @param non-empty-string $property The property
-     *
-     * @return static
      */
     public function withProperty(string $property): static;
 
     /**
      * Determine whether this is a static property.
-     *
-     * @return bool
      */
     public function isStatic(): bool;
 
@@ -42,8 +38,6 @@ interface PropertyDispatchContract extends ClassDispatchContract
      * Create a new dispatch with whether this is a static property.
      *
      * @param bool $isStatic The static flag
-     *
-     * @return static
      */
     public function withIsStatic(bool $isStatic): static;
 }

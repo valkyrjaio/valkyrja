@@ -32,8 +32,6 @@ class ApplicationTest extends TestCase
 {
     /**
      * Test the container() helper method.
-     *
-     * @return void
      */
     public function testContainer(): void
     {
@@ -42,8 +40,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the version() helper method.
-     *
-     * @return void
      */
     public function testVersion(): void
     {
@@ -52,8 +48,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the getEnv() helper method.
-     *
-     * @return void
      */
     public function testGetEnv(): void
     {
@@ -62,8 +56,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the getEnv() helper method.
-     *
-     * @return void
      */
     public function testSetEnv(): void
     {
@@ -73,8 +65,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the environment() helper method.
-     *
-     * @return void
      */
     public function testEnvironment(): void
     {
@@ -83,8 +73,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the debug() helper method.
-     *
-     * @return void
      */
     public function testDebug(): void
     {
@@ -93,8 +81,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the client() helper method.
-     *
-     * @return void
      */
     public function testClient(): void
     {
@@ -103,8 +89,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the filesystem() helper method.
-     *
-     * @return void
      */
     public function testFilesystem(): void
     {
@@ -113,8 +97,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the kernel() helper method.
-     *
-     * @return void
      */
     public function testKernel(): void
     {
@@ -123,8 +105,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the logger() helper method.
-     *
-     * @return void
      */
     public function testLogger(): void
     {
@@ -133,8 +113,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the router() helper method.
-     *
-     * @return void
      */
     public function testRouter(): void
     {
@@ -143,8 +121,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the responseBuilder() helper method.
-     *
-     * @return void
      */
     public function testResponseBuilder(): void
     {
@@ -153,8 +129,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the session() helper method.
-     *
-     * @return void
      */
     public function testSession(): void
     {
@@ -163,8 +137,6 @@ class ApplicationTest extends TestCase
 
     /**
      * Test the view() helper method.
-     *
-     * @return void
      */
     public function testRenderer(): void
     {

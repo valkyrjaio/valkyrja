@@ -226,9 +226,7 @@ class PdoStatement implements Contract
     /**
      * Get value type to bind with.
      *
-     * @param mixed $value
      *
-     * @return int
      */
     protected function getBindValueType(mixed $value): int
     {

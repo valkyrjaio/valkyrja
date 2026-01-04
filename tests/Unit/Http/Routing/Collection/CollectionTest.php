@@ -44,8 +44,6 @@ class CollectionTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,

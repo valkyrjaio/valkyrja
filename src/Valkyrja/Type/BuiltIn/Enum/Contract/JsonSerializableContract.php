@@ -21,8 +21,6 @@ interface JsonSerializableContract extends PhpJsonSerializable, UnitEnum
 {
     /**
      * Json serialize.
-     *
-     * @return string|int
      */
     #[Override]
     public function jsonSerialize(): string|int;

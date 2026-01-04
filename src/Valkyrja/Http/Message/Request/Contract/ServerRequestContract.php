@@ -65,8 +65,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string     $name    The server name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
-     *
-     * @return mixed
      */
     public function getServerParam(string $name, mixed $default = null): mixed;
 
@@ -74,8 +72,6 @@ interface ServerRequestContract extends RequestContract
      * Determine if a specific server exists.
      *
      * @param string $name The server name to check for
-     *
-     * @return bool
      */
     public function hasServerParam(string $name): bool;
 
@@ -101,8 +97,6 @@ interface ServerRequestContract extends RequestContract
      * updated cookie values.
      *
      * @param array<string, string|null> $cookies Array of key/value pairs representing cookies
-     *
-     * @return static
      */
     public function withCookieParams(array $cookies): static;
 
@@ -119,8 +113,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string      $name  The name of the cookie
      * @param string|null $value The value of the cookie
-     *
-     * @return static
      */
     public function withAddedCookieParam(string $name, string|null $value = null): static;
 
@@ -130,8 +122,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string      $name    The cookie name to retrieve
      * @param string|null $default [optional] Default value to return if the param does not exist
-     *
-     * @return string|null
      */
     public function getCookieParam(string $name, string|null $default = null): string|null;
 
@@ -139,8 +129,6 @@ interface ServerRequestContract extends RequestContract
      * Determine if a specific cookie exists.
      *
      * @param string $name The cookie name to check for
-     *
-     * @return bool
      */
     public function hasCookieParam(string $name): bool;
 
@@ -191,8 +179,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param array<array-key, mixed> $query Array of query string arguments, typically from
      *                                       $_GET
-     *
-     * @return static
      */
     public function withQueryParams(array $query): static;
 
@@ -202,8 +188,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string|int $name    The query param name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
-     *
-     * @return mixed
      */
     public function getQueryParam(string|int $name, mixed $default = null): mixed;
 
@@ -211,8 +195,6 @@ interface ServerRequestContract extends RequestContract
      * Determine if a specific query param exists.
      *
      * @param string|int $name The query param name to check for
-     *
-     * @return bool
      */
     public function hasQueryParam(string|int $name): bool;
 
@@ -233,8 +215,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string|int $name  The name of the query argument
      * @param mixed      $value The value of the query argument
-     *
-     * @return static
      */
     public function withAddedQueryParam(string|int $name, mixed $value): static;
 
@@ -261,8 +241,6 @@ interface ServerRequestContract extends RequestContract
      *                                                    instances
      *
      * @throws InvalidArgumentException if an invalid structure is provided
-     *
-     * @return static
      */
     public function withUploadedFiles(array $uploadedFiles): static;
 
@@ -275,8 +253,6 @@ interface ServerRequestContract extends RequestContract
      * @param UploadedFileContract $uploadedFile An UploadedFileInterface instance
      *
      * @throws InvalidArgumentException if an invalid structure is provided
-     *
-     * @return static
      */
     public function withAddedUploadedFile(UploadedFileContract $uploadedFile): static;
 
@@ -334,8 +310,6 @@ interface ServerRequestContract extends RequestContract
      *                                      typically be in an array or object
      *
      * @throws InvalidArgumentException if an unsupported argument type is provided
-     *
-     * @return static
      */
     public function withParsedBody(array $data): static;
 
@@ -360,8 +334,6 @@ interface ServerRequestContract extends RequestContract
      * @param mixed      $value The value of the param
      *
      * @throws InvalidArgumentException if an unsupported argument type is provided
-     *
-     * @return static
      */
     public function withAddedParsedBodyParam(string|int $name, mixed $value): static;
 
@@ -371,8 +343,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string|int $name    The body param name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
-     *
-     * @return mixed
      */
     public function getParsedBodyParam(string|int $name, mixed $default = null): mixed;
 
@@ -380,8 +350,6 @@ interface ServerRequestContract extends RequestContract
      * Determine if a specific body param exists.
      *
      * @param string|int $name The body param name to check for
-     *
-     * @return bool
      */
     public function hasParsedBodyParam(string|int $name): bool;
 
@@ -426,7 +394,6 @@ interface ServerRequestContract extends RequestContract
      * @param string     $name    The attribute name
      * @param mixed|null $default Default value to return if the attribute does not exist
      *
-     * @return mixed
      *
      * @see getAttributes()
      */
@@ -443,7 +410,6 @@ interface ServerRequestContract extends RequestContract
      * @param string $name  The attribute name
      * @param mixed  $value The value of the attribute
      *
-     * @return static
      *
      * @see getAttributes()
      */
@@ -459,7 +425,6 @@ interface ServerRequestContract extends RequestContract
      *
      * @param string $name The attribute name
      *
-     * @return static
      *
      * @see getAttributes()
      */
@@ -467,8 +432,6 @@ interface ServerRequestContract extends RequestContract
 
     /**
      * Is this an AJAX request?
-     *
-     * @return bool
      */
     public function isXmlHttpRequest(): bool;
 }

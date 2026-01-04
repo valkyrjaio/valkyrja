@@ -19,8 +19,6 @@ abstract class Provider
 {
     /**
      * Whether this provider is deferred.
-     *
-     * @return bool
      */
     public static function deferred(): bool
     {
@@ -51,8 +49,6 @@ abstract class Provider
      * Publish the provider.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publish(ContainerContract $container): void
     {

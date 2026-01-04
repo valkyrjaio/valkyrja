@@ -35,8 +35,6 @@ class ResponseFactoryTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $route           = new Route(
             path: '/',
             name: self::ROUTE_NAME,

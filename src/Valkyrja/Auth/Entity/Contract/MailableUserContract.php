@@ -17,8 +17,6 @@ interface MailableUserContract extends UserContract
 {
     /**
      * Get the email field.
-     *
-     * @return string
      */
     public static function getEmailField(): string;
 }

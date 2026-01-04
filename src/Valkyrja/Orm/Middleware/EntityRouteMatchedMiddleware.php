@@ -68,8 +68,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      * Check route for entities.
      *
      * @param RouteContract $route The route
-     *
-     * @return ResponseContract|RouteContract
      */
     protected function checkRouteForEntities(RouteContract $route): ResponseContract|RouteContract
     {
@@ -122,8 +120,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      * @param ParameterContract            $parameter The parameter
      * @param class-string<EntityContract> $type      The entity type
      * @param mixed                        $value     The argument value
-     *
-     * @return EntityContract|ResponseContract
      */
     protected function checkParameterForEntity(ParameterContract $parameter, string $type, mixed $value): EntityContract|ResponseContract
     {
@@ -150,8 +146,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      * @param ParameterContract            $parameter  The parameter
      * @param class-string<EntityContract> $entityName The entity class name
      * @param non-empty-string|int         $value      The value
-     *
-     * @return EntityContract|null
      */
     protected function findEntityFromParameter(
         ParameterContract $parameter,
@@ -180,8 +174,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      * Response for when the entity was not found with the given value.
      *
      * @param ParameterContract $parameter The parameter
-     *
-     * @return ResponseContract
      */
     protected function getNotFoundResponse(ParameterContract $parameter): ResponseContract
     {
@@ -196,8 +188,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      * Response for when bad data has been provided to match for the entity.
      *
      * @param ParameterContract $parameter The parameter
-     *
-     * @return ResponseContract
      */
     protected function getBadRequestResponse(ParameterContract $parameter): ResponseContract
     {

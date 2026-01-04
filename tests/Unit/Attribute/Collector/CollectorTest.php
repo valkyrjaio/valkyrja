@@ -82,13 +82,9 @@ class CollectorTest extends TestCase
 
     /**
      * Setup the test.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->attributes = new Collector();
         $this->class      = new AttributedClass();
     }
@@ -97,8 +93,6 @@ class CollectorTest extends TestCase
      * Test the forClass() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForClass(): void
     {
@@ -118,8 +112,6 @@ class CollectorTest extends TestCase
      * Test the forClassMembers() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForClassMembers(): void
     {
@@ -139,8 +131,6 @@ class CollectorTest extends TestCase
      * Test the forClassMembers() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForClassAndMembers(): void
     {
@@ -161,8 +151,6 @@ class CollectorTest extends TestCase
      * Test the forConstant() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForConstant(): void
     {
@@ -187,8 +175,6 @@ class CollectorTest extends TestCase
      * Test the forConstants() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForConstants(): void
     {
@@ -203,8 +189,6 @@ class CollectorTest extends TestCase
      * Test the forProperty() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForProperty(): void
     {
@@ -229,8 +213,6 @@ class CollectorTest extends TestCase
      * Test the forProperties() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForProperties(): void
     {
@@ -245,8 +227,6 @@ class CollectorTest extends TestCase
      * Test the forMethod() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForMethod(): void
     {
@@ -297,8 +277,6 @@ class CollectorTest extends TestCase
      * Test the forMethods() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForMethods(): void
     {
@@ -314,8 +292,6 @@ class CollectorTest extends TestCase
      * Test the forFunction() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForFunction(): void
     {
@@ -357,8 +333,6 @@ class CollectorTest extends TestCase
      * Test the forClosure() method.
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function testForClosure(): void
     {
@@ -426,8 +400,6 @@ class CollectorTest extends TestCase
      * Tests for the const member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForConst(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -446,8 +418,6 @@ class CollectorTest extends TestCase
      * Tests for the protectedConst member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForProtectedConst(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -466,8 +436,6 @@ class CollectorTest extends TestCase
      * Tests for the staticProperty member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForStaticProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -486,8 +454,6 @@ class CollectorTest extends TestCase
      * Tests for the property member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -506,8 +472,6 @@ class CollectorTest extends TestCase
      * Tests for the staticMember() member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForStaticMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -526,8 +490,6 @@ class CollectorTest extends TestCase
      * Tests for the method() member.
      *
      * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function testsForMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
@@ -546,8 +508,6 @@ class CollectorTest extends TestCase
      * Base tests for all items.
      *
      * @param AttributeClass ...$attributes The attributes
-     *
-     * @return void
      */
     protected function baseTests(AttributeClass ...$attributes): void
     {
@@ -570,8 +530,6 @@ class CollectorTest extends TestCase
      * @param AttributeClass           $attribute1 The first attribute
      * @param AttributeClass           $attribute2 The second attribute
      * @param AttributeClassChildClass $attribute3 The third attribute
-     *
-     * @return void
      */
     protected function valueTests(
         int $value1,
@@ -594,8 +552,6 @@ class CollectorTest extends TestCase
      * @param AttributeClassChildClass $attribute The attribute
      * @param bool                     $isStatic  Whether the member is static
      * @param string                   $name      The name of the member
-     *
-     * @return void
      */
     protected function setTests(AttributeClassChildClass $attribute, bool $isStatic, string $name): void
     {

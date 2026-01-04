@@ -32,9 +32,7 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
     /**
      * Create a new header value from a string.
      *
-     * @param string $value
      *
-     * @return static
      */
     public static function fromValue(string $value): static;
 
@@ -45,15 +43,11 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
 
     /**
      * @param ComponentContract|string ...$components The components
-     *
-     * @return static
      */
     public function withComponents(ComponentContract|string ...$components): static;
 
     /**
      * @param ComponentContract|string ...$components The components
-     *
-     * @return static
      */
     public function withAddedComponents(ComponentContract|string ...$components): static;
 
@@ -63,8 +57,5 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
     #[Override]
     public function jsonSerialize(): string;
 
-    /**
-     * @return string
-     */
     public function __toString(): string;
 }

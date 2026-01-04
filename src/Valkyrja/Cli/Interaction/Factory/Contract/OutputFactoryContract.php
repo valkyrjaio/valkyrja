@@ -28,8 +28,6 @@ interface OutputFactoryContract
      *
      * @param ExitCode|int    $exitCode    The exit code
      * @param MessageContract ...$messages The messages
-     *
-     * @return OutputContract
      */
     public function createOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
@@ -41,8 +39,6 @@ interface OutputFactoryContract
      *
      * @param ExitCode|int    $exitCode    The exit code
      * @param MessageContract ...$messages The messages
-     *
-     * @return EmptyOutputContract
      */
     public function createEmptyOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
@@ -54,8 +50,6 @@ interface OutputFactoryContract
      *
      * @param ExitCode|int    $exitCode    The exit code
      * @param MessageContract ...$messages The messages
-     *
-     * @return PlainOutputContract
      */
     public function createPlainOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
@@ -68,8 +62,6 @@ interface OutputFactoryContract
      * @param non-empty-string $filepath    The filepath
      * @param ExitCode|int     $exitCode    The exit code
      * @param MessageContract  ...$messages The messages
-     *
-     * @return FileOutputContract
      */
     public function createFileOutput(
         string $filepath,
@@ -83,8 +75,6 @@ interface OutputFactoryContract
      * @param resource        $stream      The stream
      * @param ExitCode|int    $exitCode    The exit code
      * @param MessageContract ...$messages The messages
-     *
-     * @return StreamOutputContract
      */
     public function createStreamOutput(
         $stream,

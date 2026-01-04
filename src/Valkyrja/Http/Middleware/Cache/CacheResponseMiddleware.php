@@ -110,8 +110,6 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
     /**
      * Get the ttl.
-     *
-     * @return int
      */
     protected function getTtl(): int
     {
@@ -121,9 +119,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
     /**
      * Get a hashed version of the request path.
      *
-     * @param ServerRequestContract $request
      *
-     * @return string
      */
     protected function getHashedPath(ServerRequestContract $request): string
     {

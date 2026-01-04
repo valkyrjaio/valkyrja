@@ -35,8 +35,6 @@ interface OutputContract
 
     /**
      * Determine if there are written messages.
-     *
-     * @return bool
      */
     public function hasWrittenMessage(): bool;
 
@@ -49,8 +47,6 @@ interface OutputContract
 
     /**
      * Determine if there are unwritten messages.
-     *
-     * @return bool
      */
     public function hasUnwrittenMessage(): bool;
 
@@ -58,8 +54,6 @@ interface OutputContract
      * Create a new Output with the specified messages.
      *
      * @param MessageContract ...$messages The messages
-     *
-     * @return static
      */
     public function withMessages(MessageContract ...$messages): static;
 
@@ -67,8 +61,6 @@ interface OutputContract
      * Create a new Output with the specified additional messages.
      *
      * @param MessageContract ...$messages The messages
-     *
-     * @return static
      */
     public function withAddedMessages(MessageContract ...$messages): static;
 
@@ -76,15 +68,11 @@ interface OutputContract
      * Create a new Output with the specified additional message.
      *
      * @param MessageContract $message The message to add
-     *
-     * @return static
      */
     public function withAddedMessage(MessageContract $message): static;
 
     /**
      * Write all unwritten messages.
-     *
-     * @return static
      */
     public function writeMessages(): static;
 
@@ -92,8 +80,6 @@ interface OutputContract
      * Write a message.
      *
      * @param MessageContract $message The message
-     *
-     * @return static
      */
     public function writeMessage(MessageContract $message): static;
 
@@ -108,15 +94,11 @@ interface OutputContract
      * Create a new output with the specified writers.
      *
      * @param WriterContract ...$writers The writers
-     *
-     * @return static
      */
     public function withWriters(WriterContract ...$writers): static;
 
     /**
      * Determine whether this output should be interactive.
-     *
-     * @return bool
      */
     public function isInteractive(): bool;
 
@@ -124,15 +106,11 @@ interface OutputContract
      * Create a new Output with the specified interactivity.
      *
      * @param bool $isInteractive The interactivity
-     *
-     * @return static
      */
     public function withIsInteractive(bool $isInteractive): static;
 
     /**
      * Determine whether this output should be quiet.
-     *
-     * @return bool
      */
     public function isQuiet(): bool;
 
@@ -140,15 +118,11 @@ interface OutputContract
      * Create a new Output with the specified quietness.
      *
      * @param bool $isQuiet The quietness
-     *
-     * @return static
      */
     public function withIsQuiet(bool $isQuiet): static;
 
     /**
      * Determine whether this output should be silent.
-     *
-     * @return bool
      */
     public function isSilent(): bool;
 
@@ -156,15 +130,11 @@ interface OutputContract
      * Create a new Output with the specified silentness.
      *
      * @param bool $isSilent The silentness
-     *
-     * @return static
      */
     public function withIsSilent(bool $isSilent): static;
 
     /**
      * Get the exit code.
-     *
-     * @return ExitCode|int
      */
     public function getExitCode(): ExitCode|int;
 
@@ -172,8 +142,6 @@ interface OutputContract
      * Create a new Output with the specified exit code.
      *
      * @param ExitCode|int $exitCode The exit code
-     *
-     * @return static
      */
     public function withExitCode(ExitCode|int $exitCode): static;
 }

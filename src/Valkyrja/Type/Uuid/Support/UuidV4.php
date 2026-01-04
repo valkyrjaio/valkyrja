@@ -38,8 +38,6 @@ class UuidV4 extends Uuid
      * Generate a v4 UUID.
      *
      * @throws RandomException
-     *
-     * @return string
      */
     public static function generate(): string
     {

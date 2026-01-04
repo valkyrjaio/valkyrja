@@ -35,7 +35,6 @@ abstract class CookieFactory
      * PHP will replace special characters in cookie names, which results in other cookies not being available due to
      * overwriting. Thus, the server request should take the cookies from the request header instead.
      *
-     * @param string $cookieHeader
      *
      * @return array<string, string>
      */
@@ -68,8 +67,6 @@ abstract class CookieFactory
 
     /**
      * @param array<string, string> $cookies The cookies
-     *
-     * @return string
      */
     public static function convertCookieArrayToHeaderString(array $cookies): string
     {

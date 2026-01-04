@@ -17,15 +17,11 @@ interface MigrationContract
 {
     /**
      * Run the migration.
-     *
-     * @return void
      */
     public function run(): void;
 
     /**
      * Rollback the migration.
-     *
-     * @return void
      */
     public function rollback(): void;
 }

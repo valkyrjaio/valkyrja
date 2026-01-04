@@ -51,15 +51,11 @@ interface ApplicationContract
      * Add a component to the application.
      *
      * @param class-string<Provider> $component The component class
-     *
-     * @return void
      */
     public function addComponent(string $component): void;
 
     /**
      * Get environment variables.
-     *
-     * @return Env
      */
     public function getEnv(): Env;
 
@@ -67,15 +63,11 @@ interface ApplicationContract
      * Set the environment variables class.
      *
      * @param Env $env The env file to use
-     *
-     * @return void
      */
     public function setEnv(Env $env): void;
 
     /**
      * Get the container.
-     *
-     * @return ContainerContract
      */
     public function getContainer(): ContainerContract;
 
@@ -83,29 +75,21 @@ interface ApplicationContract
      * Set the container.
      *
      * @param ContainerContract $container The container
-     *
-     * @return static
      */
     public function setContainer(ContainerContract $container): static;
 
     /**
      * Whether the application is running in debug mode or not.
-     *
-     * @return bool
      */
     public function getDebugMode(): bool;
 
     /**
      * Get the environment with which the application is running in.
-     *
-     * @return string
      */
     public function getEnvironment(): string;
 
     /**
      * Get the application version.
-     *
-     * @return string
      */
     public function getVersion(): string;
 }

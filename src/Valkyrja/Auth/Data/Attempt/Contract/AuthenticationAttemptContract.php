@@ -19,15 +19,11 @@ interface AuthenticationAttemptContract
 {
     /**
      * Get the authentication retrieval.
-     *
-     * @return RetrievalContract
      */
     public function getRetrieval(): RetrievalContract;
 
     /**
      * Get the password.
-     *
-     * @return string
      */
     public function getPassword(): string;
 }

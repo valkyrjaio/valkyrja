@@ -127,8 +127,6 @@ class CacheSession extends PhpSession
 
     /**
      * Get the cache session id.
-     *
-     * @return string
      */
     protected function getCacheSessionId(): string
     {
@@ -139,8 +137,6 @@ class CacheSession extends PhpSession
      * Update the cache session.
      *
      * @throws JsonException
-     *
-     * @return void
      */
     protected function updateCacheSession(): void
     {

@@ -77,8 +77,6 @@ class InMemoryStore implements Contract
      *
      * @param array<non-empty-string, int|non-empty-string|bool|null> $retrievalFields
      * @param U                                                       $user
-     *
-     * @return bool
      */
     protected function filterUsers(array $retrievalFields, UserContract $user): bool
     {

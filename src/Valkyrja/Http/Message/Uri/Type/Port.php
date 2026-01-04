@@ -52,8 +52,6 @@ class Port extends Type
 
     /**
      * @inheritDoc
-     *
-     * @return int|null
      */
     #[Override]
     public function asFlatValue(): int|null

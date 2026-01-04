@@ -199,8 +199,6 @@ abstract class Entity extends Model implements Contract
      *
      * @param array<string, mixed> $allProperties    The properties
      * @param string[]             $unStorableFields The un-storable fields
-     *
-     * @return void
      */
     protected function internalRemoveUnStorableFields(array &$allProperties, array $unStorableFields): void
     {
@@ -239,8 +237,6 @@ abstract class Entity extends Model implements Contract
      * @param string              $property The property name
      *
      * @throws JsonException
-     *
-     * @return mixed
      */
     protected function internalGetPropertyValueForDataStore(array $castings, string $property): mixed
     {
@@ -277,8 +273,6 @@ abstract class Entity extends Model implements Contract
      *
      * @param Cast  $cast  The cast for the property
      * @param mixed $value The value
-     *
-     * @return mixed
      */
     protected function internalGetTypeValueForDataStore(Cast $cast, mixed $value): mixed
     {

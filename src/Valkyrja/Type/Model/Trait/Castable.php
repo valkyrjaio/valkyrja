@@ -73,8 +73,6 @@ trait Castable
      *
      * @param Cast|null $cast  The cast
      * @param mixed     $value The property value
-     *
-     * @return mixed
      */
     protected function internalCheckAndCastPropertyValue(Cast|null $cast, mixed $value): mixed
     {
@@ -130,8 +128,6 @@ trait Castable
      * Modify the cast value before returning it.
      *
      * @param TypeContract $type The type
-     *
-     * @return TypeContract
      */
     protected function internalModifyCastPropertyValue(TypeContract $type): TypeContract
     {

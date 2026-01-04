@@ -35,8 +35,6 @@ class Obj
      * @param object $subject The subject object
      *
      * @throws JsonException
-     *
-     * @return string
      */
     public static function toString(object $subject): string
     {
@@ -49,8 +47,6 @@ class Obj
      * @param string $subject The subject object as a string
      *
      * @throws JsonException
-     *
-     * @return object
      */
     public static function fromString(string $subject): object
     {
@@ -67,8 +63,6 @@ class Obj
      * Convert an object to a serialized string.
      *
      * @param object $subject The subject object
-     *
-     * @return string
      */
     public static function toSerializedString(object $subject): string
     {
@@ -80,8 +74,6 @@ class Obj
      *
      * @param string              $subject        The subject object as a string
      * @param class-string[]|null $allowedClasses The allowed classes to be unserialized
-     *
-     * @return object
      */
     public static function fromSerializedString(string $subject, array|null $allowedClasses = [stdClass::class]): object
     {
@@ -186,8 +178,6 @@ class Obj
      * @param non-empty-string $name      The dot notation to search for
      * @param mixed|null       $default   [optional] The default value
      * @param non-empty-string $separator [optional] The separator
-     *
-     * @return mixed
      */
     public static function getValueDotNotation(object $subject, string $name, mixed $default = null, string $separator = '.'): mixed
     {

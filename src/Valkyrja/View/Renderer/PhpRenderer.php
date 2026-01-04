@@ -102,8 +102,6 @@ class PhpRenderer implements Contract
      *
      * @param string               $path      The file path
      * @param array<string, mixed> $variables [optional] The variables
-     *
-     * @return string
      */
     protected function renderFullPath(string $path, array $variables = []): string
     {
@@ -118,8 +116,6 @@ class PhpRenderer implements Contract
      *
      * @param string               $path      The file path
      * @param array<string, mixed> $variables [optional] The variables
-     *
-     * @return void
      */
     protected function requirePath(string $path, array $variables = []): void
     {
@@ -140,8 +136,6 @@ class PhpRenderer implements Contract
      * @param string $template The template
      *
      * @throws InvalidConfigPath
-     *
-     * @return string
      */
     protected function getFullPath(string $template): string
     {
@@ -177,8 +171,6 @@ class PhpRenderer implements Contract
      * Get the template directory.
      *
      * @param string|null $path [optional] The path to append
-     *
-     * @return string
      */
     protected function getDir(string|null $path = null): string
     {

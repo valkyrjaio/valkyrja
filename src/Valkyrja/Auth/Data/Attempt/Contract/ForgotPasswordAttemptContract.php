@@ -19,8 +19,6 @@ interface ForgotPasswordAttemptContract
 {
     /**
      * Get the authentication retrieval.
-     *
-     * @return RetrievalContract
      */
     public function getRetrieval(): RetrievalContract;
 }

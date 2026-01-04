@@ -28,8 +28,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Set properties from an array of properties.
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return static
      */
     public static function fromArray(array $properties): static;
 
@@ -47,8 +45,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      *
      * @param string $name  The property to set
      * @param mixed  $value The value to set
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void;
 
@@ -56,8 +52,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Check if a property is set.
      *
      * @param string $name The property to check
-     *
-     * @return bool
      */
     public function __isset(string $name): bool;
 
@@ -65,8 +59,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Determine whether the model has a property.
      *
      * @param string $property The property
-     *
-     * @return bool
      */
     public function hasProperty(string $property): bool;
 
@@ -74,8 +66,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Set properties from an array of properties.
      *
      * @param array<string, mixed> $properties The properties
-     *
-     * @return void
      */
     public function updateProperties(array $properties): void;
 
@@ -83,8 +73,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Get a new model with new properties.
      *
      * @param array<string, mixed> $properties The properties to modify
-     *
-     * @return static
      */
     public function withProperties(array $properties): static;
 
@@ -96,8 +84,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
 
     /**
      * @inheritDoc
-     *
-     * @return string
      */
     #[Override]
     public function asFlatValue(): string;
@@ -122,8 +108,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Get an original property value by name.
      *
      * @param string $name The original property to get
-     *
-     * @return mixed
      */
     public function getOriginalPropertyValue(string $name): mixed;
 
@@ -144,8 +128,6 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
 
     /**
      * To string.
-     *
-     * @return string
      */
     public function __toString(): string;
 }

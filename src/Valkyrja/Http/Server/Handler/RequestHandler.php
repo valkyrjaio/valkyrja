@@ -136,8 +136,6 @@ class RequestHandler implements Contract
      * Dispatch the request via the router.
      *
      * @param ServerRequestContract $request The request
-     *
-     * @return ResponseContract
      */
     protected function dispatchRouter(ServerRequestContract $request): ResponseContract
     {
@@ -164,8 +162,6 @@ class RequestHandler implements Contract
      * @param Throwable $throwable The exception
      *
      * @throws Throwable
-     *
-     * @return ResponseContract
      */
     protected function getResponseFromThrowable(Throwable $throwable): ResponseContract
     {
@@ -186,8 +182,6 @@ class RequestHandler implements Contract
      * Get the default exception response.
      *
      * @param HttpException|null $httpException [optional] The Http exception
-     *
-     * @return ResponseContract
      */
     protected function getDefaultErrorResponse(HttpException|null $httpException = null): ResponseContract
     {
@@ -211,8 +205,6 @@ class RequestHandler implements Contract
 
     /**
      * Finish a session if it is active.
-     *
-     * @return void
      */
     protected function finishSession(): void
     {
@@ -223,8 +215,6 @@ class RequestHandler implements Contract
 
     /**
      * Determine if the session should be closed.
-     *
-     * @return bool
      */
     protected function shouldCloseSession(): bool
     {
@@ -235,8 +225,6 @@ class RequestHandler implements Contract
 
     /**
      * Close the session.
-     *
-     * @return void
      */
     protected function closeSession(): void
     {
@@ -245,8 +233,6 @@ class RequestHandler implements Contract
 
     /**
      * Finish the request.
-     *
-     * @return void
      */
     protected function finishRequest(): void
     {
@@ -269,8 +255,6 @@ class RequestHandler implements Contract
 
     /**
      * Determine if the request should be finished with Fastcgi.
-     *
-     * @return bool
      */
     protected function shouldUseFastcgiToFinishRequest(): bool
     {
@@ -279,8 +263,6 @@ class RequestHandler implements Contract
 
     /**
      * Determine if the request should be finished with Litespeed.
-     *
-     * @return bool
      */
     protected function shouldUseLitespeedToFinishRequest(): bool
     {
@@ -289,8 +271,6 @@ class RequestHandler implements Contract
 
     /**
      * Determine if the request should be finished via closing the output buffers.
-     *
-     * @return bool
      */
     protected function shouldCloseOutputBuffersToFinishRequest(): bool
     {
@@ -299,8 +279,6 @@ class RequestHandler implements Contract
 
     /**
      * Finish the request with Fastcgi.
-     *
-     * @return void
      */
     protected function finishRequestWithFastcgi(): void
     {
@@ -309,8 +287,6 @@ class RequestHandler implements Contract
 
     /**
      * Finish the request with Litespeed.
-     *
-     * @return void
      */
     protected function finishRequestWithLitespeed(): void
     {
@@ -325,8 +301,6 @@ class RequestHandler implements Contract
      *
      * @param int  $targetLevel The target output buffering level
      * @param bool $flush       Whether to flush or clean the buffers
-     *
-     * @return void
      */
     protected function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
@@ -364,8 +338,6 @@ class RequestHandler implements Contract
 
     /**
      * End the output buffers with flush.
-     *
-     * @return void
      */
     protected function closeOutputBuffersWithFlush(): void
     {
@@ -374,8 +346,6 @@ class RequestHandler implements Contract
 
     /**
      * End the output buffers with clean.
-     *
-     * @return void
      */
     protected function closeOutputBuffersWithClean(): void
     {
@@ -384,8 +354,6 @@ class RequestHandler implements Contract
 
     /**
      * Finish the request for any scenario not previously caught.
-     *
-     * @return void
      */
     protected function finishRequestForAllOtherTypes(): void
     {

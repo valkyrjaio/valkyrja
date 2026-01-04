@@ -22,8 +22,6 @@ interface DispatcherContract
      *
      * @param DispatchContract                    $dispatch  The dispatch
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return mixed
      */
     public function dispatch(DispatchContract $dispatch, array|null $arguments = null): mixed;
 }

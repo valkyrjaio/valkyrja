@@ -26,15 +26,11 @@ interface QuestionContract extends MessageContract
 
     /**
      * @param callable(OutputContract, AnswerContract):OutputContract $callable The callable
-     *
-     * @return static
      */
     public function withCallable(callable $callable): static;
 
     /**
      * Get the Answer message.
-     *
-     * @return AnswerContract
      */
     public function getAnswer(): AnswerContract;
 
@@ -42,15 +38,11 @@ interface QuestionContract extends MessageContract
      * Create a new Question with the specified Answer message.
      *
      * @param AnswerContract $answer The answer message
-     *
-     * @return static
      */
     public function withAnswer(AnswerContract $answer): static;
 
     /**
      * Ask the question and get an updated Answer with the response.
-     *
-     * @return AnswerContract
      */
     public function ask(): AnswerContract;
 }

@@ -19,8 +19,6 @@ use function var_dump;
  * A handy debug helper to dump vars and exit.
  *
  * @param mixed ...$arguments The arguments to dump
- *
- * @return never
  */
 function dd(...$arguments): never
 {

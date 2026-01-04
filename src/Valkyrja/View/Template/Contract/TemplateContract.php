@@ -19,8 +19,6 @@ interface TemplateContract extends Stringable
 {
     /**
      * Get the template name.
-     *
-     * @return string
      */
     public function getName(): string;
 
@@ -28,8 +26,6 @@ interface TemplateContract extends Stringable
      * Set the template name.
      *
      * @param string $name The name
-     *
-     * @return static
      */
     public function setName(string $name): static;
 
@@ -44,8 +40,6 @@ interface TemplateContract extends Stringable
      * Set the variables.
      *
      * @param array<string, mixed> $variables [optional] The variables to set
-     *
-     * @return static
      */
     public function setVariables(array $variables = []): static;
 
@@ -53,8 +47,6 @@ interface TemplateContract extends Stringable
      * Get a variable.
      *
      * @param string $key The variable key to set
-     *
-     * @return mixed
      */
     public function getVariable(string $key): mixed;
 
@@ -63,8 +55,6 @@ interface TemplateContract extends Stringable
      *
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
-     *
-     * @return static
      */
     public function setVariable(string $key, mixed $value): static;
 
@@ -72,8 +62,6 @@ interface TemplateContract extends Stringable
      * Escape a value for output.
      *
      * @param string|int|float $value The value to escape
-     *
-     * @return string
      */
     public function escape(string|int|float $value): string;
 
@@ -81,15 +69,11 @@ interface TemplateContract extends Stringable
      * Set the layout for the view template.
      *
      * @param string|null $layout [optional] The layout
-     *
-     * @return static
      */
     public function setLayout(string|null $layout = null): static;
 
     /**
      * Set no layout for this view.
-     *
-     * @return static
      */
     public function withoutLayout(): static;
 
@@ -98,8 +82,6 @@ interface TemplateContract extends Stringable
      *
      * @param string               $partial   The partial
      * @param array<string, mixed> $variables [optional] The variables
-     *
-     * @return string
      */
     public function getPartial(string $partial, array $variables = []): string;
 
@@ -107,8 +89,6 @@ interface TemplateContract extends Stringable
      * Output a block.
      *
      * @param string $name The name of the block
-     *
-     * @return string
      */
     public function getBlock(string $name): string;
 
@@ -127,15 +107,11 @@ interface TemplateContract extends Stringable
      * Start a block.
      *
      * @param string $name The name of the block
-     *
-     * @return void
      */
     public function startBlock(string $name): void;
 
     /**
      * End a block.
-     *
-     * @return void
      */
     public function endBlock(): void;
 
@@ -143,15 +119,11 @@ interface TemplateContract extends Stringable
      * Render the template.
      *
      * @param array<string, mixed> $variables [optional] The variables to set
-     *
-     * @return string
      */
     public function render(array $variables = []): string;
 
     /**
      * Get the view as a string.
-     *
-     * @return string
      */
     public function __toString(): string;
 }

@@ -50,20 +50,14 @@ class CollectionTest extends TestCase
 
     /**
      * Setup the test.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->class = new Collection($this->value);
     }
 
     /**
      * Test the constructor with no data.
-     *
-     * @return void
      */
     public function testConstruct(): void
     {
@@ -72,8 +66,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the constructor with data.
-     *
-     * @return void
      */
     public function testConstructWithData(): void
     {
@@ -82,8 +74,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test getting a value from the collection.
-     *
-     * @return void
      */
     public function testGet(): void
     {
@@ -92,8 +82,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test getting a value from the collection that doesn't exist.
-     *
-     * @return void
      */
     public function testGetNonExistent(): void
     {
@@ -102,8 +90,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test getting a value from the collection that doesn't exist with a default value set.
-     *
-     * @return void
      */
     public function testGetNonExistentWithDefault(): void
     {
@@ -112,8 +98,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the has method.
-     *
-     * @return void
      */
     public function testHas(): void
     {
@@ -122,8 +106,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the has method with a non existent key.
-     *
-     * @return void
      */
     public function testHasNonExistent(): void
     {
@@ -132,8 +114,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the exists method.
-     *
-     * @return void
      */
     public function testExists(): void
     {
@@ -142,8 +122,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the exists method with a non existent value.
-     *
-     * @return void
      */
     public function testExistsNonExistent(): void
     {
@@ -152,8 +130,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the set method.
-     *
-     * @return void
      */
     public function testSet(): void
     {
@@ -162,8 +138,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the has method with the new key set.
-     *
-     * @return void
      */
     public function testHasNewValue(): void
     {
@@ -174,8 +148,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the exists method with the new value set.
-     *
-     * @return void
      */
     public function testExistsNewValue(): void
     {
@@ -186,8 +158,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the remove method.
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -198,8 +168,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the remove method with a non existent key.
-     *
-     * @return void
      */
     public function testRemoveNonExistent(): void
     {
@@ -208,8 +176,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the all method.
-     *
-     * @return void
      */
     public function testAll(): void
     {
@@ -218,8 +184,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the setAll method.
-     *
-     * @return void
      */
     public function testSetAll(): void
     {
@@ -228,8 +192,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the keys method.
-     *
-     * @return void
      */
     public function testKeys(): void
     {
@@ -238,8 +200,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the count method.
-     *
-     * @return void
      */
     public function testCount(): void
     {
@@ -248,8 +208,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the isEmpty method.
-     *
-     * @return void
      */
     public function testIsEmpty(): void
     {
@@ -258,8 +216,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the magic __get method.
-     *
-     * @return void
      */
     public function testMagicGet(): void
     {
@@ -270,8 +226,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the magic __isset method.
-     *
-     * @return void
      */
     public function testMagicIsset(): void
     {
@@ -282,8 +236,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the magic __set method.
-     *
-     * @return void
      */
     public function testMagicSet(): void
     {
@@ -294,8 +246,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the magic __unset method.
-     *
-     * @return void
      */
     public function testMagicUnset(): void
     {
@@ -306,8 +256,6 @@ class CollectionTest extends TestCase
 
     /**
      * Test the magic __toString method.
-     *
-     * @return void
      */
     public function testMagicToString(): void
     {

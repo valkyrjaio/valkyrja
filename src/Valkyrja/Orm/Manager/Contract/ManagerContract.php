@@ -33,29 +33,21 @@ interface ManagerContract
 
     /**
      * Create a query builder.
-     *
-     * @return QueryBuilderFactoryContract
      */
     public function createQueryBuilder(): QueryBuilderFactoryContract;
 
     /**
      * Initiate a transaction.
-     *
-     * @return bool
      */
     public function beginTransaction(): bool;
 
     /**
      * In a transaction.
-     *
-     * @return bool
      */
     public function inTransaction(): bool;
 
     /**
      * Ensure a transaction is in progress.
-     *
-     * @return void
      */
     public function ensureTransaction(): void;
 
@@ -63,8 +55,6 @@ interface ManagerContract
      * Prepare a query.
      *
      * @param string $query The query
-     *
-     * @return StatementContract
      */
     public function prepare(string $query): StatementContract;
 
@@ -72,22 +62,16 @@ interface ManagerContract
      * Run a query.
      *
      * @param string $query The query
-     *
-     * @return StatementContract
      */
     public function query(string $query): StatementContract;
 
     /**
      * Commit all items in the transaction.
-     *
-     * @return bool
      */
     public function commit(): bool;
 
     /**
      * Rollback the previous transaction.
-     *
-     * @return bool
      */
     public function rollback(): bool;
 

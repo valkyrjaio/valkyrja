@@ -32,8 +32,6 @@ interface CollectionContract
      * Add commands.
      *
      * @param RouteContract ...$commands The commands
-     *
-     * @return static
      */
     public function add(RouteContract ...$commands): static;
 
@@ -41,8 +39,6 @@ interface CollectionContract
      * Get a command.
      *
      * @param string $name The command name
-     *
-     * @return RouteContract|null
      */
     public function get(string $name): RouteContract|null;
 
@@ -50,8 +46,6 @@ interface CollectionContract
      * Determine if a command exists.
      *
      * @param string $name The command name
-     *
-     * @return bool
      */
     public function has(string $name): bool;
 

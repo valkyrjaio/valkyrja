@@ -17,8 +17,6 @@ interface TableContract
 {
     /**
      * Create the table.
-     *
-     * @return static
      */
     public function create(): static;
 
@@ -26,15 +24,11 @@ interface TableContract
      * Rename the table.
      *
      * @param string $name The new name
-     *
-     * @return static
      */
     public function rename(string $name): static;
 
     /**
      * Drop the table.
-     *
-     * @return static
      */
     public function drop(): static;
 
@@ -42,22 +36,16 @@ interface TableContract
      * Set the name of the table.
      *
      * @param string $name The table name
-     *
-     * @return static
      */
     public function setName(string $name): static;
 
     /**
      * Do only if the table doesn't already exist.
-     *
-     * @return static
      */
     public function ifNotExists(): static;
 
     /**
      * Do only if the table exists.
-     *
-     * @return static
      */
     public function ifExists(): static;
 
@@ -65,8 +53,6 @@ interface TableContract
      * Create a new column.
      *
      * @param string $name The column name
-     *
-     * @return ColumnContract
      */
     public function createColumn(string $name): ColumnContract;
 
@@ -74,8 +60,6 @@ interface TableContract
      * Change an existing column.
      *
      * @param string $name The column name
-     *
-     * @return ColumnContract
      */
     public function changeColumn(string $name): ColumnContract;
 
@@ -83,8 +67,6 @@ interface TableContract
      * Drop an existing column.
      *
      * @param string $name The column name
-     *
-     * @return ColumnContract
      */
     public function dropColumn(string $name): ColumnContract;
 
@@ -92,8 +74,6 @@ interface TableContract
      * Create a new index.
      *
      * @param string $name The index name
-     *
-     * @return IndexContract
      */
     public function createIndex(string $name): IndexContract;
 
@@ -101,8 +81,6 @@ interface TableContract
      * Change an existing index.
      *
      * @param string $name The index name
-     *
-     * @return IndexContract
      */
     public function changeIndex(string $name): IndexContract;
 
@@ -110,8 +88,6 @@ interface TableContract
      * Drop an existing index.
      *
      * @param string $name The index name
-     *
-     * @return IndexContract
      */
     public function dropIndex(string $name): IndexContract;
 
@@ -119,8 +95,6 @@ interface TableContract
      * Create a new constraint.
      *
      * @param string $name The constraint name
-     *
-     * @return ConstraintContract
      */
     public function createConstraint(string $name): ConstraintContract;
 
@@ -128,8 +102,6 @@ interface TableContract
      * Change an existing constraint.
      *
      * @param string $name The constraint name
-     *
-     * @return ConstraintContract
      */
     public function changeConstraint(string $name): ConstraintContract;
 
@@ -137,15 +109,11 @@ interface TableContract
      * Drop an existing constraint.
      *
      * @param string $name The constraint name
-     *
-     * @return ConstraintContract
      */
     public function dropConstraint(string $name): ConstraintContract;
 
     /**
      * Get the built query string.
-     *
-     * @return string
      */
     public function getQueryString(): string;
 }

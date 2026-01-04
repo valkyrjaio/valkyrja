@@ -42,8 +42,6 @@ class TestCase extends PHPUnitTestCase
 
     /**
      * Setup functional tests.
-     *
-     * @return void
      */
     protected function setUp(): void
     {

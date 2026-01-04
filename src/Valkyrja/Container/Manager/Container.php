@@ -345,8 +345,6 @@ class Container implements Contract
      *
      * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return object|null
      */
     protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
     {
@@ -364,8 +362,6 @@ class Container implements Contract
      *
      * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return object|null
      */
     protected function getCallableWithoutChecks(string $id, array $arguments = []): object|null
     {
@@ -382,8 +378,6 @@ class Container implements Contract
      * Get a singleton from the container without trying to get an alias or ensuring published.
      *
      * @param class-string $id The service id
-     *
-     * @return object|null
      */
     protected function getSingletonWithoutChecks(string $id): object|null
     {
@@ -405,8 +399,6 @@ class Container implements Contract
      *
      * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return ServiceContract|null
      */
     protected function getServiceWithoutChecks(string $id, array $arguments = []): ServiceContract|null
     {

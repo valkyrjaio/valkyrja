@@ -17,8 +17,6 @@ interface ConstraintContract
 {
     /**
      * Create the constraint.
-     *
-     * @return static
      */
     public function create(): static;
 
@@ -26,15 +24,11 @@ interface ConstraintContract
      * Rename the constraint.
      *
      * @param string $name The new name
-     *
-     * @return static
      */
     public function rename(string $name): static;
 
     /**
      * Drop the constraint.
-     *
-     * @return static
      */
     public function drop(): static;
 
@@ -42,8 +36,6 @@ interface ConstraintContract
      * Set the name of the constraint.
      *
      * @param string $name The constraint name
-     *
-     * @return static
      */
     public function setName(string $name): static;
 
@@ -51,29 +43,21 @@ interface ConstraintContract
      * Add a column to the constraint.
      *
      * @param string $name The column name
-     *
-     * @return static
      */
     public function addColumn(string $name): static;
 
     /**
      * Set this as a primary key constraint.
-     *
-     * @return static
      */
     public function isPrimaryKey(): static;
 
     /**
      * Do only if the table doesn't already exist.
-     *
-     * @return static
      */
     public function ifNotExists(): static;
 
     /**
      * Do only if the table exists.
-     *
-     * @return static
      */
     public function ifExists(): static;
 }

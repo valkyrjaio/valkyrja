@@ -33,8 +33,6 @@ abstract class TestCase extends PHPUnitTestCase
      *
      * @param class-string $expected The expected class
      * @param class-string $actual   The actual string
-     *
-     * @return void
      */
     protected static function assertIsA(string $expected, string $actual): void
     {
@@ -43,7 +41,6 @@ abstract class TestCase extends PHPUnitTestCase
 
     /**
      * @param object|class-string $class
-     * @param string              $method
      */
     protected static function assertMethodExists(object|string $class, string $method): void
     {
@@ -83,8 +80,6 @@ abstract class TestCase extends PHPUnitTestCase
     #[Override]
     protected function tearDown(): void
     {
-        parent::tearDown();
-
         $dir = EnvClass::APP_DIR . '/storage';
 
         /** @var string[] $files */

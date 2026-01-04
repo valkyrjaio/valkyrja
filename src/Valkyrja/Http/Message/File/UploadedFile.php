@@ -200,8 +200,6 @@ class UploadedFile implements Contract
      * @param string $path The path to write the stream to
      *
      * @throws InvalidStreamException
-     *
-     * @return void
      */
     protected function writeStream(string $path): void
     {
@@ -231,8 +229,6 @@ class UploadedFile implements Contract
 
     /**
      * Get the PHP_SAPI value.
-     *
-     * @return string
      */
     protected function getPhpSapi(): string
     {
@@ -241,8 +237,6 @@ class UploadedFile implements Contract
 
     /**
      * Determine if a new stream should be opened to move the file.
-     *
-     * @return bool
      */
     protected function shouldWriteStream(): bool
     {
@@ -262,8 +256,6 @@ class UploadedFile implements Contract
      * Get the directory name for a given path.
      *
      * @param string $path The path
-     *
-     * @return string
      */
     protected function getDirectoryName(string $path): string
     {
@@ -294,8 +286,6 @@ class UploadedFile implements Contract
      * Close a stream.
      *
      * @param resource $stream The stream
-     *
-     * @return bool
      */
     protected function closeStream($stream): bool
     {
@@ -306,8 +296,6 @@ class UploadedFile implements Contract
      * Determine if a filename is a directory.
      *
      * @param string $filename The file
-     *
-     * @return bool
      */
     protected function isDir(string $filename): bool
     {
@@ -318,8 +306,6 @@ class UploadedFile implements Contract
      * Determine if a file is writable.
      *
      * @param string $filename The file
-     *
-     * @return bool
      */
     protected function isWritable(string $filename): bool
     {
@@ -331,8 +317,6 @@ class UploadedFile implements Contract
      *
      * @param string $from Path to move from
      * @param string $to   Path to move to
-     *
-     * @return bool
      */
     protected function moveUploadedFile(string $from, string $to): bool
     {
@@ -342,9 +326,7 @@ class UploadedFile implements Contract
     /**
      * Delete a file.
      *
-     * @param string $filename
      *
-     * @return bool
      */
     protected function deleteFile(string $filename): bool
     {

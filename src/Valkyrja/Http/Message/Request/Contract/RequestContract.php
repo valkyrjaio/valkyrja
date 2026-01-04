@@ -45,8 +45,6 @@ interface RequestContract extends MessageContract
      * withRequestTarget() below).
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
-     *
-     * @return string
      */
     public function getRequestTarget(): string;
 
@@ -64,8 +62,6 @@ interface RequestContract extends MessageContract
      *     request-target forms allowed in request messages)
      *
      * @param string $requestTarget The request target
-     *
-     * @return static
      */
     public function withRequestTarget(string $requestTarget): static;
 
@@ -88,8 +84,6 @@ interface RequestContract extends MessageContract
      * @param RequestMethod $method Case-sensitive method
      *
      * @throws InvalidArgumentException for invalid HTTP methods
-     *
-     * @return static
      */
     public function withMethod(RequestMethod $method): static;
 
@@ -131,8 +125,6 @@ interface RequestContract extends MessageContract
      * @param UriContract $uri          New request URI to use
      * @param bool        $preserveHost Preserve the original state of the Host
      *                                  header
-     *
-     * @return static
      */
     public function withUri(UriContract $uri, bool $preserveHost = false): static;
 }

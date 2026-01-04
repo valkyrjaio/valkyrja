@@ -52,8 +52,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * Ensure a message is a message.
      *
      * @param string $message The message
-     *
-     * @return void
      */
     protected function ensureIsStruct(string $message): void
     {
@@ -64,8 +62,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * Determine if a dependency is a message.
      *
      * @param string $struct The message
-     *
-     * @return bool
      */
     protected function determineIsStruct(string $struct): bool
     {
@@ -76,8 +72,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * @param ServerRequestContract               $request      The request
      * @param RouteContract                       $matchedRoute The matched route
      * @param class-string<RequestStructContract> $struct       The message class name
-     *
-     * @return ResponseContract|null
      */
     protected function ensureRequestConformsToMessage(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
@@ -90,8 +84,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * @param ServerRequestContract               $request      The request
      * @param RouteContract                       $matchedRoute The matched route
      * @param class-string<RequestStructContract> $struct       The message class name
-     *
-     * @return ResponseContract|null
      */
     protected function ensureRequestHasNoExtraData(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
@@ -108,8 +100,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * @param ServerRequestContract               $request      The request
      * @param RouteContract                       $matchedRoute The matched route
      * @param class-string<RequestStructContract> $struct       The message class name
-     *
-     * @return ResponseContract
      */
     protected function getExtraDataErrorResponse(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract
     {
@@ -122,8 +112,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * @param ServerRequestContract               $request      The request
      * @param RouteContract                       $matchedRoute The matched route
      * @param class-string<RequestStructContract> $struct       The message class name
-     *
-     * @return ResponseContract|null
      */
     protected function ensureRequestIsValid(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
@@ -141,8 +129,6 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
      * @param RouteContract                       $matchedRoute The matched route
      * @param ValidatorContract                   $validate     The validation object
      * @param class-string<RequestStructContract> $struct       The message class name
-     *
-     * @return ResponseContract
      */
     protected function getValidationErrorsResponse(
         ServerRequestContract $request,

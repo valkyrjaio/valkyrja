@@ -27,8 +27,6 @@ interface ResponseFactoryContract
      * @param string|null                  $content    [optional] The response content
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return ResponseContract
      */
     public function createResponse(
         string|null $content = null,
@@ -42,8 +40,6 @@ interface ResponseFactoryContract
      * @param string|null                  $content    [optional] The response content
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return TextResponseContract
      */
     public function createTextResponse(
         string|null $content = null,
@@ -57,8 +53,6 @@ interface ResponseFactoryContract
      * @param array<array-key, mixed>|null $data       [optional] The data to set
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return JsonResponseContract
      */
     public function createJsonResponse(
         array|null $data = null,
@@ -73,8 +67,6 @@ interface ResponseFactoryContract
      * @param array<array-key, mixed>|null $data       [optional] The data to set
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return JsonResponseContract
      */
     public function createJsonpResponse(
         string $callback,
@@ -89,8 +81,6 @@ interface ResponseFactoryContract
      * @param string|null                  $uri        [optional] The uri to redirect to
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponseContract
      */
     public function createRedirectResponse(
         string|null $uri = null,

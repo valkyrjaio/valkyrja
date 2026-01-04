@@ -75,10 +75,6 @@ class Header implements Contract
      */
     protected int $position = 0;
 
-    /**
-     * @param string               $name
-     * @param ValueContract|string ...$values
-     */
     public function __construct(string $name, ValueContract|string ...$values)
     {
         $this->rewind();
@@ -311,7 +307,6 @@ class Header implements Contract
     /**
      * Map string values to Value objects.
      *
-     * @param ValueContract|string ...$values
      *
      * @return ValueContract[]
      */
@@ -323,11 +318,6 @@ class Header implements Contract
         );
     }
 
-    /**
-     * @param string $name
-     *
-     * @return void
-     */
     protected function updateName(string $name): void
     {
         HeaderSecurity::assertValidName($name);
@@ -343,9 +333,6 @@ class Header implements Contract
         $this->values = $this->mapToValue(...$values);
     }
 
-    /**
-     * @return string
-     */
     protected function nameToString(): string
     {
         return $this->name . ':';
@@ -353,8 +340,6 @@ class Header implements Contract
 
     /**
      * @see https://greenbytes.de/tech/webdav/rfc2616.html#message.headers
-     *
-     * @return string
      */
     protected function valuesToString(): string
     {

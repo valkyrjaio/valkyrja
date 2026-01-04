@@ -111,8 +111,6 @@ class Enum
      *
      * @param class-string<UnitEnum> $enum The enum class name
      * @param string                 $name The name to check
-     *
-     * @return bool
      */
     public static function isValidName(string $enum, string $name): bool
     {
@@ -124,8 +122,6 @@ class Enum
      *
      * @param class-string<BackedEnum> $enum  The enum class name
      * @param string|int               $value The value to check
-     *
-     * @return bool
      */
     public static function isValidValue(string $enum, string|int $value): bool
     {

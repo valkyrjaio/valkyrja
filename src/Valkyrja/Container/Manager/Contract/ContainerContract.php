@@ -36,7 +36,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string $id The service id
      *
-     * @return bool
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
@@ -48,8 +47,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string                  $id      The service id
      * @param class-string<ServiceContract> $service The service
-     *
-     * @return static
      */
     public function bind(string $id, string $service): static;
 
@@ -58,8 +55,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string $alias The alias
      * @param class-string $id    The service id to alias
-     *
-     * @return static
      */
     public function bindAlias(string $alias, string $id): static;
 
@@ -68,8 +63,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string                  $id        The service id
      * @param class-string<ServiceContract> $singleton The singleton service
-     *
-     * @return static
      */
     public function bindSingleton(string $id, string $singleton): static;
 
@@ -81,7 +74,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * @param class-string<T> $id       The service id
      * @param callable        $callable The callable
      *
-     * @return static
      *
      * @see https://psalm.dev/r/4431cf022b callable(Container, mixed...):T
      */
@@ -94,8 +86,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string<T> $id        The service id
      * @param T               $singleton The singleton
-     *
-     * @return static
      */
     public function setSingleton(string $id, object $singleton): static;
 
@@ -103,8 +93,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Check whether a given service is an alias.
      *
      * @param class-string $id The service id
-     *
-     * @return bool
      */
     public function isAlias(string $id): bool;
 
@@ -112,8 +100,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Check whether a given service is bound to a callable.
      *
      * @param class-string $id The service id
-     *
-     * @return bool
      */
     public function isCallable(string $id): bool;
 
@@ -121,8 +107,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Check whether a given service exists.
      *
      * @param class-string $id The service id
-     *
-     * @return bool
      */
     public function isService(string $id): bool;
 
@@ -130,8 +114,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Check whether a given service is a singleton.
      *
      * @param class-string $id The service id
-     *
-     * @return bool
      */
     public function isSingleton(string $id): bool;
 
