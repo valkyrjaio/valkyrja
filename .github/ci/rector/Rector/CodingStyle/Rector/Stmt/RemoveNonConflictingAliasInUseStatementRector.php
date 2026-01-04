@@ -142,9 +142,9 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $this->modifyImplements($allNode, $aliasName, $aliasUseLastName);
             }
 
-            // if ($aliasName === 'PhpThrowable') {
-            //     file_put_contents(__DIR__ . 'interfaceexample.json', json_encode($node));
-            // }
+            if ($aliasName === 'FlysystemInterface') {
+                file_put_contents(__DIR__ . 'returntypeexample.json', json_encode($node));
+            }
         }
 
         if ($hasChanged) {
@@ -163,9 +163,9 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $newComments = [];
 
             foreach ($comments as $comment) {
-                if ($comment instanceof Doc && preg_match("/(\W)$alias/", $comment->getText()) === 1) {
+                if ($comment instanceof Doc && preg_match("/(\W)$alias(\W)/", $comment->getText()) === 1) {
                     $newComments[] = new Doc(
-                        text: preg_replace("/(\W)$alias/", "$1$className", $comment->getText()),
+                        text: preg_replace("/(\W)$alias(\W)/", "$1$className$2", $comment->getText()),
                     );
 
                     continue;
