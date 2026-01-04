@@ -87,8 +87,6 @@ class InputHandler implements Contract
 
     /**
      * Run the handler.
-     *
-     *
      */
     #[Override]
     public function run(InputContract $input): void

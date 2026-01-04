@@ -44,8 +44,6 @@ final class HeaderSecurity
      * lossy.
      *
      * @see http://en.wikipedia.org/wiki/HTTP_response_splitting
-     *
-     *
      */
     public static function filter(string $value): string
     {
@@ -90,9 +88,7 @@ final class HeaderSecurity
     /**
      * Assert a header value is valid.
      *
-     *
      * @throws InvalidArgumentException for invalid values
-     *
      */
     public static function assertValid(string $value): void
     {
@@ -108,8 +104,6 @@ final class HeaderSecurity
      * a single CRLF sequence followed by a space or horizontal tab.
      *
      * @see http://en.wikipedia.org/wiki/HTTP_response_splitting
-     *
-     *
      */
     public static function isValid(string $value): bool
     {
@@ -140,9 +134,7 @@ final class HeaderSecurity
      *
      * @see http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     *
      * @throws InvalidArgumentException
-     *
      */
     public static function assertValidName(string $name): void
     {

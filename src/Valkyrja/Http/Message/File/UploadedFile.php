@@ -325,8 +325,6 @@ class UploadedFile implements Contract
 
     /**
      * Delete a file.
-     *
-     *
      */
     protected function deleteFile(string $filename): bool
     {

@@ -52,8 +52,6 @@ interface StatementContract
 
     /**
      * Fetch a single column.
-     *
-     *
      */
     public function fetchColumn(int $columnNumber = 0): mixed;
 

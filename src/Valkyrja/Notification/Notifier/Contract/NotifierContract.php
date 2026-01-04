@@ -50,8 +50,6 @@ interface NotifierContract
 
     /**
      * Add a User recipient to send a notification to.
-     *
-     *
      */
     public function addUserRecipient(NotifiableUserContract $user): static;
 

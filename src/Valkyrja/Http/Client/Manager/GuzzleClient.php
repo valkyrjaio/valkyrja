@@ -151,7 +151,6 @@ class GuzzleClient implements Contract
      *
      * @param ResponseInterface $guzzleResponse The Guzzle Response
      *
-     *
      * @psalm-suppress MixedArgumentTypeCoercion
      */
     protected function fromPsr7(ResponseInterface $guzzleResponse): ResponseContract

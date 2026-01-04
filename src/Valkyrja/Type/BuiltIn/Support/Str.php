@@ -272,9 +272,7 @@ class Str
     /**
      * Convert mixed to a string.
      *
-     *
      * @throws JsonException
-     *
      */
     public static function fromMixed(mixed $subject): string
     {

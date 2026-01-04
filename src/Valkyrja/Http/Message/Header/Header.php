@@ -307,7 +307,6 @@ class Header implements Contract
     /**
      * Map string values to Value objects.
      *
-     *
      * @return ValueContract[]
      */
     protected function mapToValue(ValueContract|string ...$values): array

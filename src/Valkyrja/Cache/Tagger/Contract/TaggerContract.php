@@ -19,22 +19,16 @@ interface TaggerContract
 {
     /**
      * Make a new Tag Store.
-     *
-     *
      */
     public static function make(CacheContract $store, string ...$tags): static;
 
     /**
      * Determine if an item exists in the cache.
-     *
-     *
      */
     public function has(string $key): bool;
 
     /**
      * Retrieve an item from the cache by key.
-     *
-     *
      */
     public function get(string $key): string|null;
 
@@ -43,15 +37,12 @@ interface TaggerContract
      *
      * Items not found in the cache will have a null value.
      *
-     *
      * @return string[]
      */
     public function many(string ...$keys): array;
 
     /**
      * Store an item in the cache for a given number of minutes.
-     *
-     *
      */
     public function put(string $key, string $value, int $minutes): void;
 
@@ -69,35 +60,26 @@ interface TaggerContract
      * </code>
      *
      * @param array<string, string> $values
-     *
      */
     public function putMany(array $values, int $minutes): void;
 
     /**
      * Increment the value of an item in the cache.
-     *
-     *
      */
     public function increment(string $key, int $value = 1): int;
 
     /**
      * Decrement the value of an item in the cache.
-     *
-     *
      */
     public function decrement(string $key, int $value = 1): int;
 
     /**
      * Store an item in the cache indefinitely.
-     *
-     *
      */
     public function forever(string $key, string $value): void;
 
     /**
      * Remove an item from the cache.
-     *
-     *
      */
     public function forget(string $key): bool;
 
@@ -108,29 +90,21 @@ interface TaggerContract
 
     /**
      * Tag a key.
-     *
-     *
      */
     public function tag(string $key): static;
 
     /**
      * Untag a key.
-     *
-     *
      */
     public function untag(string $key): static;
 
     /**
      * Tag many keys.
-     *
-     *
      */
     public function tagMany(string ...$keys): static;
 
     /**
      * Untag many keys.
-     *
-     *
      */
     public function untagMany(string ...$keys): static;
 }

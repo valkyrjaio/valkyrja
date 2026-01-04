@@ -115,7 +115,6 @@ abstract class UriFactory
      * If not, the $default is returned.
      *
      * @param array<string, string|string[]> $headers
-     *
      */
     public static function getHeader(string $header, array $headers, string|null $default = null): string
     {
@@ -136,7 +135,6 @@ abstract class UriFactory
      *
      * @param array<string, string>          $server
      * @param array<string, string|string[]> $headers
-     *
      */
     public static function marshalHostAndPortFromHeaders(
         HostPortAccumulator $accumulator,
@@ -227,8 +225,6 @@ abstract class UriFactory
 
     /**
      * Strip the query string from a path.
-     *
-     *
      */
     public static function stripQueryString(string $path): string
     {
@@ -266,8 +262,6 @@ abstract class UriFactory
 
     /**
      * Marshal the host and port from the request header.
-     *
-     *
      */
     private static function marshalHostAndPortFromHeader(HostPortAccumulator $accumulator, string $host): void
     {
@@ -285,7 +279,6 @@ abstract class UriFactory
      * Marshal host/port from misinterpreted IPv6 address.
      *
      * @param array<string, string> $server
-     *
      */
     private static function marshalIpv6HostAndPort(HostPortAccumulator $accumulator, array $server): void
     {

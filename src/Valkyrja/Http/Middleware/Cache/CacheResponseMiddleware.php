@@ -118,8 +118,6 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
     /**
      * Get a hashed version of the request path.
-     *
-     *
      */
     protected function getHashedPath(ServerRequestContract $request): string
     {

@@ -163,9 +163,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a decoded encrypted message.
      *
-     *
      * @throws CryptException
-     *
      */
     protected function validateDecoded(string|false $decoded): void
     {
@@ -177,9 +175,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a decoded encrypted message type.
      *
-     *
      * @throws CryptException
-     *
      */
     protected function validateDecodedType(string|false $decoded): void
     {
@@ -190,8 +186,6 @@ class SodiumCrypt implements CryptContract
 
     /**
      * Check if a decoded encrypted message is a valid type.
-     *
-     *
      */
     protected function isValidDecodedType(string|false $decoded): bool
     {
@@ -201,9 +195,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a decoded encrypted message string length.
      *
-     *
      * @throws CryptException
-     *
      */
     protected function validateDecodedStrLen(string $decoded): void
     {
@@ -214,8 +206,6 @@ class SodiumCrypt implements CryptContract
 
     /**
      * Validate a decoded encrypted message string length.
-     *
-     *
      */
     protected function isValidDecodedStrLen(string $decoded): bool
     {
@@ -253,9 +243,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a plain text encrypted message.
      *
-     *
      * @throws CryptException
-     *
      */
     protected function validatePlainDecoded(bool|string $plain): void
     {
@@ -266,8 +254,6 @@ class SodiumCrypt implements CryptContract
 
     /**
      * Validate a plain text encrypted message.
-     *
-     *
      */
     protected function isValidPlainDecoded(bool|string $plain): bool
     {

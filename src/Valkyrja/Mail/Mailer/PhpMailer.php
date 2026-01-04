@@ -79,8 +79,6 @@ class PhpMailer implements Contract
 
     /**
      * Add plain body to PHP Mailer.
-     *
-     *
      */
     protected function addPlainBody(string|null $plainBody = null): void
     {

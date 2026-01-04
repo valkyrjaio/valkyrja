@@ -367,7 +367,6 @@ class Stream implements Contract
      * Seek the stream resource.
      *
      * @param resource $stream
-     *
      */
     protected function seekStream($stream, int $offset, int $whence = SEEK_SET): int
     {

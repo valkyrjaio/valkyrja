@@ -27,8 +27,6 @@ interface RequestHandlerContract
 
     /**
      * Send the response.
-     *
-     *
      */
     public function send(ResponseContract $response): static;
 

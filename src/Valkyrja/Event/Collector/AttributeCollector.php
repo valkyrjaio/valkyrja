@@ -58,9 +58,7 @@ class AttributeCollector implements Contract
     /**
      * Set the properties for a listener attribute.
      *
-     *
      * @throws ReflectionException
-     *
      */
     protected function setListenerProperties(Attribute $attribute): ListenerContract
     {

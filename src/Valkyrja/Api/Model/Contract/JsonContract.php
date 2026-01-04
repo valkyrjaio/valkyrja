@@ -93,8 +93,6 @@ interface JsonContract extends ModelContract
 
     /**
      * Set the status code.
-     *
-     *
      */
     public function setStatusCode(StatusCode $statusCode): static;
 
@@ -105,8 +103,6 @@ interface JsonContract extends ModelContract
 
     /**
      * Set the status.
-     *
-     *
      */
     public function setStatus(string $status): static;
 }

@@ -37,9 +37,7 @@ class UuidV8 extends Uuid
     /**
      * Generate a v8 UUID.
      *
-     *
      * @throws RandomException
-     *
      */
     public static function generate(string|null $node = null): string
     {

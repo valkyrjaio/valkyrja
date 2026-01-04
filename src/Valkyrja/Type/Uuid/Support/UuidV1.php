@@ -46,9 +46,7 @@ class UuidV1 extends Uuid
      * Version 1 UUIDs are time-based based. It can take an optional
      * node identifier based on mac address or a unique string id.
      *
-     *
      * @throws RandomException
-     *
      */
     public static function generate(string|null $node = null): string
     {

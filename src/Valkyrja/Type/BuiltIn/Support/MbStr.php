@@ -33,8 +33,6 @@ class MbStr extends Str
 
     /**
      * Get a substring from start position with a certain length.
-     *
-     *
      */
     #[Override]
     public static function substr(string $subject, int $start, int|null $length = null): string
@@ -44,8 +42,6 @@ class MbStr extends Str
 
     /**
      * Convert a string to title case.
-     *
-     *
      */
     public static function toTitleCase(string $subject): string
     {
@@ -54,8 +50,6 @@ class MbStr extends Str
 
     /**
      * Convert a string to lower case.
-     *
-     *
      */
     public static function toLowerCase(string $subject): string
     {
@@ -64,8 +58,6 @@ class MbStr extends Str
 
     /**
      * Convert a string to upper case.
-     *
-     *
      */
     public static function toUpperCase(string $subject): string
     {

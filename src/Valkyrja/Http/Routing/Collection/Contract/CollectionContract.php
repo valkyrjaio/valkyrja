@@ -131,7 +131,6 @@ interface CollectionContract
     /**
      * Get the dynamic routes in this collection.
      *
-     *
      * @return array<string, RouteContract>|array<string, array<string, RouteContract>>
      */
     public function allDynamic(RequestMethod|null $method = null): array;

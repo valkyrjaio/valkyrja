@@ -96,8 +96,6 @@ interface CookieContract extends ValueContract
     /**
      * Set whether the cookie should only be transmitted over a secure HTTPS
      * connection.
-     *
-     *
      */
     public function withSecure(bool $secure): static;
 
@@ -121,8 +119,6 @@ interface CookieContract extends ValueContract
 
     /**
      * Set whether the cookie value should be sent with no url encoding.
-     *
-     *
      */
     public function withRaw(bool $raw): static;
 
@@ -133,8 +129,6 @@ interface CookieContract extends ValueContract
 
     /**
      * Set whether the cookie will be available for cross-site requests.
-     *
-     *
      */
     public function withSameSite(SameSite|null $sameSite = null): static;
 }

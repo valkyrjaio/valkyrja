@@ -222,8 +222,6 @@ class Api implements Contract
 
     /**
      * Set item keys from object.
-     *
-     *
      */
     protected function setItemKeysFromObject(object $object, JsonDataContract $jsonData): void
     {
@@ -235,8 +233,6 @@ class Api implements Contract
 
     /**
      * Get the class name from an object.
-     *
-     *
      */
     protected function getClassNameFromObject(object $object): string
     {

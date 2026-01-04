@@ -143,7 +143,6 @@ class Arr
     /**
      * Filter empty strings.
      *
-     *
      * @return array<Stringable|string>
      */
     public static function filterEmptyStrings(Stringable|string ...$strings): array

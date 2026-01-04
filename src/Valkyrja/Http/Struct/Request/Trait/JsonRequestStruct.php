@@ -50,7 +50,6 @@ trait JsonRequestStruct
      *
      * @param JsonServerRequestContract|ServerRequestContract $request The request
      *
-     *
      * @psalm-assert JsonServerRequestContract                $request
      */
     protected static function ensureJsonRequest(JsonServerRequestContract|ServerRequestContract $request): void

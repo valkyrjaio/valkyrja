@@ -52,8 +52,6 @@ interface RequestStructContract extends StructContract
 
     /**
      * Determine if a request has extra data that was passed that is not defined in the struct.
-     *
-     *
      */
     public static function determineIfRequestContainsExtraData(ServerRequestContract $request): bool;
 }

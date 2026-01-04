@@ -31,8 +31,6 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
 {
     /**
      * Create a new Header from a string representation.
-     *
-     *
      */
     public static function fromValue(string $value): static;
 

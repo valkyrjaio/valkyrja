@@ -394,7 +394,6 @@ interface ServerRequestContract extends RequestContract
      * @param string     $name    The attribute name
      * @param mixed|null $default Default value to return if the attribute does not exist
      *
-     *
      * @see getAttributes()
      */
     public function getAttribute(string $name, mixed $default = null): mixed;
@@ -410,7 +409,6 @@ interface ServerRequestContract extends RequestContract
      * @param string $name  The attribute name
      * @param mixed  $value The value of the attribute
      *
-     *
      * @see getAttributes()
      */
     public function withAttribute(string $name, mixed $value): static;
@@ -424,7 +422,6 @@ interface ServerRequestContract extends RequestContract
      * the attribute.
      *
      * @param string $name The attribute name
-     *
      *
      * @see getAttributes()
      */

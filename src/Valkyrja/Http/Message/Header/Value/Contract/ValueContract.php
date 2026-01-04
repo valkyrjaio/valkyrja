@@ -31,8 +31,6 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
 {
     /**
      * Create a new header value from a string.
-     *
-     *
      */
     public static function fromValue(string $value): static;
 

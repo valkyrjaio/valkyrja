@@ -35,8 +35,6 @@ interface InputHandlerContract
 
     /**
      * Run the handler.
-     *
-     *
      */
     public function run(InputContract $input): void;
 }

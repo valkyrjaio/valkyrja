@@ -24,8 +24,6 @@ interface JsonDataContract extends ModelContract
 
     /**
      * Set the item.
-     *
-     *
      */
     public function setItem(object|null $item = null): static;
 
@@ -36,8 +34,6 @@ interface JsonDataContract extends ModelContract
 
     /**
      * Set the item key.
-     *
-     *
      */
     public function setItemKey(string $itemKey): static;
 
@@ -62,8 +58,6 @@ interface JsonDataContract extends ModelContract
 
     /**
      * Set the items key.
-     *
-     *
      */
     public function setItemsKey(string $itemsKey): static;
 
@@ -74,8 +68,6 @@ interface JsonDataContract extends ModelContract
 
     /**
      * Set the total.
-     *
-     *
      */
     public function setTotal(int|null $total = null): static;
 

@@ -216,7 +216,6 @@ class Value implements Contract
     /**
      * Map string parts to Part objects.
      *
-     *
      * @return ComponentContract[]
      */
     protected function mapToPart(ComponentContract|string ...$parts): array

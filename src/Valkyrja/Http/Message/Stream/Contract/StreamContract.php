@@ -104,7 +104,6 @@ interface StreamContract extends Stringable
      *
      * @throws RuntimeException on failure
      *
-     *
      * @see  seek()
      */
     public function rewind(): void;

@@ -19,8 +19,6 @@ interface CryptContract
 {
     /**
      * Determine if an encrypted message is valid.
-     *
-     *
      */
     public function isValidEncryptedMessage(string $encrypted): bool;
 

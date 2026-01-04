@@ -132,8 +132,6 @@ class NullCache implements Contract
 
     /**
      * Get key.
-     *
-     *
      */
     protected function getKey(string $key): string
     {

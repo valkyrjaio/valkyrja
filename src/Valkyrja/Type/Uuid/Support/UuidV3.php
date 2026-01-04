@@ -39,9 +39,7 @@ class UuidV3 extends Uuid
     /**
      * Generate a v3 UUID.
      *
-     *
      * @throws RuntimeException
-     *
      */
     public static function generate(string $namespace, string $name): string
     {

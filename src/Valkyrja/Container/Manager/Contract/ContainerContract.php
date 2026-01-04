@@ -36,7 +36,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string $id The service id
      *
-     *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
@@ -73,7 +72,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @param class-string<T> $id       The service id
      * @param callable        $callable The callable
-     *
      *
      * @see https://psalm.dev/r/4431cf022b callable(Container, mixed...):T
      */

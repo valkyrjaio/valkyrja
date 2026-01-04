@@ -133,8 +133,6 @@ trait StreamHelpers
 
     /**
      * Is mode writable.
-     *
-     *
      */
     protected function isModeWriteable(string $mode): bool
     {
@@ -159,8 +157,6 @@ trait StreamHelpers
 
     /**
      * Verify the write result.
-     *
-     *
      */
     protected function verifyWriteResult(int|false $result): void
     {
@@ -185,8 +181,6 @@ trait StreamHelpers
 
     /**
      * Verify the seek result.
-     *
-     *
      */
     protected function verifySeekResult(int $result): void
     {
@@ -199,8 +193,6 @@ trait StreamHelpers
 
     /**
      * Is mode readable.
-     *
-     *
      */
     protected function isModeReadable(string $mode): bool
     {
@@ -222,8 +214,6 @@ trait StreamHelpers
 
     /**
      * Verify the read result.
-     *
-     *
      */
     protected function verifyReadResult(string|false $result): void
     {
@@ -236,8 +226,6 @@ trait StreamHelpers
 
     /**
      * Verify the tell result.
-     *
-     *
      */
     protected function verifyTellResult(int|false $result): void
     {

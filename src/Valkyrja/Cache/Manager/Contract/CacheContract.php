@@ -19,15 +19,11 @@ interface CacheContract
 {
     /**
      * Determine if an item exists in the cache.
-     *
-     *
      */
     public function has(string $key): bool;
 
     /**
      * Retrieve an item from the cache by key.
-     *
-     *
      */
     public function get(string $key): string|null;
 
@@ -36,15 +32,12 @@ interface CacheContract
      *
      * Items not found in the cache will have a null value.
      *
-     *
      * @return string[]
      */
     public function many(string ...$keys): array;
 
     /**
      * Store an item in the cache for a given number of minutes.
-     *
-     *
      */
     public function put(string $key, string $value, int $minutes): void;
 
@@ -62,35 +55,26 @@ interface CacheContract
      * </code>
      *
      * @param array<string, string> $values
-     *
      */
     public function putMany(array $values, int $minutes): void;
 
     /**
      * Increment the value of an item in the cache.
-     *
-     *
      */
     public function increment(string $key, int $value = 1): int;
 
     /**
      * Decrement the value of an item in the cache.
-     *
-     *
      */
     public function decrement(string $key, int $value = 1): int;
 
     /**
      * Store an item in the cache indefinitely.
-     *
-     *
      */
     public function forever(string $key, string $value): void;
 
     /**
      * Remove an item from the cache.
-     *
-     *
      */
     public function forget(string $key): bool;
 
@@ -106,8 +90,6 @@ interface CacheContract
 
     /**
      * Get the tagger.
-     *
-     *
      */
     public function getTagger(string ...$tags): TaggerContract;
 }
