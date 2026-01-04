@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
+use Valkyrja\Type\Model\Abstract\Model;
 
 /**
  * Model class to test an invalid isset method.
  */
-class ModelInvalidIssetMethodClass extends AbstractModel
+class ModelInvalidIssetMethodClass extends Model
 {
     public string $test = 'test';
 

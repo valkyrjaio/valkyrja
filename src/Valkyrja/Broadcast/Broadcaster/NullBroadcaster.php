@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Broadcaster;
 
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
-class NullBroadcaster implements Contract
+class NullBroadcaster implements BroadcasterContract
 {
     /**
      * @inheritDoc

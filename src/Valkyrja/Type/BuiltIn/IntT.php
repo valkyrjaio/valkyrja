@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\IntContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\IntContract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function is_array;
@@ -27,7 +27,7 @@ use function is_string;
 /**
  * @extends Type<int>
  */
-class IntT extends Type implements Contract
+class IntT extends Type implements IntContract
 {
     public function __construct(int $subject)
     {

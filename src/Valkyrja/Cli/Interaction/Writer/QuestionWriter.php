@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract;
-use Valkyrja\Cli\Interaction\Message\Message as MessageMessage;
+use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
@@ -114,21 +114,21 @@ class QuestionWriter implements WriterContract
 
         if ($validResponses !== []) {
             // (`valid` or `also valid` or `another valid value`)
-            $output = $output->writeMessage(new MessageMessage(' ('));
-            $output = $output->writeMessage(new MessageMessage(implode(' or ', array_map(static fn (string $value) => "`$value`", $validResponses))));
-            $output = $output->writeMessage(new MessageMessage(')'));
+            $output = $output->writeMessage(new Message(' ('));
+            $output = $output->writeMessage(new Message(implode(' or ', array_map(static fn (string $value) => "`$value`", $validResponses))));
+            $output = $output->writeMessage(new Message(')'));
         }
 
         // [default: "defaultResponse"]
-        $output = $output->writeMessage(new MessageMessage(' [default: "'));
-        $output = $output->writeMessage(new MessageMessage($answer->getDefaultResponse(), new HighlightedTextFormatter()));
-        $output = $output->writeMessage(new MessageMessage('"]'));
+        $output = $output->writeMessage(new Message(' [default: "'));
+        $output = $output->writeMessage(new Message($answer->getDefaultResponse(), new HighlightedTextFormatter()));
+        $output = $output->writeMessage(new Message('"]'));
 
         // :
         // > response will be typed here
-        $output = $output->writeMessage(new MessageMessage(':'));
+        $output = $output->writeMessage(new Message(':'));
         $output = $output->writeMessage(new NewLine());
-        $output = $output->writeMessage(new MessageMessage('> '));
+        $output = $output->writeMessage(new Message('> '));
 
         return $output;
     }

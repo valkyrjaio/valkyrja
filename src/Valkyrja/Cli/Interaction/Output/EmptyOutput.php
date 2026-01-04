@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Interaction\Output;
 
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract;
 
-class EmptyOutput extends Output implements Contract
+class EmptyOutput extends Output implements EmptyOutputContract
 {
     /**
      * @inheritDoc

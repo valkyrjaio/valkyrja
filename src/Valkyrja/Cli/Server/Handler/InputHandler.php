@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Server\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Interaction\Data\Config as InteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
@@ -33,12 +33,12 @@ use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract as Contract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-class InputHandler implements Contract
+class InputHandler implements InputHandlerContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
@@ -46,7 +46,7 @@ class InputHandler implements Contract
         protected InputReceivedHandlerContract $inputReceivedHandler = new InputReceivedHandler(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
-        protected InteractionConfig $interactionConfig = new InteractionConfig(),
+        protected Config $interactionConfig = new Config(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
     ) {
     }

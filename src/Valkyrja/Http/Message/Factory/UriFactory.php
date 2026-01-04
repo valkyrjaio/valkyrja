@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_change_key_case;
 use function array_key_exists;
@@ -50,7 +50,7 @@ abstract class UriFactory
      */
     public static function marshalUriFromServer(array $server, array $headers): UriContract
     {
-        $uri = new HttpUri();
+        $uri = new Uri();
 
         // URI scheme
         $scheme = Scheme::HTTP;
@@ -250,7 +250,7 @@ abstract class UriFactory
             [$user, $password] = explode(':', $userInfo);
         }
 
-        return new HttpUri()
+        return new Uri()
             ->withScheme(Scheme::from($uri->getScheme()))
             ->withUserInfo($user, $password)
             ->withHost($uri->getHost())

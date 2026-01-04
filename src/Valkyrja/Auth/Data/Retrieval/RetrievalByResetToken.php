@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data\Retrieval;
 
 use Override;
-use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract as Contract;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 
-class RetrievalByResetToken implements Contract
+class RetrievalByResetToken implements RetrievalContract
 {
     /**
      * @param non-empty-string $resetToken The reset token

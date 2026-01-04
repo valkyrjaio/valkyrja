@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Manager;
 
 use Override;
-use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Cache\Tagger\Tagger as TagClass;
+use Valkyrja\Cache\Tagger\Tagger;
 
-class NullCache implements Contract
+class NullCache implements CacheContract
 {
     public function __construct(
         protected string $prefix = ''
@@ -127,7 +127,7 @@ class NullCache implements Contract
     #[Override]
     public function getTagger(string ...$tags): TaggerContract
     {
-        return TagClass::make($this, ...$tags);
+        return Tagger::make($this, ...$tags);
     }
 
     /**

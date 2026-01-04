@@ -15,9 +15,9 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
-use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract;
 
-class ConstantDispatch extends Dispatch implements Contract
+class ConstantDispatch extends Dispatch implements ConstantDispatchContract
 {
     /**
      * @param non-empty-string  $constant The constant name

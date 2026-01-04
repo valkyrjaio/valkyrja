@@ -17,12 +17,12 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract as Contract;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
 use function count;
 use function sprintf;
 
-class Formatter implements Contract
+class Formatter implements FormatterContract
 {
     public function __construct(
         protected TextColor|null $textColor = null,

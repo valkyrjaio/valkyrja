@@ -16,11 +16,11 @@ namespace Valkyrja\Api\Manager;
 use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Manager\Contract\ApiContract as Contract;
+use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Api\Model\Contract\JsonDataContract;
-use Valkyrja\Api\Model\Json as JsonModel;
-use Valkyrja\Api\Model\JsonData as JsonDataModel;
+use Valkyrja\Api\Model\Json;
+use Valkyrja\Api\Model\JsonData;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
@@ -31,7 +31,7 @@ use function end;
 use function explode;
 use function strtolower;
 
-class Api implements Contract
+class Api implements ApiContract
 {
     public function __construct(
         protected ResponseFactoryContract $responseFactory,
@@ -209,7 +209,7 @@ class Api implements Contract
      */
     protected function getJsonModel(): JsonContract
     {
-        return new JsonModel();
+        return new Json();
     }
 
     /**
@@ -217,7 +217,7 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonDataContract
     {
-        return new JsonDataModel();
+        return new JsonData();
     }
 
     /**

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Client\Manager;
 
 use Override;
-use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 
-class NullClient implements Contract
+class NullClient implements ClientContract
 {
     /**
      * @inheritDoc

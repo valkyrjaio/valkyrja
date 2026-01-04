@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Auth\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract as Contract;
+use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\EncryptedJwtAuthenticator;
 use Valkyrja\Auth\Authenticator\EncryptedTokenAuthenticator;
 use Valkyrja\Auth\Authenticator\JwtAuthenticator;
@@ -51,7 +51,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishAuthenticator($this->container);
 
-        self::assertInstanceOf(SessionAuthenticator::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(SessionAuthenticator::class, $this->container->getSingleton(AuthenticatorContract::class));
     }
 
     /**

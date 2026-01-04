@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Interaction\Option;
 
 use Override;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
-use Valkyrja\Cli\Interaction\Option\Contract\OptionContract as Contract;
+use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
-class Option implements Contract
+class Option implements OptionContract
 {
     /**
      * @param non-empty-string      $name  The name

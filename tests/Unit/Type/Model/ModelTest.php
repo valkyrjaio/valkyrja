@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Model\ModelInvalidIssetMethodClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\TypeContract;
-use Valkyrja\Type\Model\Contract\ModelContract as Contract;
+use Valkyrja\Type\Model\Contract\ModelContract;
 use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function json_encode;
@@ -44,23 +44,23 @@ class ModelTest extends TestCase
 
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'fromArray'));
-        self::assertTrue(method_exists(Contract::class, '__get'));
-        self::assertTrue(method_exists(Contract::class, '__set'));
-        self::assertTrue(method_exists(Contract::class, '__isset'));
-        self::assertTrue(method_exists(Contract::class, 'hasProperty'));
-        self::assertTrue(method_exists(Contract::class, 'updateProperties'));
-        self::assertTrue(method_exists(Contract::class, 'withProperties'));
-        self::assertTrue(method_exists(Contract::class, 'asValue'));
-        self::assertTrue(method_exists(Contract::class, 'asFlatValue'));
-        self::assertTrue(method_exists(Contract::class, 'asArray'));
-        self::assertTrue(method_exists(Contract::class, 'asChangedArray'));
-        self::assertTrue(method_exists(Contract::class, 'getOriginalPropertyValue'));
-        self::assertTrue(method_exists(Contract::class, 'asOriginalArray'));
-        self::assertTrue(method_exists(Contract::class, 'jsonSerialize'));
-        self::assertTrue(method_exists(Contract::class, '__toString'));
-        self::isA(ArrayAccess::class, Contract::class);
-        self::isA(TypeContract::class, Contract::class);
+        self::assertTrue(method_exists(ModelContract::class, 'fromArray'));
+        self::assertTrue(method_exists(ModelContract::class, '__get'));
+        self::assertTrue(method_exists(ModelContract::class, '__set'));
+        self::assertTrue(method_exists(ModelContract::class, '__isset'));
+        self::assertTrue(method_exists(ModelContract::class, 'hasProperty'));
+        self::assertTrue(method_exists(ModelContract::class, 'updateProperties'));
+        self::assertTrue(method_exists(ModelContract::class, 'withProperties'));
+        self::assertTrue(method_exists(ModelContract::class, 'asValue'));
+        self::assertTrue(method_exists(ModelContract::class, 'asFlatValue'));
+        self::assertTrue(method_exists(ModelContract::class, 'asArray'));
+        self::assertTrue(method_exists(ModelContract::class, 'asChangedArray'));
+        self::assertTrue(method_exists(ModelContract::class, 'getOriginalPropertyValue'));
+        self::assertTrue(method_exists(ModelContract::class, 'asOriginalArray'));
+        self::assertTrue(method_exists(ModelContract::class, 'jsonSerialize'));
+        self::assertTrue(method_exists(ModelContract::class, '__toString'));
+        self::isA(ArrayAccess::class, ModelContract::class);
+        self::isA(TypeContract::class, ModelContract::class);
     }
 
     public function testHas(): void

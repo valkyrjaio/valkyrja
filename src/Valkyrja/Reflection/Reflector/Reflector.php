@@ -24,14 +24,14 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Reflection\Reflector\Contract\ReflectorContract as Contract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
 
 use function class_exists;
 use function interface_exists;
 use function is_callable;
 
-class Reflector implements Contract
+class Reflector implements ReflectorContract
 {
     /**
      * Cached reflection classes.

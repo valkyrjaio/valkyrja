@@ -15,15 +15,15 @@ namespace Valkyrja\Tests\Unit\Sms\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Sms\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Vonage\Client as Vonage;
+use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
-use Vonage\Client\Credentials\CredentialsInterface as VonageCredentials;
+use Vonage\Client\Credentials\CredentialsInterface;
 
 /**
  * Test the ServiceProvider.
@@ -42,7 +42,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishSms($this->container);
 
-        self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(MessengerContract::class));
     }
 
     /**
@@ -50,7 +50,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishVonageSms(): void
     {
-        $this->container->setSingleton(Vonage::class, self::createStub(Vonage::class));
+        $this->container->setSingleton(Client::class, self::createStub(Client::class));
 
         ServiceProvider::publishVonageSms($this->container);
 
@@ -62,18 +62,18 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishVonage(): void
     {
-        $this->container->setSingleton(VonageCredentials::class, new Basic('', ''));
+        $this->container->setSingleton(CredentialsInterface::class, new Basic('', ''));
 
         ServiceProvider::publishVonage($this->container);
 
-        self::assertInstanceOf(Vonage::class, $this->container->getSingleton(Vonage::class));
+        self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
     }
 
     public function testPublishVonageCredentials(): void
     {
         ServiceProvider::publishVonageCredentials($this->container);
 
-        self::assertInstanceOf(Basic::class, $this->container->getSingleton(VonageCredentials::class));
+        self::assertInstanceOf(Basic::class, $this->container->getSingleton(CredentialsInterface::class));
     }
 
     /**

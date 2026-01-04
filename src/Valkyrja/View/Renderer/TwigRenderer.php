@@ -18,11 +18,11 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Valkyrja\View\Renderer\Contract\RendererContract as Contract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
-use Valkyrja\View\Template\Template as DefaultTemplate;
+use Valkyrja\View\Template\Template;
 
-class TwigRenderer implements Contract
+class TwigRenderer implements RendererContract
 {
     public function __construct(
         protected Environment $twig
@@ -65,7 +65,7 @@ class TwigRenderer implements Contract
     #[Override]
     public function createTemplate(string $name, array $variables = []): TemplateContract
     {
-        return new DefaultTemplate(
+        return new Template(
             renderer: $this,
             name: $name,
             variables: $variables

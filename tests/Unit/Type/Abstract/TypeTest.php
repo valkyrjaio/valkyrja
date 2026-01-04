@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Abstract;
 use JsonSerializable;
 use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Contract\TypeContract as Contract;
+use Valkyrja\Type\Contract\TypeContract;
 
 use function json_encode;
 
@@ -24,11 +24,11 @@ class TypeTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertMethodExists(Contract::class, 'fromValue');
-        self::assertMethodExists(Contract::class, 'asValue');
-        self::assertMethodExists(Contract::class, 'asFlatValue');
-        self::assertMethodExists(Contract::class, 'modify');
-        self::assertIsA(JsonSerializable::class, Contract::class);
+        self::assertMethodExists(TypeContract::class, 'fromValue');
+        self::assertMethodExists(TypeContract::class, 'asValue');
+        self::assertMethodExists(TypeContract::class, 'asFlatValue');
+        self::assertMethodExists(TypeContract::class, 'modify');
+        self::assertIsA(JsonSerializable::class, TypeContract::class);
     }
 
     public function testString(): void

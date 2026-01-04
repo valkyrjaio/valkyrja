@@ -23,7 +23,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
-use Valkyrja\Http\Server\Handler\RequestHandler as DefaultRequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -75,7 +75,7 @@ final class ServiceProvider extends Provider
 
         $container->setSingleton(
             RequestHandlerContract::class,
-            new DefaultRequestHandler(
+            new RequestHandler(
                 container: $container,
                 router: $container->getSingleton(RouterContract::class),
                 requestReceivedHandler: $requestReceived,

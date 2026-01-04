@@ -16,9 +16,9 @@ namespace Valkyrja\Sms\Messenger;
 use Override;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Sms\Data\Contract\MessageContract;
-use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 
-class LogMessenger implements Contract
+class LogMessenger implements MessengerContract
 {
     public function __construct(
         protected LoggerContract $logger,

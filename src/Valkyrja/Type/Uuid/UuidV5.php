@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
-use Valkyrja\Type\Uuid\Contract\UuidV5Contract as Contract;
+use Valkyrja\Type\Uuid\Contract\UuidV5Contract;
 use Valkyrja\Type\Uuid\Support\UuidV5 as Helper;
 
 use function gettype;
@@ -27,7 +27,7 @@ use function sprintf;
 /**
  * @extends Type<string>
  */
-class UuidV5 extends Type implements Contract
+class UuidV5 extends Type implements UuidV5Contract
 {
     /**
      * @throws InvalidUlidException

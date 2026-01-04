@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
-use Valkyrja\Dispatch\Data\PropertyDispatch as Dispatch;
+use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -28,7 +28,7 @@ class PropertyDispatchTest extends TestCase
         $property  = 'TEST';
         $property2 = 'TEST2';
 
-        $dispatch = new Dispatch(class: $class, property: $property);
+        $dispatch = new PropertyDispatch(class: $class, property: $property);
 
         self::assertSame($property, $dispatch->getProperty());
 
@@ -45,7 +45,7 @@ class PropertyDispatchTest extends TestCase
     {
         $class    = InvalidDispatcherClass::class;
         $property = 'TEST';
-        $dispatch = new Dispatch(class: $class, property: $property);
+        $dispatch = new PropertyDispatch(class: $class, property: $property);
 
         self::assertFalse($dispatch->isStatic());
 

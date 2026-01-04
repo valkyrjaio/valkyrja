@@ -18,9 +18,9 @@ use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
 use Override;
 use Valkyrja\Mail\Data\Contract\MessageContract;
-use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 
-class MailgunMailer implements Contract
+class MailgunMailer implements MailerContract
 {
     /**
      * @param non-empty-string $domain The domain

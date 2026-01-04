@@ -22,10 +22,10 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
-use Valkyrja\Cli\Routing\Data\Contract\RouteContract as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
-class Route implements Contract
+class Route implements RouteContract
 {
     /** @var ArgumentParameterContract[] */
     protected array $arguments = [];

@@ -17,7 +17,7 @@ use Valkyrja\Tests\Classes\Model\IndexableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\SimpleIndexableModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Model\Contract\IndexedModelContract as Contract;
+use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function method_exists;
@@ -29,17 +29,17 @@ class IndexableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'getIndexes'));
-        self::assertTrue(method_exists(Contract::class, 'getReversedIndexes'));
-        self::assertTrue(method_exists(Contract::class, 'getMappedArrayFromIndexedArray'));
-        self::assertTrue(method_exists(Contract::class, 'getIndexedArrayFromMappedArray'));
-        self::assertTrue(method_exists(Contract::class, 'fromIndexedArray'));
-        self::assertTrue(method_exists(Contract::class, 'updateIndexedProperties'));
-        self::assertTrue(method_exists(Contract::class, 'withIndexedProperties'));
-        self::assertTrue(method_exists(Contract::class, 'asIndexedArray'));
-        self::assertTrue(method_exists(Contract::class, 'asChangedIndexedArray'));
-        self::assertTrue(method_exists(Contract::class, 'asOriginalIndexedArray'));
-        self::isA(ModelContract::class, Contract::class);
+        self::assertTrue(method_exists(IndexedModelContract::class, 'getIndexes'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'getReversedIndexes'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'getMappedArrayFromIndexedArray'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'getIndexedArrayFromMappedArray'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'fromIndexedArray'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'updateIndexedProperties'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'withIndexedProperties'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'asIndexedArray'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'asChangedIndexedArray'));
+        self::assertTrue(method_exists(IndexedModelContract::class, 'asOriginalIndexedArray'));
+        self::isA(ModelContract::class, IndexedModelContract::class);
     }
 
     public function testGetIndexes(): void

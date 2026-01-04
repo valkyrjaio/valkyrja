@@ -15,12 +15,12 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\FalseContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\FalseContract;
 
 /**
  * @extends Type<false>
  */
-class FalseT extends Type implements Contract
+class FalseT extends Type implements FalseContract
 {
     public function __construct()
     {

@@ -16,9 +16,9 @@ namespace Valkyrja\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
 
-class FileOutput extends Output implements Contract
+class FileOutput extends Output implements FileOutputContract
 {
     /**
      * @param non-empty-string $filepath The filepath

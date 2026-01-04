@@ -28,7 +28,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as OptionContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
@@ -235,7 +235,7 @@ class HelpCommand
     /**
      * Get option messages.
      */
-    protected function getOptionMessages(OptionContract $option): Messages
+    protected function getOptionMessages(OptionParameterContract $option): Messages
     {
         $optionMessages = [];
 

@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Factory;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
-use Valkyrja\Http\Message\File\UploadedFile as HttpUploadedFile;
+use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
@@ -72,7 +72,7 @@ abstract class UploadedFileFactory
 
     public static function fromPsr(UploadedFileInterface $file): UploadedFileContract
     {
-        return new HttpUploadedFile(
+        return new UploadedFile(
             stream: StreamFactory::fromPsr($file->getStream()),
             uploadError: UploadError::from($file->getError()),
             size: (int) $file->getSize(),
@@ -115,7 +115,7 @@ abstract class UploadedFileFactory
             throw new InvalidArgumentException('Temp file name expected to be a string');
         }
 
-        return new HttpUploadedFile(
+        return new UploadedFile(
             $tmpName,
             null,
             UploadError::from((int) $value['error']),

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Uri;
 
 use Override;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Uri\Contract\UriContract as Contract;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
@@ -26,7 +26,7 @@ use function parse_url;
 use function str_starts_with;
 use function strtolower;
 
-class Uri implements Contract
+class Uri implements UriContract
 {
     use UriHelpers;
 

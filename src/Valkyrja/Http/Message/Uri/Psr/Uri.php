@@ -15,13 +15,13 @@ namespace Valkyrja\Http\Message\Uri\Psr;
 
 use Override;
 use Psr\Http\Message\UriInterface;
-use Valkyrja\Http\Message\Uri\Contract\UriContract as ValkyrjaUri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
 class Uri implements UriInterface
 {
     public function __construct(
-        protected ValkyrjaUri $uri,
+        protected UriContract $uri,
     ) {
     }
 

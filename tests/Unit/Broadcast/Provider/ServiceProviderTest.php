@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Broadcast\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
@@ -43,7 +43,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishBroadcaster($this->container);
 
-        self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(BroadcasterContract::class));
     }
 
     /**

@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Authenticator;
 
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Constant\SessionId;
-use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
+use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
@@ -47,7 +47,7 @@ class SessionAuthenticator extends Authenticator
             store: $store,
             hasher: $hasher,
             entity: $entity,
-            authenticatedUsers: $authenticatedUsers ?? $this->getAuthenticatedUsersFromSession() ?? new AuthenticatedUsersData(),
+            authenticatedUsers: $authenticatedUsers ?? $this->getAuthenticatedUsersFromSession() ?? new AuthenticatedUsers(),
         );
     }
 

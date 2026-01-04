@@ -32,7 +32,7 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
-use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -98,7 +98,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
             name: 'test',
             description: 'test',
             helpText: new Message('test'),
-            dispatch: new DefaultDispatch(self::class, 'dispatch')
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->method('getRoutes')->willReturn([$command]);
 

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Collection;
 
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
@@ -24,13 +24,13 @@ use function array_map;
 use function is_string;
 
 /**
- * @phpstan-import-type RequestMethodList from Contract
- * @phpstan-import-type RequestMethodRouteList from Contract
+ * @phpstan-import-type RequestMethodList from CollectionContract
+ * @phpstan-import-type RequestMethodRouteList from CollectionContract
  *
- * @psalm-import-type RequestMethodList from Contract
- * @psalm-import-type RequestMethodRouteList from Contract
+ * @psalm-import-type RequestMethodList from CollectionContract
+ * @psalm-import-type RequestMethodRouteList from CollectionContract
  */
-class Collection implements Contract
+class Collection implements CollectionContract
 {
     /**
      * The routes.

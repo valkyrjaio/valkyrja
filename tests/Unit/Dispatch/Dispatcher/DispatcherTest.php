@@ -23,7 +23,7 @@ use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatchClass;
@@ -116,7 +116,7 @@ class DispatcherTest extends TestCase
 
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'dispatch'));
+        self::assertTrue(method_exists(DispatcherContract::class, 'dispatch'));
     }
 
     /**

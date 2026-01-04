@@ -19,8 +19,8 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract as ViewResponseFactory;
-use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\ResponseFactory;
 
 class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
@@ -32,7 +32,7 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
     protected string $errorsTemplateDir = 'errors';
 
     public function __construct(
-        protected ViewResponseFactory $viewResponseFactory = new DefaultViewResponseFactory(),
+        protected ResponseFactoryContract $viewResponseFactory = new ResponseFactory(),
     ) {
     }
 

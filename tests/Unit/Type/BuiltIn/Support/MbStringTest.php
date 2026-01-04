@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\MbStr as Helper;
+use Valkyrja\Type\BuiltIn\Support\MbStr;
 
 class MbStringTest extends TestCase
 {
@@ -24,31 +24,31 @@ class MbStringTest extends TestCase
 
     public function testSubstr(): void
     {
-        self::assertSame('Some', Helper::substr(self::VALUE, 0, 4));
+        self::assertSame('Some', MbStr::substr(self::VALUE, 0, 4));
     }
 
     public function testContains(): void
     {
-        self::assertTrue(Helper::contains(self::VALUE, 'Some'));
-        self::assertFalse(Helper::contains(self::VALUE, 'nope'));
+        self::assertTrue(MbStr::contains(self::VALUE, 'Some'));
+        self::assertFalse(MbStr::contains(self::VALUE, 'nope'));
     }
 
     public function testToTitleCase(): void
     {
-        self::assertSame('Some Words', Helper::toTitleCase(self::VALUE));
-        self::assertSame('Uppercase', Helper::toTitleCase(self::UPPERCASE));
-        self::assertSame('Lowercase', Helper::toTitleCase(self::LOWERCASE));
+        self::assertSame('Some Words', MbStr::toTitleCase(self::VALUE));
+        self::assertSame('Uppercase', MbStr::toTitleCase(self::UPPERCASE));
+        self::assertSame('Lowercase', MbStr::toTitleCase(self::LOWERCASE));
     }
 
     public function testToLowerCase(): void
     {
-        self::assertSame('some words', Helper::toLowerCase(self::VALUE));
-        self::assertSame('uppercase', Helper::toLowerCase('UPPERCASE'));
+        self::assertSame('some words', MbStr::toLowerCase(self::VALUE));
+        self::assertSame('uppercase', MbStr::toLowerCase('UPPERCASE'));
     }
 
     public function testToUpperCase(): void
     {
-        self::assertSame('SOME WORDS', Helper::toUpperCase(self::VALUE));
-        self::assertSame('LOWERCASE', Helper::toUpperCase('lowercase'));
+        self::assertSame('SOME WORDS', MbStr::toUpperCase(self::VALUE));
+        self::assertSame('LOWERCASE', MbStr::toUpperCase('lowercase'));
     }
 }

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Argument;
 
 use Override;
-use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract as Contract;
+use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 
-class Argument implements Contract
+class Argument implements ArgumentContract
 {
     /**
      * @param non-empty-string $value The value

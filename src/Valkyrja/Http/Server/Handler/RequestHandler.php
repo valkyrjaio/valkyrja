@@ -20,7 +20,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Message\Response\Response as HttpResponse;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
@@ -33,7 +33,7 @@ use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract as Contract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 use function count;
 use function defined;
@@ -52,7 +52,7 @@ use const PHP_OUTPUT_HANDLER_FLUSHABLE;
 use const PHP_OUTPUT_HANDLER_REMOVABLE;
 use const PHP_SAPI;
 
-class RequestHandler implements Contract
+class RequestHandler implements RequestHandlerContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
@@ -197,7 +197,7 @@ class RequestHandler implements Contract
             $body->rewind();
         }
 
-        return new HttpResponse(
+        return new Response(
             body: $body,
             statusCode: $statusCode
         );

@@ -18,9 +18,9 @@ use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Data\WhereGroup;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 
-abstract class SqlQueryBuilder implements Contract
+abstract class SqlQueryBuilder implements QueryBuilderContract
 {
     /** @var string */
     protected string $alias = '';

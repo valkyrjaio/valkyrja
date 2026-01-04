@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data;
 
 use Override;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract as Contract;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 
 use function in_array;
 
-class AuthenticatedUsers implements Contract
+class AuthenticatedUsers implements AuthenticatedUsersContract
 {
     /**
      * The users.

@@ -23,13 +23,13 @@ use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 
 use function array_map;
 use function constant;
 
-class Dispatcher implements Contract
+class Dispatcher implements DispatcherContract
 {
     public function __construct(
         protected ContainerContract $container = new Container()

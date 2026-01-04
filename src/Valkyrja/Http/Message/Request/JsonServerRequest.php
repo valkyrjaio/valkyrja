@@ -20,18 +20,18 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract as Contract;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;
 
-class JsonServerRequest extends ServerRequest implements Contract
+class JsonServerRequest extends ServerRequest implements JsonServerRequestContract
 {
     protected bool $hadParsedBody = true;
 
@@ -52,9 +52,9 @@ class JsonServerRequest extends ServerRequest implements Contract
      * @throws JsonException
      */
     public function __construct(
-        UriContract $uri = new HttpUri(),
+        UriContract $uri = new Uri(),
         RequestMethod $method = RequestMethod::GET,
-        StreamContract $body = new HttpStream(stream: PhpWrapper::input),
+        StreamContract $body = new Stream(stream: PhpWrapper::input),
         array $headers = [],
         array $server = [],
         array $cookies = [],

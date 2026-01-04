@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
-use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 
-class Message implements Contract
+class Message implements MessageContract
 {
     /**
      * @param non-empty-string $text The text

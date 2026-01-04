@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -29,7 +29,7 @@ class CommandTest extends TestCase
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
-            dispatch: new DefaultDispatch(self::class, 'dispatch')
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
 
         self::assertSame('test-command', $command->getName());

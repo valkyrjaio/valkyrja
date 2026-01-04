@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
-use Valkyrja\Http\Message\Uri\Uri as HttpUri;
+use Valkyrja\Http\Message\Uri\Uri;
 
 class HttpRedirectException extends HttpException
 {
@@ -44,7 +44,7 @@ class HttpRedirectException extends HttpException
     ) {
         $statusCode ??= StatusCode::FOUND;
         $headers ??= [];
-        $uri ??= new HttpUri(path: '/');
+        $uri ??= new Uri(path: '/');
         // Set a new redirect response if one wasn't passed in
         $response ??= RedirectResponse::createFromUri($uri, $statusCode, $headers);
         // Set the uri

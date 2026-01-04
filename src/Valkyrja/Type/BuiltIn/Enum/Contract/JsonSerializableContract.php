@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Enum\Contract;
 
-use JsonSerializable as PhpJsonSerializable;
+use JsonSerializable;
 use Override;
 use UnitEnum;
 
-interface JsonSerializableContract extends PhpJsonSerializable, UnitEnum
+interface JsonSerializableContract extends JsonSerializable, UnitEnum
 {
     /**
      * Json serialize.

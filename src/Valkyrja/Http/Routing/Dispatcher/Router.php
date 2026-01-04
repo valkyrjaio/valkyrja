@@ -20,7 +20,7 @@ use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
@@ -37,20 +37,20 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as Contract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function rawurldecode;
 
-class Router implements Contract
+class Router implements RouterContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
         protected DispatcherContract $dispatcher = new Dispatcher(),
         protected MatcherContract $matcher = new Matcher(),
-        protected ResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),
+        protected ResponseFactoryContract $responseFactory = new ResponseFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),
         protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),

@@ -18,7 +18,7 @@ use Throwable;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
-use Valkyrja\Container\Manager\Contract\ContainerContract as Contract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
@@ -29,7 +29,7 @@ use function assert;
 use function is_a;
 use function is_object;
 
-class Container implements Contract
+class Container implements ContainerContract
 {
     use ProvidersAwareTrait;
 
@@ -185,7 +185,7 @@ class Container implements Contract
     #[Override]
     public function setCallable(string $id, callable $callable): static
     {
-        /** @var callable(Contract, mixed...):object $callable */
+        /** @var callable(ContainerContract, mixed...):object $callable */
         $this->callables[$id] = $callable;
         $this->published[$id] = true;
 

@@ -18,12 +18,12 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
 /**
  * @extends Handler<RouteNotMatchedMiddlewareContract>
  */
-class RouteNotMatchedHandler extends Handler implements Contract
+class RouteNotMatchedHandler extends Handler implements RouteNotMatchedHandlerContract
 {
     /**
      * @inheritDoc

@@ -16,14 +16,14 @@ namespace Valkyrja\Type\BuiltIn;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\StringContract as Contract;
-use Valkyrja\Type\BuiltIn\Support\Str as Helper;
+use Valkyrja\Type\BuiltIn\Contract\StringContract;
+use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 
 /**
  * @extends Type<string>
  */
-class StringT extends Type implements Contract
+class StringT extends Type implements StringContract
 {
     public function __construct(string $subject)
     {
@@ -38,7 +38,7 @@ class StringT extends Type implements Contract
     #[Override]
     public static function fromValue(mixed $value): static
     {
-        return new static(Helper::fromMixed($value));
+        return new static(Str::fromMixed($value));
     }
 
     /**
@@ -65,7 +65,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function startsWith(string $needle): bool
     {
-        return Helper::startsWith($this->subject, $needle);
+        return Str::startsWith($this->subject, $needle);
     }
 
     /**
@@ -74,7 +74,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function startsWithAny(string ...$needles): bool
     {
-        return Helper::startsWithAny($this->subject, ...$needles);
+        return Str::startsWithAny($this->subject, ...$needles);
     }
 
     /**
@@ -83,7 +83,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function endsWith(string $needle): bool
     {
-        return Helper::endsWith($this->subject, $needle);
+        return Str::endsWith($this->subject, $needle);
     }
 
     /**
@@ -92,7 +92,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function endsWithAny(string ...$needles): bool
     {
-        return Helper::endsWithAny($this->subject, ...$needles);
+        return Str::endsWithAny($this->subject, ...$needles);
     }
 
     /**
@@ -101,7 +101,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function contains(string $needle): bool
     {
-        return Helper::contains($this->subject, $needle);
+        return Str::contains($this->subject, $needle);
     }
 
     /**
@@ -110,7 +110,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function containsAny(string ...$needles): bool
     {
-        return Helper::containsAny($this->subject, ...$needles);
+        return Str::containsAny($this->subject, ...$needles);
     }
 
     /**
@@ -119,7 +119,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function min(int $min = 0): bool
     {
-        return Helper::min($this->subject, $min);
+        return Str::min($this->subject, $min);
     }
 
     /**
@@ -128,7 +128,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function max(int $max = 256): bool
     {
-        return Helper::max($this->subject, $max);
+        return Str::max($this->subject, $max);
     }
 
     /**
@@ -137,7 +137,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function replace(string $replace, string $replacement): static
     {
-        return $this->modify(static fn (string $subject): string => Helper::replace($subject, $replace, $replacement));
+        return $this->modify(static fn (string $subject): string => Str::replace($subject, $replace, $replacement));
     }
 
     /**
@@ -147,7 +147,7 @@ class StringT extends Type implements Contract
     public function replaceAll(array $replace, array $replacement): static
     {
         return $this->modify(
-            static fn (string $subject): string => Helper::replaceAll($subject, $replace, $replacement)
+            static fn (string $subject): string => Str::replaceAll($subject, $replace, $replacement)
         );
     }
 
@@ -158,7 +158,7 @@ class StringT extends Type implements Contract
     public function replaceAllWith(array $replace, string $replacement): static
     {
         return $this->modify(
-            static fn (string $subject): string => Helper::replaceAllWith($subject, $replace, $replacement)
+            static fn (string $subject): string => Str::replaceAllWith($subject, $replace, $replacement)
         );
     }
 
@@ -168,7 +168,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function substr(int $start, int|null $length = null): static
     {
-        return $this->modify(static fn (string $subject): string => Helper::substr($subject, $start, $length));
+        return $this->modify(static fn (string $subject): string => Str::substr($subject, $start, $length));
     }
 
     /**
@@ -258,7 +258,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function isEmail(): bool
     {
-        return Helper::isEmail($this->subject);
+        return Str::isEmail($this->subject);
     }
 
     /**
@@ -267,7 +267,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function isAlphabetic(): bool
     {
-        return Helper::isAlphabetic($this->subject);
+        return Str::isAlphabetic($this->subject);
     }
 
     /**
@@ -276,7 +276,7 @@ class StringT extends Type implements Contract
     #[Override]
     public function isLowercase(): bool
     {
-        return Helper::isLowercase($this->subject);
+        return Str::isLowercase($this->subject);
     }
 
     /**
@@ -285,6 +285,6 @@ class StringT extends Type implements Contract
     #[Override]
     public function isUppercase(): bool
     {
-        return Helper::isUppercase($this->subject);
+        return Str::isUppercase($this->subject);
     }
 }

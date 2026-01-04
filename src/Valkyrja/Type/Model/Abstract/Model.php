@@ -18,7 +18,7 @@ use JsonException;
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
-use Valkyrja\Type\Model\Contract\ModelContract as Contract;
+use Valkyrja\Type\Model\Contract\ModelContract;
 use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function array_filter;
@@ -37,7 +37,7 @@ use const JSON_THROW_ON_ERROR;
  * @phpstan-consistent-constructor
  *  Will be overridden if need be
  */
-abstract class Model implements Contract
+abstract class Model implements ModelContract
 {
     /**
      * Cached list of validation logic for models.

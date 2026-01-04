@@ -15,12 +15,12 @@ namespace Valkyrja\Broadcast\Broadcaster;
 
 use JsonException;
 use Override;
-use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class LogBroadcaster implements Contract
+class LogBroadcaster implements BroadcasterContract
 {
     public function __construct(
         protected LoggerContract $logger

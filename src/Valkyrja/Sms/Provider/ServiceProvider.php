@@ -22,9 +22,9 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Vonage\Client as Vonage;
+use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
-use Vonage\Client\Credentials\CredentialsInterface as VonageCredentials;
+use Vonage\Client\Credentials\CredentialsInterface;
 
 final class ServiceProvider extends Provider
 {
@@ -35,12 +35,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            MessengerContract::class => [self::class, 'publishSms'],
-            VonageMessenger::class   => [self::class, 'publishVonageSms'],
-            Vonage::class            => [self::class, 'publishVonage'],
-            VonageCredentials::class => [self::class, 'publishVonageCredentials'],
-            LogMessenger::class      => [self::class, 'publishLogSms'],
-            NullMessenger::class     => [self::class, 'publishNullSms'],
+            MessengerContract::class    => [self::class, 'publishSms'],
+            VonageMessenger::class      => [self::class, 'publishVonageSms'],
+            Client::class               => [self::class, 'publishVonage'],
+            CredentialsInterface::class => [self::class, 'publishVonageCredentials'],
+            LogMessenger::class         => [self::class, 'publishLogSms'],
+            NullMessenger::class        => [self::class, 'publishNullSms'],
         ];
     }
 
@@ -53,8 +53,8 @@ final class ServiceProvider extends Provider
         return [
             MessengerContract::class,
             VonageMessenger::class,
-            Vonage::class,
-            VonageCredentials::class,
+            Client::class,
+            CredentialsInterface::class,
             LogMessenger::class,
             NullMessenger::class,
         ];
@@ -83,7 +83,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             VonageMessenger::class,
             new VonageMessenger(
-                $container->getSingleton(Vonage::class),
+                $container->getSingleton(Client::class),
             ),
         );
     }
@@ -94,9 +94,9 @@ final class ServiceProvider extends Provider
     public static function publishVonage(ContainerContract $container): void
     {
         $container->setSingleton(
-            Vonage::class,
-            new Vonage(
-                credentials: $container->getSingleton(VonageCredentials::class)
+            Client::class,
+            new Client(
+                credentials: $container->getSingleton(CredentialsInterface::class)
             ),
         );
     }
@@ -113,7 +113,7 @@ final class ServiceProvider extends Provider
         $secret = $env::SMS_VONAGE_SECRET;
 
         $container->setSingleton(
-            VonageCredentials::class,
+            CredentialsInterface::class,
             new Basic(
                 key: $key,
                 secret: $secret

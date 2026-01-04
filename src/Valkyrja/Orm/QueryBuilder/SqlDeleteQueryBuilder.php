@@ -15,9 +15,9 @@ namespace Valkyrja\Orm\QueryBuilder;
 
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract;
 
-class SqlDeleteQueryBuilder extends SqlQueryBuilder implements Contract
+class SqlDeleteQueryBuilder extends SqlQueryBuilder implements DeleteQueryBuilderContract
 {
     /**
      * @inheritDoc

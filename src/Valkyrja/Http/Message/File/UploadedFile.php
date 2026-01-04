@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\File;
 
 use Override;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract as Contract;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
-use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
@@ -40,7 +40,7 @@ use function unlink;
 
 use const PHP_SAPI;
 
-class UploadedFile implements Contract
+class UploadedFile implements UploadedFileContract
 {
     /**
      * Whether the file has been moved yet.
@@ -104,7 +104,7 @@ class UploadedFile implements Contract
         }
 
         // Set the stream as a new native stream
-        $this->stream = new HttpStream($this->file);
+        $this->stream = new Stream($this->file);
 
         return $this->stream;
     }

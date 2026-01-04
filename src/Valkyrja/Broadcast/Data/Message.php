@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Data;
 
 use Override;
-use Valkyrja\Broadcast\Data\Contract\MessageContract as Contract;
+use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
-class Message implements Contract
+class Message implements MessageContract
 {
     /**
      * The channel to broadcast to.

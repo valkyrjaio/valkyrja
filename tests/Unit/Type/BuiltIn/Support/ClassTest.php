@@ -17,7 +17,7 @@ use stdClass;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Cls as Helper;
+use Valkyrja\Type\BuiltIn\Support\Cls;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
 use Valkyrja\Type\Model\Contract\ModelContract;
@@ -30,36 +30,36 @@ class ClassTest extends TestCase
     {
         $this->expectException(InvalidClassProvidedException::class);
 
-        Helper::validateInherits(self::class, stdClass::class);
+        Cls::validateInherits(self::class, stdClass::class);
     }
 
     public function testInherits(): void
     {
-        self::assertFalse(Helper::inherits(self::class, stdClass::class));
-        self::assertTrue(Helper::inherits(self::class, TestCase::class));
+        self::assertFalse(Cls::inherits(self::class, stdClass::class));
+        self::assertTrue(Cls::inherits(self::class, TestCase::class));
     }
 
     public function testValidateHasProperty(): void
     {
         $this->expectException(InvalidClassPropertyProvidedException::class);
 
-        Helper::validateHasProperty(self::class, 'test');
+        Cls::validateHasProperty(self::class, 'test');
     }
 
     public function testHasProperty(): void
     {
-        self::assertFalse(Helper::hasProperty(self::class, 'test'));
-        self::assertTrue(Helper::hasProperty(self::class, 'validProperty'));
+        self::assertFalse(Cls::hasProperty(self::class, 'test'));
+        self::assertTrue(Cls::hasProperty(self::class, 'validProperty'));
     }
 
     public function testGetNiceName(): void
     {
-        self::assertSame('ValkyrjaTestsUnitTypeBuiltInSupportClassTest', Helper::getNiceName(self::class));
+        self::assertSame('ValkyrjaTestsUnitTypeBuiltInSupportClassTest', Cls::getNiceName(self::class));
     }
 
     public function testName(): void
     {
-        self::assertSame('ClassTest', Helper::getName(self::class));
+        self::assertSame('ClassTest', Cls::getName(self::class));
     }
 
     public function testGetDefaultableServiceWithClassNotInContainer(): void
@@ -72,7 +72,7 @@ class ClassTest extends TestCase
             static fn (Container $container, string $name, mixed ...$args): ModelContract => $name::fromArray($args)
         );
 
-        $object = Helper::getDefaultableService(
+        $object = Cls::getDefaultableService(
             $container,
             ModelClass::class,
             ModelContract::class,
@@ -100,7 +100,7 @@ class ClassTest extends TestCase
             static fn (Container $container, mixed ...$args): ModelClass => ModelClass::fromArray([...['protected' => $protectedValue], ...$args])
         );
 
-        $object = Helper::getDefaultableService(
+        $object = Cls::getDefaultableService(
             $container,
             ModelClass::class,
             ModelContract::class,

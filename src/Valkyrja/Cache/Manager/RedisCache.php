@@ -15,11 +15,11 @@ namespace Valkyrja\Cache\Manager;
 
 use Override;
 use Predis\Client;
-use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Cache\Tagger\Tagger as TagClass;
+use Valkyrja\Cache\Tagger\Tagger;
 
-class RedisCache implements Contract
+class RedisCache implements CacheContract
 {
     public function __construct(
         protected Client $client,
@@ -148,7 +148,7 @@ class RedisCache implements Contract
     #[Override]
     public function getTagger(string ...$tags): TaggerContract
     {
-        return TagClass::make($this, ...$tags);
+        return Tagger::make($this, ...$tags);
     }
 
     /**

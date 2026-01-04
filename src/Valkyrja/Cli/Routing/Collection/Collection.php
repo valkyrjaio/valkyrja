@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Collection;
 
 use Override;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 
-class Collection implements Contract
+class Collection implements CollectionContract
 {
     /** @var array<string, RouteContract> */
     protected array $commands = [];

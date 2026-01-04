@@ -15,12 +15,12 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\BoolContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\BoolContract;
 
 /**
  * @extends Type<bool>
  */
-class BoolT extends Type implements Contract
+class BoolT extends Type implements BoolContract
 {
     public function __construct(bool $subject)
     {

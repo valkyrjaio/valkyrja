@@ -18,12 +18,12 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
 /**
  * @extends Handler<InputReceivedMiddlewareContract>
  */
-class InputReceivedHandler extends Handler implements Contract
+class InputReceivedHandler extends Handler implements InputReceivedHandlerContract
 {
     /**
      * @inheritDoc

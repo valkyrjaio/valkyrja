@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract as Contract;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Uri;
 
-class RedirectResponse extends Response implements Contract
+class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
      * The default uri to use.

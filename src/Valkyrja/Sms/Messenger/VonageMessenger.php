@@ -16,15 +16,15 @@ namespace Valkyrja\Sms\Messenger;
 use Override;
 use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Data\Contract\MessageContract;
-use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
-use Vonage\Client as Vonage;
-use Vonage\Client\Exception\Exception as ClientException;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
+use Vonage\Client;
+use Vonage\Client\Exception\Exception;
 use Vonage\SMS\Message\SMS;
 
-class VonageMessenger implements Contract
+class VonageMessenger implements MessengerContract
 {
     public function __construct(
-        protected Vonage $vonage
+        protected Client $vonage
     ) {
     }
 
@@ -32,7 +32,7 @@ class VonageMessenger implements Contract
      * @inheritDoc
      *
      * @throws ClientExceptionInterface
-     * @throws ClientException
+     * @throws Exception
      */
     #[Override]
     public function send(MessageContract $message): void

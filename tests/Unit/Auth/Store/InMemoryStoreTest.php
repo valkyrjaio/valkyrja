@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Auth\Store;
 
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Entity\User as UserEntity;
+use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
 use Valkyrja\Tests\Unit\TestCase;
@@ -33,13 +33,13 @@ class InMemoryStoreTest extends TestCase
     protected const string RESET_TOKEN  = 'reset_token';
 
     protected InMemoryStore $store;
-    protected UserEntity $user;
+    protected User $user;
 
     protected function setUp(): void
     {
         $this->store = new InMemoryStore([]);
 
-        $this->user           = new UserEntity();
+        $this->user           = new User();
         $this->user->id       = 'test';
         $this->user->username = self::USERNAME;
         $this->user->password = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
@@ -98,7 +98,7 @@ class InMemoryStoreTest extends TestCase
     {
         $this->expectException(InvalidUserException::class);
 
-        $nonExistentUser           = new UserEntity();
+        $nonExistentUser           = new User();
         $nonExistentUser->id       = 'test';
         $nonExistentUser->username = self::BAD_USERNAME;
 
@@ -117,7 +117,7 @@ class InMemoryStoreTest extends TestCase
 
         $this->store->update($updateUser);
 
-        $user = $this->store->retrieve($this->getAuthenticationRetrieval(), UserEntity::class);
+        $user = $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
 
         self::assertNotNull($user);
         self::assertSame(self::USERNAME, $user->username);
@@ -126,7 +126,7 @@ class InMemoryStoreTest extends TestCase
 
     public function testFailedUserRetrieval(): void
     {
-        $user = $this->store->retrieve(new RetrievalByUsername(self::BAD_USERNAME), UserEntity::class);
+        $user = $this->store->retrieve(new RetrievalByUsername(self::BAD_USERNAME), User::class);
 
         self::assertNull($user);
     }
@@ -136,7 +136,7 @@ class InMemoryStoreTest extends TestCase
      */
     protected function retrieveUser(): UserContract|null
     {
-        return $this->store->retrieve($this->getAuthenticationRetrieval(), UserEntity::class);
+        return $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
     }
 
     /**

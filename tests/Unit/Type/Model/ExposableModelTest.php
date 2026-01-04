@@ -18,7 +18,7 @@ use Valkyrja\Tests\Classes\Model\ExposableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\SimpleExposableModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Model\Contract\ExposableModelContract as Contract;
+use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function method_exists;
@@ -32,12 +32,12 @@ class ExposableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'getExposable'));
-        self::assertTrue(method_exists(Contract::class, 'asExposedArray'));
-        self::assertTrue(method_exists(Contract::class, 'asExposedChangedArray'));
-        self::assertTrue(method_exists(Contract::class, 'asExposedOnlyArray'));
-        self::assertTrue(method_exists(Contract::class, 'expose'));
-        self::isA(ModelContract::class, Contract::class);
+        self::assertTrue(method_exists(ExposableModelContract::class, 'getExposable'));
+        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedArray'));
+        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedChangedArray'));
+        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedOnlyArray'));
+        self::assertTrue(method_exists(ExposableModelContract::class, 'expose'));
+        self::isA(ModelContract::class, ExposableModelContract::class);
     }
 
     public function testGetExposable(): void

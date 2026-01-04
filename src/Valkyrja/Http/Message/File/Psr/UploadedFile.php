@@ -16,13 +16,13 @@ namespace Valkyrja\Http\Message\File\Psr;
 use Override;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract as ValkyrjaUploadedFile;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 class UploadedFile implements UploadedFileInterface
 {
     public function __construct(
-        protected ValkyrjaUploadedFile $file,
+        protected UploadedFileContract $file,
     ) {
     }
 

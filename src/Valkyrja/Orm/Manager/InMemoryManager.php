@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Manager;
 
 use Override;
-use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Orm\Repository\Repository as OrmRepository;
+use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 
-class InMemoryManager implements Contract
+class InMemoryManager implements ManagerContract
 {
     /**
      * @inheritDoc
@@ -30,7 +30,7 @@ class InMemoryManager implements Contract
     #[Override]
     public function createRepository(string $entity): RepositoryContract
     {
-        return new OrmRepository($this, $entity);
+        return new Repository($this, $entity);
     }
 
     /**

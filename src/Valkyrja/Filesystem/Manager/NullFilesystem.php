@@ -15,9 +15,9 @@ namespace Valkyrja\Filesystem\Manager;
 
 use Override;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 
-class NullFilesystem implements Contract
+class NullFilesystem implements FilesystemContract
 {
     /**
      * @inheritDoc

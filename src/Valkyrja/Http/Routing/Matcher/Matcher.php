@@ -15,11 +15,11 @@ namespace Valkyrja\Http\Routing\Matcher;
 
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
+use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract as Contract;
+use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
@@ -28,10 +28,10 @@ use Valkyrja\Type\Data\Cast;
 use function is_array;
 use function preg_match;
 
-class Matcher implements Contract
+class Matcher implements MatcherContract
 {
     public function __construct(
-        protected CollectionContract $collection = new RouteCollection()
+        protected CollectionContract $collection = new Collection()
     ) {
     }
 

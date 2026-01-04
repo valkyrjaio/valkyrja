@@ -15,9 +15,9 @@ namespace Valkyrja\Orm\Schema\Abstract;
 
 use Override;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
-use Valkyrja\Orm\Schema\Contract\MigrationContract as Contract;
+use Valkyrja\Orm\Schema\Contract\MigrationContract;
 
-abstract class Migration implements Contract
+abstract class Migration implements MigrationContract
 {
     public function __construct(
         protected ManagerContract $orm

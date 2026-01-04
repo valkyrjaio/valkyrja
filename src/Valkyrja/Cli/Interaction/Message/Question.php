@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
-use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
@@ -25,7 +25,7 @@ use function fgets;
 use function fopen;
 use function is_callable;
 
-class Question extends Message implements Contract
+class Question extends Message implements QuestionContract
 {
     /**
      * @param non-empty-string                                        $text     The text

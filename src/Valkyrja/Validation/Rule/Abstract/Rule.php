@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\Abstract;
 
 use Override;
-use Valkyrja\Validation\Rule\Contract\RuleContract as Contract;
+use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-abstract class Rule implements Contract
+abstract class Rule implements RuleContract
 {
     public function __construct(
         protected mixed $subject,

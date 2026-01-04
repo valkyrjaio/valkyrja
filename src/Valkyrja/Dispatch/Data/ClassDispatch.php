@@ -15,9 +15,9 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
-use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 
-class ClassDispatch extends Dispatch implements Contract
+class ClassDispatch extends Dispatch implements ClassDispatchContract
 {
     /**
      * @param class-string                               $class        The class name

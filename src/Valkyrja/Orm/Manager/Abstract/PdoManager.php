@@ -17,11 +17,11 @@ use Override;
 use PDO;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
-use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Orm\Repository\Repository as DefaultRepository;
+use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
@@ -29,7 +29,7 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use function is_bool;
 use function is_string;
 
-abstract class PdoManager implements Contract
+abstract class PdoManager implements ManagerContract
 {
     public function __construct(
         protected PDO $pdo,
@@ -50,7 +50,7 @@ abstract class PdoManager implements Contract
     public function createRepository(string $entity): RepositoryContract
     {
         $repositoryClass = $entity::getRepository()
-            ?? DefaultRepository::class;
+            ?? Repository::class;
 
         /** @var RepositoryContract<T> $repository */
         $repository = $this->container->get($repositoryClass, [$this, $entity]);

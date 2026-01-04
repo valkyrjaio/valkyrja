@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
-use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
-use Valkyrja\Type\Model\Contract\ExposableModelContract as Contract;
+use Valkyrja\Type\Model\Abstract\Model;
+use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
 /**
@@ -23,7 +23,7 @@ use Valkyrja\Type\Model\Trait\ProtectedExposable;
  *
  * @property string $protected
  */
-class ProtectedExposableModelClass extends AbstractModel implements Contract
+class ProtectedExposableModelClass extends Model implements ExposableModelContract
 {
     use PrivatePropertyTrait;
     use ProtectedExposable;

@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -47,7 +47,7 @@ class HandlerTestCase extends TestCase
             name: 'test',
             description: 'Test Command',
             helpText: new Message('text'),
-            dispatch: new DefaultDispatch(self::class, 'dispatch')
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
     }
 }

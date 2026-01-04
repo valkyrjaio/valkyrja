@@ -17,7 +17,7 @@ use DateTimeInterface;
 use Override;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
-use Valkyrja\Http\Message\Header\Value\Contract\CookieContract as Contract;
+use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Support\Time\Time;
 
 use function array_filter;
@@ -25,7 +25,7 @@ use function gmdate;
 use function implode;
 use function urlencode;
 
-class Cookie extends Value implements Contract
+class Cookie extends Value implements CookieContract
 {
     /**
      * @param string        $name     The cookie's name

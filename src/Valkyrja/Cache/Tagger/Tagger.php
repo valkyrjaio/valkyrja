@@ -16,10 +16,10 @@ namespace Valkyrja\Cache\Tagger;
 use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
-use Valkyrja\Cache\Tagger\Contract\TaggerContract as Contract;
+use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class Tagger implements Contract
+class Tagger implements TaggerContract
 {
     /**
      * The tags.

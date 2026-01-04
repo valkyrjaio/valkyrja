@@ -16,14 +16,14 @@ namespace Valkyrja\Auth\Store;
 use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 
 /**
  * @template U of UserContract
  *
- * @implements Contract<U>
+ * @implements StoreContract<U>
  */
-class NullStore implements Contract
+class NullStore implements StoreContract
 {
     /**
      * @inheritDoc

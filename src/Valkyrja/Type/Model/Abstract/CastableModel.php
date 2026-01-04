@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Abstract;
 
-use Valkyrja\Type\Model\Contract\CastableModelContract as Contract;
+use Valkyrja\Type\Model\Contract\CastableModelContract;
 use Valkyrja\Type\Model\Trait\Castable;
 
-abstract class CastableModel extends Model implements Contract
+abstract class CastableModel extends Model implements CastableModelContract
 {
     use Castable;
 }

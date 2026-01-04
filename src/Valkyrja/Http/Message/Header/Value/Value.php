@@ -16,9 +16,9 @@ namespace Valkyrja\Http\Message\Header\Value;
 use Override;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
-use Valkyrja\Http\Message\Header\Value\Component\Component as HeaderPart;
+use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
-use Valkyrja\Http\Message\Header\Value\Contract\ValueContract as Contract;
+use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
 use function array_filter;
 use function array_map;
@@ -28,7 +28,7 @@ use function explode;
 use function implode;
 use function is_string;
 
-class Value implements Contract
+class Value implements ValueContract
 {
     /**
      * Deliminator to use for value components.
@@ -221,7 +221,7 @@ class Value implements Contract
     protected function mapToPart(ComponentContract|string ...$parts): array
     {
         return array_map(
-            static fn (ComponentContract|string $part): ComponentContract => is_string($part) ? HeaderPart::fromValue($part) : $part,
+            static fn (ComponentContract|string $part): ComponentContract => is_string($part) ? Component::fromValue($part) : $part,
             $parts
         );
     }

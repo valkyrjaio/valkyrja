@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Struct\Contract;
 
 use UnitEnum;
-use Valkyrja\Http\Struct\Contract\StructContract as Contract;
+use Valkyrja\Http\Struct\Contract\StructContract;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
 
@@ -25,7 +25,7 @@ class StructTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertIsA(UnitEnum::class, Contract::class);
-        self::assertIsA(ArrayableContract::class, Contract::class);
+        self::assertIsA(UnitEnum::class, StructContract::class);
+        self::assertIsA(ArrayableContract::class, StructContract::class);
     }
 }

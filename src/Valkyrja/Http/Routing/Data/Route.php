@@ -22,13 +22,13 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
-use Valkyrja\Http\Routing\Data\Contract\RouteContract as Contract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 use function in_array;
 
-class Route implements Contract
+class Route implements RouteContract
 {
     /**
      * @param non-empty-string                                  $path                      The path

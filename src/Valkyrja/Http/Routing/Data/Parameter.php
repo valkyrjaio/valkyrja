@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Http\Routing\Data\Contract\ParameterContract as Contract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Type\Data\Cast;
 
-class Parameter implements Contract
+class Parameter implements ParameterContract
 {
     /**
      * @param non-empty-string                        $name    The parameter's name

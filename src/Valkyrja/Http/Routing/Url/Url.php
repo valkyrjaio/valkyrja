@@ -16,11 +16,11 @@ namespace Valkyrja\Http\Routing\Url;
 use Override;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Url\Contract\UrlContract as Contract;
+use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
 use function str_replace;
 
-class Url implements Contract
+class Url implements UrlContract
 {
     public function __construct(
         protected CollectionContract $collection,

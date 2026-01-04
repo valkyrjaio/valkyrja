@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Env;
 
-use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
+use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
@@ -22,7 +22,7 @@ use Valkyrja\Auth\Authenticator\SessionAuthenticator;
 use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Entity\User as UserEntity;
+use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
@@ -44,7 +44,7 @@ use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddlewar
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
-use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware as CliOutputThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
@@ -54,16 +54,16 @@ use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract as HttpRequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract as HttpRouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract as HttpRouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpRouteNotMatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract as HttpSendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract as HttpTerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
-use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware as HttpViewThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
@@ -170,7 +170,7 @@ class Env
     /** @var class-string<StoreContract> */
     public const string AUTH_DEFAULT_STORE = OrmStore::class;
     /** @var class-string<UserContract> */
-    public const string AUTH_DEFAULT_USER_ENTITY = UserEntity::class;
+    public const string AUTH_DEFAULT_USER_ENTITY = User::class;
     /** @var non-empty-string */
     public const string AUTH_DEFAULT_SESSION_ID = SessionId::AUTHENTICATED_USERS;
     /** @var non-empty-string */
@@ -283,7 +283,7 @@ class Env
     /** @var class-string<ThrowableCaughtMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [
         CliLogThrowableCaughtMiddleware::class,
-        CliOutputThrowableCaughtMiddleware::class,
+        OutputThrowableCaughtMiddleware::class,
     ];
     /** @var class-string<ExitedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_EXITED = [];
@@ -338,15 +338,14 @@ class Env
      * Http Middleware component env variables.
      *
      ************************************************************/
-
-    /** @var class-string<HttpRequestReceivedMiddlewareContract>[] */
+    /** @var class-string<RequestReceivedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_REQUEST_RECEIVED = [];
     /** @var class-string<HttpRouteDispatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [];
     /** @var class-string<HttpThrowableCaughtMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [
         HttpLogThrowableCaughtMiddleware::class,
-        HttpViewThrowableCaughtMiddleware::class,
+        ViewThrowableCaughtMiddleware::class,
     ];
     /** @var class-string<HttpRouteMatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_MATCHED = [];
@@ -354,9 +353,9 @@ class Env
     public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [
         ViewRouteNotMatchedMiddleware::class,
     ];
-    /** @var class-string<HttpSendingResponseMiddlewareContract>[] */
+    /** @var class-string<SendingResponseMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_SENDING_RESPONSE = [];
-    /** @var class-string<HttpTerminatedMiddlewareContract>[] */
+    /** @var class-string<TerminatedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_TERMINATED = [];
 
     /************************************************************
@@ -529,7 +528,7 @@ class Env
     public const array VIEW_PHP_PATHS = [];
     /** @var array<string, string> */
     public const array VIEW_TWIG_PATHS = [];
-    /** @var class-string<TwigExtensionInterface>[] */
+    /** @var class-string<ExtensionInterface>[] */
     public const array VIEW_TWIG_EXTENSIONS = [];
     /** @var non-empty-string */
     public const string VIEW_TWIG_COMPILED_PATH = '/storage/views';

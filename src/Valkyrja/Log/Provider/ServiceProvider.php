@@ -15,7 +15,7 @@ namespace Valkyrja\Log\Provider;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger as Monolog;
+use Monolog\Logger;
 use Override;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Env\Env;
@@ -42,7 +42,7 @@ final class ServiceProvider extends Provider
             PsrLogger::class       => [self::class, 'publishPsrLogger'],
             NullLogger::class      => [self::class, 'publishNullLogger'],
             LoggerInterface::class => [self::class, 'publishLoggerInterface'],
-            Monolog::class         => [self::class, 'publishMonolog'],
+            Logger::class          => [self::class, 'publishMonolog'],
         ];
     }
 
@@ -57,7 +57,7 @@ final class ServiceProvider extends Provider
             NullLogger::class,
             PsrLogger::class,
             LoggerInterface::class,
-            Monolog::class,
+            Logger::class,
         ];
     }
 
@@ -109,12 +109,12 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             LoggerInterface::class,
-            $container->getSingleton(Monolog::class),
+            $container->getSingleton(Logger::class),
         );
     }
 
     /**
-     * Publish the Monolog service.
+     * Publish the Logger service.
      */
     public static function publishMonolog(ContainerContract $container): void
     {
@@ -136,8 +136,8 @@ final class ServiceProvider extends Provider
         $handler->setFormatter($formatter);
 
         $container->setSingleton(
-            Monolog::class,
-            new Monolog(
+            Logger::class,
+            new Logger(
                 $name,
                 [
                     $handler,

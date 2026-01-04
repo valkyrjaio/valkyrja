@@ -17,11 +17,11 @@ use Override;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract as Contract;
+use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
-class Processor implements Contract
+class Processor implements ProcessorContract
 {
     /**
      * Process a route.

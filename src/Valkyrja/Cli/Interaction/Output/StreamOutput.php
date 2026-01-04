@@ -16,9 +16,9 @@ namespace Valkyrja\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 
-class StreamOutput extends Output implements Contract
+class StreamOutput extends Output implements StreamOutputContract
 {
     /**
      * @param resource $stream The stream

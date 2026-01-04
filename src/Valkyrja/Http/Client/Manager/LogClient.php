@@ -15,14 +15,14 @@ namespace Valkyrja\Http\Client\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
-class LogClient implements Contract
+class LogClient implements ClientContract
 {
     public function __construct(
         protected LoggerContract $logger,

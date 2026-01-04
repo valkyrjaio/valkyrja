@@ -15,9 +15,9 @@ namespace Valkyrja\Sms\Messenger;
 
 use Override;
 use Valkyrja\Sms\Data\Contract\MessageContract;
-use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 
-class NullMessenger implements Contract
+class NullMessenger implements MessengerContract
 {
     /**
      * @inheritDoc

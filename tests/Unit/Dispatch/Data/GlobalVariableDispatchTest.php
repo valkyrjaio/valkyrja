@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
-use Valkyrja\Dispatch\Data\GlobalVariableDispatch as Dispatch;
+use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -30,7 +30,7 @@ class GlobalVariableDispatchTest extends TestCase
         $variable  = '_GET';
         $variable2 = '_POST';
 
-        $dispatch = new Dispatch(variable: $variable);
+        $dispatch = new GlobalVariableDispatch(variable: $variable);
 
         self::assertSame($variable, $dispatch->getVariable());
 

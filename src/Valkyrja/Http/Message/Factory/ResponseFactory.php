@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Factory;
 use JsonException;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as Contract;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -28,7 +28,7 @@ use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 
-class ResponseFactory implements Contract
+class ResponseFactory implements ResponseFactoryContract
 {
     /**
      * @inheritDoc

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Hasher;
 
 use Override;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract as Contract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 
 use const PASSWORD_DEFAULT;
 
-class PhpPasswordHasher implements Contract
+class PhpPasswordHasher implements PasswordHasherContract
 {
     /**
      * Hash a given password.

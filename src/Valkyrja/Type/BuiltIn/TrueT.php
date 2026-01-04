@@ -15,12 +15,12 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\TrueContract as Contract;
+use Valkyrja\Type\BuiltIn\Contract\TrueContract;
 
 /**
  * @extends Type<true>
  */
-class TrueT extends Type implements Contract
+class TrueT extends Type implements TrueContract
 {
     public function __construct()
     {

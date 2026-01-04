@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Data;
 
 use Override;
-use Valkyrja\Sms\Data\Contract\MessageContract as Contract;
+use Valkyrja\Sms\Data\Contract\MessageContract;
 
-class Message implements Contract
+class Message implements MessageContract
 {
     public function __construct(
         protected string $to,
