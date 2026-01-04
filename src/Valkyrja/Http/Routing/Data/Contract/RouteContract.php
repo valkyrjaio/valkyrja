@@ -36,8 +36,6 @@ interface RouteContract
      * Create a new route with the specified path.
      *
      * @param non-empty-string $path The path
-     *
-     * @return static
      */
     public function withPath(string $path): static;
 
@@ -45,8 +43,6 @@ interface RouteContract
      * Create a new route by appending a path to the existing path.
      *
      * @param non-empty-string $path The path to append
-     *
-     * @return static
      */
     public function withAddedPath(string $path): static;
 
@@ -61,8 +57,6 @@ interface RouteContract
      * Create a new route with the specified name.
      *
      * @param non-empty-string $name The name
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
@@ -70,8 +64,6 @@ interface RouteContract
      * Create a new route by appending a name to the existing name.
      *
      * @param non-empty-string $name The name to append
-     *
-     * @return static
      */
     public function withAddedName(string $name): static;
 
@@ -84,8 +76,6 @@ interface RouteContract
      * Create a new request method with the specified dispatch.
      *
      * @param MethodDispatchContract $dispatch The dispatch
-     *
-     * @return static
      */
     public function withDispatch(MethodDispatchContract $dispatch): static;
 
@@ -100,8 +90,6 @@ interface RouteContract
      * Determine if a request method exists on this route.
      *
      * @param RequestMethod $requestMethod The request method
-     *
-     * @return bool
      */
     public function hasRequestMethod(RequestMethod $requestMethod): bool;
 
@@ -109,8 +97,6 @@ interface RouteContract
      * Create a new route with the specified request method.
      *
      * @param RequestMethod $requestMethod The request method
-     *
-     * @return static
      */
     public function withRequestMethod(RequestMethod $requestMethod): static;
 
@@ -118,8 +104,6 @@ interface RouteContract
      * Create a new route with the specified request methods.
      *
      * @param RequestMethod ...$requestMethods The request methods
-     *
-     * @return static
      */
     public function withRequestMethods(RequestMethod ...$requestMethods): static;
 
@@ -127,8 +111,6 @@ interface RouteContract
      * Create a new route with an additional request method.
      *
      * @param RequestMethod $requestMethod The request method
-     *
-     * @return static
      */
     public function withAddedRequestMethod(RequestMethod $requestMethod): static;
 
@@ -136,8 +118,6 @@ interface RouteContract
      * Create a new route with additional request methods.
      *
      * @param RequestMethod ...$requestMethods The request methods
-     *
-     * @return static
      */
     public function withAddedRequestMethods(RequestMethod ...$requestMethods): static;
 
@@ -152,8 +132,6 @@ interface RouteContract
      * Set the regex.
      *
      * @param non-empty-string|null $regex The regex
-     *
-     * @return static
      */
     public function withRegex(string|null $regex = null): static;
 
@@ -168,8 +146,6 @@ interface RouteContract
      * Create a new route with given parameter.
      *
      * @param ParameterContract $parameter The parameter
-     *
-     * @return static
      */
     public function withParameter(ParameterContract $parameter): static;
 
@@ -177,8 +153,6 @@ interface RouteContract
      * Create a new route with given parameters.
      *
      * @param ParameterContract ...$parameters The parameter
-     *
-     * @return static
      */
     public function withParameters(ParameterContract ...$parameters): static;
 
@@ -186,8 +160,6 @@ interface RouteContract
      * Create a new route with added parameter.
      *
      * @param ParameterContract $parameter The parameter
-     *
-     * @return static
      */
     public function withAddedParameter(ParameterContract $parameter): static;
 
@@ -195,8 +167,6 @@ interface RouteContract
      * Create a new route with added parameters.
      *
      * @param ParameterContract ...$parameters The parameter
-     *
-     * @return static
      */
     public function withAddedParameters(ParameterContract ...$parameters): static;
 
@@ -211,8 +181,6 @@ interface RouteContract
      * Create a new route with matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withRouteMatchedMiddleware(string ...$middleware): static;
 
@@ -220,8 +188,6 @@ interface RouteContract
      * Create a new route with added matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedRouteMatchedMiddleware(string ...$middleware): static;
 
@@ -236,8 +202,6 @@ interface RouteContract
      * Create a new route with dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withRouteDispatchedMiddleware(string ...$middleware): static;
 
@@ -245,8 +209,6 @@ interface RouteContract
      * Create a new route with added dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedRouteDispatchedMiddleware(string ...$middleware): static;
 
@@ -261,8 +223,6 @@ interface RouteContract
      * Create a new route with exception middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withThrowableCaughtMiddleware(string ...$middleware): static;
 
@@ -270,8 +230,6 @@ interface RouteContract
      * Create a new route with added exception middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static;
 
@@ -286,8 +244,6 @@ interface RouteContract
      * Create a new route with sending middleware.
      *
      * @param class-string<SendingResponseMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withSendingResponseMiddleware(string ...$middleware): static;
 
@@ -295,8 +251,6 @@ interface RouteContract
      * Create a new route with added sending middleware.
      *
      * @param class-string<SendingResponseMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedSendingResponseMiddleware(string ...$middleware): static;
 
@@ -311,8 +265,6 @@ interface RouteContract
      * Create a new route with terminated middleware.
      *
      * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withTerminatedMiddleware(string ...$middleware): static;
 
@@ -320,8 +272,6 @@ interface RouteContract
      * Create a new route with added terminated middleware.
      *
      * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedTerminatedMiddleware(string ...$middleware): static;
 
@@ -336,8 +286,6 @@ interface RouteContract
      * Create a new route with a specified RequestStruct.
      *
      * @param class-string<RequestStructContract>|null $requestStruct The request struct
-     *
-     * @return static
      */
     public function withRequestStruct(string|null $requestStruct = null): static;
 
@@ -352,8 +300,6 @@ interface RouteContract
      * Create a new route with a specified ResponseStruct.
      *
      * @param class-string<ResponseStructContract>|null $responseStruct The response struct
-     *
-     * @return static
      */
     public function withResponseStruct(string|null $responseStruct = null): static;
 }

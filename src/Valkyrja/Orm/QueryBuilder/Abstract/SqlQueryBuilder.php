@@ -111,8 +111,6 @@ abstract class SqlQueryBuilder implements Contract
 
     /**
      * Get the alias of a query statement.
-     *
-     * @return string
      */
     protected function getAliasQuery(): string
     {
@@ -123,8 +121,6 @@ abstract class SqlQueryBuilder implements Contract
 
     /**
      * Get the where of a query statement.
-     *
-     * @return string
      */
     protected function getWhereQuery(): string
     {
@@ -135,8 +131,6 @@ abstract class SqlQueryBuilder implements Contract
 
     /**
      * Get the joins of a query statement.
-     *
-     * @return string
      */
     protected function getJoinQuery(): string
     {

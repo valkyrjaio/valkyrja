@@ -133,8 +133,6 @@ class Router implements Contract
      * @param ServerRequestContract $request The request
      *
      * @throws HttpException
-     *
-     * @return RouteContract|ResponseContract
      */
     protected function attemptToMatchRoute(ServerRequestContract $request): RouteContract|ResponseContract
     {
@@ -170,8 +168,6 @@ class Router implements Contract
      * Do various stuff after the route has been matched.
      *
      * @param RouteContract $route The route
-     *
-     * @return void
      */
     protected function routeMatched(RouteContract $route): void
     {

@@ -26,8 +26,6 @@ interface ArgumentContract
      * Create a new argument with the specified value.
      *
      * @param non-empty-string $value The value
-     *
-     * @return static
      */
     public function withValue(string $value): static;
 }

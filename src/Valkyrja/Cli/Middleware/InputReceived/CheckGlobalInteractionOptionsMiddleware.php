@@ -49,8 +49,6 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
      * Set the interactivity.
      *
      * @param InputContract $input The input
-     *
-     * @return void
      */
     protected function setIsInteractive(InputContract $input): void
     {
@@ -66,8 +64,6 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
      * Set whether output is quiet.
      *
      * @param InputContract $input The input
-     *
-     * @return void
      */
     protected function setIsQuiet(InputContract $input): void
     {
@@ -83,8 +79,6 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
      * Set whether the output is entirely silent.
      *
      * @param InputContract $input The input
-     *
-     * @return void
      */
     protected function setIsSilent(InputContract $input): void
     {

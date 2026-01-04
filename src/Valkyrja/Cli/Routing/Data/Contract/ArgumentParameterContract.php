@@ -21,8 +21,6 @@ interface ArgumentParameterContract extends ParameterContract
 {
     /**
      * Get the argument mode.
-     *
-     * @return ArgumentMode
      */
     public function getMode(): ArgumentMode;
 
@@ -30,15 +28,11 @@ interface ArgumentParameterContract extends ParameterContract
      * Create a new Argument parameter with the specified argument mode.
      *
      * @param ArgumentMode $mode The argument mode
-     *
-     * @return static
      */
     public function withMode(ArgumentMode $mode): static;
 
     /**
      * Get the argument value mode.
-     *
-     * @return ArgumentValueMode
      */
     public function getValueMode(): ArgumentValueMode;
 
@@ -46,8 +40,6 @@ interface ArgumentParameterContract extends ParameterContract
      * Create a new Argument parameter with the specified argument value mode.
      *
      * @param ArgumentValueMode $valueMode The argument value mode
-     *
-     * @return static
      */
     public function withValueMode(ArgumentValueMode $valueMode): static;
 
@@ -62,8 +54,6 @@ interface ArgumentParameterContract extends ParameterContract
      * Create a new Argument parameter with the specified arguments.
      *
      * @param ArgumentContract ...$arguments The arguments
-     *
-     * @return static
      */
     public function withArguments(ArgumentContract ...$arguments): static;
 
@@ -71,8 +61,6 @@ interface ArgumentParameterContract extends ParameterContract
      * Create a new Argument parameter with added arguments.
      *
      * @param ArgumentContract ...$arguments The arguments
-     *
-     * @return static
      */
     public function withAddedArguments(ArgumentContract ...$arguments): static;
 }

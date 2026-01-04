@@ -24,8 +24,6 @@ interface ThrowableHandlerContract
      *
      * @param int  $errorReportingLevel [optional] The error reporting level
      * @param bool $displayErrors       [optional] Whether to display errors
-     *
-     * @return void
      */
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void;
 
@@ -33,8 +31,6 @@ interface ThrowableHandlerContract
      * Get trace code for a throwable.
      *
      * @param Throwable $throwable The throwable
-     *
-     * @return string
      */
     public static function getTraceCode(Throwable $throwable): string;
 }

@@ -22,15 +22,11 @@ interface StatementContract
      * Bind a value.
      *
      * @param Value $value The value to bind
-     *
-     * @return bool
      */
     public function bindValue(Value $value): bool;
 
     /**
      * Execute the statement.
-     *
-     * @return bool
      */
     public function execute(): bool;
 
@@ -56,10 +52,6 @@ interface StatementContract
 
     /**
      * Fetch a single column.
-     *
-     * @param int $columnNumber
-     *
-     * @return mixed
      */
     public function fetchColumn(int $columnNumber = 0): mixed;
 
@@ -76,36 +68,26 @@ interface StatementContract
 
     /**
      * Get the count.
-     *
-     * @return int
      */
     public function getCount(): int;
 
     /**
      * The number of rows returned.
-     *
-     * @return int
      */
     public function rowCount(): int;
 
     /**
      * Count of columns returned.
-     *
-     * @return int
      */
     public function columnCount(): int;
 
     /**
      * The error code.
-     *
-     * @return string
      */
     public function errorCode(): string;
 
     /**
      * The error message.
-     *
-     * @return string|null
      */
     public function errorMessage(): string|null;
 }

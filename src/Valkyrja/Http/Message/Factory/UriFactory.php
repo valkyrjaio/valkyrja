@@ -47,8 +47,6 @@ abstract class UriFactory
      * @throws InvalidQueryException
      * @throws InvalidPortException
      * @throws InvalidPathException
-     *
-     * @return UriContract
      */
     public static function marshalUriFromServer(array $server, array $headers): UriContract
     {
@@ -116,11 +114,7 @@ abstract class UriFactory
      * If found, it is returned as a string, using comma concatenation.
      * If not, the $default is returned.
      *
-     * @param string                         $header
      * @param array<string, string|string[]> $headers
-     * @param string|null                    $default
-     *
-     * @return string
      */
     public static function getHeader(string $header, array $headers, string|null $default = null): string
     {
@@ -139,11 +133,8 @@ abstract class UriFactory
     /**
      * Marshal the host and port from HTTP headers and/or the PHP environment.
      *
-     * @param HostPortAccumulator            $accumulator
      * @param array<string, string>          $server
      * @param array<string, string|string[]> $headers
-     *
-     * @return void
      */
     public static function marshalHostAndPortFromHeaders(
         HostPortAccumulator $accumulator,
@@ -185,8 +176,6 @@ abstract class UriFactory
      * @license   http://framework.zend.com/license/new-bsd New BSD License
      *
      * @param array<string, string> $server
-     *
-     * @return string
      */
     public static function marshalRequestUri(array $server): string
     {
@@ -236,10 +225,6 @@ abstract class UriFactory
 
     /**
      * Strip the query string from a path.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function stripQueryString(string $path): string
     {
@@ -254,8 +239,6 @@ abstract class UriFactory
      * Get a Uri object from a PSR UriInterface object.
      *
      * @param UriInterface $uri The PSR uri
-     *
-     * @return UriContract
      */
     public static function fromPsr(UriInterface $uri): UriContract
     {
@@ -279,11 +262,6 @@ abstract class UriFactory
 
     /**
      * Marshal the host and port from the request header.
-     *
-     * @param HostPortAccumulator $accumulator
-     * @param string              $host
-     *
-     * @return void
      */
     private static function marshalHostAndPortFromHeader(HostPortAccumulator $accumulator, string $host): void
     {
@@ -300,10 +278,7 @@ abstract class UriFactory
     /**
      * Marshal host/port from misinterpreted IPv6 address.
      *
-     * @param HostPortAccumulator   $accumulator
      * @param array<string, string> $server
-     *
-     * @return void
      */
     private static function marshalIpv6HostAndPort(HostPortAccumulator $accumulator, array $server): void
     {

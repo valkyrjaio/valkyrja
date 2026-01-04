@@ -80,8 +80,6 @@ class Directory
      * Construct a path with the directory separator prepended.
      *
      * @param string|null $path The path
-     *
-     * @return string
      */
     public static function path(string|null $path = null): string
     {

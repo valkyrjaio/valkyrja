@@ -82,8 +82,6 @@ abstract class UploadedFileFactory
     }
 
     /**
-     * @param UploadedFileInterface ...$files
-     *
      * @return UploadedFileContract[]
      */
     public static function fromPsrArray(UploadedFileInterface ...$files): array

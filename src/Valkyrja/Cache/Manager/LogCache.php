@@ -114,7 +114,7 @@ class LogCache implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function forever(string $key, $value): void
+    public function forever(string $key, string $value): void
     {
         $this->logger->info(self::class . " forever: $key, value $value");
     }
@@ -161,10 +161,6 @@ class LogCache implements Contract
 
     /**
      * Get key.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     protected function getKey(string $key): string
     {

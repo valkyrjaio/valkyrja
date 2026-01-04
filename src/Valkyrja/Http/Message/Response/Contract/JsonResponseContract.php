@@ -23,8 +23,6 @@ interface JsonResponseContract extends ResponseContract
      * @param array<array-key, mixed>|null $data       [optional] The data to set
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return static
      */
     public static function createFromData(
         array|null $data = null,
@@ -43,8 +41,6 @@ interface JsonResponseContract extends ResponseContract
      * Create a new JsonResponse with the given data.
      *
      * @param array<array-key, mixed> $data the data
-     *
-     * @return static
      */
     public function withJsonAsBody(array $data): static;
 
@@ -52,15 +48,11 @@ interface JsonResponseContract extends ResponseContract
      * With callback.
      *
      * @param string $callback The callback
-     *
-     * @return static
      */
     public function withCallback(string $callback): static;
 
     /**
      * Without callback.
-     *
-     * @return static
      */
     public function withoutCallback(): static;
 }

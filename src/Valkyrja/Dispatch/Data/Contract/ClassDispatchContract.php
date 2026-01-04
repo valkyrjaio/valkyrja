@@ -24,8 +24,6 @@ interface ClassDispatchContract extends DispatchContract
      * Create a new dispatch with the specified class name.
      *
      * @param class-string $class
-     *
-     * @return static
      */
     public function withClass(string $class): static;
 
@@ -40,8 +38,6 @@ interface ClassDispatchContract extends DispatchContract
      * Create a new dispatch with the specified arguments.
      *
      * @param array<non-empty-string, mixed>|null $arguments The arguments
-     *
-     * @return static
      */
     public function withArguments(array|null $arguments = null): static;
 
@@ -56,8 +52,6 @@ interface ClassDispatchContract extends DispatchContract
      * Create a new dispatch with the specified dependencies.
      *
      * @param array<non-empty-string, class-string>|null $dependencies The dependencies
-     *
-     * @return static
      */
     public function withDependencies(array|null $dependencies = null): static;
 }

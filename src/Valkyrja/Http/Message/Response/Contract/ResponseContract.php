@@ -38,8 +38,6 @@ interface ResponseContract extends MessageContract
      * @param string|null                  $content    [optional] The response content
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return static
      */
     public static function create(
         string|null $content = null,
@@ -76,8 +74,6 @@ interface ResponseContract extends MessageContract
      *                                  suggested in the HTTP specification
      *
      * @throws InvalidArgumentException For invalid status code arguments
-     *
-     * @return static
      */
     public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static;
 
@@ -110,8 +106,6 @@ interface ResponseContract extends MessageContract
      * @param CookieContract $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values
-     *
-     * @return static
      */
     public function withCookie(CookieContract $cookie): static;
 
@@ -128,36 +122,26 @@ interface ResponseContract extends MessageContract
      * @param CookieContract $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values
-     *
-     * @return static
      */
     public function withoutCookie(CookieContract $cookie): static;
 
     /**
      * Send the response HTTP line header.
-     *
-     * @return static
      */
     public function sendHttpLine(): static;
 
     /**
      * Send the response headers.
-     *
-     * @return static
      */
     public function sendHeaders(): static;
 
     /**
      * Send the response body.
-     *
-     * @return static
      */
     public function sendBody(): static;
 
     /**
      * Send the response.
-     *
-     * @return static
      */
     public function send(): static;
 }

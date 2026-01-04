@@ -19,15 +19,11 @@ interface SessionContract
 {
     /**
      * Start the session.
-     *
-     * @return void
      */
     public function start(): void;
 
     /**
      * Get the session id.
-     *
-     * @return string
      */
     public function getId(): string;
 
@@ -35,15 +31,11 @@ interface SessionContract
      * Set the session id.
      *
      * @param string $id The session id
-     *
-     * @return void
      */
     public function setId(string $id): void;
 
     /**
      * Get the session name.
-     *
-     * @return string
      */
     public function getName(): string;
 
@@ -51,15 +43,11 @@ interface SessionContract
      * Set the session name.
      *
      * @param string $name The session name
-     *
-     * @return void
      */
     public function setName(string $name): void;
 
     /**
      * Is a session active?
-     *
-     * @return bool
      */
     public function isActive(): bool;
 
@@ -67,8 +55,6 @@ interface SessionContract
      * Determine whether the session has an item.
      *
      * @param string $id The item id
-     *
-     * @return bool
      */
     public function has(string $id): bool;
 
@@ -77,8 +63,6 @@ interface SessionContract
      *
      * @param string     $id      The item id
      * @param mixed|null $default The default value
-     *
-     * @return mixed
      */
     public function get(string $id, mixed $default = null): mixed;
 
@@ -87,8 +71,6 @@ interface SessionContract
      *
      * @param string $id    The id
      * @param mixed  $value The value
-     *
-     * @return void
      */
     public function set(string $id, mixed $value): void;
 
@@ -96,8 +78,6 @@ interface SessionContract
      * Remove a session item.
      *
      * @param string $id The item id
-     *
-     * @return bool
      */
     public function remove(string $id): bool;
 
@@ -112,8 +92,6 @@ interface SessionContract
      * Generate a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id
-     *
-     * @return string
      */
     public function generateCsrfToken(string $id): string;
 
@@ -124,8 +102,6 @@ interface SessionContract
      * @param string $token The token to validate
      *
      * @throws InvalidCsrfToken
-     *
-     * @return void
      */
     public function validateCsrfToken(string $id, string $token): void;
 
@@ -134,22 +110,16 @@ interface SessionContract
      *
      * @param string $id    The csrf unique token id
      * @param string $token The token to validate
-     *
-     * @return bool
      */
     public function isCsrfTokenValid(string $id, string $token): bool;
 
     /**
      * Clear the local session.
-     *
-     * @return void
      */
     public function clear(): void;
 
     /**
      * Destroy the session.
-     *
-     * @return void
      */
     public function destroy(): void;
 }

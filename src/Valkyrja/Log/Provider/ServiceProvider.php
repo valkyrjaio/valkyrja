@@ -93,8 +93,6 @@ final class ServiceProvider extends Provider
      * Publish the null adapter service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishNullLogger(ContainerContract $container): void
     {

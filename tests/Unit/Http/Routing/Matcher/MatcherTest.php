@@ -61,8 +61,6 @@ class MatcherTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $route = new Route(
             path: self::STATIC_PATH,
             name: self::STATIC_NAME,

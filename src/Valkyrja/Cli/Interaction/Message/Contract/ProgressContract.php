@@ -17,8 +17,6 @@ interface ProgressContract extends MessageContract
 {
     /**
      * Determine whether the progress is complete.
-     *
-     * @return bool
      */
     public function isComplete(): bool;
 
@@ -26,15 +24,11 @@ interface ProgressContract extends MessageContract
      * Create a new Progress message with the specified completion.
      *
      * @param bool $isComplete Whether progress is complete
-     *
-     * @return static
      */
     public function withIsComplete(bool $isComplete): static;
 
     /**
      * Get the percentage.
-     *
-     * @return int
      */
     public function getPercentage(): int;
 
@@ -42,8 +36,6 @@ interface ProgressContract extends MessageContract
      * Create a new Progress message with the specified percentage.
      *
      * @param int $percentage The percentage
-     *
-     * @return static
      */
     public function withPercentage(int $percentage): static;
 }

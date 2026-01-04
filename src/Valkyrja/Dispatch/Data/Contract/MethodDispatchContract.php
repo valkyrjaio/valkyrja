@@ -17,8 +17,6 @@ interface MethodDispatchContract extends ClassDispatchContract
 {
     /**
      * @param callable|array{0: class-string, 1: non-empty-string} $callable
-     *
-     * @return static
      */
     public static function fromCallableOrArray(callable|array $callable): static;
 
@@ -33,15 +31,11 @@ interface MethodDispatchContract extends ClassDispatchContract
      * Create a new dispatch with the specified method.
      *
      * @param non-empty-string $method The method
-     *
-     * @return static
      */
     public function withMethod(string $method): static;
 
     /**
      * Determine whether this is a static method.
-     *
-     * @return bool
      */
     public function isStatic(): bool;
 
@@ -49,8 +43,6 @@ interface MethodDispatchContract extends ClassDispatchContract
      * Create a new dispatch with whether this is a static method.
      *
      * @param bool $isStatic The static flag
-     *
-     * @return static
      */
     public function withIsStatic(bool $isStatic): static;
 }

@@ -273,8 +273,6 @@ class Tagger implements Contract
     /**
      * Get a tag.
      *
-     * @param string $tag
-     *
      * @throws JsonException
      *
      * @return string[]
@@ -296,12 +294,9 @@ class Tagger implements Contract
     /**
      * Put a tag.
      *
-     * @param string   $tag
      * @param string[] $keys
      *
      * @throws JsonException
-     *
-     * @return void
      */
     protected function putKeys(string $tag, array $keys): void
     {

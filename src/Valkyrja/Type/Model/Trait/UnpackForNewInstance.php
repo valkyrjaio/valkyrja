@@ -17,8 +17,6 @@ trait UnpackForNewInstance
 {
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     protected static function internalGetNew(array $properties): static
     {

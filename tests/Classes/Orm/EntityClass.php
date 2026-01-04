@@ -36,8 +36,6 @@ class EntityClass extends AbstractEntity
 
     /**
      * Get the prop.
-     *
-     * @return string|null
      */
     public function getProp(): string|null
     {
@@ -46,8 +44,6 @@ class EntityClass extends AbstractEntity
 
     /**
      * Determine if the prop is set.
-     *
-     * @return bool
      */
     public function issetProp(): bool
     {
@@ -58,8 +54,6 @@ class EntityClass extends AbstractEntity
      * Set the prop.
      *
      * @param string $prop The prop
-     *
-     * @return EntityClass
      */
     public function setProp(string $prop): self
     {

@@ -161,8 +161,6 @@ trait ProvidersAwareTrait
      * Publish an unpublished provided item.
      *
      * @param class-string $id The service id
-     *
-     * @return void
      */
     protected function publishUnpublishedProvided(string $id): void
     {
@@ -178,8 +176,6 @@ trait ProvidersAwareTrait
      *
      * @param class-string<Provider> $provider    The provider
      * @param class-string           ...$provides The provided items
-     *
-     * @return void
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {

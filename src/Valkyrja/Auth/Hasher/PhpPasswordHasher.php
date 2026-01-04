@@ -41,8 +41,6 @@ class PhpPasswordHasher implements Contract
      *
      * @param string $password       The plain text password
      * @param string $hashedPassword The hashed password
-     *
-     * @return bool
      */
     #[Override]
     public function confirmPassword(string $password, string $hashedPassword): bool

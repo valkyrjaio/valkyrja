@@ -21,64 +21,46 @@ interface NotifyContract
 {
     /**
      * Get the broadcast adapter's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getBroadcastAdapterName(): string|null;
 
     /**
      * Get the broadcast message's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getBroadcastMessageName(): string|null;
 
     /**
      * Whether an broadcast message should be sent for this notification.
-     *
-     * @return bool
      */
     public function shouldSendBroadcastMessage(): bool;
 
     /**
      * Get the mail adapter's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getMailAdapterName(): string|null;
 
     /**
      * Get the mail message's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getMailMessageName(): string|null;
 
     /**
      * Whether a mail message should be sent for this notification.
-     *
-     * @return bool
      */
     public function shouldSendMailMessage(): bool;
 
     /**
      * Get the SMS adapter's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getSmsAdapterName(): string|null;
 
     /**
      * Get the SMS message's name to use for this notification.
-     *
-     * @return string|null
      */
     public function getSmsMessageName(): string|null;
 
     /**
      * Whether an SMS message should be sent for this notification.
-     *
-     * @return bool
      */
     public function shouldSendSmsMessage(): bool;
 
@@ -86,8 +68,6 @@ interface NotifyContract
      * Notify by broadcast.
      *
      * @param BroadcastMessage $broadcastMessage The broadcast message
-     *
-     * @return BroadcastMessage
      */
     public function broadcast(BroadcastMessage $broadcastMessage): BroadcastMessage;
 
@@ -95,8 +75,6 @@ interface NotifyContract
      * Notify by mail.
      *
      * @param MailMessage $mailMessage The mail message
-     *
-     * @return MailMessage
      */
     public function mail(MailMessage $mailMessage): MailMessage;
 
@@ -104,8 +82,6 @@ interface NotifyContract
      * Notify by SMS.
      *
      * @param SmsMessage $message The SMS message
-     *
-     * @return SmsMessage
      */
     public function sms(SmsMessage $message): SmsMessage;
 }

@@ -27,8 +27,6 @@ class Abort
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
      * @param ResponseContract|null        $response [optional] The response to send
-     *
-     * @return never
      */
     public static function abort400(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -40,8 +38,6 @@ class Abort
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
      * @param ResponseContract|null        $response [optional] The response to send
-     *
-     * @return never
      */
     public static function abort404(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -53,8 +49,6 @@ class Abort
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
      * @param ResponseContract|null        $response [optional] The response to send
-     *
-     * @return never
      */
     public static function abort405(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -66,8 +60,6 @@ class Abort
      *
      * @param array<string, string[]>|null $headers  [optional] The headers
      * @param ResponseContract|null        $response [optional] The response to send
-     *
-     * @return never
      */
     public static function abort413(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -81,8 +73,6 @@ class Abort
      * @param string|null                  $message    [optional] The message
      * @param array<string, string[]>|null $headers    [optional] The headers
      * @param ResponseContract|null        $response   [optional] The response to send
-     *
-     * @return never
      */
     public static function abort(
         StatusCode|null $statusCode = null,
@@ -101,8 +91,6 @@ class Abort
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @throws HttpRedirectException
-     *
-     * @return never
      */
     public static function redirect(
         UriContract|null $uri = null,

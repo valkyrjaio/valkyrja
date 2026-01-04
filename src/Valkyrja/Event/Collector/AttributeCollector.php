@@ -58,11 +58,7 @@ class AttributeCollector implements Contract
     /**
      * Set the properties for a listener attribute.
      *
-     * @param Attribute $attribute
-     *
      * @throws ReflectionException
-     *
-     * @return ListenerContract
      */
     protected function setListenerProperties(Attribute $attribute): ListenerContract
     {
@@ -90,8 +86,6 @@ class AttributeCollector implements Contract
      * Get a listener from an attribute.
      *
      * @param ListenerContract $attribute The attribute
-     *
-     * @return ListenerContract
      */
     protected function getListenerFromAttribute(ListenerContract $attribute): ListenerContract
     {

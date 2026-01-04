@@ -110,7 +110,7 @@ class RedisCache implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function forever(string $key, $value): void
+    public function forever(string $key, string $value): void
     {
         $this->client->set($this->getKey($key), $value);
     }
@@ -153,10 +153,6 @@ class RedisCache implements Contract
 
     /**
      * Get key.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     protected function getKey(string $key): string
     {

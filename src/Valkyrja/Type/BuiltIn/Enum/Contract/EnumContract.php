@@ -30,8 +30,6 @@ interface EnumContract extends TypeContract, UnitEnum
 
     /**
      * @inheritDoc
-     *
-     * @return string|int
      */
     #[Override]
     public function asFlatValue(): string|int;

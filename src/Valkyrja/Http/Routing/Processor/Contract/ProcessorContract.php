@@ -21,8 +21,6 @@ interface ProcessorContract
      * Process a route.
      *
      * @param RouteContract $route The route
-     *
-     * @return RouteContract
      */
     public function route(RouteContract $route): RouteContract;
 }

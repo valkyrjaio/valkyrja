@@ -30,8 +30,6 @@ class Cls
      * @param class-string $inherits The inherits class name
      *
      * @throws InvalidClassProvidedException
-     *
-     * @return void
      */
     public static function validateInherits(string $object, string $inherits): void
     {
@@ -45,8 +43,6 @@ class Cls
      *
      * @param class-string $object   The object name to check
      * @param class-string $inherits The inherits class name
-     *
-     * @return bool
      */
     public static function inherits(string $object, string $inherits): bool
     {
@@ -60,8 +56,6 @@ class Cls
      * @param string              $property The property name
      *
      * @throws InvalidClassProvidedException
-     *
-     * @return void
      */
     public static function validateHasProperty(string $object, string $property): void
     {
@@ -75,8 +69,6 @@ class Cls
      *
      * @param class-string|string $object   The object name to validate
      * @param string              $property The property name
-     *
-     * @return bool
      */
     public static function hasProperty(string $object, string $property): bool
     {
@@ -87,8 +79,6 @@ class Cls
      * Get a class nice name.
      *
      * @param class-string $name The class object name
-     *
-     * @return string
      */
     public static function getNiceName(string $name): string
     {
@@ -99,8 +89,6 @@ class Cls
      * Get a class name without namespace.
      *
      * @param class-string $name The class object name
-     *
-     * @return string
      */
     public static function getName(string $name): string
     {

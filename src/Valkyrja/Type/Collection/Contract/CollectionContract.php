@@ -26,8 +26,6 @@ interface CollectionContract extends Stringable
      * Set the collection.
      *
      * @param array<K, T> $collection The collection
-     *
-     * @return static
      */
     public function setAll(array $collection): static;
 
@@ -35,8 +33,6 @@ interface CollectionContract extends Stringable
      * Determine if a value exists in the collection.
      *
      * @param mixed $value The value
-     *
-     * @return bool
      */
     public function exists(mixed $value): bool;
 
@@ -56,15 +52,11 @@ interface CollectionContract extends Stringable
 
     /**
      * Get the total count of items in the collection.
-     *
-     * @return int
      */
     public function count(): int;
 
     /**
      * Determine if the collection is empty.
-     *
-     * @return bool
      */
     public function isEmpty(): bool;
 
@@ -82,8 +74,6 @@ interface CollectionContract extends Stringable
      *
      * @param K $key   The key
      * @param T $value The value
-     *
-     * @return void
      */
     public function __set(string|int $key, string|int|float|bool|array|object|null $value): void;
 
@@ -101,8 +91,6 @@ interface CollectionContract extends Stringable
      * Determine if an item is in the collection.
      *
      * @param K $key The key
-     *
-     * @return bool
      */
     public function has(string|int $key): bool;
 
@@ -111,8 +99,6 @@ interface CollectionContract extends Stringable
      *
      * @param K $key   The key
      * @param T $value The value
-     *
-     * @return static
      */
     public function set(string|int $key, string|int|float|bool|array|object|null $value): static;
 
@@ -120,8 +106,6 @@ interface CollectionContract extends Stringable
      * Determine if an item is in the collection.
      *
      * @param K $key The key
-     *
-     * @return bool
      */
     public function __isset(string|int $key): bool;
 
@@ -129,8 +113,6 @@ interface CollectionContract extends Stringable
      * Remove an item from the collection.
      *
      * @param K $key The key
-     *
-     * @return void
      */
     public function __unset(string|int $key): void;
 
@@ -138,8 +120,6 @@ interface CollectionContract extends Stringable
      * Remove an item from the collection.
      *
      * @param K $key The key
-     *
-     * @return static
      */
     public function remove(string|int $key): static;
 
@@ -147,8 +127,6 @@ interface CollectionContract extends Stringable
      * Convert the collection to a string.
      *
      * @throws JsonException
-     *
-     * @return string
      */
     public function __toString(): string;
 }

@@ -260,8 +260,6 @@ class Collection implements Contract
      * Ensure a listener, or null, is returned.
      *
      * @param ListenerContract|string $listener The listener
-     *
-     * @return ListenerContract
      */
     protected function ensureListener(ListenerContract|string $listener): ListenerContract
     {

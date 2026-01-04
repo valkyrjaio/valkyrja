@@ -59,8 +59,6 @@ interface RepositoryContract
      * Create a new entity.
      *
      * @param T $entity The entity
-     *
-     * @return void
      */
     public function create(EntityContract $entity): void;
 
@@ -68,8 +66,6 @@ interface RepositoryContract
      * Update an entity.
      *
      * @param T $entity The entity
-     *
-     * @return void
      */
     public function update(EntityContract $entity): void;
 
@@ -77,8 +73,6 @@ interface RepositoryContract
      * Delete an entity.
      *
      * @param T $entity The entity
-     *
-     * @return void
      */
     public function delete(EntityContract $entity): void;
 }

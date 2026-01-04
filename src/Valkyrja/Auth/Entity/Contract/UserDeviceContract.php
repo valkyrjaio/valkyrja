@@ -19,8 +19,6 @@ interface UserDeviceContract extends EntityContract
 {
     /**
      * Get the user id field.
-     *
-     * @return string
      */
     public static function getUserIdField(): string;
 }

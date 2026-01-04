@@ -87,8 +87,6 @@ class DispatcherTest extends TestCase
      * A valid static method.
      *
      * @param string|null $arg [optional] An argument
-     *
-     * @return string
      */
     public static function validStaticMethod(string|null $arg = null): string
     {
@@ -97,13 +95,9 @@ class DispatcherTest extends TestCase
 
     /**
      * Setup the test.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->container  = new Container();
         $this->dispatcher = new Dispatcher($this->container);
 
@@ -114,8 +108,6 @@ class DispatcherTest extends TestCase
      * A valid method.
      *
      * @param string|null $arg [optional] An argument
-     *
-     * @return string
      */
     public function validMethod(string|null $arg = null): string
     {
@@ -129,8 +121,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method.
-     *
-     * @return void
      */
     public function testDispatchClassMethod(): void
     {
@@ -141,8 +131,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method with arguments.
-     *
-     * @return void
      */
     public function testDispatchClassMethodWithArgs(): void
     {
@@ -153,8 +141,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method with arguments with a dispatch.
-     *
-     * @return void
      */
     public function testDispatchClassMethodWithDispatchArg(): void
     {
@@ -168,8 +154,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method with a static dispatch.
-     *
-     * @return void
      */
     public function testDispatchClassMethodStatic(): void
     {
@@ -180,8 +164,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method with a static dispatch and arguments.
-     *
-     * @return void
      */
     public function testDispatchClassMethodStaticWithArgs(): void
     {
@@ -195,8 +177,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassMethod method with a static dispatch and arguments with a dispatch.
-     *
-     * @return void
      */
     public function testDispatchClassMethodStaticWithDispatchArg(): void
     {
@@ -210,8 +190,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassProperty method.
-     *
-     * @return void
      */
     public function testDispatchClassProperty(): void
     {
@@ -222,8 +200,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClassProperty method with a static dispatch.
-     *
-     * @return void
      */
     public function testDispatchClassPropertyStatic(): void
     {
@@ -234,8 +210,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchCallable method with a null dispatch return.
-     *
-     * @return void
      */
     public function testDispatchCallableNullDispatchReturn(): void
     {
@@ -246,8 +220,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClass method.
-     *
-     * @return void
      */
     public function testDispatchClass(): void
     {
@@ -260,8 +232,6 @@ class DispatcherTest extends TestCase
      * Test the dispatchClass method with arguments.
      *
      * @throws Exception
-     *
-     * @return void
      */
     public function testDispatchClassWithArgs(): void
     {
@@ -282,8 +252,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClass method with a class from the container.
-     *
-     * @return void
      */
     public function testDispatchClassFromContainer(): void
     {
@@ -294,8 +262,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchFunction method.
-     *
-     * @return void
      */
     public function testDispatchFunction(): void
     {
@@ -306,8 +272,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchFunction method with arguments.
-     *
-     * @return void
      */
     public function testDispatchFunctionWithArgs(): void
     {
@@ -319,8 +283,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClosure method.
-     *
-     * @return void
      */
     public function testDispatchClosure(): void
     {
@@ -331,8 +293,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClosure method with arguments.
-     *
-     * @return void
      */
     public function testDispatchClosureWithArgs(): void
     {
@@ -344,8 +304,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchConstant method for a global constant.
-     *
-     * @return void
      */
     public function testDispatchGlobalConstant(): void
     {
@@ -356,8 +314,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchConstant method for a class constant.
-     *
-     * @return void
      */
     public function testDispatchClassConstant(): void
     {
@@ -368,8 +324,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchVariable method for a global variable.
-     *
-     * @return void
      */
     public function testDispatchVariable(): void
     {
@@ -380,8 +334,6 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchCallable method.
-     *
-     * @return void
      */
     public function testDispatchCallable(): void
     {

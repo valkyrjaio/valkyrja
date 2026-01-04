@@ -47,8 +47,6 @@ class Str
      *
      * @param string $subject The subject
      * @param string $needle  The needle
-     *
-     * @return bool
      */
     public static function startsWith(string $subject, string $needle): bool
     {
@@ -60,8 +58,6 @@ class Str
      *
      * @param string $subject    The subject
      * @param string ...$needles The needles
-     *
-     * @return bool
      */
     public static function startsWithAny(string $subject, string ...$needles): bool
     {
@@ -73,8 +69,6 @@ class Str
      *
      * @param string $subject The subject
      * @param string $needle  The needle
-     *
-     * @return bool
      */
     public static function endsWith(string $subject, string $needle): bool
     {
@@ -86,8 +80,6 @@ class Str
      *
      * @param string $subject    The subject
      * @param string ...$needles The needles
-     *
-     * @return bool
      */
     public static function endsWithAny(string $subject, string ...$needles): bool
     {
@@ -99,8 +91,6 @@ class Str
      *
      * @param string $subject The subject
      * @param string $needle  The needle
-     *
-     * @return bool
      */
     public static function contains(string $subject, string $needle): bool
     {
@@ -112,8 +102,6 @@ class Str
      *
      * @param string $subject    The subject
      * @param string ...$needles The needles
-     *
-     * @return bool
      */
     public static function containsAny(string $subject, string ...$needles): bool
     {
@@ -125,8 +113,6 @@ class Str
      *
      * @param string $subject The subject
      * @param int    $min     [optional] The minimum length
-     *
-     * @return bool
      */
     public static function min(string $subject, int $min = 0): bool
     {
@@ -138,8 +124,6 @@ class Str
      *
      * @param string $subject The subject
      * @param int    $max     [optional] The max length
-     *
-     * @return bool
      */
     public static function max(string $subject, int $max = 256): bool
     {
@@ -152,8 +136,6 @@ class Str
      * @param string $subject     The subject
      * @param string $replace     The needle to replace
      * @param string $replacement The replacement
-     *
-     * @return string
      */
     public static function replace(string $subject, string $replace, string $replacement): string
     {
@@ -166,8 +148,6 @@ class Str
      * @param string   $subject     The subject
      * @param string[] $replace     The needles to replace
      * @param string[] $replacement The replacements
-     *
-     * @return string
      */
     public static function replaceAll(string $subject, array $replace, array $replacement): string
     {
@@ -183,8 +163,6 @@ class Str
      * @param string   $subject     The subject
      * @param string[] $replace     The needles to replace
      * @param string   $replacement The replacement
-     *
-     * @return string
      */
     public static function replaceAllWith(string $subject, array $replace, string $replacement): string
     {
@@ -199,8 +177,6 @@ class Str
      * @param string   $subject The subject
      * @param int      $start   The start
      * @param int|null $length  [optional] The length
-     *
-     * @return string
      */
     public static function substr(string $subject, int $start, int|null $length = null): string
     {
@@ -213,8 +189,6 @@ class Str
      * @param int<1, max> $length [optional] The length
      *
      * @throws RandomException
-     *
-     * @return string
      */
     public static function random(int $length = 20): string
     {
@@ -227,8 +201,6 @@ class Str
      * @param int<1, max> $length [optional] The length
      *
      * @throws RandomException
-     *
-     * @return string
      */
     public static function randomMd5(int $length = 20): string
     {
@@ -241,8 +213,6 @@ class Str
      * @param int<1, max> $length [optional] The length
      *
      * @throws RandomException
-     *
-     * @return string
      */
     public static function randomBase64(int $length = 20): string
     {
@@ -253,8 +223,6 @@ class Str
      * Validate multiple params to all be strings by using PHPs built in type hinting.
      *
      * @param string ...$subjects The subjects
-     *
-     * @return void
      */
     public static function validateStrings(string ...$subjects): void
     {
@@ -265,8 +233,6 @@ class Str
      * Check if a string is a valid email.
      *
      * @param string $subject The subject
-     *
-     * @return bool
      */
     public static function isEmail(string $subject): bool
     {
@@ -277,8 +243,6 @@ class Str
      * Check if a string is alphabetic.
      *
      * @param string $subject The subject
-     *
-     * @return bool
      */
     public static function isAlphabetic(string $subject): bool
     {
@@ -289,8 +253,6 @@ class Str
      * Check if a string is alphabetic and lowercase.
      *
      * @param string $subject The subject
-     *
-     * @return bool
      */
     public static function isLowercase(string $subject): bool
     {
@@ -301,8 +263,6 @@ class Str
      * Check if a string is alphabetic and uppercase.
      *
      * @param string $subject The subject
-     *
-     * @return bool
      */
     public static function isUppercase(string $subject): bool
     {
@@ -312,11 +272,7 @@ class Str
     /**
      * Convert mixed to a string.
      *
-     * @param mixed $subject
-     *
      * @throws JsonException
-     *
-     * @return string
      */
     public static function fromMixed(mixed $subject): string
     {
@@ -337,8 +293,6 @@ class Str
      * @param string $method     The method to check all needles against
      * @param string $subject    The subject
      * @param string ...$needles The needles
-     *
-     * @return bool
      */
     protected static function withAny(string $method, string $subject, string ...$needles): bool
     {

@@ -65,8 +65,6 @@ class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilde
 
     /**
      * Get the SET part of an INSERT query.
-     *
-     * @return string
      */
     protected function getSetQuery(): string
     {

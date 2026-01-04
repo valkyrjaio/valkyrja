@@ -21,8 +21,6 @@ interface ValidatorContract
      * Validate a set of rules.
      *
      * @param array<string, RuleContract[]>|null $rules The rules
-     *
-     * @return bool
      */
     public function rules(array|null $rules = null): bool;
 
@@ -44,8 +42,6 @@ interface ValidatorContract
      * </code>
      *
      * @param array<string, RuleContract[]> $rules The rules
-     *
-     * @return void
      */
     public function setRules(array $rules): void;
 
@@ -58,8 +54,6 @@ interface ValidatorContract
 
     /**
      * Get the first error message thrown.
-     *
-     * @return string|null
      */
     public function getFirstErrorMessage(): string|null;
 }

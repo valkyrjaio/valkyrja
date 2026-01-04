@@ -63,8 +63,6 @@ trait Message
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function withProtocolVersion(ProtocolVersion $version): static
     {
@@ -125,8 +123,6 @@ trait Message
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function withHeader(string $name, string ...$values): static
     {
@@ -151,8 +147,6 @@ trait Message
      * @inheritDoc
      *
      * @param string ...$values Header value(s).
-     *
-     * @return static
      */
     public function withAddedHeader(string $name, string ...$values): static
     {
@@ -173,8 +167,6 @@ trait Message
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function withoutHeader(string $name): static
     {
@@ -201,8 +193,6 @@ trait Message
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function withBody(StreamContract $body): static
     {
@@ -224,8 +214,6 @@ trait Message
      * Set the body.
      *
      * @param StreamContract $body The body
-     *
-     * @return void
      */
     protected function setBody(StreamContract $body): void
     {
@@ -238,8 +226,6 @@ trait Message
      * @param array<string, string|string[]> $originalHeaders The original headers
      *
      * @throws InvalidArgumentException
-     *
-     * @return void
      */
     protected function setHeaders(array $originalHeaders): void
     {

@@ -25,8 +25,6 @@ interface ResponseFactoryContract
      * @param array<string, mixed>|null    $data       [optional] The view data
      * @param StatusCode|null              $statusCode [optional] The response status code
      * @param array<string, string[]>|null $headers    [optional] An array of response headers
-     *
-     * @return ResponseContract
      */
     public function createResponseFromView(
         string $template,

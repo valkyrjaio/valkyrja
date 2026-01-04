@@ -35,15 +35,11 @@ interface MessageContract
      * Create a new Message with the specified text.
      *
      * @param non-empty-string $text The text
-     *
-     * @return static
      */
     public function withText(string $text): static;
 
     /**
      * Get the formatter.
-     *
-     * @return FormatterContract|null
      */
     public function getFormatter(): FormatterContract|null;
 
@@ -51,8 +47,6 @@ interface MessageContract
      * Create a new Message with the specified Formatter.
      *
      * @param FormatterContract|null $formatter The formatter
-     *
-     * @return static
      */
     public function withFormatter(FormatterContract|null $formatter): static;
 }

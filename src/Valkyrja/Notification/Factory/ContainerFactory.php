@@ -30,8 +30,6 @@ class ContainerFactory implements FactoryContract
      *
      * @param class-string<NotifyContract> $name The notification name
      * @param array<array-key, mixed>      $data [optional] The data to add to the notification
-     *
-     * @return NotifyContract
      */
     #[Override]
     public function createNotification(string $name, array $data = []): NotifyContract

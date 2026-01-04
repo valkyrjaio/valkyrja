@@ -49,8 +49,6 @@ final class ServiceProvider extends Provider
      * Publish the api service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishApi(ContainerContract $container): void
     {

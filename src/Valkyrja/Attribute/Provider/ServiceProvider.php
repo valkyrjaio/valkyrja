@@ -48,8 +48,6 @@ final class ServiceProvider extends Provider
      * Publish the attributes service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishAttributes(ContainerContract $container): void
     {

@@ -19,15 +19,11 @@ interface RendererContract
 {
     /**
      * Start rendering.
-     *
-     * @return void
      */
     public function startRender(): void;
 
     /**
      * End rendering.
-     *
-     * @return string
      */
     public function endRender(): string;
 
@@ -52,8 +48,6 @@ interface RendererContract
      *
      * @param string               $name      The file name
      * @param array<string, mixed> $variables [optional] The variables
-     *
-     * @return string
      */
     public function renderFile(string $name, array $variables = []): string;
 }

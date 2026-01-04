@@ -29,8 +29,6 @@ interface InputContract
      * Create a new Input with the specified caller.
      *
      * @param non-empty-string $caller The caller name
-     *
-     * @return static
      */
     public function withCaller(string $caller): static;
 
@@ -45,8 +43,6 @@ interface InputContract
      * Create a new Input with the specified command name.
      *
      * @param non-empty-string $commandName The command name
-     *
-     * @return static
      */
     public function withCommandName(string $commandName): static;
 
@@ -61,8 +57,6 @@ interface InputContract
      * Create a new Input with the specified arguments.
      *
      * @param ArgumentContract ...$arguments The arguments
-     *
-     * @return static
      */
     public function withArguments(ArgumentContract ...$arguments): static;
 
@@ -70,8 +64,6 @@ interface InputContract
      * Create a new Input with an added argument.
      *
      * @param ArgumentContract $argument The argument to add
-     *
-     * @return static
      */
     public function withAddedArgument(ArgumentContract $argument): static;
 
@@ -79,15 +71,11 @@ interface InputContract
      * Create a new Input without a specified argument value.
      *
      * @param string $value The argument value to find and remove
-     *
-     * @return static
      */
     public function withoutArgument(string $value): static;
 
     /**
      * Create a new Input without any arguments.
-     *
-     * @return static
      */
     public function withoutArguments(): static;
 
@@ -111,8 +99,6 @@ interface InputContract
      * Determine if an option exists.
      *
      * @param string $name The option name
-     *
-     * @return bool
      */
     public function hasOption(string $name): bool;
 
@@ -120,8 +106,6 @@ interface InputContract
      * Create a new Input with the specified options.
      *
      * @param OptionContract ...$options The options
-     *
-     * @return static
      */
     public function withOptions(OptionContract ...$options): static;
 
@@ -129,8 +113,6 @@ interface InputContract
      * Create a new Input with an added option.
      *
      * @param OptionContract $option The option to add
-     *
-     * @return static
      */
     public function withAddedOption(OptionContract $option): static;
 
@@ -138,15 +120,11 @@ interface InputContract
      * Create a new Input without a specific option name.
      *
      * @param string $name The option name to remove
-     *
-     * @return static
      */
     public function withoutOption(string $name): static;
 
     /**
      * Create a new Input without any options.
-     *
-     * @return static
      */
     public function withoutOptions(): static;
 }

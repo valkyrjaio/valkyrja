@@ -88,8 +88,6 @@ abstract class Handler implements Contract
 
     /**
      * Update the next middleware to use.
-     *
-     * @return void
      */
     protected function updateNext(): void
     {

@@ -198,8 +198,6 @@ class Api implements Contract
      * Get a JSON response from a JSON model.
      *
      * @param JsonContract $json The json model
-     *
-     * @return JsonResponseContract
      */
     protected function getResponseFromModel(JsonContract $json): JsonResponseContract
     {
@@ -208,8 +206,6 @@ class Api implements Contract
 
     /**
      * Get JSON model.
-     *
-     * @return JsonContract
      */
     protected function getJsonModel(): JsonContract
     {
@@ -218,8 +214,6 @@ class Api implements Contract
 
     /**
      * Get JSON data model.
-     *
-     * @return JsonDataContract
      */
     protected function getJsonDataModel(): JsonDataContract
     {
@@ -228,11 +222,6 @@ class Api implements Contract
 
     /**
      * Set item keys from object.
-     *
-     * @param object           $object
-     * @param JsonDataContract $jsonData
-     *
-     * @return void
      */
     protected function setItemKeysFromObject(object $object, JsonDataContract $jsonData): void
     {
@@ -244,10 +233,6 @@ class Api implements Contract
 
     /**
      * Get the class name from an object.
-     *
-     * @param object $object
-     *
-     * @return string
      */
     protected function getClassNameFromObject(object $object): string
     {

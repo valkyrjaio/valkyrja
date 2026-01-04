@@ -54,8 +54,6 @@ class PusherBroadcaster implements Contract
      * @param MessageContract $message The message
      *
      * @throws JsonException On json decode failure
-     *
-     * @return string
      */
     protected function getMessageText(MessageContract $message): string
     {
@@ -70,8 +68,6 @@ class PusherBroadcaster implements Contract
      * @param MessageContract $message The message
      *
      * @throws JsonException On json decode failure
-     *
-     * @return void
      */
     protected function prepareMessage(MessageContract $message): void
     {

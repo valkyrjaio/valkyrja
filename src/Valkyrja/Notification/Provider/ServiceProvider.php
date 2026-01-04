@@ -54,8 +54,6 @@ final class ServiceProvider extends Provider
      * Publish the notifier service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishNotifier(ContainerContract $container): void
     {
@@ -74,8 +72,6 @@ final class ServiceProvider extends Provider
      * Publish the factory service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishFactory(ContainerContract $container): void
     {

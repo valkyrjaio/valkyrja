@@ -17,8 +17,6 @@ interface LastOnlineUserContract extends UserContract
 {
     /**
      * Get the date last online field.
-     *
-     * @return string
      */
     public static function getDateLastOnlineField(): string;
 }

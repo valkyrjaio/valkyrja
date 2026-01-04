@@ -214,8 +214,6 @@ class Collection implements Contract
      * Set a route to its request methods.
      *
      * @param RouteContract $route The route
-     *
-     * @return void
      */
     protected function setRouteToRequestMethods(RouteContract $route): void
     {
@@ -229,8 +227,6 @@ class Collection implements Contract
      *
      * @param RouteContract $route         The route
      * @param RequestMethod $requestMethod The request method
-     *
-     * @return void
      */
     protected function setRouteToRequestMethod(RouteContract $route, RequestMethod $requestMethod): void
     {
@@ -254,8 +250,6 @@ class Collection implements Contract
      * @param RequestMethodList  $type   The type [static|dynamic]
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return RouteContract|null
      */
     protected function getOfType(array $type, string $path, RequestMethod|null $method = null): RouteContract|null
     {
@@ -277,8 +271,6 @@ class Collection implements Contract
      *
      * @param RequestMethodList $type The type [static|dynamic]
      * @param string            $path The path
-     *
-     * @return RouteContract|null
      */
     protected function getAnyOfType(array $type, string $path): RouteContract|null
     {
@@ -296,8 +288,6 @@ class Collection implements Contract
      * @param RequestMethodList  $type   The type [static|dynamic]
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return bool
      */
     protected function hasOfType(array $type, string $path, RequestMethod|null $method = null): bool
     {
@@ -313,8 +303,6 @@ class Collection implements Contract
      *
      * @param RequestMethodList $type The type [static|dynamic]
      * @param string            $path The path
-     *
-     * @return bool
      */
     protected function hasAnyOfType(array $type, string $path): bool
     {
@@ -378,8 +366,6 @@ class Collection implements Contract
      * Ensure a route, or null, is returned.
      *
      * @param RouteContract|string $route The route
-     *
-     * @return RouteContract
      */
     protected function ensureRoute(RouteContract|string $route): RouteContract
     {

@@ -44,10 +44,6 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContra
 
     /**
      * Determine if a request should be redirected.
-     *
-     * @param ServerRequestContract $request
-     *
-     * @return bool
      */
     protected function shouldRedirectRequest(ServerRequestContract $request): bool
     {
@@ -60,10 +56,6 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContra
 
     /**
      * Create a Uri to redirect to.
-     *
-     * @param UriContract $uri
-     *
-     * @return UriContract
      */
     protected function createBeforeRedirectUri(UriContract $uri): UriContract
     {
@@ -76,10 +68,6 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContra
 
     /**
      * Create a RedirectResponse for the before action.
-     *
-     * @param UriContract $uri
-     *
-     * @return RedirectResponseContract
      */
     protected function createBeforeRedirectResponse(UriContract $uri): RedirectResponseContract
     {

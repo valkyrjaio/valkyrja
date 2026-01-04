@@ -93,8 +93,6 @@ final class ServiceProvider extends Provider
      * Publish the router service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishRouter(ContainerContract $container): void
     {
@@ -126,8 +124,6 @@ final class ServiceProvider extends Provider
      * Publish the collection service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishCollection(ContainerContract $container): void
     {
@@ -162,8 +158,6 @@ final class ServiceProvider extends Provider
      * Publish the matcher service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishMatcher(ContainerContract $container): void
     {
@@ -179,8 +173,6 @@ final class ServiceProvider extends Provider
      * Publish the url service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishUrl(ContainerContract $container): void
     {
@@ -196,8 +188,6 @@ final class ServiceProvider extends Provider
      * Publish the route attributes service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishAttributesCollector(ContainerContract $container): void
     {
@@ -215,8 +205,6 @@ final class ServiceProvider extends Provider
      * Publish the processor service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishProcessor(ContainerContract $container): void
     {
@@ -230,8 +218,6 @@ final class ServiceProvider extends Provider
      * Publish the processor service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishResponseFactory(ContainerContract $container): void
     {
@@ -248,8 +234,6 @@ final class ServiceProvider extends Provider
      * Publish the RequestStructMiddleware service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishRequestStructMiddleware(ContainerContract $container): void
     {
@@ -263,8 +247,6 @@ final class ServiceProvider extends Provider
      * Publish the ResponseStructMiddleware service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishResponseStructMiddleware(ContainerContract $container): void
     {
@@ -278,8 +260,6 @@ final class ServiceProvider extends Provider
      * Publish the ViewRouteNotMatchedMiddleware service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishViewRouteNotMatchedMiddleware(ContainerContract $container): void
     {

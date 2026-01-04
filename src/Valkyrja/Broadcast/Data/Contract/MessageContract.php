@@ -17,8 +17,6 @@ interface MessageContract
 {
     /**
      * Get the channel to broadcast on.
-     *
-     * @return string
      */
     public function getChannel(): string;
 
@@ -26,15 +24,11 @@ interface MessageContract
      * Set the channel to broadcast on.
      *
      * @param string $channel The channel
-     *
-     * @return static
      */
     public function setChannel(string $channel): static;
 
     /**
      * Get the event to broadcast.
-     *
-     * @return string
      */
     public function getEvent(): string;
 
@@ -42,8 +36,6 @@ interface MessageContract
      * Set the event to broadcast.
      *
      * @param string $event The event
-     *
-     * @return static
      */
     public function setEvent(string $event): static;
 
@@ -58,15 +50,11 @@ interface MessageContract
      * Set the data to broadcast.
      *
      * @param array<array-key, mixed>|null $data [optional] The data
-     *
-     * @return static
      */
     public function setData(array|null $data = null): static;
 
     /**
      * Get the message to broadcast.
-     *
-     * @return string
      */
     public function getMessage(): string;
 
@@ -74,8 +62,6 @@ interface MessageContract
      * Set the message to broadcast.
      *
      * @param string $message The message
-     *
-     * @return static
      */
     public function setMessage(string $message): static;
 }

@@ -20,8 +20,6 @@ interface UrlContract
      *
      * @param non-empty-string               $name The name of the route to get
      * @param array<string, string|int>|null $data [optional] The route data if dynamic
-     *
-     * @return string
      */
     public function getUrl(string $name, array|null $data = null): string;
 }

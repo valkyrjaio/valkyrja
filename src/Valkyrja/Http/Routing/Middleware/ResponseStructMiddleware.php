@@ -48,8 +48,6 @@ class ResponseStructMiddleware implements RouteDispatchedMiddlewareContract
      *
      * @param JsonResponseContract                 $response       The json response
      * @param class-string<ResponseStructContract> $responseStruct The response struct
-     *
-     * @return JsonResponseContract
      */
     protected function updateJsonWithResponseStruct(JsonResponseContract $response, string $responseStruct): JsonResponseContract
     {

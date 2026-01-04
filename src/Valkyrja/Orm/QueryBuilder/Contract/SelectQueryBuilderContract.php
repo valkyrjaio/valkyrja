@@ -21,8 +21,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified columns.
      *
      * @param non-empty-string ...$columns The columns
-     *
-     * @return static
      */
     public function withColumns(string ...$columns): static;
 
@@ -30,8 +28,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the added columns.
      *
      * @param non-empty-string ...$columns The columns
-     *
-     * @return static
      */
     public function withAddedColumns(string ...$columns): static;
 
@@ -39,8 +35,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified group by.
      *
      * @param string ...$groupBy The group by columns
-     *
-     * @return static
      */
     public function withGroupBy(string ...$groupBy): static;
 
@@ -48,8 +42,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the added group by.
      *
      * @param string ...$groupBy The group by columns
-     *
-     * @return static
      */
     public function withAddedGroupBy(string ...$groupBy): static;
 
@@ -57,8 +49,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified order by.
      *
      * @param OrderBy ...$orderBy The order by
-     *
-     * @return static
      */
     public function withOrderBy(OrderBy ...$orderBy): static;
 
@@ -66,8 +56,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the added order by.
      *
      * @param OrderBy ...$orderBy The order by
-     *
-     * @return static
      */
     public function withAddedOrderBy(OrderBy ...$orderBy): static;
 
@@ -75,8 +63,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified limit.
      *
      * @param int $limit The limit
-     *
-     * @return static
      */
     public function withLimit(int $limit): static;
 
@@ -84,8 +70,6 @@ interface SelectQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified offset.
      *
      * @param int $offset The offset
-     *
-     * @return static
      */
     public function withOffset(int $offset): static;
 }

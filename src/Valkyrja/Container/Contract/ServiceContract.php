@@ -22,8 +22,6 @@ interface ServiceContract
      *
      * @param ContainerContract       $container The container
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return static
      */
     public static function make(ContainerContract $container, array $arguments = []): static;
 }

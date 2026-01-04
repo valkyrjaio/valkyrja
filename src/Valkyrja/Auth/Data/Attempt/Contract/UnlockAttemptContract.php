@@ -19,8 +19,6 @@ interface UnlockAttemptContract
 {
     /**
      * Get the authentication retrieval.
-     *
-     * @return RetrievalContract
      */
     public function getRetrieval(): RetrievalContract;
 }

@@ -24,8 +24,6 @@ class Uid
      * Determine if a string is a valid UID.
      *
      * @param string $uid The UID to check
-     *
-     * @return bool
      */
     public static function isValid(string $uid): bool
     {
@@ -38,8 +36,6 @@ class Uid
      * @param string $uid The UID to check
      *
      * @throws InvalidUlidException
-     *
-     * @return void
      */
     public static function validate(string $uid): void
     {
@@ -52,8 +48,6 @@ class Uid
      * Throw an invalid UID exception.
      *
      * @param string $uid The UID that failed a check
-     *
-     * @return never
      */
     protected static function throwInvalidException(string $uid): never
     {

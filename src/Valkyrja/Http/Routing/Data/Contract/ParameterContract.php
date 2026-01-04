@@ -28,8 +28,6 @@ interface ParameterContract
      * Create a new parameter with the specified name.
      *
      * @param non-empty-string $name The name
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
@@ -44,15 +42,11 @@ interface ParameterContract
      * Create a new parameter with the specified regex.
      *
      * @param non-empty-string $regex The regex
-     *
-     * @return static
      */
     public function withRegex(string $regex): static;
 
     /**
      * Get the cast.
-     *
-     * @return Cast|null
      */
     public function getCast(): Cast|null;
 
@@ -60,15 +54,11 @@ interface ParameterContract
      * Create a new parameter with the specified cast.
      *
      * @param Cast|null $cast The cast
-     *
-     * @return static
      */
     public function withCast(Cast|null $cast = null): static;
 
     /**
      * Get whether this parameter is optional.
-     *
-     * @return bool
      */
     public function isOptional(): bool;
 
@@ -76,15 +66,11 @@ interface ParameterContract
      * Create a new parameter with whether this parameter is optional.
      *
      * @param bool $isOptional Whether this parameter is optional
-     *
-     * @return static
      */
     public function withIsOptional(bool $isOptional): static;
 
     /**
      * Get whether this parameter should be captured.
-     *
-     * @return bool
      */
     public function shouldCapture(): bool;
 
@@ -92,8 +78,6 @@ interface ParameterContract
      * Create a new parameter with whether this parameter should be captured.
      *
      * @param bool $shouldCapture Whether this parameter should be captured
-     *
-     * @return static
      */
     public function withShouldCapture(bool $shouldCapture): static;
 
@@ -108,8 +92,6 @@ interface ParameterContract
      * Create a new parameter with the specified default value.
      *
      * @param array<scalar|object>|scalar|object|null $default The default value
-     *
-     * @return static
      */
     public function withDefault(array|string|int|bool|float|object|null $default = null): static;
 
@@ -124,8 +106,6 @@ interface ParameterContract
      * Create a new parameter with the specified value.
      *
      * @param array<scalar|object>|scalar|object|null $value The value
-     *
-     * @return static
      */
     public function withValue(array|string|int|bool|float|object|null $value = null): static;
 }

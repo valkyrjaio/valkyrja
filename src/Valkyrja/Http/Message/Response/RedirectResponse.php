@@ -147,11 +147,6 @@ class RedirectResponse extends Response implements Contract
 
     /**
      * Determine if a uri is internal.
-     *
-     * @param ServerRequestContract $request
-     * @param UriContract           $uri
-     *
-     * @return bool
      */
     protected function isInternalUri(ServerRequestContract $request, UriContract $uri): bool
     {

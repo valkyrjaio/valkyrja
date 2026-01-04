@@ -47,8 +47,6 @@ final class ServiceProvider extends Provider
      * Publish the response factory service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishResponseFactory(ContainerContract $container): void
     {

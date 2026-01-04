@@ -19,8 +19,6 @@ interface JwtContract
      * Encode a payload array into a JWT string.
      *
      * @param array<array-key, mixed> $payload The payload
-     *
-     * @return string
      */
     public function encode(array $payload): string;
 

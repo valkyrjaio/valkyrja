@@ -49,13 +49,9 @@ class AttributesCollectorTest extends TestCase
 
     /**
      * Setup the test.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->class = new AttributeCollector(
             new AttributesAttributes(),
             new Reflector()

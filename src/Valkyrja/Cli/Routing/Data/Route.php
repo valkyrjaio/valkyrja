@@ -260,8 +260,6 @@ class Route implements Contract
      * Create a new command with the specified command matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withCommandMatchedMiddleware(string ...$middleware): static
@@ -277,8 +275,6 @@ class Route implements Contract
      * Create a new command with added command matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withAddedCommandMatchedMiddleware(string ...$middleware): static
@@ -305,8 +301,6 @@ class Route implements Contract
      * Create a new command with the specified command dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withCommandDispatchedMiddleware(string ...$middleware): static
@@ -322,8 +316,6 @@ class Route implements Contract
      * Create a new command with added command dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withAddedCommandDispatchedMiddleware(string ...$middleware): static
@@ -350,8 +342,6 @@ class Route implements Contract
      * Create a new command with the specified throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withThrowableCaughtMiddleware(string ...$middleware): static
@@ -367,8 +357,6 @@ class Route implements Contract
      * Create a new command with added throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static
@@ -395,8 +383,6 @@ class Route implements Contract
      * Create a new command with the specified exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withExitedMiddleware(string ...$middleware): static
@@ -412,8 +398,6 @@ class Route implements Contract
      * Create a new command with added exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     #[Override]
     public function withAddedExitedMiddleware(string ...$middleware): static

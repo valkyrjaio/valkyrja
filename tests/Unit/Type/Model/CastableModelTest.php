@@ -640,8 +640,6 @@ class CastableModelTest extends TestCase
      * @param mixed  $testValue     The test value
      * @param mixed  $expectedValue The expected resulting value
      * @param bool   $skipTest      [optional] Whether to skip the test and return the model
-     *
-     * @return CastableModelClass
      */
     protected function propertyTest(
         string $property,

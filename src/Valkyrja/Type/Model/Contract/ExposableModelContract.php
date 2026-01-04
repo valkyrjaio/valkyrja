@@ -49,8 +49,6 @@ interface ExposableModelContract extends ModelContract
      * Expose hidden properties or all properties.
      *
      * @param string ...$properties The properties to expose
-     *
-     * @return void
      */
     public function expose(string ...$properties): void;
 
@@ -58,8 +56,6 @@ interface ExposableModelContract extends ModelContract
      * Unexpose hidden properties or all properties.
      *
      * @param string ...$properties [optional] The properties to unexpose
-     *
-     * @return void
      */
     public function unexpose(string ...$properties): void;
 }

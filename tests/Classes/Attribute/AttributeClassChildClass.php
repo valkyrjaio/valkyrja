@@ -33,9 +33,6 @@ class AttributeClassChildClass extends AttributeClass
         parent::__construct($counter);
     }
 
-    /**
-     * @param mixed $default
-     */
     public function setDefault(mixed $default): void
     {
         $this->default = $default;
@@ -46,9 +43,6 @@ class AttributeClassChildClass extends AttributeClass
         return $this->dispatch;
     }
 
-    /**
-     * @param DispatchContract|null $dispatch
-     */
     public function withDispatch(DispatchContract|null $dispatch): static
     {
         $this->dispatch = $dispatch;

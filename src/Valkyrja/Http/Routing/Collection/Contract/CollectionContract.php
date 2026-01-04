@@ -42,8 +42,6 @@ interface CollectionContract
      * Add a route.
      *
      * @param RouteContract $route The route
-     *
-     * @return void
      */
     public function add(RouteContract $route): void;
 
@@ -64,8 +62,6 @@ interface CollectionContract
      *
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return bool
      */
     public function has(string $path, RequestMethod|null $method = null): bool;
 
@@ -100,8 +96,6 @@ interface CollectionContract
      *
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return bool
      */
     public function hasStatic(string $path, RequestMethod|null $method = null): bool;
 
@@ -131,15 +125,11 @@ interface CollectionContract
      *
      * @param string             $regex  The regex
      * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return bool
      */
     public function hasDynamic(string $regex, RequestMethod|null $method = null): bool;
 
     /**
      * Get the dynamic routes in this collection.
-     *
-     * @param RequestMethod|null $method
      *
      * @return array<string, RouteContract>|array<string, array<string, RouteContract>>
      */
@@ -160,8 +150,6 @@ interface CollectionContract
      * Determine if a named route exists.
      *
      * @param string $name The name
-     *
-     * @return bool
      */
     public function hasNamed(string $name): bool;
 }

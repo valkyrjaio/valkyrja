@@ -19,8 +19,6 @@ interface SchemaContract
      * Create a new table.
      *
      * @param string $name The table name
-     *
-     * @return TableContract
      */
     public function createTable(string $name): TableContract;
 
@@ -28,8 +26,6 @@ interface SchemaContract
      * Get an existing table.
      *
      * @param string $name The table name
-     *
-     * @return TableContract
      */
     public function getTable(string $name): TableContract;
 
@@ -38,8 +34,6 @@ interface SchemaContract
      *
      * @param string $name    The table name
      * @param string $newName The table's new name
-     *
-     * @return TableContract
      */
     public function renameTable(string $name, string $newName): TableContract;
 
@@ -47,15 +41,11 @@ interface SchemaContract
      * Drop a table.
      *
      * @param string $name The table name
-     *
-     * @return TableContract
      */
     public function dropTable(string $name): TableContract;
 
     /**
      * Get the built query string.
-     *
-     * @return string
      */
     public function getQueryString(): string;
 
@@ -63,22 +53,16 @@ interface SchemaContract
      * Execute a table query.
      *
      * @param TableContract $table The table to execute
-     *
-     * @return bool
      */
     public function execute(TableContract $table): bool;
 
     /**
      * Execute all pending table queries.
-     *
-     * @return bool
      */
     public function executeAll(): bool;
 
     /**
      * Get the error if one occurred.
-     *
-     * @return string
      */
     public function getError(): string;
 }

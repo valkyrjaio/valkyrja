@@ -17,8 +17,6 @@ interface DeviceAuthenticatedUserContract extends UserContract
 {
     /**
      * Get the device id field.
-     *
-     * @return string
      */
     public static function getDeviceIdField(): string;
 }

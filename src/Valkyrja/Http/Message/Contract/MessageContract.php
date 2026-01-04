@@ -37,8 +37,6 @@ interface MessageContract
      * new protocol version.
      *
      * @param ProtocolVersion $version HTTP protocol version
-     *
-     * @return static
      */
     public function withProtocolVersion(ProtocolVersion $version): static;
 
@@ -124,8 +122,6 @@ interface MessageContract
      * @param string ...$values Header value(s)
      *
      * @throws InvalidArgumentException for invalid header names or values
-     *
-     * @return static
      */
     public function withHeader(string $name, string ...$values): static;
 
@@ -143,8 +139,6 @@ interface MessageContract
      * @param string ...$values Header value(s)
      *
      * @throws InvalidArgumentException for invalid header names or values
-     *
-     * @return static
      */
     public function withAddedHeader(string $name, string ...$values): static;
 
@@ -156,8 +150,6 @@ interface MessageContract
      * the named header.
      *
      * @param string $name Case-insensitive header field name to remove
-     *
-     * @return static
      */
     public function withoutHeader(string $name): static;
 
@@ -178,8 +170,6 @@ interface MessageContract
      * @param StreamContract $body Body
      *
      * @throws InvalidArgumentException When the body is not valid
-     *
-     * @return static
      */
     public function withBody(StreamContract $body): static;
 }

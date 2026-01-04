@@ -21,8 +21,6 @@ interface InsertQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with the specified values.
      *
      * @param Value ...$values The values
-     *
-     * @return static
      */
     public function withSet(Value ...$values): static;
 
@@ -30,8 +28,6 @@ interface InsertQueryBuilderContract extends QueryBuilderContract
      * Create a new query builder with added values.
      *
      * @param Value ...$values The values
-     *
-     * @return static
      */
     public function withAddedSet(Value ...$values): static;
 }

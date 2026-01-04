@@ -55,8 +55,6 @@ class PhpMailer implements Contract
      *
      * @param string                                         $method     The phpMailer method to call
      * @param array<int, array{email: string, name: string}> $recipients The recipients
-     *
-     * @return void
      */
     protected function addRecipients(string $method, array $recipients): void
     {
@@ -71,8 +69,6 @@ class PhpMailer implements Contract
      * @param array<int, array{path: string, name: string}> $attachments The attachments
      *
      * @throws Exception
-     *
-     * @return void
      */
     protected function addAttachments(array $attachments): void
     {
@@ -83,10 +79,6 @@ class PhpMailer implements Contract
 
     /**
      * Add plain body to PHP Mailer.
-     *
-     * @param string|null $plainBody
-     *
-     * @return void
      */
     protected function addPlainBody(string|null $plainBody = null): void
     {

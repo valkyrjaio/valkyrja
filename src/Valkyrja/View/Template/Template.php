@@ -256,8 +256,6 @@ class Template implements Contract
      * @param string               $name         The file name
      * @param array<string, mixed> $variables    [optional] The variables to set
      * @param bool                 $renderLayout [optional] Whether to render the layout
-     *
-     * @return string
      */
     protected function renderFile(string $name, array $variables = [], bool $renderLayout = false): string
     {
@@ -283,8 +281,6 @@ class Template implements Contract
      *
      * @param string               $layout    The layout
      * @param array<string, mixed> $variables [optional] The variables to set
-     *
-     * @return string
      */
     protected function renderLayout(string $layout, array $variables = []): string
     {
@@ -307,8 +303,6 @@ class Template implements Contract
      *
      * @param string               $path      The path to render
      * @param array<string, mixed> $variables [optional] The variables to set
-     *
-     * @return string
      */
     protected function renderTemplate(string $path, array $variables = []): string
     {

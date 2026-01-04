@@ -19,8 +19,6 @@ interface PermissibleUserContract extends UserContract
      * Get whether the user is allowed.
      *
      * @param string $permission The permission
-     *
-     * @return bool
      */
     public function isAllowed(string $permission): bool;
 
@@ -28,8 +26,6 @@ interface PermissibleUserContract extends UserContract
      * Get whether the user is denied.
      *
      * @param string $permission The permission
-     *
-     * @return bool
      */
     public function isDenied(string $permission): bool;
 }

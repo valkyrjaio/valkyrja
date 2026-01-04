@@ -86,8 +86,6 @@ enum StatusCode: int
 
     /**
      * Get the code representation of the status.
-     *
-     * @return int
      */
     public function code(): int
     {
@@ -96,8 +94,6 @@ enum StatusCode: int
 
     /**
      * Check if this is a valid redirect.
-     *
-     * @return bool
      */
     public function isRedirect(): bool
     {
@@ -106,8 +102,6 @@ enum StatusCode: int
 
     /**
      * Check if this is an error code.
-     *
-     * @return bool
      */
     public function isError(): bool
     {
@@ -116,8 +110,6 @@ enum StatusCode: int
 
     /**
      * Get the phrase representation of the status.
-     *
-     * @return string
      */
     public function asPhrase(): string
     {

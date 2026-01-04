@@ -26,8 +26,6 @@ interface FileOutputContract extends OutputContract
      * Create a new FileOutput with the specified filepath.
      *
      * @param non-empty-string $filepath The filepath
-     *
-     * @return static
      */
     public function withFilepath(string $filepath): static;
 }

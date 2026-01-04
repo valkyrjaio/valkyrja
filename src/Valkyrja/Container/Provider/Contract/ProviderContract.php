@@ -17,8 +17,6 @@ interface ProviderContract
 {
     /**
      * Whether this provider is deferred.
-     *
-     * @return bool
      */
     public static function deferred(): bool;
 
@@ -50,8 +48,6 @@ interface ProviderContract
      * Publish the provider.
      *
      * @param object $providerAware The providers aware class
-     *
-     * @return void
      */
     public static function publish(object $providerAware): void;
 }

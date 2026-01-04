@@ -84,8 +84,6 @@ final class ServiceProvider extends Provider
      * Publish the RequestReceivedHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishInputReceivedHandler(ContainerContract $container): void
     {
@@ -105,8 +103,6 @@ final class ServiceProvider extends Provider
      * Publish the RouteDispatchedHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishRouteDispatchedHandler(ContainerContract $container): void
     {
@@ -126,8 +122,6 @@ final class ServiceProvider extends Provider
      * Publish the ThrowableCaughtHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishThrowableCaughtHandler(ContainerContract $container): void
     {
@@ -147,8 +141,6 @@ final class ServiceProvider extends Provider
      * Publish the RouteMatchedHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishRouteMatchedHandler(ContainerContract $container): void
     {
@@ -168,8 +160,6 @@ final class ServiceProvider extends Provider
      * Publish the RouteNotMatchedHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishRouteNotMatchedHandler(ContainerContract $container): void
     {
@@ -189,8 +179,6 @@ final class ServiceProvider extends Provider
      * Publish the TerminatedHandler service.
      *
      * @param ContainerContract $container The container
-     *
-     * @return void
      */
     public static function publishExitedHandler(ContainerContract $container): void
     {

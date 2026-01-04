@@ -26,8 +26,6 @@ interface StreamOutputContract extends OutputContract
      * Create a new StreamOutput with the specified stream resource.
      *
      * @param resource $stream The stream resource
-     *
-     * @return static
      */
     public function withStream($stream): static;
 }

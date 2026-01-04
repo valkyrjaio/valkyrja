@@ -46,16 +46,12 @@ interface JsonServerRequestContract extends ServerRequestContract
 
     /**
      * @param array<array-key, mixed> $data The json params
-     *
-     * @return static
      */
     public function withParsedJson(array $data): static;
 
     /**
      * @param string|int $name  The name of the json param
      * @param mixed      $value The value of the json param
-     *
-     * @return static
      */
     public function withAddedParsedJsonParam(string|int $name, mixed $value): static;
 
@@ -65,8 +61,6 @@ interface JsonServerRequestContract extends ServerRequestContract
      *
      * @param string|int $name    The json param name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
-     *
-     * @return mixed
      */
     public function getParsedJsonParam(string|int $name, mixed $default = null): mixed;
 
@@ -74,8 +68,6 @@ interface JsonServerRequestContract extends ServerRequestContract
      * Determine if a specific json param exists.
      *
      * @param string|int $name The json param name to check for
-     *
-     * @return bool
      */
     public function hasParsedJsonParam(string|int $name): bool;
 }

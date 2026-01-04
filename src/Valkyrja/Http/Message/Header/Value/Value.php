@@ -49,9 +49,6 @@ class Value implements Contract
      */
     protected int $position = 0;
 
-    /**
-     * @param ComponentContract|string ...$components
-     */
     public function __construct(ComponentContract|string ...$components)
     {
         $this->components = $this->mapToPart(...$components);
@@ -218,8 +215,6 @@ class Value implements Contract
 
     /**
      * Map string parts to Part objects.
-     *
-     * @param ComponentContract|string ...$parts
      *
      * @return ComponentContract[]
      */

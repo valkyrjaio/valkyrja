@@ -251,8 +251,6 @@ class NullSession implements Contract
      * Validate an id.
      *
      * @param string $id The id
-     *
-     * @return void
      */
     protected function validateId(string $id): void
     {

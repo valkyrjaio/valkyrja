@@ -21,8 +21,6 @@ trait ReflectionAwareAttributeTrait
 
     /**
      * Get the reflection.
-     *
-     * @return Reflector|null
      */
     public function getReflection(): Reflector|null
     {

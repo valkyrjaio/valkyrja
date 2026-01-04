@@ -24,29 +24,21 @@ interface AuthenticatorContract
 {
     /**
      * Determine if a user is authenticated.
-     *
-     * @return bool
      */
     public function isAuthenticated(): bool;
 
     /**
      * Get the current authenticated user if one exists.
-     *
-     * @return UserContract|null
      */
     public function getAuthenticated(): UserContract|null;
 
     /**
      * Get the current impersonated user if one exists.
-     *
-     * @return UserContract|null
      */
     public function getImpersonated(): UserContract|null;
 
     /**
      * Get the authenticated users.
-     *
-     * @return AuthenticatedUsersContract
      */
     public function getAuthenticatedUsers(): AuthenticatedUsersContract;
 
@@ -54,8 +46,6 @@ interface AuthenticatorContract
      * Set the authenticated users.
      *
      * @param AuthenticatedUsersContract $authenticatedUsers The authenticated users
-     *
-     * @return static
      */
     public function setAuthenticatedUsers(AuthenticatedUsersContract $authenticatedUsers): static;
 
@@ -63,8 +53,6 @@ interface AuthenticatorContract
      * Process an authentication attempt.
      *
      * @param AuthenticationAttemptContract $attempt The authentication attempt
-     *
-     * @return UserContract
      */
     public function authenticate(AuthenticationAttemptContract $attempt): UserContract;
 
@@ -72,8 +60,6 @@ interface AuthenticatorContract
      * Unauthenticate a user by their id.
      *
      * @param non-empty-string|int $id The user's id
-     *
-     * @return static
      */
     public function unauthenticate(string|int $id): static;
 }

@@ -31,28 +31,13 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
 {
     /**
      * Create a new Header from a string representation.
-     *
-     * @param string $value
-     *
-     * @return static
      */
     public static function fromValue(string $value): static;
 
-    /**
-     * @return string
-     */
     public function getName(): string;
 
-    /**
-     * @return string
-     */
     public function getNormalizedName(): string;
 
-    /**
-     * @param string $name
-     *
-     * @return static
-     */
     public function withName(string $name): static;
 
     /**
@@ -62,27 +47,18 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
 
     /**
      * @param ValueContract|string ...$values The values
-     *
-     * @return static
      */
     public function withValues(ValueContract|string ...$values): static;
 
     /**
      * @param ValueContract|string ...$values The values
-     *
-     * @return static
      */
     public function withAddedValues(ValueContract|string ...$values): static;
 
-    /**
-     * @return string
-     */
     public function getValuesAsString(): string;
 
     /**
      * @inheritDoc
-     *
-     * @return string
      */
     public function asValue(): string;
 
@@ -97,8 +73,5 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
     #[Override]
     public function jsonSerialize(): string;
 
-    /**
-     * @return string
-     */
     public function __toString(): string;
 }

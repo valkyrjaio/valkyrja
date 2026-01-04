@@ -52,8 +52,6 @@ class GuzzleClient implements Contract
      * @param RequestContract $request The request
      *
      * @throws GuzzleException
-     *
-     * @return ResponseInterface
      */
     protected function getGuzzleResponse(RequestContract $request): ResponseInterface
     {
@@ -80,8 +78,6 @@ class GuzzleClient implements Contract
      *
      * @param RequestContract      $request  The request
      * @param array<string, mixed> &$options The options
-     *
-     * @return void
      */
     protected function setGuzzleHeaders(RequestContract $request, array &$options): void
     {
@@ -99,8 +95,6 @@ class GuzzleClient implements Contract
      *
      * @param ServerRequestContract $request  The request
      * @param array<string, mixed>  &$options The options
-     *
-     * @return void
      */
     protected function setGuzzleCookies(ServerRequestContract $request, array &$options): void
     {
@@ -125,8 +119,6 @@ class GuzzleClient implements Contract
      *
      * @param ServerRequestContract $request  The request
      * @param array<string, mixed>  &$options The options
-     *
-     * @return void
      */
     protected function setGuzzleFormParams(ServerRequestContract $request, array &$options): void
     {
@@ -143,8 +135,6 @@ class GuzzleClient implements Contract
      *
      * @param RequestContract      $request  The request
      * @param array<string, mixed> &$options The options
-     *
-     * @return void
      */
     protected function setGuzzleBody(RequestContract $request, array &$options): void
     {
@@ -160,8 +150,6 @@ class GuzzleClient implements Contract
      * Convert a Guzzle Response to Valkyrja Response.
      *
      * @param ResponseInterface $guzzleResponse The Guzzle Response
-     *
-     * @return ResponseContract
      *
      * @psalm-suppress MixedArgumentTypeCoercion
      */

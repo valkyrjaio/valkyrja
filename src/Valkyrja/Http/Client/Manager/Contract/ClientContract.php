@@ -20,10 +20,6 @@ interface ClientContract
 {
     /**
      * Send a request and recieve a response.
-     *
-     * @param RequestContract $request
-     *
-     * @return ResponseContract
      */
     public function sendRequest(RequestContract $request): ResponseContract;
 }

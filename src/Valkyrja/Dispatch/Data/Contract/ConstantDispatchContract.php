@@ -26,8 +26,6 @@ interface ConstantDispatchContract extends DispatchContract
      * Create a new dispatch with the specified constant.
      *
      * @param non-empty-string $constant The constant
-     *
-     * @return static
      */
     public function withConstant(string $constant): static;
 
@@ -42,8 +40,6 @@ interface ConstantDispatchContract extends DispatchContract
      * Create a new dispatch with the specified class name.
      *
      * @param class-string|null $class [optional] The class name
-     *
-     * @return static
      */
     public function withClass(string|null $class = null): static;
 }

@@ -35,15 +35,11 @@ interface StreamContract extends Stringable
      * string casting operations.
      *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
-     *
-     * @return string
      */
     public function __toString(): string;
 
     /**
      * Closes the stream and any underlying resources.
-     *
-     * @return void
      */
     public function close(): void;
 
@@ -73,15 +69,11 @@ interface StreamContract extends Stringable
 
     /**
      * Returns true if the stream is at the end of the stream.
-     *
-     * @return bool
      */
     public function eof(): bool;
 
     /**
      * Returns whether or not the stream is seekable.
-     *
-     * @return bool
      */
     public function isSeekable(): bool;
 
@@ -100,8 +92,6 @@ interface StreamContract extends Stringable
      *                    offset
      *
      * @throws RuntimeException on failure
-     *
-     * @return void
      */
     public function seek(int $offset, int $whence = SEEK_SET): void;
 
@@ -114,16 +104,12 @@ interface StreamContract extends Stringable
      *
      * @throws RuntimeException on failure
      *
-     * @return void
-     *
      * @see  seek()
      */
     public function rewind(): void;
 
     /**
      * Returns whether or not the stream is writable.
-     *
-     * @return bool
      */
     public function isWritable(): bool;
 
@@ -140,8 +126,6 @@ interface StreamContract extends Stringable
 
     /**
      * Returns whether or not the stream is readable.
-     *
-     * @return bool
      */
     public function isReadable(): bool;
 
@@ -164,8 +148,6 @@ interface StreamContract extends Stringable
      *
      * @throws RuntimeException if unable to read or an error occurs while
      *                          reading
-     *
-     * @return string
      */
     public function getContents(): string;
 

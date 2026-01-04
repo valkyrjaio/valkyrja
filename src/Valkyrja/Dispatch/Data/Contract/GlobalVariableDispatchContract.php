@@ -26,8 +26,6 @@ interface GlobalVariableDispatchContract extends DispatchContract
      * Create a new dispatch with the specified variable.
      *
      * @param non-empty-string $variable
-     *
-     * @return static
      */
     public function withVariable(string $variable): static;
 }

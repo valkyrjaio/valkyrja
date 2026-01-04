@@ -33,8 +33,6 @@ interface RouteContract
      * Create a new Command with the specified name.
      *
      * @param non-empty-string $name The name
-     *
-     * @return static
      */
     public function withName(string $name): static;
 
@@ -49,15 +47,11 @@ interface RouteContract
      * Create a new Command with the specified description.
      *
      * @param non-empty-string $description The description
-     *
-     * @return static
      */
     public function withDescription(string $description): static;
 
     /**
      * Get the help text.
-     *
-     * @return MessageContract
      */
     public function getHelpText(): MessageContract;
 
@@ -65,15 +59,11 @@ interface RouteContract
      * Create a new Command with the specified help text.
      *
      * @param MessageContract $helpText The help text
-     *
-     * @return static
      */
     public function withHelpText(MessageContract $helpText): static;
 
     /**
      * Determine if the command has arguments.
-     *
-     * @return bool
      */
     public function hasArguments(): bool;
 
@@ -88,8 +78,6 @@ interface RouteContract
      * Get an argument.
      *
      * @param string $name The name
-     *
-     * @return ArgumentParameterContract|null
      */
     public function getArgument(string $name): ArgumentParameterContract|null;
 
@@ -97,8 +85,6 @@ interface RouteContract
      * Create a new Command with the specified argument parameters.
      *
      * @param ArgumentParameterContract ...$arguments The argument parameters
-     *
-     * @return static
      */
     public function withArguments(ArgumentParameterContract ...$arguments): static;
 
@@ -106,15 +92,11 @@ interface RouteContract
      * Create a new Command with added argument parameters.
      *
      * @param ArgumentParameterContract ...$arguments The argument parameters
-     *
-     * @return static
      */
     public function withAddedArguments(ArgumentParameterContract ...$arguments): static;
 
     /**
      * Determine if the command has options.
-     *
-     * @return bool
      */
     public function hasOptions(): bool;
 
@@ -129,8 +111,6 @@ interface RouteContract
      * Get an option parameter by name.
      *
      * @param string $name The option name
-     *
-     * @return OptionParameterContract|null
      */
     public function getOption(string $name): OptionParameterContract|null;
 
@@ -138,8 +118,6 @@ interface RouteContract
      * Create a new Command with the specified option parameters.
      *
      * @param OptionParameterContract ...$options The option parameters
-     *
-     * @return static
      */
     public function withOptions(OptionParameterContract ...$options): static;
 
@@ -147,8 +125,6 @@ interface RouteContract
      * Create a new Command with added option parameters.
      *
      * @param OptionParameterContract ...$options The option parameters
-     *
-     * @return static
      */
     public function withAddedOptions(OptionParameterContract ...$options): static;
 
@@ -163,8 +139,6 @@ interface RouteContract
      * Create a new command with the specified command matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withCommandMatchedMiddleware(string ...$middleware): static;
 
@@ -172,8 +146,6 @@ interface RouteContract
      * Create a new command with added command matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedCommandMatchedMiddleware(string ...$middleware): static;
 
@@ -188,8 +160,6 @@ interface RouteContract
      * Create a new command with the specified command dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withCommandDispatchedMiddleware(string ...$middleware): static;
 
@@ -197,8 +167,6 @@ interface RouteContract
      * Create a new command with added command dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedCommandDispatchedMiddleware(string ...$middleware): static;
 
@@ -213,8 +181,6 @@ interface RouteContract
      * Create a new command with the specified throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withThrowableCaughtMiddleware(string ...$middleware): static;
 
@@ -222,8 +188,6 @@ interface RouteContract
      * Create a new command with added throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static;
 
@@ -238,8 +202,6 @@ interface RouteContract
      * Create a new command with the specified exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withExitedMiddleware(string ...$middleware): static;
 
@@ -247,15 +209,11 @@ interface RouteContract
      * Create a new command with added exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
-     *
-     * @return static
      */
     public function withAddedExitedMiddleware(string ...$middleware): static;
 
     /**
      * Get the dispatch.
-     *
-     * @return MethodDispatchContract
      */
     public function getDispatch(): MethodDispatchContract;
 
@@ -263,8 +221,6 @@ interface RouteContract
      * Create a new Command with the specified dispatch.
      *
      * @param MethodDispatchContract $dispatch The dispatch
-     *
-     * @return static
      */
     public function withDispatch(MethodDispatchContract $dispatch): static;
 }

@@ -17,8 +17,6 @@ interface AuthenticatedUsersContract
 {
     /**
      * Determine whether there is a current user in the collection.
-     *
-     * @return bool
      */
     public function hasCurrent(): bool;
 
@@ -33,15 +31,11 @@ interface AuthenticatedUsersContract
      * Set the current user.
      *
      * @param non-empty-string|int $id The user
-     *
-     * @return static
      */
     public function setCurrent(string|int $id): static;
 
     /**
      * Determine whether there is an impersonated user in the collection.
-     *
-     * @return bool
      */
     public function isImpersonating(): bool;
 
@@ -56,8 +50,6 @@ interface AuthenticatedUsersContract
      * Set a user to impersonate.
      *
      * @param non-empty-string|int $id The user
-     *
-     * @return static
      */
     public function setImpersonated(string|int $id): static;
 
@@ -65,8 +57,6 @@ interface AuthenticatedUsersContract
      * Check if a user is authenticated.
      *
      * @param non-empty-string|int $id The user to check
-     *
-     * @return bool
      */
     public function isUserAuthenticated(string|int $id): bool;
 
@@ -74,8 +64,6 @@ interface AuthenticatedUsersContract
      * Add a user to the collection.
      *
      * @param non-empty-string|int $id The user
-     *
-     * @return static
      */
     public function add(string|int $id): static;
 
@@ -83,8 +71,6 @@ interface AuthenticatedUsersContract
      * Remove a user from the collection.
      *
      * @param non-empty-string|int $id The id of the user to remove
-     *
-     * @return static
      */
     public function remove(string|int $id): static;
 
