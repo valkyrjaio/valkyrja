@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Application\Entry\App;
+use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Env\Env;
 
 $composerAutoloadFilePossibilities = [
@@ -33,10 +33,10 @@ foreach ($composerAutoloadFilePossibilities as $file) {
 
 if ($composerAutoloadFile === null) {
     fwrite(
-        STDERR,
-        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
-        '    composer install' . PHP_EOL . PHP_EOL .
-        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+        \STDERR,
+        'You need to set up the project dependencies using Composer:' . \PHP_EOL . \PHP_EOL
+            . '    composer install' . \PHP_EOL . \PHP_EOL
+            . 'You can learn all about Composer on https://getcomposer.org/.' . \PHP_EOL
     );
 
     exit(1);
@@ -44,4 +44,4 @@ if ($composerAutoloadFile === null) {
 
 require $composerAutoloadFile;
 
-App::cli(Env::APP_DIR, new Env());
+Cli::run(Env::APP_DIR, new Env());

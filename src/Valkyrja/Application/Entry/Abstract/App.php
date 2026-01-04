@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Entry;
+namespace Valkyrja\Application\Entry\Abstract;
 
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
@@ -19,14 +19,8 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
-use Valkyrja\Cli\Interaction\Factory\InputFactory;
-use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Http\Message\Factory\RequestFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -35,7 +29,7 @@ use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 use function define;
 use function defined;
 
-class App
+abstract class App
 {
     /**
      * Start the application.
@@ -49,48 +43,6 @@ class App
         static::directory(dir: $dir);
 
         return static::app(env: $env);
-    }
-
-    /**
-     * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
-     *
-     * @param non-empty-string $dir The directory
-     */
-    public static function http(string $dir, Env $env): void
-    {
-        $app = static::start(
-            dir: $dir,
-            env: $env,
-        );
-
-        $container = $app->getContainer();
-
-        self::bootstrapThrowableHandler($app, $container);
-
-        $handler = $container->getSingleton(RequestHandlerContract::class);
-        $request = static::getRequest();
-        $handler->run($request);
-    }
-
-    /**
-     * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
-     *
-     * @param non-empty-string $dir The directory
-     */
-    public static function cli(string $dir, Env $env): void
-    {
-        $app = static::start(
-            dir: $dir,
-            env: $env,
-        );
-
-        $container = $app->getContainer();
-
-        self::bootstrapThrowableHandler($app, $container);
-
-        $handler = $container->getSingleton(InputHandlerContract::class);
-        $input   = static::getInput(env: $env);
-        $handler->run($input);
     }
 
     /**
@@ -145,6 +97,13 @@ class App
             configData: $configData
         );
     }
+
+    /**
+     * Run the app.
+     *
+     * @param non-empty-string $dir The directory
+     */
+    abstract public static function run(string $dir, Env $env): void;
 
     /**
      * Get the application config.
@@ -221,28 +180,5 @@ class App
     protected static function getContainer(): ContainerContract
     {
         return new Container();
-    }
-
-    /**
-     * Get the request.
-     */
-    protected static function getRequest(): ServerRequestContract
-    {
-        return RequestFactory::fromGlobals();
-    }
-
-    /**
-     * Get the input.
-     */
-    protected static function getInput(Env $env): InputContract
-    {
-        /** @var non-empty-string $commandName */
-        $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME;
-
-        $input = InputFactory::fromGlobals(
-            commandName: $commandName
-        );
-
-        return $input;
     }
 }
