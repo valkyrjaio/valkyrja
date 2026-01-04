@@ -139,12 +139,13 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $this->modifyClassClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyExtendsClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyTypeClassName($allNode, $aliasName, $aliasUseLastName);
+                $this->modifyReturnTypeClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyImplements($allNode, $aliasName, $aliasUseLastName);
             }
 
-            if ($aliasName === 'FlysystemInterface') {
-                file_put_contents(__DIR__ . 'returntypeexample.json', json_encode($node));
-            }
+            // if ($aliasName === 'RouteAttribute') {
+            //     file_put_contents(__DIR__ . 'attributeexample.json', json_encode($node));
+            // }
         }
 
         if ($hasChanged) {
@@ -211,6 +212,18 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $newClass->setAttribute('originalName', $className);
 
             $node->type = $newClass;
+        }
+    }
+
+    private function modifyReturnTypeClassName(Node $node, string $alias, string $className): void
+    {
+        $class = $node->returnType ?? null;
+
+        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
+            $newClass = new FullyQualified($class->name);
+            $newClass->setAttribute('originalName', $className);
+
+            $node->returnType = $newClass;
         }
     }
 
