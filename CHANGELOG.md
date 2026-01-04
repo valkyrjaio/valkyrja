@@ -1,6 +1,30 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.16.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.17.0...master)
+
+## [v25.17.0](https://github.com/valkyrjaio/valkyrja/compare/v25.16.0...v25.17.0) - 2026-01-04
+
+* [Http] Change param name from exception to throwable in middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/319
+* [Cli] Change param name from exception to throwable in middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/321
+* [Log] Update exception method and param to throwable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/322
+* [Throwable] Update getTraceCode method. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/323
+* [Composer] Update monolog/monolog to v3.10.0 from v3.9.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/324
+* [Log] Update LoggerContract to extend Psr/LoggerInterface by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/325
+* [CI] Fix release workflow root and suggested composer validation checks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/326
+* [Composer] Update composer with suggested packages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/327
+* [CI] Add check for major version direct dependency updates by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/328
+* [Composer] Update the firebase/php-jwt package to v7.0.2 from v6.11.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/329
+* [Composer] Update the phpmailer/phpmailer package to v7.0.1 from v6.12.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/330
+* [Composer] Update the predis/predis package to v3.3.0 from v2.4.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/331
+* [CI] Update the phpcsfixer package to v3.92.4 from v3.92.3 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/332
+* [Composer] Add conflict to composer by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/333
+* [Application] Split Http and Cli from Entry\App by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/334
+* [CI] Add RemoveUselessAliasInUseStatementRector rector rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/335
+* [CI] Add SeparateMultiUseImportsRector rector rule. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/336
+* [CI] Add dead code rector rules by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/337
+* [Type] Rename Enum classes as enum is a reserved keyword by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/338
+* [CI] Add rector rule for non conflicting aliases by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/339
+* [CI] Cleanup RemoveNonConflictingAliasInUseStatementRector rector rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/340
 
 ## [v25.16.0](https://github.com/valkyrjaio/valkyrja/compare/v25.15.1...v25.16.0) - 2026-01-03
 
