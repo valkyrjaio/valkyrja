@@ -21,6 +21,7 @@ use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRecto
 use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
+use Valkyrja\Rector\CodingStyle\Rector\Stmt\RemoveNonConflictingAliasInUseStatementRector;
 
 $rector = RectorConfig::configure();
 
@@ -42,6 +43,7 @@ return $rector
         AddOverrideAttributeToOverriddenMethodsRector::class,
         ExplicitNullableParamTypeRector::class,
         NewMethodCallWithoutParenthesesRector::class,
+        RemoveNonConflictingAliasInUseStatementRector::class,
         RemoveParentCallWithoutParentRector::class,
         RemoveUselessAliasInUseStatementRector::class,
         RemoveUselessParamTagRector::class,

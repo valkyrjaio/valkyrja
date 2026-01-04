@@ -1,4 +1,5 @@
 *
+!/Rector
 !.gitignore
 !composer.json
 !composer.lock
