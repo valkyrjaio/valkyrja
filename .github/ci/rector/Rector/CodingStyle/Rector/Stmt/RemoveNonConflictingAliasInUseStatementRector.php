@@ -28,7 +28,6 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
-use function file_put_contents;
 use function is_array;
 use function preg_match;
 use function strtolower;
@@ -89,8 +88,8 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 continue;
             }
 
-            $useName          = $stmt->uses[0]->name->toString();
-            $aliasUseLastName = Strings::after($useName, '\\', -1) ?? $useName;
+            $useNameToCheck   = $stmt->uses[0]->name->toString();
+            $aliasUseLastName = Strings::after($useNameToCheck, '\\', -1) ?? $useNameToCheck;
 
             foreach ($node->stmts as $compareStmt) {
                 if (
@@ -100,9 +99,11 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                         || $compareStmt instanceof Node\Stmt\Trait_
                         || $compareStmt instanceof Node\Stmt\Enum_
                     )
-                    && $compareStmt?->name?->name !== null
+                    && $compareStmt->name?->name !== null
+                    // Ensure the alias's class name does not match the class/interface/trait/enum class name
                     && strtolower($compareStmt->name->name ?? '') === strtolower($aliasUseLastName)
                 ) {
+                    // If it did this alias is required and we should move onto the next alias
                     continue 2;
                 }
 
@@ -122,10 +123,19 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                     continue;
                 }
 
-                $use      = $compareStmt->uses[0]->name->toString();
-                $lastName = Strings::after($use, '\\', -1) ?? $use;
+                $use          = $compareStmt->uses[0]->name->toString();
+                $lastName     = Strings::after($use, '\\', -1) ?? $use;
+                $useAliasName = $stmt->uses[0]->alias instanceof Identifier ? $stmt->uses[0]->alias->toString() : null;
 
-                if (strtolower($lastName) === strtolower($aliasName) || strtolower($lastName) === strtolower($aliasUseLastName)) {
+                if (
+                    // Ensure the alias is not the same as the class name of another use statement
+                    strtolower($lastName) === strtolower($aliasName)
+                    // Ensure the alias's class name is not the same as the class name of another use statement
+                    || strtolower($lastName) === strtolower($aliasUseLastName)
+                    // Ensure the alias is not the same as the alias of another use statement
+                    || strtolower($useAliasName) === strtolower($aliasName)
+                ) {
+                    // If it matched then this alias is required and we should move onto the next alias
                     continue 2;
                 }
             }
@@ -134,7 +144,8 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $hasChanged           = true;
 
             $nodeFinder = new NodeFinder();
-            $allNodes   = $nodeFinder->findInstanceOf($node, Node::class);
+            // Get all nodes
+            $allNodes = $nodeFinder->findInstanceOf($node, Node::class);
 
             foreach ($allNodes as $allNode) {
                 $this->modifyComments($allNode, $aliasName, $aliasUseLastName);
@@ -147,10 +158,6 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $this->modifyNodes($allNode, 'extends', $aliasName, $aliasUseLastName);
                 $this->modifyNodes($allNode, 'traits', $aliasName, $aliasUseLastName);
             }
-
-            // if ($aliasName === 'EnumTrait') {
-            //     file_put_contents(__DIR__ . 'traituseexample.json', json_encode($node));
-            // }
         }
 
         if ($hasChanged) {
