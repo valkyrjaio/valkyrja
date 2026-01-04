@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
 use RuntimeException;
-use Valkyrja\Tests\Classes\Enum\Enum;
+use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Classes\Model\CastableModelClass;
@@ -533,7 +533,7 @@ class CastableModelTest extends TestCase
      */
     public function testEnumCast(): void
     {
-        $value   = Enum::club;
+        $value   = EnumClass::club;
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Enum;
 
 use Valkyrja\Type\BuiltIn\Enum\Contract\EnumContract as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Trait\Enum as EnumTrait;
+use Valkyrja\Type\BuiltIn\Enum\Trait\Enumerable;
 
 /**
  * Enum class to use to test enums.
  */
-enum Enum implements Contract
+enum EnumClass implements Contract
 {
-    use EnumTrait;
+    use Enumerable;
 
     case spade;
     case heart;

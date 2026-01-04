@@ -21,7 +21,7 @@ use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use function is_int;
 use function is_string;
 
-trait Enum
+trait Enumerable
 {
     /**
      * Get a new Type given a value.
