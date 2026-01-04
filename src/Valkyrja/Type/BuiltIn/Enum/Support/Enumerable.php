@@ -19,7 +19,7 @@ use UnitEnum;
 use function assert;
 use function in_array;
 
-class Enum
+class Enumerable
 {
     /**
      * A cache of enum class names and their names, or values.

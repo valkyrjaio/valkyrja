@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Tests\Classes\Enum\Enum;
+use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Type\Data\ArrayCast;
@@ -122,8 +122,8 @@ class CastableModelClass extends AbstractModel
     /** @var ModelClass[] */
     public array $modelArray;
 
-    public Enum $enum;
-    /** @var Enum[] */
+    public EnumClass $enum;
+    /** @var EnumClass[] */
     public array $enumArray;
 
     public StringEnum $stringEnum;
@@ -170,8 +170,8 @@ class CastableModelClass extends AbstractModel
             self::NULL_ARRAY_PROPERTY              => new ArrayCast(CastType::null),
             self::MODEL_PROPERTY                   => new OriginalCast(ModelClass::class),
             self::MODEL_ARRAY_PROPERTY             => new OriginalArrayCast(ModelClass::class),
-            self::ENUM_PROPERTY                    => new OriginalCast(Enum::class),
-            self::ENUM_ARRAY_PROPERTY              => new OriginalArrayCast(Enum::class),
+            self::ENUM_PROPERTY                    => new OriginalCast(EnumClass::class),
+            self::ENUM_ARRAY_PROPERTY              => new OriginalArrayCast(EnumClass::class),
             self::STRING_ENUM_PROPERTY             => new OriginalCast(StringEnum::class),
             self::STRING_ENUM_ARRAY_PROPERTY       => new OriginalArrayCast(StringEnum::class),
             self::INT_ENUM_PROPERTY                => new OriginalCast(IntEnum::class),

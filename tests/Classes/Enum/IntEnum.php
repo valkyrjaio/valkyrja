@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Enum;
 
 use Valkyrja\Type\BuiltIn\Enum\Contract\EnumContract as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Trait\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Trait\Enumerable;
 
 /**
  * Model class to use to test int BackedEnum.
  */
 enum IntEnum: int implements Contract
 {
-    use Enum;
+    use Enumerable;
 
     case first  = 1;
     case second = 2;

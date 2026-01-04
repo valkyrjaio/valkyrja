@@ -16,9 +16,9 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Enum\Support;
 use Valkyrja\Tests\Classes\Enum\ArrayableEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableIntEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableStringEnum;
-use Valkyrja\Tests\Classes\Enum\Enum as TestEnum;
+use Valkyrja\Tests\Classes\Enum\EnumClass as TestEnum;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 class EnumTest extends TestCase
 {
@@ -28,17 +28,17 @@ class EnumTest extends TestCase
     {
         self::assertSame(
             ['spade', 'heart', 'diamond', 'club'],
-            Enum::names(ArrayableEnum::class)
+            Enumerable::names(ArrayableEnum::class)
         );
 
         self::assertSame(
             ['foo', 'lorem'],
-            Enum::names(ArrayableStringEnum::class)
+            Enumerable::names(ArrayableStringEnum::class)
         );
 
         self::assertSame(
             ['first', 'second'],
-            Enum::names(ArrayableIntEnum::class)
+            Enumerable::names(ArrayableIntEnum::class)
         );
     }
 
@@ -46,17 +46,17 @@ class EnumTest extends TestCase
     {
         self::assertSame(
             ['spade', 'heart', 'diamond', 'club'],
-            Enum::values(ArrayableEnum::class)
+            Enumerable::values(ArrayableEnum::class)
         );
 
         self::assertSame(
             ['bar', 'ipsum'],
-            Enum::values(ArrayableStringEnum::class)
+            Enumerable::values(ArrayableStringEnum::class)
         );
 
         self::assertSame(
             [1, 2],
-            Enum::values(ArrayableIntEnum::class)
+            Enumerable::values(ArrayableIntEnum::class)
         );
     }
 
@@ -64,17 +64,17 @@ class EnumTest extends TestCase
     {
         self::assertSame(
             ['spade' => 'spade', 'heart' => 'heart', 'diamond' => 'diamond', 'club' => 'club'],
-            Enum::asArray(ArrayableEnum::class)
+            Enumerable::asArray(ArrayableEnum::class)
         );
 
         self::assertSame(
             ['foo' => 'bar', 'lorem' => 'ipsum'],
-            Enum::asArray(ArrayableStringEnum::class)
+            Enumerable::asArray(ArrayableStringEnum::class)
         );
 
         self::assertSame(
             ['first' => 1, 'second' => 2],
-            Enum::asArray(ArrayableIntEnum::class)
+            Enumerable::asArray(ArrayableIntEnum::class)
         );
     }
 
@@ -82,38 +82,38 @@ class EnumTest extends TestCase
     {
         self::assertSame(
             ['spade' => 'spade', 'heart' => 'heart', 'diamond' => 'diamond', 'club' => 'club'],
-            Enum::asReverseArray(ArrayableEnum::class)
+            Enumerable::asReverseArray(ArrayableEnum::class)
         );
 
         self::assertSame(
             ['bar' => 'foo', 'ipsum' => 'lorem'],
-            Enum::asReverseArray(ArrayableStringEnum::class)
+            Enumerable::asReverseArray(ArrayableStringEnum::class)
         );
 
         self::assertSame(
             [1 => 'first', 2 => 'second'],
-            Enum::asReverseArray(ArrayableIntEnum::class)
+            Enumerable::asReverseArray(ArrayableIntEnum::class)
         );
     }
 
     public function testIsValidName(): void
     {
-        self::assertTrue(Enum::isValidName(ArrayableEnum::class, 'spade'));
-        self::assertFalse(Enum::isValidName(ArrayableEnum::class, 'card'));
+        self::assertTrue(Enumerable::isValidName(ArrayableEnum::class, 'spade'));
+        self::assertFalse(Enumerable::isValidName(ArrayableEnum::class, 'card'));
 
-        self::assertTrue(Enum::isValidName(ArrayableStringEnum::class, 'foo'));
-        self::assertFalse(Enum::isValidName(ArrayableStringEnum::class, 'too'));
+        self::assertTrue(Enumerable::isValidName(ArrayableStringEnum::class, 'foo'));
+        self::assertFalse(Enumerable::isValidName(ArrayableStringEnum::class, 'too'));
 
-        self::assertTrue(Enum::isValidName(ArrayableIntEnum::class, 'second'));
-        self::assertFalse(Enum::isValidName(ArrayableIntEnum::class, 'third'));
+        self::assertTrue(Enumerable::isValidName(ArrayableIntEnum::class, 'second'));
+        self::assertFalse(Enumerable::isValidName(ArrayableIntEnum::class, 'third'));
     }
 
     public function testIsValidValue(): void
     {
-        self::assertTrue(Enum::isValidValue(ArrayableStringEnum::class, 'bar'));
-        self::assertFalse(Enum::isValidValue(ArrayableStringEnum::class, 'too'));
+        self::assertTrue(Enumerable::isValidValue(ArrayableStringEnum::class, 'bar'));
+        self::assertFalse(Enumerable::isValidValue(ArrayableStringEnum::class, 'too'));
 
-        self::assertTrue(Enum::isValidValue(ArrayableIntEnum::class, 2));
-        self::assertFalse(Enum::isValidValue(ArrayableIntEnum::class, 3));
+        self::assertTrue(Enumerable::isValidValue(ArrayableIntEnum::class, 2));
+        self::assertFalse(Enumerable::isValidValue(ArrayableIntEnum::class, 3));
     }
 }

@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 use function constant;
 
@@ -30,7 +30,7 @@ class StatusCodeTest extends TestCase
     {
         $codes = [];
 
-        foreach (Enum::values(StatusCode::class) as $code) {
+        foreach (Enumerable::values(StatusCode::class) as $code) {
             $codes[] = [$code];
         }
 

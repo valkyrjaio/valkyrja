@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Enum\Trait;
 
-use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 trait Arrayable
 {
@@ -24,7 +24,7 @@ trait Arrayable
      */
     public static function names(): array
     {
-        return Enum::names(static::class);
+        return Enumerable::names(static::class);
     }
 
     /**
@@ -34,7 +34,7 @@ trait Arrayable
      */
     public static function values(): array
     {
-        return Enum::values(static::class);
+        return Enumerable::values(static::class);
     }
 
     /**
@@ -44,7 +44,7 @@ trait Arrayable
      */
     public static function asArray(): array
     {
-        return Enum::asArray(static::class);
+        return Enumerable::asArray(static::class);
     }
 
     /**
@@ -54,6 +54,6 @@ trait Arrayable
      */
     public static function asReverseArray(): array
     {
-        return Enum::asReverseArray(static::class);
+        return Enumerable::asReverseArray(static::class);
     }
 }
