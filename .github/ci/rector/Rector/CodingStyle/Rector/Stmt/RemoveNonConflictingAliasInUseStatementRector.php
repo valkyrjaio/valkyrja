@@ -29,6 +29,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
 use function file_put_contents;
+use function is_array;
 use function preg_match;
 use function strtolower;
 
@@ -136,16 +137,17 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
 
             foreach ($allNodes as $allNode) {
                 $this->modifyComments($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyNameClassName($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyClassClassName($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyExtendsClassName($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyTypeClassName($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyReturnTypeClassName($allNode, $aliasName, $aliasUseLastName);
-                $this->modifyImplements($allNode, $aliasName, $aliasUseLastName);
+                $this->modifyNodeClassName($allNode, 'name', $aliasName, $aliasUseLastName);
+                $this->modifyNodeClassName($allNode, 'class', $aliasName, $aliasUseLastName);
+                $this->modifyNodeClassName($allNode, 'extends', $aliasName, $aliasUseLastName);
+                $this->modifyNodeClassName($allNode, 'type', $aliasName, $aliasUseLastName);
+                $this->modifyNodeClassName($allNode, 'returnType', $aliasName, $aliasUseLastName);
+                $this->modifyNodes($allNode, 'implements', $aliasName, $aliasUseLastName);
+                $this->modifyNodes($allNode, 'extends', $aliasName, $aliasUseLastName);
             }
 
-            // if ($aliasName === 'RouteAttribute') {
-            //     file_put_contents(__DIR__ . 'attributeexample.json', json_encode($node));
+            // if ($aliasName === 'PhpJsonSerializable') {
+            //     file_put_contents(__DIR__ . 'multipleimplementsexample.json', json_encode($node));
             // }
         }
 
@@ -180,89 +182,41 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
         }
     }
 
-    private function modifyClassClassName(Node $node, string $alias, string $className): void
+    private function modifyNodeClassName(Node $node, string $property, string $alias, string $className): void
     {
-        $class = $node->class ?? null;
+        $NameNode = $node->$property ?? null;
 
-        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
-            $newClass = new FullyQualified($class->name);
-            $newClass->setAttribute('originalName', $className);
+        if ($NameNode instanceof FullyQualified && $NameNode->getAttribute('originalName')?->name === $alias) {
+            $newNameNode = new FullyQualified($NameNode->name);
+            $newNameNode->setAttribute('originalName', $className);
 
-            $node->class = $newClass;
+            $node->$property = $newNameNode;
         }
     }
 
-    private function modifyNameClassName(Node $node, string $alias, string $className): void
+    private function modifyNodes(Node $node, string $property, string $alias, string $className): void
     {
-        $class = $node->name ?? null;
+        $nameNodes = $node->$property ?? null;
 
-        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
-            $newClass = new FullyQualified($class->name);
-            $newClass->setAttribute('originalName', $className);
-
-            $node->name = $newClass;
-        }
-    }
-
-    private function modifyExtendsClassName(Node $node, string $alias, string $className): void
-    {
-        $class = $node->extends ?? null;
-
-        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
-            $newClass = new FullyQualified($class->name);
-            $newClass->setAttribute('originalName', $className);
-
-            $node->extends = $newClass;
-        }
-    }
-
-    private function modifyTypeClassName(Node $node, string $alias, string $className): void
-    {
-        $class = $node->type ?? null;
-
-        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
-            $newClass = new FullyQualified($class->name);
-            $newClass->setAttribute('originalName', $className);
-
-            $node->type = $newClass;
-        }
-    }
-
-    private function modifyReturnTypeClassName(Node $node, string $alias, string $className): void
-    {
-        $class = $node->returnType ?? null;
-
-        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
-            $newClass = new FullyQualified($class->name);
-            $newClass->setAttribute('originalName', $className);
-
-            $node->returnType = $newClass;
-        }
-    }
-
-    private function modifyImplements(Node $node, string $alias, string $className): void
-    {
-        $implements = $node->implements ?? null;
-
-        if ($implements === null) {
+        if (! is_array($nameNodes)) {
             return;
         }
 
-        $newImplements = [];
+        $newNameNodes = [];
 
-        foreach ($implements as $implement) {
-            if ($implement instanceof FullyQualified && $implement->getAttribute('originalName')?->name === $alias) {
-                $newClass = new FullyQualified($implement->name);
+        foreach ($nameNodes as $nameNode) {
+            if ($nameNode instanceof FullyQualified && $nameNode->getAttribute('originalName')?->name === $alias) {
+                $newClass = new FullyQualified($nameNode->name);
                 $newClass->setAttribute('originalName', $className);
 
-                $newImplements[] = $newClass;
+                $newNameNodes[] = $newClass;
 
                 continue;
             }
 
-            $newImplements[] = $implement;
+            $newNameNodes[] = $nameNode;
         }
 
-        $node->implements = $newImplements;
+        $node->$property = $newNameNodes;
     }
 }
