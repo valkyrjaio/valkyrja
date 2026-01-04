@@ -98,6 +98,7 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                         $compareStmt instanceof Node\Stmt\Class_
                         || $compareStmt instanceof Node\Stmt\Interface_
                         || $compareStmt instanceof Node\Stmt\Trait_
+                        || $compareStmt instanceof Node\Stmt\Enum_
                     )
                     && $compareStmt?->name?->name !== null
                     && strtolower($compareStmt->name->name ?? '') === strtolower($aliasUseLastName)
