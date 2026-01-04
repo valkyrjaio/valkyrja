@@ -23,8 +23,18 @@
     "psr/log"                 : "^3.0.2"
   },
   "require-dev"       : {
-    "filp/whoops"     : "^2.18.4",
-    "monolog/monolog" : "^3.10.0"
+    "filp/whoops"                : "^2.18.4",
+    "firebase/php-jwt"           : "^6.11.1",
+    "guzzlehttp/guzzle"          : "^7.10.0",
+    "league/flysystem"           : "^3.30.2",
+    "league/flysystem-aws-s3-v3" : "^3.30.1",
+    "mailgun/mailgun-php"        : "^4.3.5",
+    "monolog/monolog"            : "^3.10.0",
+    "phpmailer/phpmailer"        : "^6.12.0",
+    "predis/predis"              : "^2.4.1",
+    "pusher/pusher-php-server"   : "^7.2.7",
+    "twig/twig"                  : "^3.22.2",
+    "vonage/client-core"         : "^4.11.2"
   },
   "autoload"          : {
     "psr-4" : {
@@ -43,6 +53,7 @@
     "bin/valkyrja"
   ],
   "suggest"           : {
+    "filp/whoops"                : "Required to use the default Throwable handler (^2.18.4)",
     "firebase/php-jwt"           : "Required to use the default JWT adapter (^6.11.1)",
     "guzzlehttp/guzzle"          : "Required to use the default Client adapter (^7.10.0).",
     "league/flysystem"           : "Required to use the default Filesystem adapter (^3.30.2).",
@@ -93,6 +104,7 @@
     "rector-check"                       : "cd .github/ci/rector && composer check",
     "rector-outdated-check"              : "cd .github/ci/rector && composer install && composer outdated --direct --minor-only",
     "rector-composer-update"             : "cd .github/ci/rector && composer update",
+    "root-outdated-check"                : "composer install && composer outdated --direct --minor-only",
     "root-and-suggested-outdated-check"  : "cd .github/ci/root-and-suggested && composer install && composer outdated --direct --minor-only",
     "root-and-suggested-composer-update" : "cd .github/ci/root-and-suggested && composer update"
   },
@@ -101,6 +113,11 @@
   "extra"             : {
     "branch-alias" : {
       "dev-master" : "25.x-dev"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": false
     }
   }
 }
