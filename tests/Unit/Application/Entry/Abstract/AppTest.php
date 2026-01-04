@@ -11,27 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Application\Entry;
+namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Throwable;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
-use Valkyrja\Application\Entry\App;
+use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
-use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollection;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
-use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Data\Data as ContainerData;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Data as EventData;
-use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpCollection;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
-use Valkyrja\Http\Routing\Data\Route as HttpRoute;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
@@ -46,23 +37,6 @@ use const LOCK_EX;
  */
 class AppTest extends TestCase
 {
-    protected static bool $cliCalled  = false;
-    protected static bool $httpCalled = false;
-
-    public static function httpCallback(): Response
-    {
-        self::$httpCalled = true;
-
-        return new Response();
-    }
-
-    public static function cliCallback(): Output
-    {
-        self::$cliCalled = true;
-
-        return new Output();
-    }
-
     /**
      * Test the appStart method.
      */
@@ -197,103 +171,5 @@ class AppTest extends TestCase
 
             throw $e;
         }
-    }
-
-    public function testHttp(): void
-    {
-        App::directory(EnvClass::APP_DIR);
-
-        self::$httpCalled = false;
-
-        $_SERVER['REQUEST_URI'] = '/version';
-
-        $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = true;
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestHttp.php';
-        };
-        /** @var non-empty-string $dir */
-        $dir = $env::APP_DIR;
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        $application = App::app($env);
-        $container   = $application->getContainer();
-
-        $http = $container->getSingleton(HttpCollection::class);
-
-        $http->add(
-            new HttpRoute(
-                path: '/version',
-                name: 'version',
-                dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback'])
-            )
-        );
-        $data = new Data(container: $container->getData(), http: $http->getData());
-
-        file_put_contents($filepath, serialize($data), LOCK_EX);
-
-        ob_start();
-        App::http($dir, $env);
-        ob_get_clean();
-
-        restore_error_handler();
-        restore_exception_handler();
-
-        self::assertTrue(self::$httpCalled);
-
-        @unlink($filepath);
-        self::$httpCalled = false;
-    }
-
-    public function testCli(): void
-    {
-        App::directory(EnvClass::APP_DIR);
-
-        self::$cliCalled = false;
-
-        Exiter::freeze();
-
-        $_SERVER['argv'] = [
-            'cli',
-            'version',
-        ];
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestCli.php';
-        };
-        /** @var non-empty-string $dir */
-        $dir = $env::APP_DIR;
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        $application = App::app($env);
-        $container   = $application->getContainer();
-
-        $cli = $container->getSingleton(CliCollection::class);
-
-        $cli->add(
-            new Route(
-                name: 'version',
-                description: 'test',
-                helpText: new Message('test'),
-                dispatch: MethodDispatch::fromCallableOrArray([self::class, 'cliCallback'])
-            )
-        );
-        $data = new Data(container: $container->getData(), cli: $cli->getData());
-
-        file_put_contents($filepath, serialize($data), LOCK_EX);
-
-        ob_start();
-        App::cli($dir, $env);
-        ob_get_clean();
-
-        self::assertTrue(self::$cliCalled);
-
-        @unlink($filepath);
-        self::$cliCalled = false;
-        Exiter::unfreeze();
     }
 }
