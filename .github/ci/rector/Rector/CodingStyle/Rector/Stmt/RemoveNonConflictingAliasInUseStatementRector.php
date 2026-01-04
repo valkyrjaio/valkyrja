@@ -144,10 +144,11 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $this->modifyNodeClassName($allNode, 'returnType', $aliasName, $aliasUseLastName);
                 $this->modifyNodes($allNode, 'implements', $aliasName, $aliasUseLastName);
                 $this->modifyNodes($allNode, 'extends', $aliasName, $aliasUseLastName);
+                $this->modifyNodes($allNode, 'traits', $aliasName, $aliasUseLastName);
             }
 
-            // if ($aliasName === 'PhpJsonSerializable') {
-            //     file_put_contents(__DIR__ . 'multipleimplementsexample.json', json_encode($node));
+            // if ($aliasName === 'EnumTrait') {
+            //     file_put_contents(__DIR__ . 'traituseexample.json', json_encode($node));
             // }
         }
 
