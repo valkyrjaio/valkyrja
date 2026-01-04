@@ -9,7 +9,7 @@
   },
   "require-dev"       : {
     "filp/whoops"                : "^2.18.4",
-    "firebase/php-jwt"           : "^6.11.1",
+    "firebase/php-jwt"           : "^7.0.2",
     "guzzlehttp/guzzle"          : "^7.10.0",
     "league/flysystem"           : "^3.30.2",
     "league/flysystem-aws-s3-v3" : "^3.30.1",
