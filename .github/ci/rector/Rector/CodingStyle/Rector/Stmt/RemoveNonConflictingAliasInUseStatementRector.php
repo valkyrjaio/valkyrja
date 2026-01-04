@@ -28,8 +28,8 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
-use function str_contains;
-use function str_replace;
+use function file_put_contents;
+use function preg_match;
 use function strtolower;
 
 use const false;
@@ -129,6 +129,11 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             foreach ($allNodes as $allNode) {
                 $this->modifyComments($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyClassName($allNode, $aliasName, $aliasUseLastName);
+                $this->modifyImplements($allNode, $aliasName, $aliasUseLastName);
+            }
+
+            if ($aliasName === 'ReflectionContract') {
+                file_put_contents(__DIR__ . 'propertytypehintexample.json', json_encode($node));
             }
         }
 
@@ -148,9 +153,9 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $newComments = [];
 
             foreach ($comments as $comment) {
-                if ($comment instanceof Doc && str_contains($comment->getText(), $alias)) {
+                if ($comment instanceof Doc && preg_match("/(\W)$alias/", $comment->getText()) === 1) {
                     $newComments[] = new Doc(
-                        text: str_replace($alias, $className, $comment->getText()),
+                        text: preg_replace("/(\W)$alias/", "$1$className", $comment->getText()),
                     );
 
                     continue;
@@ -165,7 +170,7 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
 
     private function modifyClassName(Node $node, string $alias, string $className): void
     {
-        $class = $node->class ?? null;
+        $class = $node->class ?? $node->extends ?? null;
 
         if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
             $newClass = new FullyQualified($class->name);
@@ -173,5 +178,31 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
 
             $node->class = $newClass;
         }
+    }
+
+    private function modifyImplements(Node $node, string $alias, string $className): void
+    {
+        $implements = $node->implements ?? null;
+
+        if ($implements === null) {
+            return;
+        }
+
+        $newImplements = [];
+
+        foreach ($implements as $implement) {
+            if ($implement instanceof FullyQualified && $implement->getAttribute('originalName')?->name === $alias) {
+                $newClass = new FullyQualified($implement->name);
+                $newClass->setAttribute('originalName', $className);
+
+                $newImplements[] = $newClass;
+
+                continue;
+            }
+
+            $newImplements[] = $implement;
+        }
+
+        $node->implements = $newImplements;
     }
 }
