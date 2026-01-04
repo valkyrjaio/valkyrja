@@ -136,6 +136,7 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
 
             foreach ($allNodes as $allNode) {
                 $this->modifyComments($allNode, $aliasName, $aliasUseLastName);
+                $this->modifyNameClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyClassClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyExtendsClassName($allNode, $aliasName, $aliasUseLastName);
                 $this->modifyTypeClassName($allNode, $aliasName, $aliasUseLastName);
@@ -188,6 +189,18 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
             $newClass->setAttribute('originalName', $className);
 
             $node->class = $newClass;
+        }
+    }
+
+    private function modifyNameClassName(Node $node, string $alias, string $className): void
+    {
+        $class = $node->name ?? null;
+
+        if ($class instanceof FullyQualified && $class->getAttribute('originalName')?->name === $alias) {
+            $newClass = new FullyQualified($class->name);
+            $newClass->setAttribute('originalName', $className);
+
+            $node->name = $newClass;
         }
     }
 
