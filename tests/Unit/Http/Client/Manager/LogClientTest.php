@@ -37,7 +37,7 @@ class LogClientTest extends TestCase
         $client  = new LogClient($logger);
         $request = new Request();
 
-        $logger->expects(self::once())->method('info');
+        $logger->expects($this->once())->method('info');
 
         $response = $client->sendRequest($request);
 

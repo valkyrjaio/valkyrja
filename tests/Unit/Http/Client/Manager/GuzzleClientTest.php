@@ -73,11 +73,11 @@ class GuzzleClientTest extends TestCase
         //     'form_params' => $parsedBody,
         // ];
 
-        $psr7Response->expects(self::once())->method('getHeaders')->willReturn($headers);
-        $psr7Response->expects(self::once())->method('getStatusCode')->willReturn(200);
-        $psr7Response->expects(self::once())->method('getBody')->willReturn($psr7Body);
-        $psr7Body->expects(self::once())->method('getContents')->willReturn($contents);
-        $guzzle->expects(self::once())
+        $psr7Response->expects($this->once())->method('getHeaders')->willReturn($headers);
+        $psr7Response->expects($this->once())->method('getStatusCode')->willReturn(200);
+        $psr7Response->expects($this->once())->method('getBody')->willReturn($psr7Body);
+        $psr7Body->expects($this->once())->method('getContents')->willReturn($contents);
+        $guzzle->expects($this->once())
                ->method('request')
                ->with(
                    'GET',
