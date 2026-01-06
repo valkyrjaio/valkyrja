@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.17.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.17.1...master)
+
+## [v25.17.1](https://github.com/valkyrjaio/valkyrja/compare/v25.17.0...v25.17.1) - 2026-01-05
+
+* [CI] Add methods to override php_unit_test_case_static_method_calls by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/341
+* [Http] Ensure the middleware calls the handler properly by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/342
 
 ## [v25.17.0](https://github.com/valkyrjaio/valkyrja/compare/v25.16.0...v25.17.0) - 2026-01-04
 
