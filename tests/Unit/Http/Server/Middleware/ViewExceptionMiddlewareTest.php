@@ -32,7 +32,6 @@ class ViewExceptionMiddlewareTest extends TestCase
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
         $request    = new ServerRequest();
         $response   = new Response(statusCode: $statusCode);
-        $handler    = new ThrowableCaughtHandler();
         $exception  = new Exception();
 
         $args = [
@@ -43,10 +42,26 @@ class ViewExceptionMiddlewareTest extends TestCase
 
         $templateText = 'Error: 500';
 
-        $view = self::createStub(ResponseFactory::class);
-        $view->method('createResponseFromView')
-             ->with('errors/500', $args)
-             ->willReturn(Response::create(content: $templateText, statusCode: $statusCode));
+        $viewResponse = Response::create(content: $templateText, statusCode: $statusCode);
+
+        $view = $this->createMock(ResponseFactory::class);
+        $view->expects($this->once())
+             ->method('createResponseFromView')
+             ->with(
+                 $this->equalTo('errors/500'),
+                 $this->equalTo($args)
+             )
+             ->willReturn($viewResponse);
+
+        $handler = $this->createMock(ThrowableCaughtHandler::class);
+        $handler->expects($this->once())
+                ->method('throwableCaught')
+                ->with(
+                    $this->equalTo($request),
+                    $this->equalTo($viewResponse),
+                    $this->equalTo($exception),
+                )
+                ->willReturn($viewResponse);
 
         $middleware = new ViewThrowableCaughtMiddleware(viewResponseFactory: $view);
 

@@ -32,10 +32,26 @@ class LogExceptionMiddlewareTest extends TestCase
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
         $request    = new ServerRequest();
         $response   = new Response(statusCode: $statusCode);
-        $handler    = new ThrowableCaughtHandler();
         $exception  = new Exception();
+        $url        = $request->getUri()->getPath();
 
-        $logger = self::createStub(LoggerContract::class);
+        $logger = $this->createMock(LoggerContract::class);
+        $logger->expects($this->once())
+               ->method('throwable')
+               ->with(
+                   $this->equalTo($exception),
+                   $this->equalTo("Http Server Error\nUrl: $url"),
+               );
+
+        $handler = $this->createMock(ThrowableCaughtHandler::class);
+        $handler->expects($this->once())
+                ->method('throwableCaught')
+                ->with(
+                    $this->equalTo($request),
+                    $this->equalTo($response),
+                    $this->equalTo($exception),
+                )
+                ->willReturn($response);
 
         $middleware = new LogThrowableCaughtMiddleware(logger: $logger);
 
