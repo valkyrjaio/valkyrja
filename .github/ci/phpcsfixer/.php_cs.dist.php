@@ -12,13 +12,13 @@ declare(strict_types=1);
  */
 
 $header = <<<EOF
-This file is part of the Valkyrja Framework package.
+    This file is part of the Valkyrja Framework package.
 
-(c) Melech Mizrachi <melechmizrachi@gmail.com>
+    (c) Melech Mizrachi <melechmizrachi@gmail.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
-EOF;
+    For the full copyright and license information, please view the LICENSE
+    file that was distributed with this source code.
+    EOF;
 
 $finder = PhpCsFixer\Finder::create()
                            ->exclude('.github')
@@ -201,7 +201,11 @@ return new PhpCsFixer\Config()
             ],
             'php_unit_test_case_static_method_calls'   => [
                 'call_type' => 'self',
-                'methods'   => [],
+                'methods'   => [
+                    'any'     => 'this',
+                    'equalTo' => 'this',
+                    'once'    => 'this',
+                ],
             ],
             'yoda_style'                               => [
                 'equal'            => false,
