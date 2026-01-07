@@ -48,8 +48,8 @@ class ViewExceptionMiddlewareTest extends TestCase
         $view->expects($this->once())
              ->method('createResponseFromView')
              ->with(
-                 $this->equalTo('errors/500'),
-                 $this->equalTo($args)
+                 self::equalTo('errors/500'),
+                 self::equalTo($args)
              )
              ->willReturn($viewResponse);
 
@@ -57,9 +57,9 @@ class ViewExceptionMiddlewareTest extends TestCase
         $handler->expects($this->once())
                 ->method('throwableCaught')
                 ->with(
-                    $this->equalTo($request),
-                    $this->equalTo($viewResponse),
-                    $this->equalTo($exception),
+                    self::equalTo($request),
+                    self::equalTo($viewResponse),
+                    self::equalTo($exception),
                 )
                 ->willReturn($viewResponse);
 
