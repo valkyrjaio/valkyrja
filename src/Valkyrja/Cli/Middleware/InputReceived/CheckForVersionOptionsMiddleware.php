@@ -47,7 +47,9 @@ class CheckForVersionOptionsMiddleware implements InputReceivedMiddlewareContrac
             /** @var non-empty-string $commandName */
             $commandName = $env::CLI_VERSION_COMMAND_NAME;
 
-            $input = $input->withCommandName($commandName);
+            $input = $input
+                ->withCommandName($commandName)
+                ->withOptions();
         }
 
         return $handler->inputReceived($input);
