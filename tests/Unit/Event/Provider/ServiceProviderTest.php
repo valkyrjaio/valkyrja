@@ -16,14 +16,14 @@ namespace Valkyrja\Tests\Unit\Event\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcherContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
+use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Provider\ServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
@@ -37,6 +37,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(DispatcherContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(CollectorContract::class, ServiceProvider::provides());
+        self::assertContains(DispatcherContract::class, ServiceProvider::provides());
+        self::assertContains(CollectionContract::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -45,7 +59,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
         $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
-        ServiceProvider::publishAttributesCollector($this->container);
+        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
     }
@@ -55,19 +70,21 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishDispatcher(): void
     {
-        $this->container->setSingleton(DispatchDispatcher::class, self::createStub(DispatchDispatcher::class));
+        $this->container->setSingleton(DispatchDispatcherContract::class, self::createStub(DispatchDispatcherContract::class));
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
 
-        ServiceProvider::publishDispatcher($this->container);
+        $callback = ServiceProvider::publishers()[DispatcherContract::class];
+        $callback($this->container);
 
-        self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));
     }
 
     public function testPublishCollectionWithData(): void
     {
         $this->container->setSingleton(Data::class, new Data());
 
-        ServiceProvider::publishCollection($this->container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
     }
@@ -86,7 +103,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $collector->method('getListeners')->willReturn([$listener]);
 
-        ServiceProvider::publishCollection($this->container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
         self::assertContains($eventId, $collection->getEvents());
