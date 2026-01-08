@@ -32,6 +32,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(RequestHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ViewThrowableCaughtMiddleware::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(RequestHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(LogThrowableCaughtMiddleware::class, ServiceProvider::provides());
+        self::assertContains(ViewThrowableCaughtMiddleware::class, ServiceProvider::provides());
+    }
+
     public function testPublishersArray(): void
     {
         $publishers = ServiceProvider::publishers();
@@ -65,7 +79,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
 
-        ServiceProvider::publishRequestHandler($container);
+        $callback = ServiceProvider::publishers()[RequestHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             RequestHandler::class,
@@ -79,7 +94,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogThrowableCaughtMiddleware($container);
+        $callback = ServiceProvider::publishers()[LogThrowableCaughtMiddleware::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             LogThrowableCaughtMiddleware::class,
@@ -93,7 +109,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        ServiceProvider::publishViewThrowableCaughtMiddleware($container);
+        $callback = ServiceProvider::publishers()[ViewThrowableCaughtMiddleware::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             ViewThrowableCaughtMiddleware::class,

@@ -32,6 +32,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(ClientContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(GuzzleClient::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Client::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogClient::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullClient::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(ClientContract::class, ServiceProvider::provides());
+        self::assertContains(GuzzleClient::class, ServiceProvider::provides());
+        self::assertContains(Client::class, ServiceProvider::provides());
+        self::assertContains(LogClient::class, ServiceProvider::provides());
+        self::assertContains(NullClient::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -39,7 +57,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(GuzzleClient::class, self::createStub(GuzzleClient::class));
 
-        ServiceProvider::publishClient($this->container);
+        $callback = ServiceProvider::publishers()[ClientContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(ClientContract::class));
     }
@@ -52,7 +71,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        ServiceProvider::publishGuzzleClient($this->container);
+        $callback = ServiceProvider::publishers()[GuzzleClient::class];
+        $callback($this->container);
 
         self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(GuzzleClient::class));
     }
@@ -64,14 +84,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogClient($this->container);
+        $callback = ServiceProvider::publishers()[LogClient::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogClient::class, $this->container->getSingleton(LogClient::class));
     }
 
     public function testPublishNullClient(): void
     {
-        ServiceProvider::publishNullClient($this->container);
+        $callback = ServiceProvider::publishers()[NullClient::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullClient::class, $this->container->getSingleton(NullClient::class));
     }
@@ -81,7 +103,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishGuzzle(): void
     {
-        ServiceProvider::publishGuzzle($this->container);
+        $callback = ServiceProvider::publishers()[Client::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
     }

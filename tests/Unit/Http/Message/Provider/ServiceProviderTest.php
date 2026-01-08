@@ -26,9 +26,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
+    }
+
     public function testPublishResponseFactory(): void
     {
-        ServiceProvider::publishResponseFactory($this->container);
+        $callback = ServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(ResponseFactory::class, $this->container->getSingleton(ResponseFactoryContract::class));
     }
