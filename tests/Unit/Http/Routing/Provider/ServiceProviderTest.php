@@ -63,47 +63,32 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
-    public function testPublishersArray(): void
+    public function testExpectedPublishers(): void
     {
-        $publishers = ServiceProvider::publishers();
-
-        self::assertArrayHasKey(RouterContract::class, $publishers);
-        self::assertArrayHasKey(CollectionContract::class, $publishers);
-        self::assertArrayHasKey(MatcherContract::class, $publishers);
-        self::assertArrayHasKey(UrlContract::class, $publishers);
-        self::assertArrayHasKey(CollectorContract::class, $publishers);
-        self::assertArrayHasKey(ProcessorContract::class, $publishers);
-        self::assertArrayHasKey(ResponseFactoryContract::class, $publishers);
-        self::assertArrayHasKey(RequestStructMiddleware::class, $publishers);
-        self::assertArrayHasKey(ResponseStructMiddleware::class, $publishers);
-        self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, $publishers);
-
-        self::assertSame([ServiceProvider::class, 'publishRouter'], $publishers[RouterContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishCollection'], $publishers[CollectionContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishMatcher'], $publishers[MatcherContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishUrl'], $publishers[UrlContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishAttributesCollector'], $publishers[CollectorContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishProcessor'], $publishers[ProcessorContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishResponseFactory'], $publishers[ResponseFactoryContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishRequestStructMiddleware'], $publishers[RequestStructMiddleware::class]);
-        self::assertSame([ServiceProvider::class, 'publishResponseStructMiddleware'], $publishers[ResponseStructMiddleware::class]);
-        self::assertSame([ServiceProvider::class, 'publishViewRouteNotMatchedMiddleware'], $publishers[ViewRouteNotMatchedMiddleware::class]);
+        self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(MatcherContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(UrlContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ProcessorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RequestStructMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ResponseStructMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, ServiceProvider::publishers());
     }
 
-    public function testProvidesArray(): void
+    public function testExpectedProvides(): void
     {
-        $provides = ServiceProvider::provides();
-
-        self::assertContains(RouterContract::class, $provides);
-        self::assertContains(CollectionContract::class, $provides);
-        self::assertContains(MatcherContract::class, $provides);
-        self::assertContains(UrlContract::class, $provides);
-        self::assertContains(CollectorContract::class, $provides);
-        self::assertContains(ProcessorContract::class, $provides);
-        self::assertContains(ResponseFactoryContract::class, $provides);
-        self::assertContains(RequestStructMiddleware::class, $provides);
-        self::assertContains(ResponseStructMiddleware::class, $provides);
-        self::assertContains(ViewRouteNotMatchedMiddleware::class, $provides);
+        self::assertContains(RouterContract::class, ServiceProvider::provides());
+        self::assertContains(CollectionContract::class, ServiceProvider::provides());
+        self::assertContains(MatcherContract::class, ServiceProvider::provides());
+        self::assertContains(UrlContract::class, ServiceProvider::provides());
+        self::assertContains(CollectorContract::class, ServiceProvider::provides());
+        self::assertContains(ProcessorContract::class, ServiceProvider::provides());
+        self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
+        self::assertContains(RequestStructMiddleware::class, ServiceProvider::provides());
+        self::assertContains(ResponseStructMiddleware::class, ServiceProvider::provides());
+        self::assertContains(ViewRouteNotMatchedMiddleware::class, ServiceProvider::provides());
     }
 
     public function testPublishRouter(): void
@@ -123,7 +108,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouterContract::class));
 
-        ServiceProvider::publishRouter($container);
+        $callback = ServiceProvider::publishers()[RouterContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(RouterContract::class));
         self::assertTrue($container->isSingleton(RouterContract::class));
@@ -139,7 +125,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectionContract::class));
 
-        ServiceProvider::publishCollection($container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
         self::assertTrue($container->isSingleton(CollectionContract::class));
@@ -162,7 +149,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->method('getRoutes')->willReturn([$route]);
 
-        ServiceProvider::publishCollection($container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
         self::assertTrue($container->isSingleton(CollectionContract::class));
@@ -178,7 +166,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(MatcherContract::class));
 
-        ServiceProvider::publishMatcher($container);
+        $callback = ServiceProvider::publishers()[MatcherContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(MatcherContract::class));
         self::assertTrue($container->isSingleton(MatcherContract::class));
@@ -195,7 +184,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(UrlContract::class));
 
-        ServiceProvider::publishUrl($container);
+        $callback = ServiceProvider::publishers()[UrlContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(UrlContract::class));
         self::assertTrue($container->isSingleton(UrlContract::class));
@@ -212,7 +202,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectorContract::class));
 
-        ServiceProvider::publishAttributesCollector($container);
+        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(CollectorContract::class));
         self::assertTrue($container->isSingleton(CollectorContract::class));
@@ -225,7 +216,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ProcessorContract::class));
 
-        ServiceProvider::publishProcessor($container);
+        $callback = ServiceProvider::publishers()[ProcessorContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(ProcessorContract::class));
         self::assertTrue($container->isSingleton(ProcessorContract::class));
@@ -241,7 +233,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ResponseFactoryContract::class));
 
-        ServiceProvider::publishResponseFactory($container);
+        $callback = ServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(ResponseFactoryContract::class));
         self::assertTrue($container->isSingleton(ResponseFactoryContract::class));
@@ -254,7 +247,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RequestStructMiddleware::class));
 
-        ServiceProvider::publishRequestStructMiddleware($container);
+        $callback = ServiceProvider::publishers()[RequestStructMiddleware::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(RequestStructMiddleware::class));
         self::assertTrue($container->isSingleton(RequestStructMiddleware::class));
@@ -267,7 +261,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ResponseStructMiddleware::class));
 
-        ServiceProvider::publishResponseStructMiddleware($container);
+        $callback = ServiceProvider::publishers()[ResponseStructMiddleware::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(ResponseStructMiddleware::class));
         self::assertTrue($container->isSingleton(ResponseStructMiddleware::class));
@@ -282,7 +277,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
 
-        ServiceProvider::publishViewRouteNotMatchedMiddleware($container);
+        $callback = ServiceProvider::publishers()[ViewRouteNotMatchedMiddleware::class];
+        $callback($this->container);
 
         self::assertTrue($container->has(ViewRouteNotMatchedMiddleware::class));
         self::assertTrue($container->isSingleton(ViewRouteNotMatchedMiddleware::class));
