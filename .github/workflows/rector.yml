@@ -32,6 +32,9 @@ jobs:
         id: changes
         with:
           filters: |
+            ci:
+              - '.github/ci/rector/**'
+              - '.github/workflows/rector.yml'
             files:
               - '.github/ci/rector/**'
               - '.github/workflows/rector.yml'
@@ -40,6 +43,15 @@ jobs:
               - 'src/**/*.php'
               - 'tests/**/*.php'
               - 'composer.json'
+
+      - name: Get latest CI code from target
+        if: steps.changes.outputs.ci != 'true' && github.base_ref
+        env:
+          REF: ${{ github.base_ref }}
+        run: |
+          echo "Using CI code from `$REF`"
+          git fetch origin "$REF"
+          git checkout origin/"$REF" -- .github/ci/rector
 
       - name: Setup PHP
         if: steps.changes.outputs.files == 'true'
