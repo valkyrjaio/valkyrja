@@ -33,6 +33,26 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(MessengerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(VonageMessenger::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Client::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CredentialsInterface::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogMessenger::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullMessenger::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(MessengerContract::class, ServiceProvider::provides());
+        self::assertContains(VonageMessenger::class, ServiceProvider::provides());
+        self::assertContains(Client::class, ServiceProvider::provides());
+        self::assertContains(CredentialsInterface::class, ServiceProvider::provides());
+        self::assertContains(LogMessenger::class, ServiceProvider::provides());
+        self::assertContains(NullMessenger::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -40,7 +60,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VonageMessenger::class, self::createStub(VonageMessenger::class));
 
-        ServiceProvider::publishSms($this->container);
+        $callback = ServiceProvider::publishers()[MessengerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(MessengerContract::class));
     }
@@ -52,7 +73,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
 
-        ServiceProvider::publishVonageSms($this->container);
+        $callback = ServiceProvider::publishers()[VonageMessenger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(VonageMessenger::class));
     }
@@ -64,14 +86,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CredentialsInterface::class, new Basic('', ''));
 
-        ServiceProvider::publishVonage($this->container);
+        $callback = ServiceProvider::publishers()[Client::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
     }
 
     public function testPublishVonageCredentials(): void
     {
-        ServiceProvider::publishVonageCredentials($this->container);
+        $callback = ServiceProvider::publishers()[CredentialsInterface::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Basic::class, $this->container->getSingleton(CredentialsInterface::class));
     }
@@ -83,14 +107,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogSms($this->container);
+        $callback = ServiceProvider::publishers()[LogMessenger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogMessenger::class, $this->container->getSingleton(LogMessenger::class));
     }
 
     public function testPublishNullSms(): void
     {
-        ServiceProvider::publishNullSms($this->container);
+        $callback = ServiceProvider::publishers()[NullMessenger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullMessenger::class, $this->container->getSingleton(NullMessenger::class));
     }
