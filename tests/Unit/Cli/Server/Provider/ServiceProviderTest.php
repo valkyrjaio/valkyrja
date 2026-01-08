@@ -22,6 +22,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -34,6 +35,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(InputHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(OutputThrowableCaughtMiddleware::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(InputHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(LogThrowableCaughtMiddleware::class, ServiceProvider::provides());
+        self::assertContains(OutputThrowableCaughtMiddleware::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -45,7 +60,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
         $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
 
-        ServiceProvider::publishInputHandler($this->container);
+        $callback = ServiceProvider::publishers()[InputHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(InputHandler::class, $this->container->getSingleton(InputHandlerContract::class));
     }
@@ -57,8 +73,17 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogThrowableCaughtMiddleware($this->container);
+        $callback = ServiceProvider::publishers()[LogThrowableCaughtMiddleware::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogThrowableCaughtMiddleware::class, $this->container->getSingleton(LogThrowableCaughtMiddleware::class));
+    }
+
+    public function testPublishOutputThrowableCaughtMiddleware(): void
+    {
+        $callback = ServiceProvider::publishers()[OutputThrowableCaughtMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OutputThrowableCaughtMiddleware::class, $this->container->getSingleton(OutputThrowableCaughtMiddleware::class));
     }
 }

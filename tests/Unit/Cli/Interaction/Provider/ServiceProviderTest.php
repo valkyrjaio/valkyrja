@@ -29,9 +29,22 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(Config::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(OutputFactoryContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(Config::class, ServiceProvider::provides());
+        self::assertContains(OutputFactoryContract::class, ServiceProvider::provides());
+    }
+
     public function testPublishConfig(): void
     {
-        ServiceProvider::publishConfig($this->container);
+        $callback = ServiceProvider::publishers()[Config::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Config::class, $config = $this->container->getSingleton(Config::class));
         self::assertSame(Env::CLI_INTERACTION_IS_QUIET, $config->isQuiet);
@@ -46,7 +59,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Config::class, self::createStub(Config::class));
 
-        ServiceProvider::publishOutputFactory($this->container);
+        $callback = ServiceProvider::publishers()[OutputFactoryContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(OutputFactory::class, $this->container->getSingleton(OutputFactoryContract::class));
     }
