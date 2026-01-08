@@ -38,6 +38,26 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(RendererContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PhpRenderer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(OrkaRenderer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(TwigRenderer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Environment::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(RendererContract::class, ServiceProvider::provides());
+        self::assertContains(PhpRenderer::class, ServiceProvider::provides());
+        self::assertContains(OrkaRenderer::class, ServiceProvider::provides());
+        self::assertContains(TwigRenderer::class, ServiceProvider::provides());
+        self::assertContains(Environment::class, ServiceProvider::provides());
+        self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -45,21 +65,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PhpRenderer::class, self::createStub(PhpRenderer::class));
 
-        ServiceProvider::publishRenderer($this->container);
+        $callback = ServiceProvider::publishers()[RendererContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(RendererContract::class));
     }
 
     public function testPublishPhpRenderer(): void
     {
-        ServiceProvider::publishPhpRenderer($this->container);
+        $callback = ServiceProvider::publishers()[PhpRenderer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(PhpRenderer::class));
     }
 
     public function testPublishOrkaRenderer(): void
     {
-        ServiceProvider::publishOrkaRenderer($this->container);
+        $callback = ServiceProvider::publishers()[OrkaRenderer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(OrkaRenderer::class, $this->container->getSingleton(OrkaRenderer::class));
     }
@@ -71,7 +94,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Environment::class, self::createStub(Environment::class));
 
-        ServiceProvider::publishTwigRenderer($this->container);
+        $callback = ServiceProvider::publishers()[TwigRenderer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(TwigRenderer::class, $this->container->getSingleton(TwigRenderer::class));
     }
@@ -95,7 +119,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
             }
         );
 
-        ServiceProvider::publishTwigEnvironment($this->container);
+        $callback = ServiceProvider::publishers()[Environment::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Environment::class, $this->container->getSingleton(Environment::class));
     }
@@ -108,7 +133,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
         $this->container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
-        ServiceProvider::publishResponseFactory($this->container);
+        $callback = ServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(ResponseFactory::class, $this->container->getSingleton(ResponseFactoryContract::class));
     }
