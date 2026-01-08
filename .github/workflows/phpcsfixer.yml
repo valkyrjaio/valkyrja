@@ -47,7 +47,7 @@ jobs:
       - name: Get latest CI code from target
         if: steps.changes.outputs.ci == 'true'
         env:
-          REF: github.base_ref
+          REF: ${{ github.base_ref }}
         run: |
           echo "github.base_ref: $REF"
 
