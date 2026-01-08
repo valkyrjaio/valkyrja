@@ -67,6 +67,11 @@ final class ServiceProvider extends Provider
     {
         return [
             AuthenticatorContract::class,
+            EncryptedJwtAuthenticator::class,
+            EncryptedTokenAuthenticator::class,
+            JwtAuthenticator::class,
+            SessionAuthenticator::class,
+            TokenAuthenticator::class,
             StoreContract::class,
             OrmStore::class,
             InMemoryStore::class,
