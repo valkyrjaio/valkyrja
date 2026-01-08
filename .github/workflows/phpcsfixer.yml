@@ -45,7 +45,7 @@ jobs:
               - 'composer.json'
 
       - name: Get latest CI code from target
-        if: steps.changes.outputs.ci == 'true' && github.base_ref
+        if: steps.changes.outputs.ci != 'true' && github.base_ref
         env:
           REF: ${{ github.base_ref }}
         run: |
