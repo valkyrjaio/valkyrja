@@ -45,6 +45,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(CollectorContract::class, ServiceProvider::provides());
+        self::assertContains(RouterContract::class, ServiceProvider::provides());
+        self::assertContains(CollectionContract::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -53,7 +67,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
         $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
-        ServiceProvider::publishAttributeCollector($this->container);
+        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
     }
@@ -72,7 +87,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        ServiceProvider::publishRouter($this->container);
+        $callback = ServiceProvider::publishers()[RouterContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Router::class, $this->container->getSingleton(RouterContract::class));
     }
@@ -81,7 +97,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Data::class, new Data());
 
-        ServiceProvider::publishCollection($this->container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
     }
@@ -102,7 +119,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->method('getRoutes')->willReturn([$command]);
 
-        ServiceProvider::publishCollection($this->container);
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
         self::assertNotNull($collection->get('test'));

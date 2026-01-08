@@ -25,6 +25,9 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -36,9 +39,36 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(InputReceivedHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ThrowableCaughtHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RouteMatchedHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RouteDispatchedHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ExitedHandlerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CheckForVersionOptionsMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(InputReceivedHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(ThrowableCaughtHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(RouteMatchedHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(RouteNotMatchedHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(RouteDispatchedHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(ExitedHandlerContract::class, ServiceProvider::provides());
+        self::assertContains(CheckForHelpOptionsMiddleware::class, ServiceProvider::provides());
+        self::assertContains(CheckForVersionOptionsMiddleware::class, ServiceProvider::provides());
+        self::assertContains(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::provides());
+    }
+
     public function testPublishInputReceivedHandler(): void
     {
-        ServiceProvider::publishInputReceivedHandler($this->container);
+        $callback = ServiceProvider::publishers()[InputReceivedHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             InputReceivedHandler::class,
@@ -48,7 +78,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteDispatchedHandler(): void
     {
-        ServiceProvider::publishRouteDispatchedHandler($this->container);
+        $callback = ServiceProvider::publishers()[RouteDispatchedHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             RouteDispatchedHandler::class,
@@ -58,7 +89,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandler(): void
     {
-        ServiceProvider::publishThrowableCaughtHandler($this->container);
+        $callback = ServiceProvider::publishers()[ThrowableCaughtHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             ThrowableCaughtHandler::class,
@@ -68,7 +100,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteMatchedHandler(): void
     {
-        ServiceProvider::publishRouteMatchedHandler($this->container);
+        $callback = ServiceProvider::publishers()[RouteMatchedHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             RouteMatchedHandler::class,
@@ -78,7 +111,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteNotMatchedHandler(): void
     {
-        ServiceProvider::publishRouteNotMatchedHandler($this->container);
+        $callback = ServiceProvider::publishers()[RouteNotMatchedHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             RouteNotMatchedHandler::class,
@@ -88,7 +122,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishExitedHandler(): void
     {
-        ServiceProvider::publishExitedHandler($this->container);
+        $callback = ServiceProvider::publishers()[ExitedHandlerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(
             ExitedHandler::class,

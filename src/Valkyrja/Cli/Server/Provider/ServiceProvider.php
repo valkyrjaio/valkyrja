@@ -22,6 +22,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -35,8 +36,9 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputHandlerContract::class         => [self::class, 'publishInputHandler'],
-            LogThrowableCaughtMiddleware::class => [self::class, 'publishLogThrowableCaughtMiddleware'],
+            InputHandlerContract::class            => [self::class, 'publishInputHandler'],
+            LogThrowableCaughtMiddleware::class    => [self::class, 'publishLogThrowableCaughtMiddleware'],
+            OutputThrowableCaughtMiddleware::class => [self::class, 'publishOutputThrowableCaughtMiddleware'],
         ];
     }
 
@@ -49,6 +51,7 @@ final class ServiceProvider extends Provider
         return [
             InputHandlerContract::class,
             LogThrowableCaughtMiddleware::class,
+            OutputThrowableCaughtMiddleware::class,
         ];
     }
 
@@ -82,6 +85,17 @@ final class ServiceProvider extends Provider
             new LogThrowableCaughtMiddleware(
                 logger: $container->getSingleton(LoggerContract::class),
             )
+        );
+    }
+
+    /**
+     * Publish the OutputThrowableCaughtMiddleware service.
+     */
+    public static function publishOutputThrowableCaughtMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            OutputThrowableCaughtMiddleware::class,
+            new OutputThrowableCaughtMiddleware()
         );
     }
 }
