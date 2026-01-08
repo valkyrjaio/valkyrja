@@ -23,9 +23,9 @@ use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 class CheckForHelpOptionsMiddleware implements InputReceivedMiddlewareContract
 {
     /**
-     * @param string $commandName     The command name to route to
-     * @param string $optionName      The option name to check for
-     * @param string $optionShortName The option short name to check for
+     * @param non-empty-string $commandName     The command name to route to
+     * @param non-empty-string $optionName      The option name to check for
+     * @param non-empty-string $optionShortName The option short name to check for
      */
     public function __construct(
         protected string $commandName,
