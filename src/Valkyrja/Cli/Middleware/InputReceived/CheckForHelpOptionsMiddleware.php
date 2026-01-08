@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\InputReceived;
 
 use Override;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -23,8 +22,15 @@ use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
 class CheckForHelpOptionsMiddleware implements InputReceivedMiddlewareContract
 {
+    /**
+     * @param string $commandName     The command name to route to
+     * @param string $optionName      The option name to check for
+     * @param string $optionShortName The option short name to check for
+     */
     public function __construct(
-        protected Env $env,
+        protected string $commandName,
+        protected string $optionName,
+        protected string $optionShortName,
     ) {
     }
 
@@ -34,22 +40,13 @@ class CheckForHelpOptionsMiddleware implements InputReceivedMiddlewareContract
     #[Override]
     public function inputReceived(InputContract $input, InputReceivedHandlerContract $handler): InputContract|OutputContract
     {
-        $env = $this->env;
-        /** @var non-empty-string $name */
-        $name = $env::CLI_HELP_OPTION_NAME;
-        /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_HELP_OPTION_SHORT_NAME;
-
         // Check if the options are set for help
         if (
-            $input->hasOption($shortName)
-            || $input->hasOption($name)
+            $input->hasOption($this->optionShortName)
+            || $input->hasOption($this->optionName)
         ) {
-            /** @var non-empty-string $commandName */
-            $commandName = $env::CLI_HELP_COMMAND_NAME;
-
             $input = $input
-                ->withCommandName($commandName)
+                ->withCommandName($this->commandName)
                 ->withOptions(
                     new Option('command', $input->getCommandName()),
                 );

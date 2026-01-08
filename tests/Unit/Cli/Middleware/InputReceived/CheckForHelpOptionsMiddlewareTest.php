@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\InputReceived;
 
+use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 class CheckForHelpOptionsMiddlewareTest extends TestCase
 {
     public function testWithoutHelpOptions(): void
     {
-        $env     = new EnvClass();
         $input   = new Input();
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -34,7 +33,11 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->with($input)
             ->willReturn($input);
 
-        $middleware = new CheckForHelpOptionsMiddleware(env: $env);
+        $middleware = new CheckForHelpOptionsMiddleware(
+            commandName: HelpCommand::NAME,
+            optionName: HelpOptionParameter::NAME,
+            optionShortName: HelpOptionParameter::SHORT_NAME,
+        );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
@@ -43,7 +46,6 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
     public function testWithHelpOption(): void
     {
-        $env     = new EnvClass();
         $input   = new Input()->withOptions(new Option(name: HelpOptionParameter::NAME));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -51,12 +53,16 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->method('inputReceived')
             ->willReturnArgument(0);
 
-        $middleware = new CheckForHelpOptionsMiddleware(env: $env);
+        $middleware = new CheckForHelpOptionsMiddleware(
+            commandName: HelpCommand::NAME,
+            optionName: HelpOptionParameter::NAME,
+            optionShortName: HelpOptionParameter::SHORT_NAME,
+        );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame($env::CLI_HELP_COMMAND_NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(HelpCommand::NAME, $inputAfterMiddleware->getCommandName());
         self::assertNotEmpty($inputAfterMiddleware->getOptions());
         self::assertSame('command', $inputAfterMiddleware->getOptions()[0]->getName());
         self::assertSame($input->getCommandName(), $inputAfterMiddleware->getOptions()[0]->getValue());
@@ -64,7 +70,6 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
     public function testWithHelpShortOption(): void
     {
-        $env     = new EnvClass();
         $input   = new Input()->withOptions(new Option(name: HelpOptionParameter::SHORT_NAME));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -72,12 +77,16 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->method('inputReceived')
             ->willReturnArgument(0);
 
-        $middleware = new CheckForHelpOptionsMiddleware(env: $env);
+        $middleware = new CheckForHelpOptionsMiddleware(
+            commandName: HelpCommand::NAME,
+            optionName: HelpOptionParameter::NAME,
+            optionShortName: HelpOptionParameter::SHORT_NAME,
+        );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame($env::CLI_HELP_COMMAND_NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(HelpCommand::NAME, $inputAfterMiddleware->getCommandName());
         self::assertNotEmpty($inputAfterMiddleware->getOptions());
         self::assertSame('command', $inputAfterMiddleware->getOptions()[0]->getName());
         self::assertSame($input->getCommandName(), $inputAfterMiddleware->getOptions()[0]->getValue());
