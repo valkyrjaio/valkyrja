@@ -37,6 +37,9 @@ use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
@@ -251,7 +254,12 @@ final class ServiceProvider extends Provider
             CheckGlobalInteractionOptionsMiddleware::class,
             new CheckGlobalInteractionOptionsMiddleware(
                 config: $container->getSingleton(Config::class),
-                env: $container->getSingleton(Env::class)
+                noInteractionOptionName: NoInteractionOptionParameter::NAME,
+                noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
+                quietOptionName: QuietOptionParameter::NAME,
+                quietOptionShortName: QuietOptionParameter::SHORT_NAME,
+                silentOptionName: SilentOptionParameter::NAME,
+                silentOptionShortName: SilentOptionParameter::SHORT_NAME
             )
         );
     }
