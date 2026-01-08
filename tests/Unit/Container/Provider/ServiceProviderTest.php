@@ -36,6 +36,18 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(CollectorContract::class, ServiceProvider::provides());
+        self::assertContains(Data::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -43,7 +55,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
 
-        ServiceProvider::publishAttributesCollector($this->container);
+        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
     }
@@ -63,7 +76,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $alias = new Alias(serviceId: Singleton2Class::class)->withDispatch(new ClassDispatch(SingletonClass::class));
         $collector->method('getAliases')->willReturn([$alias]);
 
-        ServiceProvider::publishData($this->container);
+        $callback = ServiceProvider::publishers()[Data::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Data::class, $this->container->getSingleton(Data::class));
     }
@@ -81,7 +95,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $service = new Service(serviceId: self::class)->withDispatch(new ClassDispatch(self::class));
         $collector->method('getServices')->willReturn([$service]);
 
-        ServiceProvider::publishData($this->container);
+        $callback = ServiceProvider::publishers()[Data::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Data::class, $this->container->getSingleton(Data::class));
     }
