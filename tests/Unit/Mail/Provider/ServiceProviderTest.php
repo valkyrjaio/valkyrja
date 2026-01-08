@@ -34,6 +34,30 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(MailerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(MailgunMailer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Mailgun::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(HttpClientConfigurator::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PhpMailer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PHPMailerClient::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogMailer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullMailer::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(MailerContract::class, ServiceProvider::provides());
+        self::assertContains(MailgunMailer::class, ServiceProvider::provides());
+        self::assertContains(Mailgun::class, ServiceProvider::provides());
+        self::assertContains(HttpClientConfigurator::class, ServiceProvider::provides());
+        self::assertContains(PhpMailer::class, ServiceProvider::provides());
+        self::assertContains(PHPMailerClient::class, ServiceProvider::provides());
+        self::assertContains(LogMailer::class, ServiceProvider::provides());
+        self::assertContains(NullMailer::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -41,7 +65,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(MailgunMailer::class, self::createStub(MailgunMailer::class));
 
-        ServiceProvider::publishMailer($this->container);
+        $callback = ServiceProvider::publishers()[MailerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(MailerContract::class));
     }
@@ -53,7 +78,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Mailgun::class, self::createStub(Mailgun::class));
 
-        ServiceProvider::publishMailgunMailer($this->container);
+        $callback = ServiceProvider::publishers()[MailgunMailer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(MailgunMailer::class));
     }
@@ -61,14 +87,17 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishMailgun(): void
     {
         ServiceProvider::publishMailgunHttpClientConfigurator($this->container);
-        ServiceProvider::publishMailgun($this->container);
+
+        $callback = ServiceProvider::publishers()[Mailgun::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Mailgun::class, $this->container->getSingleton(Mailgun::class));
     }
 
     public function testPublishMailgunHttpClientConfigurator(): void
     {
-        ServiceProvider::publishMailgunHttpClientConfigurator($this->container);
+        $callback = ServiceProvider::publishers()[HttpClientConfigurator::class];
+        $callback($this->container);
 
         self::assertInstanceOf(HttpClientConfigurator::class, $this->container->getSingleton(HttpClientConfigurator::class));
     }
@@ -80,14 +109,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PHPMailerClient::class, self::createStub(PHPMailerClient::class));
 
-        ServiceProvider::publishPhpMailer($this->container);
+        $callback = ServiceProvider::publishers()[PhpMailer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PhpMailer::class, $this->container->getSingleton(PhpMailer::class));
     }
 
     public function testPublishPhpMailerClient(): void
     {
-        ServiceProvider::publishPhpMailerClient($this->container);
+        $callback = ServiceProvider::publishers()[PHPMailerClient::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PHPMailerClient::class, $this->container->getSingleton(PHPMailerClient::class));
     }
@@ -99,14 +130,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogMailer($this->container);
+        $callback = ServiceProvider::publishers()[LogMailer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogMailer::class, $this->container->getSingleton(LogMailer::class));
     }
 
     public function testPublishNullMailer(): void
     {
-        ServiceProvider::publishNullMailer($this->container);
+        $callback = ServiceProvider::publishers()[NullMailer::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullMailer::class, $this->container->getSingleton(NullMailer::class));
     }
