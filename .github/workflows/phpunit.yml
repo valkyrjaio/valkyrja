@@ -35,6 +35,10 @@ jobs:
         uses: dorny/paths-filter@v3
         with:
           filters: |
+            ci:
+              - '.github/ci/phpunit/**'
+              - '.github/ci/root-and-suggested/**'
+              - '.github/workflows/phpunit.yml'
             files:
               - '.github/ci/phpunit/**'
               - '.github/ci/root-and-suggested/**'
@@ -44,6 +48,16 @@ jobs:
               - 'src/**/*.php'
               - 'tests/**/*.php'
               - 'composer.json'
+
+      - name: Get latest CI code from target
+        if: steps.changes.outputs.ci != 'true' && github.base_ref
+        env:
+          REF: ${{ github.base_ref }}
+        run: |
+          echo "Using CI code from `$REF`"
+          git fetch origin "$REF"
+          git checkout origin/"$REF" -- .github/ci/phpunit
+          git checkout origin/"$REF" -- .github/ci/root-and-suggested
 
       - name: Setup PHP
         if: steps.changes.outputs.files == 'true'
