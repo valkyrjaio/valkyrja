@@ -36,6 +36,30 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(ManagerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(MysqlManager::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PgsqlManager::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(SqliteManager::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PDO::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(InMemoryManager::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullManager::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Repository::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(ManagerContract::class, ServiceProvider::provides());
+        self::assertContains(MysqlManager::class, ServiceProvider::provides());
+        self::assertContains(PgsqlManager::class, ServiceProvider::provides());
+        self::assertContains(SqliteManager::class, ServiceProvider::provides());
+        self::assertContains(PDO::class, ServiceProvider::provides());
+        self::assertContains(InMemoryManager::class, ServiceProvider::provides());
+        self::assertContains(NullManager::class, ServiceProvider::provides());
+        self::assertContains(Repository::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -43,7 +67,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(MysqlManager::class, self::createStub(MysqlManager::class));
 
-        ServiceProvider::publishManager($this->container);
+        $callback = ServiceProvider::publishers()[ManagerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(ManagerContract::class));
     }
@@ -55,7 +80,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
             static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
         );
 
-        ServiceProvider::publishMysqlManager($this->container);
+        $callback = ServiceProvider::publishers()[MysqlManager::class];
+        $callback($this->container);
 
         self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(MysqlManager::class));
     }
@@ -67,29 +93,37 @@ class ServiceProviderTest extends ServiceProviderTestCase
             static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
         );
 
-        ServiceProvider::publishPgsqlManager($this->container);
+        $callback = ServiceProvider::publishers()[PgsqlManager::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PgsqlManager::class, $this->container->getSingleton(PgsqlManager::class));
     }
 
     public function testPublishSqliteManager(): void
     {
-        ServiceProvider::publishPdo($this->container);
-        ServiceProvider::publishSqliteManager($this->container);
+        $this->container->setCallable(
+            PDO::class,
+            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+        );
+
+        $callback = ServiceProvider::publishers()[SqliteManager::class];
+        $callback($this->container);
 
         self::assertInstanceOf(SqliteManager::class, $this->container->getSingleton(SqliteManager::class));
     }
 
     public function testPublishInMemoryManager(): void
     {
-        ServiceProvider::publishInMemoryManager($this->container);
+        $callback = ServiceProvider::publishers()[InMemoryManager::class];
+        $callback($this->container);
 
         self::assertInstanceOf(InMemoryManager::class, $this->container->getSingleton(InMemoryManager::class));
     }
 
     public function testPublishNullManager(): void
     {
-        ServiceProvider::publishNullManager($this->container);
+        $callback = ServiceProvider::publishers()[NullManager::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullManager::class, $this->container->getSingleton(NullManager::class));
     }
@@ -102,7 +136,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $manager = self::createStub(MysqlManager::class);
         $entity  = Entity::class;
 
-        ServiceProvider::publishRepository($this->container);
+        $callback = ServiceProvider::publishers()[Repository::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Repository::class, $this->container->getCallable(Repository::class, [$manager, $entity]));
     }
@@ -115,7 +150,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $dsn     = 'sqlite::memory:';
         $options = [];
 
-        ServiceProvider::publishPdo($this->container);
+        $callback = ServiceProvider::publishers()[PDO::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PDO::class, $this->container->getCallable(PDO::class, [$dsn, $options]));
     }
