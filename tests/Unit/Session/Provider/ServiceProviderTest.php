@@ -37,6 +37,28 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(SessionContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PhpSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CacheSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CookieSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CookieParams::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(SessionContract::class, ServiceProvider::provides());
+        self::assertContains(PhpSession::class, ServiceProvider::provides());
+        self::assertContains(NullSession::class, ServiceProvider::provides());
+        self::assertContains(CacheSession::class, ServiceProvider::provides());
+        self::assertContains(CookieSession::class, ServiceProvider::provides());
+        self::assertContains(LogSession::class, ServiceProvider::provides());
+        self::assertContains(CookieParams::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -44,7 +66,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PhpSession::class, self::createStub(PhpSession::class));
 
-        ServiceProvider::publishSession($this->container);
+        $callback = ServiceProvider::publishers()[SessionContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(SessionContract::class));
     }
@@ -53,14 +76,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
-        ServiceProvider::publishPhpSession($this->container);
+        $callback = ServiceProvider::publishers()[PhpSession::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(PhpSession::class));
     }
 
     public function testPublishNullSession(): void
     {
-        ServiceProvider::publishNullSession($this->container);
+        $callback = ServiceProvider::publishers()[NullSession::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullSession::class, $this->container->getSingleton(NullSession::class));
     }
@@ -73,7 +98,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CacheContract::class, self::createStub(CacheContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
-        ServiceProvider::publishCacheSession($this->container);
+        $callback = ServiceProvider::publishers()[CacheSession::class];
+        $callback($this->container);
 
         self::assertInstanceOf(CacheSession::class, $this->container->getSingleton(CacheSession::class));
     }
@@ -87,7 +113,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
-        ServiceProvider::publishCookieSession($this->container);
+        $callback = ServiceProvider::publishers()[CookieSession::class];
+        $callback($this->container);
 
         self::assertInstanceOf(CookieSession::class, $this->container->getSingleton(CookieSession::class));
     }
@@ -100,14 +127,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
-        ServiceProvider::publishLogSession($this->container);
+        $callback = ServiceProvider::publishers()[LogSession::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogSession::class, $this->container->getSingleton(LogSession::class));
     }
 
     public function testPublishCookieParams(): void
     {
-        ServiceProvider::publishCookieParams($this->container);
+        $callback = ServiceProvider::publishers()[CookieParams::class];
+        $callback($this->container);
 
         self::assertInstanceOf(CookieParams::class, $cookieParams = $this->container->getSingleton(CookieParams::class));
         self::assertSame(Env::SESSION_COOKIE_PARAM_PATH, $cookieParams->path);
