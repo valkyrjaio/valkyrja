@@ -31,6 +31,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(CacheContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RedisCache::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Client::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogCache::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullCache::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(CacheContract::class, ServiceProvider::provides());
+        self::assertContains(RedisCache::class, ServiceProvider::provides());
+        self::assertContains(Client::class, ServiceProvider::provides());
+        self::assertContains(LogCache::class, ServiceProvider::provides());
+        self::assertContains(NullCache::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -38,7 +56,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(RedisCache::class, self::createStub(RedisCache::class));
 
-        ServiceProvider::publishCache($this->container);
+        $callback = ServiceProvider::publishers()[CacheContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(RedisCache::class, $this->container->getSingleton(CacheContract::class));
     }
@@ -50,14 +69,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
 
-        ServiceProvider::publishRedisCache($this->container);
+        $callback = ServiceProvider::publishers()[RedisCache::class];
+        $callback($this->container);
 
         self::assertInstanceOf(RedisCache::class, $this->container->getSingleton(RedisCache::class));
     }
 
     public function testPublishRedisClient(): void
     {
-        ServiceProvider::publishRedisClient($this->container);
+        $callback = ServiceProvider::publishers()[Client::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
     }
@@ -69,14 +90,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogCache($this->container);
+        $callback = ServiceProvider::publishers()[LogCache::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogCache::class, $this->container->getSingleton(LogCache::class));
     }
 
     public function testPublishNullCache(): void
     {
-        ServiceProvider::publishNullCache($this->container);
+        $callback = ServiceProvider::publishers()[NullCache::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullCache::class, $this->container->getSingleton(NullCache::class));
     }
