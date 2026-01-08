@@ -202,9 +202,10 @@ return new PhpCsFixer\Config()
             'php_unit_test_case_static_method_calls'   => [
                 'call_type' => 'self',
                 'methods'   => [
-                    'any'   => 'this',
-                    'once'  => 'this',
-                    'never' => 'this',
+                    'any'     => 'this',
+                    'equalTo' => 'this',
+                    'once'    => 'this',
+                    'never'   => 'this',
                 ],
             ],
             'yoda_style'                               => [
