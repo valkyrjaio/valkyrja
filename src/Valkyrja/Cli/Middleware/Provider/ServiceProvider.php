@@ -223,10 +223,21 @@ final class ServiceProvider extends Provider
      */
     public static function publishCheckForVersionOptionsMiddleware(ContainerContract $container): void
     {
+        $env = $container->getSingleton(Env::class);
+
+        /** @var non-empty-string $commandName */
+        $commandName = $env::CLI_VERSION_COMMAND_NAME;
+        /** @var non-empty-string $name */
+        $name = $env::CLI_VERSION_OPTION_NAME;
+        /** @var non-empty-string $shortName */
+        $shortName = $env::CLI_VERSION_OPTION_SHORT_NAME;
+
         $container->setSingleton(
             CheckForVersionOptionsMiddleware::class,
             new CheckForVersionOptionsMiddleware(
-                env: $container->getSingleton(Env::class)
+                commandName: $commandName,
+                optionName: $name,
+                optionShortName: $shortName
             )
         );
     }
