@@ -34,6 +34,26 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(BroadcasterContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PusherBroadcaster::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CryptPusherBroadcaster::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Pusher::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LogBroadcaster::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullBroadcaster::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(BroadcasterContract::class, ServiceProvider::provides());
+        self::assertContains(PusherBroadcaster::class, ServiceProvider::provides());
+        self::assertContains(CryptPusherBroadcaster::class, ServiceProvider::provides());
+        self::assertContains(Pusher::class, ServiceProvider::provides());
+        self::assertContains(LogBroadcaster::class, ServiceProvider::provides());
+        self::assertContains(NullBroadcaster::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -41,7 +61,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PusherBroadcaster::class, self::createStub(PusherBroadcaster::class));
 
-        ServiceProvider::publishBroadcaster($this->container);
+        $callback = ServiceProvider::publishers()[BroadcasterContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(BroadcasterContract::class));
     }
@@ -53,7 +74,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
 
-        ServiceProvider::publishPusherBroadcaster($this->container);
+        $callback = ServiceProvider::publishers()[PusherBroadcaster::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(PusherBroadcaster::class));
     }
@@ -66,7 +88,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
 
-        ServiceProvider::publishCryptPusherBroadcaster($this->container);
+        $callback = ServiceProvider::publishers()[CryptPusherBroadcaster::class];
+        $callback($this->container);
 
         self::assertInstanceOf(CryptPusherBroadcaster::class, $this->container->getSingleton(CryptPusherBroadcaster::class));
     }
@@ -76,7 +99,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPusher(): void
     {
-        ServiceProvider::publishPusher($this->container);
+        $callback = ServiceProvider::publishers()[Pusher::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Pusher::class, $this->container->getSingleton(Pusher::class));
     }
@@ -88,14 +112,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        ServiceProvider::publishLogBroadcaster($this->container);
+        $callback = ServiceProvider::publishers()[LogBroadcaster::class];
+        $callback($this->container);
 
         self::assertInstanceOf(LogBroadcaster::class, $this->container->getSingleton(LogBroadcaster::class));
     }
 
     public function testPublishNullBroadcaster(): void
     {
-        ServiceProvider::publishNullBroadcaster($this->container);
+        $callback = ServiceProvider::publishers()[NullBroadcaster::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullBroadcaster::class, $this->container->getSingleton(NullBroadcaster::class));
     }
