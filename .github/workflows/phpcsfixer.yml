@@ -45,11 +45,12 @@ jobs:
               - 'composer.json'
 
       - name: Get latest CI code from target
-        if: steps.changes.outputs.ci == 'true'
+        if: steps.changes.outputs.ci == 'true' && github.base_ref
         env:
           REF: ${{ github.base_ref }}
         run: |
-          echo "github.base_ref: $REF"
+          echo "Using CI code from `$REF`"
+          git checkout origin/"$REF" -- ./github/cli/phpcsfixer
 
       - name: Setup PHP
         if: steps.changes.outputs.files == 'true'
