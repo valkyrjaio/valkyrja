@@ -14,21 +14,30 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\InputReceived;
 
 use Override;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 
 class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddlewareContract
 {
+    /**
+     * @param non-empty-string $noInteractionOptionName      The no interaction option name
+     * @param non-empty-string $noInteractionOptionShortName The no interaction option short name
+     * @param non-empty-string $quietOptionName              The quiet option name
+     * @param non-empty-string $quietOptionShortName         The quiet option short name
+     * @param non-empty-string $silentOptionName             The silent option name
+     * @param non-empty-string $silentOptionShortName        The silent option short name
+     */
     public function __construct(
         protected Config $config,
-        protected Env $env,
+        protected string $noInteractionOptionName,
+        protected string $noInteractionOptionShortName,
+        protected string $quietOptionName,
+        protected string $quietOptionShortName,
+        protected string $silentOptionName,
+        protected string $silentOptionShortName,
     ) {
     }
 
@@ -53,8 +62,8 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
     protected function setIsInteractive(InputContract $input): void
     {
         if (
-            $input->hasOption(NoInteractionOptionParameter::SHORT_NAME)
-            || $input->hasOption(NoInteractionOptionParameter::NAME)
+            $input->hasOption($this->noInteractionOptionShortName)
+            || $input->hasOption($this->noInteractionOptionName)
         ) {
             $this->config->isInteractive = false;
         }
@@ -68,8 +77,8 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
     protected function setIsQuiet(InputContract $input): void
     {
         if (
-            $input->hasOption(QuietOptionParameter::SHORT_NAME)
-            || $input->hasOption(QuietOptionParameter::NAME)
+            $input->hasOption($this->quietOptionShortName)
+            || $input->hasOption($this->quietOptionName)
         ) {
             $this->config->isQuiet = true;
         }
@@ -83,8 +92,8 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
     protected function setIsSilent(InputContract $input): void
     {
         if (
-            $input->hasOption(SilentOptionParameter::SHORT_NAME)
-            || $input->hasOption(SilentOptionParameter::NAME)
+            $input->hasOption($this->silentOptionShortName)
+            || $input->hasOption($this->silentOptionName)
         ) {
             $this->config->isSilent = true;
         }
