@@ -30,6 +30,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(LoggerContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(PsrLogger::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullLogger::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(LoggerInterface::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Logger::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(LoggerContract::class, ServiceProvider::provides());
+        self::assertContains(PsrLogger::class, ServiceProvider::provides());
+        self::assertContains(NullLogger::class, ServiceProvider::provides());
+        self::assertContains(LoggerInterface::class, ServiceProvider::provides());
+        self::assertContains(Logger::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -37,7 +55,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PsrLogger::class, self::createStub(PsrLogger::class));
 
-        ServiceProvider::publishLogger($this->container);
+        $callback = ServiceProvider::publishers()[LoggerContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(LoggerContract::class));
     }
@@ -49,7 +68,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerInterface::class, self::createStub(LoggerInterface::class));
 
-        ServiceProvider::publishPsrLogger($this->container);
+        $callback = ServiceProvider::publishers()[PsrLogger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(PsrLogger::class));
     }
@@ -61,21 +81,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
-        ServiceProvider::publishLoggerInterface($this->container);
+        $callback = ServiceProvider::publishers()[LoggerInterface::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Logger::class, $this->container->getSingleton(LoggerInterface::class));
     }
 
     public function testPublishMonolog(): void
     {
-        ServiceProvider::publishMonolog($this->container);
+        $callback = ServiceProvider::publishers()[Logger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Logger::class, $this->container->getSingleton(Logger::class));
     }
 
     public function testPublishNullLogger(): void
     {
-        ServiceProvider::publishNullLogger($this->container);
+        $callback = ServiceProvider::publishers()[NullLogger::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullLogger::class, $this->container->getSingleton(NullLogger::class));
     }
