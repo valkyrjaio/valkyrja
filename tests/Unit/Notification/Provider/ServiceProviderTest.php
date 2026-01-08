@@ -32,6 +32,18 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(NotifierContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(FactoryContract::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(NotifierContract::class, ServiceProvider::provides());
+        self::assertContains(FactoryContract::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -42,14 +54,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(MailerContract::class, self::createStub(MailerContract::class));
         $this->container->setSingleton(MessengerContract::class, self::createStub(MessengerContract::class));
 
-        ServiceProvider::publishNotifier($this->container);
+        $callback = ServiceProvider::publishers()[NotifierContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(Notifier::class, $this->container->getSingleton(NotifierContract::class));
     }
 
     public function testPublishFactory(): void
     {
-        ServiceProvider::publishFactory($this->container);
+        $callback = ServiceProvider::publishers()[FactoryContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(ContainerFactory::class, $this->container->getSingleton(FactoryContract::class));
     }
