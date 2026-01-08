@@ -28,6 +28,20 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
 
+    public function testExpectedPublishers(): void
+    {
+        self::assertArrayHasKey(CryptContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(SodiumCrypt::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(NullCrypt::class, ServiceProvider::publishers());
+    }
+
+    public function testExpectedProvides(): void
+    {
+        self::assertContains(CryptContract::class, ServiceProvider::provides());
+        self::assertContains(SodiumCrypt::class, ServiceProvider::provides());
+        self::assertContains(NullCrypt::class, ServiceProvider::provides());
+    }
+
     /**
      * @throws Exception
      */
@@ -35,21 +49,24 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(SodiumCrypt::class, self::createStub(SodiumCrypt::class));
 
-        ServiceProvider::publishCrypt($this->container);
+        $callback = ServiceProvider::publishers()[CryptContract::class];
+        $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(CryptContract::class));
     }
 
     public function testPublishSodiumCrypt(): void
     {
-        ServiceProvider::publishSodiumCrypt($this->container);
+        $callback = ServiceProvider::publishers()[SodiumCrypt::class];
+        $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(SodiumCrypt::class));
     }
 
     public function testPublishNullCrypt(): void
     {
-        ServiceProvider::publishNullCrypt($this->container);
+        $callback = ServiceProvider::publishers()[NullCrypt::class];
+        $callback($this->container);
 
         self::assertInstanceOf(NullCrypt::class, $this->container->getSingleton(NullCrypt::class));
     }
