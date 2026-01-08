@@ -126,14 +126,15 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
                 $use          = $compareStmt->uses[0]->name->toString();
                 $lastName     = Strings::after($use, '\\', -1) ?? $use;
                 $useAliasName = $stmt->uses[0]->alias instanceof Identifier ? $stmt->uses[0]->alias->toString() : null;
+                $useHasAlias  = $useAliasName !== null;
 
                 if (
                     // Ensure the alias is not the same as the class name of another use statement
                     strtolower($lastName) === strtolower($aliasName)
-                    // Ensure the alias's class name is not the same as the class name of another use statement
-                    || strtolower($lastName) === strtolower($aliasUseLastName)
-                    // Ensure the alias is not the same as the alias of another use statement
-                    || strtolower($useAliasName) === strtolower($aliasName)
+                    // Ensure the alias's class name is not the same as the class name of another use statement that has no alias
+                    || (! $useHasAlias && strtolower($lastName) === strtolower($aliasUseLastName))
+                    // Ensure the alias is not the same as the alias of another use statement that has an alias
+                    || ($useHasAlias && strtolower($useAliasName) === strtolower($aliasName))
                 ) {
                     // If it matched then this alias is required and we should move onto the next alias
                     continue 2;
