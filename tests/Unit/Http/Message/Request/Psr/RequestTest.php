@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RequestTest extends TestCase
 {

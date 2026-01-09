@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Http\Middleware\Cache\NoCacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class NoCacheMiddlewareTest extends TestCase
 {

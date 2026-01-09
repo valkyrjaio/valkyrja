@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\HtmlResponse;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class HtmlResponseTest extends TestCase
 {

@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 use const JSON_THROW_ON_ERROR;

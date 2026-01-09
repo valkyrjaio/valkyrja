@@ -27,7 +27,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteNotMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Router service.

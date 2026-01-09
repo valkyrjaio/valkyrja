@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Throwable\Exception;
 
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class InvalidReferenceExceptionTest extends TestCase
 {

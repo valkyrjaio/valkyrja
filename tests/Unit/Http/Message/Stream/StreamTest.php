@@ -32,7 +32,7 @@ use Valkyrja\Tests\Classes\Http\Message\Stream\StreamSeekExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamTellExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamWriteExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\UnseekableStreamExceptionClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class StreamTest extends TestCase
 {

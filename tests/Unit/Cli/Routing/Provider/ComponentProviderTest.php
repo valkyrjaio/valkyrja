@@ -19,7 +19,7 @@ use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Routing\Provider\ComponentProvider;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.

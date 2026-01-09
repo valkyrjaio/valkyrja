@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Input;
 use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Input class.

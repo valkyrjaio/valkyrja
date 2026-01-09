@@ -26,7 +26,7 @@ use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function defined;
 

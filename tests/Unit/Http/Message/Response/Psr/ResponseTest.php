@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Response\Psr\Response as PsrResponse;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ResponseTest extends TestCase
 {

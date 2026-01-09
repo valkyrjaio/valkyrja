@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header\Value\Component;
 
 use JsonException;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function json_encode;
 

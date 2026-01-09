@@ -21,7 +21,7 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the attributes collector class.

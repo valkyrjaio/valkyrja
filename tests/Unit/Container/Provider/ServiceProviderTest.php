@@ -27,6 +27,7 @@ use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\Singleton2Class;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

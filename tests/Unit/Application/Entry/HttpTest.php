@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const LOCK_EX;
 

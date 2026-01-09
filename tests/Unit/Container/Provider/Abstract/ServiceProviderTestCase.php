@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container\Provider;
+namespace Valkyrja\Tests\Unit\Container\Provider\Abstract;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_map;
 use function class_exists;

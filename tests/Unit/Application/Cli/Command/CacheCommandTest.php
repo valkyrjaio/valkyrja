@@ -21,7 +21,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Event\Collection\Collection as EventCollection;
 use Valkyrja\Http\Routing\Collection\Collection as HttpCollection;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const LOCK_EX;
 

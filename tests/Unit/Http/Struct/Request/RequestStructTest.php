@@ -26,7 +26,7 @@ use Valkyrja\Tests\Classes\Http\Struct\JsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\WithNoRulesQueryRequestStructEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_filter;
 

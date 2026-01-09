@@ -25,7 +25,7 @@ use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

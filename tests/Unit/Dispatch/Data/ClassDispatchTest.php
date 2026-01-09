@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 use JsonException;
 use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ClassDispatch.

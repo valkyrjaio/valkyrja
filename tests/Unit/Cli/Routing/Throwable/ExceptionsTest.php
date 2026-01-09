@@ -20,7 +20,7 @@ use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Throwable\Contract\Throwable as CliThrowable;
 use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
 use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ExceptionsTest extends TestCase
 {

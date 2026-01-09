@@ -22,7 +22,7 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function restore_error_handler;
 use function restore_exception_handler;

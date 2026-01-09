@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Stream\Enum;
 
 use Valkyrja\Http\Message\Stream\Enum\Mode;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ModeTest extends TestCase
 {

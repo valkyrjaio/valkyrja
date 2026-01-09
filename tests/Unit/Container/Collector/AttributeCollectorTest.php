@@ -18,7 +18,7 @@ use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Tests\Classes\Container\Service2Class;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the attribute collector service.

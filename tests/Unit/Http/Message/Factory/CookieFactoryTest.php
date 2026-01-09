@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Factory;
 
 use Valkyrja\Http\Message\Factory\CookieFactory;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CookieFactoryTest extends TestCase
 {

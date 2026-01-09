@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_filter;
 

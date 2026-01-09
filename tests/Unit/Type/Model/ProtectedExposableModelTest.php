@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\ProtectedExposableModelClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const JSON_THROW_ON_ERROR;
 

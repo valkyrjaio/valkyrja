@@ -28,7 +28,7 @@ use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatchClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function count;
 use function method_exists;

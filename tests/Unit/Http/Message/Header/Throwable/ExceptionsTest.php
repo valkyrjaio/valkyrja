@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedMethodException;
 use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ExceptionsTest extends TestCase
 {

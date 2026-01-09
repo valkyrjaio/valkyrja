@@ -22,7 +22,7 @@ use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionEmptyFgetsClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFgetsClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFopenClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Question class.

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Stream\Psr;
 
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class StreamTest extends TestCase
 {

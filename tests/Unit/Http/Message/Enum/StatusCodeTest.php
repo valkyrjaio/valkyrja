@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Enum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 use function constant;

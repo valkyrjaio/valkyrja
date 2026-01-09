@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Middleware attribute.

@@ -29,7 +29,7 @@ use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

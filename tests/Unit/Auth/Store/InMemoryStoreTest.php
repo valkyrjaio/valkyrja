@@ -18,7 +18,7 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PASSWORD_DEFAULT;
 

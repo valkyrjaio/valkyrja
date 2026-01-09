@@ -22,7 +22,7 @@ use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
 

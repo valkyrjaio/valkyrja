@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 use Exception;
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Str;
 
 class StringTest extends TestCase

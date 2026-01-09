@@ -29,7 +29,7 @@ use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Router service.

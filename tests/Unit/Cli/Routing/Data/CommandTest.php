@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Command class.

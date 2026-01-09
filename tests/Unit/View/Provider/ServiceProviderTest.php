@@ -21,7 +21,7 @@ use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
 use Valkyrja\View\Provider\ServiceProvider;

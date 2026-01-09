@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Formatter;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Formatter\SuccessFormatter;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the SuccessFormatter class.

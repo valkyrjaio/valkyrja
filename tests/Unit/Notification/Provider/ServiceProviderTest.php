@@ -22,7 +22,7 @@ use Valkyrja\Notification\Notifier\Contract\NotifierContract;
 use Valkyrja\Notification\Notifier\Notifier;
 use Valkyrja\Notification\Provider\ServiceProvider;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

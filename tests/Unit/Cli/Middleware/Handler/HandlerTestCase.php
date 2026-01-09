@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * The Handler test case.

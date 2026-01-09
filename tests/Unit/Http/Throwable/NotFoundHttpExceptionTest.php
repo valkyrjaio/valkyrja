@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
 use Valkyrja\Http\Message\Throwable\Exception\NotFoundHttpException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the NotFoundHttpException class.

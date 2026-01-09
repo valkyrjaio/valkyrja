@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\MessageClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function implode;
 

@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
 
 class LogThrowableCaughtMiddlewareTest extends TestCase

@@ -27,7 +27,7 @@ use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Manager\PhpSession;
 use Valkyrja\Session\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

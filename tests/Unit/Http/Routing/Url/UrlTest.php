@@ -21,7 +21,7 @@ use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Url\Url;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class UrlTest.
