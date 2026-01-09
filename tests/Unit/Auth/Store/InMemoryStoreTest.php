@@ -33,7 +33,7 @@ class InMemoryStoreTest extends TestCase
     protected const string RESET_TOKEN  = 'reset_token';
 
     protected InMemoryStore $store;
-    protected User          $user;
+    protected User $user;
 
     protected function setUp(): void
     {

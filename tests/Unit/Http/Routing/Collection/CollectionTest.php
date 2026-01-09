@@ -37,8 +37,8 @@ class CollectionTest extends TestCase
     protected const string DYNAMIC_ROUTE_REGEX = '/' . Regex::ALPHA . '/';
     protected const string DYNAMIC_ROUTE_NAME  = 'dynamic';
 
-    protected Route      $route;
-    protected Route      $dynamicRoute;
+    protected Route $route;
+    protected Route $dynamicRoute;
     protected Collection $collection;
 
     #[Override]

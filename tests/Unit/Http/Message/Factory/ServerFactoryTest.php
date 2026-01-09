@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Factory
 {
-
     use Valkyrja\Http\Message\Factory\ServerFactory;
     use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -60,9 +59,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Factory
     }
 }
 
-namespace
-{
-
+namespace {
     use Valkyrja\Tests\Unit\Http\Message\Factory\ServerFactoryTest;
 
     function apache_request_headers(): array

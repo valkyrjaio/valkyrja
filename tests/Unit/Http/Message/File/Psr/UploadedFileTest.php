@@ -32,9 +32,9 @@ class UploadedFileTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error = UploadError::OK,
-            size: $size = 1,
-            fileName: $fileName = 'test',
+            uploadError: $error   = UploadError::OK,
+            size: $size           = 1,
+            fileName: $fileName   = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);

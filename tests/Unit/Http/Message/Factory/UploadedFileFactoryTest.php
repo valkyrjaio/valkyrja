@@ -231,9 +231,9 @@ class UploadedFileFactoryTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error = UploadError::OK,
-            size: $size = 1,
-            fileName: $fileName = 'test',
+            uploadError: $error   = UploadError::OK,
+            size: $size           = 1,
+            fileName: $fileName   = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);
@@ -257,18 +257,18 @@ class UploadedFileFactoryTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error = UploadError::OK,
-            size: $size = 1,
-            fileName: $fileName = 'test',
+            uploadError: $error   = UploadError::OK,
+            size: $size           = 1,
+            fileName: $fileName   = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);
 
         $uploadedFile2    = new UploadedFile(
             stream: $stream2,
-            uploadError: $error2 = UploadError::OK,
-            size: $size2 = 1,
-            fileName: $fileName2 = 'test',
+            uploadError: $error2   = UploadError::OK,
+            size: $size2           = 1,
+            fileName: $fileName2   = 'test',
             mediaType: $mediaType2 = 'txt',
         );
         $psrUploadedFile2 = new PsrUploadedFile($uploadedFile2);

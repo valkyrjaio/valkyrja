@@ -186,11 +186,11 @@ class RequestFactoryTest extends TestCase
         $request   = new ServerRequest(
             uri: Uri::fromString(uri: $uriString),
             method: RequestMethod::DELETE,
-            body: $body = new Stream(),
-            headers: $headers = ['header1' => ['test']],
-            server: $server = ['VAR' => 'val'],
-            cookies: $cookies = ['param' => 'cookies'],
-            query: $query = ['param' => 'query'],
+            body: $body             = new Stream(),
+            headers: $headers       = ['header1' => ['test']],
+            server: $server         = ['VAR' => 'val'],
+            cookies: $cookies       = ['param' => 'cookies'],
+            query: $query           = ['param' => 'query'],
             parsedBody: $parsedBody = ['param' => 'parsedBody'],
             protocol: ProtocolVersion::V2,
             files: [$uploadedFile, $uploadedFile2]

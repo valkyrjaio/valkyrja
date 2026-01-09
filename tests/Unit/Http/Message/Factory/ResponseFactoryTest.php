@@ -32,7 +32,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createResponse();
         $response = $responseFactory->createResponse(
-            content: $content = 'test',
+            content: $content       = 'test',
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
                 'test' => 'foo',
@@ -59,7 +59,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createTextResponse();
         $response = $responseFactory->createTextResponse(
-            content: $content = 'test',
+            content: $content       = 'test',
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
                 'test' => 'foo',
@@ -90,7 +90,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createJsonResponse();
         $response = $responseFactory->createJsonResponse(
-            data: $data = ['test' => 'bar'],
+            data: $data             = ['test' => 'bar'],
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
                 'test' => 'foo',
@@ -151,7 +151,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createRedirectResponse();
         $response = $responseFactory->createRedirectResponse(
-            uri: $uri = '/redirect-path',
+            uri: $uri               = '/redirect-path',
             statusCode: $statusCode = StatusCode::PERMANENT_REDIRECT,
             headers: [
                 'test' => 'foo',
