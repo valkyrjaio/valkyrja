@@ -22,7 +22,7 @@ use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class ResponseStructMiddlewareTest.

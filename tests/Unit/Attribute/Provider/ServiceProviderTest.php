@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\ServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 

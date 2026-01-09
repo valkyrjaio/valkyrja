@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Data;
 
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Listener service.

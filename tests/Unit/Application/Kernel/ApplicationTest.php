@@ -75,7 +75,7 @@ use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;

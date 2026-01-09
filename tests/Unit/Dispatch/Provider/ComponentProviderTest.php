@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Provider;
 
 use Valkyrja\Dispatch\Provider\ComponentProvider;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.

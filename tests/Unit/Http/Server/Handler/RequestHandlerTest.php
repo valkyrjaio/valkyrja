@@ -30,7 +30,7 @@ use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandler
 use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\LitespeedRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\SessionCloseRequestHandlerClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class RequestHandlerTest.

@@ -42,7 +42,7 @@ use Valkyrja\Orm\Provider\ComponentProvider as OrmComponentProvider;
 use Valkyrja\Reflection\Provider\ComponentProvider as ReflectionComponentProvider;
 use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
 use Valkyrja\Sms\Provider\ComponentProvider as SmsComponentProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 
 /**

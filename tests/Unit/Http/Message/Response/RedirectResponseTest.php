@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RedirectResponseTest extends TestCase
 {

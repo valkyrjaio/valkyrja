@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 use ReflectionClass;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Classes\Container\ProvidesClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Provider class and Provides trait.

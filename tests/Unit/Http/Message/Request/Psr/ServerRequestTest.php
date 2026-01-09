@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ServerRequestTest extends TestCase
 {

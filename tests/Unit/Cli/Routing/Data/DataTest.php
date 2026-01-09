@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
 use stdClass;
 use Valkyrja\Cli\Routing\Data\Data;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
 

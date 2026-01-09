@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Redirect\RedirectTrailingSlashMiddleware;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RedirectTrailingSlashMiddlewareTest extends TestCase
 {

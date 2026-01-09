@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Formatter class.

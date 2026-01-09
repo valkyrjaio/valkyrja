@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Response
 {
+
     use Valkyrja\Http\Message\Constant\HeaderName;
     use Valkyrja\Http\Message\Enum\StatusCode;
     use Valkyrja\Http\Message\Header\Value\Cookie;
     use Valkyrja\Http\Message\Response\Response;
     use Valkyrja\Http\Message\Stream\Stream;
     use Valkyrja\Support\Time\Time;
-    use Valkyrja\Tests\Unit\TestCase;
+    use Valkyrja\Tests\Unit\Abstract\TestCase;
 
     use function ob_get_clean;
     use function ob_get_contents;
@@ -189,6 +190,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
 namespace Valkyrja\Http\Message\Response
 {
+
     use Valkyrja\Tests\Unit\Http\Message\Response\ResponseTest;
 
     function header(string $header, bool $replace = true, int $response_code = 0): void

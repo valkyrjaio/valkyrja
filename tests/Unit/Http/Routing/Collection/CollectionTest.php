@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Collection service.
@@ -37,8 +37,8 @@ class CollectionTest extends TestCase
     protected const string DYNAMIC_ROUTE_REGEX = '/' . Regex::ALPHA . '/';
     protected const string DYNAMIC_ROUTE_NAME  = 'dynamic';
 
-    protected Route $route;
-    protected Route $dynamicRoute;
+    protected Route      $route;
+    protected Route      $dynamicRoute;
     protected Collection $collection;
 
     #[Override]

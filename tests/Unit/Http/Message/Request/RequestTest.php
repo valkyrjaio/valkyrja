@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RequestTest extends TestCase
 {

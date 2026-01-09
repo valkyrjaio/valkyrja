@@ -19,7 +19,7 @@ use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the LogClient service.

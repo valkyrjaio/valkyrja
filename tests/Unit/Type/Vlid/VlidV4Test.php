@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Vlid;
 
 use Exception;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Vlid\Support\VlidV4 as Helper;
 use Valkyrja\Type\Vlid\VlidV4 as Id;
 

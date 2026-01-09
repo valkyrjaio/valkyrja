@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Array;
 
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Array\NonEmptyArray;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 

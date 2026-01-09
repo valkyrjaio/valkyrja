@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\IntT;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;

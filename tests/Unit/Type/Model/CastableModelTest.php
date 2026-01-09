@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Classes\Model\CastableModelClass;
 use Valkyrja\Tests\Classes\Model\EmptyCastableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\ArrayT;
 use Valkyrja\Type\BuiltIn\BoolT;
 use Valkyrja\Type\BuiltIn\FalseT;

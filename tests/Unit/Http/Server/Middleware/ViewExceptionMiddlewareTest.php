@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
 use Valkyrja\View\Factory\ResponseFactory;
 

@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class JsonResponseTest extends TestCase
 {

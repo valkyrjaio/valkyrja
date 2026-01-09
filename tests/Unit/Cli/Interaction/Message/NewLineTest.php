@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the NewLine class.

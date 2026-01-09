@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the PlainOutput class.

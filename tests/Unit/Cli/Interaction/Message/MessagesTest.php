@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Messages class.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Throwable;
 
 use Throwable as PHPThrowable;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;

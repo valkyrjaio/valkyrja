@@ -25,7 +25,7 @@ use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Psr\RequestHandler as PsrRequestHandler;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class RequestHandlerTest.

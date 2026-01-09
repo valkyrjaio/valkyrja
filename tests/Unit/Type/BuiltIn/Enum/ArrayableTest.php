@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Enum;
 use Valkyrja\Tests\Classes\Enum\ArrayableEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableIntEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableStringEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ArrayableTest extends TestCase
 {

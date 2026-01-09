@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
 use Valkyrja\Http\Throwable\Contract\Throwable as HttpThrowable;
 use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArgumentException;
 use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class ExceptionsTest extends TestCase
 {

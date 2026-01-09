@@ -20,7 +20,7 @@ use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Sms\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
 use Vonage\Client\Credentials\CredentialsInterface;

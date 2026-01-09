@@ -18,7 +18,7 @@ use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Event\EventClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Collection service.

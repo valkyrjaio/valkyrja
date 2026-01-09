@@ -22,7 +22,7 @@ use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Orm\Data\EntityCast;
 use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 
 /**

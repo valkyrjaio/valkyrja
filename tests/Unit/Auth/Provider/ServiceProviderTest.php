@@ -32,7 +32,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

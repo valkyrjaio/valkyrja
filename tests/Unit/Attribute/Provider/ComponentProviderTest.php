@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Attribute\Provider;
 
 use Valkyrja\Attribute\Provider\ComponentProvider;
 use Valkyrja\Attribute\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.

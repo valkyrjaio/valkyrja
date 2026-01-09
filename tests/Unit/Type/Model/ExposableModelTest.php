@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Tests\Classes\Model\ExposableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\SimpleExposableModelClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 

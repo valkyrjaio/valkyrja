@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the GlobalVariableDispatch.

@@ -21,7 +21,7 @@ use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddlewar
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 {

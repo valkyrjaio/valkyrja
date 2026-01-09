@@ -25,7 +25,7 @@ use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Filesystem\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Filesystem\EnvClass;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

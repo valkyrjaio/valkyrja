@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri\Psr;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Psr\Uri as Psr;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class UriTest extends TestCase
 {

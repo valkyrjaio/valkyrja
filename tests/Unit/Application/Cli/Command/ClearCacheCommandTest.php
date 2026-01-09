@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Application\Cli\Command;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ClearCacheCommand service.

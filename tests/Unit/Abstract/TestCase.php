@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit;
+namespace Valkyrja\Tests\Unit\Abstract;
 
 use Override;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;

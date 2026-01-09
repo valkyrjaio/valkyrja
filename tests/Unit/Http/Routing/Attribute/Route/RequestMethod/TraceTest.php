@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route\RequestMethod;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Trace;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Trace attribute.

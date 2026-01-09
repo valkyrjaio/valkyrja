@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class UriFactoryTest extends TestCase
 {
@@ -185,13 +185,13 @@ class UriFactoryTest extends TestCase
     public function testFromPsrArray(): void
     {
         $stream = new Uri(
-            scheme: $scheme     = Scheme::HTTPS,
+            scheme: $scheme = Scheme::HTTPS,
             username: $username = 'username',
             password: $password = 'password',
-            host: $host         = 'host',
-            port: $port         = 20,
-            path: $path         = '/path',
-            query: $query       = 'test=test',
+            host: $host = 'host',
+            port: $port = 20,
+            path: $path = '/path',
+            query: $query = 'test=test',
             fragment: $fragment = 'fragment',
         );
 

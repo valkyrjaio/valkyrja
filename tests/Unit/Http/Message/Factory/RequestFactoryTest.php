@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_merge;
 
@@ -186,11 +186,11 @@ class RequestFactoryTest extends TestCase
         $request   = new ServerRequest(
             uri: Uri::fromString(uri: $uriString),
             method: RequestMethod::DELETE,
-            body: $body             = new Stream(),
-            headers: $headers       = ['header1' => ['test']],
-            server: $server         = ['VAR' => 'val'],
-            cookies: $cookies       = ['param' => 'cookies'],
-            query: $query           = ['param' => 'query'],
+            body: $body = new Stream(),
+            headers: $headers = ['header1' => ['test']],
+            server: $server = ['VAR' => 'val'],
+            cookies: $cookies = ['param' => 'cookies'],
+            query: $query = ['param' => 'query'],
             parsedBody: $parsedBody = ['param' => 'parsedBody'],
             protocol: ProtocolVersion::V2,
             files: [$uploadedFile, $uploadedFile2]

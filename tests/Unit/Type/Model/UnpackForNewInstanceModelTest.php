@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use Valkyrja\Tests\Classes\Model\UnpackForNewInstanceModelClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the UnpackForNewInstanceModelTest model.

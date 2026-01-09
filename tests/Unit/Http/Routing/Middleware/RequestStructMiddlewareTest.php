@@ -23,7 +23,7 @@ use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class RequestStructMiddlewareTest.

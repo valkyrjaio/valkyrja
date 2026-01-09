@@ -21,7 +21,7 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 /**

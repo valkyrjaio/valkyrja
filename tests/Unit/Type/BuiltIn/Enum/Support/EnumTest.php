@@ -17,7 +17,7 @@ use Valkyrja\Tests\Classes\Enum\ArrayableEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableIntEnum;
 use Valkyrja\Tests\Classes\Enum\ArrayableStringEnum;
 use Valkyrja\Tests\Classes\Enum\EnumClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
 
 class EnumTest extends TestCase

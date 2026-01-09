@@ -17,7 +17,7 @@ use Throwable as PHPThrowable;
 use Valkyrja\Http\Throwable\Contract\Throwable;
 use Valkyrja\Http\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Throwable\Exception\RuntimeException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;

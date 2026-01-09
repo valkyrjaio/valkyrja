@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the AttributeCollector class.

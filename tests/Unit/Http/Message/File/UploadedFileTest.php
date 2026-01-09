@@ -30,7 +30,7 @@ use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveUploadedFileClass;
 use Valkyrja\Tests\Classes\Http\Message\File\UnableToWriteFileExceptionClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;
 

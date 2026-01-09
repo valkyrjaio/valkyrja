@@ -19,7 +19,7 @@ use Valkyrja\Tests\Classes\Support\ProvidedClass;
 use Valkyrja\Tests\Classes\Support\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Support\ProviderClass;
 use Valkyrja\Tests\Classes\Support\ProvidersAwareClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 /**

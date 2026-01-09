@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Ulid\Support;
 
 use Exception;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Vlid\Support\VlidV1;

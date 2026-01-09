@@ -21,7 +21,7 @@ use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract;
 use Valkyrja\Tests\Classes\Attribute\AttributeClass;
 use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Collector service.

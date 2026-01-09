@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Throwable;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the HttpException class.

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\ErrorFormatter;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ErrorMessage class.

@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function implode;
 use function json_encode;

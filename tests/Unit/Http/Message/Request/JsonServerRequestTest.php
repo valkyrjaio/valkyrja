@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_filter;
 use function json_encode;

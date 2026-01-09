@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CheckForHelpOptionsMiddlewareTest extends TestCase
 {

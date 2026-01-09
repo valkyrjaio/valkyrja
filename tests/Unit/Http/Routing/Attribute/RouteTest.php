@@ -24,7 +24,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the route attribute.

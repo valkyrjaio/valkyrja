@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Functional;
+namespace Valkyrja\Tests\Functional\Abstract;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Entry\Abstract\App;

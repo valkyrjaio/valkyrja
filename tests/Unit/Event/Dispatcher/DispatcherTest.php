@@ -19,7 +19,7 @@ use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Event\DispatchCollectableEventClass;
 use Valkyrja\Tests\Classes\Event\StoppableEventClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Dispatcher service.

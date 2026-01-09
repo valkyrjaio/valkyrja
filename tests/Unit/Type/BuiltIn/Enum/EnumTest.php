@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 

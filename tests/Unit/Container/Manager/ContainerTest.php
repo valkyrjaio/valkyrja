@@ -24,7 +24,7 @@ use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Trait\ExpectErrorTrait;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the container service.

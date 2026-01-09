@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;
 
@@ -32,9 +32,9 @@ class UploadedFileTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error   = UploadError::OK,
-            size: $size           = 1,
-            fileName: $fileName   = 'test',
+            uploadError: $error = UploadError::OK,
+            size: $size = 1,
+            fileName: $fileName = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);

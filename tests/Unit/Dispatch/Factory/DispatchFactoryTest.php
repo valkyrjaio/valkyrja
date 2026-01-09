@@ -26,7 +26,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Factory\DispatchFactory;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the DispatchFactory.

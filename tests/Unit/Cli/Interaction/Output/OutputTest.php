@@ -21,7 +21,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionAskManipulationClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Output class.

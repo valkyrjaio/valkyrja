@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Value;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_merge;
 use function implode;

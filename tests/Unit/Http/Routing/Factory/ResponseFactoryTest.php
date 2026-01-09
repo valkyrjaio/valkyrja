@@ -21,7 +21,7 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Url\Url;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ResponseFactory service.

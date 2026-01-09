@@ -19,7 +19,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ListCommand service.

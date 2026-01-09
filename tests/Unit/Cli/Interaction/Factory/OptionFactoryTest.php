@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Factory\OptionFactory;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the OptionFactory class.

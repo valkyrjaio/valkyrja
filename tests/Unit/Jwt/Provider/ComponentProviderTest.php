@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use Valkyrja\Jwt\Provider\ComponentProvider;
 use Valkyrja\Jwt\Provider\ServiceProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.

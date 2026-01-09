@@ -32,7 +32,7 @@ use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Route service.

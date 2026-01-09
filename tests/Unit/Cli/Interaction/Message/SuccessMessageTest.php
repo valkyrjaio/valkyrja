@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\SuccessFormatter;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the SuccessMessage class.

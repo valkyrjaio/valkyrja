@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class UploadErrorExceptionTest extends TestCase
 {

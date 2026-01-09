@@ -17,7 +17,7 @@ use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the MethodDispatch.

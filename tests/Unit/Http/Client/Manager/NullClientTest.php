@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Client\Manager;
 use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the NullClient service.

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Application\Provider;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Application\Provider\ComponentProvider;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.

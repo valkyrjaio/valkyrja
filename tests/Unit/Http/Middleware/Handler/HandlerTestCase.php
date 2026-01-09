@@ -18,7 +18,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * The Handler test case.

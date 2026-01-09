@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Routing\Support\Abort;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Class AbortTest.

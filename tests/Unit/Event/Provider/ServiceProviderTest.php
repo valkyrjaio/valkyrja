@@ -27,7 +27,7 @@ use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Provider\ServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

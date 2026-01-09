@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
 
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the ArgumentFactory class.

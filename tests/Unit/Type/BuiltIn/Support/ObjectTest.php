@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 use JsonException;
 use stdClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 

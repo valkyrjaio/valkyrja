@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Option;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Option;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Option class.

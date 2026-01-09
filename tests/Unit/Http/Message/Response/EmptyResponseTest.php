@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class EmptyResponseTest extends TestCase
 {
