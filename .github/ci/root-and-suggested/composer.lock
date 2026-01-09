@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f710419eb3c5aee9990e54f45fc0cbc3",
+    "content-hash": "d6edd8f1cbd9b34f7fc8bc1e8cef967d",
     "packages": [
         {
             "name": "psr/container",
@@ -326,16 +326,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.6",
+            "version": "3.369.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b1e1846a4b6593b6916764d86fc0890a31727370"
+                "reference": "cb7c0a255a34d44f13f9276d720827d56a3b381b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b1e1846a4b6593b6916764d86fc0890a31727370",
-                "reference": "b1e1846a4b6593b6916764d86fc0890a31727370",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cb7c0a255a34d44f13f9276d720827d56a3b381b",
+                "reference": "cb7c0a255a34d44f13f9276d720827d56a3b381b",
                 "shasum": ""
             },
             "require": {
@@ -417,9 +417,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.9"
             },
-            "time": "2026-01-02T19:09:23+00:00"
+            "time": "2026-01-07T19:06:56+00:00"
         },
         {
             "name": "brick/math",
@@ -3219,23 +3219,23 @@
         },
         {
             "name": "vonage/client-core",
-            "version": "4.11.2",
+            "version": "4.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vonage/vonage-php-sdk-core.git",
-                "reference": "b1abab7ad0d7e5f9e358aed98ea4de9b973349aa"
+                "reference": "62655fde78ae8fede60e1984c3bfdfa9e9afeed8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vonage/vonage-php-sdk-core/zipball/b1abab7ad0d7e5f9e358aed98ea4de9b973349aa",
-                "reference": "b1abab7ad0d7e5f9e358aed98ea4de9b973349aa",
+                "url": "https://api.github.com/repos/Vonage/vonage-php-sdk-core/zipball/62655fde78ae8fede60e1984c3bfdfa9e9afeed8",
+                "reference": "62655fde78ae8fede60e1984c3bfdfa9e9afeed8",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "laminas/laminas-diactoros": "^3.0",
                 "lcobucci/jwt": "^4.0|^5.2.0",
-                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4",
+                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4 || ~8.5",
                 "psr/container": "^1.0 | ^2.0",
                 "psr/http-client-implementation": "^1.0",
                 "psr/log": "^1.1|^2.0|^3.0",
@@ -3269,6 +3269,16 @@
                     "name": "James Seconde",
                     "email": "jim.seconde@vonage.com",
                     "role": "PHP Developer Advocate"
+                },
+                {
+                    "name": "Chuck \"MANCHUCK\" Reeves",
+                    "homepage": "https://github.com/manchuck",
+                    "role": "Sr Developer Advocate"
+                },
+                {
+                    "name": "Chris Tankersley",
+                    "homepage": "https://github.com/dragonmantank",
+                    "role": "Staff Dev Relations Engineer"
                 }
             ],
             "description": "PHP Client for using Vonage's API.",
@@ -3279,7 +3289,7 @@
                 "issues": "https://github.com/Vonage/vonage-php-sdk-core/issues",
                 "source": "https://github.com/Vonage/vonage-php-sdk-core"
             },
-            "time": "2025-02-03T11:10:11+00:00"
+            "time": "2026-01-06T14:44:39+00:00"
         },
         {
             "name": "vonage/jwt",
