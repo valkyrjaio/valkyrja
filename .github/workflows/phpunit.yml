@@ -54,7 +54,7 @@ jobs:
         env:
           REF: ${{ github.base_ref }}
         run: |
-          echo "Using CI code from `$REF`"
+          echo "Using CI code from $REF"
           git fetch origin "$REF"
           git checkout origin/"$REF" -- .github/ci/phpunit
           git checkout origin/"$REF" -- .github/ci/root-and-suggested
