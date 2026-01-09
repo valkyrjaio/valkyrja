@@ -1,6 +1,39 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.17.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.18.0...master)
+
+## [v25.18.0](https://github.com/valkyrjaio/valkyrja/compare/v25.17.1...v25.18.0) - 2026-01-08
+
+* [CI] Fix the rector RemoveNonConflictingAliasInUseStatementRector rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/343
+* [Cache] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/346
+* [Cli] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/347
+* [Crypt] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/348
+* [Attribute] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/353
+* [Api] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/352
+* [Container] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/350
+* [Auth] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/349
+* [Filesystem] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/356
+* [Broadcast] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/351
+* [Event] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/355
+* [Dispatch] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/354
+* [Session] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/357
+* [Sms] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/358
+* [Notification] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/360
+* [Orm] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/361
+* [View] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/359
+* [Reflection] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/362
+* [Jwt] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/363
+* [Http] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/366
+* [Log] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/364
+* [Mail] Ensure all expected services exist in service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/365
+* [CI] Update phpcsfixer php_unit_test_case_static_method_calls rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/344
+* [Cli] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/367
+* [CI] Update the CI workflows to get the latest ref version of the ci dir by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/368
+* [Cli] Update the CheckForHelpOptionsMiddleware to not rely on Env by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/369
+* [Cli] Update the CheckForVersionOptionsMiddleware to not rely on Env by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/370
+* [Cli] Update the CheckGlobalInteractionOptionsMiddleware to not rely on Env by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/371
+* [Composer] Update vonage/client-core to v4.12.0 from v4.11.2 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/372
+* [CI] Update phpcsfixer to v3.92.5 from v3.92.4 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/373
 
 ## [v25.17.1](https://github.com/valkyrjaio/valkyrja/compare/v25.17.0...v25.17.1) - 2026-01-05
 
