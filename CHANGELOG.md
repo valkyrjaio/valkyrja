@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.18.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.19.0...master)
+
+## [v25.19.0](https://github.com/valkyrjaio/valkyrja/compare/v25.18.0...v25.19.0) - 2026-01-08
+
+* [Tests] Move test case classes to new Abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/374
+* [CI] Fix echo statement in workflows by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/375
 
 ## [v25.18.0](https://github.com/valkyrjaio/valkyrja/compare/v25.17.1...v25.18.0) - 2026-01-08
 
