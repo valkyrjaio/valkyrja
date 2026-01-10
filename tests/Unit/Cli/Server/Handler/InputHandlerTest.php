@@ -137,7 +137,7 @@ class InputHandlerTest extends TestCase
         $exceptionHandler
             ->expects($this->once())
             ->method('throwableCaught')
-            ->with($input, $this->anything(), $exception)
+            ->with($input, self::anything(), $exception)
             ->willReturnArgument(1);
 
         $container = new Container();
@@ -171,7 +171,7 @@ class InputHandlerTest extends TestCase
         $throwableCaughtHandler
             ->expects($this->once())
             ->method('throwableCaught')
-            ->with($input, $this->anything(), $exception)
+            ->with($input, self::anything(), $exception)
             ->willReturn($output);
 
         $container = new Container();
