@@ -46,8 +46,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -75,14 +76,17 @@ class RequestHandlerTest extends TestCase
         $response2 = new Response();
         $request   = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            // Router shouldn't be called since the middleware returns a response
+            ->expects($this->never())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
 
-        $beforeHandler = self::createStub(RequestReceivedHandler::class);
+        $beforeHandler = $this->createMock(RequestReceivedHandler::class);
         $beforeHandler
+            ->expects($this->once())
             ->method('requestReceived')
             ->with($request)
             ->willReturn($response2);
@@ -105,52 +109,101 @@ class RequestHandlerTest extends TestCase
      * @throws MockObjectException
      * @throws Throwable
      */
-    public function testHandleException(): void
+    public function testHandleWithBeforeMiddlewareReturningRequest(): void
     {
-        $response  = new Response();
-        $request   = new ServerRequest();
-        $exception = new HttpException(response: $response);
+        $response = new Response();
+        $request  = new ServerRequest();
+        $request2 = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
+            ->with($request2)
+            ->willReturn($response);
+
+        $beforeHandler = $this->createMock(RequestReceivedHandler::class);
+        $beforeHandler
+            ->expects($this->once())
+            ->method('requestReceived')
             ->with($request)
-            ->willThrowException($exception);
+            ->willReturn($request2);
 
         $container = new Container();
 
         $requestHandler = new RequestHandler(
             container: $container,
             router: $router,
+            requestReceivedHandler: $beforeHandler,
         );
 
         $handledResponse = $requestHandler->handle($request);
 
-        self::assertSame($exception->getResponse(), $handledResponse);
-        self::assertSame($exception->getResponse(), $container->get(ResponseContract::class));
+        self::assertSame($response, $handledResponse);
+        self::assertSame($response, $container->get(ResponseContract::class));
     }
 
     /**
      * @throws MockObjectException
      * @throws Throwable
      */
-    public function testHandleExceptionWithExceptionMiddleware(): void
+    public function testHandleException(): void
+    {
+        $response  = new Response();
+        $request   = new ServerRequest();
+        $exception = new HttpException(response: $response);
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($request)
+            ->willThrowException($exception);
+
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->with($request, $response, $exception)
+            ->willReturn($response);
+
+        $container = new Container();
+
+        $requestHandler = new RequestHandler(
+            container: $container,
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+        );
+
+        $handledResponse = $requestHandler->handle($request);
+
+        self::assertSame($response, $handledResponse);
+        self::assertSame($response, $container->get(ResponseContract::class));
+    }
+
+    /**
+     * @throws MockObjectException
+     * @throws Throwable
+     */
+    public function testHandleExceptionWithThrowableCaughtMiddleware(): void
     {
         $response  = new Response();
         $response2 = new Response();
         $request   = new ServerRequest();
         $exception = new HttpException(response: $response);
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willThrowException($exception);
 
-        $exceptionHandler = self::createStub(ThrowableCaughtHandler::class);
-        $exceptionHandler
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
             ->method('throwableCaught')
-            ->with($request, $response)
+            ->with($request, $response, $exception)
             ->willReturn($response2);
 
         $container = new Container();
@@ -158,7 +211,7 @@ class RequestHandlerTest extends TestCase
         $requestHandler = new RequestHandler(
             container: $container,
             router: $router,
-            throwableCaughtHandler: $exceptionHandler
+            throwableCaughtHandler: $throwableCaughtHandler
         );
 
         $handledResponse = $requestHandler->handle($request);
@@ -180,8 +233,9 @@ class RequestHandlerTest extends TestCase
 
         $request = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willThrowException($exception);
@@ -207,8 +261,9 @@ class RequestHandlerTest extends TestCase
 
         $exception = new HttpException(message: 'test');
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willThrowException($exception);
@@ -235,8 +290,9 @@ class RequestHandlerTest extends TestCase
 
         $exception = new Exception(message: 'test');
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willThrowException($exception);
@@ -262,8 +318,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -289,8 +346,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -319,8 +377,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -349,8 +408,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -379,8 +439,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
@@ -409,8 +470,9 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
