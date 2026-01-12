@@ -21,6 +21,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
@@ -31,6 +32,8 @@ use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\LitespeedRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\SessionCloseRequestHandlerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+
+use function ob_start;
 
 /**
  * Class RequestHandlerTest.
@@ -490,5 +493,40 @@ class RequestHandlerTest extends TestCase
 
         self::assertSame($response, $container->get(ResponseContract::class));
         self::assertTrue($requestHandler->hasRequestBeenFinishedByClosingOutputBuffers());
+    }
+
+    /**
+     * @throws MockObjectException
+     * @throws Throwable
+     */
+    public function testHandleTerminateHandler(): void
+    {
+        $response = new Response();
+        $request  = new ServerRequest();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($request)
+            ->willReturn($response);
+
+        $terminatedHandler = $this->createMock(TerminatedHandlerContract::class);
+        $terminatedHandler
+            ->expects($this->once())
+            ->method('terminated')
+            ->with($request, $response);
+
+        $container = new Container();
+
+        $requestHandler = new RequestHandler(
+            container: $container,
+            router: $router,
+            terminatedHandler: $terminatedHandler,
+        );
+
+        ob_start();
+        $requestHandler->run($request);
+        ob_get_clean();
     }
 }
