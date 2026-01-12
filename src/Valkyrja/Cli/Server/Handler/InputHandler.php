@@ -151,15 +151,6 @@ class InputHandler implements InputHandlerContract
                 new NewLine(),
                 new ErrorMessage('Message:'),
                 new Message(' ' . $throwable->getMessage()),
-                new NewLine(),
-                new NewLine(),
-                new ErrorMessage('Line:'),
-                new Message(' ' . ((string) $throwable->getLine())),
-                new NewLine(),
-                new NewLine(),
-                new ErrorMessage('Trace:'),
-                new NewLine(),
-                new Message($throwable->getTraceAsString() . "\n"),
             );
     }
 }
