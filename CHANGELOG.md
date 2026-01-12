@@ -1,6 +1,14 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.19.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.19.1...master)
+
+## [v25.19.1](https://github.com/valkyrjaio/valkyrja/compare/v25.19.0...v25.19.1) - 2026-01-11
+
+* [Cli] Update Cli Server tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/320
+* [Http] Update the RequestHandlerTest by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/376
+* [Http] Add test for RequestHandler TerminatedHandler call by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/377
+* [Cli] Update InputHandler test to cover more scenarios by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/378
+* [Composer] Update phpmailer/phpmailer to v7.0.2 from v7.0.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/379
 
 ## [v25.19.0](https://github.com/valkyrjaio/valkyrja/compare/v25.18.0...v25.19.0) - 2026-01-08
 
