@@ -165,7 +165,7 @@ class InputHandlerTest extends TestCase
         self::assertStringContainsString('Cli Server Error:', $handledResponse->getMessages()[0]->getText());
         self::assertInstanceOf(NewLine::class, $handledResponse->getMessages()[1]);
         self::assertSame('Command:', $handledResponse->getMessages()[2]->getText());
-        self::assertSame(" list", $handledResponse->getMessages()[3]->getText());
+        self::assertSame(' list', $handledResponse->getMessages()[3]->getText());
         self::assertInstanceOf(NewLine::class, $handledResponse->getMessages()[4]);
         self::assertInstanceOf(NewLine::class, $handledResponse->getMessages()[5]);
         self::assertSame('Message:', $handledResponse->getMessages()[6]->getText());
