@@ -15,7 +15,10 @@ namespace Valkyrja\Cli\Server\Middleware;
 
 use Override;
 use Throwable;
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -32,17 +35,27 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContra
     {
         $commandName = $input->getCommandName();
 
-        $output = $output->withMessages(
-            new Message('Cli Server Error:'),
-            new NewLine(),
-            new Message("Url: $commandName"),
-            new NewLine(),
-            new Message('Message: ' . $throwable->getMessage()),
-            new NewLine(),
-            new Message('Line: ' . ((string) $throwable->getLine())),
-            new NewLine(),
-            new Message('Trace: ' . $throwable->getTraceAsString()),
-        );
+        $output = $output
+            ->withExitCode(exitCode: ExitCode::ERROR)
+            ->withMessages(
+                new Banner(new ErrorMessage('Cli Server Error:')),
+                new NewLine(),
+                new ErrorMessage('Command:'),
+                new Message(" $commandName"),
+                new NewLine(),
+                new NewLine(),
+                new ErrorMessage('Message:'),
+                new Message(' ' . $throwable->getMessage()),
+                new NewLine(),
+                new NewLine(),
+                new ErrorMessage('Line:'),
+                new Message(' ' . ((string) $throwable->getLine())),
+                new NewLine(),
+                new NewLine(),
+                new ErrorMessage('Trace:'),
+                new NewLine(),
+                new Message($throwable->getTraceAsString() . "\n")
+            );
 
         return $handler->throwableCaught($input, $output, $throwable);
     }

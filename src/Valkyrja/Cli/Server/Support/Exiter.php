@@ -38,6 +38,14 @@ class Exiter
      */
     public static function exit(int $code = 0): void
     {
-        static::$exit ? exit($code) : '';
+        static::$exit ? exit($code) : static::frozenCallback($code);
+    }
+
+    /**
+     * Callback for when exiter is frozen.
+     */
+    public static function frozenCallback(int $code = 0): void
+    {
+        echo $code;
     }
 }
