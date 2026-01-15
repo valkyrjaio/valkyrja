@@ -28,22 +28,22 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 class Route extends Model
 {
     /**
-     * @param non-empty-string                                  $name                        The name
-     * @param non-empty-string                                  $description                 The description
-     * @param MessageContract                                   $helpText                    The help text
-     * @param class-string<RouteMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware            The exited middleware
-     * @param ParameterContract[]                               $parameters                  The parameters
+     * @param non-empty-string                                  $name                      The name
+     * @param non-empty-string                                  $description               The description
+     * @param MessageContract                                   $helpText                  The help text
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware          The exited middleware
+     * @param ParameterContract[]                               $parameters                The parameters
      */
     public function __construct(
         protected string $name,
         protected string $description,
         protected MessageContract $helpText,
         protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, '__construct'),
-        protected array $commandMatchedMiddleware = [],
-        protected array $commandDispatchedMiddleware = [],
+        protected array $routeMatchedMiddleware = [],
+        protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $exitedMiddleware = [],
         array $parameters = [],
@@ -53,8 +53,8 @@ class Route extends Model
             description: $description,
             helpText: $helpText,
             dispatch: $dispatch,
-            commandMatchedMiddleware: $commandMatchedMiddleware,
-            commandDispatchedMiddleware: $commandDispatchedMiddleware,
+            routeMatchedMiddleware: $routeMatchedMiddleware,
+            routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
             exitedMiddleware: $exitedMiddleware,
             parameters: $parameters,

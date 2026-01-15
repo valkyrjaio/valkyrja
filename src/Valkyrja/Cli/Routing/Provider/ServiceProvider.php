@@ -29,6 +29,7 @@ use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
+use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -43,9 +44,10 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            CollectorContract::class  => [self::class, 'publishAttributeCollector'],
-            RouterContract::class     => [self::class, 'publishRouter'],
-            CollectionContract::class => [self::class, 'publishCollection'],
+            CollectorContract::class             => [self::class, 'publishAttributeCollector'],
+            RouterContract::class                => [self::class, 'publishRouter'],
+            CollectionContract::class            => [self::class, 'publishCollection'],
+            CheckCommandForTypoMiddleware::class => [self::class, 'publishCheckCommandForTypoMiddleware'],
         ];
     }
 
@@ -59,6 +61,7 @@ final class ServiceProvider extends Provider
             CollectorContract::class,
             RouterContract::class,
             CollectionContract::class,
+            CheckCommandForTypoMiddleware::class,
         ];
     }
 
@@ -95,9 +98,9 @@ final class ServiceProvider extends Provider
                 collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
                 throwableCaughtHandler: $throwableCaughtHandler,
-                commandMatchedHandler: $commandMatchedHandler,
-                commandNotMatchedHandler: $commandNotMatchedHandler,
-                commandDispatchedHandler: $commandDispatchedHandler,
+                routeMatchedHandler: $commandMatchedHandler,
+                routeNotMatchedHandler: $commandNotMatchedHandler,
+                routeDispatchedHandler: $commandDispatchedHandler,
                 exitedHandler: $exitedHandler
             )
         );
@@ -131,5 +134,19 @@ final class ServiceProvider extends Provider
                 ...$collector->getRoutes(...$controllers)
             );
         }
+    }
+
+    /**
+     * Publish the check command for typo middleware service.
+     */
+    public static function publishCheckCommandForTypoMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            CheckCommandForTypoMiddleware::class,
+            new CheckCommandForTypoMiddleware(
+                router: $container->getSingleton(RouterContract::class),
+                collection: $container->getSingleton(CollectionContract::class),
+            )
+        );
     }
 }

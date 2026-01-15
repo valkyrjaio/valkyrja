@@ -34,22 +34,22 @@ class Route implements RouteContract
     protected array $options = [];
 
     /**
-     * @param non-empty-string                                  $name                        The name
-     * @param non-empty-string                                  $description                 The description
-     * @param MessageContract                                   $helpText                    The help text
-     * @param class-string<RouteMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware            The exited middleware
-     * @param ParameterContract[]                               $parameters                  The parameters
+     * @param non-empty-string                                  $name                      The name
+     * @param non-empty-string                                  $description               The description
+     * @param MessageContract                                   $helpText                  The help text
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware          The exited middleware
+     * @param ParameterContract[]                               $parameters                The parameters
      */
     public function __construct(
         protected string $name,
         protected string $description,
         protected MessageContract $helpText,
         protected MethodDispatchContract $dispatch,
-        protected array $commandMatchedMiddleware = [],
-        protected array $commandDispatchedMiddleware = [],
+        protected array $routeMatchedMiddleware = [],
+        protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $exitedMiddleware = [],
         array $parameters = [],
@@ -251,9 +251,9 @@ class Route implements RouteContract
      * @return class-string<RouteMatchedMiddlewareContract>[]
      */
     #[Override]
-    public function getCommandMatchedMiddleware(): array
+    public function getRouteMatchedMiddleware(): array
     {
-        return $this->commandMatchedMiddleware;
+        return $this->routeMatchedMiddleware;
     }
 
     /**
@@ -262,11 +262,11 @@ class Route implements RouteContract
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withCommandMatchedMiddleware(string ...$middleware): static
+    public function withRouteMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->commandMatchedMiddleware = $middleware;
+        $new->routeMatchedMiddleware = $middleware;
 
         return $new;
     }
@@ -277,11 +277,11 @@ class Route implements RouteContract
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withAddedCommandMatchedMiddleware(string ...$middleware): static
+    public function withAddedRouteMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->commandMatchedMiddleware = array_merge($this->commandMatchedMiddleware, $middleware);
+        $new->routeMatchedMiddleware = array_merge($this->routeMatchedMiddleware, $middleware);
 
         return $new;
     }
@@ -292,9 +292,9 @@ class Route implements RouteContract
      * @return class-string<RouteDispatchedMiddlewareContract>[]
      */
     #[Override]
-    public function getCommandDispatchedMiddleware(): array
+    public function getRouteDispatchedMiddleware(): array
     {
-        return $this->commandDispatchedMiddleware;
+        return $this->routeDispatchedMiddleware;
     }
 
     /**
@@ -303,11 +303,11 @@ class Route implements RouteContract
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withCommandDispatchedMiddleware(string ...$middleware): static
+    public function withRouteDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->commandDispatchedMiddleware = $middleware;
+        $new->routeDispatchedMiddleware = $middleware;
 
         return $new;
     }
@@ -318,11 +318,11 @@ class Route implements RouteContract
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withAddedCommandDispatchedMiddleware(string ...$middleware): static
+    public function withAddedRouteDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->commandDispatchedMiddleware = array_merge($this->commandDispatchedMiddleware, $middleware);
+        $new->routeDispatchedMiddleware = array_merge($this->routeDispatchedMiddleware, $middleware);
 
         return $new;
     }

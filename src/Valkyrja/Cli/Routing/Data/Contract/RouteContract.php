@@ -30,7 +30,7 @@ interface RouteContract
     public function getName(): string;
 
     /**
-     * Create a new Command with the specified name.
+     * Create a new route with the specified name.
      *
      * @param non-empty-string $name The name
      */
@@ -44,7 +44,7 @@ interface RouteContract
     public function getDescription(): string;
 
     /**
-     * Create a new Command with the specified description.
+     * Create a new route with the specified description.
      *
      * @param non-empty-string $description The description
      */
@@ -56,14 +56,14 @@ interface RouteContract
     public function getHelpText(): MessageContract;
 
     /**
-     * Create a new Command with the specified help text.
+     * Create a new route with the specified help text.
      *
      * @param MessageContract $helpText The help text
      */
     public function withHelpText(MessageContract $helpText): static;
 
     /**
-     * Determine if the command has arguments.
+     * Determine if the route has arguments.
      */
     public function hasArguments(): bool;
 
@@ -82,21 +82,21 @@ interface RouteContract
     public function getArgument(string $name): ArgumentParameterContract|null;
 
     /**
-     * Create a new Command with the specified argument parameters.
+     * Create a new route with the specified argument parameters.
      *
      * @param ArgumentParameterContract ...$arguments The argument parameters
      */
     public function withArguments(ArgumentParameterContract ...$arguments): static;
 
     /**
-     * Create a new Command with added argument parameters.
+     * Create a new route with added argument parameters.
      *
      * @param ArgumentParameterContract ...$arguments The argument parameters
      */
     public function withAddedArguments(ArgumentParameterContract ...$arguments): static;
 
     /**
-     * Determine if the command has options.
+     * Determine if the route has options.
      */
     public function hasOptions(): bool;
 
@@ -115,60 +115,60 @@ interface RouteContract
     public function getOption(string $name): OptionParameterContract|null;
 
     /**
-     * Create a new Command with the specified option parameters.
+     * Create a new route with the specified option parameters.
      *
      * @param OptionParameterContract ...$options The option parameters
      */
     public function withOptions(OptionParameterContract ...$options): static;
 
     /**
-     * Create a new Command with added option parameters.
+     * Create a new route with added option parameters.
      *
      * @param OptionParameterContract ...$options The option parameters
      */
     public function withAddedOptions(OptionParameterContract ...$options): static;
 
     /**
-     * Get the command matched middleware.
+     * Get the route matched middleware.
      *
      * @return class-string<RouteMatchedMiddlewareContract>[]
      */
-    public function getCommandMatchedMiddleware(): array;
+    public function getRouteMatchedMiddleware(): array;
 
     /**
-     * Create a new command with the specified command matched middleware.
+     * Create a new route with the specified route matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
-    public function withCommandMatchedMiddleware(string ...$middleware): static;
+    public function withRouteMatchedMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new command with added command matched middleware.
+     * Create a new route with added route matched middleware.
      *
      * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
-    public function withAddedCommandMatchedMiddleware(string ...$middleware): static;
+    public function withAddedRouteMatchedMiddleware(string ...$middleware): static;
 
     /**
-     * Get the command dispatched middleware.
+     * Get the route dispatched middleware.
      *
      * @return class-string<RouteDispatchedMiddlewareContract>[]
      */
-    public function getCommandDispatchedMiddleware(): array;
+    public function getRouteDispatchedMiddleware(): array;
 
     /**
-     * Create a new command with the specified command dispatched middleware.
+     * Create a new route with the specified route dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
-    public function withCommandDispatchedMiddleware(string ...$middleware): static;
+    public function withRouteDispatchedMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new command with added command dispatched middleware.
+     * Create a new route with added route dispatched middleware.
      *
      * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
-    public function withAddedCommandDispatchedMiddleware(string ...$middleware): static;
+    public function withAddedRouteDispatchedMiddleware(string ...$middleware): static;
 
     /**
      * Get the throwable caught middleware.
@@ -178,14 +178,14 @@ interface RouteContract
     public function getThrowableCaughtMiddleware(): array;
 
     /**
-     * Create a new command with the specified throwable caught middleware.
+     * Create a new route with the specified throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      */
     public function withThrowableCaughtMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new command with added throwable caught middleware.
+     * Create a new route with added throwable caught middleware.
      *
      * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      */
@@ -199,14 +199,14 @@ interface RouteContract
     public function getExitedMiddleware(): array;
 
     /**
-     * Create a new command with the specified exited middleware.
+     * Create a new route with the specified exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
      */
     public function withExitedMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new command with added exited middleware.
+     * Create a new route with added exited middleware.
      *
      * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
      */
@@ -218,7 +218,7 @@ interface RouteContract
     public function getDispatch(): MethodDispatchContract;
 
     /**
-     * Create a new Command with the specified dispatch.
+     * Create a new route with the specified dispatch.
      *
      * @param MethodDispatchContract $dispatch The dispatch
      */

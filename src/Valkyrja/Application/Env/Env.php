@@ -43,6 +43,7 @@ use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
@@ -277,7 +278,9 @@ class Env
     /** @var class-string<RouteMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
     /** @var class-string<RouteNotMatchedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [];
+    public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [
+        CheckCommandForTypoMiddleware::class,
+    ];
     /** @var class-string<RouteDispatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
     /** @var class-string<ThrowableCaughtMiddlewareContract>[] */

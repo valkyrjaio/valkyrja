@@ -37,8 +37,8 @@ class CommandTest extends TestCase
         self::assertInstanceOf(Message::class, $command->getHelpText());
         self::assertEmpty($command->getArguments());
         self::assertEmpty($command->getOptions());
-        self::assertEmpty($command->getCommandMatchedMiddleware());
-        self::assertEmpty($command->getCommandDispatchedMiddleware());
+        self::assertEmpty($command->getRouteMatchedMiddleware());
+        self::assertEmpty($command->getRouteDispatchedMiddleware());
         self::assertEmpty($command->getThrowableCaughtMiddleware());
         self::assertEmpty($command->getExitedMiddleware());
     }

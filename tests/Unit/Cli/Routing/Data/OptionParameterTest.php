@@ -13,22 +13,38 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
+use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Type\BuiltIn\IntT;
+use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Enum\CastType;
 
 /**
  * Test the OptionParameter class.
  */
 class OptionParameterTest extends TestCase
 {
+    /** @var non-empty-string */
+    protected const string NAME = 'name';
+    /** @var non-empty-string */
+    protected const string DESCRIPTION = 'Test description';
+
     public function testDefaults(): void
     {
-        $parameter = new OptionParameter('test-option', 'Test Option');
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
 
-        self::assertSame('test-option', $parameter->getName());
-        self::assertSame('Test Option', $parameter->getDescription());
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
         self::assertNull($parameter->getCast());
         self::assertNull($parameter->getValueDisplayName());
         self::assertNull($parameter->getDefaultValue());
@@ -37,5 +53,770 @@ class OptionParameterTest extends TestCase
         self::assertEmpty($parameter->getOptions());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+    }
+
+    public function testName(): void
+    {
+        $name        = self::NAME;
+        $name2       = 'name2';
+        $description = self::DESCRIPTION;
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withName($name2);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name2, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+    }
+
+    public function testDescription(): void
+    {
+        $name         = self::NAME;
+        $description  = self::DESCRIPTION;
+        $description2 = 'description2';
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withDescription($description2);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description2, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+    }
+
+    public function testCast(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $cast        = new Cast(type: CastType::bool);
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+        $parameter2 = $parameter->withCast($cast);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertSame($cast, $parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+    }
+
+    public function testShortNames(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $shortName   = 's';
+        $shortName2  = 'ss';
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withShortNames($shortName);
+        $parameter3 = $parameter2->withShortNames($shortName2);
+        $parameter4 = $parameter2->withAddedShortNames($shortName2);
+        $parameter5 = $parameter->withAddedShortNames($shortName2);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNotSame($parameter2, $parameter3);
+        self::assertNotSame($parameter2, $parameter4);
+        self::assertNotSame($parameter, $parameter5);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertSame(['s'], $parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+
+        self::assertSame($name, $parameter3->getName());
+        self::assertSame($description, $parameter3->getDescription());
+        self::assertNull($parameter3->getCast());
+        self::assertNull($parameter3->getValueDisplayName());
+        self::assertNull($parameter3->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
+        self::assertEmpty($parameter3->getValidValues());
+        self::assertSame(['ss'], $parameter3->getShortNames());
+        self::assertEmpty($parameter3->getOptions());
+        self::assertEmpty($parameter3->getCastValues());
+        self::assertNull($parameter3->getFirstValue());
+        self::assertTrue($parameter3->areValuesValid());
+
+        self::assertSame($name, $parameter4->getName());
+        self::assertSame($description, $parameter4->getDescription());
+        self::assertNull($parameter4->getCast());
+        self::assertNull($parameter4->getValueDisplayName());
+        self::assertNull($parameter4->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
+        self::assertEmpty($parameter4->getValidValues());
+        self::assertSame(['s', 'ss'], $parameter4->getShortNames());
+        self::assertEmpty($parameter4->getOptions());
+        self::assertEmpty($parameter4->getCastValues());
+        self::assertNull($parameter4->getFirstValue());
+        self::assertTrue($parameter4->areValuesValid());
+
+        self::assertSame($name, $parameter5->getName());
+        self::assertSame($description, $parameter5->getDescription());
+        self::assertNull($parameter5->getCast());
+        self::assertNull($parameter5->getValueDisplayName());
+        self::assertNull($parameter5->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
+        self::assertEmpty($parameter5->getValidValues());
+        self::assertSame(['ss'], $parameter5->getShortNames());
+        self::assertEmpty($parameter5->getOptions());
+        self::assertEmpty($parameter5->getCastValues());
+        self::assertNull($parameter5->getFirstValue());
+        self::assertTrue($parameter5->areValuesValid());
+    }
+
+    public function testMode(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $mode        = OptionMode::REQUIRED;
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withMode($mode);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::REQUIRED, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->areValuesValid());
+    }
+
+    public function testValueMode(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $mode        = OptionValueMode::ARRAY;
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withValueMode($mode);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::ARRAY, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+    }
+
+    public function testValueDisplayName(): void
+    {
+        $name             = self::NAME;
+        $description      = self::DESCRIPTION;
+        $valueDisplayName = 'test';
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withValueDisplayName($valueDisplayName);
+        $parameter3 = $parameter2->withValueDisplayName(null);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNotSame($parameter2, $parameter3);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertSame($valueDisplayName, $parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+
+        self::assertSame($name, $parameter3->getName());
+        self::assertSame($description, $parameter3->getDescription());
+        self::assertNull($parameter3->getCast());
+        self::assertNull($parameter3->getValueDisplayName());
+        self::assertNull($parameter3->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
+        self::assertEmpty($parameter3->getValidValues());
+        self::assertEmpty($parameter3->getShortNames());
+        self::assertEmpty($parameter3->getOptions());
+        self::assertEmpty($parameter3->getCastValues());
+        self::assertNull($parameter3->getFirstValue());
+        self::assertTrue($parameter3->areValuesValid());
+    }
+
+    public function testDefaultValue(): void
+    {
+        $name         = self::NAME;
+        $description  = self::DESCRIPTION;
+        $defaultValue = 'test';
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withDefaultValue($defaultValue);
+        $parameter3 = $parameter2->withDefaultValue(null);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNotSame($parameter2, $parameter3);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertSame($defaultValue, $parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+
+        self::assertSame($name, $parameter3->getName());
+        self::assertSame($description, $parameter3->getDescription());
+        self::assertNull($parameter3->getCast());
+        self::assertNull($parameter3->getValueDisplayName());
+        self::assertNull($parameter3->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
+        self::assertEmpty($parameter3->getValidValues());
+        self::assertEmpty($parameter3->getShortNames());
+        self::assertEmpty($parameter3->getOptions());
+        self::assertEmpty($parameter3->getCastValues());
+        self::assertNull($parameter3->getFirstValue());
+        self::assertTrue($parameter3->areValuesValid());
+    }
+
+    public function testValidValues(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $validValue  = 'test';
+        $validValue2 = 'test2';
+        $validValue3 = 'test3';
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withValidValues($validValue);
+        $parameter3 = $parameter2->withAddedValidValues($validValue2);
+        $parameter4 = $parameter->withAddedValidValues($validValue2);
+        $parameter5 = $parameter3->withValidValues($validValue3);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNotSame($parameter2, $parameter3);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertSame([$validValue], $parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertEmpty($parameter2->getOptions());
+        self::assertEmpty($parameter2->getCastValues());
+        self::assertNull($parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+
+        self::assertSame($name, $parameter3->getName());
+        self::assertSame($description, $parameter3->getDescription());
+        self::assertNull($parameter3->getCast());
+        self::assertNull($parameter3->getValueDisplayName());
+        self::assertNull($parameter3->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
+        self::assertSame([$validValue, $validValue2], $parameter3->getValidValues());
+        self::assertEmpty($parameter3->getShortNames());
+        self::assertEmpty($parameter3->getOptions());
+        self::assertEmpty($parameter3->getCastValues());
+        self::assertNull($parameter3->getFirstValue());
+        self::assertTrue($parameter3->areValuesValid());
+
+        self::assertSame($name, $parameter4->getName());
+        self::assertSame($description, $parameter4->getDescription());
+        self::assertNull($parameter4->getCast());
+        self::assertNull($parameter4->getValueDisplayName());
+        self::assertNull($parameter4->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
+        self::assertSame([$validValue2], $parameter4->getValidValues());
+        self::assertEmpty($parameter4->getShortNames());
+        self::assertEmpty($parameter4->getOptions());
+        self::assertEmpty($parameter4->getCastValues());
+        self::assertNull($parameter4->getFirstValue());
+        self::assertTrue($parameter4->areValuesValid());
+
+        self::assertSame($name, $parameter5->getName());
+        self::assertSame($description, $parameter5->getDescription());
+        self::assertNull($parameter5->getCast());
+        self::assertNull($parameter5->getValueDisplayName());
+        self::assertNull($parameter5->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
+        self::assertSame([$validValue3], $parameter5->getValidValues());
+        self::assertEmpty($parameter5->getShortNames());
+        self::assertEmpty($parameter5->getOptions());
+        self::assertEmpty($parameter5->getCastValues());
+        self::assertNull($parameter5->getFirstValue());
+        self::assertTrue($parameter5->areValuesValid());
+    }
+
+    public function testOptions(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('name', 'value');
+        $option2     = new Option('name', 'value2');
+        $option3     = new Option('name', 'value3');
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description
+        );
+        $parameter2 = $parameter->withOptions($option);
+        $parameter3 = $parameter2->withAddedOptions($option2);
+        $parameter4 = $parameter->withAddedOptions($option2);
+        $parameter5 = $parameter3->withOptions($option3);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNotSame($parameter2, $parameter3);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertNull($parameter->getCast());
+        self::assertNull($parameter->getValueDisplayName());
+        self::assertNull($parameter->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
+        self::assertEmpty($parameter->getValidValues());
+        self::assertEmpty($parameter->getShortNames());
+        self::assertEmpty($parameter->getOptions());
+        self::assertEmpty($parameter->getCastValues());
+        self::assertNull($parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+
+        self::assertSame($name, $parameter2->getName());
+        self::assertSame($description, $parameter2->getDescription());
+        self::assertNull($parameter2->getCast());
+        self::assertNull($parameter2->getValueDisplayName());
+        self::assertNull($parameter2->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
+        self::assertEmpty($parameter2->getValidValues());
+        self::assertEmpty($parameter2->getShortNames());
+        self::assertSame([$option], $parameter2->getOptions());
+        self::assertSame(['value'], $parameter2->getCastValues());
+        self::assertSame('value', $parameter2->getFirstValue());
+        self::assertTrue($parameter2->areValuesValid());
+
+        self::assertSame($name, $parameter3->getName());
+        self::assertSame($description, $parameter3->getDescription());
+        self::assertNull($parameter3->getCast());
+        self::assertNull($parameter3->getValueDisplayName());
+        self::assertNull($parameter3->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
+        self::assertEmpty($parameter3->getValidValues());
+        self::assertEmpty($parameter3->getShortNames());
+        self::assertSame([$option, $option2], $parameter3->getOptions());
+        self::assertSame(['value', 'value2'], $parameter3->getCastValues());
+        self::assertSame('value', $parameter3->getFirstValue());
+        self::assertFalse($parameter3->areValuesValid());
+
+        self::assertSame($name, $parameter4->getName());
+        self::assertSame($description, $parameter4->getDescription());
+        self::assertNull($parameter4->getCast());
+        self::assertNull($parameter4->getValueDisplayName());
+        self::assertNull($parameter4->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
+        self::assertEmpty($parameter4->getValidValues());
+        self::assertEmpty($parameter4->getShortNames());
+        self::assertSame([$option2], $parameter4->getOptions());
+        self::assertSame(['value2'], $parameter4->getCastValues());
+        self::assertSame('value2', $parameter4->getFirstValue());
+        self::assertTrue($parameter4->areValuesValid());
+
+        self::assertSame($name, $parameter5->getName());
+        self::assertSame($description, $parameter5->getDescription());
+        self::assertNull($parameter5->getCast());
+        self::assertNull($parameter5->getValueDisplayName());
+        self::assertNull($parameter5->getDefaultValue());
+        self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
+        self::assertEmpty($parameter5->getValidValues());
+        self::assertEmpty($parameter5->getShortNames());
+        self::assertSame([$option3], $parameter5->getOptions());
+        self::assertSame(['value3'], $parameter5->getCastValues());
+        self::assertSame('value3', $parameter5->getFirstValue());
+        self::assertTrue($parameter5->areValuesValid());
+    }
+
+    public function testInvalidOptionsWithValues(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('name', 'value');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            valueMode: OptionValueMode::NONE,
+        );
+
+        $parameter->withOptions($option);
+    }
+
+    public function testValidOptionsWithoutValues(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('name');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            valueMode: OptionValueMode::NONE,
+        );
+
+        $parameter2 = $parameter->withOptions($option);
+
+        self::assertNotSame($parameter, $parameter2);
+
+        self::assertSame([$option], $parameter2->getOptions());
+    }
+
+    public function testInvalidWithAddedOptionsWithValues(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('name', 'value');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            valueMode: OptionValueMode::NONE,
+        );
+
+        $parameter->withAddedOptions($option);
+    }
+
+    public function testWithAddedOptionsWithoutValues(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('name');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            valueMode: OptionValueMode::NONE,
+        );
+
+        $parameter2 = $parameter->withAddedOptions($option);
+
+        self::assertNotSame($parameter, $parameter2);
+
+        self::assertSame([$option], $parameter2->getOptions());
+    }
+
+    public function testGetCastValue(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $cast        = new Cast(type: CastType::int);
+        $cast2       = new Cast(type: CastType::int, convert: false);
+        $option      = new Option('option', '1');
+        $option2     = new Option('option2', '2');
+        $option3     = new Option('option3');
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description,
+            cast: $cast,
+        );
+        $parameter2 = $parameter->withOptions($option, $option2);
+        $parameter3 = $parameter2->withCast($cast2);
+        $parameter4 = $parameter2
+            ->withCast(null)
+            ->withOptions($option3);
+
+        self::assertEmpty($parameter->getCastValues());
+
+        self::assertNotEmpty($parameter2->getCastValues());
+        self::assertSame([1, 2], $parameter2->getCastValues());
+        self::assertSame([null], $parameter4->getCastValues());
+
+        self::assertNotEmpty($parameter3->getCastValues());
+        self::assertInstanceOf(IntT::class, $value1 = $parameter3->getCastValues()[0]);
+        self::assertSame(1, $value1->asValue());
+        self::assertInstanceOf(IntT::class, $value2 = $parameter3->getCastValues()[1]);
+        self::assertSame(2, $value2->asValue());
+    }
+
+    public function testAreValuesValid(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('option', '1');
+        $option2     = new Option('option2', '2');
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+        $parameter2 = $parameter->withOptions($option);
+        $parameter3 = $parameter->withOptions($option, $option2);
+        $parameter4 = $parameter3->withValueMode(OptionValueMode::ARRAY);
+        $parameter5 = $parameter->withMode(OptionMode::REQUIRED);
+        $parameter6 = $parameter3->withMode(OptionMode::REQUIRED);
+
+        self::assertTrue($parameter->areValuesValid());
+        self::assertTrue($parameter2->areValuesValid());
+        self::assertFalse($parameter3->areValuesValid());
+        self::assertTrue($parameter4->areValuesValid());
+        self::assertFalse($parameter5->areValuesValid());
+        self::assertFalse($parameter6->areValuesValid());
+    }
+
+    public function testValidateValuesException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            mode: OptionMode::REQUIRED,
+        );
+
+        $parameter->validateValues();
+    }
+
+    public function testValidateValues(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+
+        self::assertSame($parameter, $parameter->validateValues());
     }
 }

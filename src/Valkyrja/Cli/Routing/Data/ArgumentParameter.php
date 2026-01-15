@@ -177,11 +177,17 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
     #[Override]
     public function areValuesValid(): bool
     {
-        return match (true) {
-            $this->mode === ArgumentMode::REQUIRED          => $this->arguments !== [],
-            $this->valueMode === ArgumentValueMode::DEFAULT => count($this->arguments) <= 1,
-            default                                         => true,
-        };
+        $valid = true;
+
+        if ($this->mode === ArgumentMode::REQUIRED) {
+            $valid = $this->arguments !== [];
+        }
+
+        if ($this->valueMode === ArgumentValueMode::DEFAULT) {
+            $valid = $valid && count($this->arguments) <= 1;
+        }
+
+        return $valid;
     }
 
     /**
