@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.19.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.20.0...master)
+
+## [v25.20.0](https://github.com/valkyrjaio/valkyrja/compare/v25.19.1...v25.20.0) - 2026-01-14
+
+* [Cli] Add more tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/380
+* [CI] Update rector to v2.3.1 from v2.3.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/381
 
 ## [v25.19.1](https://github.com/valkyrjaio/valkyrja/compare/v25.19.0...v25.19.1) - 2026-01-11
 
