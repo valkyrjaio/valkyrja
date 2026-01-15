@@ -18,12 +18,8 @@ use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
-use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Banner;
-use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
-use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -56,9 +52,9 @@ class Router implements RouterContract
         protected CollectionContract $collection = new Collection(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
-        protected RouteMatchedHandlerContract $commandMatchedHandler = new RouteMatchedHandler(),
-        protected RouteNotMatchedHandlerContract $commandNotMatchedHandler = new RouteNotMatchedHandler(),
-        protected RouteDispatchedHandlerContract $commandDispatchedHandler = new RouteDispatchedHandler(),
+        protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),
+        protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),
+        protected RouteDispatchedHandlerContract $routeDispatchedHandler = new RouteDispatchedHandler(),
         protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
     ) {
     }
@@ -70,20 +66,20 @@ class Router implements RouterContract
     public function dispatch(InputContract $input): OutputContract
     {
         // Attempt to match the command
-        $matchedCommand = $this->attemptToMatchCommand($input);
+        $matchedCommand = $this->attemptToMatchRoute($input);
 
         // If the command was not matched an output returned
         if ($matchedCommand instanceof OutputContract) {
             // Dispatch RouteNotMatchedMiddleware
-            return $this->commandNotMatchedHandler->routeNotMatched(
+            return $this->routeNotMatchedHandler->routeNotMatched(
                 input: $input,
                 output: $matchedCommand
             );
         }
 
-        return $this->dispatchCommand(
+        return $this->dispatchRoute(
             input: $input,
-            command: $matchedCommand
+            route: $matchedCommand
         );
     }
 
@@ -91,26 +87,26 @@ class Router implements RouterContract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchCommand(InputContract $input, RouteContract $command): OutputContract
+    public function dispatchRoute(InputContract $input, RouteContract $route): OutputContract
     {
         // The command has been matched
-        $this->commandMatched($command);
+        $this->routeMatched($route);
 
         // Dispatch the RouteMatchedMiddleware
-        $commandAfterMiddleware = $this->commandMatchedHandler->routeMatched(
+        $routeAfterMiddleware = $this->routeMatchedHandler->routeMatched(
             input: $input,
-            route: $command
+            route: $route
         );
 
         // If the return value after middleware is an output return it
-        if ($commandAfterMiddleware instanceof OutputContract) {
-            return $commandAfterMiddleware;
+        if ($routeAfterMiddleware instanceof OutputContract) {
+            return $routeAfterMiddleware;
         }
 
         // Set the command after middleware has potentially modified it in the service container
-        $this->container->setSingleton(RouteContract::class, $commandAfterMiddleware);
+        $this->container->setSingleton(RouteContract::class, $routeAfterMiddleware);
 
-        $dispatch  = $commandAfterMiddleware->getDispatch();
+        $dispatch  = $routeAfterMiddleware->getDispatch();
         $arguments = $dispatch->getArguments();
 
         // Attempt to dispatch the route using any one of the callable options
@@ -123,17 +119,17 @@ class Router implements RouterContract
             throw new RuntimeException('All commands must return an output');
         }
 
-        return $this->commandDispatchedHandler->routeDispatched(
+        return $this->routeDispatchedHandler->routeDispatched(
             input: $input,
             output: $output,
-            route: $commandAfterMiddleware
+            route: $routeAfterMiddleware
         );
     }
 
     /**
-     * Match a command, or a response if no command exists, from a given input.
+     * Match a route, or a response if no route exists, from a given input.
      */
-    protected function attemptToMatchCommand(InputContract $input): RouteContract|OutputContract
+    protected function attemptToMatchRoute(InputContract $input): RouteContract|OutputContract
     {
         $commandName = $input->getCommandName();
 
@@ -144,37 +140,35 @@ class Router implements RouterContract
 
         // Return the command if it was found
         if ($command !== null) {
-            return $this->addParametersToCommand($input, $command);
+            return $this->addParametersToRoute($input, $command);
         }
 
         $errorText = "Command `$commandName` was not found.";
 
-        $output = $this->outputFactory
+        return $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
             ->withMessages(
                 new Banner(new ErrorMessage($errorText))
             );
-
-        return $this->checkCommandNameForTypo($input, $output);
     }
 
     /**
-     * Add the parameters from the input to the command.
+     * Add the parameters from the input to the route.
      */
-    protected function addParametersToCommand(InputContract $input, RouteContract $command): RouteContract
+    protected function addParametersToRoute(InputContract $input, RouteContract $route): RouteContract
     {
-        $command = $this->addArgumentsToCommand($input, $command);
+        $route = $this->addArgumentsToRoute($input, $route);
 
-        return $this->addOptionsToCommand($input, $command);
+        return $this->addOptionsToRoute($input, $route);
     }
 
     /**
-     * Add the arguments from the input to the command.
+     * Add the arguments from the input to the route.
      */
-    protected function addArgumentsToCommand(InputContract $input, RouteContract $command): RouteContract
+    protected function addArgumentsToRoute(InputContract $input, RouteContract $route): RouteContract
     {
         $arguments          = [...$input->getArguments()];
-        $argumentParameters = $command->getArguments();
+        $argumentParameters = $route->getArguments();
 
         foreach ($argumentParameters as $key => $argumentParameter) {
             $argumentParameterArguments = [];
@@ -196,17 +190,17 @@ class Router implements RouterContract
                 ->validateValues();
         }
 
-        return $command
+        return $route
             ->withArguments(...$argumentParameters);
     }
 
     /**
-     * Add the options from the input to the command.
+     * Add the options from the input to the route.
      */
-    protected function addOptionsToCommand(InputContract $input, RouteContract $command): RouteContract
+    protected function addOptionsToRoute(InputContract $input, RouteContract $route): RouteContract
     {
         $options          = $input->getOptions();
-        $optionParameters = [...$command->getOptions()];
+        $optionParameters = [...$route->getOptions()];
 
         foreach ($optionParameters as $key => $optionParameter) {
             $optionParameterOptions = [];
@@ -226,81 +220,21 @@ class Router implements RouterContract
                 ->validateValues();
         }
 
-        return $command
+        return $route
             ->withOptions(...$optionParameters);
-    }
-
-    /**
-     * Check the command name from the input for a typo.
-     */
-    protected function checkCommandNameForTypo(InputContract $input, OutputContract $output): RouteContract|OutputContract
-    {
-        $name = $input->getCommandName();
-
-        $commands = [];
-
-        foreach ($this->collection->all() as $command) {
-            similar_text($command->getName(), $name, $percent);
-
-            if ($percent >= 60) {
-                $commands[] = $command;
-            }
-        }
-
-        if ($commands !== []) {
-            return $this->askToRunSimilarCommands($output, $commands);
-        }
-
-        return $output;
-    }
-
-    /**
-     * Ask the user if they want to run similar commands.
-     *
-     * @param RouteContract[] $commands The list of commands
-     */
-    protected function askToRunSimilarCommands(OutputContract $output, array $commands): RouteContract|OutputContract
-    {
-        $command = null;
-
-        $commandNames = array_map(static fn (RouteContract $command) => $command->getName(), $commands);
-
-        $output = $output
-            ->withAddedMessages(
-                new NewLine(),
-                new Question(
-                    'Did you mean to run one of the following commands?',
-                    static function (OutputContract $output, AnswerContract $answer) use (&$command, $commands): OutputContract {
-                        $response = $answer->getUserResponse();
-                        $command  = $response !== 'no'
-                            ? array_filter($commands, static fn (RouteContract $command): bool => $command->getName() === $response)[0] ?? null
-                            : null;
-
-                        return $output;
-                    },
-                    new Answer(
-                        defaultResponse: 'no',
-                        allowedResponses: $commandNames
-                    ),
-                ),
-            )
-            ->writeMessages();
-
-        return $command
-            ?? $output;
     }
 
     /**
      * Do various stuff after the route has been matched.
      */
-    protected function commandMatched(RouteContract $command): void
+    protected function routeMatched(RouteContract $route): void
     {
-        $this->commandMatchedHandler->add(...$command->getCommandMatchedMiddleware());
-        $this->commandDispatchedHandler->add(...$command->getCommandDispatchedMiddleware());
-        $this->throwableCaughtHandler->add(...$command->getThrowableCaughtMiddleware());
-        $this->exitedHandler->add(...$command->getExitedMiddleware());
+        $this->routeMatchedHandler->add(...$route->getRouteMatchedMiddleware());
+        $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
+        $this->throwableCaughtHandler->add(...$route->getThrowableCaughtMiddleware());
+        $this->exitedHandler->add(...$route->getExitedMiddleware());
 
         // Set the found command in the service container
-        $this->container->setSingleton(RouteContract::class, $command);
+        $this->container->setSingleton(RouteContract::class, $route);
     }
 }

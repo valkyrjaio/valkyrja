@@ -25,7 +25,7 @@ interface RouterContract
     public function dispatch(InputContract $input): OutputContract;
 
     /**
-     * Dispatch an input for a specific command.
+     * Dispatch an input for a specific route.
      */
-    public function dispatchCommand(InputContract $input, RouteContract $command): OutputContract;
+    public function dispatchRoute(InputContract $input, RouteContract $route): OutputContract;
 }

@@ -31,6 +31,7 @@ use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
+use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -50,6 +51,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CheckCommandForTypoMiddleware::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -57,6 +59,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CollectorContract::class, ServiceProvider::provides());
         self::assertContains(RouterContract::class, ServiceProvider::provides());
         self::assertContains(CollectionContract::class, ServiceProvider::provides());
+        self::assertContains(CheckCommandForTypoMiddleware::class, ServiceProvider::provides());
     }
 
     /**
@@ -124,5 +127,19 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
         self::assertNotNull($collection->get('test'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishCheckCommandForTypoMiddleware(): void
+    {
+        $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+
+        $callback = ServiceProvider::publishers()[CheckCommandForTypoMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CheckCommandForTypoMiddleware::class, $this->container->getSingleton(CheckCommandForTypoMiddleware::class));
     }
 }

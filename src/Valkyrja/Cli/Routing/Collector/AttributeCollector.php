@@ -145,10 +145,10 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)    => $route->withAddedCommandMatchedMiddleware(
+                is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)    => $route->withAddedRouteMatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true) => $route->withAddedCommandDispatchedMiddleware(
+                is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true) => $route->withAddedRouteDispatchedMiddleware(
                     $middlewareClass
                 ),
                 is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true) => $route->withAddedThrowableCaughtMiddleware(
@@ -221,8 +221,8 @@ class AttributeCollector implements Contract
             description: $route->getDescription(),
             helpText: $route->getHelpText(),
             dispatch: $route->getDispatch(),
-            commandMatchedMiddleware: $route->getCommandMatchedMiddleware(),
-            commandDispatchedMiddleware: $route->getCommandDispatchedMiddleware(),
+            routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
+            routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             exitedMiddleware: $route->getExitedMiddleware(),
             parameters: array_merge($route->getArguments(), $route->getOptions()),

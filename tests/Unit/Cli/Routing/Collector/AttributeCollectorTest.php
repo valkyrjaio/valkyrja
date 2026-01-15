@@ -16,8 +16,22 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Collector;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
+use Valkyrja\Cli\Routing\Data\ArgumentParameter;
+use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Data\Route;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
+use Valkyrja\Cli\Routing\Enum\OptionMode;
+use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Reflection\Reflector\Reflector;
+use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
+use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllAttributesClass;
+use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithUnsupportedMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -52,5 +66,66 @@ class AttributeCollectorTest extends TestCase
 
         self::assertNotEmpty($commands);
         self::assertCount(1, $commands);
+        self::assertInstanceOf(Route::class, $command = $commands[0]);
+        self::assertSame(CommandClass::NAME, $command->getName());
+        self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
+        self::assertSame(CommandClass::HELP_TEXT, $command->getHelpText()->getText());
+        self::assertNotEmpty($command->getOptions());
+        self::assertInstanceOf(OptionParameter::class, $command->getOptions()[0]);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testGetCommandsWithMoreAttributes(): void
+    {
+        $collector = new AttributeCollector(
+            attributes: new Collector(),
+            reflection: new Reflector()
+        );
+
+        $commands = $collector->getRoutes(CommandWithAllAttributesClass::class);
+
+        self::assertNotEmpty($commands);
+        self::assertCount(1, $commands);
+        self::assertInstanceOf(Route::class, $command = $commands[0]);
+        self::assertSame('className.test2.actionName', $command->getName());
+        self::assertSame(CommandWithAllAttributesClass::DESCRIPTION, $command->getDescription());
+        self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpText()->getText());
+        self::assertNotEmpty($command->getOptions());
+        self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
+        self::assertNotEmpty($command->getArguments());
+        self::assertSame('optionName', $option->getName());
+        self::assertSame('The option for the command', $option->getDescription());
+        self::assertSame('name', $option->getValueDisplayName());
+        self::assertSame('foo', $option->getDefaultValue());
+        self::assertSame(['o'], $option->getShortNames());
+        self::assertSame(['foo', 'bar'], $option->getValidValues());
+        self::assertSame(OptionMode::REQUIRED, $option->getMode());
+        self::assertSame(OptionValueMode::ARRAY, $option->getValueMode());
+        self::assertInstanceOf(ArgumentParameter::class, $argument = $command->getArguments()[0]);
+        self::assertSame('argumentName', $argument->getName());
+        self::assertSame('The argument for the command', $argument->getDescription());
+        self::assertSame(ArgumentMode::REQUIRED, $argument->getMode());
+        self::assertSame(ArgumentValueMode::ARRAY, $argument->getValueMode());
+        self::assertSame([RouteDispatchedMiddlewareClass::class], $command->getRouteDispatchedMiddleware());
+        self::assertSame([RouteMatchedMiddlewareClass::class], $command->getRouteMatchedMiddleware());
+        self::assertSame([ThrowableCaughtMiddlewareClass::class], $command->getThrowableCaughtMiddleware());
+        self::assertSame([ExitedMiddlewareClass::class], $command->getExitedMiddleware());
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testGetCommandsWithInvalidMiddleware(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $collector = new AttributeCollector(
+            attributes: new Collector(),
+            reflection: new Reflector()
+        );
+
+        $collector->getRoutes(CommandWithUnsupportedMiddlewareClass::class);
     }
 }

@@ -260,6 +260,10 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $new = clone $this;
 
         foreach ($options as $option) {
+            if ($this->valueMode === OptionValueMode::NONE && $option->getValue() !== null) {
+                throw new InvalidArgumentException("$this->name should have no value");
+            }
+
             $new->options[] = $option;
         }
 
@@ -315,11 +319,17 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function areValuesValid(): bool
     {
-        return match (true) {
-            $this->mode === OptionMode::REQUIRED          => $this->options !== [],
-            $this->valueMode === OptionValueMode::DEFAULT => count($this->options) <= 1,
-            default                                       => true,
-        };
+        $valid = true;
+
+        if ($this->mode === OptionMode::REQUIRED) {
+            $valid = $this->options !== [];
+        }
+
+        if ($this->valueMode === OptionValueMode::DEFAULT) {
+            $valid = $valid && count($this->options) <= 1;
+        }
+
+        return $valid;
     }
 
     /**

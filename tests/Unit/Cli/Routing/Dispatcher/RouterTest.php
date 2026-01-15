@@ -61,7 +61,7 @@ class RouterTest extends TestCase
         $commandNotMatchedHandler = new RouteNotMatchedHandler();
         $commandNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedClass::class);
 
-        $router = new Router(commandNotMatchedHandler: $commandNotMatchedHandler);
+        $router = new Router(routeNotMatchedHandler: $commandNotMatchedHandler);
         $input  = new Input(commandName: 'non-existing-command');
 
         $router->dispatch($input);
@@ -98,7 +98,7 @@ class RouterTest extends TestCase
         $collection = new Collection();
         $router     = new Router(
             collection: $collection,
-            commandMatchedHandler: $commandMatchedHandler
+            routeMatchedHandler: $commandMatchedHandler
         );
         $input      = new Input(commandName: 'test-command');
 
@@ -127,7 +127,7 @@ class RouterTest extends TestCase
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
 
-        $output = $router->dispatchCommand($input, $command);
+        $output = $router->dispatchRoute($input, $command);
 
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
     }
@@ -144,7 +144,7 @@ class RouterTest extends TestCase
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
 
-        $output = $router->dispatchCommand($input, $command);
+        $output = $router->dispatchRoute($input, $command);
 
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
     }
@@ -161,7 +161,7 @@ class RouterTest extends TestCase
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
 
-        $output = $router->dispatchCommand($input, $command);
+        $output = $router->dispatchRoute($input, $command);
 
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
     }
