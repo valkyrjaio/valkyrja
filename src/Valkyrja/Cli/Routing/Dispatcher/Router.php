@@ -89,6 +89,7 @@ class Router implements RouterContract
     #[Override]
     public function dispatchRoute(InputContract $input, RouteContract $route): OutputContract
     {
+        $route = $this->addParametersToRoute($input, $route);
         // The command has been matched
         $this->routeMatched($route);
 
@@ -134,13 +135,13 @@ class Router implements RouterContract
         $commandName = $input->getCommandName();
 
         // Try to get the command
-        $command = $this->collection->get(
+        $route = $this->collection->get(
             name: $commandName
         );
 
         // Return the command if it was found
-        if ($command !== null) {
-            return $this->addParametersToRoute($input, $command);
+        if ($route !== null) {
+            return $route;
         }
 
         $errorText = "Command `$commandName` was not found.";
