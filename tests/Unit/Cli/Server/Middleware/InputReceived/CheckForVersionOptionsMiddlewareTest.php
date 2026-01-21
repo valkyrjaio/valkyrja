@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 
-use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 

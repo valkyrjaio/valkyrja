@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
+use Valkyrja\Cli\Routing\Provider\ComponentProvider;
+use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
-use Valkyrja\Cli\Routing\Provider\ComponentProvider;
-use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
