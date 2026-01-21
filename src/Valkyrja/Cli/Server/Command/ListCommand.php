@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Command;
+namespace Valkyrja\Cli\Server\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -34,6 +34,14 @@ class ListCommand
 {
     public const string NAME = 'list';
 
+    public function __construct(
+        protected VersionCommand $version,
+        protected RouteContract $route,
+        protected CollectionContract $collection,
+        protected OutputFactoryContract $outputFactory
+    ) {
+    }
+
     #[Route(
         name: self::NAME,
         description: 'List all commands',
@@ -47,21 +55,30 @@ class ListCommand
             ),
         ]
     )]
-    public function run(VersionCommand $version, RouteContract $route, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
+    public function run(): OutputContract
     {
-        $namespace = $route->getOption('namespace')?->getFirstValue();
-        $routes    = $collection->all();
+        $namespace = $this->route->getOption('namespace')?->getFirstValue();
+        $routes    = $this->collection->all();
 
         if (is_string($namespace)) {
-            $routes = array_filter($routes, static fn (RouteContract $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
+            $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
+
+            if ($routes === []) {
+                return $this->outputFactory
+                    ->createOutput()
+                    ->withExitCode(ExitCode::ERROR)
+                    ->withAddedMessages(
+                        new Banner(new ErrorMessage("Namespace `$namespace` was not found."))
+                    );
+            }
         }
 
         if ($routes === []) {
-            return $outputFactory
+            return $this->outputFactory
                 ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
-                    new Banner(new ErrorMessage("Namespace `$namespace` was not found."))
+                    new Banner(new ErrorMessage('No routes found.'))
                 );
         }
 
@@ -69,21 +86,21 @@ class ListCommand
 
         usort($routes, static fn (RouteContract $a, RouteContract $b): int => $a->getName() <=> $b->getName());
 
-        $output = $version
-            ->run($outputFactory)
+        $output = $this->version
+            ->run()
             ->withAddedMessages(
                 new NewLine(),
                 new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
                 new NewLine()
             );
 
-        foreach ($routes as $item) {
+        foreach ($routes as $route) {
             $output = $output->withAddedMessages(
                 new Message('  '),
-                new Message($item->getName(), new Formatter(textColor: TextColor::MAGENTA)),
+                new Message($route->getName(), new Formatter(textColor: TextColor::MAGENTA)),
                 new NewLine(),
                 new Message('    - '),
-                new Message($item->getDescription(), new HighlightedTextFormatter()),
+                new Message($route->getDescription(), new HighlightedTextFormatter()),
                 new NewLine(),
             );
         }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Command;
+namespace Valkyrja\Cli\Server\Command;
 
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -26,6 +26,13 @@ use function is_string;
 class ListBashCommand
 {
     public const string NAME = 'list:bash';
+
+    public function __construct(
+        protected RouteContract $route,
+        protected CollectionContract $collection,
+        protected OutputFactoryContract $outputFactory
+    ) {
+    }
 
     #[Route(
         name: self::NAME,
@@ -42,19 +49,19 @@ class ListBashCommand
             ),
         ]
     )]
-    public function run(RouteContract $route, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
+    public function run(): OutputContract
     {
-        $output = $outputFactory
+        $output = $this->outputFactory
             ->createOutput();
 
-        $namespace = $route->getArgument('namespace')?->getFirstValue();
-        $routes    = $collection->all();
+        $namespace = $this->route->getArgument('namespace')?->getFirstValue();
+        $routes    = $this->collection->all();
         $colonAt   = false;
 
         if (is_string($namespace)) {
             $colonAt = strpos($namespace, ':');
 
-            $routes = array_filter($routes, static fn (RouteContract $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
+            $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
         }
 
         $routesForBash = array_map(

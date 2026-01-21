@@ -15,10 +15,10 @@ namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Cli\Command\HelpCommand;
-use Valkyrja\Cli\Command\ListBashCommand;
-use Valkyrja\Cli\Command\ListCommand;
-use Valkyrja\Cli\Command\VersionCommand;
+use Valkyrja\Cli\Server\Command\HelpCommand;
+use Valkyrja\Cli\Server\Command\ListBashCommand;
+use Valkyrja\Cli\Server\Command\ListCommand;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 
 class ComponentProvider extends Provider
 {

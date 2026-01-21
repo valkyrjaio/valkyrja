@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Server\Middleware;
+namespace Valkyrja\Cli\Server\Middleware\ThrowableCaught;
 
 use Override;
 use Throwable;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\InputReceived;
+namespace Valkyrja\Cli\Server\Middleware\InputReceived;
 
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;

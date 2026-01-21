@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Cli\Command;
 
-use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
@@ -25,6 +24,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
@@ -55,7 +55,7 @@ class ListCommand
         usort($routes, static fn (RouteContract $a, RouteContract $b): int => $a->getPath() <=> $b->getPath());
 
         $output = $version
-            ->run($outputFactory)
+            ->run()
             ->withAddedMessages(
                 new NewLine(),
                 new Message('Routes:', new HighlightedTextFormatter()),

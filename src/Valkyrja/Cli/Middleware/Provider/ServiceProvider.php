@@ -15,7 +15,6 @@ namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -34,12 +33,6 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
-use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
-use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
-use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
@@ -52,15 +45,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputReceivedHandlerContract::class            => [self::class, 'publishInputReceivedHandler'],
-            ThrowableCaughtHandlerContract::class          => [self::class, 'publishThrowableCaughtHandler'],
-            RouteMatchedHandlerContract::class             => [self::class, 'publishRouteMatchedHandler'],
-            RouteNotMatchedHandlerContract::class          => [self::class, 'publishRouteNotMatchedHandler'],
-            RouteDispatchedHandlerContract::class          => [self::class, 'publishRouteDispatchedHandler'],
-            ExitedHandlerContract::class                   => [self::class, 'publishExitedHandler'],
-            CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
-            CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
-            CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
+            InputReceivedHandlerContract::class   => [self::class, 'publishInputReceivedHandler'],
+            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
+            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
         ];
     }
 
@@ -77,9 +67,6 @@ final class ServiceProvider extends Provider
             RouteMatchedHandlerContract::class,
             RouteNotMatchedHandlerContract::class,
             ExitedHandlerContract::class,
-            CheckForHelpOptionsMiddleware::class,
-            CheckForVersionOptionsMiddleware::class,
-            CheckGlobalInteractionOptionsMiddleware::class,
         ];
     }
 
@@ -195,72 +182,5 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-    }
-
-    /**
-     * Publish the CheckForHelpOptionsMiddleware service.
-     */
-    public static function publishCheckForHelpOptionsMiddleware(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-
-        /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_HELP_COMMAND_NAME;
-        /** @var non-empty-string $name */
-        $name = $env::CLI_HELP_OPTION_NAME;
-        /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_HELP_OPTION_SHORT_NAME;
-
-        $container->setSingleton(
-            CheckForHelpOptionsMiddleware::class,
-            new CheckForHelpOptionsMiddleware(
-                commandName: $commandName,
-                optionName: $name,
-                optionShortName: $shortName
-            )
-        );
-    }
-
-    /**
-     * Publish the CheckForVersionOptionsMiddleware service.
-     */
-    public static function publishCheckForVersionOptionsMiddleware(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-
-        /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_VERSION_COMMAND_NAME;
-        /** @var non-empty-string $name */
-        $name = $env::CLI_VERSION_OPTION_NAME;
-        /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_VERSION_OPTION_SHORT_NAME;
-
-        $container->setSingleton(
-            CheckForVersionOptionsMiddleware::class,
-            new CheckForVersionOptionsMiddleware(
-                commandName: $commandName,
-                optionName: $name,
-                optionShortName: $shortName
-            )
-        );
-    }
-
-    /**
-     * Publish the CheckGlobalInteractionOptionsMiddleware service.
-     */
-    public static function publishCheckGlobalInteractionOptionsMiddleware(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            CheckGlobalInteractionOptionsMiddleware::class,
-            new CheckGlobalInteractionOptionsMiddleware(
-                config: $container->getSingleton(Config::class),
-                noInteractionOptionName: NoInteractionOptionParameter::NAME,
-                noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-                quietOptionName: QuietOptionParameter::NAME,
-                quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-                silentOptionName: SilentOptionParameter::NAME,
-                silentOptionShortName: SilentOptionParameter::SHORT_NAME
-            )
-        );
     }
 }

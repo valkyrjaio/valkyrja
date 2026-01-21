@@ -11,7 +11,7 @@
   },
   "scripts"           : {
     "check"       : "vendor/bin/phpunit",
-    "coverage"    : "php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-text --stderr",
+    "coverage"    : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --coverage-text --stderr",
     "no-coverage" : "vendor/bin/phpunit --no-coverage"
   },
   "minimum-stability" : "dev",
