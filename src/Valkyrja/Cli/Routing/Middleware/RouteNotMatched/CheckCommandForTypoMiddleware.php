@@ -35,9 +35,13 @@ class CheckCommandForTypoMiddleware implements RouteNotMatchedMiddlewareContract
 {
     protected RouteContract|null $matchedRoute = null;
 
+    /**
+     * @param non-empty-string $defaultAnswer The default answer
+     */
     public function __construct(
         protected RouterContract $router,
-        protected CollectionContract $collection
+        protected CollectionContract $collection,
+        protected string $defaultAnswer = 'no',
     ) {
     }
 
@@ -102,7 +106,7 @@ class CheckCommandForTypoMiddleware implements RouteNotMatchedMiddlewareContract
                         commands: $commands
                     ),
                     new Answer(
-                        defaultResponse: 'no',
+                        defaultResponse: $this->defaultAnswer,
                         allowedResponses: $commandNames
                     ),
                 ),

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Middleware\InputReceived;
+namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 
-use Valkyrja\Cli\Command\VersionCommand;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CheckForVersionOptionsMiddlewareTest extends TestCase

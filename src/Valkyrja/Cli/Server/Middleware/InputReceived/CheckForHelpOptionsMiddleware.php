@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\InputReceived;
+namespace Valkyrja\Cli\Server\Middleware\InputReceived;
 
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
-class CheckForVersionOptionsMiddleware implements InputReceivedMiddlewareContract
+class CheckForHelpOptionsMiddleware implements InputReceivedMiddlewareContract
 {
     /**
      * @param non-empty-string $commandName     The command name to route to
@@ -39,14 +40,16 @@ class CheckForVersionOptionsMiddleware implements InputReceivedMiddlewareContrac
     #[Override]
     public function inputReceived(InputContract $input, InputReceivedHandlerContract $handler): InputContract|OutputContract
     {
-        // Check if the options are set for the version
+        // Check if the options are set for help
         if (
             $input->hasOption($this->optionShortName)
             || $input->hasOption($this->optionName)
         ) {
             $input = $input
                 ->withCommandName($this->commandName)
-                ->withOptions();
+                ->withOptions(
+                    new Option('command', $input->getCommandName()),
+                );
         }
 
         return $handler->inputReceived($input);

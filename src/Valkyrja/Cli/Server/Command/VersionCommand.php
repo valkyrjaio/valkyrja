@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Command;
+namespace Valkyrja\Cli\Server\Command;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -28,14 +28,19 @@ class VersionCommand
 {
     public const string NAME = 'version';
 
+    public function __construct(
+        protected OutputFactoryContract $outputFactory
+    ) {
+    }
+
     #[Route(
         name: self::NAME,
         description: 'Get the application version',
         helpText: new Message('A command to show the application version and info'),
     )]
-    public function run(OutputFactoryContract $outputFactory): OutputContract
+    public function run(): OutputContract
     {
-        return $outputFactory
+        return $this->outputFactory
             ->createOutput()
             ->withMessages(
                 new Message(ApplicationContract::ASCII),
@@ -55,7 +60,6 @@ class VersionCommand
                 new Message('Running on PHP ' . PHP_VERSION),
                 new NewLine(),
                 new NewLine(),
-            )
-            ->writeMessages();
+            );
     }
 }

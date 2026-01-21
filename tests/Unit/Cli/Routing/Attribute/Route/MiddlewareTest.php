@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Attribute\Route;
 
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
-use Valkyrja\Cli\Server\Middleware\OutputThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class MiddlewareTest extends TestCase

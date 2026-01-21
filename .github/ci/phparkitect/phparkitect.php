@@ -124,8 +124,7 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Command'))
-                      ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Attribute\\'))
-                      ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Data\\'))
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\*'))
                       ->andThat(new NotHaveNameMatching('*Handler'))
                       ->andThat(new NotHaveNameMatching('*Middleware'))
                       ->should(new ResideInOneOfTheseNamespaces('*Cli\\Command\\'))

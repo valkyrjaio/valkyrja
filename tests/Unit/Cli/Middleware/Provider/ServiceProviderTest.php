@@ -25,9 +25,6 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Cli\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
-use Valkyrja\Cli\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
-use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -47,9 +44,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(RouteDispatchedHandlerContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ExitedHandlerContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckForVersionOptionsMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -60,9 +54,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(RouteNotMatchedHandlerContract::class, ServiceProvider::provides());
         self::assertContains(RouteDispatchedHandlerContract::class, ServiceProvider::provides());
         self::assertContains(ExitedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(CheckForHelpOptionsMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckForVersionOptionsMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::provides());
     }
 
     public function testPublishInputReceivedHandler(): void

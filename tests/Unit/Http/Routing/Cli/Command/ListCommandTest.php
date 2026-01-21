@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
-use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
@@ -39,9 +39,9 @@ class ListCommandTest extends TestCase
             regex: $regex,
         );
 
-        $version       = new VersionCommand();
-        $collection    = new Collection();
         $outputFactory = new OutputFactory();
+        $version       = new VersionCommand($outputFactory);
+        $collection    = new Collection();
 
         $listCommand = new ListCommand();
 
@@ -65,9 +65,9 @@ class ListCommandTest extends TestCase
 
     public function testNoRoutes(): void
     {
-        $version       = new VersionCommand();
-        $collection    = new Collection();
         $outputFactory = new OutputFactory();
+        $version       = new VersionCommand($outputFactory);
+        $collection    = new Collection();
 
         $listCommand = new ListCommand();
 

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Middleware\InputReceived;
+namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase

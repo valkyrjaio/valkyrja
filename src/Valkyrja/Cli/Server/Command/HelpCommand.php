@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Command;
+namespace Valkyrja\Cli\Server\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -46,6 +46,16 @@ class HelpCommand
 {
     public const string NAME = 'help';
 
+    protected RouteContract $helpRoute;
+
+    public function __construct(
+        protected VersionCommand $version,
+        protected RouteContract $route,
+        protected CollectionContract $collection,
+        protected OutputFactoryContract $outputFactory,
+    ) {
+    }
+
     #[Route(
         name: self::NAME,
         description: 'Help for a command',
@@ -59,12 +69,12 @@ class HelpCommand
             ),
         ]
     )]
-    public function run(VersionCommand $version, RouteContract $route, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
+    public function run(): OutputContract
     {
-        $commandName = $route->getOption('command')?->getFirstValue();
+        $commandName = $this->route->getOption('command')?->getFirstValue();
 
         if (! is_string($commandName)) {
-            return $outputFactory
+            return $this->outputFactory
                 ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
@@ -72,10 +82,10 @@ class HelpCommand
                 );
         }
 
-        $helpCommand = $collection->get($commandName);
+        $helpRoute = $this->collection->get($commandName);
 
-        if ($helpCommand === null) {
-            return $outputFactory
+        if ($helpRoute === null) {
+            return $this->outputFactory
                 ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
@@ -83,21 +93,24 @@ class HelpCommand
                 );
         }
 
-        $output = $version->run($outputFactory);
+        $this->helpRoute = $helpRoute;
 
-        return $this->getHelpText($output, $helpCommand);
+        $output = $this->version->run();
+
+        return $this->getHelpText($output);
     }
 
     /**
      * Get the help text for a given command.
      */
-    protected function getHelpText(OutputContract $output, RouteContract $route): OutputContract
+    protected function getHelpText(OutputContract $output): OutputContract
     {
+        $route            = $this->helpRoute;
         $argumentMessages = [];
         $optionMessages   = [];
 
         if ($route->hasOptions()) {
-            $optionMessages[] = $this->getOptionsHeadingMessages($route);
+            $optionMessages[] = $this->getOptionsHeadingMessages();
             $optionMessages[] = new NewLine();
 
             foreach ($route->getOptions() as $option) {
@@ -105,7 +118,7 @@ class HelpCommand
             }
         }
 
-        $optionMessages[] = $this->getGlobalOptionsHeadingMessages($route);
+        $optionMessages[] = $this->getGlobalOptionsHeadingMessages();
         $optionMessages[] = new NewLine();
 
         $optionMessages[] = $this->getOptionMessages(new QuietOptionParameter());
@@ -115,70 +128,67 @@ class HelpCommand
         $optionMessages[] = $this->getOptionMessages(new VersionOptionParameter());
 
         if ($route->hasArguments()) {
-            $argumentMessages[] = $this->getArgumentsHeadingMessages($route);
+            $argumentMessages[] = $this->getArgumentsHeadingMessages();
             $argumentMessages[] = new NewLine();
 
             foreach ($route->getArguments() as $argument) {
-                $optionMessages[] = $this->getArgumentMessages($argument);
+                $argumentMessages[] = $this->getArgumentMessages($argument);
             }
-
-            $argumentMessages[] = new NewLine();
         }
 
         return $output
             ->withAddedMessages(
                 new NewLine(),
-                $this->getNameMessages($route),
+                $this->getNameMessages(),
                 new NewLine(),
                 new NewLine(),
-                $this->getDescriptionMessages($route),
+                $this->getDescriptionMessages(),
                 new NewLine(),
                 new NewLine(),
-                $this->getUsageMessages($route),
+                $this->getUsageMessages(),
                 new NewLine(),
                 new NewLine(),
                 ...$argumentMessages,
                 ...$optionMessages,
             )
             ->withAddedMessages(
-                $this->getHelpTextMessages($route),
+                $this->getHelpTextMessages(),
                 new NewLine(),
-            )
-            ->writeMessages();
+            );
     }
 
     /**
      * Get name messages.
      */
-    protected function getNameMessages(RouteContract $route): Messages
+    protected function getNameMessages(): Messages
     {
         return new Messages(
             new Message('Name: ', new HighlightedTextFormatter()),
-            new Message($route->getName()),
+            new Message($this->helpRoute->getName()),
         );
     }
 
     /**
      * Get description messages.
      */
-    protected function getDescriptionMessages(RouteContract $route): Messages
+    protected function getDescriptionMessages(): Messages
     {
         return new Messages(
             new Message('Description:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText(new Message($route->getDescription())),
+            $this->getIndentedText(new Message($this->helpRoute->getDescription())),
         );
     }
 
     /**
      * Get help text messages.
      */
-    protected function getHelpTextMessages(RouteContract $route): Messages
+    protected function getHelpTextMessages(): Messages
     {
         return new Messages(
             new Message('Help:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText($route->getHelpText()),
+            $this->getIndentedText($this->helpRoute->getHelpText()),
             new NewLine(),
         );
     }
@@ -186,8 +196,9 @@ class HelpCommand
     /**
      * Get usage messages.
      */
-    protected function getUsageMessages(RouteContract $route): Messages
+    protected function getUsageMessages(): Messages
     {
+        $route = $this->helpRoute;
         $usage = $route->getName();
 
         if ($route->hasOptions()) {
@@ -215,7 +226,7 @@ class HelpCommand
     /**
      * Get options heading messages.
      */
-    protected function getOptionsHeadingMessages(RouteContract $route): Messages
+    protected function getOptionsHeadingMessages(): Messages
     {
         return new Messages(
             new Message('Options:', new HighlightedTextFormatter()),
@@ -225,7 +236,7 @@ class HelpCommand
     /**
      * Get global options heading messages.
      */
-    protected function getGlobalOptionsHeadingMessages(RouteContract $route): Messages
+    protected function getGlobalOptionsHeadingMessages(): Messages
     {
         return new Messages(
             new Message('Global Options:', new HighlightedTextFormatter()),
@@ -255,15 +266,19 @@ class HelpCommand
         if ($valueDisplayName !== null) {
             $optionMessages[] = new Message(' ');
 
+            $text = '';
+
             if ($option->getValueMode() === OptionValueMode::ARRAY) {
-                $optionMessages[] = new Message('...', new HighlightedTextFormatter());
+                $text = '...';
             }
 
             if ($option->getMode() === OptionMode::REQUIRED) {
-                $optionMessages[] = new Message('=' . $valueDisplayName, new HighlightedTextFormatter());
+                $text .= '=' . $valueDisplayName;
             } else {
-                $optionMessages[] = new Message('[=' . $valueDisplayName . ']', new HighlightedTextFormatter());
+                $text .= '[=' . $valueDisplayName . ']';
             }
+
+            $optionMessages[] = new Message($text, new HighlightedTextFormatter());
         }
 
         $optionMessages[] = new NewLine();
@@ -298,7 +313,7 @@ class HelpCommand
     /**
      * Get arguments heading messages.
      */
-    protected function getArgumentsHeadingMessages(RouteContract $route): Messages
+    protected function getArgumentsHeadingMessages(): Messages
     {
         return new Messages(
             new Message('Arguments:', new HighlightedTextFormatter()),
