@@ -57,7 +57,7 @@ class PhpRenderer implements RendererContract
     #[Override]
     public function endRender(): string
     {
-        $obClean = ob_get_clean();
+        $obClean = $this->obGetClean();
 
         if ($obClean === false) {
             throw new RuntimeException('Render failed');
@@ -95,6 +95,16 @@ class PhpRenderer implements RendererContract
     public function renderFile(string $name, array $variables = []): string
     {
         return $this->renderFullPath($this->getFullPath($name), $variables);
+    }
+
+    /**
+     * Get the contents of the output buffer and delete it.
+     *
+     * @return string|false
+     */
+    protected function obGetClean(): string|false
+    {
+        return ob_get_clean();
     }
 
     /**
