@@ -7,8 +7,8 @@
     "slevomat/coding-standard"  : "^8.26.0"
   },
   "scripts"           : {
-    "check"    : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src -n && vendor/bin/phpcs --standard=./ruleset.xml ../../../tests -n",
-    "warnings" : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src && vendor/bin/phpcs --standard=./ruleset.xml ../../../tests"
+    "check"    : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src -n && vendor/bin/phpcs --standard=./ruleset.xml ../../../tests -n -s",
+    "warnings" : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src && vendor/bin/phpcs --standard=./ruleset.xml ../../../tests -s"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
