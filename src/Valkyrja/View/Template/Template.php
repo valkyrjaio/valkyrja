@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\View\Template;
 
 use Override;
-use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
+use Valkyrja\View\Throwable\Exception\InvalidArgumentException;
 
 use function array_merge;
 use function htmlentities;
@@ -137,8 +137,7 @@ class Template implements TemplateContract
     #[Override]
     public function escape(string|int|float $value): string
     {
-        /** @var string|false $encodedValue */
-        $encodedValue = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
+        $encodedValue = $this->convertEncoding((string) $value);
 
         if (! is_string($encodedValue)) {
             throw new InvalidArgumentException("Error occurred when encoding `$value`");
@@ -248,6 +247,18 @@ class Template implements TemplateContract
     public function __toString(): string
     {
         return $this->render();
+    }
+
+    /**
+     * Convert encoding of a string.
+     *
+     * @param string $value The value to convert
+     *
+     * @return string|false
+     */
+    protected function convertEncoding(string $value): string|false
+    {
+        return mb_convert_encoding($value, 'UTF-8', 'UTF-8');
     }
 
     /**
