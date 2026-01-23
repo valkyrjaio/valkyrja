@@ -13,7 +13,7 @@
     "guzzlehttp/guzzle"          : "^7.10.0",
     "league/flysystem"           : "^3.30.2",
     "league/flysystem-aws-s3-v3" : "^3.30.1",
-    "mailgun/mailgun-php"        : "^4.3.5",
+    "mailgun/mailgun-php"        : "^4.3.6",
     "monolog/monolog"            : "^3.10.0",
     "phpmailer/phpmailer"        : "^7.0.2",
     "predis/predis"              : "^3.3.0",
