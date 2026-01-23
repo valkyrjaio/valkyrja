@@ -25,6 +25,7 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessag
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
@@ -114,16 +115,29 @@ final class ServiceProvider extends Provider
         $dir = $env::VIEW_ORKA_PATH;
         /** @var non-empty-string $fileExtension */
         $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION;
-        /** @var array<string, string> $paths */
+        /** @var array<non-empty-string, non-empty-string> $paths */
         $paths = $env::VIEW_ORKA_PATHS;
+        /** @var class-string<ReplacementContract>[] $coreReplacements */
+        $coreReplacements = $env::VIEW_ORKA_CORE_REPLACEMENTS;
+        /** @var class-string<ReplacementContract>[] $replacements */
+        $replacements    = $env::VIEW_ORKA_REPLACEMENTS;
+        $allReplacements = array_merge($coreReplacements, $replacements);
+
+        $replacementClasses = [];
+
+        foreach ($allReplacements as $replacement) {
+            $replacementClasses[] = $container->get($replacement);
+        }
 
         $container->setSingleton(
             OrkaRenderer::class,
             new OrkaRenderer(
-                dir: Directory::basePath(path: $dir),
-                fileExtension: $fileExtension,
-                paths: $paths,
-                debug: $debug
+                Directory::basePath(path: $dir),
+                $fileExtension,
+                $paths,
+                Directory::storagePath('views/'),
+                $debug,
+                ...$replacementClasses,
             ),
         );
     }
