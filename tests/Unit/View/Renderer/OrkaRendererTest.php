@@ -42,8 +42,6 @@ class OrkaRendererTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->originalBasePath = Directory::$BASE_PATH;
         Directory::$BASE_PATH   = __DIR__ . '/../../..';
     }
