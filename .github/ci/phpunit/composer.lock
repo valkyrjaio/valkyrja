@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d42a61f537c4e8485ea415373a7172c",
+    "content-hash": "4d2bd92c0742b53144a3fea421d72264",
     "packages": [],
     "packages-dev": [
         {
@@ -1246,16 +1246,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.4",
+            "version": "12.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a"
+                "reference": "ab8e4374264bc65523d1458d14bf80261577e01f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
-                "reference": "4ba0e923f9d3fc655de22f9547c01d15a41fc93a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ab8e4374264bc65523d1458d14bf80261577e01f",
+                "reference": "ab8e4374264bc65523d1458d14bf80261577e01f",
                 "shasum": ""
             },
             "require": {
@@ -1269,7 +1269,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.3",
-                "phpunit/php-code-coverage": "^12.5.1",
+                "phpunit/php-code-coverage": "^12.5.2",
                 "phpunit/php-file-iterator": "^6.0.0",
                 "phpunit/php-invoker": "^6.0.0",
                 "phpunit/php-text-template": "^5.0.0",
@@ -1323,7 +1323,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.6"
             },
             "funding": [
                 {
@@ -1347,7 +1347,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-15T06:05:34+00:00"
+            "time": "2026-01-16T16:28:10+00:00"
         },
         {
             "name": "psr/container",
@@ -2607,16 +2607,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v8.0.1",
+            "version": "v8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "a5a054e613da565d46183a845ae4c0c996a3fbce"
+                "reference": "58063686fd7b8e676f14b5a4808cb85265c5216e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/a5a054e613da565d46183a845ae4c0c996a3fbce",
-                "reference": "a5a054e613da565d46183a845ae4c0c996a3fbce",
+                "url": "https://api.github.com/repos/symfony/config/zipball/58063686fd7b8e676f14b5a4808cb85265c5216e",
+                "reference": "58063686fd7b8e676f14b5a4808cb85265c5216e",
                 "shasum": ""
             },
             "require": {
@@ -2661,7 +2661,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v8.0.1"
+                "source": "https://github.com/symfony/config/tree/v8.0.3"
             },
             "funding": [
                 {
@@ -2681,20 +2681,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-05T14:08:45+00:00"
+            "time": "2025-12-23T14:52:06+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v8.0.1",
+            "version": "v8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "fcb73f69d655b48fcb894a262f074218df08bd58"
+                "reference": "6145b304a5c1ea0bdbd0b04d297a5864f9a7d587"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/fcb73f69d655b48fcb894a262f074218df08bd58",
-                "reference": "fcb73f69d655b48fcb894a262f074218df08bd58",
+                "url": "https://api.github.com/repos/symfony/console/zipball/6145b304a5c1ea0bdbd0b04d297a5864f9a7d587",
+                "reference": "6145b304a5c1ea0bdbd0b04d297a5864f9a7d587",
                 "shasum": ""
             },
             "require": {
@@ -2751,7 +2751,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v8.0.1"
+                "source": "https://github.com/symfony/console/tree/v8.0.3"
             },
             "funding": [
                 {
@@ -2771,7 +2771,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-05T15:25:33+00:00"
+            "time": "2025-12-23T14:52:06+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
