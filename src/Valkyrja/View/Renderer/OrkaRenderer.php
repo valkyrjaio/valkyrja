@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\View\Renderer;
 
 use Override;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Throwable\Exception\RuntimeException;
 
@@ -32,12 +31,14 @@ class OrkaRenderer extends PhpRenderer
     protected array $replacements = [];
 
     /**
-     * @param array<non-empty-string, non-empty-string> $paths The paths
+     * @param array<non-empty-string, non-empty-string> $paths      The paths
+     * @param non-empty-string                          $storageDir The storage directory
      */
     public function __construct(
         string $dir,
         string $fileExtension = '.orka.phtml',
         array $paths = [],
+        protected string $storageDir = 'storage/views',
         protected bool $debug = false,
         ReplacementContract ...$replacements
     ) {
@@ -98,7 +99,7 @@ class OrkaRenderer extends PhpRenderer
      */
     protected function getCachedFilePath(string $name): string
     {
-        return Directory::storagePath('views/' . md5($name));
+        return $this->storageDir . '/' . md5($name);
     }
 
     /**

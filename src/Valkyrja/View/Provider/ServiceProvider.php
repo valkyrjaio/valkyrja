@@ -135,6 +135,7 @@ final class ServiceProvider extends Provider
                 Directory::basePath(path: $dir),
                 $fileExtension,
                 $paths,
+                Directory::storagePath('views/'),
                 $debug,
                 ...$replacementClasses,
             ),

@@ -78,7 +78,10 @@ class OrkaRendererTest extends TestCase
 
     public function testRenderFileWithoutReplacements(): void
     {
-        $renderer = new OrkaRenderer(self::TEMPLATES_DIR);
+        $renderer = new OrkaRenderer(
+            self::TEMPLATES_DIR,
+            storageDir: Directory::storagePath('views')
+        );
         $result   = $renderer->renderFile('simple');
 
         self::assertSame('Simple orka content', $result);
@@ -90,6 +93,7 @@ class OrkaRendererTest extends TestCase
             self::TEMPLATES_DIR,
             '.orka.phtml',
             [],
+            Directory::storagePath('views'),
             false,
             new Unescaped()
         );
@@ -108,7 +112,10 @@ class OrkaRendererTest extends TestCase
             unlink($cachedPath);
         }
 
-        $renderer = new OrkaRenderer(self::TEMPLATES_DIR);
+        $renderer = new OrkaRenderer(
+            self::TEMPLATES_DIR,
+            storageDir: Directory::storagePath('views')
+        );
         $renderer->renderFile($templateName);
 
         self::assertFileExists($cachedPath);
@@ -125,7 +132,10 @@ class OrkaRendererTest extends TestCase
         }
 
         // First render creates the cache
-        $renderer = new OrkaRenderer(self::TEMPLATES_DIR);
+        $renderer = new OrkaRenderer(
+            self::TEMPLATES_DIR,
+            storageDir: Directory::storagePath('views')
+        );
         $renderer->renderFile($templateName);
 
         // Verify cache was created
@@ -146,6 +156,7 @@ class OrkaRendererTest extends TestCase
             self::TEMPLATES_DIR,
             '.orka.phtml',
             [],
+            Directory::storagePath('views'),
             true // debug mode
         );
 
@@ -191,7 +202,11 @@ class OrkaRendererTest extends TestCase
 
     public function testConstructorWithCustomFileExtension(): void
     {
-        $renderer = new OrkaRenderer(self::TEMPLATES_DIR, '.orka.custom');
+        $renderer = new OrkaRenderer(
+            self::TEMPLATES_DIR,
+            '.orka.custom',
+            storageDir: Directory::storagePath('views')
+        );
 
         $result = $renderer->renderFile('home');
 
@@ -203,7 +218,8 @@ class OrkaRendererTest extends TestCase
         $renderer = new OrkaRenderer(
             self::TEMPLATES_DIR,
             '.orka.phtml',
-            ['@custom' => self::TEMPLATES_DIR . '/custom']
+            ['@custom' => self::TEMPLATES_DIR . '/custom'],
+            storageDir: Directory::storagePath('views'),
         );
 
         $result = $renderer->renderFile('@custom/simple');
@@ -241,6 +257,7 @@ class OrkaRendererTest extends TestCase
             self::TEMPLATES_DIR,
             '.orka.phtml',
             [],
+            Directory::storagePath('views'),
             false,
             $replacement1,
             $replacement2
