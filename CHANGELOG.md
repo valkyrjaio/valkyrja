@@ -1,6 +1,15 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.20.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.21.0...master)
+
+## [v25.21.0](https://github.com/valkyrjaio/valkyrja/compare/v25.20.0...v25.21.0) - 2026-01-22
+
+* [Cli] Update the Router test by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/382
+* [Cli] Complete all testing for component by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/383
+* [View] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/384
+* [CI] Update rector to v2.3.4 from v2.3.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/385
+* [CI] Update phpunit to v12.5.6 from v12.5.4 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/386
+* [Composer] Update mailgun/mailgun to v4.3.6 from v4.3.5 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/387
 
 ## [v25.20.0](https://github.com/valkyrjaio/valkyrja/compare/v25.19.1...v25.20.0) - 2026-01-14
 
