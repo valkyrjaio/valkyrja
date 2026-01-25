@@ -21,6 +21,10 @@ use function preg_match;
 
 class Regex extends Rule
 {
+    /**
+     * @param non-empty-string      $regex        The regex
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected string $regex,
@@ -38,10 +42,12 @@ class Regex extends Rule
 
         return is_string($subject)
             && $subject !== ''
-            && $regex !== ''
             && preg_match($regex, $subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

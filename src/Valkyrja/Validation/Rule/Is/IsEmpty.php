@@ -29,6 +29,9 @@ class IsEmpty extends Rule
             || empty($subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

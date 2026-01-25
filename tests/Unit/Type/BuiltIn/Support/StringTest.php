@@ -134,15 +134,21 @@ class StringTest extends TestCase
     public function testIsLowercase(): void
     {
         self::assertTrue(Str::isLowercase('lowercase'));
+        self::assertTrue(Str::isLowercase('lowercase with spaces'));
         self::assertFalse(Str::isLowercase('Capitalized'));
+        self::assertFalse(Str::isLowercase('Capitalized with spaces'));
         self::assertFalse(Str::isLowercase('UPPERCASE'));
+        self::assertFalse(Str::isLowercase('UPPERCASE WITH SPACES'));
     }
 
     public function testIsUppercase(): void
     {
         self::assertFalse(Str::isUppercase('lowercase'));
+        self::assertFalse(Str::isUppercase('lowercase with spaces'));
         self::assertFalse(Str::isUppercase('Capitalized'));
+        self::assertFalse(Str::isUppercase('Capitalized with spaces'));
         self::assertTrue(Str::isUppercase('UPPERCASE'));
+        self::assertTrue(Str::isUppercase('UPPERCASE WITH SPACES'));
     }
 
     /**

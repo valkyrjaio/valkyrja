@@ -21,6 +21,9 @@ use function is_int;
 
 class GreaterThan extends Rule
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected int $min,
@@ -36,6 +39,9 @@ class GreaterThan extends Rule
             && Integer::greaterThan($this->subject, $this->min);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

@@ -26,6 +26,9 @@ class IsBool extends Rule
         return is_bool($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

@@ -23,12 +23,12 @@ class Validator implements ValidatorContract
     /**
      * The error messages if validation failed.
      *
-     * @var array<string, string>
+     * @var array<non-empty-string, non-empty-string>
      */
     protected array $errorMessages = [];
 
     /**
-     * @param array<string, RuleContract[]> $rules
+     * @param array<non-empty-string, RuleContract[]> $rules The rules
      */
     public function __construct(
         protected array $rules = [],
@@ -85,6 +85,8 @@ class Validator implements ValidatorContract
 
     /**
      * Validate a rule for a subject.
+     *
+     * @param non-empty-string $subject The subject to validate
      */
     protected function validateRule(RuleContract $rule, string $subject): void
     {

@@ -11,28 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Rule\String;
+namespace Valkyrja\Validation\Rule\Orm;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Str;
-use Valkyrja\Validation\Rule\Abstract\Rule;
+use Valkyrja\Validation\Rule\Orm\Abstract\EntityRule;
 
-use function is_string;
-
-class Uppercase extends Rule
+class EntityExists extends EntityRule
 {
     #[Override]
     public function isValid(): bool
     {
-        return is_string($this->subject) && Str::isUppercase($this->subject);
+        return $this->checkForEntity() !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    protected function getDefaultErrorMessage(): string
     {
-        return 'Must be uppercase';
+        return 'The entity does not exist';
     }
 }

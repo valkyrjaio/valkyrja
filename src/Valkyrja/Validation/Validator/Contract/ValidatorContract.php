@@ -20,7 +20,7 @@ interface ValidatorContract
     /**
      * Validate a set of rules.
      *
-     * @param array<string, RuleContract[]>|null $rules The rules
+     * @param array<non-empty-string, RuleContract[]>|null $rules The rules
      */
     public function rules(array|null $rules = null): bool;
 
@@ -41,19 +41,21 @@ interface ValidatorContract
      *      ]
      * </code>
      *
-     * @param array<string, RuleContract[]> $rules The rules
+     * @param array<non-empty-string, RuleContract[]> $rules The rules
      */
     public function setRules(array $rules): void;
 
     /**
      * Get the error messages.
      *
-     * @return array<string, string>
+     * @return array<non-empty-string, non-empty-string>
      */
     public function getErrorMessages(): array;
 
     /**
      * Get the first error message thrown.
+     *
+     * @return non-empty-string|null
      */
     public function getFirstErrorMessage(): string|null;
 }

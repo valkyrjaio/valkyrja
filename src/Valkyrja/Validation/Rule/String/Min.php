@@ -21,6 +21,9 @@ use function is_string;
 
 class Min extends Rule
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected int $min,
@@ -35,9 +38,16 @@ class Min extends Rule
         /** @var mixed $subject */
         $subject = $this->subject;
 
-        return is_string($subject) && Str::min($subject, $this->min);
+        if (! is_string($subject)) {
+            return false;
+        }
+
+        return Str::min($subject, $this->min);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

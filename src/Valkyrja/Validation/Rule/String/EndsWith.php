@@ -21,6 +21,10 @@ use function is_string;
 
 class EndsWith extends Rule
 {
+    /**
+     * @param non-empty-string      $needle       The needle
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected string $needle,
@@ -36,6 +40,9 @@ class EndsWith extends Rule
             && Str::endsWith($this->subject, $this->needle);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {
