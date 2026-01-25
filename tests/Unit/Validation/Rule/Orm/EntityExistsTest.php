@@ -34,8 +34,6 @@ class EntityExistsTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->orm        = $this->createMock(ManagerContract::class);
         $this->repository = $this->createMock(RepositoryContract::class);
     }
