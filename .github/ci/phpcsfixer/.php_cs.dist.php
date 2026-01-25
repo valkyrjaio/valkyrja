@@ -21,10 +21,10 @@ $header = <<<EOF
     EOF;
 
 $finder = PhpCsFixer\Finder::create()
-                           ->exclude('.github')
-                           ->exclude('docs')
-                           ->exclude('vendor')
-                           ->in(__DIR__ . '/../../../');
+    ->exclude('.github')
+    ->exclude('docs')
+    ->exclude('vendor')
+    ->in(__DIR__ . '/../../../');
 
 return new PhpCsFixer\Config()
     ->setParallelConfig(
@@ -55,6 +55,7 @@ return new PhpCsFixer\Config()
             'combine_consecutive_unsets'               => true,
             'comment_to_phpdoc'                        => true,
             // 'explicit_string_variable'                 => true,
+            'method_chaining_indentation'              => true,
             'modernize_types_casting'                  => true,
             'no_unreachable_default_argument_value'    => true,
             'no_superfluous_elseif'                    => true,
