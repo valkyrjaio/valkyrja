@@ -18,6 +18,9 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 class NotEqual extends Rule
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected mixed $value,
@@ -32,6 +35,9 @@ class NotEqual extends Rule
         return $this->subject !== $this->value;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

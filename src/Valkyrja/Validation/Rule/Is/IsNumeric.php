@@ -26,6 +26,9 @@ class IsNumeric extends Rule
         return is_numeric($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

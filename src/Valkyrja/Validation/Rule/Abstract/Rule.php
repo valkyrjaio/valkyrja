@@ -19,6 +19,9 @@ use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
 abstract class Rule implements RuleContract
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         protected mixed $subject,
         protected string|null $errorMessage = null
@@ -39,10 +42,16 @@ abstract class Rule implements RuleContract
         }
     }
 
+    /**
+     * @param non-empty-string $message The error message
+     */
     protected function getException(string $message): void
     {
         throw new ValidationException($message);
     }
 
+    /**
+     * @return non-empty-string
+     */
     abstract protected function getDefaultErrorMessage(): string;
 }

@@ -21,6 +21,10 @@ use function is_string;
 
 class StartsWith extends Rule
 {
+    /**
+     * @param non-empty-string      $needle       The needle
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected string $needle,
@@ -35,6 +39,9 @@ class StartsWith extends Rule
         return is_string($this->subject) && Str::startsWith($this->subject, $this->needle);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

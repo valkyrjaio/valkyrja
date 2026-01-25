@@ -28,6 +28,9 @@ class Alpha extends Rule
             && Str::isAlphabetic($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

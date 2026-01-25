@@ -26,6 +26,9 @@ class IsString extends Rule
         return is_string($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

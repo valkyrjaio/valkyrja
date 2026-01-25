@@ -18,6 +18,9 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 class Equal extends Rule
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected mixed $value,

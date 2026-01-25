@@ -24,6 +24,9 @@ class Required extends Rule
         return (bool) $this->subject;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

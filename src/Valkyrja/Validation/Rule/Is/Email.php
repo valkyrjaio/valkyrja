@@ -28,6 +28,9 @@ class Email extends Rule
             && Str::isEmail($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

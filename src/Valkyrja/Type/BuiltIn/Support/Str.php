@@ -19,8 +19,6 @@ use Random\RandomException;
 use function base64_encode;
 use function bin2hex;
 use function ctype_alpha;
-use function ctype_lower;
-use function ctype_upper;
 use function filter_var;
 use function gettype;
 use function is_array;
@@ -256,7 +254,7 @@ class Str
      */
     public static function isLowercase(string $subject): bool
     {
-        return ctype_lower($subject);
+        return strtolower($subject) === $subject;
     }
 
     /**
@@ -266,7 +264,7 @@ class Str
      */
     public static function isUppercase(string $subject): bool
     {
-        return ctype_upper($subject);
+        return strtoupper($subject) === $subject;
     }
 
     /**

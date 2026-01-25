@@ -24,10 +24,16 @@ class Lowercase extends Rule
     #[Override]
     public function isValid(): bool
     {
-        return is_string($this->subject)
-            && Str::isLowercase($this->subject);
+        if (! is_string($this->subject)) {
+            return false;
+        }
+
+        return Str::isLowercase($this->subject);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {

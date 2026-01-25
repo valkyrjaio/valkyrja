@@ -21,6 +21,9 @@ use function is_string;
 
 class Max extends Rule
 {
+    /**
+     * @param non-empty-string|null $errorMessage The error message
+     */
     public function __construct(
         mixed $subject,
         protected int $max,
@@ -32,10 +35,16 @@ class Max extends Rule
     #[Override]
     public function isValid(): bool
     {
-        return is_string($this->subject)
-            && Str::min($this->subject, $this->max);
+        if (! is_string($this->subject)) {
+            return false;
+        }
+
+        return Str::max($this->subject, $this->max);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getDefaultErrorMessage(): string
     {
