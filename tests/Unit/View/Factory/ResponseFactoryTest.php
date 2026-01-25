@@ -48,22 +48,22 @@ class ResponseFactoryTest extends TestCase
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
-                 ->method('render')
-                 ->willReturn($templateContent);
+            ->method('render')
+            ->willReturn($templateContent);
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('createTemplate')
-                 ->with($templateName, [])
-                 ->willReturn($template);
+            ->method('createTemplate')
+            ->with($templateName, [])
+            ->willReturn($template);
 
         $response = self::createStub(ResponseContract::class);
 
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
-                            ->method('createResponse')
-                            ->with($templateContent, null, null)
-                            ->willReturn($response);
+            ->method('createResponse')
+            ->with($templateContent, null, null)
+            ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName);
@@ -82,22 +82,22 @@ class ResponseFactoryTest extends TestCase
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
-                 ->method('render')
-                 ->willReturn($templateContent);
+            ->method('render')
+            ->willReturn($templateContent);
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('createTemplate')
-                 ->with($templateName, $data)
-                 ->willReturn($template);
+            ->method('createTemplate')
+            ->with($templateName, $data)
+            ->willReturn($template);
 
         $response = self::createStub(ResponseContract::class);
 
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
-                            ->method('createResponse')
-                            ->with($templateContent, null, null)
-                            ->willReturn($response);
+            ->method('createResponse')
+            ->with($templateContent, null, null)
+            ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, $data);
@@ -116,22 +116,22 @@ class ResponseFactoryTest extends TestCase
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
-                 ->method('render')
-                 ->willReturn($templateContent);
+            ->method('render')
+            ->willReturn($templateContent);
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('createTemplate')
-                 ->with($templateName, [])
-                 ->willReturn($template);
+            ->method('createTemplate')
+            ->with($templateName, [])
+            ->willReturn($template);
 
         $response = self::createStub(ResponseContract::class);
 
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
-                            ->method('createResponse')
-                            ->with($templateContent, $statusCode, null)
-                            ->willReturn($response);
+            ->method('createResponse')
+            ->with($templateContent, $statusCode, null)
+            ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, null, $statusCode);
@@ -150,22 +150,22 @@ class ResponseFactoryTest extends TestCase
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
-                 ->method('render')
-                 ->willReturn($templateContent);
+            ->method('render')
+            ->willReturn($templateContent);
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('createTemplate')
-                 ->with($templateName, [])
-                 ->willReturn($template);
+            ->method('createTemplate')
+            ->with($templateName, [])
+            ->willReturn($template);
 
         $response = self::createStub(ResponseContract::class);
 
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
-                            ->method('createResponse')
-                            ->with($templateContent, null, $headers)
-                            ->willReturn($response);
+            ->method('createResponse')
+            ->with($templateContent, null, $headers)
+            ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, null, null, $headers);
@@ -186,22 +186,22 @@ class ResponseFactoryTest extends TestCase
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
-                 ->method('render')
-                 ->willReturn($templateContent);
+            ->method('render')
+            ->willReturn($templateContent);
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('createTemplate')
-                 ->with($templateName, $data)
-                 ->willReturn($template);
+            ->method('createTemplate')
+            ->with($templateName, $data)
+            ->willReturn($template);
 
         $response = self::createStub(ResponseContract::class);
 
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
-                            ->method('createResponse')
-                            ->with($templateContent, $statusCode, $headers)
-                            ->willReturn($response);
+            ->method('createResponse')
+            ->with($templateContent, $statusCode, $headers)
+            ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, $data, $statusCode, $headers);

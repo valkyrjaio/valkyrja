@@ -205,8 +205,8 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->willReturn($templateContent);
+            ->method('renderFile')
+            ->willReturn($templateContent);
 
         $template = new Template($renderer, 'test');
         $template->setLayout('layouts/main');
@@ -226,8 +226,8 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->willReturn($templateContent);
+            ->method('renderFile')
+            ->willReturn($templateContent);
 
         $template = new Template($renderer, 'test');
         $template->setLayout('layouts/main');
@@ -248,8 +248,8 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->exactly(2))
-                 ->method('renderFile')
-                 ->willReturnOnConsecutiveCalls($templateContent, $layoutContent);
+            ->method('renderFile')
+            ->willReturnOnConsecutiveCalls($templateContent, $layoutContent);
 
         $template = new Template($renderer, 'test');
 
@@ -290,10 +290,10 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('startRender');
+            ->method('startRender');
         $renderer->expects($this->once())
-                 ->method('endRender')
-                 ->willReturn($blockContent);
+            ->method('endRender')
+            ->willReturn($blockContent);
 
         $template = new Template($renderer, 'test');
 
@@ -314,10 +314,10 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->exactly(2))
-                 ->method('startRender');
+            ->method('startRender');
         $renderer->expects($this->exactly(2))
-                 ->method('endRender')
-                 ->willReturnOnConsecutiveCalls($innerContent, $outerContent);
+            ->method('endRender')
+            ->willReturnOnConsecutiveCalls($innerContent, $outerContent);
 
         $template = new Template($renderer, 'test');
 
@@ -341,12 +341,12 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->with(
-                     'partials/header',
-                     self::callback(static fn ($variables) => isset($variables['template']) && $variables['template'] instanceof Template)
-                 )
-                 ->willReturn($partialContent);
+            ->method('renderFile')
+            ->with(
+                'partials/header',
+                self::callback(static fn ($variables) => isset($variables['template']) && $variables['template'] instanceof Template)
+            )
+            ->willReturn($partialContent);
 
         $template = new Template($renderer, 'test');
 
@@ -362,12 +362,12 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->with(
-                     'partials/greeting',
-                     self::callback(static fn ($variables) => $variables['name'] === 'John' && isset($variables['template']))
-                 )
-                 ->willReturn($partialContent);
+            ->method('renderFile')
+            ->with(
+                'partials/greeting',
+                self::callback(static fn ($variables) => $variables['name'] === 'John' && isset($variables['template']))
+            )
+            ->willReturn($partialContent);
 
         $template = new Template($renderer, 'test');
 
@@ -383,12 +383,12 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->with(
-                     'home',
-                     self::callback(static fn ($variables) => isset($variables['template']) && $variables['template'] instanceof Template)
-                 )
-                 ->willReturn($renderedContent);
+            ->method('renderFile')
+            ->with(
+                'home',
+                self::callback(static fn ($variables) => isset($variables['template']) && $variables['template'] instanceof Template)
+            )
+            ->willReturn($renderedContent);
 
         $template = new Template($renderer, 'home');
 
@@ -404,12 +404,12 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->with(
-                     'greeting',
-                     self::callback(static fn ($variables) => $variables['name'] === 'World' && isset($variables['template']))
-                 )
-                 ->willReturn($renderedContent);
+            ->method('renderFile')
+            ->with(
+                'greeting',
+                self::callback(static fn ($variables) => $variables['name'] === 'World' && isset($variables['template']))
+            )
+            ->willReturn($renderedContent);
 
         $template = new Template($renderer, 'greeting');
 
@@ -426,8 +426,8 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->exactly(2))
-                 ->method('renderFile')
-                 ->willReturnOnConsecutiveCalls($templateContent, $layoutContent);
+            ->method('renderFile')
+            ->willReturnOnConsecutiveCalls($templateContent, $layoutContent);
 
         $template = new Template($renderer, 'page');
         $template->setLayout('layouts/main');
@@ -444,8 +444,8 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->once())
-                 ->method('renderFile')
-                 ->willReturn($renderedContent);
+            ->method('renderFile')
+            ->willReturn($renderedContent);
 
         $template = new Template($renderer, 'test');
 
@@ -465,27 +465,27 @@ class TemplateTest extends TestCase
 
         $renderer = $this->createMock(RendererContract::class);
         $renderer->expects($this->exactly(3))
-                 ->method('renderFile')
-                 ->willReturnCallback(
-                     static function (string $path) use (
-                         &$template,
-                         $templateContent,
-                         $firstLayoutContent,
-                         $finalLayoutContent
-                     ): string {
-                         if ($path === 'page') {
-                             return $templateContent;
-                         }
+            ->method('renderFile')
+            ->willReturnCallback(
+                static function (string $path) use (
+                    &$template,
+                    $templateContent,
+                    $firstLayoutContent,
+                    $finalLayoutContent
+                ): string {
+                    if ($path === 'page') {
+                        return $templateContent;
+                    }
 
-                         if ($path === 'layouts/first') {
-                             $template->setLayout('layouts/final');
+                    if ($path === 'layouts/first') {
+                        $template->setLayout('layouts/final');
 
-                             return $firstLayoutContent;
-                         }
+                        return $firstLayoutContent;
+                    }
 
-                         return $finalLayoutContent;
-                     }
-                 );
+                    return $finalLayoutContent;
+                }
+            );
 
         $template = new Template($renderer, 'page');
         $template->setLayout('layouts/first');

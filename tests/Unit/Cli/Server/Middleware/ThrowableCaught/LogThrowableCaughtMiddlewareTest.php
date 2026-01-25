@@ -32,21 +32,21 @@ class LogThrowableCaughtMiddlewareTest extends TestCase
 
         $logger = $this->createMock(LoggerContract::class);
         $logger->expects($this->once())
-               ->method('throwable')
-               ->with(
-                   self::equalTo($exception),
-                   self::equalTo("Cli Server Error\nUrl: $commandName"),
-               );
+            ->method('throwable')
+            ->with(
+                self::equalTo($exception),
+                self::equalTo("Cli Server Error\nUrl: $commandName"),
+            );
 
         $handler = $this->createMock(ThrowableCaughtHandler::class);
         $handler->expects($this->once())
-                ->method('throwableCaught')
-                ->with(
-                    self::equalTo($input),
-                    self::equalTo($output),
-                    self::equalTo($exception),
-                )
-                ->willReturn($output);
+            ->method('throwableCaught')
+            ->with(
+                self::equalTo($input),
+                self::equalTo($output),
+                self::equalTo($exception),
+            )
+            ->willReturn($output);
 
         $middleware = new LogThrowableCaughtMiddleware(logger: $logger);
 

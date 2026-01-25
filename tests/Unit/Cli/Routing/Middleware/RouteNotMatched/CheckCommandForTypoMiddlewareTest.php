@@ -33,14 +33,14 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
         $output2 = new Output(isInteractive: false);
         $handler = $this->createMock(RouteNotMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeNotMatched')
-                ->withAnyParameters()
-                ->willReturnArgument(1);
+            ->method('routeNotMatched')
+            ->withAnyParameters()
+            ->willReturnArgument(1);
         $router = $this->createMock(RouterContract::class);
         $router->expects($this->never())
-               ->method('dispatch')
-               ->withAnyParameters()
-               ->willReturn($output2);
+            ->method('dispatch')
+            ->withAnyParameters()
+            ->willReturn($output2);
         $collection = new Collection();
         $collection->add(
             new Route(
@@ -79,14 +79,14 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
         $output2 = new Output(isInteractive: false);
         $handler = $this->createMock(RouteNotMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeNotMatched')
-                ->withAnyParameters()
-                ->willReturnArgument(1);
+            ->method('routeNotMatched')
+            ->withAnyParameters()
+            ->willReturnArgument(1);
         $router = $this->createMock(RouterContract::class);
         $router->expects($this->once())
-               ->method('dispatch')
-               ->withAnyParameters()
-               ->willReturn($output2);
+            ->method('dispatch')
+            ->withAnyParameters()
+            ->willReturn($output2);
         $collection = new Collection();
         $collection->add(
             new Route(
@@ -126,14 +126,14 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
         $output2 = new Output(isInteractive: false);
         $handler = $this->createMock(RouteNotMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeNotMatched')
-                ->withAnyParameters()
-                ->willReturnArgument(1);
+            ->method('routeNotMatched')
+            ->withAnyParameters()
+            ->willReturnArgument(1);
         $router = $this->createMock(RouterContract::class);
         $router->expects($this->never())
-               ->method('dispatch')
-               ->withAnyParameters()
-               ->willReturn($output2);
+            ->method('dispatch')
+            ->withAnyParameters()
+            ->willReturn($output2);
         $collection = new Collection();
         $collection->add(
             new Route(
@@ -173,14 +173,14 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
         $output2 = new Output(isInteractive: false);
         $handler = $this->createMock(RouteNotMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeNotMatched')
-                ->withAnyParameters()
-                ->willReturnArgument(1);
+            ->method('routeNotMatched')
+            ->withAnyParameters()
+            ->willReturnArgument(1);
         $router = $this->createMock(RouterContract::class);
         $router->expects($this->never())
-               ->method('dispatch')
-               ->withAnyParameters()
-               ->willReturn($output2);
+            ->method('dispatch')
+            ->withAnyParameters()
+            ->willReturn($output2);
         $collection = new Collection();
         $collection->add(
             new Route(

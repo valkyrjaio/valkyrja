@@ -33,19 +33,19 @@ class ListCommandTest extends TestCase
         $output        = new Output();
         $outputFactory = $this->createMock(OutputFactory::class);
         $outputFactory->expects($this->once())
-                      ->method('createOutput')
-                      ->willReturn($output);
+            ->method('createOutput')
+            ->willReturn($output);
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->never())
-                       ->method('run');
+            ->method('run');
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('all')
-                   ->willReturn([]);
+            ->method('all')
+            ->willReturn([]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->willReturn(null);
+            ->method('getOption')
+            ->willReturn(null);
 
         $command = new ListCommand(
             version: $versionCommand,
@@ -68,23 +68,23 @@ class ListCommandTest extends TestCase
         $output        = new Output();
         $outputFactory = $this->createMock(OutputFactory::class);
         $outputFactory->expects($this->once())
-                      ->method('createOutput')
-                      ->willReturn($output);
+            ->method('createOutput')
+            ->willReturn($output);
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->never())
-                       ->method('run');
+            ->method('run');
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('all')
-                   ->willReturn([]);
+            ->method('all')
+            ->willReturn([]);
         $option = $this->createMock(OptionParameter::class);
         $option->expects($this->once())
-               ->method('getFirstValue')
-               ->willReturn('non-existent namespace');
+            ->method('getFirstValue')
+            ->willReturn('non-existent namespace');
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->willReturn($option);
+            ->method('getOption')
+            ->willReturn($option);
 
         $command = new ListCommand(
             version: $versionCommand,
@@ -108,39 +108,39 @@ class ListCommandTest extends TestCase
         $listRouteDescription = 'Route 1 description';
         $listRoute            = $this->createMock(Route::class);
         $listRoute->expects($this->exactly(2))
-                  ->method('getName')
-                  ->willReturn($listRouteName);
+            ->method('getName')
+            ->willReturn($listRouteName);
         $listRoute->expects($this->once())
-                  ->method('getDescription')
-                  ->willReturn($listRouteDescription);
+            ->method('getDescription')
+            ->willReturn($listRouteDescription);
 
         $listRoute2Name        = 'Route2name';
         $listRoute2Description = 'Route 2 description';
         $listRoute2            = $this->createMock(Route::class);
         $listRoute2->expects($this->exactly(2))
-                   ->method('getName')
-                   ->willReturn($listRoute2Name);
+            ->method('getName')
+            ->willReturn($listRoute2Name);
         $listRoute2->expects($this->once())
-                   ->method('getDescription')
-                   ->willReturn($listRoute2Description);
+            ->method('getDescription')
+            ->willReturn($listRoute2Description);
 
         $versionText   = 'Version Command Output';
         $output        = new Output();
         $outputFactory = $this->createMock(OutputFactory::class);
         $outputFactory->expects($this->never())
-                      ->method('createOutput');
+            ->method('createOutput');
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->once())
-                       ->method('run')
-                       ->willReturn($output->withMessages(new Message($versionText)));
+            ->method('run')
+            ->willReturn($output->withMessages(new Message($versionText)));
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('all')
-                   ->willReturn([$listRoute, $listRoute2]);
+            ->method('all')
+            ->willReturn([$listRoute, $listRoute2]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->willReturn(null);
+            ->method('getOption')
+            ->willReturn(null);
 
         $command = new ListCommand(
             version: $versionCommand,
@@ -171,51 +171,51 @@ class ListCommandTest extends TestCase
         $listRouteDescription = 'Route 1 description';
         $listRoute            = $this->createMock(Route::class);
         $listRoute->expects($this->exactly(3))
-                  ->method('getName')
-                  ->willReturn($listRouteName);
+            ->method('getName')
+            ->willReturn($listRouteName);
         $listRoute->expects($this->once())
-                  ->method('getDescription')
-                  ->willReturn($listRouteDescription);
+            ->method('getDescription')
+            ->willReturn($listRouteDescription);
 
         $listRoute2Name        = "$namespace:Route2name";
         $listRoute2Description = 'Route 2 description';
         $listRoute2            = $this->createMock(Route::class);
         $listRoute2->expects($this->exactly(3))
-                   ->method('getName')
-                   ->willReturn($listRoute2Name);
+            ->method('getName')
+            ->willReturn($listRoute2Name);
         $listRoute2->expects($this->once())
-                   ->method('getDescription')
-                   ->willReturn($listRoute2Description);
+            ->method('getDescription')
+            ->willReturn($listRoute2Description);
 
         $listRoute3Name = 'Route3name';
         $listRoute3     = $this->createMock(Route::class);
         $listRoute3->expects($this->once())
-                   ->method('getName')
-                   ->willReturn($listRoute3Name);
+            ->method('getName')
+            ->willReturn($listRoute3Name);
         $listRoute3->expects($this->never())
-                   ->method('getDescription');
+            ->method('getDescription');
 
         $versionText   = 'Version Command Output';
         $output        = new Output();
         $outputFactory = $this->createMock(OutputFactory::class);
         $outputFactory->expects($this->never())
-                      ->method('createOutput');
+            ->method('createOutput');
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->once())
-                       ->method('run')
-                       ->willReturn($output->withMessages(new Message($versionText)));
+            ->method('run')
+            ->willReturn($output->withMessages(new Message($versionText)));
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('all')
-                   ->willReturn([$listRoute, $listRoute2, $listRoute3]);
+            ->method('all')
+            ->willReturn([$listRoute, $listRoute2, $listRoute3]);
         $option = $this->createMock(OptionParameter::class);
         $option->expects($this->once())
-               ->method('getFirstValue')
-               ->willReturn($namespace);
+            ->method('getFirstValue')
+            ->willReturn($namespace);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->willReturn($option);
+            ->method('getOption')
+            ->willReturn($option);
 
         $command = new ListCommand(
             version: $versionCommand,

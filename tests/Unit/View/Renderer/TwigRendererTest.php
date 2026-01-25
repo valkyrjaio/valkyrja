@@ -77,9 +77,9 @@ class TwigRendererTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
         $twig->expects($this->once())
-             ->method('render')
-             ->with($templateName, $variables)
-             ->willReturn($renderedContent);
+            ->method('render')
+            ->with($templateName, $variables)
+            ->willReturn($renderedContent);
 
         $renderer = new TwigRenderer($twig);
 
@@ -99,9 +99,9 @@ class TwigRendererTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
         $twig->expects($this->once())
-             ->method('render')
-             ->with($templateName, [])
-             ->willReturn($renderedContent);
+            ->method('render')
+            ->with($templateName, [])
+            ->willReturn($renderedContent);
 
         $renderer = new TwigRenderer($twig);
 
@@ -156,9 +156,9 @@ class TwigRendererTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
         $twig->expects($this->once())
-             ->method('render')
-             ->with($templateName, $variables)
-             ->willReturn($renderedContent);
+            ->method('render')
+            ->with($templateName, $variables)
+            ->willReturn($renderedContent);
 
         $renderer = new TwigRenderer($twig);
 
@@ -178,9 +178,9 @@ class TwigRendererTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
         $twig->expects($this->once())
-             ->method('render')
-             ->with($templateName, [])
-             ->willReturn($renderedContent);
+            ->method('render')
+            ->with($templateName, [])
+            ->willReturn($renderedContent);
 
         $renderer = new TwigRenderer($twig);
 

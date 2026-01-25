@@ -33,13 +33,13 @@ class OutputThrowableCaughtMiddlewareTest extends TestCase
 
         $handler = $this->createMock(ThrowableCaughtHandler::class);
         $handler->expects($this->once())
-                ->method('throwableCaught')
-                ->with(
-                    self::equalTo($input),
-                    self::anything(),
-                    self::equalTo($exception),
-                )
-                ->willReturnArgument(1);
+            ->method('throwableCaught')
+            ->with(
+                self::equalTo($input),
+                self::anything(),
+                self::equalTo($exception),
+            )
+            ->willReturnArgument(1);
 
         $middleware = new OutputThrowableCaughtMiddleware();
 
