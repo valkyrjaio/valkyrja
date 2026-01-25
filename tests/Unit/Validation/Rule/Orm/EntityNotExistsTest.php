@@ -38,13 +38,12 @@ class EntityNotExistsTest extends TestCase
 
         $this->orm        = $this->createMock(ManagerContract::class);
         $this->repository = $this->createMock(RepositoryContract::class);
-
-        $this->orm->expects($this->once())->method('createRepository')
-            ->willReturn($this->repository);
     }
 
     public function testInstanceOfContract(): void
     {
+        $this->orm->expects($this->never())->method('createRepository');
+        $this->repository->expects($this->never())->method('findBy');
         $rule = new EntityNotExists($this->orm, 1, EntityClass::class);
 
         self::assertInstanceOf(RuleContract::class, $rule);
@@ -52,6 +51,8 @@ class EntityNotExistsTest extends TestCase
 
     public function testGetSubject(): void
     {
+        $this->orm->expects($this->never())->method('createRepository');
+        $this->repository->expects($this->never())->method('findBy');
         $rule = new EntityNotExists($this->orm, 42, EntityClass::class);
 
         self::assertSame(42, $rule->getSubject());
@@ -59,6 +60,10 @@ class EntityNotExistsTest extends TestCase
 
     public function testIsValidWhenEntityDoesNotExist(): void
     {
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
         $this->repository
             ->expects($this->once())
             ->method('findBy')
@@ -73,9 +78,13 @@ class EntityNotExistsTest extends TestCase
     {
         $entity = self::createStub(EntityContract::class);
 
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
         $this->repository
             ->expects($this->once())
-                         ->method('findBy')
+            ->method('findBy')
             ->willReturn($entity);
 
         $rule = new EntityNotExists($this->orm, 1, EntityClass::class);
@@ -85,9 +94,13 @@ class EntityNotExistsTest extends TestCase
 
     public function testIsValidWithNullSubjectWhenEntityDoesNotExist(): void
     {
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
         $this->repository
             ->expects($this->once())
-                         ->method('findBy')
+            ->method('findBy')
             ->willReturn(null);
 
         $rule = new EntityNotExists($this->orm, null, EntityClass::class);
@@ -97,6 +110,8 @@ class EntityNotExistsTest extends TestCase
 
     public function testThrowsExceptionWithInvalidSubjectType(): void
     {
+        $this->orm->expects($this->never())->method('createRepository');
+        $this->repository->expects($this->never())->method('findBy');
         $rule = new EntityNotExists($this->orm, ['invalid'], EntityClass::class);
 
         $this->expectException(InvalidArgumentException::class);
@@ -107,9 +122,13 @@ class EntityNotExistsTest extends TestCase
 
     public function testValidatePassesWhenEntityDoesNotExist(): void
     {
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
         $this->repository
             ->expects($this->once())
-                         ->method('findBy')
+            ->method('findBy')
             ->willReturn(null);
 
         $rule = new EntityNotExists($this->orm, 'new-email@example.com', EntityClass::class);
@@ -124,9 +143,13 @@ class EntityNotExistsTest extends TestCase
     {
         $entity = self::createStub(EntityContract::class);
 
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
         $this->repository
             ->expects($this->once())
-                         ->method('findBy')
+            ->method('findBy')
             ->willReturn($entity);
 
         $rule = new EntityNotExists($this->orm, 1, EntityClass::class);
@@ -141,8 +164,13 @@ class EntityNotExistsTest extends TestCase
     {
         $entity = self::createStub(EntityContract::class);
 
-        $this->repository->expects($this->once())
-                         ->method('findBy')
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
+        $this->repository
+            ->expects($this->once())
+            ->method('findBy')
             ->willReturn($entity);
 
         $rule = new EntityNotExists($this->orm, 'taken@example.com', EntityClass::class, null, 'Email already in use');
@@ -155,7 +183,12 @@ class EntityNotExistsTest extends TestCase
 
     public function testWithCustomField(): void
     {
-        $this->repository->expects($this->once())
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->willReturn($this->repository);
+        $this->repository
+            ->expects($this->once())
             ->method('findBy')
             ->with(self::callback(static function (Where $where): bool {
                 $value = $where->value;
