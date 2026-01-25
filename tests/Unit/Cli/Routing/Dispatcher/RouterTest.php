@@ -64,9 +64,9 @@ class RouterTest extends TestCase
         $input   = new Input(commandName: 'non-existing-command');
         $handler = $this->createMock(RouteNotMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeNotMatched')
-                ->with($input, self::anything())
-                ->willReturnArgument(1);
+            ->method('routeNotMatched')
+            ->with($input, self::anything())
+            ->willReturnArgument(1);
 
         $router = new Router(routeNotMatchedHandler: $handler);
 
@@ -99,9 +99,9 @@ class RouterTest extends TestCase
 
         $handler = $this->createMock(RouteMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeMatched')
-                ->with($input, self::anything())
-                ->willReturnArgument(1);
+            ->method('routeMatched')
+            ->with($input, self::anything())
+            ->willReturnArgument(1);
 
         $command = new Route(
             name: 'test-command',
@@ -126,9 +126,9 @@ class RouterTest extends TestCase
 
         $handler = $this->createMock(RouteMatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeMatched')
-                ->with($input, self::anything())
-                ->willReturn($output);
+            ->method('routeMatched')
+            ->with($input, self::anything())
+            ->willReturn($output);
 
         $command = new Route(
             name: 'test-command',
@@ -154,9 +154,9 @@ class RouterTest extends TestCase
 
         $handler = $this->createMock(RouteDispatchedHandlerContract::class);
         $handler->expects($this->once())
-                ->method('routeDispatched')
-                ->with($input, self::anything(), self::anything())
-                ->willReturnArgument(1);
+            ->method('routeDispatched')
+            ->with($input, self::anything(), self::anything())
+            ->willReturnArgument(1);
 
         $command = new Route(
             name: 'test-command',

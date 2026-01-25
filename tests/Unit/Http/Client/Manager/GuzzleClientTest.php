@@ -78,18 +78,18 @@ class GuzzleClientTest extends TestCase
         $psr7Response->expects($this->once())->method('getBody')->willReturn($psr7Body);
         $psr7Body->expects($this->once())->method('getContents')->willReturn($contents);
         $guzzle->expects($this->once())
-               ->method('request')
-               ->with(
-                   'GET',
-                   $stringUri,
-                   self::logicalAnd(
-                       self::arrayHasKey('headers'),
-                       self::arrayHasKey('body'),
-                       self::arrayHasKey('cookies'),
-                       self::arrayHasKey('form_params'),
-                   )
-               )
-               ->willReturn($psr7Response);
+            ->method('request')
+            ->with(
+                'GET',
+                $stringUri,
+                self::logicalAnd(
+                    self::arrayHasKey('headers'),
+                    self::arrayHasKey('body'),
+                    self::arrayHasKey('cookies'),
+                    self::arrayHasKey('form_params'),
+                )
+            )
+            ->willReturn($psr7Response);
 
         $response = $client->sendRequest($request);
 

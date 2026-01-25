@@ -46,22 +46,22 @@ class ViewExceptionMiddlewareTest extends TestCase
 
         $view = $this->createMock(ResponseFactory::class);
         $view->expects($this->once())
-             ->method('createResponseFromView')
-             ->with(
-                 self::equalTo('errors/500'),
-                 self::equalTo($args)
-             )
-             ->willReturn($viewResponse);
+            ->method('createResponseFromView')
+            ->with(
+                self::equalTo('errors/500'),
+                self::equalTo($args)
+            )
+            ->willReturn($viewResponse);
 
         $handler = $this->createMock(ThrowableCaughtHandler::class);
         $handler->expects($this->once())
-                ->method('throwableCaught')
-                ->with(
-                    self::equalTo($request),
-                    self::equalTo($viewResponse),
-                    self::equalTo($exception),
-                )
-                ->willReturn($viewResponse);
+            ->method('throwableCaught')
+            ->with(
+                self::equalTo($request),
+                self::equalTo($viewResponse),
+                self::equalTo($exception),
+            )
+            ->willReturn($viewResponse);
 
         $middleware = new ViewThrowableCaughtMiddleware(viewResponseFactory: $view);
 

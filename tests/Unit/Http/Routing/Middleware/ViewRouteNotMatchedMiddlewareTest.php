@@ -46,8 +46,8 @@ class ViewRouteNotMatchedMiddlewareTest extends TestCase
 
         $view = self::createStub(RendererContract::class);
         $view->method('render')
-             ->with('errors/404', $args)
-             ->willReturn($templateText);
+            ->with('errors/404', $args)
+            ->willReturn($templateText);
 
         $middleware = new ViewRouteNotMatchedMiddleware(renderer: $view);
 

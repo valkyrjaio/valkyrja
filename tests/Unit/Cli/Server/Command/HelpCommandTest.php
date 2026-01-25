@@ -38,19 +38,19 @@ class HelpCommandTest extends TestCase
         $output = new Output();
         $route  = $this->createMock(RouteContract::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->with('command')
-              ->willReturn(null);
+            ->method('getOption')
+            ->with('command')
+            ->willReturn(null);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->never())
-                   ->method('get');
+            ->method('get');
         $version = $this->createMock(VersionCommand::class);
         $version->expects($this->never())
-                ->method('run');
+            ->method('run');
         $outputFactory = $this->createMock(OutputFactoryContract::class);
         $outputFactory->expects($this->once())
-                      ->method('createOutput')
-                      ->willReturn($output);
+            ->method('createOutput')
+            ->willReturn($output);
 
         $helpCommand   = new HelpCommand(
             version: $version,
@@ -75,25 +75,25 @@ class HelpCommandTest extends TestCase
         $output = new Output();
         $option = $this->createMock(OptionParameterContract::class);
         $option->expects($this->once())
-               ->method('getFirstValue')
-               ->willReturn($commandName);
+            ->method('getFirstValue')
+            ->willReturn($commandName);
         $route = $this->createMock(RouteContract::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->with('command')
-              ->willReturn($option);
+            ->method('getOption')
+            ->with('command')
+            ->willReturn($option);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('get')
-                   ->with($commandName)
-                   ->willReturn(null);
+            ->method('get')
+            ->with($commandName)
+            ->willReturn(null);
         $version = $this->createMock(VersionCommand::class);
         $version->expects($this->never())
-                ->method('run');
+            ->method('run');
         $outputFactory = $this->createMock(OutputFactoryContract::class);
         $outputFactory->expects($this->once())
-                      ->method('createOutput')
-                      ->willReturn($output);
+            ->method('createOutput')
+            ->willReturn($output);
 
         $helpCommand   = new HelpCommand(
             version: $version,
@@ -161,25 +161,25 @@ class HelpCommandTest extends TestCase
         $output = new Output();
         $option = $this->createMock(OptionParameterContract::class);
         $option->expects($this->once())
-               ->method('getFirstValue')
-               ->willReturn($commandName);
+            ->method('getFirstValue')
+            ->willReturn($commandName);
         $route = $this->createMock(RouteContract::class);
         $route->expects($this->once())
-              ->method('getOption')
-              ->with('command')
-              ->willReturn($option);
+            ->method('getOption')
+            ->with('command')
+            ->willReturn($option);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-                   ->method('get')
-                   ->with($commandName)
-                   ->willReturn($helpRoute);
+            ->method('get')
+            ->with($commandName)
+            ->willReturn($helpRoute);
         $version = $this->createMock(VersionCommand::class);
         $version->expects($this->once())
-                ->method('run')
-                ->willReturn($output->withMessages(new Message($versionText)));
+            ->method('run')
+            ->willReturn($output->withMessages(new Message($versionText)));
         $outputFactory = $this->createMock(OutputFactoryContract::class);
         $outputFactory->expects($this->never())
-                      ->method('createOutput');
+            ->method('createOutput');
 
         $helpCommand   = new HelpCommand(
             version: $version,
