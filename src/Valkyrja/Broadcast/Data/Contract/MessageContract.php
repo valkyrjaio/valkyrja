@@ -17,27 +17,31 @@ interface MessageContract
 {
     /**
      * Get the channel to broadcast on.
+     *
+     * @return non-empty-string
      */
     public function getChannel(): string;
 
     /**
      * Set the channel to broadcast on.
      *
-     * @param string $channel The channel
+     * @param non-empty-string $channel The channel
      */
-    public function setChannel(string $channel): static;
+    public function withChannel(string $channel): static;
 
     /**
      * Get the event to broadcast.
+     *
+     * @return non-empty-string
      */
     public function getEvent(): string;
 
     /**
      * Set the event to broadcast.
      *
-     * @param string $event The event
+     * @param non-empty-string $event The event
      */
-    public function setEvent(string $event): static;
+    public function withEvent(string $event): static;
 
     /**
      * Get the data to broadcast.
@@ -51,17 +55,19 @@ interface MessageContract
      *
      * @param array<array-key, mixed>|null $data [optional] The data
      */
-    public function setData(array|null $data = null): static;
+    public function withData(array|null $data = null): static;
 
     /**
      * Get the message to broadcast.
+     *
+     * @return non-empty-string
      */
     public function getMessage(): string;
 
     /**
      * Set the message to broadcast.
      *
-     * @param string $message The message
+     * @param non-empty-string $message The message
      */
-    public function setMessage(string $message): static;
+    public function withMessage(string $message): static;
 }

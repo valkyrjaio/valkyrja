@@ -57,9 +57,8 @@ class PusherBroadcaster implements BroadcasterContract
      */
     protected function getMessageText(MessageContract $message): string
     {
-        $this->prepareMessage($message);
-
-        return $message->getMessage();
+        return $this->prepareMessage($message)
+            ->getMessage();
     }
 
     /**
@@ -69,12 +68,14 @@ class PusherBroadcaster implements BroadcasterContract
      *
      * @throws JsonException On json decode failure
      */
-    protected function prepareMessage(MessageContract $message): void
+    protected function prepareMessage(MessageContract $message): MessageContract
     {
         $data = $message->getData();
 
         if ($data !== null && $data !== []) {
-            $message->setMessage(Arr::toString($data));
+            $message = $message->withMessage(Arr::toString($data));
         }
+
+        return $message;
     }
 }
