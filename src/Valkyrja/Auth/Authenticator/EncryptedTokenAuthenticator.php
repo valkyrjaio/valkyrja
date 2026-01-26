@@ -55,7 +55,7 @@ class EncryptedTokenAuthenticator extends TokenAuthenticator
     /**
      * Attempt to get the authenticated users from the token.
      *
-     * @param string $token The token
+     * @param non-empty-string $token The token
      */
     #[Override]
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null

@@ -64,7 +64,7 @@ class TokenAuthenticator extends Authenticator
 
         [$bearer, $token] = explode(' ', $headerLine);
 
-        if ($bearer !== HeaderValue::BEARER) {
+        if ($bearer !== HeaderValue::BEARER || $token === '') {
             throw new InvalidAuthenticationException('Invalid authorization header');
         }
 
@@ -74,7 +74,7 @@ class TokenAuthenticator extends Authenticator
     /**
      * Attempt to get the authenticated users from the token.
      *
-     * @param string $token The token
+     * @param non-empty-string $token The token
      */
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {

@@ -155,4 +155,61 @@ class SodiumCryptTest extends TestCase
 
         self::assertSame($message, $decrypted);
     }
+
+    /**
+     * @throws SodiumException
+     */
+    public function testInvalidPlainDecodedThrowsException(): void
+    {
+        $this->expectException(CryptException::class);
+        $this->expectExceptionMessage('The message was tampered with in transit');
+
+        $crypt = new class('key') extends SodiumCrypt {
+            protected function isValidDecodedType(string|false $decoded): bool
+            {
+                return true;
+            }
+
+            protected function isValidDecodedStrLen(string $decoded): bool
+            {
+                return true;
+            }
+
+            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+            {
+                return false;
+            }
+
+            protected function hex2bin(string $key): string|false
+            {
+                return 'keyasbytes';
+            }
+        };
+
+        @$crypt->decrypt('encrypted');
+    }
+
+    /**
+     * @throws SodiumException
+     */
+    public function testInvalidKeyThrowsException(): void
+    {
+        $key = 'test';
+        $this->expectException(CryptException::class);
+        $this->expectExceptionMessage("$key could not be converted to bytes");
+
+        $crypt = new class($key) extends SodiumCrypt {
+            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+            {
+                return 'decrypted';
+            }
+
+            protected function hex2bin(string $key): string|false
+            {
+                return false;
+            }
+        };
+
+        $crypt->decrypt('encrypted', $key);
+    }
 }

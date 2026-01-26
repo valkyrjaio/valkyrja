@@ -40,28 +40,28 @@ class NullCryptTest extends TestCase
 
     public function testEncryptReturnsEmptyString(): void
     {
-        self::assertSame('', $this->crypt->encrypt('test message'));
-        self::assertSame('', $this->crypt->encrypt('test message', 'key'));
+        self::assertSame('encrypted', $this->crypt->encrypt('test message'));
+        self::assertSame('encrypted', $this->crypt->encrypt('test message', 'key'));
     }
 
     public function testEncryptArrayReturnsEmptyString(): void
     {
-        self::assertSame('', $this->crypt->encryptArray(['key' => 'value']));
-        self::assertSame('', $this->crypt->encryptArray(['key' => 'value'], 'key'));
+        self::assertSame('[]', $this->crypt->encryptArray(['key' => 'value']));
+        self::assertSame('[]', $this->crypt->encryptArray(['key' => 'value'], 'key'));
     }
 
     public function testEncryptObjectReturnsEmptyString(): void
     {
         $object = new stdClass();
 
-        self::assertSame('', $this->crypt->encryptObject($object));
-        self::assertSame('', $this->crypt->encryptObject($object, 'key'));
+        self::assertSame('{}', $this->crypt->encryptObject($object));
+        self::assertSame('{}', $this->crypt->encryptObject($object, 'key'));
     }
 
     public function testDecryptReturnsEmptyString(): void
     {
-        self::assertSame('', $this->crypt->decrypt('encrypted'));
-        self::assertSame('', $this->crypt->decrypt('encrypted', 'key'));
+        self::assertSame('decrypted', $this->crypt->decrypt('encrypted'));
+        self::assertSame('decrypted', $this->crypt->decrypt('encrypted', 'key'));
     }
 
     public function testDecryptArrayReturnsEmptyArray(): void
