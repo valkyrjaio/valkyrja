@@ -129,12 +129,4 @@ class NullCache implements CacheContract
     {
         return Tagger::make($this, ...$tags);
     }
-
-    /**
-     * Get key.
-     */
-    protected function getKey(string $key): string
-    {
-        return $this->getPrefix() . $key;
-    }
 }

@@ -46,6 +46,15 @@ class Tagger implements TaggerContract
 
     /**
      * @inheritDoc
+     */
+    #[Override]
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @inheritDoc
      *
      * @throws JsonException
      */

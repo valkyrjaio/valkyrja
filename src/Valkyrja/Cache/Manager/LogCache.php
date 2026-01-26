@@ -35,6 +35,8 @@ class LogCache implements CacheContract
     #[Override]
     public function has(string $key): bool
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " has: $key");
 
         return true;
@@ -46,6 +48,8 @@ class LogCache implements CacheContract
     #[Override]
     public function get(string $key): string|null
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " get: $key");
 
         return '';
@@ -72,6 +76,8 @@ class LogCache implements CacheContract
     #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " put: $key, value $value, minutes $minutes");
     }
 
@@ -94,6 +100,8 @@ class LogCache implements CacheContract
     #[Override]
     public function increment(string $key, int $value = 1): int
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " increment: $key, value $value");
 
         return $value;
@@ -105,6 +113,8 @@ class LogCache implements CacheContract
     #[Override]
     public function decrement(string $key, int $value = 1): int
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " decrement: $key, value $value");
 
         return $value;
@@ -116,6 +126,8 @@ class LogCache implements CacheContract
     #[Override]
     public function forever(string $key, string $value): void
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " forever: $key, value $value");
     }
 
@@ -125,6 +137,8 @@ class LogCache implements CacheContract
     #[Override]
     public function forget(string $key): bool
     {
+        $key = $this->getKey($key);
+
         $this->logger->info(self::class . " forget: $key");
 
         return true;
