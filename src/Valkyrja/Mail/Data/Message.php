@@ -21,51 +21,37 @@ class Message implements MessageContract
     /**
      * The recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $recipients = [];
 
     /**
      * The reply to recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $replyToRecipients = [];
 
     /**
      * The copy recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $copyRecipients = [];
 
     /**
      * The blind copy recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $blindCopyRecipients = [];
 
     /**
      * The attachments.
      *
-     * @var array<int, array{path: string, name: string}>
+     * @var array<int, array{path: non-empty-string, name: string}>
      */
     protected array $attachments = [];
-
-    /**
-     * The subject.
-     *
-     * @var string
-     */
-    protected string $subject = '';
-
-    /**
-     * The body.
-     *
-     * @var string
-     */
-    protected string $body = '';
 
     /**
      * Whether the message body is html.
@@ -77,13 +63,20 @@ class Message implements MessageContract
     /**
      * The plain body.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $plainBody = null;
 
+    /**
+     * @param non-empty-string $fromEmail
+     * @param non-empty-string $subject
+     * @param non-empty-string $body
+     */
     public function __construct(
-        protected string $fromEmail = '',
-        protected string $fromName = ''
+        protected string $fromEmail,
+        protected string $fromName,
+        protected string $subject,
+        protected string $body
     ) {
     }
 
@@ -109,12 +102,14 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setFrom(string $email, string $name = ''): static
+    public function withFrom(string $email, string $name = ''): static
     {
-        $this->fromEmail = $email;
-        $this->fromName  = $name;
+        $new = clone $this;
 
-        return $this;
+        $new->fromEmail = $email;
+        $new->fromName  = $name;
+
+        return $new;
     }
 
     /**
@@ -130,14 +125,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function addRecipient(string $email, string $name = ''): static
+    public function withAddedRecipient(string $email, string $name = ''): static
     {
-        $this->recipients[] = [
+        $new = clone $this;
+
+        $new->recipients[] = [
             'email' => $email,
             'name'  => $name,
         ];
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -153,14 +150,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function addReplyTo(string $email, string $name = ''): static
+    public function withAddedReplyToRecipient(string $email, string $name = ''): static
     {
-        $this->replyToRecipients[] = [
+        $new = clone $this;
+
+        $new->replyToRecipients[] = [
             'email' => $email,
             'name'  => $name,
         ];
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -176,14 +175,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function addCopyRecipient(string $email, string $name = ''): static
+    public function withAddedCopyRecipient(string $email, string $name = ''): static
     {
-        $this->copyRecipients[] = [
+        $new = clone $this;
+
+        $new->copyRecipients[] = [
             'email' => $email,
             'name'  => $name,
         ];
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -199,14 +200,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function addBlindCopyRecipient(string $email, string $name = ''): static
+    public function withAddedBlindCopyRecipient(string $email, string $name = ''): static
     {
-        $this->blindCopyRecipients[] = [
+        $new = clone $this;
+
+        $new->blindCopyRecipients[] = [
             'email' => $email,
             'name'  => $name,
         ];
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -222,14 +225,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function addAttachment(string $path, string $name = ''): static
+    public function withAddedAttachment(string $path, string $name = ''): static
     {
-        $this->attachments[] = [
+        $new = clone $this;
+
+        $new->attachments[] = [
             'path' => $path,
             'name' => $name,
         ];
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -245,11 +250,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setSubject(string $subject): static
+    public function withSubject(string $subject): static
     {
-        $this->subject = $subject;
+        $new = clone $this;
 
-        return $this;
+        $new->subject = $subject;
+
+        return $new;
     }
 
     /**
@@ -265,11 +272,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setBody(string $body): static
+    public function withBody(string $body): static
     {
-        $this->body = $body;
+        $new = clone $this;
 
-        return $this;
+        $new->body = $body;
+
+        return $new;
     }
 
     /**
@@ -285,11 +294,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setIsHtml(bool $isHtml = true): static
+    public function withIsHtml(bool $isHtml = true): static
     {
-        $this->isHtml = $isHtml;
+        $new = clone $this;
 
-        return $this;
+        $new->isHtml = $isHtml;
+
+        return $new;
     }
 
     /**
@@ -305,10 +316,12 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setPlainBody(string|null $plainBody = null): static
+    public function withPlainBody(string|null $plainBody = null): static
     {
-        $this->plainBody = $plainBody;
+        $new = clone $this;
 
-        return $this;
+        $new->plainBody = $plainBody;
+
+        return $new;
     }
 }
