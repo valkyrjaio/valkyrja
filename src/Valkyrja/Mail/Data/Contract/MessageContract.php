@@ -17,118 +17,126 @@ interface MessageContract
 {
     /**
      * Get the from email.
+     *
+     * @return non-empty-string
      */
     public function getFromEmail(): string;
 
     /**
      * Get the from name.
+     *
+     * @return string
      */
     public function getFromName(): string;
 
     /**
      * Set the mail's sender information.
      *
-     * @param string $email The email
-     * @param string $name  [optional] The name
+     * @param non-empty-string $email The email
+     * @param string           $name  [optional] The name
      */
     public function withFrom(string $email, string $name = ''): static;
 
     /**
      * Get the recipients.
      *
-     * @return array<int, array{email: string, name: string}>
+     * @return array<int, array{email: non-empty-string, name: string}>
      */
     public function getRecipients(): array;
 
     /**
      * Add a recipient.
      *
-     * @param string $email The email
-     * @param string $name  [optional] The name
+     * @param non-empty-string $email The email
+     * @param string           $name  [optional] The name
      */
     public function withAddedRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the reply to recipients.
      *
-     * @return array<int, array{email: string, name: string}>
+     * @return array<int, array{email: non-empty-string, name: string}>
      */
     public function getReplyToRecipients(): array;
 
     /**
      * Add a Reply-To recipient.
      *
-     * @param string $email The email
-     * @param string $name  [optional] The name
+     * @param non-empty-string $email The email
+     * @param string           $name  [optional] The name
      */
     public function withAddedReplyToRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the copy recipients.
      *
-     * @return array<int, array{email: string, name: string}>
+     * @return array<int, array{email: non-empty-string, name: string}>
      */
     public function getCopyRecipients(): array;
 
     /**
      * Add a copy (CC) recipient.
      *
-     * @param string $email The email
-     * @param string $name  [optional] The name
+     * @param non-empty-string $email The email
+     * @param string           $name  [optional] The name
      */
     public function withAddedCopyRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the blind copy recipients.
      *
-     * @return array<int, array{email: string, name: string}>
+     * @return array<int, array{email: non-empty-string, name: string}>
      */
     public function getBlindCopyRecipients(): array;
 
     /**
      * Add a blind copy (BCC) recipient.
      *
-     * @param string $email The email
-     * @param string $name  [optional] The name
+     * @param non-empty-string $email The email
+     * @param string           $name  [optional] The name
      */
     public function withAddedBlindCopyRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the attachments.
      *
-     * @return array<int, array{path: string, name: string}>
+     * @return array<int, array{path: non-empty-string, name: string}>
      */
     public function getAttachments(): array;
 
     /**
      * Add an attachment from the filesystem.
      *
-     * @param string $path The path
-     * @param string $name [optional] The name
+     * @param non-empty-string $path The path
+     * @param string           $name [optional] The name
      */
     public function withAddedAttachment(string $path, string $name = ''): static;
 
     /**
      * Get the subject.
+     *
+     * @return non-empty-string
      */
     public function getSubject(): string;
 
     /**
      * Set the subject.
      *
-     * @param string $subject The subject
+     * @param non-empty-string $subject The subject
      */
     public function withSubject(string $subject): static;
 
     /**
      * Get the body.
+     *
+     * @return non-empty-string
      */
     public function getBody(): string;
 
     /**
      * Set the body of the mail.
      *
-     * @param string $body The body
+     * @param non-empty-string $body The body
      */
     public function withBody(string $body): static;
 
@@ -146,13 +154,15 @@ interface MessageContract
 
     /**
      * Get the plain body.
+     *
+     * @return non-empty-string|null
      */
     public function getPlainBody(): string|null;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.
      *
-     * @param string|null $plainBody The plain body
+     * @param non-empty-string|null $plainBody The plain body
      */
     public function withPlainBody(string|null $plainBody = null): static;
 }

@@ -33,7 +33,7 @@ class Notifier implements NotifierContract
     /**
      * The mail recipients.
      *
-     * @var array<int, array{email: string, name: string, user?: NotifiableUserContract}>
+     * @var array<int, array{email: non-empty-string, name: string, body: non-empty-string, subject: non-empty-string, user?: NotifiableUserContract}>
      */
     protected array $mailRecipients = [];
 
@@ -75,8 +75,10 @@ class Notifier implements NotifierContract
     public function addMailRecipient(string $email, string $name = ''): static
     {
         $this->mailRecipients[] = [
-            'email' => $email,
-            'name'  => $name,
+            'email'   => $email,
+            'name'    => $name,
+            'subject' => 'Subject',
+            'body'    => 'Body',
         ];
 
         return $this;
@@ -214,7 +216,7 @@ class Notifier implements NotifierContract
             ? $user->__get($user::getNameField())
             : '';
 
-        if (! is_string($email)) {
+        if (! is_string($email) || $email === '') {
             throw new InvalidArgumentException('Invalid email provided');
         }
 
@@ -223,9 +225,11 @@ class Notifier implements NotifierContract
         }
 
         $this->mailRecipients[] = [
-            'email' => $email,
-            'name'  => $name,
-            'user'  => $user,
+            'email'   => $email,
+            'name'    => $name,
+            'subject' => 'Subject',
+            'body'    => 'Body',
+            'user'    => $user,
         ];
     }
 

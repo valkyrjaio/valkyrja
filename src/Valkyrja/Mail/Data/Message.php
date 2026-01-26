@@ -21,35 +21,35 @@ class Message implements MessageContract
     /**
      * The recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $recipients = [];
 
     /**
      * The reply to recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $replyToRecipients = [];
 
     /**
      * The copy recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $copyRecipients = [];
 
     /**
      * The blind copy recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: non-empty-string, name: string}>
      */
     protected array $blindCopyRecipients = [];
 
     /**
      * The attachments.
      *
-     * @var array<int, array{path: string, name: string}>
+     * @var array<int, array{path: non-empty-string, name: string}>
      */
     protected array $attachments = [];
 
@@ -63,13 +63,13 @@ class Message implements MessageContract
     /**
      * The plain body.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $plainBody = null;
 
     /**
      * @param non-empty-string $fromEmail
-     * @param non-empty-string $fromName
+     * @param string           $fromName
      * @param non-empty-string $subject
      * @param non-empty-string $body
      */
