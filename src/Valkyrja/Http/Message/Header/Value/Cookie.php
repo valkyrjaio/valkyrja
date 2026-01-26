@@ -88,7 +88,7 @@ class Cookie extends Value implements CookieContract
         $arr[] = $this->httpOnly ? new Component('httponly') : '';
         $arr[] = $this->sameSite ? new Component('samesite', $this->sameSite->value) : '';
 
-        $arrToString = array_map('strval', $arr);
+        $arrToString = array_map(static fn (mixed $val): string => (string) $val, $arr);
 
         $arrFilteredEmptyStrings = array_filter($arrToString);
 

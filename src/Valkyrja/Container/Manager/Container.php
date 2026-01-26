@@ -23,7 +23,6 @@ use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
 use function array_filter;
-use function array_map;
 use function array_merge;
 use function assert;
 use function is_a;
@@ -107,10 +106,9 @@ class Container implements ContainerContract
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
 
-        array_map(
-            [$this, 'register'],
-            $data->providers
-        );
+        foreach ($data->providers as $provider) {
+            $this->register($provider);
+        }
     }
 
     /**

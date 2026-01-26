@@ -25,6 +25,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
 use Valkyrja\Attribute\Throwable\Exception\RuntimeException;
 use Valkyrja\Dispatch\Data\CallableDispatch;
 use Valkyrja\Dispatch\Data\ClassDispatch;
@@ -365,7 +366,7 @@ class Collector implements CollectorContract
         foreach ($reflectionAttributes as $reflectionAttribute) {
             $instance = $reflectionAttribute->newInstance();
 
-            if (method_exists($instance, 'setReflection')) {
+            if ($instance instanceof ReflectionAwareAttributeContract) {
                 $instance->setReflection($reflection);
             }
 

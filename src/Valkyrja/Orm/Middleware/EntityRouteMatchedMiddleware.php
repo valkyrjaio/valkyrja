@@ -81,7 +81,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
             // Iterate through the params
             foreach ($parameters as $parameter) {
                 $name = $parameter->getName();
-                /** @psalm-suppress MixedAssignment */
+                /** @var mixed $value */
                 $value = $arguments[$name];
                 $type  = $parameter->getCast()->type ?? null;
 

@@ -42,16 +42,16 @@ class ServerRequest extends Request implements ServerRequestContract
     protected array $attributes = [];
 
     /**
-     * @param UriContract                  $uri        [optional] The uri
-     * @param RequestMethod                $method     [optional] The method
-     * @param StreamContract               $body       [optional] The body stream
-     * @param array<string, string[]>      $headers    [optional] The headers
-     * @param array<string, mixed>         $server     [optional] The server
-     * @param array<string, string|null>   $cookies    [optional] The cookies
-     * @param array<array-key, mixed>      $query      [optional] The query string
-     * @param array<array-key, mixed>      $parsedBody [optional] The parsed body
-     * @param ProtocolVersion              $protocol   [optional] The protocol version
-     * @param UploadedFileContract[]|array $files      [optional] The files
+     * @param UriContract                                    $uri        [optional] The uri
+     * @param RequestMethod                                  $method     [optional] The method
+     * @param StreamContract                                 $body       [optional] The body stream
+     * @param array<string, string[]>                        $headers    [optional] The headers
+     * @param array<string, mixed>                           $server     [optional] The server
+     * @param array<string, string|null>                     $cookies    [optional] The cookies
+     * @param array<array-key, mixed>                        $query      [optional] The query string
+     * @param array<array-key, mixed>                        $parsedBody [optional] The parsed body
+     * @param ProtocolVersion                                $protocol   [optional] The protocol version
+     * @param UploadedFileContract[]|array<array-key, mixed> $files      [optional] The files
      *
      * @throws InvalidArgumentException
      */

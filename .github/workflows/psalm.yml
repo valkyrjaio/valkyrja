@@ -89,7 +89,7 @@ jobs:
       - name: Run Psalm with Shepherd
         if: steps.changes.outputs.files == 'true'
         run: |
-          composer psalm-shepherd
+          composer psalm-shepherd-with-stats
 
       - name: Report failure in PR comment
         if: steps.build_step.outcome == 'failure'

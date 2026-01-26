@@ -286,11 +286,10 @@ class StrCase
     protected static function allTo(string $method, string ...$subjects): array
     {
         foreach ($subjects as $key => $string) {
-            /** @psalm-suppress MixedAssignment */
-            $subjects[$key] = static::$method($string);
+            /** @var string $value */
+            $value          = static::$method($string);
+            $subjects[$key] = $value;
         }
-
-        /** @var string[] $subjects */
 
         return $subjects;
     }

@@ -78,6 +78,7 @@ class TokenAuthenticator extends Authenticator
      */
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {
+        /** @var mixed $unserializedUsers */
         $unserializedUsers = unserialize(
             $token,
             ['allowed_classes' => true]

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Attribute;
 
 use Attribute;
+use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
 use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
 
 /**
  * Attribute class used for unit testing.
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class AttributeClass
+class AttributeClass implements ReflectionAwareAttributeContract
 {
     use ReflectionAwareAttributeTrait;
 

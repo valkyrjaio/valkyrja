@@ -50,6 +50,7 @@ class Obj
      */
     public static function fromString(string $subject): object
     {
+        /** @var mixed $decoded */
         $decoded = json_decode($subject, false, 512, JSON_THROW_ON_ERROR);
 
         if (! is_object($decoded)) {
@@ -83,6 +84,7 @@ class Obj
             $options['allowed_classes'] = $allowedClasses;
         }
 
+        /** @var mixed $unserialized */
         $unserialized = unserialize($subject, $options);
 
         if (! is_object($unserialized)) {

@@ -36,7 +36,7 @@
     "twig/twig"                  : "^3.22.2",
     "vonage/client-core"         : "^4.12.0"
   },
-  "conflict": {
+  "conflict"          : {
     "filp/whoops"                : "<2.18.4",
     "firebase/php-jwt"           : "<7.0.2",
     "guzzlehttp/guzzle"          : "<7.10.0",
@@ -119,6 +119,8 @@
     "psalm"                                           : "cd .github/ci/psalm && composer check",
     "psalm-no-cache"                                  : "cd .github/ci/psalm && composer no-cache",
     "psalm-shepherd"                                  : "cd .github/ci/psalm && composer shepherd",
+    "psalm-shepherd-with-stats"                       : "cd .github/ci/psalm && composer shepherd-with-stats",
+    "psalm-stats"                                     : "cd .github/ci/psalm && composer stats",
     "psalm-outdated-check"                            : "cd .github/ci/psalm && composer install && composer outdated --direct --minor-only",
     "psalm-outdated-check-major-release"              : "cd .github/ci/psalm && composer install && composer outdated --direct",
     "psalm-composer-update"                           : "cd .github/ci/psalm && composer update",

@@ -56,7 +56,7 @@ class UploadedFileFactoryTest extends TestCase
         UploadedFileFactory::normalizeFiles($files);
     }
 
-    public function testNormalizeFilesNextedFiles(): void
+    public function testNormalizeFilesNestedFiles(): void
     {
         $nestedFiles = [
             'files' => [

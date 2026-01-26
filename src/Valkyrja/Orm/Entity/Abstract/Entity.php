@@ -240,6 +240,7 @@ abstract class Entity extends Model implements EntityContract
      */
     protected function internalGetPropertyValueForDataStore(array $castings, string $property): mixed
     {
+        /** @var mixed $value */
         $value = $this->__get($property);
 
         // If there is no type specified or the value is null just return the value

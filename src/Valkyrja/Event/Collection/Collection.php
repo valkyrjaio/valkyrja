@@ -226,7 +226,7 @@ class Collection implements CollectionContract
     public function getListeners(): array
     {
         return array_map(
-            [$this, 'ensureListener'],
+            fn (ListenerContract|string $listener): ListenerContract => $this->ensureListener($listener),
             $this->listeners
         );
     }
@@ -264,6 +264,7 @@ class Collection implements CollectionContract
     protected function ensureListener(ListenerContract|string $listener): ListenerContract
     {
         if (is_string($listener)) {
+            /** @var mixed $unserializedListener */
             $unserializedListener = unserialize($listener, ['allowed_classes' => true]);
 
             if (! $unserializedListener instanceof Listener) {

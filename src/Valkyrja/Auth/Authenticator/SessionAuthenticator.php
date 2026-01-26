@@ -56,12 +56,14 @@ class SessionAuthenticator extends Authenticator
      */
     protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract|null
     {
+        /** @var mixed $sessionSerializedUsers */
         $sessionSerializedUsers = $this->session->get($this->sessionId);
 
         if (! is_string($sessionSerializedUsers)) {
             return null;
         }
 
+        /** @var mixed $sessionUsers */
         $sessionUsers = unserialize(
             $sessionSerializedUsers,
             ['allowed_classes' => true]

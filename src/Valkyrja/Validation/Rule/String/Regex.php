@@ -36,13 +36,11 @@ class Regex extends Rule
     #[Override]
     public function isValid(): bool
     {
-        /** @var mixed $subject */
-        $subject = $this->subject;
         $regex   = $this->regex;
 
-        return is_string($subject)
-            && $subject !== ''
-            && preg_match($regex, $subject);
+        return is_string($this->subject)
+            && $this->subject !== ''
+            && preg_match($regex, $this->subject);
     }
 
     /**

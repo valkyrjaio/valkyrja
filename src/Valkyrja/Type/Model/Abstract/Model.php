@@ -137,7 +137,7 @@ abstract class Model implements ModelContract
      * @inheritDoc
      */
     #[Override]
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'get');
 
@@ -176,6 +176,7 @@ abstract class Model implements ModelContract
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'isset');
 
         if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
+            /** @var mixed $isset */
             $isset = $this->$methodName();
 
             if (! is_bool($isset)) {
