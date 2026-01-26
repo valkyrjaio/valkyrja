@@ -24,8 +24,6 @@ interface MessageContract
 
     /**
      * Get the from name.
-     *
-     * @return string
      */
     public function getFromName(): string;
 

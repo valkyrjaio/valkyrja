@@ -69,7 +69,6 @@ class Message implements MessageContract
 
     /**
      * @param non-empty-string $fromEmail
-     * @param string           $fromName
      * @param non-empty-string $subject
      * @param non-empty-string $body
      */
