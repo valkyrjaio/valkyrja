@@ -78,7 +78,7 @@ class InMemoryFilesystem implements FilesystemContract
     #[Override]
     public function writeStream(string $path, $resource): bool
     {
-        $pathContents = fread($resource, 4096);
+        $pathContents = $this->readFromResource($resource, 4096);
 
         if ($pathContents === false) {
             throw new RuntimeException('Failed to read provided resource');
@@ -87,6 +87,17 @@ class InMemoryFilesystem implements FilesystemContract
         $this->files[$path] = new InMemoryFile($path, $pathContents, timestamp: time());
 
         return true;
+    }
+
+    /**
+     * Read from a resource.
+     *
+     * @param resource $resource The resource
+     * @param int      $length   The length to read
+     */
+    protected function readFromResource($resource, int $length): string|false
+    {
+        return fread($resource, $length);
     }
 
     /**
