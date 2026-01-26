@@ -70,7 +70,7 @@ class EncryptedJwtAuthenticator extends JwtAuthenticator
         /** @var mixed $users */
         $users = $jwtPayload['users'] ?? null;
 
-        if (! is_string($users)) {
+        if (! is_string($users) || $users === '') {
             throw new InvalidAuthenticationException('Invalid token structure. Expecting users');
         }
 

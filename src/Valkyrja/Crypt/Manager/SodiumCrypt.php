@@ -24,6 +24,7 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function bin2hex;
 use function hex2bin;
+use function is_string;
 use function random_bytes;
 use function sodium_crypto_secretbox;
 use function sodium_crypto_secretbox_open;
@@ -83,6 +84,7 @@ class SodiumCrypt implements CryptContract
      *
      * @throws JsonException
      * @throws SodiumException
+     * @throws RandomException
      */
     #[Override]
     public function encryptArray(array $array, string|null $key = null): string
@@ -95,11 +97,15 @@ class SodiumCrypt implements CryptContract
      *
      * @throws JsonException
      * @throws SodiumException
+     * @throws RandomException
      */
     #[Override]
     public function encryptObject(object $object, string|null $key = null): string
     {
-        return $this->encrypt(Obj::toString($object), $key);
+        /** @var non-empty-string $objectAsString */
+        $objectAsString = Obj::toString($object);
+
+        return $this->encrypt($objectAsString, $key);
     }
 
     /**
@@ -145,13 +151,13 @@ class SodiumCrypt implements CryptContract
     /**
      * Get a decoded encrypted message.
      *
-     * @param string $encrypted The encrypted message
+     * @param non-empty-string $encrypted The encrypted message
      *
      * @throws CryptException
      */
     protected function getDecoded(string $encrypted): string
     {
-        $decoded = hex2bin($encrypted);
+        $decoded = $this->hex2bin($encrypted);
 
         $this->validateDecoded($decoded);
 
@@ -215,27 +221,41 @@ class SodiumCrypt implements CryptContract
     /**
      * Get plain text from decoded encrypted string.
      *
-     * @param string      $decoded The decoded encrypted message
-     * @param string|null $key     The encryption key
+     * @param string           $decoded The decoded encrypted message
+     * @param non-empty-string $key     The encryption key
      *
      * @throws CryptException
      * @throws SodiumException
+     *
+     * @return non-empty-string
      */
-    protected function getDecodedPlain(string $decoded, string|null $key = null): string
+    protected function getDecodedPlain(string $decoded, string $key): string
     {
-        if ($key === null) {
-            throw new CryptException("Invalid ky `$key` provided");
-        }
-
         $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 
-        $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
+        $plain = $this->sodiumCryptoSecretboxOpen($cipherText, $nonce, $key);
 
         $this->validatePlainDecoded($plain);
 
-        /** @var string $plain */
         sodium_memzero($cipherText);
+
+        return $plain;
+    }
+
+    /**
+     * @param string           $cipherText The cipher text
+     * @param string           $nonce      The nonce
+     * @param non-empty-string $key        The encryption key
+     *
+     * @throws SodiumException
+     *
+     * @return non-empty-string|false
+     */
+    protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+    {
+        /** @var non-empty-string|false $plain */
+        $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
 
         return $plain;
     }
@@ -243,9 +263,11 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a plain text encrypted message.
      *
+     * @psalm-assert non-empty-string $plain
+     *
      * @throws CryptException
      */
-    protected function validatePlainDecoded(bool|string $plain): void
+    protected function validatePlainDecoded(string|bool $plain): void
     {
         if (! $this->isValidPlainDecoded($plain)) {
             throw new CryptException('The message was tampered with in transit');
@@ -254,27 +276,41 @@ class SodiumCrypt implements CryptContract
 
     /**
      * Validate a plain text encrypted message.
+     *
+     * @psalm-assert non-empty-string $plain
      */
-    protected function isValidPlainDecoded(bool|string $plain): bool
+    protected function isValidPlainDecoded(string|bool $plain): bool
     {
-        return $plain !== false;
+        return is_string($plain) && $plain !== '';
     }
 
     /**
      * Get a key as bytes.
      *
-     * @param string|null $key [optional] The key
+     * @param non-empty-string|null $key [optional] The key
+     *
+     * @return non-empty-string
      */
     protected function getKeyAsBytes(string|null $key = null): string
     {
         $key ??= $this->key;
 
-        $keyAsBytes = hex2bin($key);
+        $keyAsBytes = $this->hex2bin($key);
 
-        if ($keyAsBytes === false) {
+        if ($keyAsBytes === false || $keyAsBytes === '') {
             throw new CryptException("$key could not be converted to bytes");
         }
 
         return $keyAsBytes;
+    }
+
+    /**
+     * @param non-empty-string $key The key
+     *
+     * @return string|false
+     */
+    protected function hex2bin(string $key): string|false
+    {
+        return hex2bin($key);
     }
 }

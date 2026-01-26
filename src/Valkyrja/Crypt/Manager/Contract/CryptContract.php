@@ -19,26 +19,32 @@ interface CryptContract
 {
     /**
      * Determine if an encrypted message is valid.
+     *
+     * @param non-empty-string $encrypted The encrypted message
      */
     public function isValidEncryptedMessage(string $encrypted): bool;
 
     /**
      * Encrypt a message.
      *
-     * @param string      $message The message to encrypt
-     * @param string|null $key     The encryption key
+     * @param non-empty-string      $message The message to encrypt
+     * @param non-empty-string|null $key     The encryption key
      *
      * @throws CryptException On any failure
+     *
+     * @return non-empty-string
      */
     public function encrypt(string $message, string|null $key = null): string;
 
     /**
      * Decrypt a message.
      *
-     * @param string      $encrypted The encrypted message to decrypt
-     * @param string|null $key       The encryption key
+     * @param non-empty-string      $encrypted The encrypted message to decrypt
+     * @param non-empty-string|null $key       The encryption key
      *
      * @throws CryptException On any failure
+     *
+     * @return non-empty-string
      */
     public function decrypt(string $encrypted, string|null $key = null): string;
 
@@ -46,17 +52,19 @@ interface CryptContract
      * Encrypt an array.
      *
      * @param array<array-key, mixed> $array The array to encrypt
-     * @param string|null             $key   The encryption key
+     * @param non-empty-string|null   $key   The encryption key
      *
      * @throws CryptException On any failure
+     *
+     * @return non-empty-string
      */
     public function encryptArray(array $array, string|null $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an array.
      *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
+     * @param non-empty-string      $encrypted The encrypted message
+     * @param non-empty-string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      *
@@ -67,18 +75,20 @@ interface CryptContract
     /**
      * Encrypt a json array.
      *
-     * @param object      $object The object to encrypt
-     * @param string|null $key    The encryption key
+     * @param object                $object The object to encrypt
+     * @param non-empty-string|null $key    The encryption key
      *
      * @throws CryptException On any failure
+     *
+     * @return non-empty-string
      */
     public function encryptObject(object $object, string|null $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an object.
      *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
+     * @param non-empty-string      $encrypted The encrypted message
+     * @param non-empty-string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      */

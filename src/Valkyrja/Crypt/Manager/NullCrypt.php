@@ -34,7 +34,7 @@ class NullCrypt implements CryptContract
     #[Override]
     public function encrypt(string $message, string|null $key = null): string
     {
-        return '';
+        return 'encrypted';
     }
 
     /**
@@ -43,7 +43,7 @@ class NullCrypt implements CryptContract
     #[Override]
     public function encryptArray(array $array, string|null $key = null): string
     {
-        return '';
+        return '[]';
     }
 
     /**
@@ -52,7 +52,7 @@ class NullCrypt implements CryptContract
     #[Override]
     public function encryptObject(object $object, string|null $key = null): string
     {
-        return '';
+        return '{}';
     }
 
     /**
@@ -61,7 +61,7 @@ class NullCrypt implements CryptContract
     #[Override]
     public function decrypt(string $encrypted, string|null $key = null): string
     {
-        return '';
+        return 'decrypted';
     }
 
     /**
