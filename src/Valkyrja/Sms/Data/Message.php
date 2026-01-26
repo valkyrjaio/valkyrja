@@ -39,11 +39,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setTo(string $to): static
+    public function withTo(string $to): static
     {
-        $this->to = $to;
+        $new = clone $this;
 
-        return $this;
+        $new->to = $to;
+
+        return $new;
     }
 
     /**
@@ -59,11 +61,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setFrom(string $from): static
+    public function withFrom(string $from): static
     {
-        $this->from = $from;
+        $new = clone $this;
 
-        return $this;
+        $new->from = $from;
+
+        return $new;
     }
 
     /**
@@ -79,11 +83,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setText(string $text): static
+    public function withText(string $text): static
     {
-        $this->text = $text;
+        $new = clone $this;
 
-        return $this;
+        $new->text = $text;
+
+        return $new;
     }
 
     /**
@@ -99,10 +105,12 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setIsUnicode(bool $isUnicode = true): static
+    public function withIsUnicode(bool $isUnicode = true): static
     {
-        $this->isUnicode = $isUnicode;
+        $new = clone $this;
 
-        return $this;
+        $new->isUnicode = $isUnicode;
+
+        return $new;
     }
 }

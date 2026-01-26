@@ -25,7 +25,7 @@ interface MessageContract
      *
      * @param string $to The to
      */
-    public function setTo(string $to): static;
+    public function withTo(string $to): static;
 
     /**
      * Get the phone number to set as sent from.
@@ -37,7 +37,7 @@ interface MessageContract
      *
      * @param string $from The from
      */
-    public function setFrom(string $from): static;
+    public function withFrom(string $from): static;
 
     /**
      * Get the text.
@@ -49,7 +49,7 @@ interface MessageContract
      *
      * @param string $text The text
      */
-    public function setText(string $text): static;
+    public function withText(string $text): static;
 
     /**
      * Get whether the text is unicode.
@@ -61,5 +61,5 @@ interface MessageContract
      *
      * @param bool $isUnicode [optional] Whether the text is unicode
      */
-    public function setIsUnicode(bool $isUnicode = true): static;
+    public function withIsUnicode(bool $isUnicode = true): static;
 }
