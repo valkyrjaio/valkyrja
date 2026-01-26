@@ -90,17 +90,6 @@ class InMemoryFilesystem implements FilesystemContract
     }
 
     /**
-     * Read from a resource.
-     *
-     * @param resource $resource The resource
-     * @param int      $length   The length to read
-     */
-    protected function readFromResource($resource, int $length): string|false
-    {
-        return fread($resource, $length);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]
@@ -303,6 +292,17 @@ class InMemoryFilesystem implements FilesystemContract
         }
 
         return $contents;
+    }
+
+    /**
+     * Read from a resource.
+     *
+     * @param resource $resource The resource
+     * @param int      $length   The length to read
+     */
+    protected function readFromResource($resource, int $length): string|false
+    {
+        return fread($resource, $length);
     }
 
     protected function getMetadataInternal(string $path): InMemoryMetadata|null
