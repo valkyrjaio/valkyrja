@@ -44,10 +44,15 @@ class PhpMailerTest extends TestCase
      */
     public function testSendSuccess(): void
     {
-        $fromEmail = 'sender@example.com';
-        $fromName  = 'Sender Name';
-        $subject   = 'Test Subject';
-        $body      = 'Test body content';
+        $fromEmail      = 'sender@example.com';
+        $fromName       = 'Sender Name';
+        $subject        = 'Test Subject';
+        $body           = 'Test body content';
+        $toEmail        = 'to@example.com';
+        $toName         = 'To Name';
+        $plainBody      = 'Plain body content';
+        $attachmentPath = 'attachmentPath';
+        $attachmentName = 'attachmentName';
 
         $message = new Message(
             fromEmail: $fromEmail,
@@ -55,7 +60,9 @@ class PhpMailerTest extends TestCase
             subject: $subject,
             body: $body
         )
-            ->withAddedRecipient('to@example.com', 'To Name')
+            ->withAddedRecipient($toEmail, $toName)
+            ->withPlainBody($plainBody)
+            ->withAddedAttachment($attachmentPath, $attachmentName)
             ->withIsHtml(true);
 
         $this->phpMailerClient
@@ -66,7 +73,12 @@ class PhpMailerTest extends TestCase
         $this->phpMailerClient
             ->expects($this->once())
             ->method('addAddress')
-            ->with('to@example.com', 'To Name');
+            ->with($toEmail, $toName);
+
+        $this->phpMailerClient
+            ->expects($this->once())
+            ->method('addAttachment')
+            ->with($attachmentPath, $attachmentName);
 
         $this->phpMailerClient
             ->expects($this->once())
@@ -83,6 +95,7 @@ class PhpMailerTest extends TestCase
 
         self::assertSame($subject, $this->phpMailerClient->Subject);
         self::assertSame($body, $this->phpMailerClient->Body);
+        self::assertSame($plainBody, $this->phpMailerClient->AltBody);
     }
 
     public function testSendThrowsException(): void

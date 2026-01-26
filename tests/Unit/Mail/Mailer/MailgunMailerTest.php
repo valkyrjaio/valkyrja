@@ -53,13 +53,17 @@ class MailgunMailerTest extends TestCase
      */
     public function testSendSuccess(): void
     {
-        $domain    = 'example.com';
-        $fromEmail = 'sender@example.com';
-        $fromName  = 'Sender Name';
-        $subject   = 'Test Subject';
-        $body      = 'Test body content';
-        $toEmail   = 'to@example.com';
-        $toName    = 'To Name';
+        $domain         = 'example.com';
+        $fromEmail      = 'sender@example.com';
+        $fromName       = 'Sender Name';
+        $subject        = 'Test Subject';
+        $body           = 'Test body content';
+        $toEmail        = 'to@example.com';
+        $toName         = 'To Name';
+        $plainBody      = 'Plain body content';
+        $attachmentPath = 'attachmentPath';
+        $attachmentName = 'attachmentName';
+        $count          = 0;
 
         $message = new Message(
             fromEmail: $fromEmail,
@@ -67,7 +71,11 @@ class MailgunMailerTest extends TestCase
             subject: $subject,
             body: $body
         )
-            ->withAddedRecipient($toEmail, $toName);
+            ->withAddedRecipient($toEmail, $toName)
+            ->withAddedReplyToRecipient($toEmail, $toName)
+            ->withPlainBody($plainBody)
+            ->withAddedAttachment($attachmentPath, $attachmentName)
+            ->withIsHtml(true);
 
         $this->mailgunClient
             ->expects($this->once())
@@ -86,8 +94,25 @@ class MailgunMailerTest extends TestCase
             ->with($subject);
 
         $this->batchMessage
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('setTextBody')
+            ->with(
+                self::callback(
+                    static function (string $param) use ($body, $plainBody, &$count): bool {
+                        if ($count === 0) {
+                            $count++;
+
+                            return $body === $param;
+                        }
+
+                        return $plainBody === $param;
+                    }
+                )
+            );
+
+        $this->batchMessage
+            ->expects($this->once())
+            ->method('setHtmlBody')
             ->with($body);
 
         $this->batchMessage
@@ -99,6 +124,16 @@ class MailgunMailerTest extends TestCase
             ->expects($this->once())
             ->method('addToRecipient')
             ->with($toEmail, ['full_name' => $toName]);
+
+        $this->batchMessage
+            ->expects($this->once())
+            ->method('setReplyToAddress')
+            ->with($toEmail, ['full_name' => $toName]);
+
+        $this->batchMessage
+            ->expects($this->once())
+            ->method('addAttachment')
+            ->with($attachmentPath, $attachmentName);
 
         $this->batchMessage
             ->expects($this->once())
