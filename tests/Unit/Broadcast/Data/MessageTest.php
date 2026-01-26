@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 class MessageTest extends TestCase
 {
     protected string $channel = 'test-channel';
-    protected string $event = 'test-event';
+    protected string $event   = 'test-event';
     protected string $message = 'Test message';
 
     /** @var array<string, mixed> */
@@ -80,7 +80,7 @@ class MessageTest extends TestCase
             message: $this->message
         );
 
-        $newEvent  = 'new-event';
+        $newEvent   = 'new-event';
         $newMessage = $message->withEvent($newEvent);
 
         self::assertNotSame($message, $newMessage);
