@@ -83,6 +83,7 @@ class SodiumCrypt implements CryptContract
      *
      * @throws JsonException
      * @throws SodiumException
+     * @throws RandomException
      */
     #[Override]
     public function encryptArray(array $array, string|null $key = null): string
@@ -95,6 +96,7 @@ class SodiumCrypt implements CryptContract
      *
      * @throws JsonException
      * @throws SodiumException
+     * @throws RandomException
      */
     #[Override]
     public function encryptObject(object $object, string|null $key = null): string
