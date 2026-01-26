@@ -297,8 +297,8 @@ class InMemoryFilesystem implements FilesystemContract
     /**
      * Read from a resource.
      *
-     * @param resource $resource The resource
-     * @param int      $length   The length to read
+     * @param resource    $resource The resource
+     * @param int<1, max> $length   The length to read
      */
     protected function readFromResource($resource, int $length): string|false
     {
