@@ -31,7 +31,7 @@ interface MessageContract
      * @param string $email The email
      * @param string $name  [optional] The name
      */
-    public function setFrom(string $email, string $name = ''): static;
+    public function withFrom(string $email, string $name = ''): static;
 
     /**
      * Get the recipients.
@@ -46,7 +46,7 @@ interface MessageContract
      * @param string $email The email
      * @param string $name  [optional] The name
      */
-    public function addRecipient(string $email, string $name = ''): static;
+    public function withAddedRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the reply to recipients.
@@ -61,7 +61,7 @@ interface MessageContract
      * @param string $email The email
      * @param string $name  [optional] The name
      */
-    public function addReplyTo(string $email, string $name = ''): static;
+    public function withAddedReplyToRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the copy recipients.
@@ -76,7 +76,7 @@ interface MessageContract
      * @param string $email The email
      * @param string $name  [optional] The name
      */
-    public function addCopyRecipient(string $email, string $name = ''): static;
+    public function withAddedCopyRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the blind copy recipients.
@@ -91,7 +91,7 @@ interface MessageContract
      * @param string $email The email
      * @param string $name  [optional] The name
      */
-    public function addBlindCopyRecipient(string $email, string $name = ''): static;
+    public function withAddedBlindCopyRecipient(string $email, string $name = ''): static;
 
     /**
      * Get the attachments.
@@ -106,7 +106,7 @@ interface MessageContract
      * @param string $path The path
      * @param string $name [optional] The name
      */
-    public function addAttachment(string $path, string $name = ''): static;
+    public function withAddedAttachment(string $path, string $name = ''): static;
 
     /**
      * Get the subject.
@@ -118,7 +118,7 @@ interface MessageContract
      *
      * @param string $subject The subject
      */
-    public function setSubject(string $subject): static;
+    public function withSubject(string $subject): static;
 
     /**
      * Get the body.
@@ -130,7 +130,7 @@ interface MessageContract
      *
      * @param string $body The body
      */
-    public function setBody(string $body): static;
+    public function withBody(string $body): static;
 
     /**
      * Get whether the message body is html.
@@ -142,7 +142,7 @@ interface MessageContract
      *
      * @param bool $isHtml [optional] Whether the message body is html
      */
-    public function setIsHtml(bool $isHtml = true): static;
+    public function withIsHtml(bool $isHtml = true): static;
 
     /**
      * Get the plain body.
@@ -154,5 +154,5 @@ interface MessageContract
      *
      * @param string|null $plainBody The plain body
      */
-    public function setPlainBody(string|null $plainBody = null): static;
+    public function withPlainBody(string|null $plainBody = null): static;
 }

@@ -278,7 +278,9 @@ class Notifier implements NotifierContract
         foreach ($this->mailRecipients as $mailRecipient) {
             $message = new MailMessage(
                 $mailRecipient['email'],
-                $mailRecipient['name']
+                $mailRecipient['name'],
+                $mailRecipient['subject'],
+                $mailRecipient['body'],
             );
 
             $notify->mail($message);
