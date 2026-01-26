@@ -44,7 +44,7 @@ interface NotifierContract
     /**
      * Add a broadcast event to send a notification to.
      *
-     * @param string $event The event
+     * @param non-empty-string $event The event
      */
     public function addBroadcastEvent(string $event): static;
 

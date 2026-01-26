@@ -47,7 +47,7 @@ class Notifier implements NotifierContract
     /**
      * The broadcast events.
      *
-     * @var array<int, array{event: string, user?: NotifiableUserContract}>
+     * @var array<int, array{event: non-empty-string, channel: non-empty-string, message: non-empty-string, user?: NotifiableUserContract}>
      */
     protected array $broadcastEvents = [];
 
@@ -107,7 +107,9 @@ class Notifier implements NotifierContract
     public function addBroadcastEvent(string $event): static
     {
         $this->broadcastEvents[] = [
-            'event' => $event,
+            'event'   => $event,
+            'message' => 'message',
+            'channel' => 'channel',
         ];
 
         return $this;
@@ -194,10 +196,12 @@ class Notifier implements NotifierContract
             ? $user->__get($user::getSecretIdField())
             : null;
 
-        if (is_string($secretId)) {
+        if (is_string($secretId) && $secretId !== '') {
             $this->broadcastEvents[] = [
-                'event' => $secretId,
-                'user'  => $user,
+                'event'   => $secretId,
+                'message' => 'message',
+                'channel' => 'channel',
+                'user'    => $user,
             ];
         }
     }
@@ -263,9 +267,12 @@ class Notifier implements NotifierContract
     protected function notifyByBroadcast(NotifyContract $notify): void
     {
         foreach ($this->broadcastEvents as $broadcastEvent) {
-            $message = new BroadcastMessage();
+            $message = new BroadcastMessage(
+                channel: $broadcastEvent['channel'],
+                event: $broadcastEvent['event'],
+                message: $broadcastEvent['message'],
+            );
 
-            $message->setEvent($broadcastEvent['event']);
             $notify->broadcast($message);
 
             $this->broadcaster->send($message);

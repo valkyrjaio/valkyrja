@@ -19,32 +19,18 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 class Message implements MessageContract
 {
     /**
-     * The channel to broadcast to.
-     *
-     * @var string
+     * @param non-empty-string             $channel The channel
+     * @param non-empty-string             $event   The event
+     * @param non-empty-string             $message The message
+     * @param array<array-key, mixed>|null $data    [optional] The data
      */
-    protected string $channel;
-
-    /**
-     * The event to broadcast to.
-     *
-     * @var string
-     */
-    protected string $event;
-
-    /**
-     * The message to broadcast.
-     *
-     * @var string
-     */
-    protected string $message;
-
-    /**
-     * The data to broadcast.
-     *
-     * @var array<array-key, mixed>|null
-     */
-    protected array|null $data = null;
+    public function __construct(
+        protected string $channel,
+        protected string $event,
+        protected string $message,
+        protected array|null $data = null
+    ) {
+    }
 
     /**
      * @inheritDoc
@@ -59,11 +45,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setChannel(string $channel): static
+    public function withChannel(string $channel): static
     {
-        $this->channel = $channel;
+        $new = clone $this;
 
-        return $this;
+        $new->channel = $channel;
+
+        return $new;
     }
 
     /**
@@ -79,11 +67,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setEvent(string $event): static
+    public function withEvent(string $event): static
     {
-        $this->event = $event;
+        $new = clone $this;
 
-        return $this;
+        $new->event = $event;
+
+        return $new;
     }
 
     /**
@@ -99,11 +89,13 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setData(array|null $data = null): static
+    public function withData(array|null $data = null): static
     {
-        $this->data = $data;
+        $new = clone $this;
 
-        return $this;
+        $new->data = $data;
+
+        return $new;
     }
 
     /**
@@ -119,10 +111,12 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function setMessage(string $message): static
+    public function withMessage(string $message): static
     {
-        $this->message = $message;
+        $new = clone $this;
 
-        return $this;
+        $new->message = $message;
+
+        return $new;
     }
 }

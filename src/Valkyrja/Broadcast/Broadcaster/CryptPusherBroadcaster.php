@@ -34,12 +34,13 @@ class CryptPusherBroadcaster extends PusherBroadcaster
      * @throws CryptException On a crypt failure
      */
     #[Override]
-    protected function prepareMessage(MessageContract $message): void
+    protected function prepareMessage(MessageContract $message): MessageContract
     {
-        parent::prepareMessage($message);
+        $message = parent::prepareMessage($message);
 
-        $message->setMessage(
-            $this->crypt->encrypt($message->getMessage())
-        );
+        /** @var non-empty-string $encrypted */
+        $encrypted = $this->crypt->encrypt($message->getMessage());
+
+        return $message->withMessage($encrypted);
     }
 }
