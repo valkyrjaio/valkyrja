@@ -23,6 +23,11 @@ interface TaggerContract
     public static function make(CacheContract $store, string ...$tags): static;
 
     /**
+     * @return array<array-key, string>
+     */
+    public function getTags(): array;
+
+    /**
      * Determine if an item exists in the cache.
      */
     public function has(string $key): bool;
