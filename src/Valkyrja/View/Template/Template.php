@@ -29,21 +29,21 @@ class Template implements TemplateContract
     /**
      * The layout template.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $layout = null;
 
     /**
      * The block status.
      *
-     * @var string[]
+     * @var non-empty-string[]
      */
     protected array $blockStatus = [];
 
     /**
      * The view blocks.
      *
-     * @var string[]
+     * @var array<non-empty-string, string>
      */
     protected array $blocks = [];
 
@@ -62,7 +62,8 @@ class Template implements TemplateContract
     protected bool $hasLayoutChanged = false;
 
     /**
-     * @param array<string, mixed> $variables The variables
+     * @param non-empty-string               $name      The template name
+     * @param array<non-empty-string, mixed> $variables The variables
      */
     public function __construct(
         protected RendererContract $renderer,
@@ -124,7 +125,7 @@ class Template implements TemplateContract
      * @inheritDoc
      */
     #[Override]
-    public function setVariable(string $key, $value): static
+    public function setVariable(string $key, mixed $value): static
     {
         $this->variables[$key] = $value;
 
@@ -224,6 +225,7 @@ class Template implements TemplateContract
     #[Override]
     public function endBlock(): void
     {
+        /** @var non-empty-string $block */
         // Get the last item in the array (newest block to close)
         $block = end($this->blockStatus);
         // Remove the last item in the array (as we are now closing it out)
@@ -264,9 +266,9 @@ class Template implements TemplateContract
     /**
      * Render a file.
      *
-     * @param string               $name         The file name
-     * @param array<string, mixed> $variables    [optional] The variables to set
-     * @param bool                 $renderLayout [optional] Whether to render the layout
+     * @param non-empty-string               $name         The file name
+     * @param array<non-empty-string, mixed> $variables    [optional] The variables to set
+     * @param bool                           $renderLayout [optional] Whether to render the layout
      */
     protected function renderFile(string $name, array $variables = [], bool $renderLayout = false): string
     {
@@ -290,8 +292,8 @@ class Template implements TemplateContract
     /**
      * Render a layout.
      *
-     * @param string               $layout    The layout
-     * @param array<string, mixed> $variables [optional] The variables to set
+     * @param non-empty-string               $layout    The layout
+     * @param array<non-empty-string, mixed> $variables [optional] The variables to set
      */
     protected function renderLayout(string $layout, array $variables = []): string
     {
@@ -312,8 +314,8 @@ class Template implements TemplateContract
     /**
      * Render a template.
      *
-     * @param string               $path      The path to render
-     * @param array<string, mixed> $variables [optional] The variables to set
+     * @param non-empty-string               $path      The path to render
+     * @param array<non-empty-string, mixed> $variables [optional] The variables to set
      */
     protected function renderTemplate(string $path, array $variables = []): string
     {

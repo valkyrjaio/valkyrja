@@ -265,10 +265,9 @@ class Valkyrja implements ApplicationContract
      */
     protected function addComponentContainerProviders(string $component): void
     {
-        array_map(
-            [$this->container, 'register'],
-            $component::getContainerProviders(),
-        );
+        foreach ($component::getContainerProviders() as $provider) {
+            $this->container->register($provider);
+        }
     }
 
     /**

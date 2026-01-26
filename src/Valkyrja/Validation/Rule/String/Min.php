@@ -35,14 +35,11 @@ class Min extends Rule
     #[Override]
     public function isValid(): bool
     {
-        /** @var mixed $subject */
-        $subject = $this->subject;
-
-        if (! is_string($subject)) {
+        if (! is_string($this->subject)) {
             return false;
         }
 
-        return Str::min($subject, $this->min);
+        return Str::min($this->subject, $this->min);
     }
 
     /**

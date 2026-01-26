@@ -30,24 +30,24 @@ interface RendererContract
     /**
      * Render a template.
      *
-     * @param non-empty-string     $name      The template name
-     * @param array<string, mixed> $variables [optional] The variables
+     * @param non-empty-string               $name      The template name
+     * @param array<non-empty-string, mixed> $variables [optional] The variables
      */
     public function render(string $name, array $variables = []): string;
 
     /**
      * Create a new template.
      *
-     * @param non-empty-string     $name      The template name
-     * @param array<string, mixed> $variables [optional] The variables
+     * @param non-empty-string               $name      The template name
+     * @param array<non-empty-string, mixed> $variables [optional] The variables
      */
     public function createTemplate(string $name, array $variables = []): TemplateContract;
 
     /**
      * Render a template file.
      *
-     * @param string               $name      The file name
-     * @param array<string, mixed> $variables [optional] The variables
+     * @param non-empty-string               $name      The file name
+     * @param array<non-empty-string, mixed> $variables [optional] The variables
      */
     public function renderFile(string $name, array $variables = []): string;
 }

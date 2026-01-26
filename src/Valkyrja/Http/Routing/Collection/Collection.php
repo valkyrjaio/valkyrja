@@ -342,7 +342,7 @@ class Collection implements CollectionContract
     protected function ensureMethodRoutes(array $methodsArray): array
     {
         return array_map(
-            [$this, 'ensureRoutes'],
+            fn (array $routes): array => $this->ensureRoutes($routes),
             $methodsArray
         );
     }
@@ -357,7 +357,7 @@ class Collection implements CollectionContract
     protected function ensureRoutes(array $routesArray): array
     {
         return array_map(
-            [$this, 'ensureRoute'],
+            fn (RouteContract|string $route): RouteContract => $this->ensureRoute($route),
             $routesArray
         );
     }
@@ -374,6 +374,7 @@ class Collection implements CollectionContract
         }
 
         if (is_string($route)) {
+            /** @var mixed $unserializedRoute */
             $unserializedRoute = unserialize($route, ['allowed_classes' => true]);
 
             if (! $unserializedRoute instanceof RouteContract) {

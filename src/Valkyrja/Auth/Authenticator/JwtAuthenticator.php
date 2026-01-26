@@ -83,12 +83,14 @@ class JwtAuthenticator extends Authenticator
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsersContract|null
     {
         $jwtPayload = $this->jwt->decode($token);
-        $users      = $jwtPayload['users'] ?? null;
+        /** @var mixed $users */
+        $users = $jwtPayload['users'] ?? null;
 
         if (! is_string($users)) {
             throw new InvalidAuthenticationException('Invalid token structure. Expecting users');
         }
 
+        /** @var mixed $unserializedUsers */
         $unserializedUsers = unserialize(
             $users,
             ['allowed_classes' => true]

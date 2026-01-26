@@ -111,6 +111,7 @@ class Router implements RouterContract
         $arguments = $dispatch->getArguments();
 
         // Attempt to dispatch the route using any one of the callable options
+        /** @var mixed $output */
         $output = $this->dispatcher->dispatch(
             dispatch: $dispatch,
             arguments: $arguments

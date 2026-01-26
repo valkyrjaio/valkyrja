@@ -71,7 +71,11 @@ abstract class CookieFactory
     {
         return implode(
             self::SEPARATOR,
-            array_map([self::class, 'combineKeyAndValue'], array_keys($cookies), array_values($cookies))
+            array_map(
+                static fn (string $key, string $value): string => self::combineKeyAndValue($key, $value),
+                array_keys($cookies),
+                array_values($cookies)
+            )
         );
     }
 

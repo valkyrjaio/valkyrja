@@ -6,9 +6,11 @@
     "vimeo/psalm" : "^6.14.3"
   },
   "scripts"           : {
-    "check"    : "vendor/bin/psalm --config=psalm.xml --memory-limit=-1 --threads=4",
-    "no-cache" : "vendor/bin/psalm --config=psalm.xml --no-cache --memory-limit=-1 --threads=4",
-    "shepherd" : "vendor/bin/psalm --config=psalm.xml --shepherd --memory-limit=-1 --threads=4"
+    "check"               : "vendor/bin/psalm --config=psalm.xml --memory-limit=-1 --threads=4",
+    "no-cache"            : "vendor/bin/psalm --config=psalm.xml --no-cache --memory-limit=-1 --threads=4",
+    "shepherd"            : "vendor/bin/psalm --config=psalm.xml --shepherd --memory-limit=-1 --threads=4",
+    "shepherd-with-stats" : "vendor/bin/psalm --config=psalm.xml --shepherd --memory-limit=-1 --threads=4",
+    "stats"               : "vendor/bin/psalm --config=psalm.xml --memory-limit=-1 --threads=4 --stats --long-progress"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true

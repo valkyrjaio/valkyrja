@@ -31,7 +31,7 @@ class Collection implements CollectionContract
     public function getData(): Data
     {
         return new Data(
-            commands: array_map('serialize', $this->commands),
+            commands: array_map(static fn (RouteContract $command): string => serialize($command), $this->commands),
         );
     }
 
@@ -42,6 +42,7 @@ class Collection implements CollectionContract
     public function setFromData(Data $data): void
     {
         foreach ($data->commands as $id => $commandSerialized) {
+            /** @var mixed $command */
             $command = unserialize($commandSerialized, ['allowed_classes' => true]);
 
             if (! $command instanceof RouteContract) {

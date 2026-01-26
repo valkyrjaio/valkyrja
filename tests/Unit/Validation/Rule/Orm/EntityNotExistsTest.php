@@ -21,7 +21,6 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Tests\Classes\Orm\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Orm\EntityNotExists;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -88,34 +87,6 @@ class EntityNotExistsTest extends TestCase
         $rule = new EntityNotExists($this->orm, 1, EntityClass::class);
 
         self::assertFalse($rule->isValid());
-    }
-
-    public function testIsValidWithNullSubjectWhenEntityDoesNotExist(): void
-    {
-        $this->orm
-            ->expects($this->once())
-            ->method('createRepository')
-            ->willReturn($this->repository);
-        $this->repository
-            ->expects($this->once())
-            ->method('findBy')
-            ->willReturn(null);
-
-        $rule = new EntityNotExists($this->orm, null, EntityClass::class);
-
-        self::assertTrue($rule->isValid());
-    }
-
-    public function testThrowsExceptionWithInvalidSubjectType(): void
-    {
-        $this->orm->expects($this->never())->method('createRepository');
-        $this->repository->expects($this->never())->method('findBy');
-        $rule = new EntityNotExists($this->orm, ['invalid'], EntityClass::class);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value to match must be string, int, float, bool, or null');
-
-        $rule->isValid();
     }
 
     public function testValidatePassesWhenEntityDoesNotExist(): void

@@ -19,42 +19,44 @@ interface TemplateContract extends Stringable
 {
     /**
      * Get the template name.
+     *
+     * @return non-empty-string
      */
     public function getName(): string;
 
     /**
      * Set the template name.
      *
-     * @param string $name The name
+     * @param non-empty-string $name The name
      */
     public function setName(string $name): static;
 
     /**
      * Get the variables.
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, mixed>
      */
     public function getVariables(): array;
 
     /**
      * Set the variables.
      *
-     * @param array<string, mixed> $variables [optional] The variables to set
+     * @param array<non-empty-string, mixed> $variables [optional] The variables to set
      */
     public function setVariables(array $variables = []): static;
 
     /**
      * Get a variable.
      *
-     * @param string $key The variable key to set
+     * @param non-empty-string $key The variable key to set
      */
     public function getVariable(string $key): mixed;
 
     /**
      * Set a single variable.
      *
-     * @param string $key   The variable key to set
-     * @param mixed  $value The value to set
+     * @param non-empty-string $key   The variable key to set
+     * @param mixed            $value The value to set
      */
     public function setVariable(string $key, mixed $value): static;
 
@@ -68,7 +70,7 @@ interface TemplateContract extends Stringable
     /**
      * Set the layout for the view template.
      *
-     * @param string|null $layout [optional] The layout
+     * @param non-empty-string|null $layout [optional] The layout
      */
     public function setLayout(string|null $layout = null): static;
 
@@ -80,22 +82,22 @@ interface TemplateContract extends Stringable
     /**
      * Output a partial.
      *
-     * @param string               $partial   The partial
-     * @param array<string, mixed> $variables [optional] The variables
+     * @param non-empty-string               $partial   The partial
+     * @param array<non-empty-string, mixed> $variables [optional] The variables
      */
     public function getPartial(string $partial, array $variables = []): string;
 
     /**
      * Output a block.
      *
-     * @param string $name The name of the block
+     * @param non-empty-string $name The name of the block
      */
     public function getBlock(string $name): string;
 
     /**
      * Determine if a block exists.
      *
-     * @param string $name The name of the block
+     * @param non-empty-string $name The name of the block
      *
      * @return bool
      *              True if the block exists
@@ -106,7 +108,7 @@ interface TemplateContract extends Stringable
     /**
      * Start a block.
      *
-     * @param string $name The name of the block
+     * @param non-empty-string $name The name of the block
      */
     public function startBlock(string $name): void;
 
@@ -118,7 +120,7 @@ interface TemplateContract extends Stringable
     /**
      * Render the template.
      *
-     * @param array<string, mixed> $variables [optional] The variables to set
+     * @param array<non-empty-string, mixed> $variables [optional] The variables to set
      */
     public function render(array $variables = []): string;
 

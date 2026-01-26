@@ -21,10 +21,10 @@ interface ResponseFactoryContract
     /**
      * View response builder.
      *
-     * @param non-empty-string             $template   The view template to use
-     * @param array<string, mixed>|null    $data       [optional] The view data
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param array<string, string[]>|null $headers    [optional] An array of response headers
+     * @param non-empty-string                       $template   The view template to use
+     * @param array<non-empty-string, mixed>|null    $data       [optional] The view data
+     * @param StatusCode|null                        $statusCode [optional] The response status code
+     * @param array<non-empty-string, string[]>|null $headers    [optional] An array of response headers
      */
     public function createResponseFromView(
         string $template,

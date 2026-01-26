@@ -105,6 +105,7 @@ abstract class UploadedFileFactory
      */
     public static function createUploadedFileFromSpec(array $value): UploadedFileContract|array
     {
+        /** @var mixed $tmpName */
         $tmpName = $value['tmp_name'] ?? null;
 
         if (is_array($tmpName)) {
@@ -143,6 +144,7 @@ abstract class UploadedFileFactory
     public static function normalizeNestedFileSpec(array $files = []): array
     {
         $normalizedFiles = [];
+        /** @var mixed $filesTmpName */
         $filesTmpName    = $files['tmp_name'] ?? null;
 
         if (! is_array($filesTmpName)) {

@@ -35,10 +35,8 @@ interface ModelContract extends ArrayAccess, Stringable, TypeContract
      * Get a property.
      *
      * @param string $name The property to get
-     *
-     * @return mixed
      */
-    public function __get(string $name);
+    public function __get(string $name): mixed;
 
     /**
      * Set a property.

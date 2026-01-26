@@ -80,7 +80,7 @@ class ArrayOf
     {
         foreach ($values as $key => $value) {
             if ($value !== null) {
-                $type = gettype($key);
+                $type = gettype($value);
 
                 throw new InvalidArgumentException("Argument $key must be of type null, $type given");
             }

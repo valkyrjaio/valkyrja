@@ -237,8 +237,8 @@ interface ServerRequestContract extends RequestContract
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param UploadedFileContract[]|array $uploadedFiles An array tree of UploadedFileInterface
-     *                                                    instances
+     * @param UploadedFileContract[]|array<array-key, mixed> $uploadedFiles An array tree of UploadedFileInterface
+     *                                                                      instances
      *
      * @throws InvalidArgumentException if an invalid structure is provided
      */

@@ -128,6 +128,7 @@ abstract class App
 
         // Allow all classes, and filter for only Data classes down below since allowed_classes cannot be
         // a class that others extend off of, and we don't want to limit what a cached data class could be
+        /** @var mixed $data */
         $data = unserialize($cache, ['allowed_classes' => true]);
 
         if (! $data instanceof Data) {

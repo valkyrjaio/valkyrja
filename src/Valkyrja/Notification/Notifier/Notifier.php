@@ -207,8 +207,10 @@ class Notifier implements NotifierContract
      */
     protected function addMailUserRecipient(NotifiableUserContract $user): void
     {
+        /** @var mixed $email */
         $email = $user->__get($user::getEmailField());
-        $name  = $user::hasNameField()
+        /** @var mixed $name */
+        $name = $user::hasNameField()
             ? $user->__get($user::getNameField())
             : '';
 

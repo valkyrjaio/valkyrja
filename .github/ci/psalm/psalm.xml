@@ -6,6 +6,7 @@
        errorLevel="1"
        findUnusedBaselineEntry="false"
        findUnusedCode="false"
+       totallyTyped="true"
        autoloader="./autoload.php"
 >
     <projectFiles>

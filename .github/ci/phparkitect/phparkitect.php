@@ -44,238 +44,239 @@ return static function (Config $config): void {
     $testRules = [];
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*'))
-                      ->should(new NotContainDocBlockLike('@author'))
-                      ->because('All classes should NOT have an author');
+        ->that(new ResideInOneOfTheseNamespaces('*'))
+        ->should(new NotContainDocBlockLike('@author'))
+        ->because('All classes should NOT have an author');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new ResideInOneOfTheseNamespaces('*'))
-                       ->should(new NotContainDocBlockLike('@author'))
-                       ->because('All classes should NOT have an author');
+        ->that(new ResideInOneOfTheseNamespaces('*'))
+        ->should(new NotContainDocBlockLike('@author'))
+        ->because('All classes should NOT have an author');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveAttribute(Attribute::class))
-                      ->should(new ResideInOneOfTheseNamespaces('*Attribute\\'))
-                      ->because('All attributes should exist in an appropriate namespace');
+        ->that(new HaveAttribute(Attribute::class))
+        ->should(new ResideInOneOfTheseNamespaces('*Attribute\\'))
+        ->because('All attributes should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Attribute\\'))
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Attribute\\'))
-                      ->should(new HaveAttribute(Attribute::class))
-                      ->because('All non-attributes should exist in an appropriate namespace');
+        ->that(new ResideInOneOfTheseNamespaces('*Attribute\\'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Attribute\\'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Attribute\\'))
+        ->should(new HaveAttribute(Attribute::class))
+        ->because('All attributes should be properly attributed');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new NotResideInTheseNamespaces('*Attribute\\*'))
-                      ->should(new NotHaveAttribute(Attribute::class))
-                      ->because('All non-attributes should exist in an appropriate namespace');
+        ->that(new NotResideInTheseNamespaces('*Attribute\\*'))
+        ->should(new NotHaveAttribute(Attribute::class))
+        ->because('All non-attributes should not be attributed');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsFinal())
-                      ->andThat(new NotHaveNameMatching('*Security'))
-                      ->andThat(new NotHaveNameMatching('*Provider'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Constant\\'))
-                      ->because('All final classes are constants and should exist in an appropriate namespace');
+        ->that(new IsFinal())
+        ->andThat(new NotHaveNameMatching('*Security'))
+        ->andThat(new NotHaveNameMatching('*Provider'))
+        ->should(new ResideInOneOfTheseNamespaces('*Constant\\'))
+        ->because('All final classes are constants and should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Constant\\'))
-                      ->should(new IsFinal())
-                      ->because('All constants should be final');
+        ->that(new ResideInOneOfTheseNamespaces('*Constant\\'))
+        ->should(new IsFinal())
+        ->because('All constants should be final');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Provider::class))
-                      ->should(new HaveNameMatching('*ServiceProvider'))
-                      ->because('All service providers should be named appropriately');
+        ->that(new Extend(Provider::class))
+        ->should(new HaveNameMatching('*ServiceProvider'))
+        ->because('All service providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Provider::class))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
-                      ->because('All service providers should exist in an appropriate namespace');
+        ->that(new Extend(Provider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->because('All service providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(ComponentProvider::class))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new HaveNameMatching('*ComponentProvider'))
-                      ->because('All component providers should be named appropriately');
+        ->that(new Extend(ComponentProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*ComponentProvider'))
+        ->because('All component providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(ComponentProvider::class))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
-                      ->because('All component providers should exist in an appropriate namespace');
+        ->that(new Extend(ComponentProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->because('All component providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Provider\\'))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new HaveNameMatching('*Provider'))
-                      ->because('All classes in a Provider namespace should be named appropriately');
+        ->that(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*Provider'))
+        ->because('All classes in a Provider namespace should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Factory'))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
-                      ->because('All factories should exist in an appropriate namespace');
+        ->that(new HaveNameMatching('*Factory'))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
+        ->because('All factories should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Factory\\'))
-                      ->andThat(new NotHaveNameMatching('*Contract'))
-                      ->should(new HaveNameMatching('*Factory'))
-                      ->because('All classes in a Factory namespace should be named appropriately');
+        ->that(new ResideInOneOfTheseNamespaces('*Factory\\'))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*Factory'))
+        ->because('All classes in a Factory namespace should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Command'))
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\*'))
-                      ->andThat(new NotHaveNameMatching('*Handler'))
-                      ->andThat(new NotHaveNameMatching('*Middleware'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Cli\\Command\\'))
-                      ->because('All cli commands should exist in an appropriate namespace');
+        ->that(new HaveNameMatching('*Command'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\*'))
+        ->andThat(new NotHaveNameMatching('*Handler'))
+        ->andThat(new NotHaveNameMatching('*Middleware'))
+        ->should(new ResideInOneOfTheseNamespaces('*Cli\\Command\\'))
+        ->because('All cli commands should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Security'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Security\\'))
-                      ->because('All security classes should exist in an appropriate namespace');
+        ->that(new HaveNameMatching('*Security'))
+        ->should(new ResideInOneOfTheseNamespaces('*Security\\'))
+        ->because('All security classes should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Security'))
-                      ->should(new IsFinal())
-                      ->because('All security classes should be final');
+        ->that(new HaveNameMatching('*Security'))
+        ->should(new IsFinal())
+        ->because('All security classes should be final');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Exception'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Exception\\'))
-                      ->because('All exceptions should exist in an appropriate namespace');
+        ->that(new HaveNameMatching('*Exception'))
+        ->should(new ResideInOneOfTheseNamespaces('*Exception\\'))
+        ->because('All exceptions should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Throwable::class))
-                      ->should(new ResideInOneOfTheseNamespaces('*Throwable\\'))
-                      ->because('All throwable objects or interfaces should exist in an appropriate namespace');
+        ->that(new Extend(Throwable::class))
+        ->should(new ResideInOneOfTheseNamespaces('*Throwable\\'))
+        ->because('All throwable objects or interfaces should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Type::class))
-                      ->andThat(new NotResideInTheseNamespaces('*Config'))
-                      ->andThat(new NotResideInTheseNamespaces('*Entity'))
-                      ->andThat(new NotResideInTheseNamespaces('*Model'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Type\\'))
-                      ->because('All types should exist in an appropriate namespace');
+        ->that(new Extend(Type::class))
+        ->andThat(new NotResideInTheseNamespaces('*Config'))
+        ->andThat(new NotResideInTheseNamespaces('*Entity'))
+        ->andThat(new NotResideInTheseNamespaces('*Model'))
+        ->should(new ResideInOneOfTheseNamespaces('*Type\\'))
+        ->because('All types should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Model::class))
-                      ->andThat(new NotResideInTheseNamespaces('*Config'))
-                      ->andThat(new NotResideInTheseNamespaces('*Entity'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Model\\'))
-                      ->because('All models should exist in an appropriate namespace');
+        ->that(new Extend(Model::class))
+        ->andThat(new NotResideInTheseNamespaces('*Config'))
+        ->andThat(new NotResideInTheseNamespaces('*Entity'))
+        ->should(new ResideInOneOfTheseNamespaces('*Model\\'))
+        ->because('All models should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Entity::class))
-                      ->should(new ResideInOneOfTheseNamespaces('*Entity\\'))
-                      ->because('All entities should exist in an appropriate namespace');
+        ->that(new Extend(Entity::class))
+        ->should(new ResideInOneOfTheseNamespaces('*Entity\\'))
+        ->because('All entities should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsInterface())
-                      ->should(new ResideInOneOfTheseNamespaces('*Contract\\'))
-                      ->because('All interfaces are contracts and should be in an appropriate namespace');
+        ->that(new IsInterface())
+        ->should(new ResideInOneOfTheseNamespaces('*Contract\\'))
+        ->because('All interfaces are contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Contract\\'))
-                      ->should(new IsInterface())
-                      ->because('All non-interfaces are not contracts and should be in an appropriate namespace');
+        ->that(new ResideInOneOfTheseNamespaces('*Contract\\'))
+        ->should(new IsInterface())
+        ->because('All non-interfaces are not contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsInterface())
-                      ->andThat(new NotHaveNameMatching('*Throwable'))
-                      ->should(new HaveNameMatching('*Contract'))
-                      ->because('All interfaces are contracts and should named appropriately');
+        ->that(new IsInterface())
+        ->andThat(new NotHaveNameMatching('*Throwable'))
+        ->should(new HaveNameMatching('*Contract'))
+        ->because('All interfaces are contracts and should named appropriately');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new HaveNameMatching('*Contract'))
-                      ->should(new IsInterface())
-                      ->because('All classes with name Contract must be interfaces');
+        ->that(new HaveNameMatching('*Contract'))
+        ->should(new IsInterface())
+        ->because('All classes with name Contract must be interfaces');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsTrait())
-                      ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
-                      ->because('All traits should be in an appropriate namespace');
+        ->that(new IsTrait())
+        ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
+        ->because('All traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Trait\\'))
-                      ->should(new IsTrait())
-                      ->because('All non-traits should be in an appropriate namespace');
+        ->that(new ResideInOneOfTheseNamespaces('*Trait\\'))
+        ->should(new IsTrait())
+        ->because('All non-traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsAbstract())
-                      ->andThat(new NotResideInTheseNamespaces('*Factory'))
-                      ->andThat(new NotResideInTheseNamespaces('*Provider'))
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\Routing\\Controller'))
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Http\\Routing\\Controller'))
-                      ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
-                      ->because('All abstract classes should be in an appropriate namespace');
+        ->that(new IsAbstract())
+        ->andThat(new NotResideInTheseNamespaces('*Factory'))
+        ->andThat(new NotResideInTheseNamespaces('*Provider'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\Routing\\Controller'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Http\\Routing\\Controller'))
+        ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+        ->because('All abstract classes should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Abstract\\'))
-                      ->should(new IsAbstract())
-                      ->because('All non-abstract classes should be in an appropriate namespace');
+        ->that(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+        ->should(new IsAbstract())
+        ->because('All non-abstract classes should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsAbstract())
-                      ->should(new NotHaveNameMatching('*Abstract*'))
-                      ->because('All abstract classes should not be named with abstract naming convention');
+        ->that(new IsAbstract())
+        ->should(new NotHaveNameMatching('*Abstract*'))
+        ->because('All abstract classes should not be named with abstract naming convention');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotAbstract())
-                      ->should(new NotHaveNameMatching('*Abstract*'))
-                      ->because('All classes should not be named with abstract naming convention');
+        ->that(new IsNotAbstract())
+        ->should(new NotHaveNameMatching('*Abstract*'))
+        ->because('All classes should not be named with abstract naming convention');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsEnum())
-                      ->should(new ResideInOneOfTheseNamespaces('*Enum\\'))
-                      ->because('All enums should be in an appropriate namespace');
+        ->that(new IsEnum())
+        ->should(new ResideInOneOfTheseNamespaces('*Enum\\'))
+        ->because('All enums should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new ResideInOneOfTheseNamespaces('*Enum\\'))
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
-                      ->should(new IsEnum())
-                      ->because('All non-enums should be in an appropriate namespace');
+        ->that(new ResideInOneOfTheseNamespaces('*Enum\\'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+        ->should(new IsEnum())
+        ->because('All non-enums should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsEnum())
-                      ->should(new NotHaveNameMatching('*Enum*'))
-                      ->because('All enums should be appropriately named');
+        ->that(new IsEnum())
+        ->should(new NotHaveNameMatching('*Enum*'))
+        ->because('All enums should be appropriately named');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotEnum())
-                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
-                      ->andThat(new NotHaveNameMatching('EnhancedEnumSupport'))
-                      ->should(new NotHaveNameMatching('*Enum*'))
-                      ->because('All non-enums should not be named with Enum');
+        ->that(new IsNotEnum())
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+        ->andThat(new NotHaveNameMatching('EnhancedEnumSupport'))
+        ->should(new NotHaveNameMatching('*Enum*'))
+        ->because('All non-enums should not be named with Enum');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
-                       ->andThat(new NotHaveNameMatching('*Enum'))
-                       ->andThat(new IsNotTrait())
-                       ->should(new HaveNameMatching('*Class'))
-                       ->because('Testable classes should be named appropriately');
+        ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
+        ->andThat(new NotHaveNameMatching('*Enum'))
+        ->andThat(new IsNotTrait())
+        ->should(new HaveNameMatching('*Class'))
+        ->because('Testable classes should be named appropriately');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
-                       ->should(new NotHaveNameMatching('*Test'))
-                       ->because('Testable classes are not tests');
+        ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
+        ->should(new NotHaveNameMatching('*Test'))
+        ->because('Testable classes are not tests');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new NotHaveNameMatching('*Test'))
-                       ->should(new NotResideInTheseNamespaces('*Unit\\', '*Functional\\'))
-                       ->because('Only tests should be in namespace');
+        ->that(new NotHaveNameMatching('*Test'))
+        ->should(new NotResideInTheseNamespaces('*Unit\\', '*Functional\\'))
+        ->because('Only tests should be in namespace');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new IsTrait())
-                       ->andThat(new NotHaveNameMatching('TestCase'))
-                       ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
-                       ->because('All test traits should be in an appropriate namespace');
+        ->that(new IsTrait())
+        ->andThat(new NotHaveNameMatching('TestCase'))
+        ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
+        ->because('All test traits should be in an appropriate namespace');
 
     $testRules[] = Rule::allClasses()
-                       ->that(new IsTrait())
-                       ->andThat(new NotHaveNameMatching('TestCase'))
-                       ->should(new HaveNameMatching('*Trait'))
-                       ->because('All test traits should be named appropriately');
+        ->that(new IsTrait())
+        ->andThat(new NotHaveNameMatching('TestCase'))
+        ->should(new HaveNameMatching('*Trait'))
+        ->because('All test traits should be named appropriately');
 
     $config
         ->add($srcClassSet, ...$srcRules);
