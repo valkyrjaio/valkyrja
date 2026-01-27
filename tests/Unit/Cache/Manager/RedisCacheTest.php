@@ -105,7 +105,7 @@ class RedisCacheTest extends TestCase
         $this->client
             ->expects($this->once())
             ->method('setex')
-            ->with($this->prefix . 'my-key', 600, 'my-value'); // 10 minutes * 60 seconds
+            ->with($this->prefix . 'my-key', 10, 'my-value');
 
         $this->cache->put('my-key', 'my-value', 10);
     }
@@ -114,7 +114,7 @@ class RedisCacheTest extends TestCase
     {
         $client     = $this->client;
         $values     = ['key1' => 'value1', 'key2' => 'value2'];
-        $minutes    = 10;
+        $seconds    = 10;
         $countKey   = 0;
         $countValue = 0;
 
@@ -146,7 +146,7 @@ class RedisCacheTest extends TestCase
                         return $key === $this->prefix . 'key2';
                     }
                 ),
-                $minutes * 60,
+                $seconds,
                 self::callback(
                     static function (string $value) use (&$countValue): bool {
                         if ($countValue === 0) {
@@ -160,7 +160,7 @@ class RedisCacheTest extends TestCase
                 ),
             );
 
-        $this->cache->putMany($values, $minutes);
+        $this->cache->putMany($values, $seconds);
     }
 
     public function testIncrementIncrementsValue(): void

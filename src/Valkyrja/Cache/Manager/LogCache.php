@@ -74,11 +74,11 @@ class LogCache implements CacheContract
      * @inheritDoc
      */
     #[Override]
-    public function put(string $key, string $value, int $minutes): void
+    public function put(string $key, string $value, int $seconds): void
     {
         $key = $this->getKey($key);
 
-        $this->logger->info(self::class . " put: $key, value $value, minutes $minutes");
+        $this->logger->info(self::class . " put: $key, value $value, seconds $seconds");
     }
 
     /**
@@ -87,11 +87,11 @@ class LogCache implements CacheContract
      * @throws JsonException
      */
     #[Override]
-    public function putMany(array $values, int $minutes): void
+    public function putMany(array $values, int $seconds): void
     {
         $valuesString = Arr::toString($values);
 
-        $this->logger->info(self::class . " putMany: $valuesString, minutes $minutes");
+        $this->logger->info(self::class . " putMany: $valuesString, seconds $seconds");
     }
 
     /**

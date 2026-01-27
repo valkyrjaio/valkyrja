@@ -37,9 +37,9 @@ interface CacheContract
     public function many(string ...$keys): array;
 
     /**
-     * Store an item in the cache for a given number of minutes.
+     * Store an item in the cache for a given number of seconds.
      */
-    public function put(string $key, string $value, int $minutes): void;
+    public function put(string $key, string $value, int $seconds): void;
 
     /**
      * Store multiple items in the cache for a given number of minutes.
@@ -54,9 +54,9 @@ interface CacheContract
      *      )
      * </code>
      *
-     * @param array<string, string> $values
+     * @param array<string, string> $values The values as a key/value pair
      */
-    public function putMany(array $values, int $minutes): void;
+    public function putMany(array $values, int $seconds): void;
 
     /**
      * Increment the value of an item in the cache.
