@@ -1,6 +1,35 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.21.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.22.0...master)
+
+## [v25.22.0](https://github.com/valkyrjaio/valkyrja/compare/v25.21.0...v25.22.0) - 2026-01-27
+
+* [View] Update OrkaRenderer to take replacements as an argument by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/388
+* [Validation] Update validation and add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/389
+* [View] Fix test deleting .gitignore file locally by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/390
+* [CI] Add method_chaining_indentation rule to phpcsfixer by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/391
+* [CI] Fix psalm mixed types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/392
+* [CI] Fix psalm shepherd with stats by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/393
+* [Sms] Add tests and update Message class to be immutable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/394
+* [Mail] Add tests and update Message class to be immutable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/395
+* [Broadcast] Add tests and update Message class to be immutable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/396
+* [Crypt] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/397
+* [Cache] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/398
+* [Filesystem] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/399
+* [Attribute] Deprecate dispatch logic in Collector by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/400
+* [Container] Register providers from data in construct by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/401
+* [Cache] Change minutes to seconds by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/402
+* [Mail] Add data classes for recipients and attachments by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/403
+* [Jwt] Add tests and remove unused classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/404
+* [Crypt] Add SensitiveParameter attribute to key parameters by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/405
+* [Log] Add tests. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/406
+* [Mail] Add tests for the Attachment and Recipient classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/407
+* [Orm] Add tests. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/408
+* [CI] Update slevomat/coding-standard to version v8.27.1 from v8.26.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/409
+* [Composer] Update composer dependencies by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/410
+* [CI] Update phpcsfixer to v3.93.0 from v3.92.5 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/411
+* [CI] Update phpstan to v2.1.37 from v2.1.33 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/412
+* [CI] Update phpunit to v12.5.8 from v12.5.6 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/413
 
 ## [v25.21.0](https://github.com/valkyrjaio/valkyrja/compare/v25.20.0...v25.21.0) - 2026-01-22
 
