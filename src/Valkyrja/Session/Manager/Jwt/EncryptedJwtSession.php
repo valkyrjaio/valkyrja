@@ -21,6 +21,11 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
 class EncryptedJwtSession extends JwtSession
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     * @param non-empty-string      $headerName  The header name
+     */
     public function __construct(
         protected CryptContract $crypt,
         protected JwtContract $jwt,

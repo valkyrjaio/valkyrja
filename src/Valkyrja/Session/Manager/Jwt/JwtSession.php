@@ -23,6 +23,11 @@ use Valkyrja\Session\Manager\Abstract\Session;
 
 class JwtSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     * @param non-empty-string      $headerName  The header name
+     */
     public function __construct(
         protected JwtContract $jwt,
         protected ServerRequestContract $request,

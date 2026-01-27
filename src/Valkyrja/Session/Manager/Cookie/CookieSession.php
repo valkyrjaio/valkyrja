@@ -21,6 +21,10 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class CookieSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected ServerRequestContract $request,
         string|null $sessionId = null,

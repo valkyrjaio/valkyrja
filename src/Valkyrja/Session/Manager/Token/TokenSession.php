@@ -24,6 +24,11 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class TokenSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     * @param non-empty-string      $headerName  The header name
+     */
     public function __construct(
         protected ServerRequestContract $request,
         string|null $sessionId = null,

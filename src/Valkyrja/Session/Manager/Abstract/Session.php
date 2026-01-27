@@ -49,6 +49,9 @@ abstract class Session implements SessionContract
     protected array $data = [];
 
     /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */

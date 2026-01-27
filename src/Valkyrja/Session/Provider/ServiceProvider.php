@@ -136,9 +136,9 @@ final class ServiceProvider extends Provider
     public static function publishPhpSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -157,9 +157,9 @@ final class ServiceProvider extends Provider
     public static function publishNullSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -177,9 +177,9 @@ final class ServiceProvider extends Provider
     public static function publishCacheSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -198,9 +198,9 @@ final class ServiceProvider extends Provider
     public static function publishCookieSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -219,9 +219,9 @@ final class ServiceProvider extends Provider
     public static function publishEncryptedCookieSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -241,11 +241,11 @@ final class ServiceProvider extends Provider
     public static function publishJwtSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
-        /** @var string|null $headerName */
+        /** @var non-empty-string|null $headerName */
         $headerName = $env::SESSION_JWT_HEADER_NAME;
 
         $container->setSingleton(
@@ -266,11 +266,11 @@ final class ServiceProvider extends Provider
     public static function publishEncryptedJwtSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
-        /** @var string|null $headerName */
+        /** @var non-empty-string|null $headerName */
         $headerName = $env::SESSION_JWT_HEADER_NAME;
 
         $container->setSingleton(
@@ -292,11 +292,11 @@ final class ServiceProvider extends Provider
     public static function publishTokenSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
-        /** @var string|null $headerName */
+        /** @var non-empty-string|null $headerName */
         $headerName = $env::SESSION_JWT_HEADER_NAME;
 
         $container->setSingleton(
@@ -316,11 +316,11 @@ final class ServiceProvider extends Provider
     public static function publishEncryptedTokenSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
-        /** @var string|null $headerName */
+        /** @var non-empty-string|null $headerName */
         $headerName = $env::SESSION_JWT_HEADER_NAME;
 
         $container->setSingleton(
@@ -341,9 +341,9 @@ final class ServiceProvider extends Provider
     public static function publishLogSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(

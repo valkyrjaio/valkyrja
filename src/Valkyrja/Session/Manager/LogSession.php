@@ -21,6 +21,10 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class LogSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected LoggerContract $logger,
         string|null $sessionId = null,

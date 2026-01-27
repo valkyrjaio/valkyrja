@@ -32,6 +32,10 @@ use const PHP_SESSION_ACTIVE;
 
 class PhpSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected CookieParams $cookieParams,
         string|null $sessionId = null,

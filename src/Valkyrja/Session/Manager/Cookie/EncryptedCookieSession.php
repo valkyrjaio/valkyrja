@@ -19,6 +19,10 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 class EncryptedCookieSession extends CookieSession
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected CryptContract $crypt,
         protected ServerRequestContract $request,
