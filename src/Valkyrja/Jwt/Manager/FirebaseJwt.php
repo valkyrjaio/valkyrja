@@ -18,13 +18,16 @@ use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
+use SensitiveParameter;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
 class FirebaseJwt implements JwtContract
 {
     public function __construct(
+        #[SensitiveParameter]
         protected OpenSSLAsymmetricKey|OpenSSLCertificate|string $encodeKey,
+        #[SensitiveParameter]
         protected OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey,
         protected Algorithm $algorithm,
     ) {
