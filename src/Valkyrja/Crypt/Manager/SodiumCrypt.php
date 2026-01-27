@@ -16,6 +16,7 @@ namespace Valkyrja\Crypt\Manager;
 use JsonException;
 use Override;
 use Random\RandomException;
+use SensitiveParameter;
 use SodiumException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
@@ -39,6 +40,7 @@ class SodiumCrypt implements CryptContract
      * @param non-empty-string $key The key
      */
     public function __construct(
+        #[SensitiveParameter]
         protected string $key,
     ) {
     }
@@ -67,7 +69,7 @@ class SodiumCrypt implements CryptContract
      * @throws SodiumException
      */
     #[Override]
-    public function encrypt(string $message, string|null $key = null): string
+    public function encrypt(string $message, #[SensitiveParameter] string|null $key = null): string
     {
         $key    = $this->getKeyAsBytes($key);
         $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
@@ -87,7 +89,7 @@ class SodiumCrypt implements CryptContract
      * @throws RandomException
      */
     #[Override]
-    public function encryptArray(array $array, string|null $key = null): string
+    public function encryptArray(array $array, #[SensitiveParameter] string|null $key = null): string
     {
         return $this->encrypt(Arr::toString($array), $key);
     }
@@ -100,7 +102,7 @@ class SodiumCrypt implements CryptContract
      * @throws RandomException
      */
     #[Override]
-    public function encryptObject(object $object, string|null $key = null): string
+    public function encryptObject(object $object, #[SensitiveParameter] string|null $key = null): string
     {
         /** @var non-empty-string $objectAsString */
         $objectAsString = Obj::toString($object);
@@ -114,7 +116,7 @@ class SodiumCrypt implements CryptContract
      * @throws SodiumException
      */
     #[Override]
-    public function decrypt(string $encrypted, string|null $key = null): string
+    public function decrypt(string $encrypted, #[SensitiveParameter] string|null $key = null): string
     {
         $key   = $this->getKeyAsBytes($key);
         $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
@@ -131,7 +133,7 @@ class SodiumCrypt implements CryptContract
      * @throws SodiumException
      */
     #[Override]
-    public function decryptArray(string $encrypted, string|null $key = null): array
+    public function decryptArray(string $encrypted, #[SensitiveParameter] string|null $key = null): array
     {
         return Arr::fromString($this->decrypt($encrypted, $key));
     }
@@ -143,7 +145,7 @@ class SodiumCrypt implements CryptContract
      * @throws SodiumException
      */
     #[Override]
-    public function decryptObject(string $encrypted, string|null $key = null): object
+    public function decryptObject(string $encrypted, #[SensitiveParameter] string|null $key = null): object
     {
         return Obj::fromString($this->decrypt($encrypted, $key));
     }
@@ -229,7 +231,7 @@ class SodiumCrypt implements CryptContract
      *
      * @return non-empty-string
      */
-    protected function getDecodedPlain(string $decoded, string $key): string
+    protected function getDecodedPlain(string $decoded, #[SensitiveParameter] string $key): string
     {
         $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
@@ -252,7 +254,7 @@ class SodiumCrypt implements CryptContract
      *
      * @return non-empty-string|false
      */
-    protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+    protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, #[SensitiveParameter] string $key): string|false
     {
         /** @var non-empty-string|false $plain */
         $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
@@ -291,7 +293,7 @@ class SodiumCrypt implements CryptContract
      *
      * @return non-empty-string
      */
-    protected function getKeyAsBytes(string|null $key = null): string
+    protected function getKeyAsBytes(#[SensitiveParameter] string|null $key = null): string
     {
         $key ??= $this->key;
 
