@@ -20,6 +20,7 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
 use function array_filter;
@@ -76,6 +77,8 @@ class Container implements ContainerContract
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
         $this->registered       = [];
+
+        $this->registerProviders($data->providers);
     }
 
     /**
@@ -106,9 +109,7 @@ class Container implements ContainerContract
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
 
-        foreach ($data->providers as $provider) {
-            $this->register($provider);
-        }
+        $this->registerProviders($data->providers);
     }
 
     /**
@@ -471,5 +472,17 @@ class Container implements ContainerContract
         }
 
         return null;
+    }
+
+    /**
+     * Register a list of providers.
+     *
+     * @param class-string<Provider>[] $providers The providers
+     */
+    protected function registerProviders(array $providers): void
+    {
+        foreach ($providers as $provider) {
+            $this->register($provider);
+        }
     }
 }
