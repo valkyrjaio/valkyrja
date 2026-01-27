@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Collector;
 
 use Override;
 use ReflectionException;
+use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -23,7 +24,7 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Attribute\Parameter;
-use Valkyrja\Http\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Http\Routing\Attribute\Route as Attribute;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Http\Routing\Attribute\Route\Name;
 use Valkyrja\Http\Routing\Attribute\Route\Path;
@@ -66,14 +67,17 @@ class AttributeCollector implements Contract
         $routes = [];
 
         foreach ($classes as $class) {
-            /** @var Route[] $memberAttributes */
-            $memberAttributes = $this->attributes->forClassMembers($class, RouteAttribute::class);
+            /** @var Attribute[] $attributes */
+            $attributes = $this->attributes->forClassMembers($class, Attribute::class);
 
             // Iterate through all the members' attributes
-            foreach ($memberAttributes as $routeAttribute) {
-                $method = $routeAttribute->getDispatch()->getMethod();
-                $route  = $this->convertRouteAttributesToDataClass($routeAttribute);
+            foreach ($attributes as $attribute) {
+                /** @var ReflectionMethod $reflection */
+                $reflection = $attribute->getReflection();
+                $method     = $reflection->getName();
+                $route      = $this->convertRouteAttributesToDataClass($attribute);
 
+                $route = $this->updateDispatch($route, $class, $method);
                 $route = $this->updatePath($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
                 $route = $this->updateMiddleware($route, $class, $method);
@@ -88,6 +92,19 @@ class AttributeCollector implements Contract
         }
 
         return $routes;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     */
+    protected function updateDispatch(Route $route, string $class, string $method): Route
+    {
+        return $route->withDispatch(
+            $route->getDispatch()
+                ->withClass($class)
+                ->withMethod($method)
+        );
     }
 
     /**

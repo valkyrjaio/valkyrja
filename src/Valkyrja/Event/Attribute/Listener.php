@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Attribute;
 
 use Attribute;
+use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
+use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
 use Valkyrja\Event\Data\Listener as Model;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-class Listener extends Model
+class Listener extends Model implements ReflectionAwareAttributeContract
 {
+    use ReflectionAwareAttributeTrait;
 }

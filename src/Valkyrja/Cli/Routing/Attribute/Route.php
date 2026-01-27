@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Attribute;
 
 use Attribute;
+use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
+use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -25,8 +27,10 @@ use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Route extends Model
+class Route extends Model implements ReflectionAwareAttributeContract
 {
+    use ReflectionAwareAttributeTrait;
+
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
