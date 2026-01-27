@@ -68,7 +68,6 @@ class TaggerTest extends TestCase
      */
     public function testHasReturnsTrueWhenKeyExistsInTags(): void
     {
-        // Return JSON with 'my-key' in tags (covers lines 293-297)
         $this->cache
             ->expects($this->once())
             ->method('get')
@@ -83,7 +82,6 @@ class TaggerTest extends TestCase
 
         $tagger = new Tagger($this->cache, 'tag1');
 
-        // Covers line 66
         self::assertTrue($tagger->has('my-key'));
     }
 
@@ -139,7 +137,6 @@ class TaggerTest extends TestCase
 
         $tagger = new Tagger($this->cache, 'tag1');
 
-        // Covers line 83
         self::assertSame('cached-value', $tagger->get('my-key'));
     }
 

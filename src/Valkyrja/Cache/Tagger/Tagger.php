@@ -122,11 +122,11 @@ class Tagger implements TaggerContract
      * @throws JsonException
      */
     #[Override]
-    public function put(string $key, string $value, int $minutes): void
+    public function put(string $key, string $value, int $seconds): void
     {
         $this->tag($key);
 
-        $this->adapter->put($key, $value, $minutes);
+        $this->adapter->put($key, $value, $seconds);
     }
 
     /**
@@ -135,10 +135,10 @@ class Tagger implements TaggerContract
      * @throws JsonException
      */
     #[Override]
-    public function putMany(array $values, int $minutes): void
+    public function putMany(array $values, int $seconds): void
     {
         foreach ($values as $key => $value) {
-            $this->put($key, $value, $minutes);
+            $this->put($key, $value, $seconds);
         }
     }
 

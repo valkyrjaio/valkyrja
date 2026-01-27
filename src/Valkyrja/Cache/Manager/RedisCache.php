@@ -66,19 +66,17 @@ class RedisCache implements CacheContract
      * @inheritDoc
      */
     #[Override]
-    public function put(string $key, string $value, int $minutes): void
+    public function put(string $key, string $value, int $seconds): void
     {
-        $this->client->setex($this->getKey($key), $minutes * 60, $value);
+        $this->client->setex($this->getKey($key), $seconds, $value);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function putMany(array $values, int $minutes): void
+    public function putMany(array $values, int $seconds): void
     {
-        $seconds = $minutes * 60;
-
         $this->client->transaction(
             function (Client $client) use ($values, $seconds): void {
                 foreach ($values as $key => $value) {
