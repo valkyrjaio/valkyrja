@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use AssertionError;
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
@@ -242,6 +243,60 @@ class ContainerTest extends TestCase
         self::assertEmpty($data->providers);
         self::assertEmpty($data->services);
         self::assertEmpty($data->singletons);
+    }
+
+    public function testSetFromData(): void
+    {
+        $data = new Data(providers: [ServiceProvider::class]);
+
+        $container = new Container();
+
+        self::assertFalse($container->has(DispatcherContract::class));
+
+        $container->setFromData($data);
+
+        self::assertTrue($container->has(DispatcherContract::class));
+
+        $newData = $container->getData();
+
+        self::assertSame(
+            [
+                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
+            ],
+            $newData->deferredCallback
+        );
+
+        self::assertSame(
+            [
+                DispatcherContract::class => ServiceProvider::class,
+            ],
+            $newData->deferred
+        );
+    }
+
+    public function testConstructWithData(): void
+    {
+        $data = new Data(providers: [ServiceProvider::class]);
+
+        $container = new Container($data);
+
+        self::assertTrue($container->has(DispatcherContract::class));
+
+        $newData = $container->getData();
+
+        self::assertSame(
+            [
+                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
+            ],
+            $newData->deferredCallback
+        );
+
+        self::assertSame(
+            [
+                DispatcherContract::class => ServiceProvider::class,
+            ],
+            $newData->deferred
+        );
     }
 
     public function testNullInvalidReferenceMode(): void
