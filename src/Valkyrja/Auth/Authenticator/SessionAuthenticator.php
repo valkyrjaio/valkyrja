@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Authenticator;
 
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
-use Valkyrja\Auth\Constant\SessionId;
+use Valkyrja\Auth\Constant\SessionItemId;
 use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -41,7 +41,7 @@ class SessionAuthenticator extends Authenticator
         PasswordHasherContract $hasher,
         string $entity,
         AuthenticatedUsersContract|null $authenticatedUsers = null,
-        protected string $sessionItemId = SessionId::AUTHENTICATED_USERS,
+        protected string $sessionItemId = SessionItemId::AUTHENTICATED_USERS,
     ) {
         parent::__construct(
             store: $store,
