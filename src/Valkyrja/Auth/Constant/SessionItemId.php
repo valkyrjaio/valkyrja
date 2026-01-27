@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Constant;
 
-final class SessionId
+final class SessionItemId
 {
-    public const string AUTHENTICATED_USERS          = 'authenticated.users';
+    public const string AUTHENTICATED_USERS          = 'auth.users';
     public const string PASSWORD_CONFIRMED_TIMESTAMP = 'auth.passwordConfirmedTimestamp';
 }
