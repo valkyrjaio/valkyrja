@@ -41,13 +41,15 @@ class SessionAuthenticator extends Authenticator
         PasswordHasherContract $hasher,
         string $entity,
         AuthenticatedUsersContract|null $authenticatedUsers = null,
-        protected string $sessionId = SessionId::AUTHENTICATED_USERS,
+        protected string $sessionItemId = SessionId::AUTHENTICATED_USERS,
     ) {
         parent::__construct(
             store: $store,
             hasher: $hasher,
             entity: $entity,
-            authenticatedUsers: $authenticatedUsers ?? $this->getAuthenticatedUsersFromSession() ?? new AuthenticatedUsers(),
+            authenticatedUsers: $authenticatedUsers
+                ?? $this->getAuthenticatedUsersFromSession()
+                ?? new AuthenticatedUsers(),
         );
     }
 
@@ -57,7 +59,7 @@ class SessionAuthenticator extends Authenticator
     protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract|null
     {
         /** @var mixed $sessionSerializedUsers */
-        $sessionSerializedUsers = $this->session->get($this->sessionId);
+        $sessionSerializedUsers = $this->session->get($this->sessionItemId);
 
         if (! is_string($sessionSerializedUsers)) {
             return null;
