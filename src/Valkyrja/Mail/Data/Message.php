@@ -14,42 +14,44 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Data;
 
 use Override;
+use Valkyrja\Mail\Data\Contract\AttachmentContract;
 use Valkyrja\Mail\Data\Contract\MessageContract;
+use Valkyrja\Mail\Data\Contract\RecipientContract;
 
 class Message implements MessageContract
 {
     /**
      * The recipients.
      *
-     * @var array<int, array{email: non-empty-string, name: string}>
+     * @var array<int, RecipientContract>
      */
     protected array $recipients = [];
 
     /**
      * The reply to recipients.
      *
-     * @var array<int, array{email: non-empty-string, name: string}>
+     * @var array<int, RecipientContract>
      */
     protected array $replyToRecipients = [];
 
     /**
      * The copy recipients.
      *
-     * @var array<int, array{email: non-empty-string, name: string}>
+     * @var array<int, RecipientContract>
      */
     protected array $copyRecipients = [];
 
     /**
      * The blind copy recipients.
      *
-     * @var array<int, array{email: non-empty-string, name: string}>
+     * @var array<int, RecipientContract>
      */
     protected array $blindCopyRecipients = [];
 
     /**
      * The attachments.
      *
-     * @var array<int, array{path: non-empty-string, name: string}>
+     * @var array<int, AttachmentContract>
      */
     protected array $attachments = [];
 
@@ -68,13 +70,11 @@ class Message implements MessageContract
     protected string|null $plainBody = null;
 
     /**
-     * @param non-empty-string $fromEmail
      * @param non-empty-string $subject
      * @param non-empty-string $body
      */
     public function __construct(
-        protected string $fromEmail,
-        protected string $fromName,
+        protected RecipientContract $from,
         protected string $subject,
         protected string $body
     ) {
@@ -84,30 +84,20 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function getFromEmail(): string
+    public function getFrom(): RecipientContract
     {
-        return $this->fromEmail;
+        return $this->from;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getFromName(): string
-    {
-        return $this->fromName;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withFrom(string $email, string $name = ''): static
+    public function withFrom(RecipientContract $from): static
     {
         $new = clone $this;
 
-        $new->fromEmail = $email;
-        $new->fromName  = $name;
+        $new->from = $from;
 
         return $new;
     }
@@ -125,14 +115,11 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedRecipient(string $email, string $name = ''): static
+    public function withAddedRecipient(RecipientContract $recipient): static
     {
         $new = clone $this;
 
-        $new->recipients[] = [
-            'email' => $email,
-            'name'  => $name,
-        ];
+        $new->recipients[] = $recipient;
 
         return $new;
     }
@@ -150,14 +137,11 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedReplyToRecipient(string $email, string $name = ''): static
+    public function withAddedReplyToRecipient(RecipientContract $recipient): static
     {
         $new = clone $this;
 
-        $new->replyToRecipients[] = [
-            'email' => $email,
-            'name'  => $name,
-        ];
+        $new->replyToRecipients[] = $recipient;
 
         return $new;
     }
@@ -175,14 +159,11 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedCopyRecipient(string $email, string $name = ''): static
+    public function withAddedCopyRecipient(RecipientContract $recipient): static
     {
         $new = clone $this;
 
-        $new->copyRecipients[] = [
-            'email' => $email,
-            'name'  => $name,
-        ];
+        $new->copyRecipients[] = $recipient;
 
         return $new;
     }
@@ -200,14 +181,11 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedBlindCopyRecipient(string $email, string $name = ''): static
+    public function withAddedBlindCopyRecipient(RecipientContract $recipient): static
     {
         $new = clone $this;
 
-        $new->blindCopyRecipients[] = [
-            'email' => $email,
-            'name'  => $name,
-        ];
+        $new->blindCopyRecipients[] = $recipient;
 
         return $new;
     }
@@ -225,14 +203,11 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedAttachment(string $path, string $name = ''): static
+    public function withAddedAttachment(AttachmentContract $attachment): static
     {
         $new = clone $this;
 
-        $new->attachments[] = [
-            'path' => $path,
-            'name' => $name,
-        ];
+        $new->attachments[] = $attachment;
 
         return $new;
     }

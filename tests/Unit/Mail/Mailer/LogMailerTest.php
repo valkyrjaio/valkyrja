@@ -17,6 +17,7 @@ use JsonException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Data\Message;
+use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -49,8 +50,7 @@ class LogMailerTest extends TestCase
         $body      = 'Test body content';
 
         $message = new Message(
-            fromEmail: $fromEmail,
-            fromName: $fromName,
+            from: new Recipient($fromEmail, $fromName),
             subject: $subject,
             body: $body
         );
@@ -82,8 +82,7 @@ class LogMailerTest extends TestCase
     public function testSendLogsHtmlMessage(): void
     {
         $message = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject',
             body: '<p>HTML body</p>'
         )

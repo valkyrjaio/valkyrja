@@ -37,9 +37,9 @@ class LogMailer implements MailerContract
     {
         $this->logger->info(static::class . ' Send');
         $this->logger->info('From Name:');
-        $this->logger->info($message->getFromName());
+        $this->logger->info($message->getFrom()->getName() ?? '');
         $this->logger->info('From Email:');
-        $this->logger->info($message->getFromEmail());
+        $this->logger->info($message->getFrom()->getEmail());
         $this->logger->info('Recipients:');
         $this->logger->info(Arr::toString($message->getRecipients()));
         $this->logger->info('ReplyTo Recipients:');

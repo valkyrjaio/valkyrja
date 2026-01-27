@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Mail\Mailer;
 
 use Valkyrja\Mail\Data\Message;
+use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -31,8 +32,7 @@ class NullMailerTest extends TestCase
     {
         $mailer  = new NullMailer();
         $message = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Test Subject',
             body: 'Test body'
         );
@@ -48,20 +48,17 @@ class NullMailerTest extends TestCase
         $mailer = new NullMailer();
 
         $message1 = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject 1',
             body: 'Body 1'
         );
         $message2 = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject 2',
             body: 'Body 2'
         );
         $message3 = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject 3',
             body: 'Body 3'
         );

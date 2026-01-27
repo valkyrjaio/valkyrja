@@ -16,99 +16,74 @@ namespace Valkyrja\Mail\Data\Contract;
 interface MessageContract
 {
     /**
-     * Get the from email.
-     *
-     * @return non-empty-string
+     * Get the mail's sender information.
      */
-    public function getFromEmail(): string;
-
-    /**
-     * Get the from name.
-     */
-    public function getFromName(): string;
+    public function getFrom(): RecipientContract;
 
     /**
      * Set the mail's sender information.
-     *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
      */
-    public function withFrom(string $email, string $name = ''): static;
+    public function withFrom(RecipientContract $from): static;
 
     /**
      * Get the recipients.
      *
-     * @return array<int, array{email: non-empty-string, name: string}>
+     * @return array<int, RecipientContract>
      */
     public function getRecipients(): array;
 
     /**
      * Add a recipient.
-     *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
      */
-    public function withAddedRecipient(string $email, string $name = ''): static;
+    public function withAddedRecipient(RecipientContract $recipient): static;
 
     /**
      * Get the reply to recipients.
      *
-     * @return array<int, array{email: non-empty-string, name: string}>
+     * @return array<int, RecipientContract>
      */
     public function getReplyToRecipients(): array;
 
     /**
      * Add a Reply-To recipient.
-     *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
      */
-    public function withAddedReplyToRecipient(string $email, string $name = ''): static;
+    public function withAddedReplyToRecipient(RecipientContract $recipient): static;
 
     /**
      * Get the copy recipients.
      *
-     * @return array<int, array{email: non-empty-string, name: string}>
+     * @return array<int, RecipientContract>
      */
     public function getCopyRecipients(): array;
 
     /**
      * Add a copy (CC) recipient.
-     *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
      */
-    public function withAddedCopyRecipient(string $email, string $name = ''): static;
+    public function withAddedCopyRecipient(RecipientContract $recipient): static;
 
     /**
      * Get the blind copy recipients.
      *
-     * @return array<int, array{email: non-empty-string, name: string}>
+     * @return array<int, RecipientContract>
      */
     public function getBlindCopyRecipients(): array;
 
     /**
      * Add a blind copy (BCC) recipient.
-     *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
      */
-    public function withAddedBlindCopyRecipient(string $email, string $name = ''): static;
+    public function withAddedBlindCopyRecipient(RecipientContract $recipient): static;
 
     /**
      * Get the attachments.
      *
-     * @return array<int, array{path: non-empty-string, name: string}>
+     * @return array<int, AttachmentContract>
      */
     public function getAttachments(): array;
 
     /**
      * Add an attachment from the filesystem.
-     *
-     * @param non-empty-string $path The path
-     * @param string           $name [optional] The name
      */
-    public function withAddedAttachment(string $path, string $name = ''): static;
+    public function withAddedAttachment(AttachmentContract $attachment): static;
 
     /**
      * Get the subject.
