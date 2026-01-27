@@ -11,30 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager;
+namespace Valkyrja\Session\Manager\Cookie;
 
+use JsonException;
 use Override;
-use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Session\Data\CookieParams;
-use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
+use Valkyrja\Session\Manager\Abstract\Session;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
-use function headers_sent;
-use function session_start;
-
-class CookieSession extends PhpSession
+class CookieSession extends Session
 {
     public function __construct(
-        protected CryptContract $crypt,
         protected ServerRequestContract $request,
-        CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
         parent::__construct(
-            cookieParams: $cookieParams,
-            sessionId: $sessionId,
+            sessionId: $sessionId ?? 'VALKYRJA_SESSION',
             sessionName: $sessionName
         );
     }
@@ -42,41 +35,30 @@ class CookieSession extends PhpSession
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     #[Override]
     public function start(): void
     {
-        // If the session is already active
-        if ($this->isActive() || headers_sent()) {
-            // No need to reactivate
+        $dataString = $this->request->getCookieParam($this->getId());
+
+        // If the session failed to start
+        if ($dataString === null || $dataString === '') {
             return;
         }
 
-        // If the session failed to start
-        if (! session_start()) {
-            // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
-        }
-
-        $dataString = $this->request->getCookieParam($this->getId());
-
-        // Set the data
-        /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = $dataString !== null && $dataString !== ''
-            ? $this->crypt->decryptArray($dataString)
-            : [];
+        $this->setDataFromCookieValue($dataString);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     #[Override]
     public function set(string $id, $value): void
     {
-        $this->data[$id] = $value;
+        parent::set($id, $value);
 
         $this->updateCookieSession();
     }
@@ -84,26 +66,24 @@ class CookieSession extends PhpSession
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     #[Override]
     public function remove(string $id): bool
     {
-        if (! $this->has($id)) {
-            return false;
+        $removed = parent::remove($id);
+
+        if ($removed) {
+            $this->updateCookieSession();
         }
 
-        unset($this->data[$id]);
-
-        $this->updateCookieSession();
-
-        return true;
+        return $removed;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     #[Override]
     public function clear(): void
@@ -116,7 +96,7 @@ class CookieSession extends PhpSession
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     #[Override]
     public function destroy(): void
@@ -127,15 +107,34 @@ class CookieSession extends PhpSession
     }
 
     /**
+     * @param non-empty-string $value The cookie value
+     *
+     * @throws JsonException
+     */
+    protected function setDataFromCookieValue(string $value): void
+    {
+        /** @psalm-suppress MixedPropertyTypeCoercion */
+        $this->data = Arr::fromString($value);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function getDataAsCookieValue(): string
+    {
+        return Arr::toString($this->data);
+    }
+
+    /**
      * Update the cache session.
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     protected function updateCookieSession(): void
     {
         setcookie(
             $this->getId(),
-            $this->crypt->encryptArray($this->data),
+            $this->getDataAsCookieValue(),
             0,
             '/',
             '',

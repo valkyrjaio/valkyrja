@@ -13,21 +13,114 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Manager;
 
+use JsonException;
+use Override;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Session\Data\CookieParams;
+use Valkyrja\Session\Manager\Abstract\Session;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class LogSession extends PhpSession
+class LogSession extends Session
 {
     public function __construct(
         protected LoggerContract $logger,
-        CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
         parent::__construct(
-            cookieParams: $cookieParams,
             sessionId: $sessionId,
             sessionName: $sessionName
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function start(): void
+    {
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    #[Override]
+    public function set(string $id, $value): void
+    {
+        parent::set($id, $value);
+
+        $this->updateLogSession();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    #[Override]
+    public function remove(string $id): bool
+    {
+        $removed = parent::remove($id);
+
+        if ($removed) {
+            $this->updateLogSession();
+        }
+
+        return $removed;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    #[Override]
+    public function clear(): void
+    {
+        parent::clear();
+
+        $this->updateLogSession();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    #[Override]
+    public function destroy(): void
+    {
+        parent::destroy();
+
+        $this->updateLogSession();
+    }
+
+    /**
+     * Get the cache session id.
+     */
+    protected function getCacheSessionId(): string
+    {
+        return $this->getId() . '_session';
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function getDataAsLoggableValue(): string
+    {
+        return Arr::toString($this->data);
+    }
+
+    /**
+     * Update the cache session.
+     *
+     * @throws JsonException
+     */
+    protected function updateLogSession(): void
+    {
+        $this->logger->info(
+            $this->getCacheSessionId() . "\n" . $this->getDataAsLoggableValue()
         );
     }
 }

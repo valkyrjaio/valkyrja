@@ -11,18 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager;
+namespace Valkyrja\Tests\Classes\Session;
 
 use Override;
-use Valkyrja\Session\Manager\Abstract\Session;
+use Valkyrja\Session\Manager\PhpSession;
 
-class NullSession extends Session
+/**
+ * Test class that simulates session_name() returning false.
+ */
+class PhpSessionWithFailingGetNameClass extends PhpSession
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function start(): void
+    protected function sessionName(string|null $name = null): string|false
     {
+        return false;
     }
 }
