@@ -48,12 +48,22 @@ class Helpers
      */
     public static function getFormattedDate(string $format = DateFormat::DEFAULT): string
     {
-        $dateTime = DateTime::createFromFormat('U.u', (string) microtime(true));
+        $dateTime = static::createDateTimeFromMicrotime();
 
         if ($dateTime === false) {
             throw new RuntimeException('Failure occurred when creating a new DateTime object for current microtime.');
         }
 
         return $dateTime->format($format);
+    }
+
+    /**
+     * Create a DateTime from the current microtime.
+     *
+     * @return DateTime|false
+     */
+    protected static function createDateTimeFromMicrotime(): DateTime|false
+    {
+        return DateTime::createFromFormat('U.u', (string) microtime(true));
     }
 }

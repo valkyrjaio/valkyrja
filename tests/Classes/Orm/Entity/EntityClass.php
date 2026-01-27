@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Orm;
+namespace Valkyrja\Tests\Classes\Orm\Entity;
 
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
@@ -20,6 +20,13 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
  */
 class EntityClass extends Entity
 {
+    /**
+     * @inheritDoc
+     */
+    protected static string $tableName = 'test';
+
+    public int $id;
+
     /**
      * A property to test with.
      *

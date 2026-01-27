@@ -19,7 +19,7 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Tests\Classes\Orm\EntityClass;
+use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Orm\EntityNotExists;

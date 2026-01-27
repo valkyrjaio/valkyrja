@@ -158,7 +158,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements SelectQueryBuilde
      */
     protected function getGroupByQuery(): string
     {
-        return empty($this->orderBy) || $this->isCount()
+        return empty($this->groupBy) || $this->isCount()
             ? ''
             : ' ' . Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
     }
