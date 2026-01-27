@@ -126,7 +126,7 @@ class CacheSessionTest extends TestCase
             ->with('session-id_session', '[]');
 
         $session = new CacheSession($cache, 'session-id');
-        $result = $session->remove('key');
+        $result  = $session->remove('key');
 
         self::assertTrue($result);
         self::assertFalse($session->has('key'));
@@ -147,7 +147,7 @@ class CacheSessionTest extends TestCase
             ->method('forever');
 
         $session = new CacheSession($cache, 'session-id');
-        $result = $session->remove('nonexistent');
+        $result  = $session->remove('nonexistent');
 
         self::assertFalse($result);
     }
