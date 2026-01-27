@@ -20,7 +20,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
-use Valkyrja\Orm\Manager\InMemoryManager;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\Manager\PgsqlManager;
@@ -41,7 +40,6 @@ final class ServiceProvider extends Provider
             PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
             SqliteManager::class   => [self::class, 'publishSqliteManager'],
             PDO::class             => [self::class, 'publishPdo'],
-            InMemoryManager::class => [self::class, 'publishInMemoryManager'],
             NullManager::class     => [self::class, 'publishNullManager'],
             Repository::class      => [self::class, 'publishRepository'],
         ];
@@ -59,7 +57,6 @@ final class ServiceProvider extends Provider
             PgsqlManager::class,
             SqliteManager::class,
             PDO::class,
-            InMemoryManager::class,
             NullManager::class,
             Repository::class,
         ];
@@ -253,17 +250,6 @@ final class ServiceProvider extends Provider
         return new PDO(
             dsn: $dsn,
             options: $options
-        );
-    }
-
-    /**
-     * Publish the in memory manager service.
-     */
-    public static function publishInMemoryManager(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            InMemoryManager::class,
-            new InMemoryManager()
         );
     }
 

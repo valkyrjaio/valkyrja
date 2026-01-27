@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
-use Valkyrja\Orm\Manager\InMemoryManager;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\Manager\PgsqlManager;
@@ -43,7 +42,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(PgsqlManager::class, ServiceProvider::publishers());
         self::assertArrayHasKey(SqliteManager::class, ServiceProvider::publishers());
         self::assertArrayHasKey(PDO::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(InMemoryManager::class, ServiceProvider::publishers());
         self::assertArrayHasKey(NullManager::class, ServiceProvider::publishers());
         self::assertArrayHasKey(Repository::class, ServiceProvider::publishers());
     }
@@ -55,7 +53,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(PgsqlManager::class, ServiceProvider::provides());
         self::assertContains(SqliteManager::class, ServiceProvider::provides());
         self::assertContains(PDO::class, ServiceProvider::provides());
-        self::assertContains(InMemoryManager::class, ServiceProvider::provides());
         self::assertContains(NullManager::class, ServiceProvider::provides());
         self::assertContains(Repository::class, ServiceProvider::provides());
     }
@@ -110,14 +107,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(SqliteManager::class, $this->container->getSingleton(SqliteManager::class));
-    }
-
-    public function testPublishInMemoryManager(): void
-    {
-        $callback = ServiceProvider::publishers()[InMemoryManager::class];
-        $callback($this->container);
-
-        self::assertInstanceOf(InMemoryManager::class, $this->container->getSingleton(InMemoryManager::class));
     }
 
     public function testPublishNullManager(): void
