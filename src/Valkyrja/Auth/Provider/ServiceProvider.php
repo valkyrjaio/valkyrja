@@ -16,11 +16,7 @@ namespace Valkyrja\Auth\Provider;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
-use Valkyrja\Auth\Authenticator\EncryptedJwtAuthenticator;
-use Valkyrja\Auth\Authenticator\EncryptedTokenAuthenticator;
-use Valkyrja\Auth\Authenticator\JwtAuthenticator;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
-use Valkyrja\Auth\Authenticator\TokenAuthenticator;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
@@ -30,9 +26,6 @@ use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
@@ -45,17 +38,13 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            AuthenticatorContract::class       => [self::class, 'publishAuthenticator'],
-            EncryptedJwtAuthenticator::class   => [self::class, 'publishEncryptedJwtAuthenticator'],
-            EncryptedTokenAuthenticator::class => [self::class, 'publishEncryptedTokenAuthenticator'],
-            JwtAuthenticator::class            => [self::class, 'publishJwtAuthenticator'],
-            SessionAuthenticator::class        => [self::class, 'publishSessionAuthenticator'],
-            TokenAuthenticator::class          => [self::class, 'publishTokenAuthenticator'],
-            StoreContract::class               => [self::class, 'publishStore'],
-            OrmStore::class                    => [self::class, 'publishOrmStore'],
-            InMemoryStore::class               => [self::class, 'publishInMemoryStore'],
-            NullStore::class                   => [self::class, 'publishNullStore'],
-            PasswordHasherContract::class      => [self::class, 'publishPasswordHasher'],
+            AuthenticatorContract::class  => [self::class, 'publishAuthenticator'],
+            SessionAuthenticator::class   => [self::class, 'publishSessionAuthenticator'],
+            StoreContract::class          => [self::class, 'publishStore'],
+            OrmStore::class               => [self::class, 'publishOrmStore'],
+            InMemoryStore::class          => [self::class, 'publishInMemoryStore'],
+            NullStore::class              => [self::class, 'publishNullStore'],
+            PasswordHasherContract::class => [self::class, 'publishPasswordHasher'],
         ];
     }
 
@@ -67,11 +56,7 @@ final class ServiceProvider extends Provider
     {
         return [
             AuthenticatorContract::class,
-            EncryptedJwtAuthenticator::class,
-            EncryptedTokenAuthenticator::class,
-            JwtAuthenticator::class,
             SessionAuthenticator::class,
-            TokenAuthenticator::class,
             StoreContract::class,
             OrmStore::class,
             InMemoryStore::class,
@@ -96,79 +81,6 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the encrypted jwt authenticator service.
-     */
-    public static function publishEncryptedJwtAuthenticator(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
-        /** @var non-empty-string $headerName */
-        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
-
-        $container->setSingleton(
-            EncryptedJwtAuthenticator::class,
-            new EncryptedJwtAuthenticator(
-                crypt: $container->getSingleton(CryptContract::class),
-                jwt: $container->getSingleton(JwtContract::class),
-                request: $container->getSingleton(ServerRequestContract::class),
-                store: $container->getSingleton(StoreContract::class),
-                hasher: $container->getSingleton(PasswordHasherContract::class),
-                entity: $entity,
-                headerName: $headerName,
-            ),
-        );
-    }
-
-    /**
-     * Publish the encrypted token authenticator service.
-     */
-    public static function publishEncryptedTokenAuthenticator(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
-        /** @var non-empty-string $headerName */
-        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
-
-        $container->setSingleton(
-            EncryptedTokenAuthenticator::class,
-            new EncryptedTokenAuthenticator(
-                crypt: $container->getSingleton(CryptContract::class),
-                request: $container->getSingleton(ServerRequestContract::class),
-                store: $container->getSingleton(StoreContract::class),
-                hasher: $container->getSingleton(PasswordHasherContract::class),
-                entity: $entity,
-                headerName: $headerName,
-            ),
-        );
-    }
-
-    /**
-     * Publish the jwt authenticator service.
-     */
-    public static function publishJwtAuthenticator(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
-        /** @var non-empty-string $headerName */
-        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
-
-        $container->setSingleton(
-            JwtAuthenticator::class,
-            new JwtAuthenticator(
-                jwt: $container->getSingleton(JwtContract::class),
-                request: $container->getSingleton(ServerRequestContract::class),
-                store: $container->getSingleton(StoreContract::class),
-                hasher: $container->getSingleton(PasswordHasherContract::class),
-                entity: $entity,
-                headerName: $headerName,
-            ),
-        );
-    }
-
-    /**
      * Publish the session authenticator service.
      */
     public static function publishSessionAuthenticator(ContainerContract $container): void
@@ -187,29 +99,6 @@ final class ServiceProvider extends Provider
                 hasher: $container->getSingleton(PasswordHasherContract::class),
                 entity: $entity,
                 sessionItemId: $sessionItemId,
-            ),
-        );
-    }
-
-    /**
-     * Publish the token authenticator service.
-     */
-    public static function publishTokenAuthenticator(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
-        /** @var non-empty-string $headerName */
-        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
-
-        $container->setSingleton(
-            TokenAuthenticator::class,
-            new TokenAuthenticator(
-                request: $container->getSingleton(ServerRequestContract::class),
-                store: $container->getSingleton(StoreContract::class),
-                hasher: $container->getSingleton(PasswordHasherContract::class),
-                entity: $entity,
-                headerName: $headerName,
             ),
         );
     }
