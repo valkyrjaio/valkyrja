@@ -7,7 +7,7 @@
     "mockery/mockery"             : "^1.6.12",
     "php-coveralls/php-coveralls" : "^2.9.1",
     "phpunit/phpcov"              : "^11.0.3",
-    "phpunit/phpunit"             : "^12.5.6"
+    "phpunit/phpunit"             : "^12.5.8"
   },
   "scripts"           : {
     "check"       : "vendor/bin/phpunit",
