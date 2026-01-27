@@ -16,7 +16,9 @@ namespace Valkyrja\Tests\Unit\Mail\Mailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\MockObject;
+use Valkyrja\Mail\Data\Attachment;
 use Valkyrja\Mail\Data\Message;
+use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\PhpMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -55,14 +57,13 @@ class PhpMailerTest extends TestCase
         $attachmentName = 'attachmentName';
 
         $message = new Message(
-            fromEmail: $fromEmail,
-            fromName: $fromName,
+            from: new Recipient($fromEmail, $fromName),
             subject: $subject,
             body: $body
         )
-            ->withAddedRecipient($toEmail, $toName)
+            ->withAddedRecipient(new Recipient($toEmail, $toName))
             ->withPlainBody($plainBody)
-            ->withAddedAttachment($attachmentPath, $attachmentName)
+            ->withAddedAttachment(new Attachment($attachmentPath, $attachmentName))
             ->withIsHtml(true);
 
         $this->phpMailerClient
@@ -101,8 +102,7 @@ class PhpMailerTest extends TestCase
     public function testSendThrowsException(): void
     {
         $message = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject',
             body: 'Body'
         );

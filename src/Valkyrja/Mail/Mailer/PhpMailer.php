@@ -16,7 +16,9 @@ namespace Valkyrja\Mail\Mailer;
 use Override;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
+use Valkyrja\Mail\Data\Contract\AttachmentContract;
 use Valkyrja\Mail\Data\Contract\MessageContract;
+use Valkyrja\Mail\Data\Contract\RecipientContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 
 class PhpMailer implements MailerContract
@@ -34,12 +36,12 @@ class PhpMailer implements MailerContract
     #[Override]
     public function send(MessageContract $message): void
     {
-        $this->phpMailer->setFrom($message->getFromEmail(), $message->getFromName());
+        $this->phpMailer->setFrom($message->getFrom()->getEmail(), $message->getFrom()->getName() ?? '');
 
-        $this->addRecipients('addAddress', $message->getRecipients());
-        $this->addRecipients('addReplyTo', $message->getReplyToRecipients());
-        $this->addRecipients('addCC', $message->getCopyRecipients());
-        $this->addRecipients('addBCC', $message->getBlindCopyRecipients());
+        $this->addRecipients([$this->phpMailer, 'addAddress'], $message->getRecipients());
+        $this->addRecipients([$this->phpMailer, 'addReplyTo'], $message->getReplyToRecipients());
+        $this->addRecipients([$this->phpMailer, 'addCC'], $message->getCopyRecipients());
+        $this->addRecipients([$this->phpMailer, 'addBCC'], $message->getBlindCopyRecipients());
         $this->addAttachments($message->getAttachments());
         $this->addPlainBody($message->getPlainBody());
 
@@ -53,27 +55,27 @@ class PhpMailer implements MailerContract
     /**
      * Add recipients to PHP Mailer by method.
      *
-     * @param string                                         $method     The phpMailer method to call
-     * @param array<int, array{email: string, name: string}> $recipients The recipients
+     * @param callable                      $callable   The callable to add the recipient to
+     * @param array<int, RecipientContract> $recipients The recipients
      */
-    protected function addRecipients(string $method, array $recipients): void
+    protected function addRecipients(callable $callable, array $recipients): void
     {
         foreach ($recipients as $recipient) {
-            $this->phpMailer->{$method}($recipient['email'], $recipient['name']);
+            $callable($recipient->getEmail(), $recipient->getName() ?? '');
         }
     }
 
     /**
      * Add attachments to PHP Mailer.
      *
-     * @param array<int, array{path: string, name: string}> $attachments The attachments
+     * @param array<int, AttachmentContract> $attachments The attachments
      *
      * @throws Exception
      */
     protected function addAttachments(array $attachments): void
     {
         foreach ($attachments as $attachment) {
-            $this->phpMailer->addAttachment($attachment['path'], $attachment['name']);
+            $this->phpMailer->addAttachment($attachment->getPath(), $attachment->getName() ?? '');
         }
     }
 

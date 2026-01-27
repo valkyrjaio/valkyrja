@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Mail\Data\Message as MailMessage;
+use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Notification\Data\Contract\NotifyContract;
 use Valkyrja\Notification\Entity\Contract\NotifiableUserContract;
@@ -33,7 +34,7 @@ class Notifier implements NotifierContract
     /**
      * The mail recipients.
      *
-     * @var array<int, array{email: non-empty-string, name: string, body: non-empty-string, subject: non-empty-string, user?: NotifiableUserContract}>
+     * @var array<int, array{email: non-empty-string, name: non-empty-string|null, body: non-empty-string, subject: non-empty-string, user?: NotifiableUserContract}>
      */
     protected array $mailRecipients = [];
 
@@ -72,7 +73,7 @@ class Notifier implements NotifierContract
      * @inheritDoc
      */
     #[Override]
-    public function addMailRecipient(string $email, string $name = ''): static
+    public function addMailRecipient(string $email, string|null $name = null): static
     {
         $this->mailRecipients[] = [
             'email'   => $email,
@@ -218,16 +219,17 @@ class Notifier implements NotifierContract
         /** @var mixed $name */
         $name = $user::hasNameField()
             ? $user->__get($user::getNameField())
-            : '';
+            : null;
 
         if (! is_string($email) || $email === '') {
             throw new InvalidArgumentException('Invalid email provided');
         }
 
-        if (! is_string($name)) {
+        if ($name !== null && (! is_string($name) || $name === '')) {
             throw new InvalidArgumentException('Invalid name provided');
         }
 
+        /** @var non-empty-string $name */
         $this->mailRecipients[] = [
             'email'   => $email,
             'name'    => $name,
@@ -288,8 +290,7 @@ class Notifier implements NotifierContract
     {
         foreach ($this->mailRecipients as $mailRecipient) {
             $message = new MailMessage(
-                $mailRecipient['email'],
-                $mailRecipient['name'],
+                new Recipient($mailRecipient['email'], $mailRecipient['name']),
                 $mailRecipient['subject'],
                 $mailRecipient['body'],
             );

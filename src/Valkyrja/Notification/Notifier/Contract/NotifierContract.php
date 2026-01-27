@@ -29,10 +29,10 @@ interface NotifierContract
     /**
      * Add a mail recipient to send a notification to.
      *
-     * @param non-empty-string $email The email
-     * @param string           $name  [optional] The name
+     * @param non-empty-string      $email The email
+     * @param non-empty-string|null $name  [optional] The name
      */
-    public function addMailRecipient(string $email, string $name = ''): static;
+    public function addMailRecipient(string $email, string|null $name = null): static;
 
     /**
      * Add an SMS recipient to send a notification to.

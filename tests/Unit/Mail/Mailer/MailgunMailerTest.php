@@ -18,7 +18,10 @@ use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Http\Client\ClientExceptionInterface;
+use Valkyrja\Mail\Data\Attachment;
 use Valkyrja\Mail\Data\Message;
+use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -50,6 +53,7 @@ class MailgunMailerTest extends TestCase
 
     /**
      * @throws MissingRequiredParameter
+     * @throws ClientExceptionInterface
      */
     public function testSendSuccess(): void
     {
@@ -66,15 +70,14 @@ class MailgunMailerTest extends TestCase
         $count          = 0;
 
         $message = new Message(
-            fromEmail: $fromEmail,
-            fromName: $fromName,
+            from: new Recipient($fromEmail, $fromName),
             subject: $subject,
             body: $body
         )
-            ->withAddedRecipient($toEmail, $toName)
-            ->withAddedReplyToRecipient($toEmail, $toName)
+            ->withAddedRecipient(new Recipient($toEmail, $toName))
+            ->withAddedReplyToRecipient(new Recipient($toEmail, $toName))
             ->withPlainBody($plainBody)
-            ->withAddedAttachment($attachmentPath, $attachmentName)
+            ->withAddedAttachment(new Attachment($attachmentPath, $attachmentName))
             ->withIsHtml(true);
 
         $this->mailgunClient
@@ -143,11 +146,13 @@ class MailgunMailerTest extends TestCase
         $mailer->send($message);
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function testSendThrowsException(): void
     {
         $message = new Message(
-            fromEmail: 'sender@example.com',
-            fromName: 'Sender',
+            from: new Recipient('sender@example.com', 'Sender'),
             subject: 'Subject',
             body: 'Body'
         );
