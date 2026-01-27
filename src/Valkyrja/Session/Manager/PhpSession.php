@@ -15,13 +15,13 @@ namespace Valkyrja\Session\Manager;
 
 use Override;
 use Valkyrja\Session\Data\CookieParams;
+use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
 use Valkyrja\Session\Throwable\Exception\SessionIdFailure;
 use Valkyrja\Session\Throwable\Exception\SessionNameFailure;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 
 use function headers_sent;
-use function preg_match;
 use function session_id;
 use function session_name;
 use function session_start;
@@ -30,8 +30,12 @@ use function session_unset;
 
 use const PHP_SESSION_ACTIVE;
 
-class PhpSession extends NullSession
+class PhpSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected CookieParams $cookieParams,
         string|null $sessionId = null,
@@ -50,7 +54,7 @@ class PhpSession extends NullSession
     public function start(): void
     {
         // If the session is already active
-        if ($this->isActive() || headers_sent()) {
+        if ($this->isActive() || $this->headersSent()) {
             // No need to reactivate
             return;
         }
@@ -66,7 +70,7 @@ class PhpSession extends NullSession
         ]);
 
         // If the session failed to start
-        if (! session_start()) {
+        if (! $this->sessionStart()) {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start');
         }
@@ -81,7 +85,7 @@ class PhpSession extends NullSession
     #[Override]
     public function getId(): string
     {
-        $sessionId = session_id();
+        $sessionId = $this->sessionId();
 
         if ($sessionId === false) {
             throw new SessionIdFailure('Retrieval of session id failed');
@@ -96,15 +100,9 @@ class PhpSession extends NullSession
     #[Override]
     public function setId(string $id): void
     {
-        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
-            throw new InvalidSessionId(
-                "The session id, '$id', is invalid! "
-                . 'Session id can only contain alpha numeric characters, dashes, commas, '
-                . 'and be at least 1 character in length but up to 128 characters long.'
-            );
-        }
+        parent::setId($id);
 
-        session_id($id);
+        $this->sessionId($id);
     }
 
     /**
@@ -113,7 +111,7 @@ class PhpSession extends NullSession
     #[Override]
     public function getName(): string
     {
-        $sessionName = session_name();
+        $sessionName = $this->sessionName();
 
         if ($sessionName === false) {
             throw new SessionNameFailure('Retrieval of session id failed');
@@ -128,7 +126,9 @@ class PhpSession extends NullSession
     #[Override]
     public function setName(string $name): void
     {
-        session_name($name);
+        parent::setName($name);
+
+        $this->sessionName($name);
     }
 
     /**
@@ -160,5 +160,52 @@ class PhpSession extends NullSession
         parent::destroy();
 
         session_unset();
+    }
+
+    /**
+     * Get or set the session id.
+     */
+    protected function sessionId(string|null $sessionId = null): string|false
+    {
+        return session_id($sessionId);
+    }
+
+    /**
+     * Get or set the session name.
+     */
+    protected function sessionName(string|null $name = null): string|false
+    {
+        return session_name($name);
+    }
+
+    /**
+     * Start the session.
+     */
+    protected function sessionStart(): bool
+    {
+        return session_start();
+    }
+
+    /**
+     * Determine if the headers have been sent.
+     */
+    protected function headersSent(): bool
+    {
+        return headers_sent();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function validateId(string $id): void
+    {
+        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
+            throw new InvalidSessionId(
+                "The session id, '$id', is invalid! "
+                . 'Session id can only contain alpha numeric characters, dashes, commas, '
+                . 'and be at least 1 character in length but up to 128 characters long.'
+            );
+        }
     }
 }

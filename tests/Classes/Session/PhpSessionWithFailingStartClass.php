@@ -11,18 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager;
+namespace Valkyrja\Tests\Classes\Session;
 
 use Override;
-use Valkyrja\Session\Manager\Abstract\Session;
+use Valkyrja\Session\Manager\PhpSession;
 
-class NullSession extends Session
+/**
+ * Test class that simulates session_start() failure.
+ */
+class PhpSessionWithFailingStartClass extends PhpSession
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function start(): void
+    protected function sessionStart(): bool
     {
+        return false;
     }
 }

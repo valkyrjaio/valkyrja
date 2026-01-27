@@ -19,16 +19,23 @@ use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\CookieSession;
+use Valkyrja\Session\Manager\Cookie\CookieSession;
+use Valkyrja\Session\Manager\Cookie\EncryptedCookieSession;
+use Valkyrja\Session\Manager\Jwt\EncryptedJwtSession;
+use Valkyrja\Session\Manager\Jwt\JwtSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Manager\PhpSession;
+use Valkyrja\Session\Manager\Token\EncryptedTokenSession;
+use Valkyrja\Session\Manager\Token\TokenSession;
 
 final class ServiceProvider extends Provider
 {
@@ -39,13 +46,18 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            SessionContract::class => [self::class, 'publishSession'],
-            PhpSession::class      => [self::class, 'publishPhpSession'],
-            NullSession::class     => [self::class, 'publishNullSession'],
-            CacheSession::class    => [self::class, 'publishCacheSession'],
-            CookieSession::class   => [self::class, 'publishCookieSession'],
-            LogSession::class      => [self::class, 'publishLogSession'],
-            CookieParams::class    => [self::class, 'publishCookieParams'],
+            SessionContract::class        => [self::class, 'publishSession'],
+            PhpSession::class             => [self::class, 'publishPhpSession'],
+            NullSession::class            => [self::class, 'publishNullSession'],
+            CacheSession::class           => [self::class, 'publishCacheSession'],
+            CookieSession::class          => [self::class, 'publishCookieSession'],
+            EncryptedCookieSession::class => [self::class, 'publishEncryptedCookieSession'],
+            JwtSession::class             => [self::class, 'publishJwtSession'],
+            EncryptedJwtSession::class    => [self::class, 'publishEncryptedJwtSession'],
+            TokenSession::class           => [self::class, 'publishTokenSession'],
+            EncryptedTokenSession::class  => [self::class, 'publishEncryptedTokenSession'],
+            LogSession::class             => [self::class, 'publishLogSession'],
+            CookieParams::class           => [self::class, 'publishCookieParams'],
         ];
     }
 
@@ -61,6 +73,11 @@ final class ServiceProvider extends Provider
             NullSession::class,
             CacheSession::class,
             CookieSession::class,
+            EncryptedCookieSession::class,
+            JwtSession::class,
+            EncryptedJwtSession::class,
+            TokenSession::class,
+            EncryptedTokenSession::class,
             LogSession::class,
             CookieParams::class,
         ];
@@ -119,9 +136,9 @@ final class ServiceProvider extends Provider
     public static function publishPhpSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -140,9 +157,9 @@ final class ServiceProvider extends Provider
     public static function publishNullSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
@@ -160,16 +177,15 @@ final class ServiceProvider extends Provider
     public static function publishCacheSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
             CacheSession::class,
             new CacheSession(
                 cache: $container->getSingleton(CacheContract::class),
-                cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
             ),
@@ -182,19 +198,139 @@ final class ServiceProvider extends Provider
     public static function publishCookieSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
             CookieSession::class,
             new CookieSession(
-                crypt: $container->getSingleton(CryptContract::class),
                 request: $container->getSingleton(ServerRequestContract::class),
-                cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the encrypted cookie session service.
+     */
+    public static function publishEncryptedCookieSession(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var non-empty-string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+
+        $container->setSingleton(
+            EncryptedCookieSession::class,
+            new EncryptedCookieSession(
+                crypt: $container->getSingleton(CryptContract::class),
+                request: $container->getSingleton(ServerRequestContract::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the jwt session service.
+     */
+    public static function publishJwtSession(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var non-empty-string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+        /** @var non-empty-string|null $headerName */
+        $headerName = $env::SESSION_JWT_HEADER_NAME;
+
+        $container->setSingleton(
+            JwtSession::class,
+            new JwtSession(
+                jwt: $container->getSingleton(JwtContract::class),
+                request: $container->getSingleton(ServerRequestContract::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+                headerName: $headerName ?? HeaderName::AUTHORIZATION,
+            ),
+        );
+    }
+
+    /**
+     * Publish the encrypted jwt session service.
+     */
+    public static function publishEncryptedJwtSession(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var non-empty-string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+        /** @var non-empty-string|null $headerName */
+        $headerName = $env::SESSION_JWT_HEADER_NAME;
+
+        $container->setSingleton(
+            EncryptedJwtSession::class,
+            new EncryptedJwtSession(
+                crypt: $container->getSingleton(CryptContract::class),
+                jwt: $container->getSingleton(JwtContract::class),
+                request: $container->getSingleton(ServerRequestContract::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+                headerName: $headerName ?? HeaderName::AUTHORIZATION,
+            ),
+        );
+    }
+
+    /**
+     * Publish the token session service.
+     */
+    public static function publishTokenSession(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var non-empty-string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+        /** @var non-empty-string|null $headerName */
+        $headerName = $env::SESSION_JWT_HEADER_NAME;
+
+        $container->setSingleton(
+            TokenSession::class,
+            new TokenSession(
+                request: $container->getSingleton(ServerRequestContract::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+                headerName: $headerName ?? HeaderName::AUTHORIZATION,
+            ),
+        );
+    }
+
+    /**
+     * Publish the encrypted token session service.
+     */
+    public static function publishEncryptedTokenSession(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var non-empty-string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+        /** @var non-empty-string|null $headerName */
+        $headerName = $env::SESSION_JWT_HEADER_NAME;
+
+        $container->setSingleton(
+            EncryptedTokenSession::class,
+            new EncryptedTokenSession(
+                crypt: $container->getSingleton(CryptContract::class),
+                request: $container->getSingleton(ServerRequestContract::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+                headerName: $headerName ?? HeaderName::AUTHORIZATION,
             ),
         );
     }
@@ -205,16 +341,15 @@ final class ServiceProvider extends Provider
     public static function publishLogSession(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string|null $sessionId */
+        /** @var non-empty-string|null $sessionId */
         $sessionId = $env::SESSION_PHP_ID;
-        /** @var string|null $sessionName */
+        /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
 
         $container->setSingleton(
             LogSession::class,
             new LogSession(
                 logger: $container->getSingleton(LoggerContract::class),
-                cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
             ),

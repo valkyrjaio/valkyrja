@@ -18,14 +18,20 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\CookieSession;
+use Valkyrja\Session\Manager\Cookie\CookieSession;
+use Valkyrja\Session\Manager\Cookie\EncryptedCookieSession;
+use Valkyrja\Session\Manager\Jwt\EncryptedJwtSession;
+use Valkyrja\Session\Manager\Jwt\JwtSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Manager\PhpSession;
+use Valkyrja\Session\Manager\Token\EncryptedTokenSession;
+use Valkyrja\Session\Manager\Token\TokenSession;
 use Valkyrja\Session\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -44,6 +50,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CacheSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CookieSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedCookieSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(JwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedJwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(TokenSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedTokenSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(LogSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CookieParams::class, ServiceProvider::publishers());
     }
@@ -55,6 +66,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(NullSession::class, ServiceProvider::provides());
         self::assertContains(CacheSession::class, ServiceProvider::provides());
         self::assertContains(CookieSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedCookieSession::class, ServiceProvider::provides());
+        self::assertContains(JwtSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedJwtSession::class, ServiceProvider::provides());
+        self::assertContains(TokenSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedTokenSession::class, ServiceProvider::provides());
         self::assertContains(LogSession::class, ServiceProvider::provides());
         self::assertContains(CookieParams::class, ServiceProvider::provides());
     }
@@ -96,7 +112,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCacheSession(): void
     {
         $this->container->setSingleton(CacheContract::class, self::createStub(CacheContract::class));
-        $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         $callback = ServiceProvider::publishers()[CacheSession::class];
         $callback($this->container);
@@ -109,9 +124,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCookieSession(): void
     {
-        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
-        $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         $callback = ServiceProvider::publishers()[CookieSession::class];
         $callback($this->container);
@@ -122,10 +135,79 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /**
      * @throws Exception
      */
+    public function testPublishEncryptedCookieSession(): void
+    {
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[EncryptedCookieSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(EncryptedCookieSession::class, $this->container->getSingleton(EncryptedCookieSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishJwtSession(): void
+    {
+        $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[JwtSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtSession::class, $this->container->getSingleton(JwtSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishEncryptedJwtSession(): void
+    {
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[EncryptedJwtSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(EncryptedJwtSession::class, $this->container->getSingleton(EncryptedJwtSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishTokenSession(): void
+    {
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[TokenSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(TokenSession::class, $this->container->getSingleton(TokenSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishEncryptedTokenSession(): void
+    {
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[EncryptedTokenSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(EncryptedTokenSession::class, $this->container->getSingleton(EncryptedTokenSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testPublishLogSession(): void
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
-        $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         $callback = ServiceProvider::publishers()[LogSession::class];
         $callback($this->container);

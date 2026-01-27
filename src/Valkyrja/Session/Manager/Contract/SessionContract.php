@@ -30,7 +30,7 @@ interface SessionContract
     /**
      * Set the session id.
      *
-     * @param string $id The session id
+     * @param non-empty-string $id The session id
      */
     public function setId(string $id): void;
 

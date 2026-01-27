@@ -16,23 +16,21 @@ namespace Valkyrja\Session\Manager;
 use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
-use Valkyrja\Session\Data\CookieParams;
-use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
+use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-use function headers_sent;
-use function session_start;
-
-class CacheSession extends PhpSession
+class CacheSession extends Session
 {
+    /**
+     * @param non-empty-string|null $sessionId   The session id
+     * @param non-empty-string|null $sessionName The session id
+     */
     public function __construct(
         protected CacheContract $cache,
-        CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
         parent::__construct(
-            cookieParams: $cookieParams,
             sessionId: $sessionId,
             sessionName: $sessionName
         );
@@ -46,25 +44,15 @@ class CacheSession extends PhpSession
     #[Override]
     public function start(): void
     {
-        // If the session is already active
-        if ($this->isActive() || headers_sent()) {
-            // No need to reactivate
+        $cachedData = $this->cache->get($this->getCacheSessionId());
+
+        // If the session data isn't present
+        if ($cachedData === null || $cachedData === '') {
             return;
         }
 
-        // If the session failed to start
-        if (
-            ! session_start()
-            || ($cachedData = $this->cache->get($this->getCacheSessionId())) === null
-            || $cachedData === ''
-        ) {
-            // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
-        }
-
         // Set the data
-        /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($cachedData);
+        $this->setDataFromCacheValue($cachedData);
     }
 
     /**
@@ -75,7 +63,7 @@ class CacheSession extends PhpSession
     #[Override]
     public function set(string $id, $value): void
     {
-        $this->data[$id] = $value;
+        parent::set($id, $value);
 
         $this->updateCacheSession();
     }
@@ -88,15 +76,13 @@ class CacheSession extends PhpSession
     #[Override]
     public function remove(string $id): bool
     {
-        if (! $this->has($id)) {
-            return false;
+        $removed = parent::remove($id);
+
+        if ($removed) {
+            $this->updateCacheSession();
         }
 
-        unset($this->data[$id]);
-
-        $this->updateCacheSession();
-
-        return true;
+        return $removed;
     }
 
     /**
@@ -134,12 +120,34 @@ class CacheSession extends PhpSession
     }
 
     /**
+     * @param non-empty-string $value The cookie value
+     *
+     * @throws JsonException
+     */
+    protected function setDataFromCacheValue(string $value): void
+    {
+        /** @psalm-suppress MixedPropertyTypeCoercion */
+        $this->data = Arr::fromString($value);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function getDataAsCacheValue(): string
+    {
+        return Arr::toString($this->data);
+    }
+
+    /**
      * Update the cache session.
      *
      * @throws JsonException
      */
     protected function updateCacheSession(): void
     {
-        $this->cache->forever($this->getCacheSessionId(), Arr::toString($this->data));
+        $this->cache->forever(
+            $this->getCacheSessionId(),
+            $this->getDataAsCacheValue()
+        );
     }
 }
