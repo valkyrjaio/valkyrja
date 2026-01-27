@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager;
 
+use Override;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Http\Message\Enum\SameSite;
@@ -50,6 +51,7 @@ class PhpSessionTest extends TestCase
         );
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
