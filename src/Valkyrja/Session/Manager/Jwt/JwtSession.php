@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager\Jwt;
 
 use Override;
-use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Abstract\Session;
