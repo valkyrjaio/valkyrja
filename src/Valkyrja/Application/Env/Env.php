@@ -175,7 +175,7 @@ class Env
     /** @var class-string<UserContract> */
     public const string AUTH_DEFAULT_USER_ENTITY = User::class;
     /** @var non-empty-string */
-    public const string AUTH_DEFAULT_SESSION_ID = SessionId::AUTHENTICATED_USERS;
+    public const string AUTH_SESSION_ITEM_ID = SessionId::AUTHENTICATED_USERS;
     /** @var non-empty-string */
     public const string AUTH_DEFAULT_AUTHORIZATION_HEADER = HeaderName::AUTHORIZATION;
     /** @var non-empty-string */

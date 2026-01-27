@@ -176,8 +176,8 @@ final class ServiceProvider extends Provider
         $env = $container->getSingleton(Env::class);
         /** @var class-string<UserContract> $entity */
         $entity = $env::AUTH_DEFAULT_USER_ENTITY;
-        /** @var non-empty-string $sessionId */
-        $sessionId = $env::AUTH_DEFAULT_SESSION_ID;
+        /** @var non-empty-string $sessionItemId */
+        $sessionItemId = $env::AUTH_SESSION_ITEM_ID;
 
         $container->setSingleton(
             SessionAuthenticator::class,
@@ -186,7 +186,7 @@ final class ServiceProvider extends Provider
                 store: $container->getSingleton(StoreContract::class),
                 hasher: $container->getSingleton(PasswordHasherContract::class),
                 entity: $entity,
-                sessionId: $sessionId,
+                sessionItemId: $sessionItemId,
             ),
         );
     }
