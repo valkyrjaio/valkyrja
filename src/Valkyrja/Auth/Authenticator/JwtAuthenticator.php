@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Authenticator;
 
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
-use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -22,6 +21,7 @@ use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 

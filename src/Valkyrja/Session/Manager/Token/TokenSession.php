@@ -15,9 +15,9 @@ namespace Valkyrja\Session\Manager\Token;
 
 use JsonException;
 use Override;
-use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Type\BuiltIn\Support\Arr;
