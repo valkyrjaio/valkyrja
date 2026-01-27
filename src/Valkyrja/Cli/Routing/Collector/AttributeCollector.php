@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Collector;
 
 use Override;
 use ReflectionException;
+use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -68,9 +69,12 @@ class AttributeCollector implements Contract
 
             // Get all the attributes for each class and iterate through them
             foreach ($attributes as $attribute) {
-                $method = $attribute->getDispatch()->getMethod();
-                $route  = $this->convertAttributeToData($attribute);
+                /** @var ReflectionMethod $reflection */
+                $reflection = $attribute->getReflection();
+                $method     = $reflection->getName();
+                $route      = $this->convertAttributeToData($attribute);
 
+                $route = $this->updateDispatch($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
                 $route = $this->updateMiddleware($route, $class, $method);
                 $route = $this->updateArguments($route, $class, $method);
@@ -81,6 +85,19 @@ class AttributeCollector implements Contract
         }
 
         return $routes;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     */
+    protected function updateDispatch(Route $route, string $class, string $method): Route
+    {
+        return $route->withDispatch(
+            $route->getDispatch()
+                ->withClass($class)
+                ->withMethod($method)
+        );
     }
 
     /**

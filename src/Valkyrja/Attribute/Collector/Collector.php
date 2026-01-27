@@ -16,26 +16,16 @@ namespace Valkyrja\Attribute\Collector;
 use Closure;
 use Override;
 use ReflectionAttribute;
-use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionException;
-use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
-use Valkyrja\Attribute\Throwable\Exception\RuntimeException;
-use Valkyrja\Dispatch\Data\CallableDispatch;
-use Valkyrja\Dispatch\Data\ClassDispatch;
-use Valkyrja\Dispatch\Data\ConstantDispatch;
-use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector as ReflectorReflector;
-
-use function is_callable;
 
 class Collector implements CollectorContract
 {
@@ -368,44 +358,6 @@ class Collector implements CollectorContract
 
             if ($instance instanceof ReflectionAwareAttributeContract) {
                 $instance->setReflection($reflection);
-            }
-
-            if (
-                method_exists($instance, 'withDispatch')
-                && method_exists($instance, 'getDispatch')
-                && method_exists($reflection, 'getName')
-            ) {
-                /** @var non-empty-string $name */
-                $name = $reflection->getName();
-                /** @var object $instance */
-                $instance = $instance->withDispatch(
-                    match (true) {
-                        $reflection instanceof ReflectionMethod        => new MethodDispatch(
-                            class: $reflection->getDeclaringClass()->getName(),
-                            method: $name,
-                            isStatic: $reflection->isStatic()
-                        ),
-                        $reflection instanceof ReflectionProperty      => new PropertyDispatch(
-                            class: $reflection->getDeclaringClass()->getName(),
-                            property: $name,
-                            isStatic: $reflection->isStatic()
-                        ),
-                        $reflection instanceof ReflectionClass         => new ClassDispatch(
-                            class: $reflection->getName(),
-                        ),
-                        $reflection instanceof ReflectionClassConstant => new ConstantDispatch(
-                            constant: $name,
-                            class: $reflection->getDeclaringClass()->getName()
-                        ),
-                        $reflection instanceof ReflectionFunction
-                        && ! $reflection->isClosure()                  => new CallableDispatch(
-                            callable: is_callable($name)
-                                ? $name
-                                : throw new RuntimeException('ReflectionFunction has no valid callable'),
-                        ),
-                        default                                        => $instance->getDispatch(),
-                    }
-                );
             }
 
             $instances[] = $instance;

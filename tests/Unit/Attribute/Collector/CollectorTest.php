@@ -15,9 +15,6 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract;
 use Valkyrja\Tests\Classes\Attribute\AttributeClass;
 use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;
@@ -411,7 +408,6 @@ class CollectorTest extends TestCase
             self::SIX,
             ...$attributes
         );
-        $this->setTests($attributes[2], false, self::CONST_NAME);
     }
 
     /**
@@ -429,7 +425,6 @@ class CollectorTest extends TestCase
             self::NINE,
             ...$attributes
         );
-        $this->setTests($attributes[2], false, self::PROTECTED_CONST_NAME);
     }
 
     /**
@@ -447,7 +442,6 @@ class CollectorTest extends TestCase
             self::TWELVE,
             ...$attributes
         );
-        $this->setTests($attributes[2], true, self::STATIC_PROPERTY_NAME);
     }
 
     /**
@@ -465,7 +459,6 @@ class CollectorTest extends TestCase
             self::FIFTEEN,
             ...$attributes
         );
-        $this->setTests($attributes[2], false, self::PROPERTY_NAME);
     }
 
     /**
@@ -483,7 +476,6 @@ class CollectorTest extends TestCase
             self::EIGHTEEN,
             ...$attributes
         );
-        $this->setTests($attributes[2], true, self::STATIC_METHOD_NAME);
     }
 
     /**
@@ -501,7 +493,6 @@ class CollectorTest extends TestCase
             self::TWENTY_ONE,
             ...$attributes
         );
-        $this->setTests($attributes[2], false, self::METHOD_NAME);
     }
 
     /**
@@ -544,44 +535,5 @@ class CollectorTest extends TestCase
         self::assertSame($value2, $attribute2->counter);
         self::assertSame($value3, $attribute3->counter);
         self::assertSame($value4, $attribute3->test);
-    }
-
-    /**
-     * Tests related to setters.
-     *
-     * @param AttributeClassChildClass $attribute The attribute
-     * @param bool                     $isStatic  Whether the member is static
-     * @param string                   $name      The name of the member
-     */
-    protected function setTests(AttributeClassChildClass $attribute, bool $isStatic, string $name): void
-    {
-        match ($name) {
-            self::CONST_NAME, self::PROTECTED_CONST_NAME => static function () use ($name, $attribute): void {
-                $dispatch = $attribute->getDispatch();
-
-                self::assertInstanceOf(ConstantDispatchContract::class, $dispatch);
-                /** @var ConstantDispatchContract $dispatch */
-                self::assertSame($name, $dispatch->getConstant());
-                self::assertSame(AttributedClass::class, $dispatch->getClass());
-            },
-            self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => static function () use ($name, $attribute, $isStatic): void {
-                $dispatch = $attribute->getDispatch();
-
-                self::assertInstanceOf(PropertyDispatchContract::class, $dispatch);
-                /** @var PropertyDispatchContract $dispatch */
-                self::assertSame($isStatic, $dispatch->isStatic());
-                self::assertSame($name, $dispatch->getProperty());
-                self::assertSame(AttributedClass::class, $dispatch->getClass());
-            },
-            self::STATIC_METHOD_NAME, self::METHOD_NAME => static function () use ($name, $attribute, $isStatic): void {
-                $dispatch = $attribute->getDispatch();
-
-                self::assertInstanceOf(MethodDispatchContract::class, $dispatch);
-                /** @var MethodDispatchContract $dispatch */
-                self::assertSame($isStatic, $dispatch->isStatic());
-                self::assertSame($name, $dispatch->getMethod());
-                self::assertSame(AttributedClass::class, $dispatch->getClass());
-            },
-        };
     }
 }

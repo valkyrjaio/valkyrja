@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 
 /**
  * Attribute child class used for unit testing.
@@ -22,8 +21,6 @@ use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClassChildClass extends AttributeClass
 {
-    public DispatchContract|null $dispatch = null;
-
     public mixed $default = null;
 
     public function __construct(
@@ -36,17 +33,5 @@ class AttributeClassChildClass extends AttributeClass
     public function setDefault(mixed $default): void
     {
         $this->default = $default;
-    }
-
-    public function getDispatch(): DispatchContract|null
-    {
-        return $this->dispatch;
-    }
-
-    public function withDispatch(DispatchContract|null $dispatch): static
-    {
-        $this->dispatch = $dispatch;
-
-        return $this;
     }
 }
