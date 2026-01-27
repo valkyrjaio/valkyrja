@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Manager;
 
 use Override;
+use SensitiveParameter;
 use stdClass;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 
@@ -32,7 +33,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function encrypt(string $message, string|null $key = null): string
+    public function encrypt(string $message, #[SensitiveParameter] string|null $key = null): string
     {
         return 'encrypted';
     }
@@ -41,7 +42,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function encryptArray(array $array, string|null $key = null): string
+    public function encryptArray(array $array, #[SensitiveParameter] string|null $key = null): string
     {
         return '[]';
     }
@@ -50,7 +51,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function encryptObject(object $object, string|null $key = null): string
+    public function encryptObject(object $object, #[SensitiveParameter] string|null $key = null): string
     {
         return '{}';
     }
@@ -59,7 +60,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function decrypt(string $encrypted, string|null $key = null): string
+    public function decrypt(string $encrypted, #[SensitiveParameter] string|null $key = null): string
     {
         return 'decrypted';
     }
@@ -68,7 +69,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function decryptArray(string $encrypted, string|null $key = null): array
+    public function decryptArray(string $encrypted, #[SensitiveParameter] string|null $key = null): array
     {
         return [];
     }
@@ -77,7 +78,7 @@ class NullCrypt implements CryptContract
      * @inheritDoc
      */
     #[Override]
-    public function decryptObject(string $encrypted, string|null $key = null): object
+    public function decryptObject(string $encrypted, #[SensitiveParameter] string|null $key = null): object
     {
         return new stdClass();
     }

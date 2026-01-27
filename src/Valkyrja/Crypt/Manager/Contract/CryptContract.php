@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Manager\Contract;
 
+use SensitiveParameter;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 interface CryptContract
@@ -34,7 +35,7 @@ interface CryptContract
      *
      * @return non-empty-string
      */
-    public function encrypt(string $message, string|null $key = null): string;
+    public function encrypt(string $message, #[SensitiveParameter] string|null $key = null): string;
 
     /**
      * Decrypt a message.
@@ -46,7 +47,7 @@ interface CryptContract
      *
      * @return non-empty-string
      */
-    public function decrypt(string $encrypted, string|null $key = null): string;
+    public function decrypt(string $encrypted, #[SensitiveParameter] string|null $key = null): string;
 
     /**
      * Encrypt an array.
@@ -58,7 +59,7 @@ interface CryptContract
      *
      * @return non-empty-string
      */
-    public function encryptArray(array $array, string|null $key = null): string;
+    public function encryptArray(array $array, #[SensitiveParameter] string|null $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an array.
@@ -70,7 +71,7 @@ interface CryptContract
      *
      * @return array<array-key, mixed>
      */
-    public function decryptArray(string $encrypted, string|null $key = null): array;
+    public function decryptArray(string $encrypted, #[SensitiveParameter] string|null $key = null): array;
 
     /**
      * Encrypt a json array.
@@ -82,7 +83,7 @@ interface CryptContract
      *
      * @return non-empty-string
      */
-    public function encryptObject(object $object, string|null $key = null): string;
+    public function encryptObject(object $object, #[SensitiveParameter] string|null $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an object.
@@ -92,5 +93,5 @@ interface CryptContract
      *
      * @throws CryptException On any failure
      */
-    public function decryptObject(string $encrypted, string|null $key = null): object;
+    public function decryptObject(string $encrypted, #[SensitiveParameter] string|null $key = null): object;
 }
