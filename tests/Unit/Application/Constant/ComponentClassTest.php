@@ -37,7 +37,6 @@ use Valkyrja\Http\Server\Provider\ComponentProvider as HttpServerComponentProvid
 use Valkyrja\Jwt\Provider\ComponentProvider as JwtComponentProvider;
 use Valkyrja\Log\Provider\ComponentProvider as LogComponentProvider;
 use Valkyrja\Mail\Provider\ComponentProvider as MailComponentProvider;
-use Valkyrja\Notification\Provider\ComponentProvider as NotificationComponentProvider;
 use Valkyrja\Orm\Provider\ComponentProvider as OrmComponentProvider;
 use Valkyrja\Reflection\Provider\ComponentProvider as ReflectionComponentProvider;
 use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
@@ -75,7 +74,6 @@ class ComponentClassTest extends TestCase
         self::assertSame(JwtComponentProvider::class, ComponentClass::JWT);
         self::assertSame(LogComponentProvider::class, ComponentClass::LOG);
         self::assertSame(MailComponentProvider::class, ComponentClass::MAIL);
-        self::assertSame(NotificationComponentProvider::class, ComponentClass::NOTIFICATION);
         self::assertSame(OrmComponentProvider::class, ComponentClass::ORM);
         self::assertSame(ReflectionComponentProvider::class, ComponentClass::REFLECTION);
         self::assertSame(SessionComponentProvider::class, ComponentClass::SESSION);

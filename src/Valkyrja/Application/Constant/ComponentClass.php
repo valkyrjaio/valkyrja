@@ -36,7 +36,6 @@ use Valkyrja\Http\Server\Provider\ComponentProvider as HttpServerComponentProvid
 use Valkyrja\Jwt\Provider\ComponentProvider as JwtComponentProvider;
 use Valkyrja\Log\Provider\ComponentProvider as LogComponentProvider;
 use Valkyrja\Mail\Provider\ComponentProvider as MailComponentProvider;
-use Valkyrja\Notification\Provider\ComponentProvider as NotificationComponentProvider;
 use Valkyrja\Orm\Provider\ComponentProvider as OrmComponentProvider;
 use Valkyrja\Reflection\Provider\ComponentProvider as ReflectionComponentProvider;
 use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
@@ -68,7 +67,6 @@ final class ComponentClass
     public const string JWT             = JwtComponentProvider::class;
     public const string LOG             = LogComponentProvider::class;
     public const string MAIL            = MailComponentProvider::class;
-    public const string NOTIFICATION    = NotificationComponentProvider::class;
     public const string ORM             = OrmComponentProvider::class;
     public const string REFLECTION      = ReflectionComponentProvider::class;
     public const string SESSION         = SessionComponentProvider::class;
