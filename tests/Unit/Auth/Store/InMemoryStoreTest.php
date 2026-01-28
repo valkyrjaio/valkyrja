@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User;
@@ -127,6 +128,40 @@ class InMemoryStoreTest extends TestCase
     public function testFailedUserRetrieval(): void
     {
         $user = $this->store->retrieve(new RetrievalByUsername(self::BAD_USERNAME), User::class);
+
+        self::assertNull($user);
+    }
+
+    /**
+     * Test retrieving a user with multiple retrieval fields (covers line 92).
+     * This tests the else branch in filterUsers() when there are multiple fields.
+     */
+    public function testRetrieveUserWithMultipleFields(): void
+    {
+        $this->store->create($this->user);
+
+        // Use RetrievalByIdAndUsername which provides both id and username fields
+        $retrieval = new RetrievalByIdAndUsername('test', self::USERNAME);
+
+        $user = $this->store->retrieve($retrieval, User::class);
+
+        self::assertNotNull($user);
+        self::assertSame('test', $user->id);
+        self::assertSame(self::USERNAME, $user->username);
+    }
+
+    /**
+     * Test retrieving with multiple fields where one field doesn't match.
+     * This tests the else branch in filterUsers() returning false.
+     */
+    public function testRetrieveUserWithMultipleFieldsNoMatch(): void
+    {
+        $this->store->create($this->user);
+
+        // Use correct id but wrong username - should not match
+        $retrieval = new RetrievalByIdAndUsername('test', 'wrong_username');
+
+        $user = $this->store->retrieve($retrieval, User::class);
 
         self::assertNull($user);
     }
