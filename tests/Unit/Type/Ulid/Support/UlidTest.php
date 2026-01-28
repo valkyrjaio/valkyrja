@@ -93,18 +93,20 @@ class UlidTest extends TestCase
 
     /**
      * Test that generate handles when all random bytes are at max (lines 85-87).
+     * This test ensures we hit the elseif branch when:
+     * 1. doesTimeMatch() returns false (new time <= stored time)
+     * 2. areAllRandomBytesMax() returns true
      *
      * @throws Exception
      */
     public function testGenerateWithAllRandomBytesAtMax(): void
     {
-        // First generate a ULID to initialize the state
-        UlidClass::generate();
+        // Set the stored time to a far future value so that microtime() will return
+        // a smaller value, making doesTimeMatch() return false
+        $futureTime = '9999999999999';
+        UlidClass::setTime($futureTime);
 
-        $currentTime = UlidClass::getStoredTime();
-
-        // Set the time to the same value and set all random bytes to max
-        UlidClass::setTime($currentTime);
+        // Set all random bytes to max - this makes areAllRandomBytesMax() return true
         UlidClass::setRandomBytes([
             1 => Ulid::MAX_PART,
             2 => Ulid::MAX_PART,
@@ -112,14 +114,21 @@ class UlidTest extends TestCase
             4 => Ulid::MAX_PART,
         ]);
 
-        // Generate another ULID - this should trigger the elseif branch (lines 85-87)
+        // Verify the preconditions
+        self::assertTrue(UlidClass::testAreAllRandomBytesMax());
+
+        // Generate a ULID - this should trigger the elseif branch (lines 85-87)
+        // because the new time from microtime() will be less than the stored future time
+        // and all random bytes are at max
         $ulid = UlidClass::generate();
 
         // The generated ULID should be valid
         self::assertTrue(UlidClass::isValid($ulid));
 
-        // The time should have been incremented
-        self::assertGreaterThan($currentTime, UlidClass::getStoredTime());
+        // The stored time should now be incremented from what microtime() returned
+        // (not from the future time we set, since the time passed to increaseTime is from getTime)
+        // The key point is that new random bytes were generated (randomize was called)
+        self::assertFalse(UlidClass::testAreAllRandomBytesMax());
     }
 
     /**
