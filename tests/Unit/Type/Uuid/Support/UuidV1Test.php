@@ -60,7 +60,7 @@ class UuidV1Test extends AbstractUuidTestCase
     }
 
     /**
-     * Test generate with empty string node (covers lines 85-88).
+     * Test generate with empty string node.
      * When node is empty string, it generates random bytes for the node.
      *
      * @throws Exception
@@ -70,6 +70,24 @@ class UuidV1Test extends AbstractUuidTestCase
         // Passing empty string triggers the else branch (lines 85-88)
         // which generates random bytes for the node
         $uuid = UuidV1::generate('');
+
+        self::assertTrue(UuidV1::isValid($uuid));
+        $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
+    }
+
+    /**
+     * Test generate with numeric string node
+     * When node is a purely numeric string (all digits), it skips the md5 branch
+     * but hits the is_numeric branch which formats the node as hex.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithNumericStringNode(): void
+    {
+        // A purely numeric string like "123456789012" is valid hex (digits 0-9)
+        // so it skips the preg_match branch, but is_numeric returns true
+        // triggering the next if branch
+        $uuid = UuidV1::generate('123456789012');
 
         self::assertTrue(UuidV1::isValid($uuid));
         $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
