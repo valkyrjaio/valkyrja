@@ -1,6 +1,21 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.22.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.23.0...master)
+
+## [v25.23.0](https://github.com/valkyrjaio/valkyrja/compare/v25.22.0...v25.23.0) - 2026-01-27
+
+* [Session] Add various session managers, and add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/414
+* [Auth] Update SessionAuthenticator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/415
+* [Http] Move HeaderValue constant class to Http/Message from Auth by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/416
+* [Auth] Change SessionId to SessionItemId for better clarity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/417
+* [Auth] Remove authenticators by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/418
+* [Type] Update tests to cover all lines and classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/419
+* [Auth] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/420
+* [Api] Add tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/421
+* [CI] Update phpunit no-coverage script to display all issues by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/422
+* [Http] Remove skipped tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/423
+* [Orm] Deprecate Helpers class in favor of DateFactory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/424
+* [Notification] Deprecate component by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/425
 
 ## [v25.22.0](https://github.com/valkyrjaio/valkyrja/compare/v25.21.0...v25.22.0) - 2026-01-27
 
