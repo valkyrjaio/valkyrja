@@ -112,7 +112,6 @@
     "phpstan-composer-update"                         : "cd .github/ci/phpstan && composer update",
     "phpunit"                                         : "cd .github/ci/phpunit && composer check",
     "phpunit-coverage"                                : "cd .github/ci/phpunit && composer coverage",
-    "phpunit-no-cov"                                  : "cd .github/ci/phpunit && composer no-coverage",
     "phpunit-outdated-check"                          : "cd .github/ci/phpunit && composer install && composer outdated --direct --minor-only",
     "phpunit-outdated-check-major-release"            : "cd .github/ci/phpunit && composer install && composer outdated --direct",
     "phpunit-composer-update"                         : "cd .github/ci/phpunit && composer update",

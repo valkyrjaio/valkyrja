@@ -94,10 +94,10 @@ jobs:
         if: steps.changes.outputs.files == 'true'
         run: mkdir -p .github/ci/phpunit/build/logs
 
-      - name: Run PHPUnit tests with no coverage
+      - name: Run PHPUnit tests
         if: ${{ matrix.php != '8.4' && steps.changes.outputs.files == 'true' }}
         run: |
-          composer phpunit-no-cov
+          composer phpunit
 
       - name: Run PHPUnit tests with full coverage
         if: ${{ matrix.php == '8.4' && steps.changes.outputs.files == 'true' }}
