@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Processor;
 
-use Valkyrja\Auth\Entity\User;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
-use Valkyrja\Orm\Data\EntityCast;
-use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Data\Cast;
 
 /**
  * Class ProcessorTest.
@@ -177,166 +173,5 @@ class ProcessorTest extends TestCase
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
         self::assertSame('/^\/(?:[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
-    }
-
-    public function testDynamicRouteEntityParameter(): void
-    {
-        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
-
-        $processor = new Processor();
-
-        $route = new Route(
-            path: '/{value}',
-            name: 'route',
-            dispatch: new MethodDispatch(
-                class: Route::class,
-                method: 'test',
-                dependencies: [
-                    'user' => User::class,
-                ]
-            ),
-            parameters: [
-                new Parameter(
-                    name: 'value',
-                    regex: Regex::ALPHA,
-                    cast: new Cast(type: User::class, convert: false)
-                ),
-            ],
-        );
-
-        $routeAfterProcessing = $processor->route($route);
-
-        self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
-        self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^\/([a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
-        self::assertEmpty($routeAfterProcessing->getDispatch()->getDependencies());
-    }
-
-    public function testDynamicRouteEntityParameterWithNoDependencies(): void
-    {
-        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
-
-        $processor = new Processor();
-
-        $route = new Route(
-            path: '/{value}',
-            name: 'route',
-            dispatch: new MethodDispatch(
-                class: Route::class,
-                method: 'test',
-                dependencies: [
-                    'route' => Route::class,
-                    'user'  => User::class,
-                ]
-            ),
-            parameters: [
-                new Parameter(
-                    name: 'value',
-                    regex: Regex::ALPHA,
-                    cast: new Cast(type: User::class, convert: false)
-                ),
-            ],
-        );
-
-        $routeAfterProcessing = $processor->route($route);
-
-        self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
-        self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^\/([a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
-        self::assertSame([Route::class], $routeAfterProcessing->getDispatch()->getDependencies());
-    }
-
-    public function testDynamicRouteEntityParameterWithDependencies(): void
-    {
-        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
-
-        $processor = new Processor();
-
-        $route = new Route(
-            path: '/{value}',
-            name: 'route',
-            dispatch: new MethodDispatch(
-                class: Route::class,
-                method: 'test',
-                dependencies: []
-            ),
-            parameters: [
-                new Parameter(
-                    name: 'value',
-                    regex: Regex::ALPHA,
-                    cast: new Cast(type: User::class, convert: false)
-                ),
-            ],
-        );
-
-        $routeAfterProcessing = $processor->route($route);
-
-        self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
-        self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^\/([a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
-        self::assertEmpty($routeAfterProcessing->getDispatch()->getDependencies());
-    }
-
-    public function testDynamicRouteEntityParameterWithEntityCast(): void
-    {
-        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
-
-        $processor = new Processor();
-
-        $route = new Route(
-            path: '/{value}',
-            name: 'route',
-            dispatch: new MethodDispatch(
-                class: Route::class,
-                method: 'test',
-                dependencies: [
-                    'user' => User::class,
-                ]
-            ),
-            parameters: [
-                new Parameter(
-                    name: 'value',
-                    regex: Regex::ALPHA,
-                    cast: new EntityCast(type: User::class, column: 'id', convert: false)
-                ),
-            ]
-        );
-
-        $routeAfterProcessing = $processor->route($route);
-
-        self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
-        self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^\/([a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
-        self::assertEmpty($routeAfterProcessing->getDispatch()->getDependencies());
-    }
-
-    public function testDynamicRouteEntityParameterWithEntityCastWithInvalidColumn(): void
-    {
-        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
-
-        $this->expectException(InvalidRoutePathException::class);
-
-        $processor = new Processor();
-
-        $route = new Route(
-            path: '/{value}',
-            name: 'route',
-            dispatch: new MethodDispatch(
-                class: Route::class,
-                method: 'test',
-                dependencies: [
-                    'user' => User::class,
-                ]
-            ),
-            parameters: [
-                new Parameter(
-                    name: 'value',
-                    regex: Regex::ALPHA,
-                    cast: new EntityCast(type: User::class, column: 'invalidcolumn', convert: false)
-                ),
-            ]
-        );
-
-        $processor->route($route);
     }
 }
