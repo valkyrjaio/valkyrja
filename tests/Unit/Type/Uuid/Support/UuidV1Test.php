@@ -58,4 +58,20 @@ class UuidV1Test extends AbstractUuidTestCase
 
         UuidV1::validate($uuid);
     }
+
+    /**
+     * Test generate with empty string node (covers lines 85-88).
+     * When node is empty string, it generates random bytes for the node.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithEmptyStringNode(): void
+    {
+        // Passing empty string triggers the else branch (lines 85-88)
+        // which generates random bytes for the node
+        $uuid = UuidV1::generate('');
+
+        self::assertTrue(UuidV1::isValid($uuid));
+        $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
+    }
 }
