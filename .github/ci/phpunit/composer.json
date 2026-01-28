@@ -12,7 +12,7 @@
   "scripts"           : {
     "check"       : "vendor/bin/phpunit",
     "coverage"    : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --coverage-text --stderr",
-    "no-coverage" : "vendor/bin/phpunit --no-coverage"
+    "no-coverage" : "vendor/bin/phpunit --no-coverage --display-phpunit-notices"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
