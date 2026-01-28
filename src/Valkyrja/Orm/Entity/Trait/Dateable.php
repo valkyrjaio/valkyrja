@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity\Trait;
 
 use Valkyrja\Orm\Constant\DateFormat;
-use Valkyrja\Orm\Support\Helpers;
+use Valkyrja\Orm\Factory\DateFactory;
 
 trait Dateable
 {
@@ -31,7 +31,7 @@ trait Dateable
      */
     public static function getFormattedDate(): string
     {
-        return Helpers::getFormattedDate(static::getDateFormat());
+        return DateFactory::getFormattedDate(static::getDateFormat());
     }
 
     /**

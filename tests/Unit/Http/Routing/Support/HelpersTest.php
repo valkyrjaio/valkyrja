@@ -17,7 +17,7 @@ use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
- * Class HelpersTest.
+ * Class DateFactoryTest.
  */
 class HelpersTest extends TestCase
 {

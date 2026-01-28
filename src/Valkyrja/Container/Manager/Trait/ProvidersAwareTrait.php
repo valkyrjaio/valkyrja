@@ -77,7 +77,7 @@ trait ProvidersAwareTrait
 
         $this->providers[] = $provider;
 
-        // Helpers::validateClass($provider, Provides::class);
+        // DateFactory::validateClass($provider, Provides::class);
 
         /** @var class-string<ProviderContract> $providerClass */
         $providerClass = $provider;

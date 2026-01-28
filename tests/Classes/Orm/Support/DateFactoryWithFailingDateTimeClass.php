@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Classes\Orm\Support;
 
 use DateTime;
 use Override;
-use Valkyrja\Orm\Support\Helpers;
+use Valkyrja\Orm\Factory\DateFactory;
 
 /**
  * Test helper class that simulates DateTime creation failure.
  */
-class HelpersWithFailingDateTimeClass extends Helpers
+class DateFactoryWithFailingDateTimeClass extends DateFactory
 {
     /**
      * @inheritDoc

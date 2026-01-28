@@ -11,36 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Support;
+namespace Valkyrja\Orm\Factory;
 
 use DateTime;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function microtime;
-use function str_replace;
 
-class Helpers
+class DateFactory
 {
-    /**
-     * Get a column for a value bind.
-     *
-     * @param string $column The column
-     */
-    public static function getColumnForValueBind(string $column): string
-    {
-        return ':'
-            . str_replace(
-                [
-                    '.',
-                    ':',
-                    '-',
-                ],
-                '',
-                $column
-            );
-    }
-
     /**
      * Get the formatted date.
      *
