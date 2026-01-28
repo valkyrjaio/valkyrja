@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Session\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
@@ -25,13 +26,17 @@ use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Cookie\CookieSession;
 use Valkyrja\Session\Manager\Cookie\EncryptedCookieSession;
-use Valkyrja\Session\Manager\Jwt\EncryptedJwtSession;
-use Valkyrja\Session\Manager\Jwt\JwtSession;
+use Valkyrja\Session\Manager\Jwt\Cli\EncryptedOptionJwtSession;
+use Valkyrja\Session\Manager\Jwt\Cli\OptionJwtSession;
+use Valkyrja\Session\Manager\Jwt\Http\EncryptedHeaderJwtSession;
+use Valkyrja\Session\Manager\Jwt\Http\HeaderJwtSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Manager\PhpSession;
-use Valkyrja\Session\Manager\Token\EncryptedTokenSession;
-use Valkyrja\Session\Manager\Token\TokenSession;
+use Valkyrja\Session\Manager\Token\Cli\EncryptedOptionTokenSession;
+use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
+use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
+use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 use Valkyrja\Session\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -51,10 +56,14 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CacheSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CookieSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(EncryptedCookieSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(JwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedJwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(TokenSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedTokenSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(OptionJwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedOptionJwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(HeaderJwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedHeaderJwtSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(OptionTokenSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedOptionTokenSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(HeaderTokenSession::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedHeaderTokenSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(LogSession::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CookieParams::class, ServiceProvider::publishers());
     }
@@ -67,10 +76,14 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CacheSession::class, ServiceProvider::provides());
         self::assertContains(CookieSession::class, ServiceProvider::provides());
         self::assertContains(EncryptedCookieSession::class, ServiceProvider::provides());
-        self::assertContains(JwtSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedJwtSession::class, ServiceProvider::provides());
-        self::assertContains(TokenSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedTokenSession::class, ServiceProvider::provides());
+        self::assertContains(OptionJwtSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedOptionJwtSession::class, ServiceProvider::provides());
+        self::assertContains(HeaderJwtSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedHeaderJwtSession::class, ServiceProvider::provides());
+        self::assertContains(OptionTokenSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedOptionTokenSession::class, ServiceProvider::provides());
+        self::assertContains(HeaderTokenSession::class, ServiceProvider::provides());
+        self::assertContains(EncryptedHeaderTokenSession::class, ServiceProvider::provides());
         self::assertContains(LogSession::class, ServiceProvider::provides());
         self::assertContains(CookieParams::class, ServiceProvider::provides());
     }
@@ -149,57 +162,113 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /**
      * @throws Exception
      */
-    public function testPublishJwtSession(): void
+    public function testPublishOptionJwtSession(): void
     {
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
-        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+        $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
 
-        $callback = ServiceProvider::publishers()[JwtSession::class];
+        $callback = ServiceProvider::publishers()[OptionJwtSession::class];
         $callback($this->container);
 
-        self::assertInstanceOf(JwtSession::class, $this->container->getSingleton(JwtSession::class));
+        self::assertInstanceOf(OptionJwtSession::class, $this->container->getSingleton(OptionJwtSession::class));
     }
 
     /**
      * @throws Exception
      */
-    public function testPublishEncryptedJwtSession(): void
+    public function testPublishEncryptedOptionJwtSession(): void
+    {
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
+        $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
+
+        $callback = ServiceProvider::publishers()[EncryptedOptionJwtSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(EncryptedOptionJwtSession::class, $this->container->getSingleton(EncryptedOptionJwtSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishHeaderJwtSession(): void
+    {
+        $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
+
+        $callback = ServiceProvider::publishers()[HeaderJwtSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(HeaderJwtSession::class, $this->container->getSingleton(HeaderJwtSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishEncryptedHeaderJwtSession(): void
     {
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedJwtSession::class];
+        $callback = ServiceProvider::publishers()[EncryptedHeaderJwtSession::class];
         $callback($this->container);
 
-        self::assertInstanceOf(EncryptedJwtSession::class, $this->container->getSingleton(EncryptedJwtSession::class));
+        self::assertInstanceOf(EncryptedHeaderJwtSession::class, $this->container->getSingleton(EncryptedHeaderJwtSession::class));
     }
 
     /**
      * @throws Exception
      */
-    public function testPublishTokenSession(): void
+    public function testPublishOptionTokenSession(): void
+    {
+        $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
+
+        $callback = ServiceProvider::publishers()[OptionTokenSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OptionTokenSession::class, $this->container->getSingleton(OptionTokenSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishEncryptedOptionTokenSession(): void
+    {
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
+
+        $callback = ServiceProvider::publishers()[EncryptedOptionTokenSession::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(EncryptedOptionTokenSession::class, $this->container->getSingleton(EncryptedOptionTokenSession::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishHeaderTokenSession(): void
     {
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[TokenSession::class];
+        $callback = ServiceProvider::publishers()[HeaderTokenSession::class];
         $callback($this->container);
 
-        self::assertInstanceOf(TokenSession::class, $this->container->getSingleton(TokenSession::class));
+        self::assertInstanceOf(HeaderTokenSession::class, $this->container->getSingleton(HeaderTokenSession::class));
     }
 
     /**
      * @throws Exception
      */
-    public function testPublishEncryptedTokenSession(): void
+    public function testPublishEncryptedHeaderTokenSession(): void
     {
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedTokenSession::class];
+        $callback = ServiceProvider::publishers()[EncryptedHeaderTokenSession::class];
         $callback($this->container);
 
-        self::assertInstanceOf(EncryptedTokenSession::class, $this->container->getSingleton(EncryptedTokenSession::class));
+        self::assertInstanceOf(EncryptedHeaderTokenSession::class, $this->container->getSingleton(EncryptedHeaderTokenSession::class));
     }
 
     /**

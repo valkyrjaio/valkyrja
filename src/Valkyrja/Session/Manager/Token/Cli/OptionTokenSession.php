@@ -11,29 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager\Jwt;
+namespace Valkyrja\Session\Manager\Token\Cli;
 
+use JsonException;
 use Override;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
-use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Constant\HeaderValue;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Jwt\Manager\Contract\JwtContract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Session\Manager\Abstract\Session;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
-class JwtSession extends Session
+class OptionTokenSession extends Session
 {
     /**
      * @param non-empty-string|null $sessionId   The session id
      * @param non-empty-string|null $sessionName The session id
-     * @param non-empty-string      $headerName  The header name
+     * @param non-empty-string      $optionName  The option name
      */
     public function __construct(
-        protected JwtContract $jwt,
-        protected ServerRequestContract $request,
+        protected InputContract $input,
         string|null $sessionId = null,
         string|null $sessionName = null,
-        protected string $headerName = HeaderName::AUTHORIZATION
+        protected string $optionName = OptionName::TOKEN
     ) {
         parent::__construct(
             sessionId: $sessionId,
@@ -43,20 +41,17 @@ class JwtSession extends Session
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     #[Override]
     public function start(): void
     {
-        $headerLine = $this->request->getHeaderLine($this->headerName);
+        $option = $this->input->getOption($this->optionName)[0] ?? null;
+        $token  = $option?->getValue();
 
-        if ($headerLine === '') {
+        if ($token === null) {
             return;
-        }
-
-        [$bearer, $token] = explode(' ', $headerLine);
-
-        if ($bearer !== HeaderValue::BEARER || $token === '') {
-            throw new InvalidAuthenticationException('Invalid authorization header');
         }
 
         $this->setDataFromTokenValue($token);
@@ -64,10 +59,12 @@ class JwtSession extends Session
 
     /**
      * @param non-empty-string $value The token value
+     *
+     * @throws JsonException
      */
     protected function setDataFromTokenValue(string $value): void
     {
         /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = $this->jwt->decode($value);
+        $this->data = Arr::fromString($value);
     }
 }

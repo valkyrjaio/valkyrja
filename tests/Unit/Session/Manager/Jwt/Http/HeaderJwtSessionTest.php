@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Session\Manager\Jwt;
+namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
@@ -19,16 +19,16 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\Jwt\JwtSession;
+use Valkyrja\Session\Manager\Jwt\Http\HeaderJwtSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class JwtSessionTest extends TestCase
+class HeaderJwtSessionTest extends TestCase
 {
     protected JwtContract&MockObject $jwt;
 
     protected ServerRequestContract&MockObject $request;
 
-    protected JwtSession $session;
+    protected HeaderJwtSession $session;
 
     protected function setUp(): void
     {
@@ -45,7 +45,7 @@ class JwtSessionTest extends TestCase
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
 
-        $this->session = new JwtSession($this->jwt, $this->request);
+        $this->session = new HeaderJwtSession($this->jwt, $this->request);
     }
 
     public function testImplementsSessionContract(): void
@@ -70,7 +70,7 @@ class JwtSessionTest extends TestCase
             ->with('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test')
             ->willReturn(['key' => 'value', 'key2' => 'value2']);
 
-        $session = new JwtSession($jwt, $request);
+        $session = new HeaderJwtSession($jwt, $request);
 
         self::assertSame('value', $session->get('key'));
         self::assertSame('value2', $session->get('key2'));
@@ -90,7 +90,7 @@ class JwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $session = new JwtSession($jwt, $request);
+        $session = new HeaderJwtSession($jwt, $request);
 
         self::assertSame([], $session->all());
     }
@@ -112,7 +112,7 @@ class JwtSessionTest extends TestCase
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
-        new JwtSession($jwt, $request);
+        new HeaderJwtSession($jwt, $request);
     }
 
     public function testStartThrowsExceptionForEmptyToken(): void
@@ -132,7 +132,7 @@ class JwtSessionTest extends TestCase
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
-        new JwtSession($jwt, $request);
+        new HeaderJwtSession($jwt, $request);
     }
 
     public function testConstructorWithSessionIdAndName(): void
@@ -149,7 +149,7 @@ class JwtSessionTest extends TestCase
             ->method('getHeaderLine')
             ->willReturn('');
 
-        $session = new JwtSession($jwt, $request, 'session-id', 'MY_SESSION');
+        $session = new HeaderJwtSession($jwt, $request, 'session-id', 'MY_SESSION');
 
         self::assertSame('session-id', $session->getId());
         self::assertSame('MY_SESSION', $session->getName());
@@ -170,7 +170,7 @@ class JwtSessionTest extends TestCase
             ->with('X-Custom-Auth')
             ->willReturn('');
 
-        $session = new JwtSession($jwt, $request, null, null, 'X-Custom-Auth');
+        $session = new HeaderJwtSession($jwt, $request, null, null, 'X-Custom-Auth');
 
         self::assertSame('', $session->getId());
     }
