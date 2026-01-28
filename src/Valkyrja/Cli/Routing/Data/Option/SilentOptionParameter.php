@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Option;
 
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 class SilentOptionParameter extends OptionParameter
 {
-    public const string NAME       = 'silent';
-    public const string SHORT_NAME = 's';
-
     public function __construct()
     {
         parent::__construct(
-            name: self::NAME,
+            name: OptionName::SILENT,
             description: 'All output is suppressed',
-            shortNames: [self::SHORT_NAME],
+            shortNames: [OptionShortName::SILENT],
             valueMode: OptionValueMode::NONE
         );
     }

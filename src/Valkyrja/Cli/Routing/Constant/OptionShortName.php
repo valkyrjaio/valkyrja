@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Constant;
 
-final class OptionName
+final class OptionShortName
 {
     /** @var non-empty-string */
-    public const string HELP = 'help';
+    public const string HELP = 'h';
     /** @var non-empty-string */
-    public const string VERSION = 'version';
+    public const string VERSION = 'v';
     /** @var non-empty-string */
-    public const string QUIET = 'quiet';
+    public const string QUIET = 'q';
     /** @var non-empty-string */
-    public const string SILENT = 'silent';
+    public const string SILENT = 's';
     /** @var non-empty-string */
-    public const string NO_INTERACTION = 'no-interaction';
+    public const string NO_INTERACTION = 'N';
     /** @var non-empty-string */
-    public const string TOKEN = 'token';
+    public const string TOKEN = 't';
 }

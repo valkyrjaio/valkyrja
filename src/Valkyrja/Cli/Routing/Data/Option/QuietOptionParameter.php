@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Option;
 
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 class QuietOptionParameter extends OptionParameter
 {
-    public const string NAME       = 'quiet';
-    public const string SHORT_NAME = 'q';
-
     public function __construct()
     {
         parent::__construct(
-            name: self::NAME,
+            name: OptionName::QUIET,
             description: 'Output is suppressed, except for errors.',
-            shortNames: [self::SHORT_NAME],
+            shortNames: [OptionShortName::QUIET],
             valueMode: OptionValueMode::NONE
         );
     }

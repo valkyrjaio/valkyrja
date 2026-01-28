@@ -17,9 +17,8 @@ use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -38,12 +37,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -57,7 +56,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithNoInteractionOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: NoInteractionOptionParameter::NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionName::NO_INTERACTION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -67,12 +66,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -86,7 +85,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithNoInteractionShortOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: NoInteractionOptionParameter::SHORT_NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionShortName::NO_INTERACTION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -96,12 +95,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -115,7 +114,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithQuietOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: QuietOptionParameter::NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionName::QUIET));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -125,12 +124,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -144,7 +143,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithQuietShortOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: QuietOptionParameter::SHORT_NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionShortName::QUIET));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -154,12 +153,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -173,7 +172,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithSilentOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: SilentOptionParameter::NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionName::SILENT));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -183,12 +182,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -202,7 +201,7 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     public function testWithSilentShortOption(): void
     {
         $config  = new Config();
-        $input   = new Input()->withOptions(new Option(name: SilentOptionParameter::SHORT_NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionShortName::SILENT));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -212,12 +211,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -232,9 +231,9 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     {
         $config  = new Config();
         $input   = new Input()->withOptions(
-            new Option(name: NoInteractionOptionParameter::NAME),
-            new Option(name: QuietOptionParameter::NAME),
-            new Option(name: SilentOptionParameter::NAME),
+            new Option(name: OptionName::NO_INTERACTION),
+            new Option(name: OptionName::QUIET),
+            new Option(name: OptionName::SILENT),
         );
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -245,12 +244,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -265,9 +264,9 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
     {
         $config  = new Config();
         $input   = new Input()->withOptions(
-            new Option(name: NoInteractionOptionParameter::SHORT_NAME),
-            new Option(name: QuietOptionParameter::SHORT_NAME),
-            new Option(name: SilentOptionParameter::SHORT_NAME),
+            new Option(name: OptionShortName::NO_INTERACTION),
+            new Option(name: OptionShortName::QUIET),
+            new Option(name: OptionShortName::SILENT),
         );
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -278,12 +277,12 @@ class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckGlobalInteractionOptionsMiddleware(
             config: $config,
-            noInteractionOptionName: NoInteractionOptionParameter::NAME,
-            noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-            quietOptionName: QuietOptionParameter::NAME,
-            quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-            silentOptionName: SilentOptionParameter::NAME,
-            silentOptionShortName: SilentOptionParameter::SHORT_NAME
+            noInteractionOptionName: OptionName::NO_INTERACTION,
+            noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+            quietOptionName: OptionName::QUIET,
+            quietOptionShortName: OptionShortName::QUIET,
+            silentOptionName: OptionName::SILENT,
+            silentOptionShortName: OptionShortName::SILENT
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);

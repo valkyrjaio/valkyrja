@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Option;
 
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 class HelpOptionParameter extends OptionParameter
 {
-    public const string NAME       = 'help';
-    public const string SHORT_NAME = 'h';
-
     public function __construct()
     {
         parent::__construct(
-            name: self::NAME,
+            name: OptionName::HELP,
             description: 'Help with this command',
-            shortNames: [self::SHORT_NAME],
+            shortNames: [OptionShortName::HELP],
             valueMode: OptionValueMode::NONE
         );
     }

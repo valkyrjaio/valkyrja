@@ -16,7 +16,8 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -35,8 +36,8 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForVersionOptionsMiddleware(
             commandName: VersionCommand::NAME,
-            optionName: VersionOptionParameter::NAME,
-            optionShortName: VersionOptionParameter::SHORT_NAME,
+            optionName: OptionName::VERSION,
+            optionShortName: OptionShortName::VERSION,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -46,7 +47,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
 
     public function testWithVersionOption(): void
     {
-        $input   = new Input()->withOptions(new Option(name: VersionOptionParameter::NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionName::VERSION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -55,8 +56,8 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForVersionOptionsMiddleware(
             commandName: VersionCommand::NAME,
-            optionName: VersionOptionParameter::NAME,
-            optionShortName: VersionOptionParameter::SHORT_NAME,
+            optionName: OptionName::VERSION,
+            optionShortName: OptionShortName::VERSION,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -68,7 +69,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
 
     public function testWithVersionShortOption(): void
     {
-        $input   = new Input()->withOptions(new Option(name: VersionOptionParameter::SHORT_NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionShortName::VERSION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -77,8 +78,8 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForVersionOptionsMiddleware(
             commandName: VersionCommand::NAME,
-            optionName: VersionOptionParameter::NAME,
-            optionShortName: VersionOptionParameter::SHORT_NAME,
+            optionName: OptionName::VERSION,
+            optionShortName: OptionShortName::VERSION,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);

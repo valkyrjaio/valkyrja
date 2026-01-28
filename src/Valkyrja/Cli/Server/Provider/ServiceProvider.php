@@ -21,10 +21,9 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
@@ -244,12 +243,12 @@ final class ServiceProvider extends Provider
             CheckGlobalInteractionOptionsMiddleware::class,
             new CheckGlobalInteractionOptionsMiddleware(
                 config: $container->getSingleton(Config::class),
-                noInteractionOptionName: NoInteractionOptionParameter::NAME,
-                noInteractionOptionShortName: NoInteractionOptionParameter::SHORT_NAME,
-                quietOptionName: QuietOptionParameter::NAME,
-                quietOptionShortName: QuietOptionParameter::SHORT_NAME,
-                silentOptionName: SilentOptionParameter::NAME,
-                silentOptionShortName: SilentOptionParameter::SHORT_NAME
+                noInteractionOptionName: OptionName::NO_INTERACTION,
+                noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
+                quietOptionName: OptionName::QUIET,
+                quietOptionShortName: OptionShortName::QUIET,
+                silentOptionName: OptionName::SILENT,
+                silentOptionShortName: OptionShortName::SILENT
             )
         );
     }
