@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Vlid\Support;
 
+use DateTime;
 use Exception;
+use Override;
+use Valkyrja\Tests\Classes\Type\Vlid\VlidClass;
+use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Support\Vlid;
 use Valkyrja\Type\Vlid\Support\VlidV1;
@@ -22,8 +26,23 @@ use Valkyrja\Type\Vlid\Support\VlidV3;
 use Valkyrja\Type\Vlid\Support\VlidV4;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
+use function strlen;
+
 class VlidTest extends AbstractVlidTestCase
 {
+    #[Override]
+    protected function setUp(): void
+    {
+        VlidClass::reset();
+    }
+
+    #[Override]
+    protected function tearDown(): void
+    {
+        VlidClass::reset();
+        parent::tearDown();
+    }
+
     public function testDefaultVersion(): void
     {
         self::assertSame(Version::V1, Vlid::VERSION);
@@ -105,5 +124,91 @@ class VlidTest extends AbstractVlidTestCase
         $this->expectExceptionMessage("Invalid VLID $vlid provided.");
 
         Vlid::validate($vlid);
+    }
+
+    /**
+     * Test getTimeFromDateTime returns timestamp with microseconds (line 133).
+     */
+    public function testGetTimeFromDateTime(): void
+    {
+        $dateTime = new DateTime('2024-01-15 12:30:45.123456');
+
+        $result = VlidClass::testGetTimeFromDateTime($dateTime);
+
+        // Should return Unix timestamp with microseconds (Uu format)
+        self::assertIsString($result);
+        self::assertMatchesRegularExpression('/^\d+$/', $result);
+        // The result should be longer than Ulid's (which uses Uv - milliseconds)
+        // Vlid uses Uu which includes microseconds (6 digits instead of 3)
+        self::assertGreaterThanOrEqual(16, strlen($result));
+    }
+
+    /**
+     * Test areAllRandomBytesMax returns correct values (line 153).
+     * Note: Vlid has only 3 random bytes instead of 4 like Ulid.
+     */
+    public function testAreAllRandomBytesMax(): void
+    {
+        // Test with non-max bytes
+        VlidClass::setRandomBytes([
+            1 => 100,
+            2 => 200,
+            3 => 300,
+        ]);
+
+        self::assertFalse(VlidClass::testAreAllRandomBytesMax());
+
+        // Test with all max bytes (Vlid uses 3 random bytes)
+        VlidClass::setRandomBytes([
+            1 => Ulid::MAX_PART,
+            2 => Ulid::MAX_PART,
+            3 => Ulid::MAX_PART,
+        ]);
+
+        self::assertTrue(VlidClass::testAreAllRandomBytesMax());
+    }
+
+    /**
+     * Test that generate handles when all random bytes are at max.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithAllRandomBytesAtMax(): void
+    {
+        // First generate a VLID to initialize the state
+        VlidClass::generate();
+
+        $currentTime = VlidClass::getStoredTime();
+
+        // Set the time to the same value and set all random bytes to max (3 for Vlid)
+        VlidClass::setTime($currentTime);
+        VlidClass::setRandomBytes([
+            1 => Ulid::MAX_PART,
+            2 => Ulid::MAX_PART,
+            3 => Ulid::MAX_PART,
+        ]);
+
+        // Generate another VLID - this should trigger the elseif branch
+        $vlid = VlidClass::generate();
+
+        // The generated VLID should be valid
+        self::assertTrue(VlidClass::isValid($vlid));
+
+        // The time should have been incremented
+        self::assertGreaterThan($currentTime, VlidClass::getStoredTime());
+    }
+
+    /**
+     * Test generate with a DateTime (covers line 133 via normal flow).
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithDateTime(): void
+    {
+        $dateTime = new DateTime('2024-06-15 10:30:00.123456');
+
+        $vlid = VlidClass::generate($dateTime);
+
+        self::assertTrue(VlidClass::isValid($vlid));
     }
 }
