@@ -20,7 +20,7 @@ use Valkyrja\Type\Ulid\Support\Ulid;
 /**
  * Test wrapper for Ulid to expose protected methods and allow state manipulation.
  */
-class UlidTestWrapper extends Ulid
+class UlidClass extends Ulid
 {
     /**
      * Whether to force unpackRandomBytes to return false.

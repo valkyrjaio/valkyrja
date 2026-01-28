@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid\Support;
 
 use Exception;
 use Override;
-use Valkyrja\Tests\Classes\Type\Vlid\VlidV2TestWrapper;
+use Valkyrja\Tests\Classes\Type\Vlid\VlidV2Class;
 use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Support\VlidV1;
@@ -31,13 +31,13 @@ class VlidV2Test extends AbstractVlidTestCase
     #[Override]
     protected function setUp(): void
     {
-        VlidV2TestWrapper::reset();
+        VlidV2Class::reset();
     }
 
     #[Override]
     protected function tearDown(): void
     {
-        VlidV2TestWrapper::reset();
+        VlidV2Class::reset();
         parent::tearDown();
     }
 
@@ -94,24 +94,24 @@ class VlidV2Test extends AbstractVlidTestCase
     public function testAreAllRandomBytesMax(): void
     {
         // Test with non-max bytes
-        VlidV2TestWrapper::setRandomBytes([
+        VlidV2Class::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => 400,
         ]);
 
-        self::assertFalse(VlidV2TestWrapper::testAreAllRandomBytesMax());
+        self::assertFalse(VlidV2Class::testAreAllRandomBytesMax());
 
         // Test with all max bytes (VlidV2 uses 4 random bytes)
-        VlidV2TestWrapper::setRandomBytes([
+        VlidV2Class::setRandomBytes([
             1 => Ulid::MAX_PART,
             2 => Ulid::MAX_PART,
             3 => Ulid::MAX_PART,
             4 => Ulid::MAX_PART,
         ]);
 
-        self::assertTrue(VlidV2TestWrapper::testAreAllRandomBytesMax());
+        self::assertTrue(VlidV2Class::testAreAllRandomBytesMax());
     }
 
     /**
@@ -122,13 +122,13 @@ class VlidV2Test extends AbstractVlidTestCase
     public function testGenerateWithAllRandomBytesAtMax(): void
     {
         // First generate a VLID V2 to initialize the state
-        VlidV2TestWrapper::generate();
+        VlidV2Class::generate();
 
-        $currentTime = VlidV2TestWrapper::getStoredTime();
+        $currentTime = VlidV2Class::getStoredTime();
 
         // Set the time to the same value and set all random bytes to max (4 for VlidV2)
-        VlidV2TestWrapper::setTime($currentTime);
-        VlidV2TestWrapper::setRandomBytes([
+        VlidV2Class::setTime($currentTime);
+        VlidV2Class::setRandomBytes([
             1 => Ulid::MAX_PART,
             2 => Ulid::MAX_PART,
             3 => Ulid::MAX_PART,
@@ -136,12 +136,12 @@ class VlidV2Test extends AbstractVlidTestCase
         ]);
 
         // Generate another VLID V2 - this should trigger the elseif branch
-        $vlid = VlidV2TestWrapper::generate();
+        $vlid = VlidV2Class::generate();
 
         // The generated VLID V2 should be valid
-        self::assertTrue(VlidV2TestWrapper::isValid($vlid));
+        self::assertTrue(VlidV2Class::isValid($vlid));
 
         // The time should have been incremented
-        self::assertGreaterThan($currentTime, VlidV2TestWrapper::getStoredTime());
+        self::assertGreaterThan($currentTime, VlidV2Class::getStoredTime());
     }
 }

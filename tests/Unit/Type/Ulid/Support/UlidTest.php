@@ -17,7 +17,7 @@ use DateTime;
 use Exception;
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Tests\Classes\Type\Ulid\UlidTestWrapper;
+use Valkyrja\Tests\Classes\Type\Ulid\UlidClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Ulid\Support\Ulid;
@@ -32,13 +32,13 @@ class UlidTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        UlidTestWrapper::reset();
+        UlidClass::reset();
     }
 
     #[Override]
     protected function tearDown(): void
     {
-        UlidTestWrapper::reset();
+        UlidClass::reset();
         parent::tearDown();
     }
 
@@ -99,13 +99,13 @@ class UlidTest extends TestCase
     public function testGenerateWithAllRandomBytesAtMax(): void
     {
         // First generate a ULID to initialize the state
-        UlidTestWrapper::generate();
+        UlidClass::generate();
 
-        $currentTime = UlidTestWrapper::getStoredTime();
+        $currentTime = UlidClass::getStoredTime();
 
         // Set the time to the same value and set all random bytes to max
-        UlidTestWrapper::setTime($currentTime);
-        UlidTestWrapper::setRandomBytes([
+        UlidClass::setTime($currentTime);
+        UlidClass::setRandomBytes([
             1 => Ulid::MAX_PART,
             2 => Ulid::MAX_PART,
             3 => Ulid::MAX_PART,
@@ -113,13 +113,13 @@ class UlidTest extends TestCase
         ]);
 
         // Generate another ULID - this should trigger the elseif branch (lines 85-87)
-        $ulid = UlidTestWrapper::generate();
+        $ulid = UlidClass::generate();
 
         // The generated ULID should be valid
-        self::assertTrue(UlidTestWrapper::isValid($ulid));
+        self::assertTrue(UlidClass::isValid($ulid));
 
         // The time should have been incremented
-        self::assertGreaterThan($currentTime, UlidTestWrapper::getStoredTime());
+        self::assertGreaterThan($currentTime, UlidClass::getStoredTime());
     }
 
     /**
@@ -132,7 +132,7 @@ class UlidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The timestamp must be positive.');
 
-        UlidTestWrapper::testGetTime($dateTime);
+        UlidClass::testGetTime($dateTime);
     }
 
     /**
@@ -142,7 +142,7 @@ class UlidTest extends TestCase
     {
         $dateTime = new DateTime('2024-01-15 12:30:45.123456');
 
-        $result = UlidTestWrapper::testGetTimeFromDateTime($dateTime);
+        $result = UlidClass::testGetTimeFromDateTime($dateTime);
 
         // Should return Unix timestamp in milliseconds (Uv format)
         self::assertIsString($result);
@@ -155,7 +155,7 @@ class UlidTest extends TestCase
     public function testIncreaseTime(): void
     {
         $time   = '1705312800000';
-        $result = UlidTestWrapper::testIncreaseTime($time);
+        $result = UlidClass::testIncreaseTime($time);
 
         self::assertSame('1705312800001', $result);
     }
@@ -168,16 +168,16 @@ class UlidTest extends TestCase
     public function testUpdateRandomBytesResetsMaxToZero(): void
     {
         // Set random bytes where the last one is at max
-        UlidTestWrapper::setRandomBytes([
+        UlidClass::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => Ulid::MAX_PART,
         ]);
 
-        UlidTestWrapper::testUpdateRandomBytes();
+        UlidClass::testUpdateRandomBytes();
 
-        $randomBytes = UlidTestWrapper::getRandomBytes();
+        $randomBytes = UlidClass::getRandomBytes();
 
         // The 4th byte should be reset to 0 and 3rd byte incremented
         self::assertSame(0, $randomBytes[4]);
@@ -192,16 +192,16 @@ class UlidTest extends TestCase
     public function testUpdateRandomBytesWithMultipleBytesAtMax(): void
     {
         // Set random bytes where multiple are at max
-        UlidTestWrapper::setRandomBytes([
+        UlidClass::setRandomBytes([
             1 => 100,
             2 => Ulid::MAX_PART,
             3 => Ulid::MAX_PART,
             4 => Ulid::MAX_PART,
         ]);
 
-        UlidTestWrapper::testUpdateRandomBytes();
+        UlidClass::testUpdateRandomBytes();
 
-        $randomBytes = UlidTestWrapper::getRandomBytes();
+        $randomBytes = UlidClass::getRandomBytes();
 
         // Bytes 2, 3, 4 should be reset to 0, and byte 1 should be incremented
         self::assertSame(101, $randomBytes[1]);
@@ -217,12 +217,12 @@ class UlidTest extends TestCase
      */
     public function testGenerateRandomBytesThrowsOnUnpackFailure(): void
     {
-        UlidTestWrapper::setForceUnpackFail(true);
+        UlidClass::setForceUnpackFail(true);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Random bytes failed to unpack');
 
-        UlidTestWrapper::generate();
+        UlidClass::generate();
     }
 
     /**
@@ -233,16 +233,16 @@ class UlidTest extends TestCase
     public function testConvertRandomBytesPart(): void
     {
         // Initialize state by generating a ULID
-        UlidTestWrapper::generate();
+        UlidClass::generate();
 
         // Test converting each random byte part
         for ($i = 1; $i <= 4; $i++) {
-            $result = UlidTestWrapper::testConvertRandomBytesPart($i);
+            $result = UlidClass::testConvertRandomBytesPart($i);
             self::assertIsString($result);
         }
 
         // Test with index > MAX_RANDOM_BYTES returns empty string
-        $result = UlidTestWrapper::testConvertRandomBytesPart(5);
+        $result = UlidClass::testConvertRandomBytesPart(5);
         self::assertSame('', $result);
     }
 
@@ -252,24 +252,24 @@ class UlidTest extends TestCase
     public function testAreAllRandomBytesMax(): void
     {
         // Test with non-max bytes
-        UlidTestWrapper::setRandomBytes([
+        UlidClass::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => 400,
         ]);
 
-        self::assertFalse(UlidTestWrapper::testAreAllRandomBytesMax());
+        self::assertFalse(UlidClass::testAreAllRandomBytesMax());
 
         // Test with all max bytes
-        UlidTestWrapper::setRandomBytes([
+        UlidClass::setRandomBytes([
             1 => Ulid::MAX_PART,
             2 => Ulid::MAX_PART,
             3 => Ulid::MAX_PART,
             4 => Ulid::MAX_PART,
         ]);
 
-        self::assertTrue(UlidTestWrapper::testAreAllRandomBytesMax());
+        self::assertTrue(UlidClass::testAreAllRandomBytesMax());
     }
 
     /**
@@ -281,8 +281,8 @@ class UlidTest extends TestCase
     {
         $dateTime = new DateTime('2024-06-15 10:30:00');
 
-        $ulid = UlidTestWrapper::generate($dateTime);
+        $ulid = UlidClass::generate($dateTime);
 
-        self::assertTrue(UlidTestWrapper::isValid($ulid));
+        self::assertTrue(UlidClass::isValid($ulid));
     }
 }

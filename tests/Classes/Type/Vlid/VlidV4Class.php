@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Type\Vlid;
 
-use DateTimeInterface;
-use Valkyrja\Type\Vlid\Support\Vlid;
+use Valkyrja\Type\Vlid\Support\VlidV4;
 
 /**
- * Test wrapper for Vlid to expose protected methods and allow state manipulation.
+ * Test wrapper for VlidV4 to expose protected methods and allow state manipulation.
  */
-class VlidTestWrapper extends Vlid
+class VlidV4Class extends VlidV4
 {
     /**
      * Set the time static property.
@@ -55,14 +54,6 @@ class VlidTestWrapper extends Vlid
     public static function getRandomBytes(): array
     {
         return static::$randomBytes;
-    }
-
-    /**
-     * Expose getTimeFromDateTime for testing.
-     */
-    public static function testGetTimeFromDateTime(DateTimeInterface $dateTime): string
-    {
-        return static::getTimeFromDateTime($dateTime);
     }
 
     /**
