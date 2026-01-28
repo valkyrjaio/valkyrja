@@ -141,7 +141,6 @@ class Env
         ComponentClass::JWT,
         ComponentClass::LOG,
         ComponentClass::MAIL,
-        ComponentClass::NOTIFICATION,
         ComponentClass::ORM,
         ComponentClass::SESSION,
         ComponentClass::SMS,
