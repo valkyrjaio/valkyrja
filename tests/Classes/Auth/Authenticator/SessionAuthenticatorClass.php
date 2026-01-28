@@ -19,7 +19,7 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 /**
  * Test wrapper for SessionAuthenticator to expose protected methods.
  */
-class SessionAuthenticatorTestWrapper extends SessionAuthenticator
+class SessionAuthenticatorClass extends SessionAuthenticator
 {
     /**
      * Expose getAuthenticatedUsersFromSession for testing.

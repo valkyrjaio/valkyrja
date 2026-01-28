@@ -22,7 +22,7 @@ use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Tests\Classes\Auth\Authenticator\SessionAuthenticatorTestWrapper;
+use Valkyrja\Tests\Classes\Auth\Authenticator\SessionAuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
@@ -59,7 +59,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -86,7 +86,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -108,7 +108,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn(null);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -133,7 +133,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -158,7 +158,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -180,7 +180,7 @@ class SessionAuthenticatorTest extends TestCase
         $this->session->expects($this->never())
             ->method('get');
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -201,7 +201,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn(null);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -226,7 +226,7 @@ class SessionAuthenticatorTest extends TestCase
             ->with($customSessionId)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorTestWrapper(
+        $authenticator = new SessionAuthenticatorClass(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
