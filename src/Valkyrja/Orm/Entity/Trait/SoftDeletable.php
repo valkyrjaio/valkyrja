@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity\Trait;
 
 use Valkyrja\Orm\Constant\DateFormat;
-use Valkyrja\Orm\Support\Helpers;
+use Valkyrja\Orm\Factory\DateFactory;
 
 trait SoftDeletable
 {
@@ -31,7 +31,7 @@ trait SoftDeletable
      */
     public static function getFormattedDeletedDate(): string
     {
-        return Helpers::getFormattedDate(static::getDeletedDateFormat());
+        return DateFactory::getFormattedDate(static::getDeletedDateFormat());
     }
 
     /**
