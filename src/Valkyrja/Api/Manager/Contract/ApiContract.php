@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Manager\Contract;
 
 use Throwable;
-use Valkyrja\Api\Data\Contract\JsonContract;
+use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 

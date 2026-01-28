@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Data;
+namespace Valkyrja\Api\Model;
 
 use Override;
-use Valkyrja\Api\Data\Contract\JsonDataContract;
+use Valkyrja\Api\Model\Contract\JsonDataContract;
 use Valkyrja\Type\Model\Abstract\Model;
 
 class JsonData extends Model implements JsonDataContract

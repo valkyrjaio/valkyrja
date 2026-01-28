@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Api\Data;
+namespace Valkyrja\Tests\Unit\Api\Model;
 
 use stdClass;
-use Valkyrja\Api\Data\Contract\JsonDataContract;
-use Valkyrja\Api\Data\JsonData;
+use Valkyrja\Api\Model\Contract\JsonDataContract;
+use Valkyrja\Api\Model\JsonData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

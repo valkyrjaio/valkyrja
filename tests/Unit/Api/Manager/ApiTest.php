@@ -17,9 +17,9 @@ use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Data\Contract\JsonContract;
 use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
+use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
@@ -350,7 +350,8 @@ class ApiTest extends TestCase
     {
         $this->responseFactory->expects($this->once())
             ->method('createJsonResponse')
-            ->with(self::callback(static fn (array $data): bool => isset($data['data'])
+            ->with(self::callback(
+                static fn (array $data): bool => isset($data['data'])
                     && isset($data['statusCode'], $data['status'])
             ))
             ->willReturn($this->jsonResponse);

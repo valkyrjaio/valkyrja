@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Data\Contract;
+namespace Valkyrja\Api\Model\Contract;
 
 use Valkyrja\Type\Model\Contract\ModelContract;
 

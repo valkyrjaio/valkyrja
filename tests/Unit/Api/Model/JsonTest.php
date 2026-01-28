@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Api\Data;
+namespace Valkyrja\Tests\Unit\Api\Model;
 
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Data\Contract\JsonContract;
-use Valkyrja\Api\Data\Json;
+use Valkyrja\Api\Model\Contract\JsonContract;
+use Valkyrja\Api\Model\Json;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
