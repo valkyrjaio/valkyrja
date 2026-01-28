@@ -95,7 +95,7 @@ class UlidTest extends TestCase
      * Test that generate handles when all random bytes are at max (lines 85-87).
      * This test ensures we hit the elseif branch when:
      * 1. doesTimeMatch() returns false (new time <= stored time)
-     * 2. areAllRandomBytesMax() returns true
+     * 2. areAllRandomBytesMax() returns true.
      *
      * @throws Exception
      */
