@@ -246,8 +246,6 @@ class Ulid extends Uid
             throw new RuntimeException('Random bytes failed to unpack');
         }
 
-        /** @var array<int, int> $randomBytes */
-
         return $randomBytes;
     }
 
@@ -260,7 +258,10 @@ class Ulid extends Uid
      */
     protected static function unpackRandomBytes(string $bytes): array|false
     {
-        return unpack('n*', $bytes);
+        /** @var array<int, int>|false $randomBytes */
+        $randomBytes =  unpack('n*', $bytes);
+
+        return $randomBytes;
     }
 
     /**
