@@ -16,7 +16,8 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -35,8 +36,8 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForHelpOptionsMiddleware(
             commandName: HelpCommand::NAME,
-            optionName: HelpOptionParameter::NAME,
-            optionShortName: HelpOptionParameter::SHORT_NAME,
+            optionName: OptionName::HELP,
+            optionShortName: OptionShortName::HELP,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -46,7 +47,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
     public function testWithHelpOption(): void
     {
-        $input   = new Input()->withOptions(new Option(name: HelpOptionParameter::NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionName::HELP));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -55,8 +56,8 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForHelpOptionsMiddleware(
             commandName: HelpCommand::NAME,
-            optionName: HelpOptionParameter::NAME,
-            optionShortName: HelpOptionParameter::SHORT_NAME,
+            optionName: OptionName::HELP,
+            optionShortName: OptionShortName::HELP,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
@@ -70,7 +71,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
     public function testWithHelpShortOption(): void
     {
-        $input   = new Input()->withOptions(new Option(name: HelpOptionParameter::SHORT_NAME));
+        $input   = new Input()->withOptions(new Option(name: OptionShortName::HELP));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
             ->expects($this->once())
@@ -79,8 +80,8 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
 
         $middleware = new CheckForHelpOptionsMiddleware(
             commandName: HelpCommand::NAME,
-            optionName: HelpOptionParameter::NAME,
-            optionShortName: HelpOptionParameter::SHORT_NAME,
+            optionName: OptionName::HELP,
+            optionShortName: OptionShortName::HELP,
         );
 
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);

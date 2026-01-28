@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Option;
 
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 class NoInteractionOptionParameter extends OptionParameter
 {
-    public const string NAME       = 'no-interaction';
-    public const string SHORT_NAME = 'N';
-
     public function __construct()
     {
         parent::__construct(
-            name: self::NAME,
+            name: OptionName::NO_INTERACTION,
             description: 'No interactive questions are asked.',
-            shortNames: [self::SHORT_NAME],
+            shortNames: [OptionShortName::NO_INTERACTION],
             valueMode: OptionValueMode::NONE
         );
     }

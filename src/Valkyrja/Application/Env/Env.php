@@ -35,8 +35,8 @@ use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
-use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -241,15 +241,15 @@ class Env
     /** @var non-empty-string */
     public const string CLI_HELP_COMMAND_NAME = HelpCommand::NAME;
     /** @var non-empty-string */
-    public const string CLI_HELP_OPTION_NAME = HelpOptionParameter::NAME;
+    public const string CLI_HELP_OPTION_NAME = OptionName::HELP;
     /** @var non-empty-string */
-    public const string CLI_HELP_OPTION_SHORT_NAME = HelpOptionParameter::SHORT_NAME;
+    public const string CLI_HELP_OPTION_SHORT_NAME = OptionShortName::HELP;
     /** @var non-empty-string */
     public const string CLI_VERSION_COMMAND_NAME = VersionCommand::NAME;
     /** @var non-empty-string */
-    public const string CLI_VERSION_OPTION_NAME = VersionOptionParameter::NAME;
+    public const string CLI_VERSION_OPTION_NAME = OptionName::VERSION;
     /** @var non-empty-string */
-    public const string CLI_VERSION_OPTION_SHORT_NAME = VersionOptionParameter::SHORT_NAME;
+    public const string CLI_VERSION_OPTION_SHORT_NAME = OptionShortName::VERSION;
 
     /************************************************************
      *
