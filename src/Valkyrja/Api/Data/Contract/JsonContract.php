@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Model\Contract;
+namespace Valkyrja\Api\Data\Contract;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Contract\ModelContract;
