@@ -61,8 +61,8 @@ class AuthenticatorTest extends TestCase
 
     public function testIsAuthenticatedReturnsFalseWhenNoUserAuthenticated(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         self::assertFalse($this->authenticator->isAuthenticated());
     }
@@ -88,8 +88,8 @@ class AuthenticatorTest extends TestCase
 
     public function testGetAuthenticatedReturnsNullWhenNoUserAuthenticated(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         self::assertNull($this->authenticator->getAuthenticated());
     }
@@ -115,8 +115,8 @@ class AuthenticatorTest extends TestCase
 
     public function testGetImpersonatedReturnsNullWhenNotImpersonating(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         self::assertNull($this->authenticator->getImpersonated());
     }
@@ -135,7 +135,7 @@ class AuthenticatorTest extends TestCase
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($impersonatedUser);
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         $result = $this->authenticator->getImpersonated();
 
@@ -144,8 +144,8 @@ class AuthenticatorTest extends TestCase
 
     public function testGetAuthenticatedUsers(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         $authenticatedUsers = $this->authenticator->getAuthenticatedUsers();
 
@@ -154,8 +154,8 @@ class AuthenticatorTest extends TestCase
 
     public function testSetAuthenticatedUsers(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         $newAuthenticatedUsers = new AuthenticatedUsers(self::USER_ID);
 
@@ -192,7 +192,7 @@ class AuthenticatorTest extends TestCase
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn(null);
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         $attempt = new AuthenticationAttempt(
             new RetrievalByUsername('nonexistent'),
@@ -267,7 +267,7 @@ class AuthenticatorTest extends TestCase
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($impersonatedUser);
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         // Verify impersonation is active
         self::assertTrue($this->authenticator->getAuthenticatedUsers()->isImpersonating());
@@ -283,8 +283,8 @@ class AuthenticatorTest extends TestCase
 
     public function testUnauthenticateNonCurrentUser(): void
     {
-        $this->store->expects($this->never())->method($this->anything());
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->store->expects($this->never())->method(self::anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         // Set up multiple authenticated users
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, null, self::USER_ID, self::USER_ID_2);
@@ -308,7 +308,7 @@ class AuthenticatorTest extends TestCase
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($this->user);
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         // Call getAuthenticated multiple times
         $result1 = $this->authenticator->getAuthenticated();
@@ -333,7 +333,7 @@ class AuthenticatorTest extends TestCase
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($impersonatedUser);
-        $this->hasher->expects($this->never())->method($this->anything());
+        $this->hasher->expects($this->never())->method(self::anything());
 
         // Call getImpersonated multiple times
         $result1 = $this->authenticator->getImpersonated();

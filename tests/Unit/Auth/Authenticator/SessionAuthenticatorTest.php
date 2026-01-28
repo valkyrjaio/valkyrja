@@ -42,8 +42,8 @@ class SessionAuthenticatorTest extends TestCase
     {
         $this->session = $this->createMock(SessionContract::class);
         // Use createStub for mocks that don't need expectations
-        $this->store   = $this->createStub(StoreContract::class);
-        $this->hasher  = $this->createStub(PasswordHasherContract::class);
+        $this->store   = self::createStub(StoreContract::class);
+        $this->hasher  = self::createStub(PasswordHasherContract::class);
     }
 
     /**
