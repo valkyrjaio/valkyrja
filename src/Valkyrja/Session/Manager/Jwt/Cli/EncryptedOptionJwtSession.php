@@ -11,35 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager\Jwt;
+namespace Valkyrja\Session\Manager\Jwt\Cli;
 
 use Override;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
-class EncryptedJwtSession extends JwtSession
+class EncryptedOptionJwtSession extends OptionJwtSession
 {
     /**
      * @param non-empty-string|null $sessionId   The session id
      * @param non-empty-string|null $sessionName The session id
-     * @param non-empty-string      $headerName  The header name
+     * @param non-empty-string      $optionName  The option name
      */
     public function __construct(
         protected CryptContract $crypt,
         protected JwtContract $jwt,
-        protected ServerRequestContract $request,
+        protected InputContract $input,
         string|null $sessionId = null,
         string|null $sessionName = null,
-        protected string $headerName = HeaderName::AUTHORIZATION
+        protected string $optionName = OptionName::TOKEN
     ) {
         parent::__construct(
             jwt: $jwt,
-            request: $request,
+            input: $input,
             sessionId: $sessionId,
             sessionName: $sessionName,
-            headerName: $headerName
+            optionName: $optionName
         );
     }
 

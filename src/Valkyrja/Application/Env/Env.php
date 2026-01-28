@@ -499,7 +499,11 @@ class Env
     /** @var SameSite */
     public const SameSite SESSION_COOKIE_PARAM_SAME_SITE = SameSite::NONE;
     /** @var non-empty-string|null */
+    public const string|null SESSION_JWT_OPTION_NAME = null;
+    /** @var non-empty-string|null */
     public const string|null SESSION_JWT_HEADER_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null SESSION_TOKEN_OPTION_NAME = null;
     /** @var non-empty-string|null */
     public const string|null SESSION_TOKEN_HEADER_NAME = null;
 

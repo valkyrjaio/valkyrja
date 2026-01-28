@@ -11,34 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Session\Manager\Token;
+namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\Token\EncryptedTokenSession;
-use Valkyrja\Session\Manager\Token\TokenSession;
+use Valkyrja\Session\Manager\Jwt\Http\EncryptedHeaderJwtSession;
+use Valkyrja\Session\Manager\Jwt\Http\HeaderJwtSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EncryptedTokenSessionTest extends TestCase
+class EncryptedHeaderJwtSessionTest extends TestCase
 {
     protected CryptContract&MockObject $crypt;
 
+    protected JwtContract&MockObject $jwt;
+
     protected ServerRequestContract&MockObject $request;
 
-    protected EncryptedTokenSession $session;
+    protected EncryptedHeaderJwtSession $session;
 
     protected function setUp(): void
     {
         $this->crypt   = $this->createMock(CryptContract::class);
+        $this->jwt     = $this->createMock(JwtContract::class);
         $this->request = $this->createMock(ServerRequestContract::class);
 
         $this->crypt
             ->expects($this->never())
             ->method('decrypt');
+
+        $this->jwt
+            ->expects($this->never())
+            ->method('decode');
 
         $this->request
             ->expects($this->once())
@@ -46,7 +54,7 @@ class EncryptedTokenSessionTest extends TestCase
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
 
-        $this->session = new EncryptedTokenSession($this->crypt, $this->request);
+        $this->session = new EncryptedHeaderJwtSession($this->crypt, $this->jwt, $this->request);
     }
 
     public function testImplementsSessionContract(): void
@@ -54,29 +62,36 @@ class EncryptedTokenSessionTest extends TestCase
         self::assertInstanceOf(SessionContract::class, $this->session);
     }
 
-    public function testExtendsTokenSession(): void
+    public function testExtendsJwtSession(): void
     {
-        self::assertInstanceOf(TokenSession::class, $this->session);
+        self::assertInstanceOf(HeaderJwtSession::class, $this->session);
     }
 
-    public function testStartDecryptsTokenBeforeParsingData(): void
+    public function testStartDecryptsTokenBeforeJwtDecode(): void
     {
         $crypt   = $this->createMock(CryptContract::class);
+        $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
         $request
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
-            ->willReturn('Bearer encrypted-token-data');
+            ->willReturn('Bearer encrypted-jwt-token');
 
         $crypt
             ->expects($this->once())
             ->method('decrypt')
-            ->with('encrypted-token-data')
-            ->willReturn('{"key":"value","key2":"value2"}');
+            ->with('encrypted-jwt-token')
+            ->willReturn('decrypted-jwt-token');
 
-        $session = new EncryptedTokenSession($crypt, $request);
+        $jwt
+            ->expects($this->once())
+            ->method('decode')
+            ->with('decrypted-jwt-token')
+            ->willReturn(['key' => 'value', 'key2' => 'value2']);
+
+        $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request);
 
         self::assertSame('value', $session->get('key'));
         self::assertSame('value2', $session->get('key2'));
@@ -85,6 +100,7 @@ class EncryptedTokenSessionTest extends TestCase
     public function testStartDoesNotDecryptWhenHeaderIsEmpty(): void
     {
         $crypt   = $this->createMock(CryptContract::class);
+        $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
         $request
@@ -96,7 +112,11 @@ class EncryptedTokenSessionTest extends TestCase
             ->expects($this->never())
             ->method('decrypt');
 
-        $session = new EncryptedTokenSession($crypt, $request);
+        $jwt
+            ->expects($this->never())
+            ->method('decode');
+
+        $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request);
 
         self::assertSame([], $session->all());
     }
@@ -104,6 +124,7 @@ class EncryptedTokenSessionTest extends TestCase
     public function testStartThrowsExceptionForInvalidBearerPrefix(): void
     {
         $crypt   = $this->createMock(CryptContract::class);
+        $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
         $request
@@ -115,27 +136,36 @@ class EncryptedTokenSessionTest extends TestCase
             ->expects($this->never())
             ->method('decrypt');
 
+        $jwt
+            ->expects($this->never())
+            ->method('decode');
+
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
-        new EncryptedTokenSession($crypt, $request);
+        new EncryptedHeaderJwtSession($crypt, $jwt, $request);
     }
 
     public function testConstructorWithSessionIdAndName(): void
     {
         $crypt   = $this->createMock(CryptContract::class);
+        $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
         $crypt
             ->expects($this->never())
             ->method('decrypt');
 
+        $jwt
+            ->expects($this->never())
+            ->method('decode');
+
         $request
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
 
-        $session = new EncryptedTokenSession($crypt, $request, 'session-id', 'MY_SESSION');
+        $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request, 'session-id', 'MY_SESSION');
 
         self::assertSame('session-id', $session->getId());
         self::assertSame('MY_SESSION', $session->getName());
@@ -144,11 +174,16 @@ class EncryptedTokenSessionTest extends TestCase
     public function testConstructorWithCustomHeaderName(): void
     {
         $crypt   = $this->createMock(CryptContract::class);
+        $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
         $crypt
             ->expects($this->never())
             ->method('decrypt');
+
+        $jwt
+            ->expects($this->never())
+            ->method('decode');
 
         $request
             ->expects($this->once())
@@ -156,7 +191,7 @@ class EncryptedTokenSessionTest extends TestCase
             ->with('X-Custom-Auth')
             ->willReturn('');
 
-        $session = new EncryptedTokenSession($crypt, $request, null, null, 'X-Custom-Auth');
+        $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request, null, null, 'X-Custom-Auth');
 
         self::assertSame('', $session->getId());
     }

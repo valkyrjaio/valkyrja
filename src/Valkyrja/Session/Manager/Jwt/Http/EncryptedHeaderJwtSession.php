@@ -11,18 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Manager\Token;
+namespace Valkyrja\Session\Manager\Jwt\Http;
 
-use JsonException;
 use Override;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 
-class TokenSession extends Session
+class EncryptedHeaderJwtSession extends HeaderJwtSession
 {
     /**
      * @param non-empty-string|null $sessionId   The session id
@@ -30,48 +27,30 @@ class TokenSession extends Session
      * @param non-empty-string      $headerName  The header name
      */
     public function __construct(
+        protected CryptContract $crypt,
+        protected JwtContract $jwt,
         protected ServerRequestContract $request,
         string|null $sessionId = null,
         string|null $sessionName = null,
         protected string $headerName = HeaderName::AUTHORIZATION
     ) {
         parent::__construct(
+            jwt: $jwt,
+            request: $request,
             sessionId: $sessionId,
-            sessionName: $sessionName
+            sessionName: $sessionName,
+            headerName: $headerName
         );
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
-    public function start(): void
-    {
-        $headerLine = $this->request->getHeaderLine($this->headerName);
-
-        if ($headerLine === '') {
-            return;
-        }
-
-        [$bearer, $token] = explode(' ', $headerLine);
-
-        if ($bearer !== HeaderValue::BEARER || $token === '') {
-            throw new InvalidAuthenticationException('Invalid authorization header');
-        }
-
-        $this->setDataFromTokenValue($token);
-    }
-
-    /**
-     * @param non-empty-string $value The token value
-     *
-     * @throws JsonException
-     */
     protected function setDataFromTokenValue(string $value): void
     {
-        /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($value);
+        parent::setDataFromTokenValue(
+            $this->crypt->decrypt($value)
+        );
     }
 }

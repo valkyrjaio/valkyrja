@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Session\Manager\Token;
+namespace Valkyrja\Tests\Unit\Session\Manager\Token\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\Token\TokenSession;
+use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class TokenSessionTest extends TestCase
+class HeaderTokenSessionTest extends TestCase
 {
     protected ServerRequestContract&MockObject $request;
 
-    protected TokenSession $session;
+    protected HeaderTokenSession $session;
 
     protected function setUp(): void
     {
@@ -37,7 +37,7 @@ class TokenSessionTest extends TestCase
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
 
-        $this->session = new TokenSession($this->request);
+        $this->session = new HeaderTokenSession($this->request);
     }
 
     public function testImplementsSessionContract(): void
@@ -55,7 +55,7 @@ class TokenSessionTest extends TestCase
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Bearer {"key":"value","key2":"value2"}');
 
-        $session = new TokenSession($request);
+        $session = new HeaderTokenSession($request);
 
         self::assertSame('value', $session->get('key'));
         self::assertSame('value2', $session->get('key2'));
@@ -70,7 +70,7 @@ class TokenSessionTest extends TestCase
             ->method('getHeaderLine')
             ->willReturn('');
 
-        $session = new TokenSession($request);
+        $session = new HeaderTokenSession($request);
 
         self::assertSame([], $session->all());
     }
@@ -88,7 +88,7 @@ class TokenSessionTest extends TestCase
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
-        new TokenSession($request);
+        new HeaderTokenSession($request);
     }
 
     public function testStartThrowsExceptionForEmptyToken(): void
@@ -104,7 +104,7 @@ class TokenSessionTest extends TestCase
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
-        new TokenSession($request);
+        new HeaderTokenSession($request);
     }
 
     public function testConstructorWithSessionIdAndName(): void
@@ -116,7 +116,7 @@ class TokenSessionTest extends TestCase
             ->method('getHeaderLine')
             ->willReturn('');
 
-        $session = new TokenSession($request, 'session-id', 'MY_SESSION');
+        $session = new HeaderTokenSession($request, 'session-id', 'MY_SESSION');
 
         self::assertSame('session-id', $session->getId());
         self::assertSame('MY_SESSION', $session->getName());
@@ -132,7 +132,7 @@ class TokenSessionTest extends TestCase
             ->with('X-Custom-Auth')
             ->willReturn('');
 
-        $session = new TokenSession($request, null, null, 'X-Custom-Auth');
+        $session = new HeaderTokenSession($request, null, null, 'X-Custom-Auth');
 
         self::assertSame('', $session->getId());
     }
