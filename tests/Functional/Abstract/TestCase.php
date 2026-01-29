@@ -55,9 +55,6 @@ class TestCase extends PHPUnitTestCase
 
         $container = $app->getContainer();
 
-        // $handler = $container->getSingleton(RequestHandler::class);
-        // $handler->run(RequestFactory::fromGlobals());
-
         $container->setSingleton(ServerRequestContract::class, RequestFactory::fromGlobals());
     }
 }
