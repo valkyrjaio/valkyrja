@@ -18,6 +18,7 @@ use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 
 class Cli extends App
@@ -48,7 +49,8 @@ class Cli extends App
     protected static function getInput(Env $env): InputContract
     {
         /** @var non-empty-string $commandName */
-        $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME;
+        $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME
+            ?? ListCommand::NAME;
 
         $input = InputFactory::fromGlobals(
             commandName: $commandName

@@ -15,7 +15,6 @@ namespace Valkyrja\Application\Env;
 
 use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -28,7 +27,6 @@ use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
@@ -73,8 +71,8 @@ class Env
     public const string APP_URL = 'localhost';
     /** @var non-empty-string */
     public const string APP_TIMEZONE = 'UTC';
-    /** @var non-empty-string */
-    public const string APP_VERSION = ApplicationContract::VERSION;
+    /** @var non-empty-string|null */
+    public const string|null APP_VERSION = null;
     /** @var non-empty-string */
     public const string APP_KEY = 'some_secret_app_key';
     /** @var class-string<Provider>[] */
@@ -122,8 +120,8 @@ class Env
     public const bool APP_ADD_HTTP_CONTROLLERS = true;
     /** @var bool */
     public const bool APP_ADD_EVENT_LISTENERS = true;
-    /** @var non-empty-string */
-    public const string APP_CLI_DEFAULT_COMMAND_NAME = ListCommand::NAME;
+    /** @var non-empty-string|null */
+    public const string|null APP_CLI_DEFAULT_COMMAND_NAME = null;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';
     /** @var non-empty-string */

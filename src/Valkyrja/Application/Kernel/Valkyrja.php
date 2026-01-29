@@ -154,7 +154,8 @@ class Valkyrja implements ApplicationContract
     public function getVersion(): string
     {
         /** @var non-empty-string $version */
-        $version = $this->env::APP_VERSION;
+        $version = $this->env::APP_VERSION
+            ?? ApplicationContract::VERSION;
 
         return $version;
     }
