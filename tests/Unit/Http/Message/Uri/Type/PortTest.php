@@ -24,9 +24,6 @@ class PortTest extends TestCase
 {
     public static function validPortsProvider(): array
     {
-        // $validPorts = range(1, 65535);
-
-        // return array_map(static fn (int $port): array => [$port], $validPorts);
         return [
             [1],
             [random_int(1, 65535)],
