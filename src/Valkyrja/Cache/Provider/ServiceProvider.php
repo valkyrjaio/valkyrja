@@ -63,7 +63,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<CacheContract> $default */
-        $default = $env::CACHE_DEFAULT;
+        $default = $env::CACHE_DEFAULT
+            ?? RedisCache::class;
 
         $container->setSingleton(
             CacheContract::class,
@@ -78,7 +79,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */
-        $prefix = $env::CACHE_REDIS_PREFIX;
+        $prefix = $env::CACHE_REDIS_PREFIX
+            ?? '';
 
         $container->setSingleton(
             RedisCache::class,
@@ -96,9 +98,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $host */
-        $host = $env::CACHE_REDIS_HOST;
+        $host = $env::CACHE_REDIS_HOST
+            ?? '127.0.0.1';
         /** @var int $port */
-        $port = $env::CACHE_REDIS_PORT;
+        $port = $env::CACHE_REDIS_PORT
+            ?? 6379;
 
         $container->setSingleton(
             Client::class,
@@ -118,9 +122,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */
-        $prefix = $env::CACHE_LOG_PREFIX;
+        $prefix = $env::CACHE_LOG_PREFIX
+            ?? '';
         /** @var class-string<LoggerContract> $logger */
-        $logger = $env::CACHE_LOG_LOGGER;
+        $logger = $env::CACHE_LOG_LOGGER
+            ?? LoggerContract::class;
 
         $container->setSingleton(
             LogCache::class,
@@ -138,7 +144,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */
-        $prefix = $env::CACHE_NULL_PREFIX;
+        $prefix = $env::CACHE_NULL_PREFIX
+            ?? '';
 
         $container->setSingleton(
             NullCache::class,

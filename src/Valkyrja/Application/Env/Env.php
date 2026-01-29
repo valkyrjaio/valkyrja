@@ -28,7 +28,6 @@ use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
-use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -193,20 +192,20 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<CacheContract> */
-    public const string CACHE_DEFAULT = RedisCache::class;
-    /** @var non-empty-string */
-    public const string CACHE_REDIS_HOST = '127.0.0.1';
-    /** @var int */
-    public const int CACHE_REDIS_PORT = 6379;
-    /** @var string */
-    public const string CACHE_REDIS_PREFIX = '';
-    /** @var string */
-    public const string CACHE_LOG_PREFIX = '';
-    /** @var class-string<LoggerContract> */
-    public const string CACHE_LOG_LOGGER = LoggerContract::class;
-    /** @var string */
-    public const string CACHE_NULL_PREFIX = '';
+    /** @var class-string<CacheContract>|null */
+    public const string|null CACHE_DEFAULT = null;
+    /** @var non-empty-string|null */
+    public const string|null CACHE_REDIS_HOST = null;
+    /** @var int|null */
+    public const int|null CACHE_REDIS_PORT = null;
+    /** @var string|null */
+    public const string|null CACHE_REDIS_PREFIX = null;
+    /** @var string|null */
+    public const string|null CACHE_LOG_PREFIX = null;
+    /** @var class-string<LoggerContract>|null */
+    public const string|null CACHE_LOG_LOGGER = null;
+    /** @var string|null */
+    public const string|null CACHE_NULL_PREFIX = null;
 
     /************************************************************
      *
