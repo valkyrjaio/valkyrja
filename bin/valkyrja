@@ -21,11 +21,21 @@ $composerAutoloadFilePossibilities = [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/vendor/autoload.php',
 ];
-$composerAutoloadFile              = null;
 
-foreach ($composerAutoloadFilePossibilities as $file) {
+$dirPossibilities = [
+    __DIR__ . '/../../../../',
+    __DIR__ . '/../../../',
+    __DIR__ . '/../',
+    __DIR__ . '/',
+];
+
+$composerAutoloadFile = null;
+$dir                  = null;
+
+foreach ($composerAutoloadFilePossibilities as $key => $file) {
     if (file_exists($file)) {
         $composerAutoloadFile = $file;
+        $dir                  = $dirPossibilities[$key];
 
         break;
     }
@@ -44,4 +54,4 @@ if ($composerAutoloadFile === null) {
 
 require $composerAutoloadFile;
 
-Cli::run(Env::APP_DIR, new Env());
+Cli::run($dir, new Env());
