@@ -28,8 +28,6 @@ interface FormatterContract
      * Create a new instance with the specified formats.
      *
      * @param FormatContract ...$formats The formats
-     *
-     * @return static
      */
     public function withFormats(FormatContract ...$formats): static;
 
