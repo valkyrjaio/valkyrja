@@ -68,8 +68,6 @@ class Env
     /** @var bool */
     public const bool APP_DEBUG_MODE = true;
     /** @var non-empty-string */
-    public const string APP_URL = 'localhost';
-    /** @var non-empty-string */
     public const string APP_TIMEZONE = 'UTC';
     /** @var non-empty-string|null */
     public const string|null APP_VERSION = null;
@@ -141,20 +139,6 @@ class Env
     public const string|null AUTH_DEFAULT_USER_ENTITY = null;
     /** @var non-empty-string|null */
     public const string|null AUTH_SESSION_ITEM_ID = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_DEFAULT_AUTHORIZATION_HEADER = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_AUTHENTICATE_ROUTE = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_AUTHENTICATE_URL = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_NOT_AUTHENTICATED_ROUTE = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_NOT_AUTHENTICATED_URL = null;
-    /** @var non-empty-string|null */
-    public const string|null AUTH_PASSWORD_CONFIRM_ROUTE = null;
-    /** @var positive-int|null */
-    public const int|null AUTH_PASSWORD_TIMEOUT = null;
 
     /************************************************************
      *
