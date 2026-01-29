@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Session\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -290,11 +290,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(CookieParams::class, $cookieParams = $this->container->getSingleton(CookieParams::class));
-        self::assertSame(Env::SESSION_COOKIE_PARAM_PATH, $cookieParams->path);
-        self::assertSame(Env::SESSION_COOKIE_PARAM_DOMAIN, $cookieParams->domain);
-        self::assertSame(Env::SESSION_COOKIE_PARAM_LIFETIME, $cookieParams->lifetime);
-        self::assertSame(Env::SESSION_COOKIE_PARAM_SECURE, $cookieParams->secure);
-        self::assertSame(Env::SESSION_COOKIE_PARAM_HTTP_ONLY, $cookieParams->httpOnly);
-        self::assertSame(Env::SESSION_COOKIE_PARAM_SAME_SITE, $cookieParams->sameSite);
+        self::assertSame('/', $cookieParams->path);
+        self::assertNull($cookieParams->domain);
+        self::assertSame(0, $cookieParams->lifetime);
+        self::assertFalse($cookieParams->secure);
+        self::assertFalse($cookieParams->httpOnly);
+        self::assertSame(SameSite::NONE, $cookieParams->sameSite);
     }
 }
