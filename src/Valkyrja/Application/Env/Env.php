@@ -75,7 +75,6 @@ use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Manager\PhpSession;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
@@ -477,24 +476,24 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<SessionContract> */
-    public const string SESSION_DEFAULT = PhpSession::class;
+    /** @var class-string<SessionContract>|null */
+    public const string|null SESSION_DEFAULT = null;
     /** @var non-empty-string|null */
     public const string|null SESSION_PHP_ID = null;
     /** @var non-empty-string|null */
     public const string|null SESSION_PHP_NAME = null;
-    /** @var non-empty-string */
-    public const string SESSION_COOKIE_PARAM_PATH = '/';
+    /** @var non-empty-string|null */
+    public const string|null SESSION_COOKIE_PARAM_PATH = null;
     /** @var non-empty-string|null */
     public const string|null SESSION_COOKIE_PARAM_DOMAIN = null;
-    /** @var int */
-    public const int SESSION_COOKIE_PARAM_LIFETIME = 0;
-    /** @var bool */
-    public const bool SESSION_COOKIE_PARAM_SECURE = false;
-    /** @var bool */
-    public const bool SESSION_COOKIE_PARAM_HTTP_ONLY = false;
-    /** @var SameSite */
-    public const SameSite SESSION_COOKIE_PARAM_SAME_SITE = SameSite::NONE;
+    /** @var int|null */
+    public const int|null SESSION_COOKIE_PARAM_LIFETIME = null;
+    /** @var bool|null */
+    public const bool|null SESSION_COOKIE_PARAM_SECURE = null;
+    /** @var bool|null */
+    public const bool|null SESSION_COOKIE_PARAM_HTTP_ONLY = null;
+    /** @var SameSite|null */
+    public const SameSite|null SESSION_COOKIE_PARAM_SAME_SITE = null;
     /** @var non-empty-string|null */
     public const string|null SESSION_JWT_OPTION_NAME = null;
     /** @var non-empty-string|null */
