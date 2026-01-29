@@ -203,35 +203,10 @@ class Dispatcher implements DispatcherContract
             return [];
         }
 
-        // $context = match (true) {
-        //     $dispatch instanceof ClassDispatch    => $dispatch->getClass(),
-        //     $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[0])
-        //         ? $callable[0]
-        //         : null,
-        // };
-        // $member  = match (true) {
-        //     $dispatch instanceof MethodDispatch   => $dispatch->getMethod(),
-        //     $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[1])
-        //         ? $callable[1]
-        //         : null,
-        //     default                               => null
-        // };
-
-        // $containerContext = null;
-
         $container = $this->container;
-        // $hasContext = $context !== null && $container instanceof ContextAwareContainer;
-        //
-        // if ($hasContext) {
-        //     /** @var ContextAwareContainer $container */
-        //     $containerContext = $container->withContext($context, $member);
-        // }
 
         return array_map(
             /** @param class-string $dependency */
-            // static fn (string $dependency): mixed => $containerContext !== null && $containerContext->has($dependency)
-            //     ? $containerContext->get($dependency)
-            //     : $container->get($dependency),
             static fn (string $dependency): mixed => $container->get($dependency),
             $dependencies
         );
