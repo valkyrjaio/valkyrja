@@ -1,6 +1,45 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.23.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.24.0...master)
+
+## [v25.24.0](https://github.com/valkyrjaio/valkyrja/compare/v25.23.0...v25.24.0) - 2026-01-28
+
+* [Cli] Add OptionName constant class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/426
+* [Session] Add Cli compatible session managers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/427
+* [Type] Add a test to cover generating UuidV1 with numeric node by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/428
+* [Cli] Use OptionName instead of other constants by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/429
+* [Type] Fix test to cover generating Ulid with maxed random bytes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/430
+* [CI] Remove phpunit no-coverage scripts by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/431
+* [Test] Remove unused testing trait by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/432
+* [Test] Remove unused end-to-end tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/433
+* [CI] Remove unused commented code. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/434
+* [Test] Remove unused commented code. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/435
+* [Http] Remove unused commented code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/436
+* [Throwable] Remove unused commented code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/437
+* [Cli] Remove unused commented code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/438
+* [Type] Remove unused commented code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/439
+* [Dispatch] Remove unused commented code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/440
+* [CI] Add naming rule for traits by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/441
+* [Container] Move provider test classes to correct namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/442
+* [View] Move Env constants' default values to ServiceProvider. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/443
+* [Sms] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/444
+* [View] Fix ServiceProviderTest by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/445
+* [Session] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/446
+* [Orm] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/447
+* [Mail] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/448
+* [Log] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/449
+* [Jwt] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/450
+* [Http] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/451
+* [Filesystem] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/452
+* [Crypt] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/453
+* [Cli] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/454
+* [Cache] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/455
+* [Broadcast] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/456
+* [Auth] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/457
+* [App] Move Env constants' default values to ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/458
+* [App] Remove unused Env constants by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/459
+* [CI] Update phpcsfixer to v3.93.1 from v3.93.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/460
+* [CI] Update rector to v2.3.5 from v2.3.4. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/461
 
 ## [v25.23.0](https://github.com/valkyrjaio/valkyrja/compare/v25.22.0...v25.23.0) - 2026-01-27
 
