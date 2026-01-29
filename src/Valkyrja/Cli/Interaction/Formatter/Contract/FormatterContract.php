@@ -13,47 +13,25 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Formatter\Contract;
 
-use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
-use Valkyrja\Cli\Interaction\Enum\Style;
-use Valkyrja\Cli\Interaction\Enum\TextColor;
+use Valkyrja\Cli\Interaction\Format\Contract\FormatContract;
 
 interface FormatterContract
 {
     /**
-     * Get the style.
-     */
-    public function getStyle(): Style|null;
-
-    /**
-     * Create a new Formatter with the specified style.
+     * Get the formats.
      *
-     * @param Style|null $style The style
+     * @return FormatContract[]
      */
-    public function withStyle(Style|null $style): static;
+    public function getFormats(): array;
 
     /**
-     * Get the text color.
-     */
-    public function getTextColor(): TextColor|null;
-
-    /**
-     * Create a new Formatter with the specified text color.
+     * Create a new instance with the specified formats.
      *
-     * @param TextColor|null $textColor The text color
-     */
-    public function withTextColor(TextColor|null $textColor): static;
-
-    /**
-     * Get the background color.
-     */
-    public function getBackgroundColor(): BackgroundColor|null;
-
-    /**
-     * Create a new Formatter with the specified background color.
+     * @param FormatContract ...$formats The formats
      *
-     * @param BackgroundColor|null $backgroundColor The background color
+     * @return static
      */
-    public function withBackgroundColor(BackgroundColor|null $backgroundColor): static;
+    public function withFormats(FormatContract ...$formats): static;
 
     /**
      * Format text.

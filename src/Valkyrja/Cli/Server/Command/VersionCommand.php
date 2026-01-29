@@ -16,6 +16,7 @@ namespace Valkyrja\Cli\Server\Command;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -46,11 +47,11 @@ class VersionCommand
                 new Message(ApplicationContract::ASCII),
                 new NewLine(),
                 new NewLine(),
-                new Message('Valkyrja Framework', new Formatter(textColor: TextColor::CYAN)),
+                new Message('Valkyrja Framework', new Formatter(new TextColorFormat(TextColor::CYAN))),
                 new Message(' version '),
-                new Message(ApplicationContract::VERSION, new Formatter(textColor: TextColor::MAGENTA)),
+                new Message(ApplicationContract::VERSION, new Formatter(new TextColorFormat(TextColor::MAGENTA))),
                 new Message(' (built: '),
-                new Message(ApplicationContract::VERSION_BUILD_DATE_TIME, new Formatter(textColor: TextColor::MAGENTA)),
+                new Message(ApplicationContract::VERSION_BUILD_DATE_TIME, new Formatter(new TextColorFormat(TextColor::MAGENTA))),
                 new Message(')'),
                 new NewLine(),
                 new Message('Copyright (c) Melech Mizrachi'),

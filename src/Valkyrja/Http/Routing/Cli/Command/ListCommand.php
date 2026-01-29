@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Routing\Cli\Command;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -65,7 +66,7 @@ class ListCommand
         foreach ($routes as $route) {
             $output = $output->withAddedMessages(
                 new Message('  '),
-                new Message($route->getPath(), new Formatter(textColor: TextColor::MAGENTA)),
+                new Message($route->getPath(), new Formatter(new TextColorFormat(TextColor::MAGENTA))),
                 new NewLine(),
                 new Message('    - '),
                 new Message('Name: '),

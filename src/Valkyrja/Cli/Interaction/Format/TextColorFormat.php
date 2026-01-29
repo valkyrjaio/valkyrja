@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Formatter;
+namespace Valkyrja\Cli\Interaction\Format;
 
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 
-class QuestionFormatter extends Formatter
+class TextColorFormat extends Format
 {
-    public function __construct()
+    public function __construct(TextColor $textColor)
     {
         parent::__construct(
-            new TextColorFormat(TextColor::MAGENTA),
+            (string) $textColor->value,
+            (string) TextColor::DEFAULT
         );
     }
 }
