@@ -92,4 +92,24 @@ class UuidV1Test extends AbstractUuidTestCase
         self::assertTrue(UuidV1::isValid($uuid));
         $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
     }
+
+    /**
+     * Test generate with short hex node that needs zero padding (line 81).
+     * When node is a valid hex string less than 12 characters that is not numeric,
+     * it gets padded with zeros to reach 12 characters.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithShortHexNodePadsWithZeros(): void
+    {
+        // 'abcdef' is valid hex (no preg_match), not numeric (skips sprintf),
+        // and length 6 < 12, so it hits line 81: $node .= str_repeat('0', 12 - $len)
+        $uuid = UuidV1::generate('abcdef');
+
+        self::assertTrue(UuidV1::isValid($uuid));
+        $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
+
+        // The node portion should end with 'abcdef000000' (6 zeros padded)
+        self::assertStringEndsWith('abcdef000000', $uuid);
+    }
 }
