@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Formatter;
 
 use Valkyrja\Cli\Interaction\Enum\TextColor;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 
 class HighlightedTextFormatter extends Formatter
 {
     public function __construct()
     {
         parent::__construct(
-            textColor: TextColor::YELLOW
+            new TextColorFormat(TextColor::YELLOW),
         );
     }
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Cli\Server\Command;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -256,11 +257,11 @@ class HelpCommand
         $valueDisplayName = $option->getValueDisplayName();
 
         $optionMessages[] = new Message('  ');
-        $optionMessages[] = new Message('--' . $option->getName(), new Formatter(textColor: TextColor::MAGENTA));
+        $optionMessages[] = new Message('--' . $option->getName(), new Formatter(new TextColorFormat(TextColor::MAGENTA)));
 
         if ($shortNames !== []) {
             $optionMessages[] = new Message(', ');
-            $optionMessages[] = new Message('-' . implode('|', $shortNames), new Formatter(textColor: TextColor::MAGENTA));
+            $optionMessages[] = new Message('-' . implode('|', $shortNames), new Formatter(new TextColorFormat(TextColor::MAGENTA)));
         }
 
         if ($valueDisplayName !== null) {

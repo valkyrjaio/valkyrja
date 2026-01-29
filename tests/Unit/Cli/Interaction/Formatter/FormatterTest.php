@@ -16,6 +16,9 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Formatter;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
+use Valkyrja\Cli\Interaction\Format\BackgroundColorFormat;
+use Valkyrja\Cli\Interaction\Format\StyleFormat;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -30,9 +33,7 @@ class FormatterTest extends TestCase
 
         $formatter = new Formatter();
 
-        self::assertNull($formatter->getTextColor());
-        self::assertNull($formatter->getBackgroundColor());
-        self::assertNull($formatter->getStyle());
+        self::assertEmpty($formatter->getFormats());
 
         self::assertSame($text, $formatter->formatText($text));
     }
@@ -43,11 +44,11 @@ class FormatterTest extends TestCase
         $style    = Style::BOLD->value;
         $styleEnd = Style::DEFAULTS[$style];
 
-        $formatter = new Formatter(style: Style::BOLD);
+        $formatter = new Formatter(new StyleFormat(Style::BOLD));
 
         self::assertSame("\033[{$style}m$text\033[{$styleEnd}m", $formatter->formatText($text));
 
-        $formatter2 = $formatter->withStyle(Style::UNDERSCORE);
+        $formatter2 = $formatter->withFormats(new StyleFormat(Style::UNDERSCORE));
         $style2     = Style::UNDERSCORE->value;
         $style2End  = Style::DEFAULTS[$style2];
 
@@ -61,14 +62,14 @@ class FormatterTest extends TestCase
         $color    = TextColor::YELLOW->value;
         $colorEnd = TextColor::DEFAULT;
 
-        $formatter = new Formatter(textColor: TextColor::YELLOW);
+        $formatter = new Formatter(new TextColorFormat(TextColor::YELLOW));
 
         self::assertSame("\033[{$color}m$text\033[{$colorEnd}m", $formatter->formatText($text));
 
         $color2    = TextColor::GREEN->value;
         $color2End = TextColor::DEFAULT;
 
-        $formatter2 = $formatter->withTextColor(TextColor::GREEN);
+        $formatter2 = $formatter->withFormats(new TextColorFormat(TextColor::GREEN));
 
         self::assertNotSame($formatter, $formatter2);
         self::assertSame("\033[{$color2}m$text\033[{$color2End}m", $formatter2->formatText($text));
@@ -80,14 +81,14 @@ class FormatterTest extends TestCase
         $color    = BackgroundColor::YELLOW->value;
         $colorEnd = BackgroundColor::DEFAULT;
 
-        $formatter = new Formatter(backgroundColor: BackgroundColor::YELLOW);
+        $formatter = new Formatter(new BackgroundColorFormat(BackgroundColor::YELLOW));
 
         self::assertSame("\033[{$color}m$text\033[{$colorEnd}m", $formatter->formatText($text));
 
         $color2    = BackgroundColor::BLACK->value;
         $color2End = BackgroundColor::DEFAULT;
 
-        $formatter2 = $formatter->withBackgroundColor(BackgroundColor::BLACK);
+        $formatter2 = $formatter->withFormats(new BackgroundColorFormat(BackgroundColor::BLACK));
 
         self::assertNotSame($formatter, $formatter2);
         self::assertSame("\033[{$color2}m$text\033[{$color2End}m", $formatter2->formatText($text));
@@ -107,9 +108,9 @@ class FormatterTest extends TestCase
         $backgroundColorEnd = BackgroundColor::DEFAULT;
 
         $formatter = new Formatter(
-            textColor: TextColor::YELLOW,
-            backgroundColor: BackgroundColor::YELLOW,
-            style: Style::BOLD
+            new TextColorFormat(TextColor::YELLOW),
+            new BackgroundColorFormat(BackgroundColor::YELLOW),
+            new StyleFormat(Style::BOLD)
         );
 
         self::assertSame("\033[$color;$backgroundColor;{$style}m$text\033[$colorEnd;$backgroundColorEnd;{$styleEnd}m", $formatter->formatText($text));

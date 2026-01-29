@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Formatter;
+namespace Valkyrja\Cli\Interaction\Format;
 
-use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Format\TextColorFormat;
+use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 
-class QuestionFormatter extends Formatter
+class BackgroundColorFormat extends Format
 {
-    public function __construct()
+    public function __construct(BackgroundColor $backgroundColor)
     {
         parent::__construct(
-            new TextColorFormat(TextColor::MAGENTA),
+            (string) $backgroundColor->value,
+            (string) BackgroundColor::DEFAULT
         );
     }
 }

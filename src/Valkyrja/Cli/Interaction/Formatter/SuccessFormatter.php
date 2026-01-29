@@ -15,14 +15,16 @@ namespace Valkyrja\Cli\Interaction\Formatter;
 
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
+use Valkyrja\Cli\Interaction\Format\BackgroundColorFormat;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 
 class SuccessFormatter extends Formatter
 {
     public function __construct()
     {
         parent::__construct(
-            textColor: TextColor::LIGHT_WHITE,
-            backgroundColor: BackgroundColor::GREEN
+            new TextColorFormat(TextColor::LIGHT_WHITE),
+            new BackgroundColorFormat(BackgroundColor::GREEN),
         );
     }
 }
