@@ -73,7 +73,6 @@ use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
-use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
@@ -417,56 +416,56 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<ManagerContract> */
-    public const string ORM_DEFAULT_MANAGER = MysqlManager::class;
-    /** @var non-empty-string */
-    public const string ORM_PGSQL_HOST = '127.0.0.1';
-    /** @var positive-int */
-    public const int ORM_PGSQL_PORT = 6379;
+    /** @var class-string<ManagerContract>|null */
+    public const string|null ORM_DEFAULT_MANAGER = null;
     /** @var non-empty-string|null */
-    public const string|null ORM_PGSQL_DB = 'valkyrja';
+    public const string|null ORM_PGSQL_HOST = null;
+    /** @var positive-int|null */
+    public const int|null ORM_PGSQL_PORT = null;
     /** @var non-empty-string|null */
-    public const string|null ORM_PGSQL_USER = 'valkyrja';
+    public const string|null ORM_PGSQL_DB = null;
     /** @var non-empty-string|null */
-    public const string|null ORM_PGSQL_PASSWORD = 'pgsql-password';
+    public const string|null ORM_PGSQL_USER = null;
     /** @var non-empty-string|null */
-    public const string|null ORM_PGSQL_CHARSET = 'utf8';
+    public const string|null ORM_PGSQL_PASSWORD = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_PGSQL_CHARSET = null;
     /** @var array<int, int|bool>|null */
     public const array|null ORM_PGSQL_OPTIONS = null;
-    /** @var non-empty-string */
-    public const string ORM_PGSQL_SCHEMA = 'public';
-    /** @var non-empty-string */
-    public const string ORM_PGSQL_SSL_MODE = 'prefer';
-    /** @var non-empty-string */
-    public const string ORM_MYSQL_HOST = '127.0.0.1';
-    /** @var positive-int */
-    public const int ORM_MYSQL_PORT = 3306;
-    /** @var non-empty-string */
-    public const string ORM_MYSQL_DB = 'valkyrja';
-    /** @var non-empty-string */
-    public const string ORM_MYSQL_USER = 'valkyrja';
-    /** @var non-empty-string */
-    public const string ORM_MYSQL_PASSWORD = 'mysql-password';
-    /** @var non-empty-string */
-    public const string ORM_MYSQL_CHARSET = 'utf8mb4';
+    /** @var non-empty-string|null */
+    public const string|null ORM_PGSQL_SCHEMA = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_PGSQL_SSL_MODE = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_MYSQL_HOST = null;
+    /** @var positive-int|null */
+    public const int|null ORM_MYSQL_PORT = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_MYSQL_DB = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_MYSQL_USER = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_MYSQL_PASSWORD = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_MYSQL_CHARSET = null;
     /** @var array<int, int|bool>|null */
     public const array|null ORM_MYSQL_OPTIONS = null;
     /** @var bool|null */
     public const bool|null ORM_MYSQL_STRICT = null;
     /** @var non-empty-string|null */
     public const string|null ORM_MYSQL_ENGINE = null;
-    /** @var non-empty-string */
-    public const string ORM_SQLITE_HOST = '127.0.0.1';
-    /** @var positive-int */
-    public const int ORM_SQLITE_PORT = 3306;
-    /** @var non-empty-string */
-    public const string ORM_SQLITE_DB = 'valkyrja';
-    /** @var non-empty-string */
-    public const string ORM_SQLITE_USER = 'valkyrja';
-    /** @var non-empty-string */
-    public const string ORM_SQLITE_PASSWORD = 'sqlite-password';
-    /** @var non-empty-string */
-    public const string ORM_SQLITE_CHARSET = 'utf8';
+    /** @var non-empty-string|null */
+    public const string|null ORM_SQLITE_HOST = null;
+    /** @var positive-int|null */
+    public const int|null ORM_SQLITE_PORT = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_SQLITE_DB = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_SQLITE_USER = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_SQLITE_PASSWORD = null;
+    /** @var non-empty-string|null */
+    public const string|null ORM_SQLITE_CHARSET = null;
     /** @var array<int, int|bool>|null */
     public const array|null ORM_SQLITE_OPTIONS = null;
 
