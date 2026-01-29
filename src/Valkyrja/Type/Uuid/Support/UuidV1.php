@@ -88,8 +88,6 @@ class UuidV1 extends Uuid
             $node    = bin2hex($node);
         }
 
-        // $hexTime = bin2hex($time);
-
         return bin2hex($time[4] . $time[5] . $time[6] . $time[7])    // time low
             . '-' . bin2hex($time[2] . $time[3])                     // time med
             . '-' . bin2hex($time[0] . $time[1])                     // time hi
