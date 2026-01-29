@@ -11,22 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Support;
+namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
 
 /**
- * Class DeferredProviderClass.
+ * Class InvalidDeferredProviderClass.
  */
-class DeferredProviderClass extends ProviderClass
+class InvalidDeferredProviderClass extends DeferredProviderClass
 {
-    public static bool $publishCalled = false;
-
-    public static bool $publishSecondaryCalled = false;
-
     #[Override]
-    public static function deferred(): bool
+    public static function publishers(): array
     {
-        return true;
+        return [
+            ProvidedSecondaryClass::class => [static::class, 'publishMethodNonExistent'],
+        ];
     }
 }
