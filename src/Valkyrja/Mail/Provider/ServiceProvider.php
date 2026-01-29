@@ -73,7 +73,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<MailerContract> $default */
-        $default = $env::MAIL_DEFAULT_MAILER;
+        $default = $env::MAIL_DEFAULT_MAILER
+            ?? MailgunMailer::class;
 
         $container->setSingleton(
             MailerContract::class,
@@ -88,7 +89,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $domain */
-        $domain = $env::MAIL_MAILGUN_DOMAIN;
+        $domain = $env::MAIL_MAILGUN_DOMAIN
+            ?? 'domain';
 
         $container->setSingleton(
             MailgunMailer::class,
@@ -119,7 +121,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $apiKey */
-        $apiKey = $env::MAIL_MAILGUN_API_KEY;
+        $apiKey = $env::MAIL_MAILGUN_API_KEY
+            ?? 'api-key';
 
         $container->setSingleton(
             HttpClientConfigurator::class,
@@ -151,15 +154,20 @@ final class ServiceProvider extends Provider
         /** @var bool $debugMode */
         $debugMode = $env::APP_DEBUG_MODE;
         /** @var string $host */
-        $host = $env::MAIL_PHP_MAILER_HOST;
+        $host = $env::MAIL_PHP_MAILER_HOST
+            ?? 'host';
         /** @var int $port */
-        $port = $env::MAIL_PHP_MAILER_PORT;
+        $port = $env::MAIL_PHP_MAILER_PORT
+            ?? 25;
         /** @var string $username */
-        $username = $env::MAIL_PHP_MAILER_USERNAME;
+        $username = $env::MAIL_PHP_MAILER_USERNAME
+            ?? 'username';
         /** @var string $password */
-        $password = $env::MAIL_PHP_MAILER_PASSWORD;
+        $password = $env::MAIL_PHP_MAILER_PASSWORD
+            ?? 'password';
         /** @var string $encryption */
-        $encryption = $env::MAIL_PHP_MAILER_ENCRYPTION;
+        $encryption = $env::MAIL_PHP_MAILER_ENCRYPTION
+            ?? 'ssl';
 
         // Create a new instance of the PHPMailer class
         $mailer = new PHPMailerClient(true);

@@ -71,7 +71,6 @@ use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
-use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
@@ -393,22 +392,22 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<MailerContract> */
-    public const string MAIL_DEFAULT_MAILER = MailgunMailer::class;
-    /** @var non-empty-string */
-    public const string MAIL_MAILGUN_API_KEY = 'api-key';
-    /** @var non-empty-string */
-    public const string MAIL_MAILGUN_DOMAIN = 'domain';
-    /** @var non-empty-string */
-    public const string MAIL_PHP_MAILER_HOST = 'host';
-    /** @var int */
-    public const int MAIL_PHP_MAILER_PORT = 25;
-    /** @var non-empty-string */
-    public const string MAIL_PHP_MAILER_USERNAME = 'username';
-    /** @var non-empty-string */
-    public const string MAIL_PHP_MAILER_PASSWORD = 'password';
-    /** @var non-empty-string */
-    public const string MAIL_PHP_MAILER_ENCRYPTION = 'ssl';
+    /** @var class-string<MailerContract>|null */
+    public const string|null MAIL_DEFAULT_MAILER = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_MAILGUN_API_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_MAILGUN_DOMAIN = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_PHP_MAILER_HOST = null;
+    /** @var int|null */
+    public const int|null MAIL_PHP_MAILER_PORT = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_PHP_MAILER_USERNAME = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_PHP_MAILER_PASSWORD = null;
+    /** @var non-empty-string|null */
+    public const string|null MAIL_PHP_MAILER_ENCRYPTION = null;
 
     /************************************************************
      *
