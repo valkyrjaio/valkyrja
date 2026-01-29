@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Support;
+namespace Valkyrja\Tests\Classes\Container\Provider;
 
 /**
- * Class ProvidedClass.
+ * Class ProvidedSecondaryClass.
  */
-class ProvidedClass
+class ProvidedSecondaryClass
 {
 }

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
-use Valkyrja\Tests\Classes\Support\DeferredProviderClass;
-use Valkyrja\Tests\Classes\Support\InvalidDeferredProviderClass;
-use Valkyrja\Tests\Classes\Support\ProvidedClass;
-use Valkyrja\Tests\Classes\Support\ProvidedSecondaryClass;
-use Valkyrja\Tests\Classes\Support\ProviderClass;
-use Valkyrja\Tests\Classes\Support\ProvidersAwareClass;
+use Valkyrja\Tests\Classes\Container\Manager\ProvidersAwareClass;
+use Valkyrja\Tests\Classes\Container\Provider\DeferredProviderClass;
+use Valkyrja\Tests\Classes\Container\Provider\InvalidDeferredProviderClass;
+use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
+use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
+use Valkyrja\Tests\Classes\Container\Provider\ProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 

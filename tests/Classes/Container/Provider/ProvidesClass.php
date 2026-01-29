@@ -11,11 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Support;
+namespace Valkyrja\Tests\Classes\Container\Provider;
+
+use Valkyrja\Container\Provider\Provider;
 
 /**
- * Class ProvidedSecondaryClass.
+ * Testable Provider/Provides Trait class.
  */
-class ProvidedSecondaryClass
+class ProvidesClass extends Provider
 {
+    public static function provides(): array
+    {
+        return [];
+    }
 }
