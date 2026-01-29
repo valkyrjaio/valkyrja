@@ -36,8 +36,6 @@ return $rector
         __DIR__ . '/../../../src',
         __DIR__ . '/../../../tests',
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
         AddOverrideAttributeToOverriddenMethodsRector::class,
