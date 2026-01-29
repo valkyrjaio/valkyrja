@@ -124,15 +124,6 @@ class Formatter implements FormatterContract
             $unset[] = Style::DEFAULTS[$this->style->value];
         }
 
-        // // Check if options were specified
-        // if (count($this->style)) {
-        //     // Iterate through all the options
-        //     foreach ($this->options as $option) {
-        //         $set[]   = $option;
-        //         $unset[] = FormatOption::DEFAULT[$option];
-        //     }
-        // }
-
         // No need to format if there's nothing to set
         if (count($set) === 0) {
             return $text;
