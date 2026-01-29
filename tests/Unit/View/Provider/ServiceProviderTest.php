@@ -105,6 +105,19 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishTwigEnvironment(): void
     {
+        $this->container->setSingleton(Env::class, self::createStub(Env::class));
+
+        $callback = ServiceProvider::publishers()[Environment::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(Environment::class, $this->container->getSingleton(Environment::class));
+    }
+
+    /**
+     * @throws LoaderError
+     */
+    public function testPublishTwigEnvironmentWithCustomEnv(): void
+    {
         $this->container->setSingleton(
             Env::class,
             new class extends Env {
