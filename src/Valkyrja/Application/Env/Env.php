@@ -78,10 +78,8 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\PhpSession;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Valkyrja\View\Orka\Constant\OrkaReplacement;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
-use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
  * @see https://psalm.dev/r/eb18b4d7ae This one is fine
@@ -524,68 +522,28 @@ class Env
      * View component env variables.
      *
      ************************************************************/
-    /** @var class-string<RendererContract> */
-    public const string VIEW_DEFAULT_RENDERER = PhpRenderer::class;
-    /** @var non-empty-string */
-    public const string VIEW_ORKA_FILE_EXTENSION = '.orka.phtml';
-    /** @var non-empty-string */
-    public const string VIEW_ORKA_PATH = '/resources/views';
-    /** @var array<non-empty-string, non-empty-string> */
-    public const array VIEW_ORKA_PATHS = [];
-    /** @var class-string<ReplacementContract>[] */
-    public const array VIEW_ORKA_CORE_REPLACEMENTS = [
-        OrkaReplacement::LAYOUT,
-        OrkaReplacement::BLOCK,
-        OrkaReplacement::END_BLOCK,
-        OrkaReplacement::START_BLOCK,
-        OrkaReplacement::TRIM_BLOCK,
-        OrkaReplacement::END_MULTILINE_COMMENT,
-        OrkaReplacement::SINGLE_LINE_COMMENT,
-        OrkaReplacement::START_MULTILINE_COMMENT,
-        OrkaReplacement::PARTIAL,
-        OrkaReplacement::PARTIAL_WITH_VARIABLES,
-        OrkaReplacement::TRIM_PARTIAL,
-        OrkaReplacement::TRIM_PARTIAL_WITH_VARIABLES,
-        OrkaReplacement::BREAK_,
-        OrkaReplacement::ELSE_HAS_BLOCK,
-        OrkaReplacement::HAS_BLOCK,
-        OrkaReplacement::UNLESS_BLOCK,
-        OrkaReplacement::ELSE_,
-        OrkaReplacement::ELSE_IF,
-        OrkaReplacement::ELSE_UNLESS,
-        OrkaReplacement::EMPTY_,
-        OrkaReplacement::END_IF,
-        OrkaReplacement::IF_,
-        OrkaReplacement::ISSET_,
-        OrkaReplacement::NOT_EMPTY,
-        OrkaReplacement::UNLESS,
-        OrkaReplacement::END_FOR,
-        OrkaReplacement::END_FOREACH,
-        OrkaReplacement::FOR_,
-        OrkaReplacement::FOREACH_,
-        OrkaReplacement::CASE_,
-        OrkaReplacement::DEFAULT_,
-        OrkaReplacement::END_SWITCH,
-        OrkaReplacement::SWITCH_,
-        OrkaReplacement::ESCAPED,
-        OrkaReplacement::SET_VARIABLE,
-        OrkaReplacement::SET_VARIABLES,
-        OrkaReplacement::UNESCAPED,
-    ];
-    /** @var class-string<ReplacementContract>[] */
-    public const array VIEW_ORKA_REPLACEMENTS = [
-        OrkaReplacement::DEBUG,
-    ];
-    /** @var non-empty-string */
-    public const string VIEW_PHP_FILE_EXTENSION = '.phtml';
-    /** @var non-empty-string */
-    public const string VIEW_PHP_PATH = '/resources/views';
-    /** @var array<string, string> */
-    public const array VIEW_PHP_PATHS = [];
-    /** @var array<string, string> */
-    public const array VIEW_TWIG_PATHS = [];
-    /** @var class-string<ExtensionInterface>[] */
-    public const array VIEW_TWIG_EXTENSIONS = [];
-    /** @var non-empty-string */
-    public const string VIEW_TWIG_COMPILED_PATH = '/storage/views';
+    /** @var class-string<RendererContract>|null */
+    public const string|null VIEW_DEFAULT_RENDERER = null;
+    /** @var non-empty-string|null */
+    public const string|null VIEW_ORKA_FILE_EXTENSION = null;
+    /** @var non-empty-string|null */
+    public const string|null VIEW_ORKA_PATH = null;
+    /** @var array<non-empty-string, non-empty-string>|null */
+    public const array|null VIEW_ORKA_PATHS = null;
+    /** @var class-string<ReplacementContract>[]|null */
+    public const array|null VIEW_ORKA_CORE_REPLACEMENTS = null;
+    /** @var class-string<ReplacementContract>[]|null */
+    public const array|null VIEW_ORKA_REPLACEMENTS = null;
+    /** @var non-empty-string|null */
+    public const string|null VIEW_PHP_FILE_EXTENSION = null;
+    /** @var non-empty-string|null */
+    public const string|null VIEW_PHP_PATH = null;
+    /** @var array<string, string>|null */
+    public const array|null VIEW_PHP_PATHS = null;
+    /** @var array<string, string>|null */
+    public const array|null VIEW_TWIG_PATHS = null;
+    /** @var class-string<ExtensionInterface>[]|null */
+    public const array|null VIEW_TWIG_EXTENSIONS = null;
+    /** @var non-empty-string|null */
+    public const string|null VIEW_TWIG_COMPILED_PATH = null;
 }

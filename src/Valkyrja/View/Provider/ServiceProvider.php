@@ -25,6 +25,7 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessag
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Orka\Constant\OrkaReplacement;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -72,7 +73,7 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RendererContract> $default */
-        $default = $env::VIEW_DEFAULT_RENDERER;
+        $default = $env::VIEW_DEFAULT_RENDERER ?? PhpRenderer::class;
 
         $container->setSingleton(
             RendererContract::class,
@@ -87,11 +88,14 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $dir */
-        $dir = $env::VIEW_PHP_PATH;
+        $dir = $env::VIEW_PHP_PATH
+            ?? '/resources/views';
         /** @var non-empty-string $fileExtension */
-        $fileExtension = $env::VIEW_PHP_FILE_EXTENSION;
+        $fileExtension = $env::VIEW_PHP_FILE_EXTENSION
+            ?? '.phtml';
         /** @var array<string, string> $paths */
-        $paths = $env::VIEW_PHP_PATHS;
+        $paths = $env::VIEW_PHP_PATHS
+            ?? [];
 
         $container->setSingleton(
             PhpRenderer::class,
@@ -112,15 +116,61 @@ final class ServiceProvider extends Provider
         /** @var bool $debug */
         $debug = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $dir */
-        $dir = $env::VIEW_ORKA_PATH;
+        $dir = $env::VIEW_ORKA_PATH
+            ?? '/resources/views';
         /** @var non-empty-string $fileExtension */
-        $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION;
+        $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION
+            ?? '.orka.phtml';
         /** @var array<non-empty-string, non-empty-string> $paths */
-        $paths = $env::VIEW_ORKA_PATHS;
+        $paths = $env::VIEW_ORKA_PATHS
+            ?? [];
         /** @var class-string<ReplacementContract>[] $coreReplacements */
-        $coreReplacements = $env::VIEW_ORKA_CORE_REPLACEMENTS;
+        $coreReplacements = $env::VIEW_ORKA_CORE_REPLACEMENTS
+            ?? [
+                OrkaReplacement::LAYOUT,
+                OrkaReplacement::BLOCK,
+                OrkaReplacement::END_BLOCK,
+                OrkaReplacement::START_BLOCK,
+                OrkaReplacement::TRIM_BLOCK,
+                OrkaReplacement::END_MULTILINE_COMMENT,
+                OrkaReplacement::SINGLE_LINE_COMMENT,
+                OrkaReplacement::START_MULTILINE_COMMENT,
+                OrkaReplacement::PARTIAL,
+                OrkaReplacement::PARTIAL_WITH_VARIABLES,
+                OrkaReplacement::TRIM_PARTIAL,
+                OrkaReplacement::TRIM_PARTIAL_WITH_VARIABLES,
+                OrkaReplacement::BREAK_,
+                OrkaReplacement::ELSE_HAS_BLOCK,
+                OrkaReplacement::HAS_BLOCK,
+                OrkaReplacement::UNLESS_BLOCK,
+                OrkaReplacement::ELSE_,
+                OrkaReplacement::ELSE_IF,
+                OrkaReplacement::ELSE_UNLESS,
+                OrkaReplacement::EMPTY_,
+                OrkaReplacement::END_IF,
+                OrkaReplacement::IF_,
+                OrkaReplacement::ISSET_,
+                OrkaReplacement::NOT_EMPTY,
+                OrkaReplacement::UNLESS,
+                OrkaReplacement::END_FOR,
+                OrkaReplacement::END_FOREACH,
+                OrkaReplacement::FOR_,
+                OrkaReplacement::FOREACH_,
+                OrkaReplacement::CASE_,
+                OrkaReplacement::DEFAULT_,
+                OrkaReplacement::END_SWITCH,
+                OrkaReplacement::SWITCH_,
+                OrkaReplacement::ESCAPED,
+                OrkaReplacement::SET_VARIABLE,
+                OrkaReplacement::SET_VARIABLES,
+                OrkaReplacement::UNESCAPED,
+            ];
         /** @var class-string<ReplacementContract>[] $replacements */
-        $replacements    = $env::VIEW_ORKA_REPLACEMENTS;
+        $replacements = $env::VIEW_ORKA_REPLACEMENTS
+            ?? [
+                OrkaReplacement::DEBUG,
+            ];
+
         $allReplacements = array_merge($coreReplacements, $replacements);
 
         $replacementClasses = [];
@@ -166,11 +216,14 @@ final class ServiceProvider extends Provider
         /** @var bool $debug */
         $debug = $env::APP_DEBUG_MODE;
         /** @var array<string, string> $paths */
-        $paths = $env::VIEW_TWIG_PATHS;
+        $paths = $env::VIEW_TWIG_PATHS
+            ?? [];
         /** @var class-string<ExtensionInterface>[] $extensions */
-        $extensions = $env::VIEW_TWIG_EXTENSIONS;
+        $extensions = $env::VIEW_TWIG_EXTENSIONS
+            ?? [];
         /** @var non-empty-string $compiledDir */
-        $compiledDir = $env::VIEW_TWIG_COMPILED_PATH;
+        $compiledDir = $env::VIEW_TWIG_COMPILED_PATH
+            ?? '/storage/views';
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
