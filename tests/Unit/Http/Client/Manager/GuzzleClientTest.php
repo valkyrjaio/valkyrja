@@ -66,12 +66,6 @@ class GuzzleClientTest extends TestCase
             cookies: ['cookie1' => 'value1'],
             parsedBody: $parsedBody,
         );
-        // $options = [
-        //     'headers'     => $request->getHeaders(),
-        //     'body'        => 'test',
-        //     'cookies'     => $this->any(),
-        //     'form_params' => $parsedBody,
-        // ];
 
         $psr7Response->expects($this->once())->method('getHeaders')->willReturn($headers);
         $psr7Response->expects($this->once())->method('getStatusCode')->willReturn(200);

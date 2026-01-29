@@ -350,19 +350,6 @@ class Stream implements StreamContract
         return $metadata[$key] ?? null;
     }
 
-    // public function __clone()
-    // {
-    //     $this->rewind();
-    //
-    //     $contents = $this->getContents();
-    //
-    //     $this->setStream($this->stream, $this->mode, $this->modeTranslation);
-    //
-    //     if ($this->isWritable()) {
-    //         $this->write($contents);
-    //         $this->rewind();
-    //     }
-    // }
     /**
      * Seek the stream resource.
      *
