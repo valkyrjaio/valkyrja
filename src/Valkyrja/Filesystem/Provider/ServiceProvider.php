@@ -74,7 +74,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<FilesystemContract> $default */
-        $default = $env::FILESYSTEM_DEFAULT;
+        $default = $env::FILESYSTEM_DEFAULT
+            ?? FlysystemFilesystem::class;
 
         $container->setSingleton(
             FilesystemContract::class,
@@ -89,7 +90,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<FilesystemContract> $default */
-        $default = $env::FLYSYSTEM_FILESYSTEM_DEFAULT;
+        $default = $env::FLYSYSTEM_FILESYSTEM_DEFAULT
+            ?? LocalFlysystemFilesystem::class;
 
         $container->setSingleton(
             FlysystemFilesystem::class,
@@ -119,7 +121,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $path */
-        $path = $env::FILESYSTEM_FLYSYSTEM_LOCAL_PATH;
+        $path = $env::FILESYSTEM_FLYSYSTEM_LOCAL_PATH
+            ?? '/storage/app';
 
         $container->setSingleton(
             LocalFilesystemAdapter::class,
@@ -151,19 +154,26 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $key */
-        $key = $env::FILESYSTEM_FLYSYSTEM_S3_KEY;
+        $key = $env::FILESYSTEM_FLYSYSTEM_S3_KEY
+            ?? 's3-key';
         /** @var non-empty-string $secret */
-        $secret = $env::FILESYSTEM_FLYSYSTEM_S3_SECRET;
+        $secret = $env::FILESYSTEM_FLYSYSTEM_S3_SECRET
+            ?? 's3-secret';
         /** @var non-empty-string $region */
-        $region = $env::FILESYSTEM_FLYSYSTEM_S3_REGION;
+        $region = $env::FILESYSTEM_FLYSYSTEM_S3_REGION
+            ?? 'us-east-1';
         /** @var non-empty-string $version */
-        $version = $env::FILESYSTEM_FLYSYSTEM_S3_VERSION;
+        $version = $env::FILESYSTEM_FLYSYSTEM_S3_VERSION
+            ?? 'latest';
         /** @var non-empty-string $bucket */
-        $bucket = $env::FILESYSTEM_FLYSYSTEM_S3_BUCKET;
+        $bucket = $env::FILESYSTEM_FLYSYSTEM_S3_BUCKET
+            ?? 's3-bucket';
         /** @var string $prefix */
-        $prefix = $env::FILESYSTEM_FLYSYSTEM_S3_PREFIX;
+        $prefix = $env::FILESYSTEM_FLYSYSTEM_S3_PREFIX
+            ?? '';
         /** @var array<array-key, mixed> $options */
-        $options = $env::FILESYSTEM_FLYSYSTEM_S3_OPTIONS;
+        $options = $env::FILESYSTEM_FLYSYSTEM_S3_OPTIONS
+            ?? [];
 
         $clientConfig = [
             'credentials' => [

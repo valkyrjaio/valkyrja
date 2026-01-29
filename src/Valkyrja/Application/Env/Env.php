@@ -50,7 +50,6 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
-use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
@@ -295,26 +294,26 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<FilesystemContract> */
-    public const string FILESYSTEM_DEFAULT = FlysystemFilesystem::class;
-    /** @var class-string<FlysystemFilesystem> */
-    public const string FLYSYSTEM_FILESYSTEM_DEFAULT = LocalFlysystemFilesystem::class;
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_LOCAL_PATH = '/storage/app';
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_KEY = 's3-key';
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_SECRET = 's3-secret';
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_REGION = 'us-east-1';
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_VERSION = 'latest';
-    /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_BUCKET = 's3-bucket';
-    /** @var string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_PREFIX = '';
-    /** @var array<string, mixed> */
-    public const array FILESYSTEM_FLYSYSTEM_S3_OPTIONS = [];
+    /** @var class-string<FilesystemContract>|null */
+    public const string|null FILESYSTEM_DEFAULT = null;
+    /** @var class-string<FlysystemFilesystem>|null */
+    public const string|null FLYSYSTEM_FILESYSTEM_DEFAULT = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_PATH = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_SECRET = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_REGION = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_VERSION = null;
+    /** @var non-empty-string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_BUCKET = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_PREFIX = null;
+    /** @var array<string, mixed>|null */
+    public const array|null FILESYSTEM_FLYSYSTEM_S3_OPTIONS = null;
 
     /************************************************************
      *
