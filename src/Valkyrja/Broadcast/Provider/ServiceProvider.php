@@ -71,7 +71,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<BroadcasterContract> $default */
-        $default = $env::BROADCAST_DEFAULT_BROADCASTER;
+        $default = $env::BROADCAST_DEFAULT_BROADCASTER
+            ?? PusherBroadcaster::class;
 
         $container->setSingleton(
             BroadcasterContract::class,
@@ -115,15 +116,20 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $key */
-        $key = $env::BROADCAST_PUSHER_KEY;
+        $key = $env::BROADCAST_PUSHER_KEY
+            ?? 'pusher-key';
         /** @var non-empty-string $secret */
-        $secret = $env::BROADCAST_PUSHER_SECRET;
+        $secret = $env::BROADCAST_PUSHER_SECRET
+            ?? 'pusher-secret';
         /** @var non-empty-string $id */
-        $id = $env::BROADCAST_PUSHER_ID;
+        $id = $env::BROADCAST_PUSHER_ID
+            ?? 'pusher-id';
         /** @var non-empty-string $cluster */
-        $cluster = $env::BROADCAST_PUSHER_CLUSTER;
+        $cluster = $env::BROADCAST_PUSHER_CLUSTER
+            ?? 'us1';
         /** @var bool $useTls */
-        $useTls = $env::BROADCAST_PUSHER_USE_TLS;
+        $useTls = $env::BROADCAST_PUSHER_USE_TLS
+            ?? true;
 
         $container->setSingleton(
             Pusher::class,
@@ -149,7 +155,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<LoggerContract> $logger */
-        $logger = $env::BROADCAST_LOG_LOGGER;
+        $logger = $env::BROADCAST_LOG_LOGGER
+            ?? LoggerContract::class;
 
         $container->setSingleton(
             LogBroadcaster::class,

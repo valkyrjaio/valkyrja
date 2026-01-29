@@ -26,7 +26,6 @@ use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
-use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
@@ -171,20 +170,20 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<BroadcasterContract> */
-    public const string BROADCAST_DEFAULT_BROADCASTER = PusherBroadcaster::class;
-    /** @var non-empty-string */
-    public const string BROADCAST_PUSHER_KEY = 'pusher-key';
-    /** @var non-empty-string */
-    public const string BROADCAST_PUSHER_SECRET = 'pusher-secret';
-    /** @var non-empty-string */
-    public const string BROADCAST_PUSHER_ID = 'pusher-id';
-    /** @var non-empty-string */
-    public const string BROADCAST_PUSHER_CLUSTER = 'us1';
-    /** @var bool */
-    public const bool BROADCAST_PUSHER_USE_TLS = true;
-    /** @var class-string<LoggerContract> */
-    public const string BROADCAST_LOG_LOGGER = LoggerContract::class;
+    /** @var class-string<BroadcasterContract>|null */
+    public const string|null BROADCAST_DEFAULT_BROADCASTER = null;
+    /** @var non-empty-string|null */
+    public const string|null BROADCAST_PUSHER_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null BROADCAST_PUSHER_SECRET = null;
+    /** @var non-empty-string|null */
+    public const string|null BROADCAST_PUSHER_ID = null;
+    /** @var non-empty-string|null */
+    public const string|null BROADCAST_PUSHER_CLUSTER = null;
+    /** @var bool|null */
+    public const bool|null BROADCAST_PUSHER_USE_TLS = null;
+    /** @var class-string<LoggerContract>|null */
+    public const string|null BROADCAST_LOG_LOGGER = null;
 
     /************************************************************
      *
