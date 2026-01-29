@@ -17,7 +17,9 @@ use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
+use Valkyrja\Auth\Constant\SessionItemId;
 use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Auth\Store\Contract\StoreContract;
@@ -72,7 +74,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<AuthenticatorContract> $default */
-        $default = $env::AUTH_DEFAULT_AUTHENTICATOR;
+        $default = $env::AUTH_DEFAULT_AUTHENTICATOR
+            ?? SessionAuthenticator::class;
 
         $container->setSingleton(
             AuthenticatorContract::class,
@@ -87,9 +90,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY
+            ?? User::class;
         /** @var non-empty-string $sessionItemId */
-        $sessionItemId = $env::AUTH_SESSION_ITEM_ID;
+        $sessionItemId = $env::AUTH_SESSION_ITEM_ID
+            ?? SessionItemId::AUTHENTICATED_USERS;
 
         $container->setSingleton(
             SessionAuthenticator::class,
@@ -110,7 +115,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<StoreContract> $default */
-        $default = $env::AUTH_DEFAULT_STORE;
+        $default = $env::AUTH_DEFAULT_STORE
+            ?? OrmStore::class;
 
         $container->setSingleton(
             StoreContract::class,

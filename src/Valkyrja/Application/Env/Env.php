@@ -18,13 +18,8 @@ use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
-use Valkyrja\Auth\Authenticator\SessionAuthenticator;
-use Valkyrja\Auth\Constant\RouteName;
-use Valkyrja\Auth\Constant\SessionItemId;
 use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
@@ -38,7 +33,6 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
-use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract as HttpRouteDispatchedMiddlewareContract;
@@ -141,28 +135,28 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<AuthenticatorContract> */
-    public const string AUTH_DEFAULT_AUTHENTICATOR = SessionAuthenticator::class;
-    /** @var class-string<StoreContract> */
-    public const string AUTH_DEFAULT_STORE = OrmStore::class;
-    /** @var class-string<UserContract> */
-    public const string AUTH_DEFAULT_USER_ENTITY = User::class;
-    /** @var non-empty-string */
-    public const string AUTH_SESSION_ITEM_ID = SessionItemId::AUTHENTICATED_USERS;
-    /** @var non-empty-string */
-    public const string AUTH_DEFAULT_AUTHORIZATION_HEADER = HeaderName::AUTHORIZATION;
-    /** @var non-empty-string */
-    public const string AUTH_AUTHENTICATE_ROUTE = RouteName::AUTHENTICATE;
+    /** @var class-string<AuthenticatorContract>|null */
+    public const string|null AUTH_DEFAULT_AUTHENTICATOR = null;
+    /** @var class-string<StoreContract>|null */
+    public const string|null AUTH_DEFAULT_STORE = null;
+    /** @var class-string<UserContract>|null */
+    public const string|null AUTH_DEFAULT_USER_ENTITY = null;
+    /** @var non-empty-string|null */
+    public const string|null AUTH_SESSION_ITEM_ID = null;
+    /** @var non-empty-string|null */
+    public const string|null AUTH_DEFAULT_AUTHORIZATION_HEADER = null;
+    /** @var non-empty-string|null */
+    public const string|null AUTH_AUTHENTICATE_ROUTE = null;
     /** @var non-empty-string|null */
     public const string|null AUTH_AUTHENTICATE_URL = null;
-    /** @var non-empty-string */
-    public const string AUTH_NOT_AUTHENTICATED_ROUTE = RouteName::DASHBOARD;
+    /** @var non-empty-string|null */
+    public const string|null AUTH_NOT_AUTHENTICATED_ROUTE = null;
     /** @var non-empty-string|null */
     public const string|null AUTH_NOT_AUTHENTICATED_URL = null;
-    /** @var non-empty-string */
-    public const string AUTH_PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
-    /** @var positive-int */
-    public const int AUTH_PASSWORD_TIMEOUT = 10800;
+    /** @var non-empty-string|null */
+    public const string|null AUTH_PASSWORD_CONFIRM_ROUTE = null;
+    /** @var positive-int|null */
+    public const int|null AUTH_PASSWORD_TIMEOUT = null;
 
     /************************************************************
      *
