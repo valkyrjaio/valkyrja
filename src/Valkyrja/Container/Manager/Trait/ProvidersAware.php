@@ -19,7 +19,7 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
 
-trait ProvidersAwareTrait
+trait ProvidersAware
 {
     /**
      * The items provided by providers that are deferred.

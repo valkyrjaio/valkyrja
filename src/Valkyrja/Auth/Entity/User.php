@@ -15,13 +15,13 @@ namespace Valkyrja\Auth\Entity;
 
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\Trait\UserFields;
-use Valkyrja\Auth\Entity\Trait\UserTrait;
+use Valkyrja\Auth\Entity\Trait\UserMethods;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
 class User extends Entity implements UserContract
 {
     use UserFields;
-    use UserTrait;
+    use UserMethods;
 
     /**
      * @inheritDoc

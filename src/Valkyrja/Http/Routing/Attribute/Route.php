@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Attribute;
 
 use Attribute;
 use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
-use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
+use Valkyrja\Attribute\Trait\ReflectionAwareAttribute;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -32,7 +32,7 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends ParentRoute implements ReflectionAwareAttributeContract
 {
-    use ReflectionAwareAttributeTrait;
+    use ReflectionAwareAttribute;
 
     /**
      * @param non-empty-string                                  $path                      The path

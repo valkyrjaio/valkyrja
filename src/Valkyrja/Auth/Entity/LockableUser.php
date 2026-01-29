@@ -15,10 +15,10 @@ namespace Valkyrja\Auth\Entity;
 
 use Valkyrja\Auth\Entity\Contract\LockableUserContract;
 use Valkyrja\Auth\Entity\Trait\LockableUserFields;
-use Valkyrja\Auth\Entity\Trait\LockableUserTrait;
+use Valkyrja\Auth\Entity\Trait\LockableUserMethods;
 
 class LockableUser extends User implements LockableUserContract
 {
     use LockableUserFields;
-    use LockableUserTrait;
+    use LockableUserMethods;
 }

@@ -15,10 +15,10 @@ namespace Valkyrja\Auth\Entity;
 
 use Valkyrja\Auth\Entity\Contract\MailableUserContract;
 use Valkyrja\Auth\Entity\Trait\MailableUserFields;
-use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
+use Valkyrja\Auth\Entity\Trait\MailableUserMethods;
 
 class MailableUser extends User implements MailableUserContract
 {
     use MailableUserFields;
-    use MailableUserTrait;
+    use MailableUserMethods;
 }

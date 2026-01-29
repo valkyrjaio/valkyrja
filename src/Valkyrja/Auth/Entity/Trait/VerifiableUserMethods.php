@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
 
-trait VerifiableUserTrait
+trait VerifiableUserMethods
 {
     /**
      * @inheritDoc

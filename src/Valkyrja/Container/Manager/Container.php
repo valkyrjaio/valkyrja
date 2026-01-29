@@ -19,7 +19,7 @@ use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
+use Valkyrja\Container\Manager\Trait\ProvidersAware;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
@@ -31,7 +31,7 @@ use function is_object;
 
 class Container implements ContainerContract
 {
-    use ProvidersAwareTrait;
+    use ProvidersAware;
 
     /**
      * The aliases.
