@@ -68,7 +68,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<LoggerContract> $default */
-        $default = $env::LOG_DEFAULT_LOGGER;
+        $default = $env::LOG_DEFAULT_LOGGER
+            ?? PsrLogger::class;
 
         $container->setSingleton(
             LoggerContract::class,
