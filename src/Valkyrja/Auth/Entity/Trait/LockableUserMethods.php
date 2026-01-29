@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
 
-trait LockableUserTrait
+trait LockableUserMethods
 {
     /**
      * @inheritDoc

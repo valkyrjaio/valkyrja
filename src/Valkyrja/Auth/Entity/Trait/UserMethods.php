@@ -18,7 +18,7 @@ use Valkyrja\Auth\Throwable\Exception\RuntimeException;
 
 use function is_string;
 
-trait UserTrait
+trait UserMethods
 {
     /**
      * @inheritDoc

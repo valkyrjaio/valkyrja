@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
-use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
+use Valkyrja\Container\Manager\Trait\ProvidersAware;
 
 use function array_key_exists;
 
@@ -22,7 +22,7 @@ use function array_key_exists;
  */
 class ProvidersAwareClass
 {
-    use ProvidersAwareTrait;
+    use ProvidersAware;
 
     private array $objects = [];
 

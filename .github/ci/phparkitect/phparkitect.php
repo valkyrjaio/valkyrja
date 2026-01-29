@@ -203,6 +203,16 @@ return static function (Config $config): void {
         ->because('All non-traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+        ->that(new IsTrait())
+        ->should(new NotHaveNameMatching('*Trait*'))
+        ->because('All traits should not be named with trait naming convention');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new IsTrait())
+        ->should(new NotHaveNameMatching('*Trait*'))
+        ->because('All classes should not be named with trait naming convention');
+
+    $srcRules[] = Rule::allClasses()
         ->that(new IsAbstract())
         ->andThat(new NotResideInTheseNamespaces('*Factory'))
         ->andThat(new NotResideInTheseNamespaces('*Provider'))
