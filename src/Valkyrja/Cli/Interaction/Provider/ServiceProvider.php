@@ -54,11 +54,14 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $isQuiet */
-        $isQuiet = $env::CLI_INTERACTION_IS_QUIET;
+        $isQuiet = $env::CLI_INTERACTION_IS_QUIET
+            ?? false;
         /** @var bool $isInteractive */
-        $isInteractive = $env::CLI_INTERACTION_IS_INTERACTIVE;
+        $isInteractive = $env::CLI_INTERACTION_IS_INTERACTIVE
+            ?? true;
         /** @var bool $isSilent */
-        $isSilent = $env::CLI_INTERACTION_IS_SILENT;
+        $isSilent = $env::CLI_INTERACTION_IS_SILENT
+            ?? false;
 
         $container->setSingleton(
             Config::class,

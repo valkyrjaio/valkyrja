@@ -33,6 +33,12 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
@@ -79,7 +85,12 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<InputReceivedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_INPUT_RECEIVED;
+        $middleware = $env::CLI_MIDDLEWARE_INPUT_RECEIVED
+            ?? [
+                CheckForHelpOptionsMiddleware::class,
+                CheckForVersionOptionsMiddleware::class,
+                CheckGlobalInteractionOptionsMiddleware::class,
+            ];
 
         $container->setSingleton(
             InputReceivedHandlerContract::class,
@@ -98,7 +109,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteDispatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_DISPATCHED;
+        $middleware = $env::CLI_MIDDLEWARE_COMMAND_DISPATCHED
+            ?? [];
 
         $container->setSingleton(
             RouteDispatchedHandlerContract::class,
@@ -117,7 +129,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<ThrowableCaughtMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_THROWABLE_CAUGHT;
+        $middleware = $env::CLI_MIDDLEWARE_THROWABLE_CAUGHT
+            ?? [
+                CliLogThrowableCaughtMiddleware::class,
+                OutputThrowableCaughtMiddleware::class,
+            ];
 
         $container->setSingleton(
             ThrowableCaughtHandlerContract::class,
@@ -136,7 +152,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_MATCHED;
+        $middleware = $env::CLI_MIDDLEWARE_COMMAND_MATCHED
+            ?? [];
 
         $container->setSingleton(
             RouteMatchedHandlerContract::class,
@@ -155,7 +172,10 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteNotMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_NOT_MATCHED;
+        $middleware = $env::CLI_MIDDLEWARE_COMMAND_NOT_MATCHED
+            ?? [
+                CheckCommandForTypoMiddleware::class,
+            ];
 
         $container->setSingleton(
             RouteNotMatchedHandlerContract::class,
@@ -174,7 +194,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<ExitedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_EXITED;
+        $middleware = $env::CLI_MIDDLEWARE_EXITED
+            ?? [];
 
         $container->setSingleton(
             ExitedHandlerContract::class,

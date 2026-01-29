@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
@@ -47,9 +46,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(Config::class, $config = $this->container->getSingleton(Config::class));
-        self::assertSame(Env::CLI_INTERACTION_IS_QUIET, $config->isQuiet);
-        self::assertSame(Env::CLI_INTERACTION_IS_INTERACTIVE, $config->isInteractive);
-        self::assertSame(Env::CLI_INTERACTION_IS_SILENT, $config->isSilent);
+        self::assertFalse($config->isQuiet);
+        self::assertTrue($config->isInteractive);
+        self::assertFalse($config->isSilent);
     }
 
     /**

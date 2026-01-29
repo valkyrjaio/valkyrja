@@ -35,17 +35,7 @@ use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Routing\Constant\OptionName;
-use Valkyrja\Cli\Routing\Constant\OptionShortName;
-use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
-use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
-use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
-use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
-use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
-use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
-use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
@@ -224,18 +214,18 @@ class Env
      *
      ************************************************************/
 
-    /** @var non-empty-string */
-    public const string CLI_HELP_COMMAND_NAME = HelpCommand::NAME;
-    /** @var non-empty-string */
-    public const string CLI_HELP_OPTION_NAME = OptionName::HELP;
-    /** @var non-empty-string */
-    public const string CLI_HELP_OPTION_SHORT_NAME = OptionShortName::HELP;
-    /** @var non-empty-string */
-    public const string CLI_VERSION_COMMAND_NAME = VersionCommand::NAME;
-    /** @var non-empty-string */
-    public const string CLI_VERSION_OPTION_NAME = OptionName::VERSION;
-    /** @var non-empty-string */
-    public const string CLI_VERSION_OPTION_SHORT_NAME = OptionShortName::VERSION;
+    /** @var non-empty-string|null */
+    public const string|null CLI_HELP_COMMAND_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null CLI_HELP_OPTION_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null CLI_HELP_OPTION_SHORT_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null CLI_VERSION_COMMAND_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null CLI_VERSION_OPTION_NAME = null;
+    /** @var non-empty-string|null */
+    public const string|null CLI_VERSION_OPTION_SHORT_NAME = null;
 
     /************************************************************
      *
@@ -243,12 +233,12 @@ class Env
      *
      ************************************************************/
 
-    /** @var bool */
-    public const bool CLI_INTERACTION_IS_QUIET = false;
-    /** @var bool */
-    public const bool CLI_INTERACTION_IS_INTERACTIVE = true;
-    /** @var bool */
-    public const bool CLI_INTERACTION_IS_SILENT = false;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_QUIET = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_SILENT = null;
 
     /************************************************************
      *
@@ -256,27 +246,18 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<InputReceivedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [
-        CheckForHelpOptionsMiddleware::class,
-        CheckForVersionOptionsMiddleware::class,
-        CheckGlobalInteractionOptionsMiddleware::class,
-    ];
-    /** @var class-string<RouteMatchedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
-    /** @var class-string<RouteNotMatchedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [
-        CheckCommandForTypoMiddleware::class,
-    ];
-    /** @var class-string<RouteDispatchedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
-    /** @var class-string<ThrowableCaughtMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [
-        CliLogThrowableCaughtMiddleware::class,
-        OutputThrowableCaughtMiddleware::class,
-    ];
-    /** @var class-string<ExitedMiddlewareContract>[] */
-    public const array CLI_MIDDLEWARE_EXITED = [];
+    /** @var class-string<InputReceivedMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_INPUT_RECEIVED = null;
+    /** @var class-string<RouteMatchedMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_MATCHED = null;
+    /** @var class-string<RouteNotMatchedMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = null;
+    /** @var class-string<RouteDispatchedMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_DISPATCHED = null;
+    /** @var class-string<ThrowableCaughtMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_THROWABLE_CAUGHT = null;
+    /** @var class-string<ExitedMiddlewareContract>[]|null */
+    public const array|null CLI_MIDDLEWARE_EXITED = null;
 
     /************************************************************
      *
