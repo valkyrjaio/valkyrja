@@ -104,17 +104,22 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $path */
-        $path = $env::SESSION_COOKIE_PARAM_PATH;
+        $path = $env::SESSION_COOKIE_PARAM_PATH
+            ?? '/';
         /** @var string|null $domain */
         $domain = $env::SESSION_COOKIE_PARAM_DOMAIN;
         /** @var int $lifetime */
-        $lifetime = $env::SESSION_COOKIE_PARAM_LIFETIME;
+        $lifetime = $env::SESSION_COOKIE_PARAM_LIFETIME
+            ?? 0;
         /** @var bool $secure */
-        $secure = $env::SESSION_COOKIE_PARAM_SECURE;
+        $secure = $env::SESSION_COOKIE_PARAM_SECURE
+            ?? false;
         /** @var bool $httpOnly */
-        $httpOnly = $env::SESSION_COOKIE_PARAM_HTTP_ONLY;
+        $httpOnly = $env::SESSION_COOKIE_PARAM_HTTP_ONLY
+            ?? false;
         /** @var SameSite $sameSite */
-        $sameSite = $env::SESSION_COOKIE_PARAM_SAME_SITE;
+        $sameSite = $env::SESSION_COOKIE_PARAM_SAME_SITE
+            ?? SameSite::NONE;
 
         $container->setSingleton(
             CookieParams::class,
@@ -136,7 +141,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<SessionContract> $default */
-        $default = $env::SESSION_DEFAULT;
+        $default = $env::SESSION_DEFAULT
+            ?? PhpSession::class;
 
         $container->setSingleton(
             SessionContract::class,
@@ -362,7 +368,7 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
         /** @var non-empty-string|null $optionName */
-        $optionName = $env::SESSION_JWT_OPTION_NAME;
+        $optionName = $env::SESSION_TOKEN_OPTION_NAME;
 
         $container->setSingleton(
             OptionTokenSession::class,
@@ -386,7 +392,7 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
         /** @var non-empty-string|null $optionName */
-        $optionName = $env::SESSION_JWT_OPTION_NAME;
+        $optionName = $env::SESSION_TOKEN_OPTION_NAME;
 
         $container->setSingleton(
             EncryptedOptionTokenSession::class,
@@ -411,7 +417,7 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
         /** @var non-empty-string|null $headerName */
-        $headerName = $env::SESSION_JWT_HEADER_NAME;
+        $headerName = $env::SESSION_TOKEN_HEADER_NAME;
 
         $container->setSingleton(
             HeaderTokenSession::class,
@@ -435,7 +441,7 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string|null $sessionName */
         $sessionName = $env::SESSION_PHP_NAME;
         /** @var non-empty-string|null $headerName */
-        $headerName = $env::SESSION_JWT_HEADER_NAME;
+        $headerName = $env::SESSION_TOKEN_HEADER_NAME;
 
         $container->setSingleton(
             EncryptedHeaderTokenSession::class,
