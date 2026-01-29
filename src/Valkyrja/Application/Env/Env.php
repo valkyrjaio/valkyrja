@@ -69,7 +69,6 @@ use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -383,8 +382,8 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<LoggerContract> */
-    public const string LOG_DEFAULT_LOGGER = PsrLogger::class;
+    /** @var class-string<LoggerContract>|null */
+    public const string|null LOG_DEFAULT_LOGGER = null;
 
     /************************************************************
      *
