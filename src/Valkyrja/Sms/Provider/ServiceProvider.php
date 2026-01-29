@@ -67,7 +67,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<MessengerContract> $default */
-        $default = $env::SMS_DEFAULT_MESSENGER;
+        $default = $env::SMS_DEFAULT_MESSENGER
+            ?? VonageMessenger::class;
 
         $container->setSingleton(
             MessengerContract::class,
@@ -108,9 +109,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $key */
-        $key = $env::SMS_VONAGE_KEY;
+        $key = $env::SMS_VONAGE_KEY
+            ?? 'vonage-key';
         /** @var string $secret */
-        $secret = $env::SMS_VONAGE_SECRET;
+        $secret = $env::SMS_VONAGE_SECRET
+            ?? 'vonage-secret';
 
         $container->setSingleton(
             CredentialsInterface::class,

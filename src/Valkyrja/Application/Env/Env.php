@@ -77,7 +77,6 @@ use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\PhpSession;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
-use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
@@ -510,18 +509,20 @@ class Env
      * SMS component env variables.
      *
      ************************************************************/
-    /** @var class-string<MessengerContract> */
-    public const string SMS_DEFAULT_MESSENGER = VonageMessenger::class;
-    /** @var non-empty-string */
-    public const string SMS_VONAGE_KEY = 'vonage-key';
-    /** @var non-empty-string */
-    public const string SMS_VONAGE_SECRET = 'vonage-secret';
+
+    /** @var class-string<MessengerContract>|null */
+    public const string|null SMS_DEFAULT_MESSENGER = null;
+    /** @var non-empty-string|null */
+    public const string|null SMS_VONAGE_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null SMS_VONAGE_SECRET = null;
 
     /************************************************************
      *
      * View component env variables.
      *
      ************************************************************/
+
     /** @var class-string<RendererContract>|null */
     public const string|null VIEW_DEFAULT_RENDERER = null;
     /** @var non-empty-string|null */
