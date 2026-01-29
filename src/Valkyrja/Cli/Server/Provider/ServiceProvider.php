@@ -194,11 +194,14 @@ final class ServiceProvider extends Provider
         $env = $container->getSingleton(Env::class);
 
         /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_HELP_COMMAND_NAME;
+        $commandName = $env::CLI_HELP_COMMAND_NAME
+            ?? HelpCommand::NAME;
         /** @var non-empty-string $name */
-        $name = $env::CLI_HELP_OPTION_NAME;
+        $name = $env::CLI_HELP_OPTION_NAME
+            ?? OptionName::HELP;
         /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_HELP_OPTION_SHORT_NAME;
+        $shortName = $env::CLI_HELP_OPTION_SHORT_NAME
+            ?? OptionShortName::HELP;
 
         $container->setSingleton(
             CheckForHelpOptionsMiddleware::class,
@@ -218,11 +221,14 @@ final class ServiceProvider extends Provider
         $env = $container->getSingleton(Env::class);
 
         /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_VERSION_COMMAND_NAME;
+        $commandName = $env::CLI_VERSION_COMMAND_NAME
+            ?? VersionCommand::NAME;
         /** @var non-empty-string $name */
-        $name = $env::CLI_VERSION_OPTION_NAME;
+        $name = $env::CLI_VERSION_OPTION_NAME
+            ?? OptionName::VERSION;
         /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_VERSION_OPTION_SHORT_NAME;
+        $shortName = $env::CLI_VERSION_OPTION_SHORT_NAME
+            ?? OptionShortName::VERSION;
 
         $container->setSingleton(
             CheckForVersionOptionsMiddleware::class,
