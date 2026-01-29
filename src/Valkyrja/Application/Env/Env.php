@@ -67,7 +67,6 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrow
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
-use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -361,20 +360,20 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<JwtContract> */
-    public const string JWT_DEFAULT = FirebaseJwt::class;
-    /** @var Algorithm */
-    public const Algorithm JWT_ALGORITHM = Algorithm::HS256;
-    /** @var non-empty-string */
-    public const string JWT_HS_KEY = 'key';
-    /** @var non-empty-string */
-    public const string JWT_RS_PRIVATE_KEY = 'private-key';
-    /** @var non-empty-string */
-    public const string JWT_RS_PUBLIC_KEY = 'public-key';
-    /** @var non-empty-string */
-    public const string JWT_EDDSA_PRIVATE_KEY = 'private-key';
-    /** @var non-empty-string */
-    public const string JWT_EDDSA_PUBLIC_KEY = 'public-key';
+    /** @var class-string<JwtContract>|null */
+    public const string|null JWT_DEFAULT = null;
+    /** @var Algorithm|null */
+    public const Algorithm|null JWT_ALGORITHM = null;
+    /** @var non-empty-string|null */
+    public const string|null JWT_HS_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null JWT_RS_PRIVATE_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null JWT_RS_PUBLIC_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null JWT_EDDSA_PRIVATE_KEY = null;
+    /** @var non-empty-string|null */
+    public const string|null JWT_EDDSA_PUBLIC_KEY = null;
 
     /************************************************************
      *

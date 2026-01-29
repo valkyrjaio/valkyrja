@@ -59,7 +59,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<JwtContract> $default */
-        $default = $env::JWT_DEFAULT;
+        $default = $env::JWT_DEFAULT
+            ?? FirebaseJwt::class;
 
         $container->setSingleton(
             JwtContract::class,
@@ -74,21 +75,22 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var Algorithm $algorithm */
-        $algorithm = $env::JWT_ALGORITHM;
+        $algorithm = $env::JWT_ALGORITHM
+            ?? Algorithm::HS256;
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $encodeKey */
         $encodeKey = match ($algorithm) {
-            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY,
-            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PRIVATE_KEY,
-            Algorithm::EdDSA => $env::JWT_EDDSA_PRIVATE_KEY,
+            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
+            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PRIVATE_KEY ?? 'private-key',
+            Algorithm::EdDSA => $env::JWT_EDDSA_PRIVATE_KEY ?? 'private-key',
             default          => $env::APP_KEY,
         };
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey */
         $decodeKey = match ($algorithm) {
-            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY,
-            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PUBLIC_KEY,
-            Algorithm::EdDSA => $env::JWT_EDDSA_PUBLIC_KEY,
+            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
+            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PUBLIC_KEY ?? 'public-key',
+            Algorithm::EdDSA => $env::JWT_EDDSA_PUBLIC_KEY ?? 'public-key',
             default          => $env::APP_KEY,
         };
 
