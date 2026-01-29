@@ -40,6 +40,9 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 
 final class ServiceProvider extends Provider
 {
@@ -88,7 +91,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RequestReceivedMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_REQUEST_RECEIVED;
+        $middleware = $env::HTTP_MIDDLEWARE_REQUEST_RECEIVED
+            ?? [];
 
         $container->setSingleton(
             RequestReceivedHandlerContract::class,
@@ -107,7 +111,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteDispatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_DISPATCHED;
+        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_DISPATCHED
+            ?? [];
 
         $container->setSingleton(
             RouteDispatchedHandlerContract::class,
@@ -126,7 +131,11 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<ThrowableCaughtMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_THROWABLE_CAUGHT;
+        $middleware = $env::HTTP_MIDDLEWARE_THROWABLE_CAUGHT
+            ?? [
+                HttpLogThrowableCaughtMiddleware::class,
+                ViewThrowableCaughtMiddleware::class,
+            ];
 
         $container->setSingleton(
             ThrowableCaughtHandlerContract::class,
@@ -145,7 +154,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_MATCHED;
+        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_MATCHED
+            ?? [];
 
         $container->setSingleton(
             RouteMatchedHandlerContract::class,
@@ -164,7 +174,10 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<RouteNotMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED;
+        $middleware = $env::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED
+            ?? [
+                ViewRouteNotMatchedMiddleware::class,
+            ];
 
         $container->setSingleton(
             RouteNotMatchedHandlerContract::class,
@@ -183,7 +196,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<SendingResponseMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_SENDING_RESPONSE;
+        $middleware = $env::HTTP_MIDDLEWARE_SENDING_RESPONSE
+            ?? [];
 
         $container->setSingleton(
             SendingResponseHandlerContract::class,
@@ -202,7 +216,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<TerminatedMiddlewareContract>[] $middleware */
-        $middleware = $env::HTTP_MIDDLEWARE_TERMINATED;
+        $middleware = $env::HTTP_MIDDLEWARE_TERMINATED
+            ?? [];
 
         $container->setSingleton(
             TerminatedHandlerContract::class,

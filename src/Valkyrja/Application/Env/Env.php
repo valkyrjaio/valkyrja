@@ -52,7 +52,6 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
-use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
@@ -62,9 +61,6 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpR
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddlewareContract;
-use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
-use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
-use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -326,33 +322,29 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<ClientContract> */
-    public const string HTTP_CLIENT_DEFAULT = GuzzleClient::class;
+    /** @var class-string<ClientContract>|null */
+    public const string|null HTTP_CLIENT_DEFAULT = null;
 
     /************************************************************
      *
      * Http Middleware component env variables.
      *
      ************************************************************/
-    /** @var class-string<RequestReceivedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_REQUEST_RECEIVED = [];
-    /** @var class-string<HttpRouteDispatchedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [];
-    /** @var class-string<HttpThrowableCaughtMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [
-        HttpLogThrowableCaughtMiddleware::class,
-        ViewThrowableCaughtMiddleware::class,
-    ];
-    /** @var class-string<HttpRouteMatchedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_ROUTE_MATCHED = [];
-    /** @var class-string<HttpRouteNotMatchedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [
-        ViewRouteNotMatchedMiddleware::class,
-    ];
-    /** @var class-string<SendingResponseMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_SENDING_RESPONSE = [];
-    /** @var class-string<TerminatedMiddlewareContract>[] */
-    public const array HTTP_MIDDLEWARE_TERMINATED = [];
+
+    /** @var class-string<RequestReceivedMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
+    /** @var class-string<HttpRouteDispatchedMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
+    /** @var class-string<HttpThrowableCaughtMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
+    /** @var class-string<HttpRouteMatchedMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
+    /** @var class-string<HttpRouteNotMatchedMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
+    /** @var class-string<SendingResponseMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
+    /** @var class-string<TerminatedMiddlewareContract>[]|null */
+    public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
 
     /************************************************************
      *
