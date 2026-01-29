@@ -47,7 +47,6 @@ use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMi
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
@@ -285,8 +284,8 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<CryptContract> */
-    public const string CRYPT_DEFAULT = SodiumCrypt::class;
+    /** @var class-string<CryptContract>|null */
+    public const string|null CRYPT_DEFAULT = null;
 
     /************************************************************
      *

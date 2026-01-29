@@ -56,7 +56,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<CryptContract> $default */
-        $default = $env::CRYPT_DEFAULT;
+        $default = $env::CRYPT_DEFAULT
+            ?? SodiumCrypt::class;
 
         $container->setSingleton(
             CryptContract::class,
