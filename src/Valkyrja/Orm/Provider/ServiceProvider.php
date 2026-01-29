@@ -69,7 +69,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<ManagerContract> $default */
-        $default = $env::ORM_DEFAULT_MANAGER;
+        $default = $env::ORM_DEFAULT_MANAGER
+            ?? MysqlManager::class;
 
         $container->setSingleton(
             ManagerContract::class,
@@ -84,17 +85,23 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
-        $db = $env::ORM_MYSQL_DB;
+        $db = $env::ORM_MYSQL_DB
+            ?? 'valkyrja';
         /** @var non-empty-string $host */
-        $host = $env::ORM_MYSQL_HOST;
+        $host = $env::ORM_MYSQL_HOST
+            ?? '127.0.0.1';
         /** @var positive-int $port */
-        $port = $env::ORM_MYSQL_PORT;
+        $port = $env::ORM_MYSQL_PORT
+            ?? 3306;
         /** @var non-empty-string $user */
-        $user = $env::ORM_MYSQL_USER;
+        $user = $env::ORM_MYSQL_USER
+            ?? 'valkyrja';
         /** @var non-empty-string $password */
-        $password = $env::ORM_MYSQL_PASSWORD;
+        $password = $env::ORM_MYSQL_PASSWORD
+            ?? 'mysql-password';
         /** @var non-empty-string $charset */
-        $charset = $env::ORM_MYSQL_CHARSET;
+        $charset = $env::ORM_MYSQL_CHARSET
+            ?? 'utf8mb4';
         /** @var non-empty-string|null $strict */
         $strict = $env::ORM_MYSQL_STRICT;
         /** @var non-empty-string|null $engine */
@@ -136,21 +143,29 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
-        $db = $env::ORM_PGSQL_DB;
+        $db = $env::ORM_PGSQL_DB
+            ?? 'valkyrja';
         /** @var non-empty-string $host */
-        $host = $env::ORM_PGSQL_HOST;
+        $host = $env::ORM_PGSQL_HOST
+            ?? '127.0.0.1';
         /** @var positive-int $port */
-        $port = $env::ORM_PGSQL_PORT;
+        $port = $env::ORM_PGSQL_PORT
+            ?? 6379;
         /** @var non-empty-string $user */
-        $user = $env::ORM_PGSQL_USER;
+        $user = $env::ORM_PGSQL_USER
+            ?? 'valkyrja';
         /** @var non-empty-string $password */
-        $password = $env::ORM_PGSQL_PASSWORD;
+        $password = $env::ORM_PGSQL_PASSWORD
+            ?? 'pgsql-password';
         /** @var non-empty-string $charset */
-        $charset = $env::ORM_PGSQL_CHARSET;
+        $charset = $env::ORM_PGSQL_CHARSET
+            ?? 'utf8';
         /** @var non-empty-string $schema */
-        $schema = $env::ORM_PGSQL_SCHEMA;
+        $schema = $env::ORM_PGSQL_SCHEMA
+            ?? 'public';
         /** @var non-empty-string $sslmode */
-        $sslmode = $env::ORM_PGSQL_SSL_MODE;
+        $sslmode = $env::ORM_PGSQL_SSL_MODE
+            ?? 'prefer';
         /** @var array<int, int|bool>|null $options */
         $options = $env::ORM_PGSQL_OPTIONS;
 
@@ -189,17 +204,23 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
-        $db = $env::ORM_SQLITE_DB;
+        $db = $env::ORM_SQLITE_DB
+            ?? 'valkyrja';
         /** @var non-empty-string $host */
-        $host = $env::ORM_SQLITE_HOST;
+        $host = $env::ORM_SQLITE_HOST
+            ?? '127.0.0.1';
         /** @var positive-int $port */
-        $port = $env::ORM_SQLITE_PORT;
+        $port = $env::ORM_SQLITE_PORT
+            ?? 3306;
         /** @var non-empty-string $user */
-        $user = $env::ORM_SQLITE_USER;
+        $user = $env::ORM_SQLITE_USER
+            ?? 'valkyrja';
         /** @var non-empty-string $password */
-        $password = $env::ORM_SQLITE_PASSWORD;
+        $password = $env::ORM_SQLITE_PASSWORD
+            ?? 'sqlite-password';
         /** @var non-empty-string $charset */
-        $charset = $env::ORM_SQLITE_CHARSET;
+        $charset = $env::ORM_SQLITE_CHARSET
+            ?? 'utf8';
         /** @var array<int, int|bool>|null $options */
         $options = $env::ORM_SQLITE_OPTIONS;
 
