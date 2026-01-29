@@ -64,7 +64,8 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<ClientContract> $default */
-        $default = $env::HTTP_CLIENT_DEFAULT;
+        $default = $env::HTTP_CLIENT_DEFAULT
+            ?? GuzzleClient::class;
 
         $container->setSingleton(
             ClientContract::class,
