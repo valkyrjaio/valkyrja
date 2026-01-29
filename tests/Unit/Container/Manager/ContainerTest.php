@@ -24,7 +24,6 @@ use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
-use Valkyrja\Tests\Trait\ExpectErrorTrait;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -32,8 +31,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 class ContainerTest extends TestCase
 {
-    use ExpectErrorTrait;
-
     /**
      * The class to test with.
      *
