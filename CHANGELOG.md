@@ -1,6 +1,23 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.24.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.25.0...master)
+
+## [v25.25.0](https://github.com/valkyrjaio/valkyrja/compare/v25.24.0...v25.25.0) - 2026-01-29
+
+* [Bin] Update the bin dir for the cli application to run in by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/462
+* [Type] Add a test for short nodes in UUIDV1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/463
+* [Cli] Update formatting to allow for multiple styles by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/464
+* [Auth] Add allowed classes for session authenticator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/465
+* [App] Add allowed classes for entry app by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/466
+* [Http] Add allowed classes for collection by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/467
+* [Cli] Add allowed classes for collection by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/468
+* [Http] Add constant class for allowed classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/469
+* [Event] Add constant class for allowed classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/470
+* [App] Add constant class for allowed classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/471
+* [Http] Fix unserialize contents of stream by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/472
+* [Http] Add allowed classes for cache response middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/473
+* [Http] Do not cache 5xx status code responses by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/474
+* [Http] Move routing middleware from Middleware to Routing by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/475
 
 ## [v25.24.0](https://github.com/valkyrjaio/valkyrja/compare/v25.23.0...v25.24.0) - 2026-01-28
 
