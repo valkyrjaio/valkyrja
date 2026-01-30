@@ -17,6 +17,7 @@ use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
@@ -139,6 +140,8 @@ class Env
     public const string|null AUTH_DEFAULT_USER_ENTITY = null;
     /** @var non-empty-string|null */
     public const string|null AUTH_SESSION_ITEM_ID = null;
+    /** @var class-string<AuthenticatedUsersContract>[]|null */
+    public const array|null AUTH_SESSION_ALLOWED_CLASSES = null;
 
     /************************************************************
      *
