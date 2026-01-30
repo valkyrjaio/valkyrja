@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.25.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.25.1...master)
+
+## [v25.25.1](https://github.com/valkyrjaio/valkyrja/compare/v25.25.0...v25.25.1) - 2026-01-29
+
+* [Http] Use allowed classes for cache response middleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/476
+* [Event] Use allowed classes for event collection by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/477
 
 ## [v25.25.0](https://github.com/valkyrjaio/valkyrja/compare/v25.24.0...v25.25.0) - 2026-01-29
 
