@@ -22,20 +22,19 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Server\Constant\CommandName;
 
 use const PHP_VERSION;
 
 class VersionCommand
 {
-    public const string NAME = 'version';
-
     public function __construct(
         protected OutputFactoryContract $outputFactory
     ) {
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::VERSION,
         description: 'Get the application version',
         helpText: new Message('A command to show the application version and info'),
     )]
