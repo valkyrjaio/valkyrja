@@ -17,9 +17,6 @@ use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-
-use function serialize;
-use function unserialize;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\NoStreamAvailableException;
@@ -37,6 +34,11 @@ use Valkyrja\Tests\Classes\Http\Message\Stream\StreamTellExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamWriteExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\UnseekableStreamExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+
+use function serialize;
+use function unserialize;
+
+use const SEEK_END;
 
 class StreamTest extends TestCase
 {
