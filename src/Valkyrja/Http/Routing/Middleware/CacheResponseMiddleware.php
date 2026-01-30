@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Middleware\Cache;
+namespace Valkyrja\Http\Routing\Middleware;
 
 use Override;
 use Throwable;

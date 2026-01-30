@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Provider;
 
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
-use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -49,7 +47,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouteDispatchedHandlerContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(SendingResponseHandlerContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(TerminatedHandlerContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CacheResponseMiddleware::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -61,7 +58,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(RouteDispatchedHandlerContract::class, ServiceProvider::provides());
         self::assertContains(SendingResponseHandlerContract::class, ServiceProvider::provides());
         self::assertContains(TerminatedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(CacheResponseMiddleware::class, ServiceProvider::provides());
     }
 
     public function testPublishRequestReceivedHandler(): void
@@ -138,22 +134,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(
             TerminatedHandler::class,
             $this->container->getSingleton(TerminatedHandlerContract::class)
-        );
-    }
-
-    public function testPublishCacheResponseMiddleware(): void
-    {
-        $this->container->setSingleton(
-            FilesystemContract::class,
-            self::createStub(FilesystemContract::class)
-        );
-
-        $callback = ServiceProvider::publishers()[CacheResponseMiddleware::class];
-        $callback($this->container);
-
-        self::assertInstanceOf(
-            CacheResponseMiddleware::class,
-            $this->container->getSingleton(CacheResponseMiddleware::class)
         );
     }
 }

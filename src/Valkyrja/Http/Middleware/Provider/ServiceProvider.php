@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
-use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
@@ -40,8 +38,7 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Constant\AllowedClasses;
-use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 
@@ -61,7 +58,6 @@ final class ServiceProvider extends Provider
             RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
             SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
             TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
-            CacheResponseMiddleware::class        => [self::class, 'publishCacheResponseMiddleware'],
         ];
     }
 
@@ -79,7 +75,6 @@ final class ServiceProvider extends Provider
             RouteNotMatchedHandlerContract::class,
             SendingResponseHandlerContract::class,
             TerminatedHandlerContract::class,
-            CacheResponseMiddleware::class,
         ];
     }
 
@@ -226,29 +221,5 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-    }
-
-    /**
-     * Publish the CacheResponseMiddleware service.
-     *
-     * @param ContainerContract $container The container
-     */
-    public static function publishCacheResponseMiddleware(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
-        /** @var class-string[] $allowedClasses */
-        $allowedClasses = $env::HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES
-            ?? AllowedClasses::CACHE_RESPONSE_MIDDLEWARE;
-
-        $container->setSingleton(
-            CacheResponseMiddleware::class,
-            new CacheResponseMiddleware(
-                filesystem: $container->getSingleton(FilesystemContract::class),
-                debug: $debugMode,
-                allowedClasses: $allowedClasses
-            )
-        );
     }
 }
