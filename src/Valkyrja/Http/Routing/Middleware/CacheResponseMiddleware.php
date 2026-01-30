@@ -78,7 +78,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
                 $response = unserialize(
                     $decodedCache,
                     [
-                        'allowed_classes' => true,
+                        'allowed_classes' => $this->allowedClasses,
                     ]
                 );
 
