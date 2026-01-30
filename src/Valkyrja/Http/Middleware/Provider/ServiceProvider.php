@@ -40,6 +40,7 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Http\Routing\Constant\AllowedClasses;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
@@ -237,12 +238,16 @@ final class ServiceProvider extends Provider
         $env = $container->getSingleton(Env::class);
         /** @var bool $debugMode */
         $debugMode = $env::APP_DEBUG_MODE;
+        /** @var class-string[] $allowedClasses */
+        $allowedClasses = $env::HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES
+            ?? AllowedClasses::CACHE_RESPONSE_MIDDLEWARE;
 
         $container->setSingleton(
             CacheResponseMiddleware::class,
             new CacheResponseMiddleware(
-                $container->getSingleton(FilesystemContract::class),
-                $debugMode
+                filesystem: $container->getSingleton(FilesystemContract::class),
+                debug: $debugMode,
+                allowedClasses: $allowedClasses
             )
         );
     }

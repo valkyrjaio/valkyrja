@@ -24,6 +24,7 @@ use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Routing\Constant\AllowedClasses;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Throwable\Exception\RuntimeException;
@@ -36,9 +37,13 @@ use function unserialize;
 
 class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
 {
+    /**
+     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
+     */
     public function __construct(
         protected FilesystemContract $filesystem = new InMemoryFilesystem(),
-        protected bool $debug = false
+        protected bool $debug = false,
+        protected array $allowedClasses = AllowedClasses::CACHE_RESPONSE_MIDDLEWARE
     ) {
     }
 
