@@ -18,6 +18,8 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
 use Valkyrja\Auth\Constant\SessionItemId;
+use Valkyrja\Auth\Data\AuthenticatedUsers;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
@@ -95,6 +97,9 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string $sessionItemId */
         $sessionItemId = $env::AUTH_SESSION_ITEM_ID
             ?? SessionItemId::AUTHENTICATED_USERS;
+        /** @var class-string<AuthenticatedUsersContract>[] $allowedClasses */
+        $allowedClasses = $env::AUTH_SESSION_ALLOWED_CLASSES
+            ?? [AuthenticatedUsers::class];
 
         $container->setSingleton(
             SessionAuthenticator::class,
@@ -104,6 +109,7 @@ final class ServiceProvider extends Provider
                 hasher: $container->getSingleton(PasswordHasherContract::class),
                 entity: $entity,
                 sessionItemId: $sessionItemId,
+                allowedClasses: $allowedClasses
             ),
         );
     }

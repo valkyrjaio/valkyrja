@@ -32,8 +32,9 @@ use function is_string;
 class SessionAuthenticator extends Authenticator
 {
     /**
-     * @param StoreContract<U> $store  The store
-     * @param class-string<U>  $entity The user entity
+     * @param StoreContract<U>                           $store          The store
+     * @param class-string<U>                            $entity         The user entity
+     * @param class-string<AuthenticatedUsersContract>[] $allowedClasses The allowed authenticated users classes
      */
     public function __construct(
         protected SessionContract $session,
@@ -42,6 +43,7 @@ class SessionAuthenticator extends Authenticator
         string $entity,
         AuthenticatedUsersContract|null $authenticatedUsers = null,
         protected string $sessionItemId = SessionItemId::AUTHENTICATED_USERS,
+        protected array $allowedClasses = [AuthenticatedUsers::class],
     ) {
         parent::__construct(
             store: $store,
@@ -68,7 +70,7 @@ class SessionAuthenticator extends Authenticator
         /** @var mixed $sessionUsers */
         $sessionUsers = unserialize(
             $sessionSerializedUsers,
-            ['allowed_classes' => true]
+            ['allowed_classes' => $this->allowedClasses]
         );
 
         if (! $sessionUsers instanceof AuthenticatedUsersContract) {
