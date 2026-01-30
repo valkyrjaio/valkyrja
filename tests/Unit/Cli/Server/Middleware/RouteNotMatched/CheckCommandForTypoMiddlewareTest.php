@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Routing\Middleware\RouteNotMatched;
+namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\RouteNotMatched;
 
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -20,7 +20,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Cli\Routing\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
+use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
