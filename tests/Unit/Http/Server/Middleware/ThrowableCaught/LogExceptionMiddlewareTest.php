@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
+namespace Valkyrja\Tests\Unit\Http\Server\Middleware\ThrowableCaught;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
-use Valkyrja\View\Factory\ResponseFactory;
 
 /**
- * Class ViewExceptionMiddlewareTest.
+ * Class LogExceptionMiddlewareTest.
  */
-class ViewExceptionMiddlewareTest extends TestCase
+class LogExceptionMiddlewareTest extends TestCase
 {
     public function testException(): void
     {
@@ -33,41 +33,30 @@ class ViewExceptionMiddlewareTest extends TestCase
         $request    = new ServerRequest();
         $response   = new Response(statusCode: $statusCode);
         $exception  = new Exception();
+        $url        = $request->getUri()->getPath();
 
-        $args = [
-            'exception' => $exception,
-            'request'   => $request,
-            'response'  => $response,
-        ];
-
-        $templateText = 'Error: 500';
-
-        $viewResponse = Response::create(content: $templateText, statusCode: $statusCode);
-
-        $view = $this->createMock(ResponseFactory::class);
-        $view->expects($this->once())
-            ->method('createResponseFromView')
+        $logger = $this->createMock(LoggerContract::class);
+        $logger->expects($this->once())
+            ->method('throwable')
             ->with(
-                self::equalTo('errors/500'),
-                self::equalTo($args)
-            )
-            ->willReturn($viewResponse);
+                self::equalTo($exception),
+                self::equalTo("Http Server Error\nUrl: $url"),
+            );
 
         $handler = $this->createMock(ThrowableCaughtHandler::class);
         $handler->expects($this->once())
             ->method('throwableCaught')
             ->with(
                 self::equalTo($request),
-                self::equalTo($viewResponse),
+                self::equalTo($response),
                 self::equalTo($exception),
             )
-            ->willReturn($viewResponse);
+            ->willReturn($response);
 
-        $middleware = new ViewThrowableCaughtMiddleware(viewResponseFactory: $view);
+        $middleware = new LogThrowableCaughtMiddleware(logger: $logger);
 
         $response = $middleware->throwableCaught($request, $response, $exception, $handler);
 
-        self::assertSame($templateText, (string) $response->getBody());
         self::assertSame($statusCode, $response->getStatusCode());
     }
 }

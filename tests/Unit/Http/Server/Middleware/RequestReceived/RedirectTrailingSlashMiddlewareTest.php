@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing\Middleware\RequestReceived;
+namespace Valkyrja\Tests\Unit\Http\Server\Middleware\RequestReceived;
 
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
-use Valkyrja\Http\Routing\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
+use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RedirectTrailingSlashMiddlewareTest extends TestCase

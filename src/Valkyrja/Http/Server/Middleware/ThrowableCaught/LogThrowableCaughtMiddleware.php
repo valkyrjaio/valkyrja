@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Server\Middleware;
+namespace Valkyrja\Http\Server\Middleware\ThrowableCaught;
 
 use Override;
 use Throwable;
@@ -19,20 +19,12 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
+class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
-    /**
-     * The errors template directory.
-     *
-     * @var string
-     */
-    protected string $errorsTemplateDir = 'errors';
-
     public function __construct(
-        protected ResponseFactoryContract $viewResponseFactory = new ResponseFactory(),
+        protected LoggerContract $logger,
     ) {
     }
 
@@ -46,17 +38,10 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
         Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): ResponseContract {
-        $statusCode = $response->getStatusCode();
+        $url        = $request->getUri()->getPath();
+        $logMessage = "Http Server Error\nUrl: $url";
 
-        $response = $this->viewResponseFactory->createResponseFromView(
-            template: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
-            data: [
-                'exception' => $throwable,
-                'request'   => $request,
-                'response'  => $response,
-            ],
-            statusCode: $statusCode
-        );
+        $this->logger->throwable($throwable, $logMessage);
 
         return $handler->throwableCaught($request, $response, $throwable);
     }

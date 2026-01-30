@@ -17,7 +17,6 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -44,10 +43,6 @@ use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Middleware\CacheResponseMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteMatched\RequestStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteMatched\ResponseStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Provider\ServiceProvider;
@@ -55,7 +50,6 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
-use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the ServiceProviderTest.
@@ -74,10 +68,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ProcessorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(RequestStructMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ResponseStructMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CacheResponseMiddleware::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -89,10 +79,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CollectorContract::class, ServiceProvider::provides());
         self::assertContains(ProcessorContract::class, ServiceProvider::provides());
         self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
-        self::assertContains(RequestStructMiddleware::class, ServiceProvider::provides());
-        self::assertContains(ResponseStructMiddleware::class, ServiceProvider::provides());
-        self::assertContains(ViewRouteNotMatchedMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CacheResponseMiddleware::class, ServiceProvider::provides());
     }
 
     public function testPublishRouter(): void
@@ -243,65 +229,5 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(ResponseFactoryContract::class));
         self::assertTrue($container->isSingleton(ResponseFactoryContract::class));
         self::assertInstanceOf(ResponseFactory::class, $container->getSingleton(ResponseFactoryContract::class));
-    }
-
-    public function testPublishRequestStructMiddleware(): void
-    {
-        $container = $this->container;
-
-        self::assertFalse($container->has(RequestStructMiddleware::class));
-
-        $callback = ServiceProvider::publishers()[RequestStructMiddleware::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(RequestStructMiddleware::class));
-        self::assertTrue($container->isSingleton(RequestStructMiddleware::class));
-        self::assertInstanceOf(RequestStructMiddleware::class, $container->getSingleton(RequestStructMiddleware::class));
-    }
-
-    public function testPublishResponseStructMiddleware(): void
-    {
-        $container = $this->container;
-
-        self::assertFalse($container->has(ResponseStructMiddleware::class));
-
-        $callback = ServiceProvider::publishers()[ResponseStructMiddleware::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(ResponseStructMiddleware::class));
-        self::assertTrue($container->isSingleton(ResponseStructMiddleware::class));
-        self::assertInstanceOf(ResponseStructMiddleware::class, $container->getSingleton(ResponseStructMiddleware::class));
-    }
-
-    public function testPublishViewRouteNotMatchedMiddleware(): void
-    {
-        $container = $this->container;
-
-        $container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
-
-        self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
-
-        $callback = ServiceProvider::publishers()[ViewRouteNotMatchedMiddleware::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(ViewRouteNotMatchedMiddleware::class));
-        self::assertTrue($container->isSingleton(ViewRouteNotMatchedMiddleware::class));
-        self::assertInstanceOf(ViewRouteNotMatchedMiddleware::class, $container->getSingleton(ViewRouteNotMatchedMiddleware::class));
-    }
-
-    public function testPublishCacheResponseMiddleware(): void
-    {
-        $this->container->setSingleton(
-            FilesystemContract::class,
-            self::createStub(FilesystemContract::class)
-        );
-
-        $callback = ServiceProvider::publishers()[CacheResponseMiddleware::class];
-        $callback($this->container);
-
-        self::assertInstanceOf(
-            CacheResponseMiddleware::class,
-            $this->container->getSingleton(CacheResponseMiddleware::class)
-        );
     }
 }
