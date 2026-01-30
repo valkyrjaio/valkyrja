@@ -141,7 +141,7 @@ abstract class App
     }
 
     /**
-     * @return class-string<Data>[]
+     * @return class-string[]
      */
     protected static function getAllowedDataClasses(): array
     {
