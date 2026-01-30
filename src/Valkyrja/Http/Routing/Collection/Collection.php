@@ -386,7 +386,7 @@ class Collection implements CollectionContract
 
         if (is_string($route)) {
             /** @var mixed $unserializedRoute */
-            $unserializedRoute = unserialize($route, ['allowed_classes' => true]);
+            $unserializedRoute = unserialize($route, ['allowed_classes' => $this->allowedClasses]);
 
             if (! $unserializedRoute instanceof RouteContract) {
                 throw new InvalidArgumentException('Invalid object serialized.');
