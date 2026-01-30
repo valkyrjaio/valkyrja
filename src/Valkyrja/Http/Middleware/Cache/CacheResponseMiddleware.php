@@ -105,6 +105,10 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
     #[Override]
     public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
     {
+        if ($response->getStatusCode()->value >= StatusCode::INTERNAL_SERVER_ERROR->value) {
+            return;
+        }
+
         $this->filesystem->write(
             $this->getCachePathForRequest($request),
             base64_encode(serialize($response))

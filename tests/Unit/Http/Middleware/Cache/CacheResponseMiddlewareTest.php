@@ -358,6 +358,146 @@ class CacheResponseMiddlewareTest extends TestCase
         $filesystem->deleteDir(Directory::cachePath('response/'));
     }
 
+    public function testBadGatewayResponseIsNotCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/bad-gateway-test'));
+        $response = Response::create('Bad Gateway', StatusCode::BAD_GATEWAY);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $cachedResponse);
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testServiceUnavailableResponseIsNotCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/service-unavailable-test'));
+        $response = Response::create('Service Unavailable', StatusCode::SERVICE_UNAVAILABLE);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $cachedResponse);
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testGatewayTimeoutResponseIsNotCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/gateway-timeout-test'));
+        $response = Response::create('Gateway Timeout', StatusCode::GATEWAY_TIMEOUT);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $cachedResponse);
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testNotImplementedResponseIsNotCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/not-implemented-test'));
+        $response = Response::create('Not Implemented', StatusCode::NOT_IMPLEMENTED);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $cachedResponse);
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function test4xxResponsesAreCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/not-found-test'));
+        $response = Response::create('Not Found', StatusCode::NOT_FOUND);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        // 4xx responses should be cached
+        self::assertInstanceOf(ResponseContract::class, $cachedResponse);
+        self::assertSame(StatusCode::NOT_FOUND, $cachedResponse->getStatusCode());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function test2xxResponsesAreCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/created-test'));
+        $response = Response::create('Created', StatusCode::CREATED);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        // 2xx responses should be cached
+        self::assertInstanceOf(ResponseContract::class, $cachedResponse);
+        self::assertSame(StatusCode::CREATED, $cachedResponse->getStatusCode());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function test3xxResponsesAreCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $redirectUri = new Uri(path: '/destination');
+        $request     = new ServerRequest(uri: new Uri(path: '/redirect-cached-test'));
+        $response    = new RedirectResponse($redirectUri, StatusCode::MOVED_PERMANENTLY);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        // 3xx responses should be cached
+        self::assertInstanceOf(ResponseContract::class, $cachedResponse);
+        self::assertSame(StatusCode::MOVED_PERMANENTLY, $cachedResponse->getStatusCode());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
     /**
      * Get the cache path for a request.
      */
