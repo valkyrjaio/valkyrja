@@ -21,6 +21,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
@@ -35,6 +36,7 @@ use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -60,6 +62,7 @@ final class ServiceProvider extends Provider
             CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
             CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
             CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
+            CheckCommandForTypoMiddleware::class           => [self::class, 'publishCheckCommandForTypoMiddleware'],
         ];
     }
 
@@ -80,6 +83,7 @@ final class ServiceProvider extends Provider
             CheckForHelpOptionsMiddleware::class,
             CheckForVersionOptionsMiddleware::class,
             CheckGlobalInteractionOptionsMiddleware::class,
+            CheckCommandForTypoMiddleware::class,
         ];
     }
 
@@ -256,6 +260,20 @@ final class ServiceProvider extends Provider
                 quietOptionShortName: OptionShortName::QUIET,
                 silentOptionName: OptionName::SILENT,
                 silentOptionShortName: OptionShortName::SILENT
+            )
+        );
+    }
+
+    /**
+     * Publish the check command for typo middleware service.
+     */
+    public static function publishCheckCommandForTypoMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            CheckCommandForTypoMiddleware::class,
+            new CheckCommandForTypoMiddleware(
+                router: $container->getSingleton(RouterContract::class),
+                collection: $container->getSingleton(CollectionContract::class),
             )
         );
     }

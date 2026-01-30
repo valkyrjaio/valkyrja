@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Middleware\RouteNotMatched;
+namespace Valkyrja\Cli\Server\Middleware\RouteNotMatched;
 
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;

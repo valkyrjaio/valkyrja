@@ -21,6 +21,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Command\HelpCommand;
@@ -32,6 +33,7 @@ use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
@@ -58,6 +60,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CheckForVersionOptionsMiddleware::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CheckCommandForTypoMiddleware::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -72,6 +75,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CheckForHelpOptionsMiddleware::class, ServiceProvider::provides());
         self::assertContains(CheckForVersionOptionsMiddleware::class, ServiceProvider::provides());
         self::assertContains(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::provides());
+        self::assertContains(CheckCommandForTypoMiddleware::class, ServiceProvider::provides());
     }
 
     /**
@@ -201,5 +205,19 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(CheckGlobalInteractionOptionsMiddleware::class, $this->container->getSingleton(CheckGlobalInteractionOptionsMiddleware::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishCheckCommandForTypoMiddleware(): void
+    {
+        $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+
+        $callback = ServiceProvider::publishers()[CheckCommandForTypoMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CheckCommandForTypoMiddleware::class, $this->container->getSingleton(CheckCommandForTypoMiddleware::class));
     }
 }
