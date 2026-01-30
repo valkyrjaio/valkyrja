@@ -126,16 +126,22 @@ abstract class App
             throw new RuntimeException('Error occurred when retrieving cache file contents');
         }
 
-        // Allow all classes, and filter for only Data classes down below since allowed_classes cannot be
-        // a class that others extend off of, and we don't want to limit what a cached data class could be
         /** @var mixed $data */
-        $data = unserialize($cache, ['allowed_classes' => true]);
+        $data = unserialize($cache, ['allowed_classes' => static::getAllowedDataClasses()]);
 
         if (! $data instanceof Data) {
             throw new RuntimeException('Invalid cache');
         }
 
         return $data;
+    }
+
+    /**
+     * @return class-string<Data>[]
+     */
+    protected static function getAllowedDataClasses(): array
+    {
+        return [Data::class];
     }
 
     /**
