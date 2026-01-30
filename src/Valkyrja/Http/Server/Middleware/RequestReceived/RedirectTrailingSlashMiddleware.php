@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Middleware\RequestReceived;
+namespace Valkyrja\Http\Server\Middleware\RequestReceived;
 
 use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;

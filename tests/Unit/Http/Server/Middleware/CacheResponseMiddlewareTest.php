@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
+namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
@@ -30,7 +30,7 @@ use Valkyrja\Http\Message\Response\XmlResponse;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
-use Valkyrja\Http\Routing\Middleware\CacheResponseMiddleware;
+use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;

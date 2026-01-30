@@ -20,7 +20,6 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollecto
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -40,16 +39,11 @@ use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Middleware\CacheResponseMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteMatched\RequestStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteMatched\ResponseStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\View\Renderer\Contract\RendererContract;
 
 final class ServiceProvider extends Provider
 {
@@ -60,17 +54,13 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            RouterContract::class                => [self::class, 'publishRouter'],
-            CollectionContract::class            => [self::class, 'publishCollection'],
-            MatcherContract::class               => [self::class, 'publishMatcher'],
-            UrlContract::class                   => [self::class, 'publishUrl'],
-            CollectorContract::class             => [self::class, 'publishAttributesCollector'],
-            ProcessorContract::class             => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class       => [self::class, 'publishResponseFactory'],
-            RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
-            ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
-            ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
-            CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
+            RouterContract::class          => [self::class, 'publishRouter'],
+            CollectionContract::class      => [self::class, 'publishCollection'],
+            MatcherContract::class         => [self::class, 'publishMatcher'],
+            UrlContract::class             => [self::class, 'publishUrl'],
+            CollectorContract::class       => [self::class, 'publishAttributesCollector'],
+            ProcessorContract::class       => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -88,10 +78,6 @@ final class ServiceProvider extends Provider
             CollectorContract::class,
             ProcessorContract::class,
             ResponseFactoryContract::class,
-            RequestStructMiddleware::class,
-            ResponseStructMiddleware::class,
-            ViewRouteNotMatchedMiddleware::class,
-            CacheResponseMiddleware::class,
         ];
     }
 
@@ -237,71 +223,6 @@ final class ServiceProvider extends Provider
             new ResponseFactory(
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 url: $container->getSingleton(UrlContract::class),
-            )
-        );
-    }
-
-    /**
-     * Publish the RequestStructMiddleware service.
-     *
-     * @param ContainerContract $container The container
-     */
-    public static function publishRequestStructMiddleware(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            RequestStructMiddleware::class,
-            new RequestStructMiddleware()
-        );
-    }
-
-    /**
-     * Publish the ResponseStructMiddleware service.
-     *
-     * @param ContainerContract $container The container
-     */
-    public static function publishResponseStructMiddleware(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            ResponseStructMiddleware::class,
-            new ResponseStructMiddleware()
-        );
-    }
-
-    /**
-     * Publish the ViewRouteNotMatchedMiddleware service.
-     *
-     * @param ContainerContract $container The container
-     */
-    public static function publishViewRouteNotMatchedMiddleware(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            ViewRouteNotMatchedMiddleware::class,
-            new ViewRouteNotMatchedMiddleware(
-                renderer: $container->getSingleton(RendererContract::class),
-            )
-        );
-    }
-
-    /**
-     * Publish the CacheResponseMiddleware service.
-     *
-     * @param ContainerContract $container The container
-     */
-    public static function publishCacheResponseMiddleware(ContainerContract $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
-        /** @var class-string[] $allowedClasses */
-        $allowedClasses = $env::HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES
-            ?? AllowedClasses::CACHE_RESPONSE_MIDDLEWARE;
-
-        $container->setSingleton(
-            CacheResponseMiddleware::class,
-            new CacheResponseMiddleware(
-                filesystem: $container->getSingleton(FilesystemContract::class),
-                debug: $debugMode,
-                allowedClasses: $allowedClasses
             )
         );
     }
