@@ -107,6 +107,9 @@ class CollectionTest extends TestCase
         self::assertSame($serializedRoute, $dataFromCollection->routes[$routeName]);
         self::assertSame($serializedRoute, $dataFromCollection2->routes[$routeName]);
         self::assertSame($serializedRoute, $dataFromCollection3->routes[$routeName]);
+        self::assertSame($routeName, $collection->getByName($routeName)->getName());
+        self::assertSame($routeName, $collection2->getByName($routeName)->getName());
+        self::assertSame($routeName, $collection3->getByName($routeName)->getName());
     }
 
     public function testInvalidSerializedRoute(): void
