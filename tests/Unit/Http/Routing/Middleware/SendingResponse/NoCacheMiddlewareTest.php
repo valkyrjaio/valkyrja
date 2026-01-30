@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
+namespace Valkyrja\Tests\Unit\Http\Routing\Middleware\SendingResponse;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Http\Middleware\Cache\NoCacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
+use Valkyrja\Http\Routing\Middleware\SendingResponse\NoCacheResponseMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class NoCacheMiddlewareTest extends TestCase

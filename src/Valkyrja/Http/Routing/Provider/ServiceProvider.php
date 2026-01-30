@@ -20,6 +20,7 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollecto
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -39,9 +40,10 @@ use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Routing\Middleware\CacheResponseMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteMatched\RequestStructMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteMatched\ResponseStructMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
@@ -68,6 +70,7 @@ final class ServiceProvider extends Provider
             RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
             ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
             ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
+            CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
         ];
     }
 
@@ -88,6 +91,7 @@ final class ServiceProvider extends Provider
             RequestStructMiddleware::class,
             ResponseStructMiddleware::class,
             ViewRouteNotMatchedMiddleware::class,
+            CacheResponseMiddleware::class,
         ];
     }
 
@@ -274,6 +278,30 @@ final class ServiceProvider extends Provider
             ViewRouteNotMatchedMiddleware::class,
             new ViewRouteNotMatchedMiddleware(
                 renderer: $container->getSingleton(RendererContract::class),
+            )
+        );
+    }
+
+    /**
+     * Publish the CacheResponseMiddleware service.
+     *
+     * @param ContainerContract $container The container
+     */
+    public static function publishCacheResponseMiddleware(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var bool $debugMode */
+        $debugMode = $env::APP_DEBUG_MODE;
+        /** @var class-string[] $allowedClasses */
+        $allowedClasses = $env::HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES
+            ?? AllowedClasses::CACHE_RESPONSE_MIDDLEWARE;
+
+        $container->setSingleton(
+            CacheResponseMiddleware::class,
+            new CacheResponseMiddleware(
+                filesystem: $container->getSingleton(FilesystemContract::class),
+                debug: $debugMode,
+                allowedClasses: $allowedClasses
             )
         );
     }

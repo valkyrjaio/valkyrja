@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
+namespace Valkyrja\Tests\Unit\Http\Routing\Middleware\RouteNotMatched;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
-use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 

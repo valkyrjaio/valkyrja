@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
+namespace Valkyrja\Tests\Unit\Http\Routing\Middleware\RouteMatched;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
+use Valkyrja\Http\Routing\Middleware\RouteMatched\RequestStructMiddleware;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
