@@ -15,7 +15,9 @@ namespace Valkyrja\Tests\Unit\Application\Entry;
 
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\Http;
+use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
@@ -69,7 +71,12 @@ class HttpTest extends TestCase
                 dispatch: MethodDispatch::fromCallableOrArray([self::class, 'routeCallback'])
             )
         );
-        $data = new Data(container: $container->getData(), http: $http->getData());
+        $data = new Data(
+            container: $container->getData(),
+            event: new EventData(),
+            cli: new CliData(),
+            http: $http->getData()
+        );
 
         file_put_contents($filepath, serialize($data), LOCK_EX);
 

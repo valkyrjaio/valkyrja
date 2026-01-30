@@ -21,6 +21,8 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Event\Data\Data as EventData;
+use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -78,7 +80,12 @@ class CliTest extends TestCase
                 dispatch: MethodDispatch::fromCallableOrArray([self::class, 'routeCallback'])
             )
         );
-        $data = new Data(container: $container->getData(), cli: $cli->getData());
+        $data = new Data(
+            container: $container->getData(),
+            event: new EventData(),
+            cli: $cli->getData(),
+            http: new HttpData()
+        );
 
         file_put_contents($filepath, serialize($data), LOCK_EX);
 
