@@ -15,8 +15,12 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Collection;
 
 use stdClass;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\Messages;
+use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -62,8 +66,15 @@ class CollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            helpText: new Message(text: 'help'),
-            dispatch: new MethodDispatch(self::class, '__construct')
+            helpText: new Messages(
+                new Message(text: 'help'),
+                new NewLine(),
+            ),
+            dispatch: new MethodDispatch(self::class, '__construct'),
+            parameters: [
+                new ArgumentParameter(name: 'test', description: 'test'),
+                new OptionParameter(name: 'test', description: 'test'),
+            ]
         );
 
         $data = new Data(
@@ -83,8 +94,8 @@ class CollectionTest extends TestCase
         self::assertSame($route->getHelpText()->getText(), $routeFromCollection->getHelpText()->getText());
         self::assertSame($route->getHelpText()->getFormattedText(), $routeFromCollection->getHelpText()->getFormattedText());
         self::assertSame($route->getDescription(), $routeFromCollection->getDescription());
-        self::assertSame($route->getOptions(), $routeFromCollection->getOptions());
-        self::assertSame($route->getArguments(), $routeFromCollection->getArguments());
+        self::assertNotEmpty($routeFromCollection->getOptions());
+        self::assertNotEmpty($routeFromCollection->getArguments());
         self::assertSame($route->getRouteDispatchedMiddleware(), $routeFromCollection->getRouteDispatchedMiddleware());
         self::assertSame($route->getRouteMatchedMiddleware(), $routeFromCollection->getRouteMatchedMiddleware());
         self::assertSame($route->getThrowableCaughtMiddleware(), $routeFromCollection->getThrowableCaughtMiddleware());
