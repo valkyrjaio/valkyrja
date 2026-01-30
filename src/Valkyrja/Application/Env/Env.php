@@ -238,6 +238,15 @@ class Env
 
     /************************************************************
      *
+     * Cli Routing component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string[]|null */
+    public const array|null CLI_ROUTING_COLLECTION_ALLOWED_CLASSES = null;
+
+    /************************************************************
+     *
      * Crypt component env variables.
      *
      ************************************************************/

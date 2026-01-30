@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
@@ -26,6 +27,7 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Cli\Routing\Constant\AllowedClasses;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -111,9 +113,16 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(ContainerContract $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string[] $allowedClasses */
+        $allowedClasses = $env::CLI_ROUTING_COLLECTION_ALLOWED_CLASSES
+            ?? AllowedClasses::COLLECTION;
+
         $container->setSingleton(
             CollectionContract::class,
-            $collection = new Collection()
+            $collection = new Collection(
+                allowedClasses: $allowedClasses
+            )
         );
 
         if ($container->isSingleton(Data::class)) {

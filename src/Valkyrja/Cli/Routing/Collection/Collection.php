@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Collection;
 
 use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Constant\AllowedClasses;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
@@ -23,6 +24,14 @@ class Collection implements CollectionContract
 {
     /** @var array<string, RouteContract> */
     protected array $commands = [];
+
+    /**
+     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
+     */
+    public function __construct(
+        protected array $allowedClasses = AllowedClasses::COLLECTION,
+    ) {
+    }
 
     /**
      * Get a data representation of the collection.
@@ -43,7 +52,7 @@ class Collection implements CollectionContract
     {
         foreach ($data->commands as $id => $commandSerialized) {
             /** @var mixed $command */
-            $command = unserialize($commandSerialized, ['allowed_classes' => true]);
+            $command = unserialize($commandSerialized, ['allowed_classes' => $this->allowedClasses]);
 
             if (! $command instanceof RouteContract) {
                 throw new RuntimeException('Invalid command unserialized');
