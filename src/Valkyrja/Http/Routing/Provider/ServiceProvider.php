@@ -15,10 +15,13 @@ namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -31,6 +34,8 @@ use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\Parameter;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
@@ -127,9 +132,19 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(ContainerContract $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string[] $allowedClasses */
+        $allowedClasses = $env::HTTP_ROUTING_COLLECTION_ALLOWED_CLASSES
+            ?? [
+                Route::class,
+                Parameter::class,
+                MethodDispatch::class,
+                RequestMethod::class,
+            ];
+
         $container->setSingleton(
             CollectionContract::class,
-            $collection = new Collection()
+            $collection = new Collection(allowedClasses: $allowedClasses)
         );
 
         if ($container->isSingleton(Data::class)) {

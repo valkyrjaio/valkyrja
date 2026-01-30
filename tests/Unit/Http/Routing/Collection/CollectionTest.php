@@ -72,7 +72,8 @@ class CollectionTest extends TestCase
         $route = new Route(
             path: "/$routeName",
             name: $routeName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback'])
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            parameters: [new Parameter(name: 'value', regex: Regex::ALPHA)],
         );
 
         $serializedRoute = serialize($route);
