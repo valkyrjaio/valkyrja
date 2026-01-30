@@ -14,12 +14,45 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Constant;
 
 use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Header\Value\Component\Component;
+use Valkyrja\Http\Message\Header\Value\Cookie;
+use Valkyrja\Http\Message\Header\Value\Value;
+use Valkyrja\Http\Message\Response\EmptyResponse;
+use Valkyrja\Http\Message\Response\HtmlResponse;
+use Valkyrja\Http\Message\Response\JsonResponse;
+use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Message\Response\TextResponse;
+use Valkyrja\Http\Message\Response\XmlResponse;
+use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 
 final class AllowedClasses
 {
+    /** @var class-string[] */
+    public const array CACHE_RESPONSE_MIDDLEWARE = [
+        Response::class,
+        EmptyResponse::class,
+        HtmlResponse::class,
+        JsonResponse::class,
+        RedirectResponse::class,
+        TextResponse::class,
+        XmlResponse::class,
+        ProtocolVersion::class,
+        StatusCode::class,
+        Stream::class,
+        Uri::class,
+        Header::class,
+        Value::class,
+        Cookie::class,
+        Component::class,
+    ];
     /** @var class-string[] */
     public const array COLLECTION = [
         Route::class,

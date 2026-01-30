@@ -16,10 +16,18 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
+use Valkyrja\Http\Message\Response\HtmlResponse;
+use Valkyrja\Http\Message\Response\JsonResponse;
+use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Message\Response\TextResponse;
+use Valkyrja\Http\Message\Response\XmlResponse;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
@@ -154,6 +162,198 @@ class CacheResponseMiddlewareTest extends TestCase
 
         // Unfreeze for future tests
         Time::unfreeze();
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/response-test'));
+        $response = Response::create('Test content', StatusCode::OK);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(Response::class, $cachedResponse);
+        self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
+        self::assertSame('Test content', (string) $cachedResponse->getBody());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testEmptyResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/empty-response-test'));
+        $response = new EmptyResponse();
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(EmptyResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::NO_CONTENT, $cachedResponse->getStatusCode());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testHtmlResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $htmlContent = '<html><body><h1>Test</h1></body></html>';
+        $request     = new ServerRequest(uri: new Uri(path: '/html-response-test'));
+        $response    = new HtmlResponse($htmlContent, StatusCode::OK);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(HtmlResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
+        self::assertSame($htmlContent, (string) $cachedResponse->getBody());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testJsonResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $jsonData = ['key' => 'value', 'nested' => ['foo' => 'bar']];
+        $request  = new ServerRequest(uri: new Uri(path: '/json-response-test'));
+        $response = new JsonResponse($jsonData, StatusCode::OK);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(JsonResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
+        self::assertSame($jsonData, $cachedResponse->getBodyAsJson());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testRedirectResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $redirectUri = new Uri(path: '/redirect-destination');
+        $request     = new ServerRequest(uri: new Uri(path: '/redirect-response-test'));
+        $response    = new RedirectResponse($redirectUri, StatusCode::FOUND);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RedirectResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::FOUND, $cachedResponse->getStatusCode());
+        self::assertSame('/redirect-destination', $cachedResponse->getUri()->getPath());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testTextResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $textContent = 'Plain text content';
+        $request     = new ServerRequest(uri: new Uri(path: '/text-response-test'));
+        $response    = new TextResponse($textContent, StatusCode::OK);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(TextResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
+        self::assertSame($textContent, (string) $cachedResponse->getBody());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testXmlResponseCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $xmlContent = '<?xml version="1.0"?><root><item>Test</item></root>';
+        $request    = new ServerRequest(uri: new Uri(path: '/xml-response-test'));
+        $response   = new XmlResponse($xmlContent, StatusCode::OK);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(XmlResponse::class, $cachedResponse);
+        self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
+        self::assertSame($xmlContent, (string) $cachedResponse->getBody());
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testResponseWithHeadersCanBeSerializedAndUnserialized(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $headers  = ['X-Custom-Header' => ['custom-value']];
+        $request  = new ServerRequest(uri: new Uri(path: '/headers-response-test'));
+        $response = Response::create('Content with headers', StatusCode::OK, $headers);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(Response::class, $cachedResponse);
+        self::assertSame(['custom-value'], $cachedResponse->getHeader('X-Custom-Header'));
+
+        $filesystem->deleteDir(Directory::cachePath('response/'));
+    }
+
+    public function testServerErrorResponseIsNotCached(): void
+    {
+        $filesystem        = new InMemoryFilesystem();
+        $middleware        = new CacheResponseMiddleware($filesystem);
+        $beforeHandler     = new RequestReceivedHandler();
+        $terminatedHandler = new TerminatedHandler();
+
+        $request  = new ServerRequest(uri: new Uri(path: '/error-response-test'));
+        $response = Response::create('Server Error', StatusCode::INTERNAL_SERVER_ERROR);
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
+
+        // Server error responses should not be returned from cache
+        self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
         $filesystem->deleteDir(Directory::cachePath('response/'));
     }

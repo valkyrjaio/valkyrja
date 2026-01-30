@@ -319,6 +319,8 @@ class Env
     public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
     /** @var class-string<TerminatedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
+    /** @var class-string[]|null */
+    public const array|null HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES = null;
 
     /************************************************************
      *
