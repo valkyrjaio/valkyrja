@@ -274,7 +274,7 @@ class Collection implements CollectionContract
     {
         if (is_string($listener)) {
             /** @var mixed $unserializedListener */
-            $unserializedListener = unserialize($listener, ['allowed_classes' => true]);
+            $unserializedListener = unserialize($listener, ['allowed_classes' => $this->allowedClasses]);
 
             if (! $unserializedListener instanceof Listener) {
                 throw new InvalidArgumentException('Invalid object serialized.');
