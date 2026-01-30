@@ -15,6 +15,7 @@ namespace Valkyrja\Event\Collection;
 
 use Override;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
+use Valkyrja\Event\Constant\AllowedClasses;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
@@ -38,6 +39,14 @@ class Collection implements CollectionContract
      * @var array<string, ListenerContract|string>
      */
     protected array $listeners = [];
+
+    /**
+     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
+     */
+    public function __construct(
+        protected array $allowedClasses = AllowedClasses::COLLECTION,
+    ) {
+    }
 
     /**
      * @inheritDoc

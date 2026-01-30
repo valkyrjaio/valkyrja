@@ -256,6 +256,15 @@ class Env
 
     /************************************************************
      *
+     * Event component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string|null */
+    public const string|null EVENT_COLLECTION_ALLOWED_CLASSES = null;
+
+    /************************************************************
+     *
      * Filesystem component env variables.
      *
      ************************************************************/
