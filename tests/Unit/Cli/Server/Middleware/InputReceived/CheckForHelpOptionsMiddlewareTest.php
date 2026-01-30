@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
-use Valkyrja\Cli\Server\Command\HelpCommand;
+use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -35,7 +35,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->willReturn($input);
 
         $middleware = new CheckForHelpOptionsMiddleware(
-            commandName: HelpCommand::NAME,
+            commandName: CommandName::HELP,
             optionName: OptionName::HELP,
             optionShortName: OptionShortName::HELP,
         );
@@ -55,7 +55,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->willReturnArgument(0);
 
         $middleware = new CheckForHelpOptionsMiddleware(
-            commandName: HelpCommand::NAME,
+            commandName: CommandName::HELP,
             optionName: OptionName::HELP,
             optionShortName: OptionShortName::HELP,
         );
@@ -63,7 +63,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame(HelpCommand::NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(CommandName::HELP, $inputAfterMiddleware->getCommandName());
         self::assertNotEmpty($inputAfterMiddleware->getOptions());
         self::assertSame('command', $inputAfterMiddleware->getOptions()[0]->getName());
         self::assertSame($input->getCommandName(), $inputAfterMiddleware->getOptions()[0]->getValue());
@@ -79,7 +79,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
             ->willReturnArgument(0);
 
         $middleware = new CheckForHelpOptionsMiddleware(
-            commandName: HelpCommand::NAME,
+            commandName: CommandName::HELP,
             optionName: OptionName::HELP,
             optionShortName: OptionShortName::HELP,
         );
@@ -87,7 +87,7 @@ class CheckForHelpOptionsMiddlewareTest extends TestCase
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame(HelpCommand::NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(CommandName::HELP, $inputAfterMiddleware->getCommandName());
         self::assertNotEmpty($inputAfterMiddleware->getOptions());
         self::assertSame('command', $inputAfterMiddleware->getOptions()[0]->getName());
         self::assertSame($input->getCommandName(), $inputAfterMiddleware->getOptions()[0]->getValue());

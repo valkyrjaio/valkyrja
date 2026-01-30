@@ -20,13 +20,12 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Server\Constant\CommandName;
 
 use function is_string;
 
 class ListBashCommand
 {
-    public const string NAME = 'list:bash';
-
     public function __construct(
         protected RouteContract $route,
         protected CollectionContract $collection,
@@ -35,7 +34,7 @@ class ListBashCommand
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::LIST_BASH,
         description: 'List all commands for bash completion',
         helpText: new Message('A command to list all the commands present within the Cli component for bash completion.'),
         parameters: [

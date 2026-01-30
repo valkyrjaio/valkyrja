@@ -29,6 +29,7 @@ use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
@@ -195,7 +196,7 @@ final class ServiceProvider extends Provider
 
         /** @var non-empty-string $commandName */
         $commandName = $env::CLI_HELP_COMMAND_NAME
-            ?? HelpCommand::NAME;
+            ?? CommandName::HELP;
         /** @var non-empty-string $name */
         $name = $env::CLI_HELP_OPTION_NAME
             ?? OptionName::HELP;
@@ -222,7 +223,7 @@ final class ServiceProvider extends Provider
 
         /** @var non-empty-string $commandName */
         $commandName = $env::CLI_VERSION_COMMAND_NAME
-            ?? VersionCommand::NAME;
+            ?? CommandName::VERSION;
         /** @var non-empty-string $name */
         $name = $env::CLI_VERSION_OPTION_NAME
             ?? OptionName::VERSION;

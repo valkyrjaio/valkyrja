@@ -40,13 +40,12 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+use Valkyrja\Cli\Server\Constant\CommandName;
 
 use function is_string;
 
 class HelpCommand
 {
-    public const string NAME = 'help';
-
     protected RouteContract $helpRoute;
 
     public function __construct(
@@ -58,7 +57,7 @@ class HelpCommand
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::HELP,
         description: 'Help for a command',
         helpText: new Message('A command to get help for a specific command.'),
         parameters: [

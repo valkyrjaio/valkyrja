@@ -28,13 +28,12 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Server\Constant\CommandName;
 
 use function is_string;
 
 class ListCommand
 {
-    public const string NAME = 'list';
-
     public function __construct(
         protected VersionCommand $version,
         protected RouteContract $route,
@@ -44,7 +43,7 @@ class ListCommand
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::LIST,
         description: 'List all commands',
         helpText: new Message('A command to list all the commands present within the Cli component.'),
         parameters: [

@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
-use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -35,7 +35,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
             ->willReturn($input);
 
         $middleware = new CheckForVersionOptionsMiddleware(
-            commandName: VersionCommand::NAME,
+            commandName: CommandName::VERSION,
             optionName: OptionName::VERSION,
             optionShortName: OptionShortName::VERSION,
         );
@@ -55,7 +55,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
             ->willReturnArgument(0);
 
         $middleware = new CheckForVersionOptionsMiddleware(
-            commandName: VersionCommand::NAME,
+            commandName: CommandName::VERSION,
             optionName: OptionName::VERSION,
             optionShortName: OptionShortName::VERSION,
         );
@@ -63,7 +63,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame(VersionCommand::NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(CommandName::VERSION, $inputAfterMiddleware->getCommandName());
         self::assertEmpty($inputAfterMiddleware->getOptions());
     }
 
@@ -77,7 +77,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
             ->willReturnArgument(0);
 
         $middleware = new CheckForVersionOptionsMiddleware(
-            commandName: VersionCommand::NAME,
+            commandName: CommandName::VERSION,
             optionName: OptionName::VERSION,
             optionShortName: OptionShortName::VERSION,
         );
@@ -85,7 +85,7 @@ class CheckForVersionOptionsMiddlewareTest extends TestCase
         $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
 
         self::assertNotSame($input, $inputAfterMiddleware);
-        self::assertSame(VersionCommand::NAME, $inputAfterMiddleware->getCommandName());
+        self::assertSame(CommandName::VERSION, $inputAfterMiddleware->getCommandName());
         self::assertEmpty($inputAfterMiddleware->getOptions());
     }
 }
