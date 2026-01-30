@@ -19,8 +19,12 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Data\Data as CliData;
+use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Event\Data\Data as EventData;
+use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -141,7 +145,13 @@ abstract class App
      */
     protected static function getAllowedDataClasses(): array
     {
-        return [Data::class];
+        return [
+            Data::class,
+            CliData::class,
+            ContainerData::class,
+            EventData::class,
+            HttpData::class,
+        ];
     }
 
     /**
