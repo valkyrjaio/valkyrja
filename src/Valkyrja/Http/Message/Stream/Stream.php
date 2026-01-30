@@ -351,6 +351,38 @@ class Stream implements StreamContract
     }
 
     /**
+     * Serialize the stream.
+     */
+    public function __serialize(): array
+    {
+        return [
+            'stream'          => $this->stream,
+            'mode'            => $this->mode,
+            'modeTranslation' => $this->modeTranslation,
+            'content'         => $this->__toString(),
+        ];
+    }
+
+    /**
+     * Unserialize the stream.
+     *
+     * @param array{stream: PhpWrapper|string, mode: Mode, modeTranslation: ModeTranslation, content: string} $data The data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->stream          = $data['stream'];
+        $this->mode            = $data['mode'];
+        $this->modeTranslation = $data['modeTranslation'];
+
+        $this->setStream($this->stream, $this->mode, $this->modeTranslation);
+
+        if ($this->isWritable()) {
+            $this->write($data['content']);
+            $this->rewind();
+        }
+    }
+
+    /**
      * Seek the stream resource.
      *
      * @param resource $stream

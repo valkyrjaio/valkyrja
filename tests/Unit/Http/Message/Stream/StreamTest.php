@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Stream;
 
 use Valkyrja\Http\Message\Stream\Enum\Mode;
+use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
+
+use function serialize;
+use function unserialize;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\NoStreamAvailableException;
@@ -378,5 +382,156 @@ class StreamTest extends TestCase
         $this->expectException(InvalidStreamException::class);
 
         @new Stream('/non-existent', Mode::READ);
+    }
+
+    public function testSerializeAndUnserialize(): void
+    {
+        $contents = 'Test stream content';
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertInstanceOf(Stream::class, $unserialized);
+        self::assertSame($contents, (string) $unserialized);
+    }
+
+    public function testSerializeAndUnserializePreservesContent(): void
+    {
+        $contents = 'Hello, World! This is a longer test content with special chars: @#$%^&*()';
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertSame($contents, $unserialized->getContents());
+    }
+
+    public function testSerializeAndUnserializePreservesStreamProperties(): void
+    {
+        $stream = new Stream(PhpWrapper::temp, Mode::WRITE_READ, ModeTranslation::BINARY_SAFE);
+        $stream->write('content');
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertTrue($unserialized->isReadable());
+        self::assertTrue($unserialized->isWritable());
+        self::assertTrue($unserialized->isSeekable());
+    }
+
+    public function testSerializeAndUnserializeEmptyStream(): void
+    {
+        $stream = new Stream();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertInstanceOf(Stream::class, $unserialized);
+        self::assertSame('', (string) $unserialized);
+        self::assertTrue($unserialized->isReadable());
+        self::assertTrue($unserialized->isWritable());
+    }
+
+    public function testSerializeAndUnserializeMultilineContent(): void
+    {
+        $contents = "Line 1\nLine 2\nLine 3\n";
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertSame($contents, (string) $unserialized);
+    }
+
+    public function testSerializeAndUnserializeBinaryContent(): void
+    {
+        $contents = "\x00\x01\x02\x03\x04\x05";
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertSame($contents, (string) $unserialized);
+    }
+
+    public function testSerializeAndUnserializeLargeContent(): void
+    {
+        $contents = str_repeat('a', 10000);
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertSame($contents, (string) $unserialized);
+        self::assertSame(10000, $unserialized->getSize());
+    }
+
+    public function testUnserializedStreamCanBeWrittenTo(): void
+    {
+        $contents = 'Original content';
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        $unserialized->seek(0, SEEK_END);
+        $unserialized->write(' - appended');
+        $unserialized->rewind();
+
+        self::assertSame('Original content - appended', $unserialized->getContents());
+    }
+
+    public function testUnserializedStreamCanBeRead(): void
+    {
+        $contents = 'Read test content';
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        self::assertSame('Read', $unserialized->read(4));
+        self::assertSame(' test content', $unserialized->getContents());
+    }
+
+    public function testUnserializedStreamCanBeRewound(): void
+    {
+        $contents = 'Rewind test';
+
+        $stream = new Stream();
+        $stream->write($contents);
+        $stream->rewind();
+
+        $serialized   = serialize($stream);
+        $unserialized = unserialize($serialized);
+
+        $unserialized->getContents();
+        self::assertTrue($unserialized->eof());
+
+        $unserialized->rewind();
+        self::assertSame(0, $unserialized->tell());
+        self::assertSame($contents, $unserialized->getContents());
     }
 }

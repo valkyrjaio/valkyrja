@@ -116,7 +116,7 @@ trait StreamHelpers
      */
     protected function isInvalidStream(): bool
     {
-        return $this->resource === null;
+        return ! is_resource($this->resource);
     }
 
     /**
