@@ -72,7 +72,8 @@ class CollectionTest extends TestCase
         $route = new Route(
             path: "/$routeName",
             name: $routeName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback'])
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            parameters: [new Parameter(name: 'value', regex: Regex::ALPHA)],
         );
 
         $serializedRoute = serialize($route);
@@ -106,6 +107,9 @@ class CollectionTest extends TestCase
         self::assertSame($serializedRoute, $dataFromCollection->routes[$routeName]);
         self::assertSame($serializedRoute, $dataFromCollection2->routes[$routeName]);
         self::assertSame($serializedRoute, $dataFromCollection3->routes[$routeName]);
+        self::assertSame($routeName, $collection->getByName($routeName)->getName());
+        self::assertSame($routeName, $collection2->getByName($routeName)->getName());
+        self::assertSame($routeName, $collection3->getByName($routeName)->getName());
     }
 
     public function testInvalidSerializedRoute(): void

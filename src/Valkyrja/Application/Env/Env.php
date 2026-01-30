@@ -304,6 +304,15 @@ class Env
 
     /************************************************************
      *
+     * Http Routing component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string[]|null */
+    public const array|null HTTP_ROUTING_COLLECTION_ALLOWED_CLASSES = null;
+
+    /************************************************************
+     *
      * Jwt component env variables.
      *
      ************************************************************/

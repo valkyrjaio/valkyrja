@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection;
 
 use Override;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\Parameter;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 
 use function array_map;
@@ -52,6 +55,14 @@ class Collection implements CollectionContract
      * @var RequestMethodList
      */
     protected array $dynamic = [];
+
+    /**
+     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
+     */
+    public function __construct(
+        protected array $allowedClasses = [Route::class, Parameter::class, MethodDispatch::class, RequestMethod::class],
+    ) {
+    }
 
     /**
      * @inheritDoc
@@ -375,7 +386,7 @@ class Collection implements CollectionContract
 
         if (is_string($route)) {
             /** @var mixed $unserializedRoute */
-            $unserializedRoute = unserialize($route, ['allowed_classes' => true]);
+            $unserializedRoute = unserialize($route, ['allowed_classes' => $this->allowedClasses]);
 
             if (! $unserializedRoute instanceof RouteContract) {
                 throw new InvalidArgumentException('Invalid object serialized.');
