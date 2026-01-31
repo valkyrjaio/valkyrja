@@ -19,7 +19,6 @@ use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
-use Valkyrja\Http\Message\Header\Value\Value;
 
 use function array_filter;
 use function array_map;
@@ -295,14 +294,11 @@ class Header implements HeaderContract
     /**
      * Map string values to Value objects.
      *
-     * @return ValueContract[]
+     * @return array<array-key, ValueContract|string>
      */
     protected function mapToValue(ValueContract|string ...$values): array
     {
-        return array_map(
-            static fn (ValueContract|string $value): ValueContract => is_string($value) ? Value::fromValue($value) : $value,
-            $values
-        );
+        return $values;
     }
 
     protected function updateName(string $name): void
