@@ -21,7 +21,6 @@ readonly class Config
     /**
      * @param non-empty-string         $version
      * @param non-empty-string         $environment
-     * @param bool                     $debugMode
      * @param non-empty-string         $timezone
      * @param class-string<Provider>[] $providers
      */
