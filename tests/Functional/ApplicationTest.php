@@ -22,7 +22,6 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
@@ -48,28 +47,11 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the getEnv() helper method.
-     */
-    public function testGetEnv(): void
-    {
-        self::assertSame($this->env, $this->app->getEnv());
-    }
-
-    /**
-     * Test the getEnv() helper method.
-     */
-    public function testSetEnv(): void
-    {
-        $this->app->setEnv($env = new EnvClass());
-        self::assertSame($env, $this->app->getEnv());
-    }
-
-    /**
      * Test the environment() helper method.
      */
     public function testEnvironment(): void
     {
-        self::assertSame($this->app->getEnv()::APP_ENV, $this->app->getEnvironment());
+        self::assertSame($this->env::APP_ENVIRONMENT, $this->app->getEnvironment());
     }
 
     /**
@@ -77,7 +59,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->app->getEnv()::APP_DEBUG_MODE, $this->app->getDebugMode());
+        self::assertSame($this->env::APP_DEBUG_MODE, $this->app->getDebugMode());
     }
 
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\CollectorContract;
@@ -67,11 +67,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishData(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $application = $container->getSingleton(ApplicationContract::class);
 
         $collector = $container->getSingleton(CollectorContract::class);
 
-        foreach ($collector->getServices(...$config->services) as $service) {
+        foreach ($collector->getServices(...$application->getContainerServices()) as $service) {
             $class = $service->dispatch->getClass();
 
             if (! is_a($class, ServiceContract::class, true)) {
@@ -87,15 +87,13 @@ final class ServiceProvider extends Provider
             $container->bind($service->serviceId, $class);
         }
 
-        foreach ($collector->getAliases(...$config->aliases) as $service) {
+        foreach ($collector->getAliases(...$application->getContainerAliases()) as $service) {
             $container->bindAlias($service->dispatch->getClass(), $service->serviceId);
         }
 
         $container->setSingleton(
             Data::class,
-            new Data(
-                providers: $config->providers
-            )
+            new Data()
         );
     }
 }

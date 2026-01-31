@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
@@ -126,19 +126,19 @@ final class ServiceProvider extends Provider
             $data = $container->getSingleton(Data::class);
 
             $collection->setFromData($data);
+
+            return;
         }
 
-        if ($container->isSingleton(Config::class)) {
-            $config = $container->getSingleton(Config::class);
+        $application = $container->getSingleton(ApplicationContract::class);
 
-            /** @var CollectorContract $collector */
-            $collector   = $container->getSingleton(CollectorContract::class);
-            $controllers = $config->commands;
+        /** @var CollectorContract $collector */
+        $collector   = $container->getSingleton(CollectorContract::class);
+        $controllers = $application->getCliControllers();
 
-            // Get all the attributes routes from the list of controllers
-            $collection->add(
-                ...$collector->getRoutes(...$controllers)
-            );
-        }
+        // Get all the attributes routes from the list of controllers
+        $collection->add(
+            ...$collector->getRoutes(...$controllers)
+        );
     }
 }

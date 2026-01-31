@@ -67,6 +67,8 @@ class CliTest extends TestCase
         /** @var non-empty-string $filepath */
         $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
+        @unlink($filepath);
+
         $application = Cli::app($env);
         $container   = $application->getContainer();
 

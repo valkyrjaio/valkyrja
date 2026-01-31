@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -107,20 +107,20 @@ final class ServiceProvider extends Provider
             $data = $container->getSingleton(Data::class);
 
             $collection->setFromData($data);
+
+            return;
         }
 
-        if ($container->isSingleton(Config::class)) {
-            $config = $container->getSingleton(Config::class);
+        $application = $container->getSingleton(ApplicationContract::class);
 
-            /** @var CollectorContract $listenerAttributes */
-            $listenerAttributes = $container->getSingleton(CollectorContract::class);
+        /** @var CollectorContract $listenerAttributes */
+        $listenerAttributes = $container->getSingleton(CollectorContract::class);
 
-            // Get all the annotated listeners from the list of classes
-            // Iterate through the listeners
-            foreach ($listenerAttributes->getListeners(...$config->listeners) as $listener) {
-                // Set the route
-                $collection->addListener($listener);
-            }
+        // Get all the annotated listeners from the list of classes
+        // Iterate through the listeners
+        foreach ($listenerAttributes->getListeners(...$application->getEventListeners()) as $listener) {
+            // Set the route
+            $collection->addListener($listener);
         }
     }
 }

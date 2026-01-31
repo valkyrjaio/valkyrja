@@ -19,9 +19,14 @@ use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Data\Data as CliData;
+use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Event\Data\Data as EventData;
+use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -84,19 +89,23 @@ abstract class App
         $cacheFilepath = $env::APP_CACHE_FILE_PATH;
         $cacheFilename = Directory::basePath($cacheFilepath);
 
+        $data = null;
+
         if (is_file(filename: $cacheFilename)) {
-            $configData = static::getData(cacheFilename: $cacheFilename);
-        } else {
-            $configData = static::getConfig();
+            $data = static::getData(cacheFilename: $cacheFilename);
         }
 
         $container = static::getContainer();
+        $app       = static::getApplication(container: $container, env: $env);
 
-        return new Valkyrja(
+        static::bootstrapServices(
+            app: $app,
             container: $container,
             env: $env,
-            configData: $configData
+            data: $data
         );
+
+        return $app;
     }
 
     /**
@@ -107,11 +116,87 @@ abstract class App
     abstract public static function run(string $dir, Env $env): void;
 
     /**
+     * Get the application.
+     */
+    protected static function getApplication(ContainerContract $container, Env $env): ApplicationContract
+    {
+        $config = static::getConfig(env: $env);
+
+        return new Valkyrja(
+            container: $container,
+            config: $config,
+        );
+    }
+
+    /**
+     * Bootstrap container services.
+     */
+    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Data|null $data = null): void
+    {
+        $container->setSingleton(Env::class, $env);
+        $container->setSingleton(ContainerContract::class, $container);
+
+        $container->setSingleton(ApplicationContract::class, $app);
+
+        if ($data !== null) {
+            $container->setSingleton(ContainerData::class, $data->container);
+            $container->setSingleton(EventData::class, $data->event);
+            $container->setSingleton(CliData::class, $data->cli);
+            $container->setSingleton(HttpData::class, $data->http);
+
+            $container->setFromData($data->container);
+        } else {
+            foreach ($app->getContainerProviders() as $provider) {
+                $container->register($provider);
+            }
+
+            $containerData = $container->getSingleton(ContainerData::class);
+            $container->setFromData($containerData);
+        }
+    }
+
+    /**
      * Get the application config.
      */
-    protected static function getConfig(): Config
+    protected static function getConfig(Env $env): Config
     {
-        return new Config();
+        $providers = static::getProviders(env: $env);
+        /** @var non-empty-string $timezone */
+        $timezone = $env::APP_TIMEZONE;
+        /** @var non-empty-string $version */
+        $version = $env::APP_VERSION
+            ?? ApplicationContract::VERSION;
+        /** @var bool $debugMode */
+        $debugMode = $env::APP_DEBUG_MODE;
+        /** @var non-empty-string $environment */
+        $environment = $env::APP_ENVIRONMENT;
+
+        return new Config(
+            version: $version,
+            environment: $environment,
+            debugMode: $debugMode,
+            timezone: $timezone,
+            providers: $providers,
+        );
+    }
+
+    /**
+     * Get the providers to register.
+     *
+     * @return class-string<Provider>[]
+     */
+    protected static function getProviders(Env $env): array
+    {
+        /** @var class-string<Provider>[] $requiredComponents */
+        $requiredComponents = $env::APP_REQUIRED_COMPONENTS;
+        /** @var class-string<Provider>[] $coreComponents */
+        $coreComponents = $env::APP_CORE_COMPONENTS;
+        /** @var class-string<Provider>[] $components */
+        $components = $env::APP_COMPONENTS;
+        /** @var class-string<Provider>[] $customComponents */
+        $customComponents = $env::APP_CUSTOM_COMPONENTS;
+
+        return array_merge($requiredComponents, $coreComponents, $components, $customComponents);
     }
 
     /**

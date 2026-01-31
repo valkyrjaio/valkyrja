@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -133,21 +133,21 @@ final class ServiceProvider extends Provider
             $data = $container->getSingleton(Data::class);
 
             $collection->setFromData($data);
+
+            return;
         }
 
-        if ($container->isSingleton(Config::class)) {
-            $config = $container->getSingleton(Config::class);
+        $application = $container->getSingleton(ApplicationContract::class);
 
-            /** @var CollectorContract $collector */
-            $collector   = $container->getSingleton(CollectorContract::class);
-            $controllers = $config->controllers;
+        /** @var CollectorContract $collector */
+        $collector   = $container->getSingleton(CollectorContract::class);
+        $controllers = $application->getHttpControllers();
 
-            // Get all the attributes routes from the list of controllers
-            // Iterate through the routes
-            foreach ($collector->getRoutes(...$controllers) as $route) {
-                // Set the route
-                $collection->add($route);
-            }
+        // Get all the attributes routes from the list of controllers
+        // Iterate through the routes
+        foreach ($collector->getRoutes(...$controllers) as $route) {
+            // Set the route
+            $collection->add($route);
         }
     }
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -106,9 +106,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
     /**
      * @throws Exception
      */
-    public function testPublishCollectionWithConfig(): void
+    public function testPublishCollectionWithoutData(): void
     {
-        $this->container->setSingleton(Config::class, new Config());
+        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $command = new Route(

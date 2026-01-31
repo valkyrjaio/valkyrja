@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Kernel\Contract;
 
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
 interface ApplicationContract
 {
@@ -48,35 +49,58 @@ interface ApplicationContract
         TEXT;
 
     /**
-     * Add a component to the application.
-     *
-     * @param class-string<Provider> $component The component class
-     */
-    public function addComponent(string $component): void;
-
-    /**
-     * Get environment variables.
-     */
-    public function getEnv(): Env;
-
-    /**
-     * Set the environment variables class.
-     *
-     * @param Env $env The env file to use
-     */
-    public function setEnv(Env $env): void;
-
-    /**
      * Get the container.
      */
     public function getContainer(): ContainerContract;
 
     /**
-     * Set the container.
+     * Get the registered component providers.
      *
-     * @param ContainerContract $container The container
+     * @return class-string<Provider>[]
      */
-    public function setContainer(ContainerContract $container): static;
+    public function getProviders(): array;
+
+    /**
+     * Get all the registered components' container aliases.
+     *
+     * @return class-string[]
+     */
+    public function getContainerAliases(): array;
+
+    /**
+     * Get all the registered components' container services.
+     *
+     * @return class-string<ServiceContract>[]
+     */
+    public function getContainerServices(): array;
+
+    /**
+     * Get all the registered components' container service providers.
+     *
+     * @return class-string<ContainerProvider>[]
+     */
+    public function getContainerProviders(): array;
+
+    /**
+     * Get all the registered components' event listeners.
+     *
+     * @return class-string[]
+     */
+    public function getEventListeners(): array;
+
+    /**
+     * Get all the registered components' cli controllers.
+     *
+     * @return class-string[]
+     */
+    public function getCliControllers(): array;
+
+    /**
+     * Get all the registered components' http controllers.
+     *
+     * @return class-string[]
+     */
+    public function getHttpControllers(): array;
 
     /**
      * Whether the application is running in debug mode or not.

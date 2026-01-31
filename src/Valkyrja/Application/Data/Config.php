@@ -13,26 +13,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Data;
 
-use Valkyrja\Container\Contract\ServiceContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Provider;
 
-class Config
+readonly class Config
 {
     /**
-     * @param class-string[]                  $aliases
-     * @param class-string<ServiceContract>[] $services
-     * @param class-string<Provider>[]        $providers
-     * @param class-string[]                  $listeners
-     * @param class-string[]                  $commands
-     * @param class-string[]                  $controllers
+     * @param non-empty-string         $version
+     * @param non-empty-string         $environment
+     * @param bool                     $debugMode
+     * @param non-empty-string         $timezone
+     * @param class-string<Provider>[] $providers
      */
     public function __construct(
-        public array $aliases = [],
-        public array $services = [],
+        public string $version = ApplicationContract::VERSION,
+        public string $environment = 'production',
+        public bool $debugMode = false,
+        public string $timezone = 'UTC',
         public array $providers = [],
-        public array $listeners = [],
-        public array $commands = [],
-        public array $controllers = [],
     ) {
     }
 }

@@ -63,7 +63,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string */
-    public const string APP_ENV = 'local';
+    public const string APP_ENVIRONMENT = 'local';
     /** @var non-empty-string */
     public const string APP_NAMESPACE = 'App';
     /** @var bool */
@@ -113,12 +113,6 @@ class Env
     ];
     /** @var class-string<Provider>[] */
     public const array APP_CUSTOM_COMPONENTS = [];
-    /** @var bool */
-    public const bool APP_ADD_CLI_CONTROLLERS = true;
-    /** @var bool */
-    public const bool APP_ADD_HTTP_CONTROLLERS = true;
-    /** @var bool */
-    public const bool APP_ADD_EVENT_LISTENERS = true;
     /** @var non-empty-string|null */
     public const string|null APP_CLI_DEFAULT_COMMAND_NAME = null;
     /** @var non-empty-string */
