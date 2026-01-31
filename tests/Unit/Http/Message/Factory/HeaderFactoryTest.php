@@ -217,7 +217,7 @@ class HeaderFactoryTest extends TestCase
             'Cache-Control' => ['no-cache', 'no-store'],
         ];
 
-        $valkyrjaHeaders = HeaderFactory::fromPsr($originalPsrHeaders);
+        $valkyrjaHeaders     = HeaderFactory::fromPsr($originalPsrHeaders);
         $roundTripPsrHeaders = HeaderFactory::toPsr($valkyrjaHeaders);
 
         self::assertSame($originalPsrHeaders, $roundTripPsrHeaders);
