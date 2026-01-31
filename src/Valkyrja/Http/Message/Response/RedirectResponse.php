@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response;
 
 use Override;
-use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
@@ -42,9 +43,9 @@ class RedirectResponse extends Response implements RedirectResponseContract
     protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::FOUND;
 
     /**
-     * @param UriContract             $uri        [optional] The uri
-     * @param StatusCode              $statusCode [optional] The status
-     * @param array<string, string[]> $headers    [optional] The headers
+     * @param UriContract      $uri        [optional] The uri
+     * @param StatusCode       $statusCode [optional] The status
+     * @param HeaderContract[] $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
@@ -60,9 +61,11 @@ class RedirectResponse extends Response implements RedirectResponseContract
             );
         }
 
+        $this->setHeaders(...$headers);
+
         parent::__construct(
             statusCode: $statusCode,
-            headers: $this->injectHeader(HeaderName::LOCATION, (string) $uri, $headers, true)
+            headers: $this->injectHeader(new Location((string) $uri), $this->headers, true)
         );
     }
 
@@ -98,7 +101,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public function withUri(UriContract $uri): static
     {
         // Set the location header for the redirect
-        $new = $this->withHeader(HeaderName::LOCATION, (string) $uri);
+        $new = $this->withHeader(new Location((string) $uri));
         // Set the uri
         $new->uri = $uri;
 

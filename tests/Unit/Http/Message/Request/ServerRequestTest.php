@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -452,8 +453,8 @@ class ServerRequestTest extends TestCase
     public function testIsXmlHttpRequest(): void
     {
         $request  = new ServerRequest();
-        $request2 = new ServerRequest(headers: [HeaderName::X_REQUESTED_WITH => ['XMLHttpRequest']]);
-        $request3 = $request->withHeader(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest');
+        $request2 = new ServerRequest(headers: [new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest')]);
+        $request3 = $request->withHeader(new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest'));
         $request4 = $request->withoutHeader(HeaderName::X_REQUESTED_WITH);
 
         self::assertNotSame($request, $request2);

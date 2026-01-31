@@ -63,7 +63,7 @@ abstract class RequestFactory
         }
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
-            $cookies = CookieFactory::parseCookieHeader($headers['cookie'][0]);
+            $cookies = CookieFactory::parseCookieHeader($headers['cookie']->getValuesAsString());
         }
 
         $cookies ??= $_COOKIE;
@@ -129,7 +129,7 @@ abstract class RequestFactory
             uri: $uri,
             method: RequestMethod::from($psrRequest->getMethod()),
             body: $body,
-            headers: $psrRequest->getHeaders(),
+            headers: HeaderFactory::fromPsr($psrRequest->getHeaders()),
             server: $psrRequest->getServerParams(),
             cookies: $psrRequest->getCookieParams(),
             query: $psrRequest->getQueryParams(),

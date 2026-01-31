@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Factory;
 
 use Valkyrja\Http\Message\Factory\UriFactory;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
@@ -65,7 +66,7 @@ class UriFactoryTest extends TestCase
 
         $hostHeaderAccumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders($hostHeaderAccumulator, [], ['host' => "$host:$port"]);
+        UriFactory::marshalHostAndPortFromHeaders($hostHeaderAccumulator, [], ['host' => new Header('Host', "$host:$port")]);
 
         self::assertSame($host, $hostHeaderAccumulator->host);
         self::assertSame($port, $hostHeaderAccumulator->port);
@@ -212,8 +213,8 @@ class UriFactoryTest extends TestCase
     public function testGetHeader(): void
     {
         $headers = [
-            'Array'  => ['test1', 'test2'],
-            'String' => 'string',
+            'Array'  => new Header('Array', 'test1, test2'),
+            'String' => new Header('String', 'string'),
         ];
 
         self::assertSame('string', UriFactory::getHeader('String', $headers));

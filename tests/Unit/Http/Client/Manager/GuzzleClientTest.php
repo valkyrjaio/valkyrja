@@ -20,7 +20,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -39,7 +41,7 @@ class GuzzleClientTest extends TestCase
     public function testSendRequest(): void
     {
         $contents   = 'test';
-        $headers    = ['header' => ['value']];
+        $headers    = [new Header('header', 'value')];
         $parsedBody = ['param' => 'value'];
         $stringUri  = 'https://example.com/';
 
@@ -67,7 +69,7 @@ class GuzzleClientTest extends TestCase
             parsedBody: $parsedBody,
         );
 
-        $psr7Response->expects($this->once())->method('getHeaders')->willReturn($headers);
+        $psr7Response->expects($this->once())->method('getHeaders')->willReturn(HeaderFactory::toPsr($headers));
         $psr7Response->expects($this->once())->method('getStatusCode')->willReturn(200);
         $psr7Response->expects($this->once())->method('getBody')->willReturn($psr7Body);
         $psr7Body->expects($this->once())->method('getContents')->willReturn($contents);
@@ -89,7 +91,7 @@ class GuzzleClientTest extends TestCase
 
         self::assertInstanceOf(Response::class, $response);
         self::assertSame($contents, $response->getBody()->getContents());
-        self::assertSame($headers, $response->getHeaders());
+        self::assertSame('value', $response->getHeaderLine('header'));
         self::assertSame(StatusCode::OK, $response->getStatusCode());
     }
 }

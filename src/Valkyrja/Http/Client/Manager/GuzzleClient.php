@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -158,7 +159,7 @@ class GuzzleClient implements ClientContract
         return $this->responseFactory->createResponse(
             content: $guzzleResponse->getBody()->getContents(),
             statusCode: StatusCode::from($guzzleResponse->getStatusCode()),
-            headers: $guzzleResponse->getHeaders()
+            headers: HeaderFactory::fromPsr($guzzleResponse->getHeaders())
         );
     }
 }

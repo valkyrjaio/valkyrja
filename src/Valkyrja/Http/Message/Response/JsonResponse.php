@@ -16,9 +16,12 @@ namespace Valkyrja\Http\Message\Response;
 use JsonException;
 use Override;
 use RuntimeException;
-use Valkyrja\Http\Message\Constant\ContentType;
+use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
@@ -51,7 +54,7 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * @param array<array-key, mixed> $data            [optional] The data
      * @param StatusCode              $statusCode      [optional] The status
-     * @param array<string, string[]> $headers         [optional] The headers
+     * @param HeaderContract[]        $headers         [optional] The headers
      * @param int                     $encodingOptions [optional] The encoding options
      *
      * @throws InvalidArgumentException
@@ -69,10 +72,12 @@ class JsonResponse extends Response implements JsonResponseContract
         $body->write((string) json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
+        $this->setHeaders(...$headers);
+
         parent::__construct(
             $body,
             $statusCode,
-            $this->injectHeader(HeaderName::CONTENT_TYPE, ContentType::APPLICATION_JSON, $headers, true)
+            $this->injectHeader(new Header(HeaderName::CONTENT_TYPE, ContentTypeValue::APPLICATION_JSON), $this->headers, true)
         );
     }
 
@@ -130,7 +135,7 @@ class JsonResponse extends Response implements JsonResponseContract
         $this->verifyCallback($callback);
 
         // Not using application/javascript for compatibility reasons with older browsers.
-        $new = $this->withHeader(HeaderName::CONTENT_TYPE, ContentType::TEXT_JAVASCRIPT);
+        $new = $this->withHeader(new ContentType(ContentTypeValue::TEXT_JAVASCRIPT));
 
         $new->stream = new Stream();
         $new->stream->write(sprintf('/**/%s(%s);', $callback, $this->stream->getContents()));
@@ -149,7 +154,7 @@ class JsonResponse extends Response implements JsonResponseContract
     public function withoutCallback(): static
     {
         // Not using application/javascript for compatibility reasons with older browsers.
-        $new = $this->withHeader(HeaderName::CONTENT_TYPE, ContentType::APPLICATION_JSON);
+        $new = $this->withHeader(new ContentType(ContentTypeValue::APPLICATION_JSON));
 
         $new->stream = new Stream();
         $new->stream->write((string) json_encode($new->data, JSON_THROW_ON_ERROR | $new->encodingOptions));

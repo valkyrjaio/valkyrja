@@ -20,14 +20,13 @@ use Valkyrja\Http\Message\Factory\CookieFactory;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-
-use function array_merge;
 
 class RequestFactoryTest extends TestCase
 {
@@ -187,7 +186,7 @@ class RequestFactoryTest extends TestCase
             uri: Uri::fromString(uri: $uriString),
             method: RequestMethod::DELETE,
             body: $body             = new Stream(),
-            headers: $headers       = ['header1' => ['test']],
+            headers: $headers       = [new Header('header1', 'test')],
             server: $server         = ['VAR' => 'val'],
             cookies: $cookies       = ['param' => 'cookies'],
             query: $query           = ['param' => 'query'],
@@ -256,13 +255,8 @@ class RequestFactoryTest extends TestCase
             actual: $fromPsr->getUri()->__toString()
         );
         self::assertSame(
-            expected: array_merge(
-                $headers,
-                [
-                    'Host' => ['example.com:9090'],
-                ]
-            ),
-            actual: $fromPsr->getHeaders()
+            expected: 'example.com:9090',
+            actual: $fromPsr->getHeaderLine('Host')
         );
         self::assertSame(
             expected: $server,

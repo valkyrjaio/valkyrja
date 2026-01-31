@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Factory\Contract;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 
 interface ResponseFactoryContract
@@ -24,7 +25,7 @@ interface ResponseFactoryContract
      * @param non-empty-string               $name       The name of the route
      * @param array<string, string|int>|null $data       [optional] The data for dynamic routes
      * @param StatusCode|null                $statusCode [optional] The response status code
-     * @param array<string, string[]>|null   $headers    [optional] An array of response headers
+     * @param HeaderContract[]|null          $headers    [optional] An array of response headers
      */
     public function createRouteRedirectResponse(
         string $name,

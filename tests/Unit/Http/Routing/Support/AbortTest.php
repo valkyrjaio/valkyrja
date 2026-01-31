@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Support;
 
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
@@ -41,7 +42,7 @@ class AbortTest extends TestCase
         $statusCode      = StatusCode::BAD_GATEWAY;
         $message         = 'message';
         $responseMessage = 'response message';
-        $headers         = ['Header' => ['test']];
+        $headers         = ['header' => new Header('Header', 'test')];
         $response        = Response::create($responseMessage);
 
         try {
@@ -73,10 +74,10 @@ class AbortTest extends TestCase
     {
         $this->expectException(HttpRedirectException::class);
 
-        $statusCode = StatusCode::PERMANENT_REDIRECT;
-        $url        = 'https://example.com/';
-        $headers    = ['Header' => ['test']];
-        $uri        = Uri::fromString($url);
+        $statusCode      = StatusCode::PERMANENT_REDIRECT;
+        $url             = 'https://example.com/';
+        $headers         = ['header' => new Header('Header', 'test')];
+        $uri             = Uri::fromString($url);
 
         try {
             Abort::redirect(
@@ -98,7 +99,7 @@ class AbortTest extends TestCase
         $this->expectException(HttpException::class);
 
         $responseMessage = 'response message';
-        $headers         = ['Header' => ['test']];
+        $headers         = ['header' => new Header('Header', 'test')];
         $response        = Response::create($responseMessage);
 
         try {
@@ -122,7 +123,7 @@ class AbortTest extends TestCase
         $this->expectException(HttpException::class);
 
         $responseMessage = 'response message';
-        $headers         = ['Header' => ['test']];
+        $headers         = ['header' => new Header('Header', 'test')];
         $response        = Response::create($responseMessage);
 
         try {
@@ -146,7 +147,7 @@ class AbortTest extends TestCase
         $this->expectException(HttpException::class);
 
         $responseMessage = 'response message';
-        $headers         = ['Header' => ['test']];
+        $headers         = ['header' => new Header('Header', 'test')];
         $response        = Response::create($responseMessage);
 
         try {
@@ -170,7 +171,7 @@ class AbortTest extends TestCase
         $this->expectException(HttpException::class);
 
         $responseMessage = 'response message';
-        $headers         = ['Header' => ['test']];
+        $headers         = ['header' => new Header('Header', 'test')];
         $response        = Response::create($responseMessage);
 
         try {

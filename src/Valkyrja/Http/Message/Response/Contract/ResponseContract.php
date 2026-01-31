@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Message\Response\Contract;
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Contract\MessageContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 
 /**
@@ -35,9 +36,9 @@ interface ResponseContract extends MessageContract
     /**
      * Create a response.
      *
-     * @param string|null                  $content    [optional] The response content
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param array<string, string[]>|null $headers    [optional] An array of response headers
+     * @param string|null           $content    [optional] The response content
+     * @param StatusCode|null       $statusCode [optional] The response status code
+     * @param HeaderContract[]|null $headers    [optional] An array of response headers
      */
     public static function create(
         string|null $content = null,

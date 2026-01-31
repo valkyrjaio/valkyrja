@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Message\Contract;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
 interface MessageContract
@@ -57,9 +58,7 @@ interface MessageContract
      * While header names are not case-sensitive, getHeaders() will preserve
      * the exact case in which headers were originally specified.
      *
-     * @return array<string, string[]> Returns an associative array of the message's
-     *                                 headers. Each key MUST be a header name, and each
-     *                                 value MUST be an array of strings for that header
+     * @return array<lowercase-string, HeaderContract>
      */
     public function getHeaders(): array;
 
@@ -82,12 +81,8 @@ interface MessageContract
      * empty array.
      *
      * @param string $name Case-insensitive header field name
-     *
-     * @return string[] An array of string values as provided for the given
-     *                  header. If the header does not appear in the message,
-     *                  this method MUST return an empty array
      */
-    public function getHeader(string $name): array;
+    public function getHeader(string $name): HeaderContract|null;
 
     /**
      * Retrieves a comma-separated string of the values for a single header.
@@ -118,12 +113,9 @@ interface MessageContract
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string $name      Case-insensitive header field name
-     * @param string ...$values Header value(s)
-     *
      * @throws InvalidArgumentException for invalid header names or values
      */
-    public function withHeader(string $name, string ...$values): static;
+    public function withHeader(HeaderContract $header): static;
 
     /**
      * Return an instance with the specified header appended with the given
@@ -135,12 +127,9 @@ interface MessageContract
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string $name      Case-insensitive header field name to add
-     * @param string ...$values Header value(s)
-     *
      * @throws InvalidArgumentException for invalid header names or values
      */
-    public function withAddedHeader(string $name, string ...$values): static;
+    public function withAddedHeader(HeaderContract $header): static;
 
     /**
      * Return an instance without the specified header.

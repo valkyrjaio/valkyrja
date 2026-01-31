@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Psr\Request as PsrRequest;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
@@ -41,7 +42,7 @@ class RequestTest extends TestCase
 
     public function testHeaders(): void
     {
-        $request    = new Request(headers: ['Test' => [$value = 'test']]);
+        $request    = new Request(headers: [new Header('Test', $value = 'test')]);
         $psrRequest = new PsrRequest($request);
 
         $psrRequest2 = $psrRequest->withHeader('Cheese', 'foo');
@@ -51,12 +52,13 @@ class RequestTest extends TestCase
         self::assertNotSame($psrRequest, $psrRequest2);
         self::assertNotSame($psrRequest, $psrRequest3);
         self::assertNotSame($psrRequest2, $psrRequest4);
-        self::assertSame($request->getHeaders(), $psrRequest->getHeaders());
+        self::assertSame(['Test' => ['test']], $psrRequest->getHeaders());
         self::assertSame(['Test' => ['test'], 'Cheese' => ['foo']], $psrRequest2->getHeaders());
         self::assertSame(['Test' => ['test', 'bar']], $psrRequest3->getHeaders());
         self::assertSame(['Cheese' => ['foo']], $psrRequest4->getHeaders());
         self::assertTrue($psrRequest->hasHeader('Test'));
         self::assertSame([$value], $psrRequest->getHeader('Test'));
+        self::assertSame([], $psrRequest->getHeader('Non-Existent'));
         self::assertSame($value, $psrRequest->getHeaderLine('Test'));
     }
 

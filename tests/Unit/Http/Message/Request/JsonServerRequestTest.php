@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use JsonException;
-use Valkyrja\Http\Message\Constant\ContentType;
-use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Constant\ContentTypeValue;
+use Valkyrja\Http\Message\Header\ContentType;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -43,7 +43,7 @@ class JsonServerRequestTest extends TestCase
             'test2' => 'bar',
             'foo2'  => 1,
         ];
-        $jsonHeaders = [HeaderName::CONTENT_TYPE => [ContentType::APPLICATION_JSON]];
+        $jsonHeaders = [new ContentType(ContentTypeValue::APPLICATION_JSON)];
         $jsonBody    = new Stream();
         $jsonBody->write(json_encode($json, JSON_THROW_ON_ERROR));
 

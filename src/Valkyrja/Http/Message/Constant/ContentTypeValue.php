@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Constant;
 /**
  * @see https://www.iana.org/assignments/media-types/media-types.xhtml
  */
-final class ContentType
+final class ContentTypeValue
 {
     public const string APPLICATION_JSON       = 'application/json';
     public const string APPLICATION_JAVASCRIPT = 'application/javascript';

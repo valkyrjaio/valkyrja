@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\UriInterface;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
@@ -23,10 +24,7 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_change_key_case;
-use function array_key_exists;
 use function explode;
-use function implode;
-use function is_array;
 use function ltrim;
 use function preg_match;
 use function preg_replace;
@@ -41,8 +39,8 @@ abstract class UriFactory
     /**
      * Marshal the URI from the $_SERVER array and headers.
      *
-     * @param array<string, string>          $server
-     * @param array<string, string|string[]> $headers
+     * @param array<string, string>                   $server  The server
+     * @param array<lowercase-string, HeaderContract> $headers The headers
      *
      * @throws InvalidQueryException
      * @throws InvalidPortException
@@ -114,27 +112,23 @@ abstract class UriFactory
      * If found, it is returned as a string, using comma concatenation.
      * If not, the $default is returned.
      *
-     * @param array<string, string|string[]> $headers
+     * @param array<lowercase-string, HeaderContract> $headers
      */
-    public static function getHeader(string $header, array $headers, string|null $default = null): string
+    public static function getHeader(string $headerName, array $headers, string|null $default = null): string
     {
-        $header  = strtolower($header);
-        $headers = array_change_key_case($headers);
+        $headerName  = strtolower($headerName);
+        $headers     = array_change_key_case($headers);
 
-        if (array_key_exists($header, $headers)) {
-            return is_array($headers[$header])
-                ? implode(', ', $headers[$header])
-                : $headers[$header];
-        }
+        $header = $headers[$headerName] ?? null;
 
-        return $default ?? '';
+        return $header?->getValuesAsString() ?? $default ?? '';
     }
 
     /**
      * Marshal the host and port from HTTP headers and/or the PHP environment.
      *
-     * @param array<string, string>          $server
-     * @param array<string, string|string[]> $headers
+     * @param array<string, string>                   $server
+     * @param array<lowercase-string, HeaderContract> $headers
      */
     public static function marshalHostAndPortFromHeaders(
         HostPortAccumulator $accumulator,

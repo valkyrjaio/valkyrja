@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 {
     use Valkyrja\Http\Message\Constant\HeaderName;
     use Valkyrja\Http\Message\Enum\StatusCode;
+    use Valkyrja\Http\Message\Header\ContentType;
     use Valkyrja\Http\Message\Header\Value\Cookie;
     use Valkyrja\Http\Message\Response\Response;
     use Valkyrja\Http\Message\Stream\Stream;
@@ -35,7 +36,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         public function testCreate(): void
         {
             $response  = Response::create();
-            $response2 = Response::create('test', StatusCode::CREATED, ['Content-Type' => ['text/html']]);
+            $response2 = Response::create('test', StatusCode::CREATED, [new ContentType('text/html')]);
 
             self::assertEmpty($response->getBody()->getContents());
             self::assertSame(StatusCode::OK, $response->getStatusCode());
@@ -43,13 +44,14 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             self::assertSame('test', $response2->getBody()->getContents());
             self::assertSame(StatusCode::CREATED, $response2->getStatusCode());
-            self::assertSame(['Content-Type' => ['text/html']], $response2->getHeaders());
+
+            self::assertSame('text/html', $response2->getHeaderLine(HeaderName::CONTENT_TYPE));
         }
 
         public function testGetStatusCode(): void
         {
             $response  = Response::create();
-            $response2 = Response::create('test', StatusCode::CREATED, ['Content-Type' => ['text/html']]);
+            $response2 = Response::create('test', StatusCode::CREATED, [new ContentType('text/html')]);
 
             self::assertSame(StatusCode::OK, $response->getStatusCode());
             self::assertSame(StatusCode::CREATED, $response2->getStatusCode());
@@ -109,7 +111,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         {
             $this->resetHeadersAndResponseCode();
 
-            $response = new Response(new Stream(), StatusCode::OK, ['Content-Type' => ['text/html']]);
+            $response = new Response(new Stream(), StatusCode::OK, [new ContentType('text/html')]);
 
             $response->sendHttpLine();
 
@@ -125,7 +127,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         {
             $this->resetHeadersAndResponseCode();
 
-            $response = new Response(new Stream(), StatusCode::OK, ['Content-Type' => ['text/html']]);
+            $response = new Response(new Stream(), StatusCode::OK, [new ContentType('text/html')]);
 
             $response->sendHeaders();
 
@@ -134,7 +136,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             self::assertCount(1, $headers);
             self::assertNotNull($headers[0] ?? null);
-            self::assertSame('Content-Type: text/html', $headers[0]);
+            self::assertSame('Content-Type:text/html', $headers[0]);
         }
 
         public function testSendBody(): void
@@ -143,7 +145,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $stream->write('test');
             $stream->rewind();
 
-            $response = new Response($stream, StatusCode::OK, ['Content-Type' => ['text/html']]);
+            $response = new Response($stream, StatusCode::OK, [new ContentType('text/html')]);
 
             ob_start();
             $response->sendBody();
@@ -161,7 +163,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $stream->write('test');
             $stream->rewind();
 
-            $response = new Response($stream, StatusCode::OK, ['Content-Type' => ['text/html']]);
+            $response = new Response($stream, StatusCode::OK, [new ContentType('text/html')]);
 
             ob_start();
             $response->send();
@@ -176,7 +178,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             self::assertNotNull($headers[0] ?? null);
             self::assertSame('HTTP/1.1 200 OK', $headers[0]);
             self::assertNotNull($headers[1] ?? null);
-            self::assertSame('Content-Type: text/html', $headers[1]);
+            self::assertSame('Content-Type:text/html', $headers[1]);
         }
 
         protected function resetHeadersAndResponseCode(): void

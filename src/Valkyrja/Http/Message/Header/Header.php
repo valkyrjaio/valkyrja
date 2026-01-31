@@ -57,7 +57,7 @@ class Header implements HeaderContract
     /**
      * The normalized name, useful for comparison.
      *
-     * @var string
+     * @var lowercase-string
      */
     protected string $normalizedName;
 

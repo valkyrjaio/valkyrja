@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Response;
 
-use Valkyrja\Http\Message\Constant\ContentType;
+use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -25,19 +27,19 @@ class TextResponseTest extends TestCase
 
     public function testConstruct(): void
     {
-        $response = new TextResponse(self::TEXT, headers: ['Random-Header' => ['test']]);
+        $response = new TextResponse(self::TEXT, headers: [new Header('Random-Header', 'test')]);
 
         self::assertSame(self::TEXT, $response->getBody()->getContents());
         self::assertSame(StatusCode::OK, $response->getStatusCode());
         self::assertSame(StatusCode::OK->asPhrase(), $response->getReasonPhrase());
         self::assertSame('test', $response->getHeaderLine('Random-Header'));
-        self::assertSame(ContentType::TEXT_PLAIN_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
+        self::assertSame(ContentTypeValue::TEXT_PLAIN_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 
     public function testCannotReplaceContentTypeFromConstruct(): void
     {
-        $response = new TextResponse(self::TEXT, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response = new TextResponse(self::TEXT, headers: [new ContentType('text')]);
 
-        self::assertSame(ContentType::TEXT_PLAIN_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
+        self::assertSame(ContentTypeValue::TEXT_PLAIN_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 }

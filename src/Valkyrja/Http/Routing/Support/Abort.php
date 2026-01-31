@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Support;
 
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
@@ -25,8 +26,8 @@ class Abort
     /**
      * Abort with a 400.
      *
-     * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param ResponseContract|null        $response [optional] The response to send
+     * @param HeaderContract[]|null $headers  [optional] The headers
+     * @param ResponseContract|null $response [optional] The response to send
      */
     public static function abort400(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -36,8 +37,8 @@ class Abort
     /**
      * Abort with a 404.
      *
-     * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param ResponseContract|null        $response [optional] The response to send
+     * @param HeaderContract[]|null $headers  [optional] The headers
+     * @param ResponseContract|null $response [optional] The response to send
      */
     public static function abort404(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -47,8 +48,8 @@ class Abort
     /**
      * Abort with a 405.
      *
-     * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param ResponseContract|null        $response [optional] The response to send
+     * @param HeaderContract[]|null $headers  [optional] The headers
+     * @param ResponseContract|null $response [optional] The response to send
      */
     public static function abort405(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -58,8 +59,8 @@ class Abort
     /**
      * Abort with a 413.
      *
-     * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param ResponseContract|null        $response [optional] The response to send
+     * @param HeaderContract[]|null $headers  [optional] The headers
+     * @param ResponseContract|null $response [optional] The response to send
      */
     public static function abort413(array|null $headers = null, ResponseContract|null $response = null): never
     {
@@ -69,10 +70,10 @@ class Abort
     /**
      * Abort.
      *
-     * @param StatusCode|null              $statusCode [optional] The status code
-     * @param string|null                  $message    [optional] The message
-     * @param array<string, string[]>|null $headers    [optional] The headers
-     * @param ResponseContract|null        $response   [optional] The response to send
+     * @param StatusCode|null       $statusCode [optional] The status code
+     * @param string|null           $message    [optional] The message
+     * @param HeaderContract[]|null $headers    [optional] The headers
+     * @param ResponseContract|null $response   [optional] The response to send
      */
     public static function abort(
         StatusCode|null $statusCode = null,
@@ -86,9 +87,9 @@ class Abort
     /**
      * Redirect to a given uri, and abort.
      *
-     * @param UriContract|null             $uri        [optional] The URI to redirect to
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param array<string, string[]>|null $headers    [optional] An array of response headers
+     * @param UriContract|null      $uri        [optional] The URI to redirect to
+     * @param StatusCode|null       $statusCode [optional] The response status code
+     * @param HeaderContract[]|null $headers    [optional] An array of response headers
      *
      * @throws HttpRedirectException
      */
