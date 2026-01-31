@@ -143,11 +143,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         $host = $uri->getHost();
 
         // If the host matches the current request uri's host
-        if (! $host || $host === $request->getUri()->getHost()) {
-            return true;
-        }
-
-        return false;
+        return ! $host || $host === $request->getUri()->getHost();
     }
 
     /**
