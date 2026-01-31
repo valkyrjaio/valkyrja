@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -106,7 +106,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Router::class, $container->getSingleton(RouterContract::class));
     }
 
-    public function testPublishCollectionData(): void
+    public function testPublishCollectionWithData(): void
     {
         $container = $this->container;
 
@@ -123,12 +123,12 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Collection::class, $container->getSingleton(CollectionContract::class));
     }
 
-    public function testPublishCollectionConfig(): void
+    public function testPublishCollectionWithoutData(): void
     {
         $container = $this->container;
 
+        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
-        $container->setSingleton(Config::class, new Config());
 
         self::assertFalse($container->has(CollectionContract::class));
 

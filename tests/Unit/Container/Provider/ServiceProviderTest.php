@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
@@ -67,7 +67,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishData(): void
     {
-        $this->container->setSingleton(Config::class, new Config());
+        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $service   = new Service(serviceId: ServiceClass::class)->withDispatch(new ClassDispatch(ServiceClass::class));
@@ -90,7 +90,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->container->setSingleton(Config::class, new Config());
+        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $service = new Service(serviceId: self::class)->withDispatch(new ClassDispatch(self::class));

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Data;
 
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -25,11 +26,10 @@ class ConfigTest extends TestCase
     {
         $data = new Config();
 
-        self::assertEmpty($data->aliases);
-        self::assertEmpty($data->services);
+        self::assertSame('production', $data->environment);
+        self::assertSame(ApplicationContract::VERSION, $data->version);
+        self::assertFalse($data->debugMode);
         self::assertEmpty($data->providers);
-        self::assertEmpty($data->listeners);
-        self::assertEmpty($data->commands);
-        self::assertEmpty($data->controllers);
+        self::assertSame('UTC', $data->timezone);
     }
 }
