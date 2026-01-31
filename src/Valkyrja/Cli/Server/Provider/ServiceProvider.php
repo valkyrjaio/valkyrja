@@ -20,7 +20,6 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
@@ -117,7 +116,7 @@ final class ServiceProvider extends Provider
             new HelpCommand(
                 version: $container->getSingleton(VersionCommand::class),
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(Collection::class),
+                collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
@@ -132,7 +131,7 @@ final class ServiceProvider extends Provider
             ListBashCommand::class,
             new ListBashCommand(
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(Collection::class),
+                collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
@@ -148,7 +147,7 @@ final class ServiceProvider extends Provider
             new ListCommand(
                 version: $container->getSingleton(VersionCommand::class),
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(Collection::class),
+                collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );

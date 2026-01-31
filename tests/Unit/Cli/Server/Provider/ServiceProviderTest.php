@@ -20,7 +20,6 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
@@ -102,7 +101,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(Collection::class, self::createStub(Collection::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = ServiceProvider::publishers()[HelpCommand::class];
@@ -117,7 +116,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishListBashCommand(): void
     {
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(Collection::class, self::createStub(Collection::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = ServiceProvider::publishers()[ListBashCommand::class];
@@ -133,7 +132,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(Collection::class, self::createStub(Collection::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = ServiceProvider::publishers()[ListCommand::class];
