@@ -65,7 +65,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
 
         parent::__construct(
             statusCode: $statusCode,
-            headers: $this->injectHeader(new Location((string) $uri), $this->headers, true)
+            headers: $this->injectHeader($this->getHeaderFromUri($uri), $this->headers, true)
         );
     }
 
@@ -101,7 +101,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public function withUri(UriContract $uri): static
     {
         // Set the location header for the redirect
-        $new = $this->withHeader(new Location((string) $uri));
+        $new = $this->withHeader($this->getHeaderFromUri($uri));
         // Set the uri
         $new->uri = $uri;
 
@@ -162,5 +162,19 @@ class RedirectResponse extends Response implements RedirectResponseContract
         }
 
         return false;
+    }
+
+    /**
+     * Get a header from a uri.
+     */
+    protected function getHeaderFromUri(UriContract $uri): HeaderContract
+    {
+        $uriString = (string) $uri;
+
+        if ($uriString === '') {
+            $uriString = '/';
+        }
+
+        return new Location($uriString);
     }
 }
