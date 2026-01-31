@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Service class.
  */
-#[Service(self::class)]
 class ServiceClass implements ServiceContract
 {
     public function __construct(

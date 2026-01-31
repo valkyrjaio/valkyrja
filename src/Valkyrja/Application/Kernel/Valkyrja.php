@@ -49,36 +49,6 @@ class Valkyrja implements ApplicationContract
      * @inheritDoc
      */
     #[Override]
-    public function getContainerAliases(): array
-    {
-        $aliases = [];
-
-        foreach ($this->getProviders() as $provider) {
-            $aliases[] = $provider::getContainerAliases();
-        }
-
-        return array_merge(...$aliases);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getContainerServices(): array
-    {
-        $services = [];
-
-        foreach ($this->getProviders() as $provider) {
-            $services[] = $provider::getContainerServices();
-        }
-
-        return array_merge(...$services);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public function getContainerProviders(): array
     {
         $providers = [];
