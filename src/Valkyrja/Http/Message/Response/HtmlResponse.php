@@ -27,7 +27,7 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class HtmlResponse extends Response implements HtmlResponseContract
 {
     /**
-     * @param string           $xml        The html
+     * @param string           $html       The html
      * @param StatusCode       $statusCode [optional] The status
      * @param HeaderContract[] $headers    [optional] The headers
      *
@@ -36,13 +36,13 @@ class HtmlResponse extends Response implements HtmlResponseContract
      * @throws InvalidStreamException
      */
     public function __construct(
-        string $xml = self::DEFAULT_CONTENT,
-        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS
+        string $html = '',
+        StatusCode $statusCode = StatusCode::OK,
+        array $headers = []
     ) {
         $body = new Stream();
 
-        $body->write($xml);
+        $body->write($html);
         $body->rewind();
 
         $this->setHeaders(...$headers);

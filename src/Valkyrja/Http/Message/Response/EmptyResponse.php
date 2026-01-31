@@ -29,7 +29,7 @@ class EmptyResponse extends Response implements EmptyResponseContract
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
      */
-    public function __construct(array $headers = self::DEFAULT_HEADERS)
+    public function __construct(array $headers = [])
     {
         parent::__construct(
             body: new Stream(mode: Mode::READ),

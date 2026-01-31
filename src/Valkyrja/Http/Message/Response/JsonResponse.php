@@ -38,20 +38,6 @@ use const JSON_THROW_ON_ERROR;
 class JsonResponse extends Response implements JsonResponseContract
 {
     /**
-     * The default data to set.
-     *
-     * @var array<array-key, mixed>
-     */
-    protected const array DEFAULT_DATA = [];
-
-    /**
-     * The default encoding options to use for json_encode.
-     *
-     * @var int
-     */
-    protected const int DEFAULT_ENCODING_OPTIONS = 79;
-
-    /**
      * @param array<array-key, mixed> $data            [optional] The data
      * @param StatusCode              $statusCode      [optional] The status
      * @param HeaderContract[]        $headers         [optional] The headers
@@ -63,10 +49,10 @@ class JsonResponse extends Response implements JsonResponseContract
      * @throws JsonException
      */
     public function __construct(
-        protected array $data = self::DEFAULT_DATA,
-        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS,
-        protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS
+        protected array $data = [],
+        StatusCode $statusCode = StatusCode::OK,
+        array $headers = [],
+        protected int $encodingOptions = 79
     ) {
         $body = new Stream();
         $body->write((string) json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
@@ -93,10 +79,9 @@ class JsonResponse extends Response implements JsonResponseContract
         array|null $headers = null
     ): static {
         return new static(
-            $data ?? static::DEFAULT_DATA,
-            $statusCode ?? static::DEFAULT_STATUS_CODE,
-            $headers ?? static::DEFAULT_HEADERS,
-            static::DEFAULT_ENCODING_OPTIONS
+            $data ?? [],
+            $statusCode ?? StatusCode::OK,
+            $headers ?? []
         );
     }
 

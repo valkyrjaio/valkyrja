@@ -36,9 +36,9 @@ class XmlResponse extends Response implements HtmlResponseContract
      * @throws InvalidStreamException
      */
     public function __construct(
-        string $xml = self::DEFAULT_CONTENT,
-        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS
+        string $xml = '',
+        StatusCode $statusCode = StatusCode::OK,
+        array $headers = []
     ) {
         $body = new Stream();
         $body->write($xml);

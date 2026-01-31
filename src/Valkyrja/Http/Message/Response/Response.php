@@ -32,27 +32,6 @@ class Response implements ResponseContract
     use Message;
 
     /**
-     * The default content to set in the body.
-     *
-     * @var string
-     */
-    protected const string DEFAULT_CONTENT = '';
-
-    /**
-     * The default status code to set.
-     *
-     * @var StatusCode
-     */
-    protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::OK;
-
-    /**
-     * The default headers to set.
-     *
-     * @var HeaderContract[]
-     */
-    protected const array DEFAULT_HEADERS = [];
-
-    /**
      * The status phrase.
      *
      * @var string
@@ -69,8 +48,8 @@ class Response implements ResponseContract
      */
     public function __construct(
         StreamContract $body = new Stream(),
-        protected StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS
+        protected StatusCode $statusCode = StatusCode::OK,
+        array $headers = []
     ) {
         $this->statusPhrase = $statusCode->asPhrase();
 
@@ -88,13 +67,13 @@ class Response implements ResponseContract
         array|null $headers = null
     ): static {
         $stream = new Stream();
-        $stream->write($content ?? static::DEFAULT_CONTENT);
+        $stream->write($content ?? '');
         $stream->rewind();
 
         return new static(
             $stream,
-            $statusCode ?? static::DEFAULT_STATUS_CODE,
-            $headers ?? static::DEFAULT_HEADERS
+            $statusCode ?? StatusCode::OK,
+            $headers ?? []
         );
     }
 
