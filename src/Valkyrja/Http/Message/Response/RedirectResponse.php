@@ -29,20 +29,6 @@ use Valkyrja\Http\Message\Uri\Uri;
 class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
-     * The default uri to use.
-     *
-     * @var string
-     */
-    protected const string DEFAULT_URI = '/';
-
-    /**
-     * @inheritDoc
-     *
-     * @var StatusCode
-     */
-    protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::FOUND;
-
-    /**
      * @param UriContract      $uri        [optional] The uri
      * @param StatusCode       $statusCode [optional] The status
      * @param HeaderContract[] $headers    [optional] The headers
@@ -51,9 +37,9 @@ class RedirectResponse extends Response implements RedirectResponseContract
      * @throws InvalidStreamException
      */
     public function __construct(
-        protected UriContract $uri = new Uri(path: self::DEFAULT_URI),
-        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS
+        protected UriContract $uri = new Uri(path: '/'),
+        StatusCode $statusCode = StatusCode::FOUND,
+        array $headers = []
     ) {
         if (! $statusCode->isRedirect()) {
             throw new InvalidArgumentException(
@@ -79,9 +65,9 @@ class RedirectResponse extends Response implements RedirectResponseContract
         array|null $headers = null
     ): static {
         return new static(
-            $uri ?? new Uri(path: static::DEFAULT_URI),
-            $statusCode ?? static::DEFAULT_STATUS_CODE,
-            $headers ?? static::DEFAULT_HEADERS
+            $uri ?? new Uri(path: '/'),
+            $statusCode ?? StatusCode::FOUND,
+            $headers ?? []
         );
     }
 

@@ -37,9 +37,9 @@ class TextResponse extends Response implements TextResponseContract
      * @throws InvalidStreamException
      */
     public function __construct(
-        string $text = self::DEFAULT_CONTENT,
-        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
-        array $headers = self::DEFAULT_HEADERS
+        string $text = '',
+        StatusCode $statusCode = StatusCode::OK,
+        array $headers = []
     ) {
         $body = new Stream();
 
@@ -66,8 +66,8 @@ class TextResponse extends Response implements TextResponseContract
     ): static {
         return new static(
             text: $content ?? '',
-            statusCode: $statusCode ?? static::DEFAULT_STATUS_CODE,
-            headers: $headers ?? static::DEFAULT_HEADERS
+            statusCode: $statusCode ?? StatusCode::OK,
+            headers: $headers ?? []
         );
     }
 }
