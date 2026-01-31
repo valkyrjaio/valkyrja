@@ -42,7 +42,6 @@ use Valkyrja\Cli\Server\Command\ListCommand as CliListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
-use Valkyrja\Container\Collector\Contract\CollectorContract as ContainerCollector;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
@@ -239,8 +238,6 @@ class AppTest extends TestCase
         self::assertSame($container, $application->getContainer());
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ApplicationContract::class));
-        self::assertTrue($container->has(ContainerData::class));
-        self::assertTrue($container->has(ContainerCollector::class));
         self::assertTrue($container->has(AttributeCollectorContract::class));
         self::assertTrue($container->has(CliInteractionConfig::class));
         self::assertTrue($container->has(OutputFactoryContract::class));
@@ -293,8 +290,6 @@ class AppTest extends TestCase
         self::assertContains(VersionCommand::class, $commands);
         self::assertContains(HttpListCommand::class, $commands);
 
-        self::assertEmpty($application->getContainerAliases());
-        self::assertEmpty($application->getContainerServices());
         self::assertEmpty($application->getEventListeners());
         self::assertEmpty($application->getHttpControllers());
     }

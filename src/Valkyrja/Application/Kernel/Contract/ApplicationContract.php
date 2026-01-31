@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Kernel\Contract;
 
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
@@ -59,20 +58,6 @@ interface ApplicationContract
      * @return class-string<Provider>[]
      */
     public function getProviders(): array;
-
-    /**
-     * Get all the registered components' container aliases.
-     *
-     * @return class-string[]
-     */
-    public function getContainerAliases(): array;
-
-    /**
-     * Get all the registered components' container services.
-     *
-     * @return class-string<ServiceContract>[]
-     */
-    public function getContainerServices(): array;
 
     /**
      * Get all the registered components' container service providers.

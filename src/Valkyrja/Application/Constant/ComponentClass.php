@@ -23,7 +23,6 @@ use Valkyrja\Cli\Interaction\Provider\ComponentProvider as CliInteractionCompone
 use Valkyrja\Cli\Middleware\Provider\ComponentProvider as CliMiddlewareComponentProvider;
 use Valkyrja\Cli\Routing\Provider\ComponentProvider as CliRoutingComponentProvider;
 use Valkyrja\Cli\Server\Provider\ComponentProvider as CliServerComponentProvider;
-use Valkyrja\Container\Provider\ComponentProvider as ContainerComponentProvider;
 use Valkyrja\Crypt\Provider\ComponentProvider as CryptComponentProvider;
 use Valkyrja\Dispatch\Provider\ComponentProvider as DispatchComponentProvider;
 use Valkyrja\Event\Provider\ComponentProvider as EventComponentProvider;
@@ -54,7 +53,6 @@ final class ComponentClass
     public const string CLI_MIDDLEWARE  = CliMiddlewareComponentProvider::class;
     public const string CLI_ROUTING     = CliRoutingComponentProvider::class;
     public const string CLI_SERVER      = CliServerComponentProvider::class;
-    public const string CONTAINER       = ContainerComponentProvider::class;
     public const string CRYPT           = CryptComponentProvider::class;
     public const string DISPATCHER      = DispatchComponentProvider::class;
     public const string EVENT           = EventComponentProvider::class;

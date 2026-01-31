@@ -145,13 +145,12 @@ abstract class App
             $container->setSingleton(HttpData::class, $data->http);
 
             $container->setFromData($data->container);
-        } else {
-            foreach ($app->getContainerProviders() as $provider) {
-                $container->register($provider);
-            }
 
-            $containerData = $container->getSingleton(ContainerData::class);
-            $container->setFromData($containerData);
+            return;
+        }
+
+        foreach ($app->getContainerProviders() as $provider) {
+            $container->register($provider);
         }
     }
 

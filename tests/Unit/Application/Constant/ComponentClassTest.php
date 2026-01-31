@@ -24,7 +24,6 @@ use Valkyrja\Cli\Interaction\Provider\ComponentProvider as CliInteractionCompone
 use Valkyrja\Cli\Middleware\Provider\ComponentProvider as CliMiddlewareComponentProvider;
 use Valkyrja\Cli\Routing\Provider\ComponentProvider as CliRoutingComponentProvider;
 use Valkyrja\Cli\Server\Provider\ComponentProvider as CliServerComponentProvider;
-use Valkyrja\Container\Provider\ComponentProvider as ContainerComponentProvider;
 use Valkyrja\Crypt\Provider\ComponentProvider as CryptComponentProvider;
 use Valkyrja\Dispatch\Provider\ComponentProvider as DispatchComponentProvider;
 use Valkyrja\Event\Provider\ComponentProvider as EventComponentProvider;
@@ -61,7 +60,6 @@ class ComponentClassTest extends TestCase
         self::assertSame(CliMiddlewareComponentProvider::class, ComponentClass::CLI_MIDDLEWARE);
         self::assertSame(CliRoutingComponentProvider::class, ComponentClass::CLI_ROUTING);
         self::assertSame(CliServerComponentProvider::class, ComponentClass::CLI_SERVER);
-        self::assertSame(ContainerComponentProvider::class, ComponentClass::CONTAINER);
         self::assertSame(CryptComponentProvider::class, ComponentClass::CRYPT);
         self::assertSame(DispatchComponentProvider::class, ComponentClass::DISPATCHER);
         self::assertSame(EventComponentProvider::class, ComponentClass::EVENT);
