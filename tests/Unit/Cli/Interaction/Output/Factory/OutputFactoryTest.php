@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
+namespace Valkyrja\Tests\Unit\Cli\Interaction\Output\Factory;
 
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;

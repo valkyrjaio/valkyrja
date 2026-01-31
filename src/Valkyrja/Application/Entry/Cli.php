@@ -16,8 +16,8 @@ namespace Valkyrja\Application\Entry;
 use Override;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 

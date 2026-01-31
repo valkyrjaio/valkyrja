@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 

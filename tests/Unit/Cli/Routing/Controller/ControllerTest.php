@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Controller;
 
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Input;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Tests\Classes\Cli\Routing\Controller\ControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 

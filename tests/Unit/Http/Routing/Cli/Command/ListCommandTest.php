@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;

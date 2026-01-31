@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Application\Cli\Command;
 
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Data\Data;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Routing\Collection\Collection as CliCollection;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Event\Collection\Collection as EventCollection;

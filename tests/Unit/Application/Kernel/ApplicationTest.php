@@ -25,7 +25,7 @@ use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Data\Config as CliInteractionConfig;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract as CliRouteDispatchedHandlerContract;

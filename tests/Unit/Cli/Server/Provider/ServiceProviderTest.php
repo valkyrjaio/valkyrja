@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;

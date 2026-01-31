@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Command;
 
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;

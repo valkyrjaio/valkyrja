@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Cli\Command;
 
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Support\Directory\Directory;
 

@@ -15,12 +15,12 @@ namespace Valkyrja\Cli\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;

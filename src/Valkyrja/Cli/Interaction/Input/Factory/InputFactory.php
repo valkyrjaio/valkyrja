@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Factory;
+namespace Valkyrja\Cli\Interaction\Input\Factory;
 
+use Valkyrja\Cli\Interaction\Argument\Factory\ArgumentFactory;
 use Valkyrja\Cli\Interaction\Input\Input;
+use Valkyrja\Cli\Interaction\Option\Factory\OptionFactory;
 
 abstract class InputFactory
 {

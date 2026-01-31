@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
+namespace Valkyrja\Tests\Unit\Cli\Interaction\Option\Factory;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
-use Valkyrja\Cli\Interaction\Factory\OptionFactory;
+use Valkyrja\Cli\Interaction\Option\Factory\OptionFactory;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
