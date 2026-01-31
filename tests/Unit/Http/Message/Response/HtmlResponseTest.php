@@ -15,6 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\HtmlResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -24,7 +26,7 @@ class HtmlResponseTest extends TestCase
 
     public function testConstruct(): void
     {
-        $response = new HtmlResponse(self::HTML, headers: ['Random-Header' => ['test']]);
+        $response = new HtmlResponse(self::HTML, headers: [new Header('Random-Header', 'test')]);
 
         self::assertSame(self::HTML, $response->getBody()->getContents());
         self::assertSame(StatusCode::OK, $response->getStatusCode());
@@ -35,7 +37,7 @@ class HtmlResponseTest extends TestCase
 
     public function testCannotReplaceContentTypeFromConstruct(): void
     {
-        $response = new HtmlResponse(self::HTML, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response = new HtmlResponse(self::HTML, headers: [new ContentType('text')]);
 
         self::assertSame('text/html; charset=utf-8', $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }

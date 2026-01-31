@@ -15,8 +15,9 @@ namespace Valkyrja\Http\Message\Response;
 
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\SetCookie;
 use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
@@ -47,7 +48,7 @@ class Response implements ResponseContract
     /**
      * The default headers to set.
      *
-     * @var array<string, string[]>
+     * @var HeaderContract[]
      */
     protected const array DEFAULT_HEADERS = [];
 
@@ -59,9 +60,9 @@ class Response implements ResponseContract
     protected string $statusPhrase;
 
     /**
-     * @param StreamContract          $body       [optional] The body
-     * @param StatusCode              $statusCode [optional] The status
-     * @param array<string, string[]> $headers    [optional] The headers
+     * @param StreamContract   $body       [optional] The body
+     * @param StatusCode       $statusCode [optional] The status
+     * @param HeaderContract[] $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
@@ -74,7 +75,7 @@ class Response implements ResponseContract
         $this->statusPhrase = $statusCode->asPhrase();
 
         $this->setBody($body);
-        $this->setHeaders($headers);
+        $this->setHeaders(...$headers);
     }
 
     /**
@@ -135,7 +136,7 @@ class Response implements ResponseContract
     #[Override]
     public function withCookie(CookieContract $cookie): static
     {
-        return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie);
+        return $this->withAddedHeader(new SetCookie($cookie));
     }
 
     /**
@@ -144,7 +145,7 @@ class Response implements ResponseContract
     #[Override]
     public function withoutCookie(CookieContract $cookie): static
     {
-        return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie->delete());
+        return $this->withAddedHeader(new SetCookie($cookie->delete()));
     }
 
     /**
@@ -171,10 +172,8 @@ class Response implements ResponseContract
     #[Override]
     public function sendHeaders(): static
     {
-        foreach ($this->headers as $name => $values) {
-            foreach ($values as $value) {
-                header("$name: $value", false);
-            }
+        foreach ($this->headers as $header) {
+            header($header->__toString(), false);
         }
 
         return $this;

@@ -16,6 +16,10 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Header\Location;
+use Valkyrja\Http\Message\Header\Referer;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
@@ -62,7 +66,7 @@ class RedirectResponseTest extends TestCase
         $response = new RedirectResponse(
             new Uri(path: '/'),
             headers: [
-                'Random-Header' => ['test'],
+                new Header('Random-Header', 'test'),
             ]
         );
 
@@ -77,8 +81,8 @@ class RedirectResponseTest extends TestCase
         $response = new RedirectResponse(
             new Uri(path: '/'),
             headers: [
-                HeaderName::CONTENT_TYPE => ['text'],
-                HeaderName::LOCATION     => ['uri.com'],
+                new ContentType('text'),
+                new Location('uri.com'),
             ]
         );
 
@@ -136,18 +140,18 @@ class RedirectResponseTest extends TestCase
             $uri = new Uri(path: '/')
         );
         $response2 = $response->back(
-            new ServerRequest(headers: [HeaderName::REFERER => [$path = '/path']]),
+            new ServerRequest(headers: [new Referer($path = '/path')]),
         );
         $response3 = $response->back(
             new ServerRequest(),
         );
         $response4 = $response->back(
-            new ServerRequest(headers: [HeaderName::REFERER => ['//www.external-uri.com/path']]),
+            new ServerRequest(headers: [new Referer('//www.external-uri.com/path')]),
         );
         $response5 = $response->back(
             new ServerRequest(
                 uri: new Uri(host: 'www.example.com'),
-                headers: [HeaderName::REFERER => [$url = '//www.example.com/path']]
+                headers: [new Referer($url = '//www.example.com/path')]
             ),
         );
 

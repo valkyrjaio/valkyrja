@@ -41,6 +41,8 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
 
     /**
      * Get the normalized header name.
+     *
+     * @return lowercase-string
      */
     public function getNormalizedName(): string;
 

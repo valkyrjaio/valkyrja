@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
+use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
-class SetCookie extends Header
+class Referer extends Header
 {
     /**
-     * @param CookieContract ...$values The cookie values
+     * @param ValueContract|non-empty-string ...$values The referer values
      */
-    public function __construct(CookieContract ...$values)
+    public function __construct(ValueContract|string ...$values)
     {
-        parent::__construct(HeaderName::SET_COOKIE, ...$values);
+        parent::__construct(HeaderName::REFERER, ...$values);
     }
 }

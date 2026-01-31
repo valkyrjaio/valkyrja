@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response\Psr;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Psr\Response as PsrResponse;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
@@ -39,7 +40,7 @@ class ResponseTest extends TestCase
 
     public function testHeaders(): void
     {
-        $response    = new Response(headers: ['Test' => [$value = 'test']]);
+        $response    = new Response(headers: [new Header('Test', $value = 'test')]);
         $psrResponse = new PsrResponse($response);
 
         $psrResponse2 = $psrResponse->withHeader('Cheese', 'foo');
@@ -49,12 +50,13 @@ class ResponseTest extends TestCase
         self::assertNotSame($psrResponse, $psrResponse2);
         self::assertNotSame($psrResponse, $psrResponse3);
         self::assertNotSame($psrResponse2, $psrResponse4);
-        self::assertSame($response->getHeaders(), $psrResponse->getHeaders());
+        self::assertSame(['Test' => ['test']], $psrResponse->getHeaders());
         self::assertSame(['Test' => ['test'], 'Cheese' => ['foo']], $psrResponse2->getHeaders());
         self::assertSame(['Test' => ['test', 'bar']], $psrResponse3->getHeaders());
         self::assertSame(['Cheese' => ['foo']], $psrResponse4->getHeaders());
         self::assertTrue($psrResponse->hasHeader('Test'));
         self::assertSame([$value], $psrResponse->getHeader('Test'));
+        self::assertSame([], $psrResponse->getHeader('Non-Existent'));
         self::assertSame($value, $psrResponse->getHeaderLine('Test'));
     }
 

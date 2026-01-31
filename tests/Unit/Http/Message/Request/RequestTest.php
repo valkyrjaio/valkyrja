@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Uri\Uri;
@@ -93,10 +94,10 @@ class RequestTest extends TestCase
         $path  = '/path?arg=value#fragment';
 
         $request  = new Request();
-        $request2 = new Request(headers: [HeaderName::HOST => [$host]]);
+        $request2 = new Request(headers: [new Header(HeaderName::HOST, $host)]);
         $request3 = new Request(
             uri: Uri::fromString($uri),
-            headers: [HeaderName::HOST => [$host]]
+            headers: [new Header(HeaderName::HOST, $host)]
         );
         $request4 = $request->withUri(Uri::fromString($uri));
         $request5 = $request->withUri(Uri::fromString($path));

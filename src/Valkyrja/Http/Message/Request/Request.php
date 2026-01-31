@@ -16,6 +16,8 @@ namespace Valkyrja\Http\Message\Request;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
@@ -40,10 +42,10 @@ class Request implements RequestContract
     protected string|null $requestTarget = null;
 
     /**
-     * @param UriContract             $uri     [optional] The uri
-     * @param RequestMethod           $method  [optional] The method
-     * @param StreamContract          $body    [optional] The body stream
-     * @param array<string, string[]> $headers [optional] The headers
+     * @param UriContract      $uri     [optional] The uri
+     * @param RequestMethod    $method  [optional] The method
+     * @param StreamContract   $body    [optional] The body stream
+     * @param HeaderContract[] $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      */
@@ -54,7 +56,7 @@ class Request implements RequestContract
         array $headers = []
     ) {
         $this->setBody($body);
-        $this->setHeaders($headers);
+        $this->setHeaders(...$headers);
         $this->addHostHeaderFromUri();
     }
 
@@ -147,9 +149,7 @@ class Request implements RequestContract
 
         $host = $new->getHostFromUri();
 
-        $new->headerNames['host'] = HeaderName::HOST;
-
-        $new->headers = $this->injectHeader(HeaderName::HOST, $host, $this->headers, true);
+        $new->headers = $this->injectHeader(new Header(HeaderName::HOST, $host), $this->headers, true);
 
         return $new;
     }
@@ -198,10 +198,9 @@ class Request implements RequestContract
     protected function addHostHeaderFromUri(): void
     {
         if (! $this->hasHeader(HeaderName::HOST) && $this->uri->getHost()) {
-            $this->headerNames['host']       = HeaderName::HOST;
-            $this->headers[HeaderName::HOST] = [
-                $this->getHostFromUri(),
-            ];
+            $header = new Header(HeaderName::HOST, $this->getHostFromUri());
+
+            $this->headers[$header->getNormalizedName()] = $header;
         }
     }
 }

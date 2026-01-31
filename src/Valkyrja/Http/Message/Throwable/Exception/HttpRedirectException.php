@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
@@ -31,10 +32,10 @@ class HttpRedirectException extends HttpException
     /**
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param StatusCode|null              $statusCode [optional] The status code to use
-     * @param UriContract|null             $uri        [optional] The uri to redirect to
-     * @param array<string, string[]>|null $headers    [optional] The headers to send
-     * @param ResponseContract|null        $response   [optional] The Response
+     * @param StatusCode|null       $statusCode [optional] The status code to use
+     * @param UriContract|null      $uri        [optional] The uri to redirect to
+     * @param HeaderContract[]|null $headers    [optional] The headers to send
+     * @param ResponseContract|null $response   [optional] The Response
      */
     public function __construct(
         UriContract|null $uri = null,

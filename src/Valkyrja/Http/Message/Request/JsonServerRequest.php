@@ -15,11 +15,12 @@ namespace Valkyrja\Http\Message\Request;
 
 use JsonException;
 use Override;
-use Valkyrja\Http\Message\Constant\ContentType;
+use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -39,7 +40,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
      * @param UriContract                  $uri        [optional] The uri
      * @param RequestMethod                $method     [optional] The method
      * @param StreamContract               $body       [optional] The body stream
-     * @param array<string, string[]>      $headers    [optional] The headers
+     * @param HeaderContract[]             $headers    [optional] The headers
      * @param array<string, mixed>         $server     [optional] The server
      * @param array<string, string|null>   $cookies    [optional] The cookies
      * @param array<array-key, mixed>      $query      [optional] The query string
@@ -79,7 +80,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
 
         if (
             $this->hasHeader(name: HeaderName::CONTENT_TYPE)
-            && str_contains($this->getHeaderLine(name: HeaderName::CONTENT_TYPE), ContentType::APPLICATION_JSON)
+            && str_contains($this->getHeaderLine(name: HeaderName::CONTENT_TYPE), ContentTypeValue::APPLICATION_JSON)
         ) {
             $bodyContents = (string) $body;
 

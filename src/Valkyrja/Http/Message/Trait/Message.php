@@ -15,12 +15,9 @@ namespace Valkyrja\Http\Message\Trait;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
-use function array_merge;
-use function implode;
-use function is_array;
 use function strtolower;
 
 trait Message
@@ -28,16 +25,9 @@ trait Message
     /**
      * The headers with normalized header names.
      *
-     * @var array<string, string[]>
+     * @var array<lowercase-string, HeaderContract>
      */
     protected array $headers = [];
-
-    /**
-     * Original header names.
-     *
-     * @var array<string, string>
-     */
-    protected array $headerNames = [];
 
     /**
      * The protocol version.
@@ -76,7 +66,7 @@ trait Message
     /**
      * @inheritDoc
      *
-     * @return array<string, string[]>
+     * @return array<lowercase-string, HeaderContract>
      */
     public function getHeaders(): array
     {
@@ -88,21 +78,19 @@ trait Message
      */
     public function hasHeader(string $name): bool
     {
-        return isset($this->headerNames[strtolower($name)]);
+        return isset($this->headers[strtolower($name)]);
     }
 
     /**
      * @inheritDoc
-     *
-     * @return string[]
      */
-    public function getHeader(string $name): array
+    public function getHeader(string $name): HeaderContract|null
     {
         if (! $this->hasHeader($name)) {
-            return [];
+            return null;
         }
 
-        $name = $this->headerNames[strtolower($name)];
+        $name = strtolower($name);
 
         return $this->headers[$name];
     }
@@ -112,55 +100,44 @@ trait Message
      */
     public function getHeaderLine(string $name): string
     {
-        $value = $this->getHeader($name);
+        $header = $this->getHeader($name);
 
-        if (empty($value)) {
+        if ($header === null) {
             return '';
         }
 
-        return implode(',', $value);
+        return $header->getValuesAsString();
     }
 
     /**
      * @inheritDoc
      */
-    public function withHeader(string $name, string ...$values): static
+    public function withHeader(HeaderContract $header): static
     {
-        HeaderSecurity::assertValidName($name);
-
-        $normalized = strtolower($name);
+        $name = $header->getNormalizedName();
 
         $new = clone $this;
 
-        if ($new->hasHeader($name)) {
-            unset($new->headers[$new->headerNames[$normalized]]);
-        }
-
-        $new->headerNames[$normalized] = $name;
-
-        $new->headers[$name] = $this->assertHeaderValues(...$values);
+        $new->headers[$name] = $header;
 
         return $new;
     }
 
     /**
      * @inheritDoc
-     *
-     * @param string ...$values Header value(s).
      */
-    public function withAddedHeader(string $name, string ...$values): static
+    public function withAddedHeader(HeaderContract $header): static
     {
-        HeaderSecurity::assertValidName($name);
+        $name           = $header->getNormalizedName();
+        $existingHeader = $this->getHeader($name);
 
-        if (! $this->hasHeader($name)) {
-            return $this->withHeader($name, ...$values);
+        if ($existingHeader === null) {
+            return $this->withHeader($header);
         }
-
-        $name = $this->headerNames[strtolower($name)];
 
         $new = clone $this;
 
-        $new->headers[$name] = array_merge($this->headers[$name], $this->assertHeaderValues(...$values));
+        $new->headers[$name] = $existingHeader->withAddedValues(...$header->getValues());
 
         return $new;
     }
@@ -174,11 +151,10 @@ trait Message
             return clone $this;
         }
 
-        $normalized = strtolower($name);
-        $original   = $this->headerNames[$normalized];
+        $headerName = strtolower($name);
         $new        = clone $this;
 
-        unset($new->headers[$original], $new->headerNames[$normalized]);
+        unset($new->headers[$headerName]);
 
         return $new;
     }
@@ -223,88 +199,48 @@ trait Message
     /**
      * Set headers.
      *
-     * @param array<string, string|string[]> $originalHeaders The original headers
+     * @param HeaderContract ...$originalHeaders The original headers
      *
      * @throws InvalidArgumentException
      */
-    protected function setHeaders(array $originalHeaders): void
+    protected function setHeaders(HeaderContract ...$originalHeaders): void
     {
-        $headerNames = $headers = [];
+        $headers = [];
 
-        foreach ($originalHeaders as $header => $value) {
-            $value = is_array($value) ? $value : [$value];
+        foreach ($originalHeaders as $header) {
+            $headerName = $header->getNormalizedName();
 
-            HeaderSecurity::assertValidName($header);
-
-            $headerNames[strtolower($header)] = $header;
-
-            $headers[$header] = $this->assertHeaderValues(...$value);
+            $headers[$headerName] = $header;
         }
 
-        $this->headerNames = $headerNames;
-        $this->headers     = $headers;
-    }
-
-    /**
-     * Filter header values.
-     *
-     * @param string ...$values Header values
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return string[]
-     */
-    protected function assertHeaderValues(string ...$values): array
-    {
-        foreach ($values as $value) {
-            HeaderSecurity::assertValid($value);
-        }
-
-        return $values;
+        $this->headers = $headers;
     }
 
     /**
      * Inject a header in a headers array.
      *
-     * @param string                       $header   The header to set
-     * @param string                       $value    The value to set
-     * @param array<string, string[]>|null $headers  [optional] The headers
-     * @param bool                         $override [optional] Whether to override any existing value
+     * @param array<lowercase-string, HeaderContract>|null $headers  [optional] The headers
+     * @param bool                                         $override [optional] Whether to override any existing value
      *
-     * @return array<string, string[]>
+     * @return array<lowercase-string, HeaderContract>
      */
     protected function injectHeader(
-        string $header,
-        string $value,
+        HeaderContract $header,
         array|null $headers = null,
         bool $override = false
     ): array {
         // The headers
         $headers ??= [];
-        // Normalize the content type header
-        $normalized = strtolower($header);
+        // Get the normalized header name
+        $headerName = $header->getNormalizedName();
         // The original value for the header (if it exists in the headers array)
         // Defaults to the value passed in
-        $originalValue = [$value];
-
-        // Iterate through all the headers
-        foreach ($headers as $headerIndex => $headerValue) {
-            // Normalize the header name and check if it matches the normalized
-            // passed in header
-            if (strtolower($headerIndex) === $normalized) {
-                // Set the original value as this header value
-                $originalValue = $headerValue;
-
-                // Unset the header as we want to use the header string that was
-                // passed in as the header
-                unset($headers[$headerIndex]);
-            }
-        }
+        $originalHeader = $headers[$headerName] ?? null;
 
         // Set the header in the headers list
-        $headers[$header] = $override
-            ? [$value]
-            : $originalValue;
+        $headers[$headerName] = $override || $originalHeader === null
+            ? $header
+            : $originalHeader->withAddedValues(...$header->getValues());
 
         return $headers;
     }

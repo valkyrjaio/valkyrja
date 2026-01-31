@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -45,7 +46,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @param UriContract                                    $uri        [optional] The uri
      * @param RequestMethod                                  $method     [optional] The method
      * @param StreamContract                                 $body       [optional] The body stream
-     * @param array<string, string[]>                        $headers    [optional] The headers
+     * @param HeaderContract[]                               $headers    [optional] The headers
      * @param array<string, mixed>                           $server     [optional] The server
      * @param array<string, string|null>                     $cookies    [optional] The cookies
      * @param array<array-key, mixed>                        $query      [optional] The query string

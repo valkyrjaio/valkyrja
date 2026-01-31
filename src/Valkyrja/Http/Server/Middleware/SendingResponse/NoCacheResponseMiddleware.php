@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Server\Middleware\SendingResponse;
 
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -26,7 +27,7 @@ class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
     protected array $expires = ['Sun, 01 Jan 2014 00:00:00 GMT'];
 
     /** @var non-empty-string[] */
-    protected array $cacheControl = ['no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'];
+    protected array $cacheControl = ['no-store', 'no-cache', 'must-revalidate', 'post-check=0', 'pre-check=0'];
 
     /** @var non-empty-string[] */
     protected array $pragma = ['no-cache'];
@@ -40,9 +41,9 @@ class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
         return $handler->sendingResponse(
             $request,
             $response
-                ->withHeader(HeaderName::EXPIRES, ...$this->expires)
-                ->withHeader(HeaderName::CACHE_CONTROL, ...$this->cacheControl)
-                ->withHeader(HeaderName::PRAGMA, ...$this->pragma)
+                ->withHeader(new Header(HeaderName::EXPIRES, ...$this->expires))
+                ->withHeader(new Header(HeaderName::CACHE_CONTROL, ...$this->cacheControl))
+                ->withHeader(new Header(HeaderName::PRAGMA, ...$this->pragma))
         );
     }
 }

@@ -17,6 +17,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -324,7 +325,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
-        $headers  = ['X-Custom-Header' => ['custom-value']];
+        $headers  = [new Header('X-Custom-Header', 'custom-value')];
         $request  = new ServerRequest(uri: new Uri(path: '/headers-response-test'));
         $response = Response::create('Content with headers', StatusCode::OK, $headers);
 
@@ -333,7 +334,7 @@ class CacheResponseMiddlewareTest extends TestCase
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
         self::assertInstanceOf(Response::class, $cachedResponse);
-        self::assertSame(['custom-value'], $cachedResponse->getHeader('X-Custom-Header'));
+        self::assertSame('custom-value', $cachedResponse->getHeaderLine('X-Custom-Header'));
 
         $filesystem->deleteDir(Directory::cachePath('response/'));
     }

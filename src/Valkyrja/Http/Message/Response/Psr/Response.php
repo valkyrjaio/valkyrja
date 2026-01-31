@@ -18,7 +18,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Factory\StreamFactory;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response as ValkyrjaResponse;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
@@ -60,7 +62,7 @@ class Response implements ResponseInterface
     #[Override]
     public function getHeaders(): array
     {
-        return $this->response->getHeaders();
+        return HeaderFactory::toPsr($this->response->getHeaders());
     }
 
     /**
@@ -78,7 +80,13 @@ class Response implements ResponseInterface
     #[Override]
     public function getHeader(string $name): array
     {
-        return $this->response->getHeader($name);
+        $header = $this->response->getHeader($name);
+
+        if ($header === null) {
+            return [];
+        }
+
+        return HeaderFactory::toPsrValues($header);
     }
 
     /**
@@ -100,7 +108,7 @@ class Response implements ResponseInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->response = $this->response->withHeader($name, ...$value);
+        $new->response = $this->response->withHeader(new Header($name, ...$value));
 
         return $new;
     }
@@ -115,7 +123,7 @@ class Response implements ResponseInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->response = $this->response->withAddedHeader($name, ...$value);
+        $new->response = $this->response->withAddedHeader(new Header($name, ...$value));
 
         return $new;
     }

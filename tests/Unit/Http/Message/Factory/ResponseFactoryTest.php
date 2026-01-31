@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Factory;
 
 use JsonException;
-use Valkyrja\Http\Message\Constant\ContentType;
+use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function json_encode;
@@ -35,7 +36,7 @@ class ResponseFactoryTest extends TestCase
             content: $content       = 'test',
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
-                'test' => 'foo',
+                new Header('test', 'foo'),
             ]
         );
 
@@ -45,12 +46,7 @@ class ResponseFactoryTest extends TestCase
 
         self::assertSame($content, $response->getBody()->getContents());
         self::assertSame($statusCode, $response->getStatusCode());
-        self::assertSame(
-            [
-                'test' => ['foo'],
-            ],
-            $response->getHeaders()
-        );
+        self::assertSame('foo', $response->getHeaderLine('test'));
     }
 
     public function testCreateTextResponse(): void
@@ -62,23 +58,18 @@ class ResponseFactoryTest extends TestCase
             content: $content       = 'test',
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
-                'test' => 'foo',
+                new Header('test', 'foo'),
             ]
         );
 
         self::assertSame('', $default->getBody()->getContents());
         self::assertSame(StatusCode::OK, $default->getStatusCode());
-        self::assertSame(['Content-Type' => ['text/plain; charset=utf-8']], $default->getHeaders());
+        self::assertSame('text/plain; charset=utf-8', $default->getHeaderLine(HeaderName::CONTENT_TYPE));
 
         self::assertSame($content, $response->getBody()->getContents());
         self::assertSame($statusCode, $response->getStatusCode());
-        self::assertSame(
-            [
-                'test'         => ['foo'],
-                'Content-Type' => ['text/plain; charset=utf-8'],
-            ],
-            $response->getHeaders()
-        );
+        self::assertSame('foo', $response->getHeaderLine('test'));
+        self::assertSame('text/plain; charset=utf-8', $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 
     /**
@@ -93,23 +84,18 @@ class ResponseFactoryTest extends TestCase
             data: $data             = ['test' => 'bar'],
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
-                'test' => 'foo',
+                new Header('test', 'foo'),
             ]
         );
 
         self::assertSame('[]', $default->getBody()->getContents());
         self::assertSame(StatusCode::OK, $default->getStatusCode());
-        self::assertSame([HeaderName::CONTENT_TYPE => [ContentType::APPLICATION_JSON]], $default->getHeaders());
+        self::assertSame(ContentTypeValue::APPLICATION_JSON, $default->getHeaderLine(HeaderName::CONTENT_TYPE));
 
         self::assertSame(json_encode($data, JSON_THROW_ON_ERROR), $response->getBody()->getContents());
         self::assertSame($statusCode, $response->getStatusCode());
-        self::assertSame(
-            [
-                'test'                   => ['foo'],
-                HeaderName::CONTENT_TYPE => [ContentType::APPLICATION_JSON],
-            ],
-            $response->getHeaders()
-        );
+        self::assertSame('foo', $response->getHeaderLine('test'));
+        self::assertSame(ContentTypeValue::APPLICATION_JSON, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 
     /**
@@ -126,23 +112,18 @@ class ResponseFactoryTest extends TestCase
             data: ['test' => 'bar'],
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
-                'test' => 'foo',
+                new Header('test', 'foo'),
             ]
         );
 
         self::assertSame('/**/callbackMethod([]);', $default->getBody()->getContents());
         self::assertSame(StatusCode::OK, $default->getStatusCode());
-        self::assertSame([HeaderName::CONTENT_TYPE => [ContentType::TEXT_JAVASCRIPT]], $default->getHeaders());
+        self::assertSame(ContentTypeValue::TEXT_JAVASCRIPT, $default->getHeaderLine(HeaderName::CONTENT_TYPE));
 
         self::assertSame('/**/callbackMethod({"test":"bar"});', $response->getBody()->getContents());
         self::assertSame($statusCode, $response->getStatusCode());
-        self::assertSame(
-            [
-                'test'                   => ['foo'],
-                HeaderName::CONTENT_TYPE => [ContentType::TEXT_JAVASCRIPT],
-            ],
-            $response->getHeaders()
-        );
+        self::assertSame('foo', $response->getHeaderLine('test'));
+        self::assertSame(ContentTypeValue::TEXT_JAVASCRIPT, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 
     public function testCreateRedirectResponse(): void
@@ -154,20 +135,15 @@ class ResponseFactoryTest extends TestCase
             uri: $uri               = '/redirect-path',
             statusCode: $statusCode = StatusCode::PERMANENT_REDIRECT,
             headers: [
-                'test' => 'foo',
+                new Header('test', 'foo'),
             ]
         );
 
         self::assertSame(StatusCode::FOUND, $default->getStatusCode());
-        self::assertSame([HeaderName::LOCATION => ['/']], $default->getHeaders());
+        self::assertSame('/', $default->getHeaderLine(HeaderName::LOCATION));
 
         self::assertSame($statusCode, $response->getStatusCode());
-        self::assertSame(
-            [
-                'test'               => ['foo'],
-                HeaderName::LOCATION => [$uri],
-            ],
-            $response->getHeaders()
-        );
+        self::assertSame('foo', $response->getHeaderLine('test'));
+        self::assertSame($uri, $response->getHeaderLine(HeaderName::LOCATION));
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 class HttpException extends RuntimeException
@@ -28,17 +29,17 @@ class HttpException extends RuntimeException
     /**
      * The headers for this exception.
      *
-     * @var array<string, string[]>
+     * @var HeaderContract[]
      */
     protected array $headers = [];
 
     /**
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param StatusCode|null              $statusCode [optional] The status code to use
-     * @param string|null                  $message    [optional] The Exception message to throw
-     * @param array<string, string[]>|null $headers    [optional] The headers to send
-     * @param ResponseContract|null        $response   [optional] The Response to send
+     * @param StatusCode|null       $statusCode [optional] The status code to use
+     * @param string|null           $message    [optional] The Exception message to throw
+     * @param HeaderContract[]|null $headers    [optional] The headers to send
+     * @param ResponseContract|null $response   [optional] The Response to send
      */
     public function __construct(
         StatusCode|null $statusCode = null,
@@ -66,7 +67,7 @@ class HttpException extends RuntimeException
     /**
      * Get the headers set for this exception.
      *
-     * @return array<string, string[]>
+     * @return HeaderContract[]
      */
     public function getHeaders(): array
     {

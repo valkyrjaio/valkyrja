@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Abstract;
+namespace Valkyrja\Tests\Unit\Http\Message\Trait;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\MessageClass;
@@ -43,8 +44,7 @@ class MessageTest extends TestCase
 
     protected static function assertHeaderValues(MessageClass $message, string ...$values): void
     {
-        self::assertSame([self::HEADER_NAME => $values], $message->getHeaders());
-        self::assertSame($values, $message->getHeader(self::HEADER_NAME));
+        self::assertSame(implode(',', $values), $message->getHeader(self::HEADER_NAME)->getValuesAsString());
         self::assertSame(implode(',', $values), $message->getHeaderLine(self::HEADER_NAME));
     }
 
@@ -72,7 +72,7 @@ class MessageTest extends TestCase
 
         self::assertEmptyHeaders($message);
 
-        $message2 = $message->withHeader(self::HEADER_NAME, self::HEADER_VALUE);
+        $message2 = $message->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE));
 
         self::assertNotSame($message, $message2);
 
@@ -81,7 +81,7 @@ class MessageTest extends TestCase
 
         self::assertHeaderValues($message2, self::HEADER_VALUE);
 
-        $message3 = $message2->withAddedHeader(self::HEADER_NAME, self::HEADER_VALUE2);
+        $message3 = $message2->withAddedHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
 
         self::assertNotSame($message, $message2);
         self::assertNotSame($message2, $message3);
@@ -93,7 +93,7 @@ class MessageTest extends TestCase
         self::assertHeaderValues($message2, self::HEADER_VALUE);
         self::assertHeaderValues($message3, self::HEADER_VALUE, self::HEADER_VALUE2);
 
-        $message4 = $message->withAddedHeader(self::HEADER_NAME, self::HEADER_VALUE2);
+        $message4 = $message->withAddedHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
 
         self::assertNotSame($message, $message4);
 
@@ -120,7 +120,7 @@ class MessageTest extends TestCase
         self::assertEmptyHeaders($message7);
         self::assertEmptyHeaders($message8);
 
-        $message9 = $message2->withHeader(self::HEADER_NAME, self::HEADER_VALUE2);
+        $message9 = $message2->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
 
         self::assertNotSame($message, $message9);
 
@@ -147,16 +147,16 @@ class MessageTest extends TestCase
 
         $message = new MessageClass(
             headers: [
-                'Test-Header'          => ['test-header-original'],
-                'Test-Header-Override' => ['test-header-override-original'],
+                new Header('Test-Header', 'test-header-original'),
+                new Header('Test-Header-Override', 'test-header-override-original'),
             ],
             testHeader: $testHeader,
             testHeaderOverride: $testHeaderOverride
         );
 
-        // This shouldn't be overriden since injectHeader is called without the override flag
-        self::assertNotSame('test-header-original', $message->getHeaderLine('Test-Header'));
-        // This should be overriden since injectHeader is called with the override flag
-        self::assertNotSame($testHeaderOverride, $message->getHeaderLine('Test-Header-Override'));
+        // This shouldn't be overridden since injectHeader is called without the override flag
+        self::assertSame('test-header-original,test-header-override', $message->getHeaderLine('Test-Header'));
+        // This should be overridden since injectHeader is called with the override flag
+        self::assertSame($testHeaderOverride, $message->getHeaderLine('Test-Header-Override'));
     }
 }

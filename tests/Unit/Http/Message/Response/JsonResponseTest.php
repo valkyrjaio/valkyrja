@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use JsonException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -31,7 +33,7 @@ class JsonResponseTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $response = new JsonResponse(self::JSON, headers: ['Random-Header' => ['test']]);
+        $response = new JsonResponse(self::JSON, headers: [new Header('Random-Header', 'test')]);
 
         self::assertSame(self::JSON_AS_TEXT, $response->getBody()->getContents());
         self::assertSame(StatusCode::OK, $response->getStatusCode());
@@ -45,7 +47,7 @@ class JsonResponseTest extends TestCase
      */
     public function testCannotReplaceContentTypeFromConstruct(): void
     {
-        $response = new JsonResponse(self::JSON, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response = new JsonResponse(self::JSON, headers: [new ContentType('text')]);
 
         self::assertSame('application/json', $response->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
@@ -55,7 +57,7 @@ class JsonResponseTest extends TestCase
      */
     public function testWithCallback(): void
     {
-        $response  = new JsonResponse(self::JSON, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response  = new JsonResponse(self::JSON, headers: [new ContentType('text')]);
         $response2 = $response->withCallback('test');
 
         self::assertNotSame($response, $response2);
@@ -74,7 +76,7 @@ class JsonResponseTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $response = new JsonResponse(self::JSON, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response = new JsonResponse(self::JSON, headers: [new ContentType('text')]);
         $response->withCallback('test();');
     }
 
@@ -83,7 +85,7 @@ class JsonResponseTest extends TestCase
      */
     public function testWithoutCallback(): void
     {
-        $response  = new JsonResponse(self::JSON, headers: [HeaderName::CONTENT_TYPE => ['text']]);
+        $response  = new JsonResponse(self::JSON, headers: [new ContentType('text')]);
         $response2 = $response->withCallback('test');
         $response3 = $response2->withoutCallback();
 

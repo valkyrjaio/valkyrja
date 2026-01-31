@@ -19,7 +19,9 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Factory\StreamFactory;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
@@ -62,7 +64,7 @@ class Request implements RequestInterface
     #[Override]
     public function getHeaders(): array
     {
-        return $this->request->getHeaders();
+        return HeaderFactory::toPsr($this->request->getHeaders());
     }
 
     /**
@@ -80,7 +82,13 @@ class Request implements RequestInterface
     #[Override]
     public function getHeader(string $name): array
     {
-        return $this->request->getHeader($name);
+        $header = $this->request->getHeader($name);
+
+        if ($header === null) {
+            return [];
+        }
+
+        return HeaderFactory::toPsrValues($header);
     }
 
     /**
@@ -102,7 +110,7 @@ class Request implements RequestInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->request = $this->request->withHeader($name, ...$value);
+        $new->request = $this->request->withHeader(new Header($name, ...$value));
 
         return $new;
     }
@@ -117,7 +125,7 @@ class Request implements RequestInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->request = $this->request->withAddedHeader($name, ...$value);
+        $new->request = $this->request->withAddedHeader(new Header($name, ...$value));
 
         return $new;
     }
