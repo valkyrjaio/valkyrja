@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Factory;
+namespace Valkyrja\Http\Message\Stream\Factory;
 
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;

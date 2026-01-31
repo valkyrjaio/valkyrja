@@ -19,7 +19,7 @@ use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 
 final class ServiceProvider extends Provider
 {

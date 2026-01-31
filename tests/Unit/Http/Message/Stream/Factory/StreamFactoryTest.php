@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory;
+namespace Valkyrja\Tests\Unit\Http\Message\Stream\Factory;
 
-use Valkyrja\Http\Message\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
+use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\Stream\Psr\StreamEmptyModeClass;

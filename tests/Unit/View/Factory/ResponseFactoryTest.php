@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\View\Factory;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;

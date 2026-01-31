@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory;
+namespace Valkyrja\Tests\Unit\Http\Message\File\Factory;
 
-use Valkyrja\Http\Message\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
+use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;

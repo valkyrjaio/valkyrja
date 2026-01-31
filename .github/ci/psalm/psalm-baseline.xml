@@ -18,7 +18,7 @@
             <code><![CDATA[OutputStyle::NORMAL->value]]></code>
         </TypeDoesNotContainType>
     </file>
-    <file src="src/Valkyrja/Http/Message/Factory/UploadedFileFactory.php">
+    <file src="src/Valkyrja/Http/Message/File/Factory/UploadedFileFactory.php">
         <InvalidArrayOffset>
             <code><![CDATA[$normalizedFiles[$key]]]></code>
         </InvalidArrayOffset>

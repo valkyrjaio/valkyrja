@@ -16,8 +16,8 @@ namespace Valkyrja\Application\Entry;
 use Override;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 class Http extends App

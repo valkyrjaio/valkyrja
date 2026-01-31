@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory
+namespace Valkyrja\Tests\Unit\Http\Message\Request\Factory
 {
-    use Valkyrja\Http\Message\Factory\ServerFactory;
+    use Valkyrja\Http\Message\Request\Factory\ServerFactory;
     use Valkyrja\Tests\Unit\Abstract\TestCase;
 
     class ServerFactoryTest extends TestCase
@@ -60,7 +60,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Factory
 }
 
 namespace {
-    use Valkyrja\Tests\Unit\Http\Message\Factory\ServerFactoryTest;
+    use Valkyrja\Tests\Unit\Http\Message\Request\Factory\ServerFactoryTest;
 
     function apache_request_headers(): array
     {

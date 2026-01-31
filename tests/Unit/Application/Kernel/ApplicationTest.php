@@ -50,7 +50,7 @@ use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Event\Collector\Contract\CollectorContract as EventCollector;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as EventDispatcher;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract as HttpRouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract as HttpRouteMatchedHandlerContract;

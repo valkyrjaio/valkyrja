@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory;
+namespace Valkyrja\Tests\Unit\Http\Message\Response\Factory;
 
 use JsonException;
 use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function json_encode;
