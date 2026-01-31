@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
+namespace Valkyrja\Tests\Unit\Cli\Interaction\Input\Factory;
 
-use Valkyrja\Cli\Interaction\Factory\InputFactory;
+use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

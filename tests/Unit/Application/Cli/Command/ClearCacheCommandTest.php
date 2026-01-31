@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Cli\Command;
 
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 

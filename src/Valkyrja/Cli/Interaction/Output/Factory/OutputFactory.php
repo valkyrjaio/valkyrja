@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Factory;
+namespace Valkyrja\Cli\Interaction\Output\Factory;
 
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
@@ -24,6 +23,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;

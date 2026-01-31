@@ -16,8 +16,8 @@ namespace Valkyrja\Cli\Interaction\Provider;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
