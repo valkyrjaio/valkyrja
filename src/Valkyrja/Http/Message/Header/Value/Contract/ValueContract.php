@@ -24,8 +24,8 @@ use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 /**
  * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
  *
- * @extends ArrayAccess<int, ComponentContract>
- * @extends Iterator<int, ComponentContract>
+ * @extends ArrayAccess<int, ComponentContract|string>
+ * @extends Iterator<int, ComponentContract|string>
  */
 interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializable, Stringable
 {
@@ -35,7 +35,7 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
     public static function fromValue(string $value): static;
 
     /**
-     * @return ComponentContract[]
+     * @return array<array-key, ComponentContract|string>
      */
     public function getComponents(): array;
 
@@ -55,5 +55,8 @@ interface ValueContract extends ArrayAccess, Countable, Iterator, JsonSerializab
     #[Override]
     public function jsonSerialize(): string;
 
+    /**
+     * @inheritDoc
+     */
     public function __toString(): string;
 }

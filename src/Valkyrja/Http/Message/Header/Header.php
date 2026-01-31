@@ -64,7 +64,7 @@ class Header implements HeaderContract
     /**
      * The values.
      *
-     * @var ValueContract[]
+     * @var array<array-key, ValueContract|string>
      */
     protected array $values = [];
 
@@ -183,27 +183,9 @@ class Header implements HeaderContract
      * @inheritDoc
      */
     #[Override]
-    public function asValue(): string
-    {
-        return $this->__toString();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function asFlatValue(): string
-    {
-        return $this->__toString();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public function jsonSerialize(): string
     {
-        return $this->asValue();
+        return $this->__toString();
     }
 
     /**
@@ -227,7 +209,7 @@ class Header implements HeaderContract
      * @inheritDoc
      */
     #[Override]
-    public function offsetGet(mixed $offset): ValueContract
+    public function offsetGet(mixed $offset): ValueContract|string
     {
         return $this->values[$offset];
     }
@@ -263,7 +245,7 @@ class Header implements HeaderContract
      * @inheritDoc
      */
     #[Override]
-    public function current(): ValueContract
+    public function current(): ValueContract|string
     {
         return $this->values[$this->position];
     }
@@ -342,7 +324,10 @@ class Header implements HeaderContract
      */
     protected function valuesToString(): string
     {
-        $filteredValues = array_filter($this->values, static fn (ValueContract $value): bool => $value->__toString() !== '');
+        $filteredValues = array_filter(
+            $this->values,
+            static fn (ValueContract|string $value): bool => (is_string($value) ? $value : $value->__toString()) !== ''
+        );
 
         return implode(',', $filteredValues);
     }
