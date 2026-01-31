@@ -123,7 +123,10 @@ class Value implements ValueContract
             static fn (ComponentContract|string $component): bool => (is_string($component) ? $component : $component->__toString()) !== ''
         );
 
-        return implode(';', $filteredParts);
+        return implode(
+            '; ',
+            array_map(static fn (ComponentContract|string $component): string => trim((string) $component), $filteredParts)
+        );
     }
 
     /**

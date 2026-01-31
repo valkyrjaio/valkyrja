@@ -44,8 +44,8 @@ class MessageTest extends TestCase
 
     protected static function assertHeaderValues(MessageClass $message, string ...$values): void
     {
-        self::assertSame(implode(',', $values), $message->getHeader(self::HEADER_NAME)->getValuesAsString());
-        self::assertSame(implode(',', $values), $message->getHeaderLine(self::HEADER_NAME));
+        self::assertSame(implode(', ', $values), $message->getHeader(self::HEADER_NAME)->getValuesAsString());
+        self::assertSame(implode(', ', $values), $message->getHeaderLine(self::HEADER_NAME));
     }
 
     public function testProtocolVersion(): void
@@ -155,7 +155,7 @@ class MessageTest extends TestCase
         );
 
         // This shouldn't be overridden since injectHeader is called without the override flag
-        self::assertSame('test-header-original,test-header-override', $message->getHeaderLine('Test-Header'));
+        self::assertSame('test-header-original, test-header-override', $message->getHeaderLine('Test-Header'));
         // This should be overridden since injectHeader is called with the override flag
         self::assertSame($testHeaderOverride, $message->getHeaderLine('Test-Header-Override'));
     }

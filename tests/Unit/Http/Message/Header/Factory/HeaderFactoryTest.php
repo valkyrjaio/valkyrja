@@ -68,11 +68,11 @@ class HeaderFactoryTest extends TestCase
 
         self::assertSame('Accept', $headers[1]->getName());
         self::assertCount(2, $headers[1]->getValues());
-        self::assertSame('text/html,application/json', $headers[1]->getValuesAsString());
+        self::assertSame('text/html, application/json', $headers[1]->getValuesAsString());
 
         self::assertSame('Cache-Control', $headers[2]->getName());
         self::assertCount(3, $headers[2]->getValues());
-        self::assertSame('no-cache,no-store,must-revalidate', $headers[2]->getValuesAsString());
+        self::assertSame('no-cache, no-store, must-revalidate', $headers[2]->getValuesAsString());
     }
 
     public function testFromPsrWithEmptyArray(): void
@@ -206,7 +206,7 @@ class HeaderFactoryTest extends TestCase
         $values = HeaderFactory::toPsrValues($header);
 
         self::assertCount(1, $values);
-        self::assertSame(['text/html;charset=utf-8'], $values);
+        self::assertSame(['text/html; charset=utf-8'], $values);
     }
 
     public function testFromPsrAndToPsrRoundTrip(): void
