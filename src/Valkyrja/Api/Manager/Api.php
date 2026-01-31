@@ -22,8 +22,8 @@ use Valkyrja\Api\Model\Contract\JsonDataContract;
 use Valkyrja\Api\Model\Json;
 use Valkyrja\Api\Model\JsonData;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 

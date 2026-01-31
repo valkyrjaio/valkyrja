@@ -19,7 +19,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;

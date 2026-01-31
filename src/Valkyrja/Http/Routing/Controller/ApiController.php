@@ -17,9 +17,9 @@ use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 abstract class ApiController extends Controller

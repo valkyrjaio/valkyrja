@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Provider\ServiceProvider;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**

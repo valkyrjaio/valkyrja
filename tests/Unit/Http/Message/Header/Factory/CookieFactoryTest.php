@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory;
+namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 
-use Valkyrja\Http\Message\Factory\CookieFactory;
+use Valkyrja\Http\Message\Header\Factory\CookieFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class CookieFactoryTest extends TestCase

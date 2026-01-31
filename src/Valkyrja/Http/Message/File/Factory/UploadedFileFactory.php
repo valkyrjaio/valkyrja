@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Factory;
+namespace Valkyrja\Http\Message\File\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;

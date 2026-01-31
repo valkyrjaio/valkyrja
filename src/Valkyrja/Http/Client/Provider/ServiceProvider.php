@@ -22,7 +22,7 @@ use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Client\Manager\NullClient;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 final class ServiceProvider extends Provider

@@ -11,17 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Factory;
+namespace Valkyrja\Http\Message\Request\Factory;
 
 use Psr\Http\Message\ServerRequestInterface;
 use UnexpectedValueException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
+use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
+use Valkyrja\Http\Message\Header\Factory\CookieFactory;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 
 use function array_key_exists;
 use function preg_match;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Factory
 {
-    use Valkyrja\Http\Message\Factory\ServerFactory;
+    use Valkyrja\Http\Message\Request\Factory\ServerFactory;
     use Valkyrja\Tests\Unit\Abstract\TestCase;
 
     class ServerFactoryTest extends TestCase

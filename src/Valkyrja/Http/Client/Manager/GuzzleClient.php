@@ -21,12 +21,12 @@ use Override;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Message\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 
 class GuzzleClient implements ClientContract
 {

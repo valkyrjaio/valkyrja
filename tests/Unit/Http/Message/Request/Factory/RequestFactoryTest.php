@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Factory;
+namespace Valkyrja\Tests\Unit\Http\Message\Request\Factory;
 
 use UnexpectedValueException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Factory\CookieFactory;
-use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Header\Factory\CookieFactory;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;

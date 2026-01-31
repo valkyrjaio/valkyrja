@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Provider\ServiceProvider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**

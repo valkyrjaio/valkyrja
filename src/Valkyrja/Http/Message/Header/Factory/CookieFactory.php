@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Factory;
+namespace Valkyrja\Http\Message\Header\Factory;
 
 use function array_keys;
 use function array_map;

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Matcher;
 
 use Override;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Http\Message\Factory\ResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
