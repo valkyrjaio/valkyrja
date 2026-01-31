@@ -20,6 +20,7 @@ use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function implode;
@@ -118,8 +119,6 @@ class HeaderTest extends TestCase
         self::assertCount(1, $singleValue);
         self::assertSame(1, $singleValue->count());
         self::assertSame($valueString, $singleValue->getValuesAsString());
-        self::assertSame($singleValueToString, $singleValue->asValue());
-        self::assertSame($singleValueToString, $singleValue->asFlatValue());
         self::assertSame($singleValueToString, $singleValue->__toString());
         self::assertSame($singleValueToString, $singleValue->jsonSerialize());
         self::assertSame("\"$singleValueToString\"", json_encode($singleValue, JSON_THROW_ON_ERROR));
@@ -128,8 +127,6 @@ class HeaderTest extends TestCase
         self::assertCount(2, $multiValue);
         self::assertSame(2, $multiValue->count());
         self::assertSame($value2String, $multiValue->getValuesAsString());
-        self::assertSame($multiValueToString, $multiValue->asValue());
-        self::assertSame($multiValueToString, $multiValue->asFlatValue());
         self::assertSame($multiValueToString, $multiValue->__toString());
         self::assertSame($multiValueToString, $multiValue->jsonSerialize());
         self::assertSame("\"$multiValueToString\"", json_encode($multiValue, JSON_THROW_ON_ERROR));
@@ -138,8 +135,6 @@ class HeaderTest extends TestCase
         self::assertCount(1, $withSingleValue);
         self::assertSame(1, $withSingleValue->count());
         self::assertSame($value3String, $withSingleValue->getValuesAsString());
-        self::assertSame($withSingleValueToString, $withSingleValue->asValue());
-        self::assertSame($withSingleValueToString, $withSingleValue->asFlatValue());
         self::assertSame($withSingleValueToString, $withSingleValue->__toString());
         self::assertSame($withSingleValueToString, $withSingleValue->jsonSerialize());
         self::assertSame("\"$withSingleValueToString\"", json_encode($withSingleValue, JSON_THROW_ON_ERROR));
@@ -148,8 +143,6 @@ class HeaderTest extends TestCase
         self::assertCount(2, $withMultiValue);
         self::assertSame(2, $withMultiValue->count());
         self::assertSame($value4String, $withMultiValue->getValuesAsString());
-        self::assertSame($withMultiValueToString, $withMultiValue->asValue());
-        self::assertSame($withMultiValueToString, $withMultiValue->asFlatValue());
         self::assertSame($withMultiValueToString, $withMultiValue->__toString());
         self::assertSame($withMultiValueToString, $withMultiValue->jsonSerialize());
         self::assertSame("\"$withMultiValueToString\"", json_encode($withMultiValue, JSON_THROW_ON_ERROR));
@@ -158,8 +151,6 @@ class HeaderTest extends TestCase
         self::assertCount(2, $addedSingleValue);
         self::assertSame(2, $addedSingleValue->count());
         self::assertSame("$valueString,$addedValueString", $addedSingleValue->getValuesAsString());
-        self::assertSame($addedSingleValueToString, $addedSingleValue->asValue());
-        self::assertSame($addedSingleValueToString, $addedSingleValue->asFlatValue());
         self::assertSame($addedSingleValueToString, $addedSingleValue->__toString());
         self::assertSame($addedSingleValueToString, $addedSingleValue->jsonSerialize());
         self::assertSame("\"$addedSingleValueToString\"", json_encode($addedSingleValue, JSON_THROW_ON_ERROR));
@@ -168,8 +159,6 @@ class HeaderTest extends TestCase
         self::assertCount(3, $addedMultiValue);
         self::assertSame(3, $addedMultiValue->count());
         self::assertSame("$valueString,$addedValue2String", $addedMultiValue->getValuesAsString());
-        self::assertSame($addedMultiValueToString, $addedMultiValue->asValue());
-        self::assertSame($addedMultiValueToString, $addedMultiValue->asFlatValue());
         self::assertSame($addedMultiValueToString, $addedMultiValue->__toString());
         self::assertSame($addedMultiValueToString, $addedMultiValue->jsonSerialize());
         self::assertSame("\"$addedMultiValueToString\"", json_encode($addedMultiValue, JSON_THROW_ON_ERROR));
@@ -223,5 +212,154 @@ class HeaderTest extends TestCase
         $header = new Header('valid', 'test');
 
         unset($header[0]);
+    }
+
+    public function testToStringFiltersEmptyValues(): void
+    {
+        $header = new Header(HeaderName::HOST, 'test', '', 'foo');
+
+        // Empty values should be filtered out in __toString()
+        self::assertSame(HeaderName::HOST . ':test,foo', $header->__toString());
+        // But count should still include the empty value
+        self::assertCount(3, $header->getValues());
+    }
+
+    public function testToStringWithOnlyEmptyValues(): void
+    {
+        $header = new Header(HeaderName::HOST, '', '');
+
+        // All empty values should result in just the header name
+        self::assertSame(HeaderName::HOST . ':', $header->__toString());
+        self::assertCount(2, $header->getValues());
+    }
+
+    public function testToStringWithMixedEmptyValues(): void
+    {
+        $header = new Header(HeaderName::HOST, 'first', '', 'middle', '', 'last');
+
+        // Empty values should be filtered out
+        self::assertSame(HeaderName::HOST . ':first,middle,last', $header->__toString());
+        self::assertCount(5, $header->getValues());
+    }
+
+    public function testGetValuesAsStringFiltersEmptyValues(): void
+    {
+        $header = new Header(HeaderName::HOST, 'test', '', 'foo');
+
+        // Empty values should be filtered out in getValuesAsString()
+        self::assertSame('test,foo', $header->getValuesAsString());
+    }
+
+    public function testJsonSerializeFiltersEmptyValues(): void
+    {
+        $header = new Header(HeaderName::HOST, 'test', '', 'foo');
+
+        // jsonSerialize uses asValue which uses __toString
+        self::assertSame(HeaderName::HOST . ':test,foo', $header->jsonSerialize());
+    }
+
+    public function testFromValueWithEmptyParts(): void
+    {
+        $header = Header::fromValue(HeaderName::HOST . ':test,,foo');
+
+        // Empty parts between commas should be preserved as values
+        self::assertCount(3, $header->getValues());
+        // But filtered out in __toString()
+        self::assertSame(HeaderName::HOST . ':test,foo', $header->__toString());
+    }
+
+    public function testToStringFiltersEmptyValueContracts(): void
+    {
+        $emptyValue    = new Value('');
+        $nonEmptyValue = new Value('test');
+        $anotherValue  = new Value('foo');
+
+        $header = new Header(HeaderName::HOST, $nonEmptyValue, $emptyValue, $anotherValue);
+
+        // Empty ValueContract should be filtered out in __toString()
+        self::assertSame(HeaderName::HOST . ':test,foo', $header->__toString());
+        self::assertCount(3, $header->getValues());
+    }
+
+    public function testToStringFiltersMixedEmptyValuesAndContracts(): void
+    {
+        $emptyValue    = new Value('');
+        $nonEmptyValue = new Value('bar');
+
+        $header = new Header(HeaderName::HOST, 'test', $emptyValue, '', $nonEmptyValue, 'baz');
+
+        // Both empty strings and empty ValueContracts should be filtered
+        self::assertSame(HeaderName::HOST . ':test,bar,baz', $header->__toString());
+        self::assertCount(5, $header->getValues());
+    }
+
+    public function testToStringWithOnlyEmptyValueContracts(): void
+    {
+        $empty1 = new Value('');
+        $empty2 = new Value('');
+
+        $header = new Header(HeaderName::HOST, $empty1, $empty2);
+
+        // All empty ValueContracts should result in just the header name
+        self::assertSame(HeaderName::HOST . ':', $header->__toString());
+        self::assertCount(2, $header->getValues());
+    }
+
+    public function testToStringWithValueContractHavingMultipleComponents(): void
+    {
+        $value1 = Value::fromValue('component1;component2');
+        $empty  = new Value('');
+        $value2 = Value::fromValue('foo;bar');
+
+        $header = new Header(HeaderName::CONTENT_TYPE, $value1, $empty, $value2);
+
+        // Values with components should be preserved, empty filtered
+        self::assertSame(HeaderName::CONTENT_TYPE . ':component1;component2,foo;bar', $header->__toString());
+        self::assertCount(3, $header->getValues());
+    }
+
+    public function testGetValuesAsStringFiltersEmptyValueContracts(): void
+    {
+        $emptyValue    = new Value('');
+        $nonEmptyValue = new Value('test');
+
+        $header = new Header(HeaderName::HOST, $nonEmptyValue, $emptyValue, 'foo');
+
+        // Empty ValueContract should be filtered out in getValuesAsString()
+        self::assertSame('test,foo', $header->getValuesAsString());
+    }
+
+    public function testWithValuesAcceptsValueContracts(): void
+    {
+        $original = new Header(HeaderName::HOST, 'original');
+        $newValue = new Value('new');
+
+        $updated = $original->withValues($newValue);
+
+        self::assertNotSame($original, $updated);
+        self::assertSame(HeaderName::HOST . ':new', $updated->__toString());
+    }
+
+    public function testWithAddedValuesAcceptsValueContracts(): void
+    {
+        $original = new Header(HeaderName::HOST, 'original');
+        $newValue = new Value('added');
+
+        $updated = $original->withAddedValues($newValue);
+
+        self::assertNotSame($original, $updated);
+        self::assertSame(HeaderName::HOST . ':original,added', $updated->__toString());
+    }
+
+    public function testWithAddedValuesFiltersEmptyValueContracts(): void
+    {
+        $original   = new Header(HeaderName::HOST, 'original');
+        $emptyValue = new Value('');
+        $newValue   = new Value('added');
+
+        $updated = $original->withAddedValues($emptyValue, $newValue);
+
+        self::assertCount(3, $updated->getValues());
+        self::assertSame(HeaderName::HOST . ':original,added', $updated->__toString());
     }
 }

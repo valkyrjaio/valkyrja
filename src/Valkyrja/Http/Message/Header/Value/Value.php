@@ -38,7 +38,7 @@ class Value implements ValueContract
     protected const string DELIMINATOR = ';';
 
     /**
-     * @var ComponentContract[]
+     * @var array<array-key, ComponentContract|string>
      */
     protected array $components = [];
 
@@ -118,7 +118,10 @@ class Value implements ValueContract
      */
     public function __toString(): string
     {
-        $filteredParts = array_filter($this->components, static fn (ComponentContract $component): bool => $component->__toString() !== '');
+        $filteredParts = array_filter(
+            $this->components,
+            static fn (ComponentContract|string $component): bool => (is_string($component) ? $component : $component->__toString()) !== ''
+        );
 
         return implode(';', $filteredParts);
     }
@@ -136,7 +139,7 @@ class Value implements ValueContract
      * @inheritDoc
      */
     #[Override]
-    public function offsetGet(mixed $offset): ComponentContract
+    public function offsetGet(mixed $offset): ComponentContract|string
     {
         return $this->components[$offset];
     }
@@ -172,7 +175,7 @@ class Value implements ValueContract
      * @inheritDoc
      */
     #[Override]
-    public function current(): ComponentContract
+    public function current(): ComponentContract|string
     {
         return $this->components[$this->position];
     }

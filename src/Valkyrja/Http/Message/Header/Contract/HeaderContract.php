@@ -24,8 +24,8 @@ use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 /**
  * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
  *
- * @extends ArrayAccess<int, ValueContract>
- * @extends Iterator<int, ValueContract>
+ * @extends ArrayAccess<int, ValueContract|string>
+ * @extends Iterator<int, ValueContract|string>
  */
 interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializable, Stringable
 {
@@ -34,14 +34,23 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
      */
     public static function fromValue(string $value): static;
 
+    /**
+     * Get the header name.
+     */
     public function getName(): string;
 
+    /**
+     * Get the normalized header name.
+     */
     public function getNormalizedName(): string;
 
+    /**
+     * Create a new Header with the specified name.
+     */
     public function withName(string $name): static;
 
     /**
-     * @return ValueContract[]
+     * @return array<array-key, ValueContract|string>
      */
     public function getValues(): array;
 
@@ -55,17 +64,10 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
      */
     public function withAddedValues(ValueContract|string ...$values): static;
 
+    /**
+     * Get the values as a string.
+     */
     public function getValuesAsString(): string;
-
-    /**
-     * @inheritDoc
-     */
-    public function asValue(): string;
-
-    /**
-     * @inheritDoc
-     */
-    public function asFlatValue(): string;
 
     /**
      * @inheritDoc
@@ -73,5 +75,8 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
     #[Override]
     public function jsonSerialize(): string;
 
+    /**
+     * @inheritDoc
+     */
     public function __toString(): string;
 }

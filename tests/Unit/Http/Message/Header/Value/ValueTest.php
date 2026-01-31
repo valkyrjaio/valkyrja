@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header\Value;
 use JsonException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -153,5 +154,123 @@ class ValueTest extends TestCase
         $value = new Value('test');
 
         unset($value[0]);
+    }
+
+    public function testToStringFiltersEmptyComponents(): void
+    {
+        $value = new Value('test', '', 'foo');
+
+        // Empty components should be filtered out in __toString()
+        self::assertSame('test;foo', $value->__toString());
+        // But count should still include the empty component
+        self::assertCount(3, $value->getComponents());
+    }
+
+    public function testToStringWithOnlyEmptyComponents(): void
+    {
+        $value = new Value('', '');
+
+        // All empty components should result in empty string
+        self::assertSame('', $value->__toString());
+        self::assertCount(2, $value->getComponents());
+    }
+
+    public function testToStringWithMixedEmptyComponents(): void
+    {
+        $value = new Value('first', '', 'middle', '', 'last');
+
+        // Empty components should be filtered out
+        self::assertSame('first;middle;last', $value->__toString());
+        self::assertCount(5, $value->getComponents());
+    }
+
+    public function testFromValueWithEmptyParts(): void
+    {
+        $value = Value::fromValue('test;;foo');
+
+        // Empty parts between semicolons should be preserved as components
+        self::assertCount(3, $value->getComponents());
+        // But filtered out in __toString()
+        self::assertSame('test;foo', $value->__toString());
+    }
+
+    public function testJsonSerializeFiltersEmptyComponents(): void
+    {
+        $value = new Value('test', '', 'foo');
+
+        // jsonSerialize uses __toString, so empty components should be filtered
+        self::assertSame('test;foo', $value->jsonSerialize());
+    }
+
+    public function testToStringFiltersEmptyComponentContracts(): void
+    {
+        $emptyComponent    = new Component('');
+        $nonEmptyComponent = new Component('test');
+        $anotherComponent  = new Component('foo');
+
+        $value = new Value($nonEmptyComponent, $emptyComponent, $anotherComponent);
+
+        // Empty ComponentContract should be filtered out in __toString()
+        self::assertSame('test;foo', $value->__toString());
+        self::assertCount(3, $value->getComponents());
+    }
+
+    public function testToStringFiltersMixedEmptyComponentsAndContracts(): void
+    {
+        $emptyComponent    = new Component('');
+        $nonEmptyComponent = new Component('bar');
+
+        $value = new Value('test', $emptyComponent, '', $nonEmptyComponent, 'baz');
+
+        // Both empty strings and empty ComponentContracts should be filtered
+        self::assertSame('test;bar;baz', $value->__toString());
+        self::assertCount(5, $value->getComponents());
+    }
+
+    public function testToStringWithOnlyEmptyComponentContracts(): void
+    {
+        $empty1 = new Component('');
+        $empty2 = new Component('');
+
+        $value = new Value($empty1, $empty2);
+
+        // All empty ComponentContracts should result in empty string
+        self::assertSame('', $value->__toString());
+        self::assertCount(2, $value->getComponents());
+    }
+
+    public function testToStringWithComponentContractHavingTokenAndText(): void
+    {
+        $component1 = new Component('key', 'value');
+        $empty      = new Component('');
+        $component2 = new Component('foo', 'bar');
+
+        $value = new Value($component1, $empty, $component2);
+
+        // Component with token and text should be "token=text"
+        self::assertSame('key=value;foo=bar', $value->__toString());
+        self::assertCount(3, $value->getComponents());
+    }
+
+    public function testWithComponentsAcceptsComponentContracts(): void
+    {
+        $original     = new Value('original');
+        $newComponent = new Component('new', 'value');
+
+        $updated = $original->withComponents($newComponent);
+
+        self::assertNotSame($original, $updated);
+        self::assertSame('new=value', $updated->__toString());
+    }
+
+    public function testWithAddedComponentsAcceptsComponentContracts(): void
+    {
+        $original     = new Value('original');
+        $newComponent = new Component('added');
+
+        $updated = $original->withAddedComponents($newComponent);
+
+        self::assertNotSame($original, $updated);
+        self::assertSame('original;added', $updated->__toString());
     }
 }
