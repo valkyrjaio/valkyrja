@@ -204,4 +204,18 @@ class RedirectResponseTest extends TestCase
 
         self::assertSame($code, $response->getStatusCode());
     }
+
+    public function testEmptyUriDefaultsToSlash(): void
+    {
+        // Create a Uri that converts to an empty string
+        $emptyUri = new Uri();
+
+        // Verify the Uri is indeed empty when cast to string
+        self::assertSame('', (string) $emptyUri);
+
+        $response = new RedirectResponse($emptyUri);
+
+        // The Location header should default to '/' when the URI is empty
+        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+    }
 }
