@@ -193,7 +193,13 @@ class Header implements HeaderContract
      */
     public function __toString(): string
     {
-        return $this->nameToString() . $this->valuesToString();
+        $values = $this->valuesToString();
+
+        if ($values === '') {
+            return '';
+        }
+
+        return $this->nameToString() . $values;
     }
 
     /**
@@ -316,7 +322,7 @@ class Header implements HeaderContract
 
     protected function nameToString(): string
     {
-        return $this->name . ':';
+        return $this->name . ': ';
     }
 
     /**
@@ -329,7 +335,10 @@ class Header implements HeaderContract
             static fn (ValueContract|string $value): bool => (is_string($value) ? $value : $value->__toString()) !== ''
         );
 
-        return implode(',', $filteredValues);
+        return implode(
+            ', ',
+            array_map(static fn (ValueContract|string $value): string => trim((string) $value), $filteredValues)
+        );
     }
 
     /**

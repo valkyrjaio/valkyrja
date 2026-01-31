@@ -57,7 +57,7 @@ class RefererTest extends TestCase
 
         self::assertCount(1, $referer->getValues());
         self::assertSame($url, $referer->getValuesAsString());
-        self::assertSame(HeaderName::REFERER . ':' . $url, $referer->__toString());
+        self::assertSame(HeaderName::REFERER . ': ' . $url, $referer->__toString());
     }
 
     public function testWithMultipleValues(): void
@@ -67,7 +67,7 @@ class RefererTest extends TestCase
         $referer = new Referer($url1, $url2);
 
         self::assertCount(2, $referer->getValues());
-        self::assertSame("$url1,$url2", $referer->getValuesAsString());
+        self::assertSame("$url1, $url2", $referer->getValuesAsString());
     }
 
     public function testWithValueContract(): void
@@ -85,7 +85,7 @@ class RefererTest extends TestCase
         $referer = new Referer($value, 'https://example.com/second');
 
         self::assertCount(2, $referer->getValues());
-        self::assertSame('https://example.com/first,https://example.com/second', $referer->getValuesAsString());
+        self::assertSame('https://example.com/first, https://example.com/second', $referer->getValuesAsString());
     }
 
     public function testToString(): void
@@ -93,7 +93,7 @@ class RefererTest extends TestCase
         $url     = 'https://example.com/path?query=value';
         $referer = new Referer($url);
 
-        self::assertSame(HeaderName::REFERER . ':' . $url, $referer->__toString());
+        self::assertSame(HeaderName::REFERER . ': ' . $url, $referer->__toString());
     }
 
     public function testWithValues(): void
@@ -115,7 +115,7 @@ class RefererTest extends TestCase
         self::assertNotSame($referer, $newReferer);
         self::assertCount(1, $referer->getValues());
         self::assertCount(2, $newReferer->getValues());
-        self::assertSame('https://original.com,https://added.com', $newReferer->getValuesAsString());
+        self::assertSame('https://original.com, https://added.com', $newReferer->getValuesAsString());
     }
 
     public function testJsonSerialize(): void
@@ -123,7 +123,7 @@ class RefererTest extends TestCase
         $url     = 'https://example.com';
         $referer = new Referer($url);
 
-        self::assertSame(HeaderName::REFERER . ':' . $url, $referer->jsonSerialize());
+        self::assertSame(HeaderName::REFERER . ': ' . $url, $referer->jsonSerialize());
     }
 
     public function testEmptyReferer(): void
@@ -132,6 +132,6 @@ class RefererTest extends TestCase
 
         self::assertCount(0, $referer->getValues());
         self::assertSame('', $referer->getValuesAsString());
-        self::assertSame(HeaderName::REFERER . ':', $referer->__toString());
+        self::assertSame('', $referer->__toString());
     }
 }

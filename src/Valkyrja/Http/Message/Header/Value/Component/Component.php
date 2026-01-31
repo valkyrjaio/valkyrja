@@ -46,7 +46,9 @@ class Component implements ComponentContract
             [$token, $text] = explode(static::DELIMINATOR, $value);
         }
 
-        return new static(token: $token, text: $text);
+        $text = $text !== null ? trim($text) : null;
+
+        return new static(token: trim($token), text: $text);
     }
 
     /**

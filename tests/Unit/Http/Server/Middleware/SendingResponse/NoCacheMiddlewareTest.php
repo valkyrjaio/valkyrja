@@ -65,7 +65,7 @@ class NoCacheMiddlewareTest extends TestCase
             $response->getHeader(HeaderName::EXPIRES)->getValuesAsString(),
         );
         self::assertSame(
-            'no-store,no-cache,must-revalidate,post-check=0,pre-check=0',
+            'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
             $response->getHeader(HeaderName::CACHE_CONTROL)->getValuesAsString(),
         );
         self::assertSame(

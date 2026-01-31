@@ -136,7 +136,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             self::assertCount(1, $headers);
             self::assertNotNull($headers[0] ?? null);
-            self::assertSame('Content-Type:text/html', $headers[0]);
+            self::assertSame('Content-Type: text/html', $headers[0]);
         }
 
         public function testSendBody(): void
@@ -178,7 +178,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             self::assertNotNull($headers[0] ?? null);
             self::assertSame('HTTP/1.1 200 OK', $headers[0]);
             self::assertNotNull($headers[1] ?? null);
-            self::assertSame('Content-Type:text/html', $headers[1]);
+            self::assertSame('Content-Type: text/html', $headers[1]);
         }
 
         protected function resetHeadersAndResponseCode(): void
