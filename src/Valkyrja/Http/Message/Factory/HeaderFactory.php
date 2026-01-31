@@ -58,7 +58,6 @@ abstract class HeaderFactory
             }
 
             if ($value && str_starts_with($key, 'CONTENT_')) {
-                /** @var lowercase-string $name */
                 $name           = 'content-' . strtolower(substr($key, 8));
                 $headers[$name] = new Header($name, $value);
             }
