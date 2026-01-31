@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Message\Header\Value;
 use Override;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
-use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
@@ -222,13 +221,10 @@ class Value implements ValueContract
     /**
      * Map string parts to Part objects.
      *
-     * @return ComponentContract[]
+     * @return array<array-key, ComponentContract|string>
      */
     protected function mapToPart(ComponentContract|string ...$parts): array
     {
-        return array_map(
-            static fn (ComponentContract|string $part): ComponentContract => is_string($part) ? Component::fromValue($part) : $part,
-            $parts
-        );
+        return $parts;
     }
 }
