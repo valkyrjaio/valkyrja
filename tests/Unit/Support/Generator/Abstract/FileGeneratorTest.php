@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support\Generator;
+namespace Valkyrja\Tests\Unit\Support\Generator\Abstract;
 
 use Override;
 use RuntimeException;
 use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Support\Generator\Abstract\FileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Support\Generator\FileGenerator;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Generator;
+namespace Valkyrja\Support\Generator\Abstract;
 
 use Override;
 use Throwable;
