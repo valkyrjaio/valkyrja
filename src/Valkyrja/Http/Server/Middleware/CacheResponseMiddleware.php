@@ -138,6 +138,6 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
      */
     protected function getCachePathForRequest(ServerRequestContract $request): string
     {
-        return Directory::cachePath('response/' . $this->getHashedPath($request));
+        return Directory::frameworkStorageCachePath('response/' . $this->getHashedPath($request));
     }
 }

@@ -32,7 +32,7 @@ class Directory
     /** @var non-empty-string */
     public static string $APP_PATH = 'app';
     /** @var non-empty-string */
-    public static string $CONFIG_PATH = 'config';
+    public static string $CACHE_PATH = 'cache';
     /** @var non-empty-string */
     public static string $ENV_PATH = 'env';
     /** @var non-empty-string */
@@ -45,8 +45,6 @@ class Directory
     public static string $FRAMEWORK_STORAGE_PATH = 'framework';
     /** @var non-empty-string */
     public static string $LOGS_STORAGE_PATH = 'logs';
-    /** @var non-empty-string */
-    public static string $CACHE_PATH = 'cache';
     /** @var non-empty-string */
     public static string $TESTS_PATH = 'tests';
     /** @var non-empty-string */
@@ -89,15 +87,15 @@ class Directory
     }
 
     /**
-     * Get the config directory for the application.
+     * Get the cache directory for the application.
      *
      * @param non-empty-string|null $path [optional] The path to append
      *
      * @return non-empty-string
      */
-    public static function configPath(string|null $path = null): string
+    public static function cachePath(string|null $path = null): string
     {
-        return static::basePath(static::$CONFIG_PATH . static::path($path));
+        return static::basePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**
@@ -173,13 +171,13 @@ class Directory
     }
 
     /**
-     * Get the cache directory for the application.
+     * Get the framework storage cache directory for the application.
      *
      * @param non-empty-string|null $path [optional] The path to append
      *
      * @return non-empty-string
      */
-    public static function cachePath(string|null $path = null): string
+    public static function frameworkStorageCachePath(string|null $path = null): string
     {
         return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
