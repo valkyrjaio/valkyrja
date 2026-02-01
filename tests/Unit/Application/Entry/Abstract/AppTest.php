@@ -90,6 +90,11 @@ use const LOCK_EX;
  */
 class AppTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        @unlink(EnvClass::APP_DIR . '/cache/container.php');
+    }
+
     /**
      * Test the appStart method.
      */

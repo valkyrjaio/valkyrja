@@ -25,7 +25,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollectionContract;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpCollectionContract;
 use Valkyrja\Support\Directory\Directory;
@@ -42,7 +41,6 @@ class CacheCommand
         helpText: new Message('A command to cache the config.'),
     )]
     public function run(
-        ContainerContract $container,
         CliCollectionContract $cliCollection,
         EventCollection $eventCollection,
         HttpCollectionContract $routerCollection,
@@ -59,7 +57,6 @@ class CacheCommand
         }
 
         $data = new Data(
-            container: $container->getData(),
             event: $eventCollection->getData(),
             cli: $cliCollection->getData(),
             http: $routerCollection->getData(),

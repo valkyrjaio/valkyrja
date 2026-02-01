@@ -25,13 +25,6 @@ class DataTest extends TestCase
     {
         $data = new Data();
 
-        self::assertEmpty($data->container->aliases);
-        self::assertEmpty($data->container->deferred);
-        self::assertEmpty($data->container->deferredCallback);
-        self::assertEmpty($data->container->services);
-        self::assertEmpty($data->container->singletons);
-        self::assertEmpty($data->container->providers);
-
         self::assertEmpty($data->cli->commands);
 
         self::assertEmpty($data->event->events);
