@@ -17,7 +17,6 @@ use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Routing\Collection\Collection as CliCollection;
-use Valkyrja\Container\Manager\Container;
 use Valkyrja\Event\Collection\Collection as EventCollection;
 use Valkyrja\Http\Routing\Collection\Collection as HttpCollection;
 use Valkyrja\Tests\EnvClass;
@@ -45,13 +44,11 @@ class CacheCommandTest extends TestCase
         self::assertFileExists($filepath);
 
         $command   = new CacheCommand();
-        $container = new Container();
         $cli       = new CliCollection();
         $event     = new EventCollection();
         $http      = new HttpCollection();
 
         $data = new Data(
-            container: $container->getData(),
             event: $event->getData(),
             cli: $cli->getData(),
             http: $http->getData(),
@@ -61,7 +58,6 @@ class CacheCommandTest extends TestCase
 
         ob_start();
         $output = $command->run(
-            container: $container,
             cliCollection: $cli,
             eventCollection: $event,
             routerCollection: $http,
@@ -94,14 +90,12 @@ class CacheCommandTest extends TestCase
         $filepath = $env::APP_CACHE_FILE_PATH;
 
         $command   = new CacheCommand();
-        $container = new Container();
         $cli       = new CliCollection();
         $event     = new EventCollection();
         $http      = new HttpCollection();
 
         ob_start();
         $output = $command->run(
-            container: $container,
             cliCollection: $cli,
             eventCollection: $event,
             routerCollection: $http,

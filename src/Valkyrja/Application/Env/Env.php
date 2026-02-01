@@ -78,6 +78,7 @@ class Env
     public const array APP_REQUIRED_COMPONENTS = [
         ComponentClass::APPLICATION,
         ComponentClass::ATTRIBUTE,
+        ComponentClass::CONTAINER,
         ComponentClass::DISPATCHER,
         ComponentClass::REFLECTION,
     ];
@@ -237,6 +238,17 @@ class Env
 
     /** @var class-string[]|null */
     public const array|null CLI_ROUTING_COLLECTION_ALLOWED_CLASSES = null;
+
+    /************************************************************
+     *
+     * Container component env variables.
+     *
+     ************************************************************/
+
+    /** @var bool|null */
+    public const bool|null CONTAINER_USE_CACHE = null;
+    /** @var non-empty-string|null */
+    public const string|null CONTAINER_CACHE_FILE_PATH = null;
 
     /************************************************************
      *

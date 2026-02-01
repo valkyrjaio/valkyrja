@@ -25,6 +25,7 @@ use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\ServiceProvider;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Support\Directory\Directory;
@@ -135,23 +136,26 @@ abstract class App
     {
         $container->setSingleton(Env::class, $env);
         $container->setSingleton(ContainerContract::class, $container);
-
         $container->setSingleton(ApplicationContract::class, $app);
 
-        if ($data !== null) {
-            $container->setSingleton(ContainerData::class, $data->container);
+        if ($data instanceof Data) {
             $container->setSingleton(EventData::class, $data->event);
             $container->setSingleton(CliData::class, $data->cli);
             $container->setSingleton(HttpData::class, $data->http);
-
-            $container->setFromData($data->container);
-
-            return;
         }
 
-        foreach ($app->getContainerProviders() as $provider) {
-            $container->register($provider);
-        }
+        static::loadContainerData(container: $container);
+    }
+
+    /**
+     * Load container data.
+     */
+    protected static function loadContainerData(ContainerContract $container): void
+    {
+        ServiceProvider::publishData(container: $container);
+        $containerData = $container->getSingleton(ContainerData::class);
+
+        $container->setFromData($containerData);
     }
 
     /**

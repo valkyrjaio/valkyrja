@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
+use Override;
 use stdClass;
 use Throwable;
 use Valkyrja\Application\Cli\Command\CacheCommand;
@@ -90,6 +91,12 @@ use const LOCK_EX;
  */
 class AppTest extends TestCase
 {
+    #[Override]
+    protected function tearDown(): void
+    {
+        @unlink(EnvClass::APP_DIR . '/cache/container.php');
+    }
+
     /**
      * Test the appStart method.
      */
