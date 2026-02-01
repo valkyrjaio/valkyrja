@@ -84,7 +84,7 @@ class DirectoryTest extends TestCase
     /**
      * Test the cachePath directory helper method.
      */
-    public function testCachePath(): void
+    public function testFrameworkStorageCachePath(): void
     {
         $expected = $this->basePath
             . Directory::DIRECTORY_SEPARATOR
@@ -94,13 +94,13 @@ class DirectoryTest extends TestCase
             . Directory::DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
-        self::assertSame($expected, Directory::cachePath());
+        self::assertSame($expected, Directory::frameworkStorageCachePath());
     }
 
     /**
      * Test the cachePath directory helper method with a sub path.
      */
-    public function testCachePathSubPath(): void
+    public function testFrameworkStorageCachePathSubPath(): void
     {
         $expected = $this->basePath
             . Directory::DIRECTORY_SEPARATOR
@@ -111,27 +111,27 @@ class DirectoryTest extends TestCase
             . Directory::$CACHE_PATH
             . $this->subPath;
 
+        self::assertSame($expected, Directory::frameworkStorageCachePath($this->subPath));
+    }
+
+    /**
+     * Test the cachePath directory helper method.
+     */
+    public function testCachePath(): void
+    {
+        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$CACHE_PATH;
+
+        self::assertSame($expected, Directory::cachePath());
+    }
+
+    /**
+     * Test the cachePath directory helper method with a sub path.
+     */
+    public function testCachePathSubPath(): void
+    {
+        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$CACHE_PATH . $this->subPath;
+
         self::assertSame($expected, Directory::cachePath($this->subPath));
-    }
-
-    /**
-     * Test the configPath directory helper method.
-     */
-    public function testConfigPath(): void
-    {
-        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
-
-        self::assertSame($expected, Directory::configPath());
-    }
-
-    /**
-     * Test the configPath directory helper method with a sub path.
-     */
-    public function testConfigPathSubPath(): void
-    {
-        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
-
-        self::assertSame($expected, Directory::configPath($this->subPath));
     }
 
     /**
