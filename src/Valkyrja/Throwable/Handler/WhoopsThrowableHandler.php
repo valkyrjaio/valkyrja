@@ -38,7 +38,7 @@ class WhoopsThrowableHandler extends ThrowableHandler
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
     {
         // If debug is already enabled
-        if (static::$enabled) {
+        if (static::$enabled || ! class_exists(Run::class)) {
             // Don't do things twice
             return;
         }
