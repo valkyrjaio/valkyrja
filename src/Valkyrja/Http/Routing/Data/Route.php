@@ -80,21 +80,7 @@ class Route implements RouteContract
      */
     public static function __set_state(array $array): static
     {
-        return new static(
-            path: $array['path'],
-            name: $array['name'],
-            dispatch: $array['dispatch'],
-            requestMethods: $array['requestMethods'],
-            regex: $array['regex'] ?? null,
-            parameters: $array['parameters'] ?? [],
-            routeMatchedMiddleware: $array['routeMatchedMiddleware'] ?? [],
-            routeDispatchedMiddleware: $array['routeDispatchedMiddleware'] ?? [],
-            throwableCaughtMiddleware: $array['throwableCaughtMiddleware'] ?? [],
-            sendingResponseMiddleware: $array['sendingResponseMiddleware'] ?? [],
-            terminatedMiddleware: $array['terminatedMiddleware'] ?? [],
-            requestStruct: $array['requestStruct'] ?? null,
-            responseStruct: $array['responseStruct'] ?? null,
-        );
+        return new static(...$array);
     }
 
     /**

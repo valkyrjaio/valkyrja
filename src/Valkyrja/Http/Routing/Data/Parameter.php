@@ -49,15 +49,7 @@ class Parameter implements ParameterContract
      */
     public static function __set_state(array $array): static
     {
-        return new static(
-            name: $array['name'],
-            regex: $array['regex'],
-            cast: $array['cast'] ?? null,
-            isOptional: $array['isOptional'],
-            shouldCapture: $array['shouldCapture'],
-            default: $array['default'] ?? null,
-            value: $array['value'] ?? null
-        );
+        return new static(...$array);
     }
 
     /**
