@@ -28,4 +28,19 @@ class ComponentProviderTest extends TestCase
         self::assertContains(CacheCommand::class, ComponentProvider::getCliControllers());
         self::assertContains(ClearCacheCommand::class, ComponentProvider::getCliControllers());
     }
+
+    public function testGetContainerProviders(): void
+    {
+        self::assertEmpty(ComponentProvider::getContainerProviders());
+    }
+
+    public function testGetEventListeners(): void
+    {
+        self::assertEmpty(ComponentProvider::getEventListeners());
+    }
+
+    public function testGetHttpControllers(): void
+    {
+        self::assertEmpty(ComponentProvider::getHttpControllers());
+    }
 }
