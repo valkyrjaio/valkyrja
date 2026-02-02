@@ -23,15 +23,15 @@ use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Reflection\Reflector\Reflector;
+use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllAttributesClass;
-use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithUnsupportedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -117,15 +117,24 @@ class AttributeCollectorTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function testGetCommandsWithInvalidMiddleware(): void
+    public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-
         $collector = new AttributeCollector(
             attributes: new Collector(),
             reflection: new Reflector()
         );
+        $routes = $collector->getRoutes(CommandWithAllMiddlewareClass::class);
 
-        $collector->getRoutes(CommandWithUnsupportedMiddlewareClass::class);
+        self::assertCount(1, $routes);
+
+        $route = $routes[0];
+
+        self::assertSame(CommandWithAllMiddlewareClass::NAME, $route->getName());
+        self::assertSame(CommandWithAllMiddlewareClass::DESCRIPTION, $route->getDescription());
+        self::assertSame(CommandWithAllMiddlewareClass::HELP_TEXT, $route->getHelpText()->getText());
+        self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getExitedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getThrowableCaughtMiddleware());
     }
 }
