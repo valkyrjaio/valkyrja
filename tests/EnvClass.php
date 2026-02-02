@@ -32,8 +32,6 @@ class EnvClass extends Env
     public const bool APP_DEBUG_MODE = false;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__;
-    /** @var non-empty-string */
-    public const string APP_CACHE_FILE_PATH = '/storage/cache.php';
 
     /************************************************************
      *

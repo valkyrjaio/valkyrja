@@ -117,8 +117,6 @@ class Env
     public const string|null APP_CLI_DEFAULT_COMMAND_NAME = null;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';
-    /** @var non-empty-string */
-    public const string APP_CACHE_FILE_PATH = '/storage/framework/cache/cache.php';
 
     /************************************************************
      *
@@ -267,8 +265,10 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string|null */
-    public const string|null EVENT_COLLECTION_ALLOWED_CLASSES = null;
+    /** @var non-empty-string|null */
+    public const string|null EVENT_COLLECTION_FILE_PATH = null;
+    /** @var bool|null */
+    public const bool|null EVENT_COLLECTION_USE_CACHE = null;
 
     /************************************************************
      *

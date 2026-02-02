@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Application\Cli\Command;
 
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -25,23 +24,10 @@ class ClearCacheCommandTest extends TestCase
 {
     public function testRun(): void
     {
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/ClearCacheCommandTestCache.php';
-        };
-
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        file_put_contents($filepath, 'test');
-
-        self::assertFileExists($filepath);
-
         $command = new ClearCacheCommand();
 
         ob_start();
         $output = $command->run(
-            env: $env,
             outputFactory: new OutputFactory()
         );
         $output->writeMessages();
@@ -49,7 +35,6 @@ class ClearCacheCommandTest extends TestCase
 
         $expected = 'Application config cache cleared successfully.';
 
-        self::assertFileDoesNotExist($filepath);
         self::assertIsString($contents);
         self::assertStringContainsString($expected, $contents);
     }

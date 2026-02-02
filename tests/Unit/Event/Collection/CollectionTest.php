@@ -18,7 +18,6 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Event\EventClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -48,7 +47,7 @@ class CollectionTest extends TestCase
 
         $data = $collection->getData();
 
-        self::assertSame([$listenerName => serialize($listener)], $data->listeners);
+        self::assertSame([$listenerName => $listener], $data->listeners);
         self::assertSame([EventClass::class => [$listenerName => $listenerName]], $data->events);
         self::assertSame([$listenerName => $listener], $collection->getListeners());
         self::assertSame([EventClass::class], $collection->getEvents());
@@ -84,7 +83,7 @@ class CollectionTest extends TestCase
 
         $dataFromCollection = $collection->getData();
 
-        self::assertSame([$listenerName => serialize($listener), $listenerName2 => serialize($listener2)], $dataFromCollection->listeners);
+        self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $dataFromCollection->listeners);
         self::assertSame($data->events, $dataFromCollection->events);
         self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $collection->getListeners());
         self::assertSame([EventClass::class], $collection->getEvents());
@@ -94,7 +93,7 @@ class CollectionTest extends TestCase
 
         $data2 = new Data(
             events: [EventClass::class => [$listenerName => $listenerName, $listenerName2 => $listenerName2]],
-            listeners: [$listenerName => serialize($listener), $listenerName2 => serialize($listener2)]
+            listeners: [$listenerName => static fn () => $listener, $listenerName2 => static fn () => $listener2]
         );
 
         $collection = new Collection();
@@ -126,24 +125,6 @@ class CollectionTest extends TestCase
         self::assertEmpty($collection->getEventsWithListeners());
         self::assertEmpty($collection->getListenersForEvent($event));
         self::assertEmpty($collection->getListenersForEventById($eventId));
-    }
-
-    public function testFromBadData(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $listenerName = 'listener';
-        $listener     = new EventClass();
-
-        $data = new Data(
-            events: [EventClass::class => [$listenerName => $listenerName]],
-            listeners: [$listenerName => serialize($listener)]
-        );
-
-        $collection = new Collection();
-        $collection->setFromData($data);
-
-        $collection->getListenersForEventById(EventClass::class);
     }
 
     public function testAddAndRemoveListener(): void
