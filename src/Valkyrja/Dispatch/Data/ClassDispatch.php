@@ -40,11 +40,7 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
      */
     public static function __set_state(array $array): static
     {
-        return new static(
-            class: $array['class'],
-            arguments: $array['arguments'] ?? null,
-            dependencies: $array['dependencies'] ?? null
-        );
+        return new static(...$array);
     }
 
     /**

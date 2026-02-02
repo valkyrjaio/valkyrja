@@ -56,13 +56,7 @@ class MethodDispatch extends ClassDispatch implements MethodDispatchContract
     #[Override]
     public static function __set_state(array $array): static
     {
-        return new static(
-            class: $array['class'],
-            method: $array['method'],
-            isStatic: $array['isStatic'],
-            arguments: $array['arguments'] ?? null,
-            dependencies: $array['dependencies'] ?? null
-        );
+        return new static(...$array);
     }
 
     /**
