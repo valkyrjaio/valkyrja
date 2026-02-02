@@ -15,14 +15,15 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Collection;
 
 use Override;
 use stdClass;
+use TypeError;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -76,8 +77,6 @@ class CollectionTest extends TestCase
             parameters: [new Parameter(name: 'value', regex: Regex::ALPHA)],
         );
 
-        $serializedRoute = serialize($route);
-
         $data = new Data(
             routes: [
                 $routeName => $route,
@@ -86,7 +85,7 @@ class CollectionTest extends TestCase
 
         $data2 = new Data(
             routes: [
-                $routeName => $serializedRoute,
+                $routeName => static fn (): RouteContract => $route,
             ]
         );
 
@@ -104,9 +103,9 @@ class CollectionTest extends TestCase
         $dataFromCollection3 = $collection3->getData();
 
         self::assertNotSame($data, $dataFromCollection);
-        self::assertSame($serializedRoute, $dataFromCollection->routes[$routeName]);
-        self::assertSame($serializedRoute, $dataFromCollection2->routes[$routeName]);
-        self::assertSame($serializedRoute, $dataFromCollection3->routes[$routeName]);
+        self::assertSame($route, $dataFromCollection->routes[$routeName]);
+        self::assertSame($route, $dataFromCollection2->routes[$routeName]);
+        self::assertSame($route, $dataFromCollection3->routes[$routeName]);
         self::assertSame($routeName, $collection->getByName($routeName)->getName());
         self::assertSame($routeName, $collection2->getByName($routeName)->getName());
         self::assertSame($routeName, $collection3->getByName($routeName)->getName());
@@ -114,11 +113,11 @@ class CollectionTest extends TestCase
 
     public function testInvalidSerializedRoute(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeError::class);
 
         $data = new Data(
             routes: [
-                'test' => serialize(new stdClass()),
+                'test' => static fn () => new stdClass(),
             ],
             static: [
                 RequestMethod::GET->value => [

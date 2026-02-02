@@ -27,7 +27,6 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ServiceProvider;
 use Valkyrja\Event\Data\Data as EventData;
-use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -141,7 +140,6 @@ abstract class App
         if ($data instanceof Data) {
             $container->setSingleton(EventData::class, $data->event);
             $container->setSingleton(CliData::class, $data->cli);
-            $container->setSingleton(HttpData::class, $data->http);
         }
 
         static::loadContainerData(container: $container);

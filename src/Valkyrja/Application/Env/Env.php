@@ -333,8 +333,10 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string[]|null */
-    public const array|null HTTP_ROUTING_COLLECTION_ALLOWED_CLASSES = null;
+    /** @var non-empty-string|null */
+    public const string|null HTTP_ROUTING_COLLECTION_FILE_PATH = null;
+    /** @var bool|null */
+    public const bool|null HTTP_ROUTING_COLLECTION_USE_CACHE = null;
 
     /************************************************************
      *

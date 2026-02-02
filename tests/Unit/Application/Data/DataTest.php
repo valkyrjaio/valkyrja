@@ -29,9 +29,5 @@ class DataTest extends TestCase
 
         self::assertEmpty($data->event->events);
         self::assertEmpty($data->event->listeners);
-
-        self::assertEmpty($data->http->routes);
-        self::assertEmpty($data->http->static);
-        self::assertEmpty($data->http->dynamic);
     }
 }

@@ -62,6 +62,42 @@ class Route implements RouteContract
     }
 
     /**
+     * @param array{
+     *     path: non-empty-string,
+     *     name: non-empty-string,
+     *     dispatch: MethodDispatchContract,
+     *     requestMethods: RequestMethod[],
+     *     regex: non-empty-string|null,
+     *     parameters: ParameterContract[],
+     *     routeMatchedMiddleware: class-string<RouteMatchedMiddlewareContract>[],
+     *     routeDispatchedMiddleware: class-string<RouteDispatchedMiddlewareContract>[],
+     *     throwableCaughtMiddleware: class-string<ThrowableCaughtMiddlewareContract>[],
+     *     sendingResponseMiddleware: class-string<SendingResponseMiddlewareContract>[],
+     *     terminatedMiddleware: class-string<TerminatedMiddlewareContract>[],
+     *     requestStruct: class-string<RequestStructContract>|null,
+     *     responseStruct: class-string<ResponseStructContract>|null,
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(
+            path: $array['path'],
+            name: $array['name'],
+            dispatch: $array['dispatch'],
+            requestMethods: $array['requestMethods'],
+            regex: $array['regex'] ?? null,
+            parameters: $array['parameters'] ?? [],
+            routeMatchedMiddleware: $array['routeMatchedMiddleware'] ?? [],
+            routeDispatchedMiddleware: $array['routeDispatchedMiddleware'] ?? [],
+            throwableCaughtMiddleware: $array['throwableCaughtMiddleware'] ?? [],
+            sendingResponseMiddleware: $array['sendingResponseMiddleware'] ?? [],
+            terminatedMiddleware: $array['terminatedMiddleware'] ?? [],
+            requestStruct: $array['requestStruct'] ?? null,
+            responseStruct: $array['responseStruct'] ?? null,
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]

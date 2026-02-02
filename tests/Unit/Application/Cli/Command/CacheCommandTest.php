@@ -18,7 +18,6 @@ use Valkyrja\Application\Data\Data;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Routing\Collection\Collection as CliCollection;
 use Valkyrja\Event\Collection\Collection as EventCollection;
-use Valkyrja\Http\Routing\Collection\Collection as HttpCollection;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -46,12 +45,10 @@ class CacheCommandTest extends TestCase
         $command   = new CacheCommand();
         $cli       = new CliCollection();
         $event     = new EventCollection();
-        $http      = new HttpCollection();
 
         $data = new Data(
             event: $event->getData(),
             cli: $cli->getData(),
-            http: $http->getData(),
         );
 
         $serializedData = serialize($data);
@@ -60,7 +57,6 @@ class CacheCommandTest extends TestCase
         $output = $command->run(
             cliCollection: $cli,
             eventCollection: $event,
-            routerCollection: $http,
             env: $env,
             outputFactory: new OutputFactory()
         );
@@ -92,13 +88,11 @@ class CacheCommandTest extends TestCase
         $command   = new CacheCommand();
         $cli       = new CliCollection();
         $event     = new EventCollection();
-        $http      = new HttpCollection();
 
         ob_start();
         $output = $command->run(
             cliCollection: $cli,
             eventCollection: $event,
-            routerCollection: $http,
             env: $env,
             outputFactory: new OutputFactory()
         );
