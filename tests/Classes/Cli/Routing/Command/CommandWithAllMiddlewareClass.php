@@ -18,9 +18,9 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\RouteNotMatchedHandlerClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
 
-class CommandWithUnsupportedMiddlewareClass
+class CommandWithAllMiddlewareClass
 {
     /** @var non-empty-string */
     public const string NAME = 'test2';
@@ -34,7 +34,7 @@ class CommandWithUnsupportedMiddlewareClass
         description: self::DESCRIPTION,
         helpText: new Message(self::HELP_TEXT),
     )]
-    #[Middleware(RouteNotMatchedHandlerClass::class)]
+    #[Middleware(AllMiddlewareClass::class)]
     public function run(OutputFactoryContract $outputFactory): OutputContract
     {
         return $outputFactory->createOutput()->withMessages(new Message(self::NAME));

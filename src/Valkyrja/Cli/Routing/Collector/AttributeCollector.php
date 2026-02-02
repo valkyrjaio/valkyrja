@@ -33,7 +33,6 @@ use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 use function array_column;
@@ -160,23 +159,21 @@ class AttributeCollector implements Contract
         $middlewareClassNames = array_column($middleware, 'name');
 
         foreach ($middlewareClassNames as $middlewareClass) {
-            $route = match (true) {
-                is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)    => $route->withAddedRouteMatchedMiddleware(
-                    $middlewareClass
-                ),
-                is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true) => $route->withAddedRouteDispatchedMiddleware(
-                    $middlewareClass
-                ),
-                is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true) => $route->withAddedThrowableCaughtMiddleware(
-                    $middlewareClass
-                ),
-                is_a($middlewareClass, ExitedMiddlewareContract::class, true)          => $route->withAddedExitedMiddleware(
-                    $middlewareClass
-                ),
-                default                                                                => throw new InvalidArgumentException(
-                    "Unsupported middleware class `$middlewareClass`"
-                ),
-            };
+            if (is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)) {
+                $route = $route->withAddedRouteMatchedMiddleware($middlewareClass);
+            }
+
+            if (is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true)) {
+                $route = $route->withAddedRouteDispatchedMiddleware($middlewareClass);
+            }
+
+            if (is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true)) {
+                $route = $route->withAddedThrowableCaughtMiddleware($middlewareClass);
+            }
+
+            if (is_a($middlewareClass, ExitedMiddlewareContract::class, true)) {
+                $route = $route->withAddedExitedMiddleware($middlewareClass);
+            }
         }
 
         return $route;
