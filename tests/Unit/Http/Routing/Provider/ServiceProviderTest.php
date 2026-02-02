@@ -73,6 +73,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ProcessorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -84,6 +85,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CollectorContract::class, ServiceProvider::provides());
         self::assertContains(ProcessorContract::class, ServiceProvider::provides());
         self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
+        self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
     }
 
     public function testPublishRouter(): void
@@ -164,6 +166,22 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
 
         self::assertNotNull($collection->get('/'));
+    }
+
+    public function testPublishDataFileGenerator(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+
+        self::assertFalse($container->has(CollectorContract::class));
+
+        $callback = ServiceProvider::publishers()[DataFileGeneratorContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(DataFileGeneratorContract::class));
+        self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
+        self::assertInstanceOf(DataFileGenerator::class, $container->getSingleton(DataFileGeneratorContract::class));
     }
 
     public function testPublishMatcher(): void
