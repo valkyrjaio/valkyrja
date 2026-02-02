@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Constant;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
@@ -30,8 +28,6 @@ use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Response\XmlResponse;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Http\Routing\Data\Route;
 
 final class AllowedClasses
 {
@@ -52,12 +48,5 @@ final class AllowedClasses
         Value::class,
         Cookie::class,
         Component::class,
-    ];
-    /** @var class-string[] */
-    public const array COLLECTION = [
-        Route::class,
-        Parameter::class,
-        MethodDispatch::class,
-        RequestMethod::class,
     ];
 }
