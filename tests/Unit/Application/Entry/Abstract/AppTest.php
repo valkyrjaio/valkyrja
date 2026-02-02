@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Override;
-use Valkyrja\Application\Cli\Command\CacheCommand;
-use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -221,8 +219,6 @@ class AppTest extends TestCase
 
         $commands = $application->getCliControllers();
 
-        self::assertContains(CacheCommand::class, $commands);
-        self::assertContains(ClearCacheCommand::class, $commands);
         self::assertContains(HelpCommand::class, $commands);
         self::assertContains(ListBashCommand::class, $commands);
         self::assertContains(CliListCommand::class, $commands);
