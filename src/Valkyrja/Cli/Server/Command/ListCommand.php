@@ -89,7 +89,6 @@ class ListCommand
         $output = $this->version
             ->run()
             ->withAddedMessages(
-                new NewLine(),
                 new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
                 new NewLine()
             );
