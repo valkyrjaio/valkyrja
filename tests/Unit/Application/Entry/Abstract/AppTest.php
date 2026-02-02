@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Override;
-use stdClass;
-use Throwable;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Data\Config as CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -84,8 +80,6 @@ use Valkyrja\View\Template\Contract\TemplateContract;
 
 use function defined;
 
-use const LOCK_EX;
-
 /**
  * Test the App service.
  */
@@ -135,8 +129,6 @@ class AppTest extends TestCase
         App::directory(EnvClass::APP_DIR);
 
         $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestConfigTest.php';
         };
 
         $application = App::app($env);
@@ -155,79 +147,18 @@ class AppTest extends TestCase
         App::directory(EnvClass::APP_DIR);
 
         $env  = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
         };
-        $data = new Data();
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        file_put_contents($filepath, serialize($data), LOCK_EX);
 
         $application = App::app($env);
 
         $container = $application->getContainer();
 
         self::assertTrue($container->has(ContainerData::class));
-        self::assertTrue($container->has(EventData::class));
+        self::assertFalse($container->has(EventData::class));
         self::assertFalse($container->has(CliData::class));
         self::assertFalse($container->has(HttpData::class));
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
-
-        @unlink($filepath);
-    }
-
-    /**
-     * Test the app method.
-     */
-    public function testAppWithEmptyCache(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Error occurred when retrieving cache file contents');
-
-        App::directory(EnvClass::APP_DIR);
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
-        };
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        file_put_contents($filepath, '', LOCK_EX);
-
-        App::app($env);
-    }
-
-    /**
-     * Test the app method.
-     *
-     * @throws Throwable
-     */
-    public function testAppWithBadCache(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid cache');
-
-        App::directory(EnvClass::APP_DIR);
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
-        };
-        /** @var non-empty-string $filepath */
-        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
-
-        file_put_contents($filepath, serialize(new stdClass()), LOCK_EX);
-
-        try {
-            App::app($env);
-        } catch (Throwable $e) {
-            @unlink($filepath);
-
-            throw $e;
-        }
     }
 
     /**

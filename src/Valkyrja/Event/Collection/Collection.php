@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Collection;
 
+use Closure;
 use Override;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
-use Valkyrja\Event\Constant\AllowedClasses;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
-use function is_string;
+use function is_callable;
 
 class Collection implements CollectionContract
 {
@@ -36,17 +34,9 @@ class Collection implements CollectionContract
     /**
      * The listeners.
      *
-     * @var array<string, ListenerContract|string>
+     * @var array<string, ListenerContract|Closure():ListenerContract>
      */
     protected array $listeners = [];
-
-    /**
-     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
-     */
-    public function __construct(
-        protected array $allowedClasses = AllowedClasses::COLLECTION,
-    ) {
-    }
 
     /**
      * @inheritDoc
@@ -56,12 +46,7 @@ class Collection implements CollectionContract
     {
         return new Data(
             events: $this->events,
-            listeners: array_map(
-                static fn (ListenerContract|string $listener): string => ! is_string($listener)
-                    ? serialize($listener)
-                    : $listener,
-                $this->listeners
-            ),
+            listeners: $this->listeners,
         );
     }
 
@@ -235,7 +220,7 @@ class Collection implements CollectionContract
     public function getListeners(): array
     {
         return array_map(
-            fn (ListenerContract|string $listener): ListenerContract => $this->ensureListener($listener),
+            fn (ListenerContract|Closure $listener): ListenerContract => $this->ensureListener($listener),
             $this->listeners
         );
     }
@@ -268,19 +253,12 @@ class Collection implements CollectionContract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param ListenerContract|string $listener The listener
+     * @param ListenerContract|Closure():ListenerContract $listener The listener
      */
-    protected function ensureListener(ListenerContract|string $listener): ListenerContract
+    protected function ensureListener(ListenerContract|Closure $listener): ListenerContract
     {
-        if (is_string($listener)) {
-            /** @var mixed $unserializedListener */
-            $unserializedListener = unserialize($listener, ['allowed_classes' => $this->allowedClasses]);
-
-            if (! $unserializedListener instanceof Listener) {
-                throw new InvalidArgumentException('Invalid object serialized.');
-            }
-
-            return $unserializedListener;
+        if (is_callable($listener)) {
+            return $listener();
         }
 
         return $listener;

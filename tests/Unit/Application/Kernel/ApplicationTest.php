@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Kernel;
 
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -38,7 +37,6 @@ class ApplicationTest extends TestCase
         );
 
         self::assertSame($container, $application->getContainer());
-        self::assertFalse($container->has(Data::class));
         self::assertSame($config->providers, $application->getProviders());
         self::assertSame($config->environment, $application->getEnvironment());
         self::assertSame($config->debugMode, $application->getDebugMode());

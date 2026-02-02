@@ -13,19 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry\Abstract;
 
-use Valkyrja\Application\Constant\AllowedClasses;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ServiceProvider;
-use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -84,16 +80,6 @@ abstract class App
      */
     public static function app(Env $env): ApplicationContract
     {
-        /** @var non-empty-string $cacheFilepath */
-        $cacheFilepath = $env::APP_CACHE_FILE_PATH;
-        $cacheFilename = Directory::basePath($cacheFilepath);
-
-        $data = null;
-
-        if (is_file(filename: $cacheFilename)) {
-            $data = static::getData(cacheFilename: $cacheFilename);
-        }
-
         $container = static::getContainer();
         $app       = static::getApplication(container: $container, env: $env);
 
@@ -101,7 +87,6 @@ abstract class App
             app: $app,
             container: $container,
             env: $env,
-            data: $data
         );
 
         return $app;
@@ -130,15 +115,11 @@ abstract class App
     /**
      * Bootstrap container services.
      */
-    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Data|null $data = null): void
+    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env): void
     {
         $container->setSingleton(Env::class, $env);
         $container->setSingleton(ContainerContract::class, $container);
         $container->setSingleton(ApplicationContract::class, $app);
-
-        if ($data instanceof Data) {
-            $container->setSingleton(EventData::class, $data->event);
-        }
 
         static::loadContainerData(container: $container);
     }
@@ -196,37 +177,6 @@ abstract class App
         $customComponents = $env::APP_CUSTOM_COMPONENTS;
 
         return array_merge($requiredComponents, $coreComponents, $components, $customComponents);
-    }
-
-    /**
-     * Get the application data.
-     *
-     * @param non-empty-string $cacheFilename The cache file path
-     */
-    protected static function getData(string $cacheFilename): Data
-    {
-        $cache = file_get_contents(filename: $cacheFilename);
-
-        if ($cache === false || $cache === '') {
-            throw new RuntimeException('Error occurred when retrieving cache file contents');
-        }
-
-        /** @var mixed $data */
-        $data = unserialize($cache, ['allowed_classes' => static::getAllowedDataClasses()]);
-
-        if (! $data instanceof Data) {
-            throw new RuntimeException('Invalid cache');
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return class-string[]
-     */
-    protected static function getAllowedDataClasses(): array
-    {
-        return AllowedClasses::ENTRY_APP;
     }
 
     /**
