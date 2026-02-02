@@ -60,7 +60,7 @@ class HelpCommand
         name: CommandName::HELP,
         description: 'Help for a command',
         helpText: new Message('A command to get help for a specific command.'),
-        parameters: [
+        options: [
             new OptionParameter(
                 name: 'command',
                 description: 'The name of the command to get help for',

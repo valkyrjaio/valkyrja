@@ -54,6 +54,35 @@ class ArgumentParameterTest extends TestCase
         self::assertTrue($parameter->areValuesValid());
     }
 
+    public function testSetState(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $cast        = new Cast(type: CastType::bool);
+        $mode        = ArgumentMode::REQUIRED;
+        $valueMode   = ArgumentValueMode::ARRAY;
+        $arguments   = [new Argument('test')];
+
+        $parameter = ArgumentParameter::__set_state([
+            'name'        => $name,
+            'description' => $description,
+            'cast'        => $cast,
+            'mode'        => $mode,
+            'valueMode'   => $valueMode,
+            'arguments'   => $arguments,
+        ]);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertSame($cast, $parameter->getCast());
+        self::assertSame($mode, $parameter->getMode());
+        self::assertSame($valueMode, $parameter->getValueMode());
+        self::assertSame($arguments, $parameter->getArguments());
+        self::assertNotEmpty($parameter->getCastValues());
+        self::assertSame('test', $parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+    }
+
     public function testName(): void
     {
         $name        = self::NAME;

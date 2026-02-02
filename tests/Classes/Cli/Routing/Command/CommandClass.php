@@ -36,7 +36,7 @@ class CommandClass
         name: self::NAME,
         description: self::DESCRIPTION,
         helpText: new Message(self::HELP_TEXT),
-        parameters: [
+        options: [
             new OptionParameter(
                 name: 'command',
                 description: 'The name of the command to get help for',

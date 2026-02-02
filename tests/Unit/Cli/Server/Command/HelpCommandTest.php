@@ -122,7 +122,7 @@ class HelpCommandTest extends TestCase
             description: $description,
             helpText: new Message(text: $helpText),
             dispatch: new MethodDispatch(class: self::class, method: '__construct'),
-            parameters: [
+            arguments: [
                 new ArgumentParameter(
                     name: 'argument1',
                     description: 'Argument 1 description',
@@ -132,6 +132,8 @@ class HelpCommandTest extends TestCase
                     description: 'Argument 2 description',
                     valueMode: ArgumentValueMode::ARRAY
                 ),
+            ],
+            options: [
                 new OptionParameter(
                     name: 'option1',
                     description: 'Option 1 description',

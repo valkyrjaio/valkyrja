@@ -46,7 +46,7 @@ class ListCommand
         name: CommandName::LIST,
         description: 'List all commands',
         helpText: new Message('A command to list all the commands present within the Cli component.'),
-        parameters: [
+        options: [
             new OptionParameter(
                 name: 'namespace',
                 description: 'An optional namespace to filter commands by',

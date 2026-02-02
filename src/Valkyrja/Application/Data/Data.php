@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Data;
 
-use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Event\Data\Data as EventData;
 
 readonly class Data
 {
     public function __construct(
         public EventData $event = new EventData(),
-        public CliData $cli = new CliData(),
     ) {
     }
 }

@@ -58,6 +58,50 @@ class OptionParameterTest extends TestCase
         self::assertTrue($parameter->areValuesValid());
     }
 
+    public function testSetState(): void
+    {
+        $name             = self::NAME;
+        $description      = self::DESCRIPTION;
+        $cast             = new Cast(type: CastType::bool);
+        $shortName        = 's';
+        $shortName2       = 'ss';
+        $shortNames       = [$shortName, $shortName2];
+        $mode             = OptionMode::REQUIRED;
+        $valueMode        = OptionValueMode::ARRAY;
+        $validValues      = ['a', 'b'];
+        $option           = new Option(name: 'test', value: 'a');
+        $options          = [$option];
+        $defaultValue     = 'b';
+        $valueDisplayName = 'test';
+
+        $parameter = OptionParameter::__set_state([
+            'name'             => $name,
+            'description'      => $description,
+            'cast'             => $cast,
+            'shortNames'       => $shortNames,
+            'mode'             => $mode,
+            'valueMode'        => $valueMode,
+            'validValues'      => $validValues,
+            'options'          => $options,
+            'defaultValue'     => $defaultValue,
+            'valueDisplayName' => $valueDisplayName,
+        ]);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($description, $parameter->getDescription());
+        self::assertSame($cast, $parameter->getCast());
+        self::assertSame($valueDisplayName, $parameter->getValueDisplayName());
+        self::assertSame($defaultValue, $parameter->getDefaultValue());
+        self::assertSame($shortNames, $parameter->getShortNames());
+        self::assertSame($validValues, $parameter->getValidValues());
+        self::assertSame($options, $parameter->getOptions());
+        self::assertSame($mode, $parameter->getMode());
+        self::assertSame($valueMode, $parameter->getValueMode());
+        self::assertNotEmpty($parameter->getCastValues());
+        self::assertSame('a', $parameter->getFirstValue());
+        self::assertTrue($parameter->areValuesValid());
+    }
+
     public function testName(): void
     {
         $name        = self::NAME;

@@ -21,18 +21,11 @@ use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
-use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 class Route implements RouteContract
 {
-    /** @var ArgumentParameterContract[] */
-    protected array $arguments = [];
-
-    /** @var OptionParameterContract[] */
-    protected array $options = [];
-
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
@@ -41,7 +34,8 @@ class Route implements RouteContract
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware          The exited middleware
-     * @param ParameterContract[]                               $parameters                The parameters
+     * @param ArgumentParameterContract[]                       $arguments                 The arguments
+     * @param OptionParameterContract[]                         $options                   The options
      */
     public function __construct(
         protected string $name,
@@ -52,15 +46,28 @@ class Route implements RouteContract
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $exitedMiddleware = [],
-        array $parameters = [],
+        protected array $arguments = [],
+        protected array $options = [],
     ) {
-        foreach ($parameters as $parameter) {
-            if ($parameter instanceof ArgumentParameterContract) {
-                $this->arguments[] = $parameter;
-            } elseif ($parameter instanceof OptionParameterContract) {
-                $this->options[] = $parameter;
-            }
-        }
+    }
+
+    /**
+     * @param array{
+     *     name: non-empty-string,
+     *     description: non-empty-string,
+     *     helpText: MessageContract,
+     *     dispatch: MethodDispatchContract,
+     *     routeMatchedMiddleware: class-string<RouteMatchedMiddlewareContract>[],
+     *     routeDispatchedMiddleware: class-string<RouteDispatchedMiddlewareContract>[],
+     *     throwableCaughtMiddleware: class-string<ThrowableCaughtMiddlewareContract>[],
+     *     exitedMiddleware: class-string<ExitedMiddlewareContract>[],
+     *     arguments: ArgumentParameterContract[],
+     *     options: OptionParameterContract[],
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(...$array);
     }
 
     /**

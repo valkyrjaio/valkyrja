@@ -28,7 +28,7 @@ class DataTest extends TestCase
     {
         $data = new Data();
 
-        self::assertEmpty($data->commands);
+        self::assertEmpty($data->routes);
     }
 
     public function testWithCommands(): void
@@ -40,6 +40,6 @@ class DataTest extends TestCase
 
         $data = new Data($commands);
 
-        self::assertSame($commands, $data->commands);
+        self::assertSame($commands, $data->routes);
     }
 }

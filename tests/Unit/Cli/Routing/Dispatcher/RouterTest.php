@@ -205,7 +205,7 @@ class RouterTest extends TestCase
             description: 'Test Command',
             helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
-            parameters: [
+            arguments: [
                 new ArgumentParameter(
                     name: 'arg1',
                     description: 'description',
@@ -239,7 +239,7 @@ class RouterTest extends TestCase
             description: 'Test Command',
             helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
-            parameters: [
+            options: [
                 new OptionParameter(
                     name: 'option',
                     description: 'option description',

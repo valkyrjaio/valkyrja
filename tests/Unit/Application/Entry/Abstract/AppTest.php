@@ -170,7 +170,7 @@ class AppTest extends TestCase
 
         self::assertTrue($container->has(ContainerData::class));
         self::assertTrue($container->has(EventData::class));
-        self::assertTrue($container->has(CliData::class));
+        self::assertFalse($container->has(CliData::class));
         self::assertFalse($container->has(HttpData::class));
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());

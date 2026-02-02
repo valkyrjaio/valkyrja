@@ -13,25 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collection;
 
+use Closure;
 use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
-use Valkyrja\Cli\Routing\Constant\AllowedClasses;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
-use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
+
+use function is_callable;
 
 class Collection implements CollectionContract
 {
-    /** @var array<string, RouteContract> */
-    protected array $commands = [];
-
-    /**
-     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
-     */
-    public function __construct(
-        protected array $allowedClasses = AllowedClasses::COLLECTION,
-    ) {
-    }
+    /** @var array<string, RouteContract|Closure():RouteContract> */
+    protected array $routes = [];
 
     /**
      * Get a data representation of the collection.
@@ -40,7 +33,7 @@ class Collection implements CollectionContract
     public function getData(): Data
     {
         return new Data(
-            commands: array_map(static fn (RouteContract $command): string => serialize($command), $this->commands),
+            routes: $this->routes,
         );
     }
 
@@ -50,16 +43,7 @@ class Collection implements CollectionContract
     #[Override]
     public function setFromData(Data $data): void
     {
-        foreach ($data->commands as $id => $commandSerialized) {
-            /** @var mixed $command */
-            $command = unserialize($commandSerialized, ['allowed_classes' => $this->allowedClasses]);
-
-            if (! $command instanceof RouteContract) {
-                throw new RuntimeException('Invalid command unserialized');
-            }
-
-            $this->commands[$id] = $command;
-        }
+        $this->routes = $data->routes;
     }
 
     /**
@@ -69,7 +53,7 @@ class Collection implements CollectionContract
     public function add(RouteContract ...$commands): static
     {
         foreach ($commands as $command) {
-            $this->commands[$command->getName()] = $command;
+            $this->routes[$command->getName()] = $command;
         }
 
         return $this;
@@ -81,8 +65,14 @@ class Collection implements CollectionContract
     #[Override]
     public function get(string $name): RouteContract|null
     {
-        return $this->commands[$name]
+        $route = $this->routes[$name]
             ?? null;
+
+        if ($route !== null) {
+            return $this->ensureRoute($route);
+        }
+
+        return null;
     }
 
     /**
@@ -91,7 +81,7 @@ class Collection implements CollectionContract
     #[Override]
     public function has(string $name): bool
     {
-        return isset($this->commands[$name]);
+        return isset($this->routes[$name]);
     }
 
     /**
@@ -100,6 +90,23 @@ class Collection implements CollectionContract
     #[Override]
     public function all(): array
     {
-        return $this->commands;
+        return array_map(
+            fn (RouteContract|Closure $route): RouteContract => $this->ensureRoute($route),
+            $this->routes
+        );
+    }
+
+    /**
+     * Ensure a route, or null, is returned.
+     *
+     * @param RouteContract|Closure():RouteContract $route The route
+     */
+    protected function ensureRoute(RouteContract|Closure $route): RouteContract
+    {
+        if (is_callable($route)) {
+            return $route();
+        }
+
+        return $route;
     }
 }

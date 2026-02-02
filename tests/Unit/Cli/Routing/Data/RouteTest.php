@@ -64,6 +64,48 @@ class RouteTest extends TestCase
         self::assertEmpty($route->getExitedMiddleware());
     }
 
+    public function testSetState(): void
+    {
+        $name                      = self::NAME;
+        $description               = self::DESCRIPTION;
+        $helpText                  = new Message('help text');
+        $dispatch                  = new MethodDispatch(class: self::class, method: '__construct');
+        $options                   = [new OptionParameter(name: 'test', description: 'test description')];
+        $arguments                 = [new ArgumentParameter(name: 'test', description: 'test description')];
+        $routeMatchedMiddleware    = [RouteMatchedMiddlewareClass::class];
+        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareClass::class];
+        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
+        $exitedMiddleware          = [ExitedMiddlewareClass::class];
+
+        $route = Route::__set_state([
+            'name'                      => $name,
+            'description'               => $description,
+            'helpText'                  => $helpText,
+            'dispatch'                  => $dispatch,
+            'arguments'                 => $arguments,
+            'options'                   => $options,
+            'routeMatchedMiddleware'    => $routeMatchedMiddleware,
+            'routeDispatchedMiddleware' => $routeDispatchedMiddleware,
+            'throwableCaughtMiddleware' => $throwableCaughtMiddleware,
+            'exitedMiddleware'          => $exitedMiddleware,
+        ]);
+
+        self::assertSame($name, $route->getName());
+        self::assertSame($description, $route->getDescription());
+        self::assertSame($helpText, $route->getHelpText());
+        self::assertSame($dispatch, $route->getDispatch());
+        self::assertTrue($route->hasArguments());
+        self::assertNotNull($route->getArgument('test'));
+        self::assertSame($arguments, $route->getArguments());
+        self::assertTrue($route->hasOptions());
+        self::assertNotNull($route->getOption('test'));
+        self::assertSame($options, $route->getOptions());
+        self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
+        self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
+        self::assertSame($throwableCaughtMiddleware, $route->getThrowableCaughtMiddleware());
+        self::assertSame($exitedMiddleware, $route->getExitedMiddleware());
+    }
+
     public function testName(): void
     {
         $name        = self::NAME;
@@ -259,7 +301,7 @@ class RouteTest extends TestCase
             description: $description,
             helpText: $helpText,
             dispatch: $dispatch,
-            parameters: [$argument]
+            arguments: [$argument]
         );
         $route2 = $route->withArguments($argument2);
         $route3 = $route->withAddedArguments($argument2);
@@ -346,7 +388,7 @@ class RouteTest extends TestCase
             description: $description,
             helpText: $helpText,
             dispatch: $dispatch,
-            parameters: [$option]
+            options: [$option]
         );
         $route2 = $route->withOptions($option2);
         $route3 = $route->withAddedOptions($option2);

@@ -31,10 +31,13 @@ use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
+use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -50,6 +53,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -57,6 +61,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CollectorContract::class, ServiceProvider::provides());
         self::assertContains(RouterContract::class, ServiceProvider::provides());
         self::assertContains(CollectionContract::class, ServiceProvider::provides());
+        self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
     }
 
     /**
@@ -110,6 +115,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
 
         $command = new Route(
             name: 'test',
@@ -118,11 +124,28 @@ class ServiceProviderTest extends ServiceProviderTestCase
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->method('getRoutes')->willReturn([$command]);
+        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
         self::assertNotNull($collection->get('test'));
+    }
+
+    public function testPublishDataFileGenerator(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+
+        self::assertFalse($container->has(CollectorContract::class));
+
+        $callback = ServiceProvider::publishers()[DataFileGeneratorContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(DataFileGeneratorContract::class));
+        self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
+        self::assertInstanceOf(DataFileGenerator::class, $container->getSingleton(DataFileGeneratorContract::class));
     }
 }

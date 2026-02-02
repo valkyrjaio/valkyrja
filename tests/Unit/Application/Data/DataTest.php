@@ -25,8 +25,6 @@ class DataTest extends TestCase
     {
         $data = new Data();
 
-        self::assertEmpty($data->cli->commands);
-
         self::assertEmpty($data->event->events);
         self::assertEmpty($data->event->listeners);
     }

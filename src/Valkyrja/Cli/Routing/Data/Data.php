@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Closure;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+
 readonly class Data
 {
     /**
-     * @param array<string, string> $commands
+     * @param array<string, RouteContract|Closure():RouteContract> $routes
      */
     public function __construct(
-        public array $commands = []
+        public array $routes = []
     ) {
     }
 }
