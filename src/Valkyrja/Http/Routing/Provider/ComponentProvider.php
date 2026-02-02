@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 class ComponentProvider extends Provider
 {
@@ -26,6 +27,17 @@ class ComponentProvider extends Provider
     {
         return [
             ServiceProvider::class,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getCliControllers(): array
+    {
+        return [
+            ListCommand::class,
         ];
     }
 }
