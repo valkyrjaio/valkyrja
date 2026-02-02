@@ -1,6 +1,39 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.25.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.26.0...master)
+
+## [v25.26.0](https://github.com/valkyrjaio/valkyrja/compare/v25.25.1...v25.26.0) - 2026-02-02
+
+* [Cli] Move command name constants from commands to new Constant class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/478
+* [Http] Move middleware from Routing to Server by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/479
+* [Cli] Move middleware from Routing to Server. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/480
+* [Http] Update Header classes to fix string support by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/481
+* [Http] Use Header instead of array of strings in Message by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/482
+* [Http] Remove response classes default param value constants. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/483
+* [Http] Remove unfinished component files in Uri namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/485
+* [Http] Reorganize factory classes in Message namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/484
+* [Cli] Reorganize factory classes in Interaction namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/486
+* [Http] Add spaces to headers and trim whitespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/487
+* [Http] Add test to cover empty uri default by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/488
+* [Http] Simplify RedirectResponse::isInternalUri bool return by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/489
+* [Http] Remove mapping in Header and Value classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/490
+* [Cli] Fix incorrect dependency for commands. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/492
+* [Application] Restructure application by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/491
+* [Container] Deprecate container attributes. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/493
+* [Throwable] Fix issue where Whoops is not installed via composer by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/494
+* [Support] Update the directory cache path by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/495
+* [Support] Add file generator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/496
+* [Container] Add new data cache procedure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/497
+* [Http] Add new routes data cache procedure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/498
+* [Http] Add tests for DataFileGenerator in ServiceProviderTest by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/499
+* [Http] Use array unpacking for set state by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/500
+* [Dispatch] Use array unpacking for set state. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/501
+* [Cli] Add new routes data cache procedure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/502
+* [Http] Remove unused allowed classes constant by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/503
+* [Cli] Remove unused AllowedClasses class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/504
+* [Event] Add new listeners data cache procedure. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/505
+* [Application] Remove application component from required by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/506
+* [CI] Update psalm to v6.15.0 from v6.14.3 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/507
 
 ## [v25.25.1](https://github.com/valkyrjaio/valkyrja/compare/v25.25.0...v25.25.1) - 2026-01-29
 
