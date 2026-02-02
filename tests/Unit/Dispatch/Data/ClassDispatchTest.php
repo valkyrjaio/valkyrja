@@ -42,6 +42,23 @@ class ClassDispatchTest extends TestCase
         self::assertSame(self::class, $newDispatch->__toString());
     }
 
+    public function testSetState(): void
+    {
+        $class        = InvalidDispatcherClass::class;
+        $arguments    = ['arg' => 'value'];
+        $dependencies = ['dependency' => self::class];
+
+        $dispatch = ClassDispatch::__set_state([
+            'class'        => $class,
+            'arguments'    => $arguments,
+            'dependencies' => $dependencies,
+        ]);
+
+        self::assertSame($class, $dispatch->getClass());
+        self::assertSame($arguments, $dispatch->getArguments());
+        self::assertSame($dependencies, $dispatch->getDependencies());
+    }
+
     public function testArguments(): void
     {
         $class     = InvalidDispatcherClass::class;

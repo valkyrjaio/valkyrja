@@ -39,6 +39,35 @@ class ParameterTest extends TestCase
         self::assertNull($parameter->getDefault());
     }
 
+    public function testSetState(): void
+    {
+        $name          = 'name';
+        $regex         = 'regex';
+        $cast          = new Cast(CastType::false);
+        $isOptional    = true;
+        $shouldCapture = false;
+        $default       = 'default';
+        $value         = 'value';
+
+        $parameter = Parameter::__set_state([
+            'name'          => $name,
+            'regex'         => $regex,
+            'cast'          => $cast,
+            'isOptional'    => $isOptional,
+            'shouldCapture' => $shouldCapture,
+            'default'       => $default,
+            'value'         => $value,
+        ]);
+
+        self::assertSame($name, $parameter->getName());
+        self::assertSame($regex, $parameter->getRegex());
+        self::assertSame($cast, $parameter->getCast());
+        self::assertSame($isOptional, $parameter->isOptional());
+        self::assertSame($shouldCapture, $parameter->shouldCapture());
+        self::assertSame($default, $parameter->getDefault());
+        self::assertSame($value, $parameter->getValue());
+    }
+
     public function testName(): void
     {
         $name  = 'name';

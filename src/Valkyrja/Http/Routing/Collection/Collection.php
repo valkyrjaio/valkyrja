@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Collection;
 
+use Closure;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
-use Valkyrja\Http\Routing\Constant\AllowedClasses;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Routing\Throwable\Exception\RuntimeException;
 
 use function array_map;
+use function is_callable;
 use function is_string;
 
 /**
@@ -36,7 +37,7 @@ class Collection implements CollectionContract
     /**
      * The routes.
      *
-     * @var array<string, RouteContract|string>
+     * @var array<string, RouteContract|Closure():RouteContract>
      */
     protected array $routes = [];
 
@@ -55,14 +56,6 @@ class Collection implements CollectionContract
     protected array $dynamic = [];
 
     /**
-     * @param class-string[] $allowedClasses [optional] The allowed classes to unserialize
-     */
-    public function __construct(
-        protected array $allowedClasses = AllowedClasses::COLLECTION,
-    ) {
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]
@@ -70,8 +63,8 @@ class Collection implements CollectionContract
     {
         return new Data(
             routes: array_map(
-                static fn (RouteContract|string $route): string => ! is_string($route)
-                    ? serialize($route)
+                static fn (RouteContract|Closure $route): RouteContract => is_callable($route)
+                    ? $route()
                     : $route,
                 $this->routes
             ),
@@ -359,14 +352,14 @@ class Collection implements CollectionContract
     /**
      * Ensure an array is an array of routes.
      *
-     * @param array<string, string|RouteContract> $routesArray The routes array
+     * @param array<string, RouteContract|string|Closure():RouteContract> $routesArray The routes array
      *
      * @return array<string, RouteContract>
      */
     protected function ensureRoutes(array $routesArray): array
     {
         return array_map(
-            fn (RouteContract|string $route): RouteContract => $this->ensureRoute($route),
+            fn (RouteContract|Closure|string $route): RouteContract => $this->ensureRoute($route),
             $routesArray
         );
     }
@@ -374,23 +367,16 @@ class Collection implements CollectionContract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param RouteContract|string $route The route
+     * @param RouteContract|string|Closure():RouteContract $route The route
      */
-    protected function ensureRoute(RouteContract|string $route): RouteContract
+    protected function ensureRoute(RouteContract|string|Closure $route): RouteContract
     {
-        if (is_string($route) && isset($this->routes[$route])) {
-            $route = $this->routes[$route];
+        if (is_string($route)) {
+            $route = $this->routes[$route] ?? throw new RuntimeException('Invalid route `$route` defined');
         }
 
-        if (is_string($route)) {
-            /** @var mixed $unserializedRoute */
-            $unserializedRoute = unserialize($route, ['allowed_classes' => $this->allowedClasses]);
-
-            if (! $unserializedRoute instanceof RouteContract) {
-                throw new InvalidArgumentException('Invalid object serialized.');
-            }
-
-            return $unserializedRoute;
+        if (is_callable($route)) {
+            return $route();
         }
 
         return $route;

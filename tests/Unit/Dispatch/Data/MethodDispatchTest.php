@@ -24,6 +24,26 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 class MethodDispatchTest extends TestCase
 {
+    public function testSetState(): void
+    {
+        $class        = InvalidDispatcherClass::class;
+        $method       = 'method';
+        $arguments    = ['arg' => 'value'];
+        $dependencies = ['dependency' => self::class];
+
+        $dispatch = MethodDispatch::__set_state([
+            'class'        => $class, 'method' => 'method', 'isStatic' => false,
+            'arguments'    => $arguments,
+            'dependencies' => $dependencies,
+        ]);
+
+        self::assertSame($class, $dispatch->getClass());
+        self::assertSame($method, $dispatch->getMethod());
+        self::assertSame($arguments, $dispatch->getArguments());
+        self::assertSame($dependencies, $dispatch->getDependencies());
+        self::assertFalse($dispatch->isStatic());
+    }
+
     public function testFromCallableOrArray(): void
     {
         $dispatch  = MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'method']);

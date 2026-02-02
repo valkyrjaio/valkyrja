@@ -43,6 +43,29 @@ class MethodDispatch extends ClassDispatch implements MethodDispatchContract
     }
 
     /**
+     * @psalm-suppress ImplementedParamTypeMismatch
+     *
+     * @param array{
+     *     class: class-string,
+     *     method: non-empty-string,
+     *     isStatic: bool,
+     *     arguments: array<non-empty-string, mixed>|null,
+     *     dependencies: array<non-empty-string, class-string>|null,
+     * } $array The array
+     */
+    #[Override]
+    public static function __set_state(array $array): static
+    {
+        return new static(
+            class: $array['class'],
+            method: $array['method'],
+            isStatic: $array['isStatic'],
+            arguments: $array['arguments'] ?? null,
+            dependencies: $array['dependencies'] ?? null
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]

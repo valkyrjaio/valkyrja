@@ -26,7 +26,6 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollectionContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpCollectionContract;
 use Valkyrja\Support\Directory\Directory;
 
 use const LOCK_EX;
@@ -43,7 +42,6 @@ class CacheCommand
     public function run(
         CliCollectionContract $cliCollection,
         EventCollection $eventCollection,
-        HttpCollectionContract $routerCollection,
         Env $env,
         OutputFactoryContract $outputFactory
     ): OutputContract {
@@ -59,7 +57,6 @@ class CacheCommand
         $data = new Data(
             event: $eventCollection->getData(),
             cli: $cliCollection->getData(),
-            http: $routerCollection->getData(),
         );
 
         // Get the results of the cache attempt

@@ -31,12 +31,13 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Http\Routing\Constant\AllowedClasses;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
+use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -44,6 +45,7 @@ use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Support\Directory\Directory;
 
 final class ServiceProvider extends Provider
 {
@@ -54,13 +56,14 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            RouterContract::class          => [self::class, 'publishRouter'],
-            CollectionContract::class      => [self::class, 'publishCollection'],
-            MatcherContract::class         => [self::class, 'publishMatcher'],
-            UrlContract::class             => [self::class, 'publishUrl'],
-            CollectorContract::class       => [self::class, 'publishAttributesCollector'],
-            ProcessorContract::class       => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+            RouterContract::class            => [self::class, 'publishRouter'],
+            CollectionContract::class        => [self::class, 'publishCollection'],
+            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            MatcherContract::class           => [self::class, 'publishMatcher'],
+            UrlContract::class               => [self::class, 'publishUrl'],
+            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
+            ProcessorContract::class         => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -73,6 +76,7 @@ final class ServiceProvider extends Provider
         return [
             RouterContract::class,
             CollectionContract::class,
+            DataFileGeneratorContract::class,
             MatcherContract::class,
             UrlContract::class,
             CollectorContract::class,
@@ -119,19 +123,32 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string[] $allowedClasses */
-        $allowedClasses = $env::HTTP_ROUTING_COLLECTION_ALLOWED_CLASSES
-            ?? AllowedClasses::COLLECTION;
-
         $container->setSingleton(
             CollectionContract::class,
-            $collection = new Collection(allowedClasses: $allowedClasses)
+            $collection = new Collection()
         );
 
-        if ($container->isSingleton(Data::class)) {
-            $data = $container->getSingleton(Data::class);
+        $data = null;
+        $env  = $container->getSingleton(Env::class);
 
+        /** @var bool $useCache */
+        $useCache = $env::HTTP_ROUTING_COLLECTION_USE_CACHE
+            ?? false;
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+            ?? '/routes.php';
+        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+
+        if ($useCache && is_file(filename: $absoluteCacheFilePath)) {
+            /**
+             * @psalm-suppress UnresolvableInclude
+             *
+             * @var mixed $data The data
+             */
+            $data = require $absoluteCacheFilePath;
+        }
+
+        if ($data instanceof Data) {
             $collection->setFromData($data);
 
             return;
@@ -149,6 +166,34 @@ final class ServiceProvider extends Provider
             // Set the route
             $collection->add($route);
         }
+
+        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator->generateFile();
+
+        $container->setSingleton(Data::class, $collection->getData());
+    }
+
+    /**
+     * Publish the data file generator service.
+     */
+    public static function publishDataFileGenerator(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+            ?? '/routes.php';
+        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+
+        $collection = $container->getSingleton(CollectionContract::class);
+
+        $container->setSingleton(
+            DataFileGeneratorContract::class,
+            new DataFileGenerator(
+                filePath: $absoluteCacheFilePath,
+                data: $collection->getData(),
+            )
+        );
     }
 
     /**

@@ -37,6 +37,30 @@ class Parameter implements ParameterContract
     }
 
     /**
+     * @param array{
+     *     name: non-empty-string,
+     *     regex: non-empty-string,
+     *     cast: Cast|null,
+     *     isOptional: bool,
+     *     shouldCapture: bool,
+     *     default: array<scalar|object>|scalar|object|null,
+     *     value: array<scalar|object>|scalar|object|null,
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(
+            name: $array['name'],
+            regex: $array['regex'],
+            cast: $array['cast'] ?? null,
+            isOptional: $array['isOptional'],
+            shouldCapture: $array['shouldCapture'],
+            default: $array['default'] ?? null,
+            value: $array['value'] ?? null
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]

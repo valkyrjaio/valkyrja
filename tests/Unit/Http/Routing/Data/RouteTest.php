@@ -66,6 +66,54 @@ class RouteTest extends TestCase
         self::assertNull($route->getResponseStruct());
     }
 
+    public function testSetState(): void
+    {
+        $path                      = '/';
+        $name                      = 'route';
+        $dispatch                  = new MethodDispatch(self::class, 'dispatch');
+        $methods                   = [RequestMethod::HEAD, RequestMethod::POST];
+        $regex                     = 'regex';
+        $parameters                = [new Parameter(name: 'test', regex: Regex::ALPHA)];
+        $routeMatchedMiddleware    = [RouteMatchedMiddlewareClass::class];
+        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareClass::class];
+        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
+        $sendingResponseMiddleware = [SendingResponseMiddlewareClass::class];
+        $terminatedMiddleware      = [TerminatedMiddlewareClass::class];
+        $requestStruct             = IndexedJsonRequestStructEnum::class;
+        $responseStruct            = ResponseStructEnum::class;
+
+        $route = Route::__set_state([
+            'path'                      => $path,
+            'name'                      => $name,
+            'dispatch'                  => $dispatch,
+            'requestMethods'            => $methods,
+            'regex'                     => $regex,
+            'parameters'                => $parameters,
+            'routeMatchedMiddleware'    => $routeMatchedMiddleware,
+            'routeDispatchedMiddleware' => $routeDispatchedMiddleware,
+            'throwableCaughtMiddleware' => $throwableCaughtMiddleware,
+            'sendingResponseMiddleware' => $sendingResponseMiddleware,
+            'terminatedMiddleware'      => $terminatedMiddleware,
+            'requestStruct'             => $requestStruct,
+            'responseStruct'            => $responseStruct,
+        ]);
+
+        self::assertSame($path, $route->getPath());
+        self::assertSame($name, $route->getName());
+        self::assertSame(self::class, $route->getDispatch()->getClass());
+        self::assertSame('dispatch', $route->getDispatch()->getMethod());
+        self::assertSame($methods, $route->getRequestMethods());
+        self::assertSame($regex, $route->getRegex());
+        self::assertSame($parameters, $route->getParameters());
+        self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
+        self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
+        self::assertSame($throwableCaughtMiddleware, $route->getThrowableCaughtMiddleware());
+        self::assertSame($sendingResponseMiddleware, $route->getSendingResponseMiddleware());
+        self::assertSame($terminatedMiddleware, $route->getTerminatedMiddleware());
+        self::assertSame($requestStruct, $route->getRequestStruct());
+        self::assertSame($responseStruct, $route->getResponseStruct());
+    }
+
     public function testPath(): void
     {
         $path  = '/';

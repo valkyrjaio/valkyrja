@@ -16,12 +16,13 @@ namespace Valkyrja\Tests\Unit\Application\Entry;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
-use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -59,6 +60,10 @@ class HttpTest extends TestCase
             public const bool|null CONTAINER_USE_CACHE = true;
             /** @var non-empty-string|null */
             public const string|null CONTAINER_CACHE_FILE_PATH = 'AppTestHttp-container.php';
+            /** @var bool|null */
+            public const bool|null HTTP_ROUTING_COLLECTION_USE_CACHE = true;
+            /** @var non-empty-string|null */
+            public const string|null HTTP_ROUTING_COLLECTION_FILE_PATH = 'AppTestHttp-routes.php';
         };
         /** @var non-empty-string $dir */
         $dir = $env::APP_DIR;
@@ -68,9 +73,14 @@ class HttpTest extends TestCase
         $containerCacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
             ?? '/container.php';
         $absoluteContainerCacheFilePath = Directory::cachePath($containerCacheFilePath);
+        /** @var non-empty-string $containerCacheFilePath */
+        $routesCacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+            ?? '/routes.php';
+        $absoluteRoutesCacheFilePath = Directory::cachePath($routesCacheFilePath);
 
         @unlink($filepath);
         @unlink($absoluteContainerCacheFilePath);
+        @unlink($absoluteRoutesCacheFilePath);
 
         $application = Http::app($env);
         $container   = $application->getContainer();
@@ -87,11 +97,12 @@ class HttpTest extends TestCase
         $data = new Data(
             event: new EventData(),
             cli: new CliData(),
-            http: $http->getData()
         );
 
-        $dataFileGenerator = $container->getSingleton(DataFileGeneratorContract::class);
-        $dataFileGenerator->generateFile($container->getData());
+        $dataFileGenerator = new DataFileGenerator($absoluteContainerCacheFilePath, $container->getData());
+        $dataFileGenerator->generateFile();
+        $httpDataFileGenerator = new HttpDataFileGenerator($absoluteRoutesCacheFilePath, $http->getData());
+        $httpDataFileGenerator->generateFile();
 
         file_put_contents($filepath, serialize($data), LOCK_EX);
 
@@ -103,6 +114,7 @@ class HttpTest extends TestCase
 
         @unlink($filepath);
         @unlink($absoluteContainerCacheFilePath);
+        @unlink($absoluteRoutesCacheFilePath);
         self::$runCalled = false;
     }
 }
