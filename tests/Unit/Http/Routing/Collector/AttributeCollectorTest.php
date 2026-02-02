@@ -15,8 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Collector;
 
 use ReflectionException;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\AllMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
@@ -24,7 +23,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerAttributedClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerClass;
-use Valkyrja\Tests\Classes\Http\Routing\Controller\InvalidControllerClass;
+use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerWithAllMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -81,15 +80,20 @@ class AttributeCollectorTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function testInvalidMiddleware(): void
+    public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
-        $middlewareClass = RequestReceivedMiddlewareClass::class;
+        $routes = new AttributeCollector()->getRoutes(ControllerWithAllMiddlewareClass::class);
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Unsupported middleware class `$middlewareClass`");
+        self::assertCount(1, $routes);
 
-        $collector = new AttributeCollector();
+        $route = $routes[0];
 
-        $collector->getRoutes(InvalidControllerClass::class);
+        self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_PATH, $route->getPath());
+        self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_NAME, $route->getName());
+        self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getSendingResponseMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getTerminatedMiddleware());
+        self::assertSame([AllMiddlewareClass::class], $route->getThrowableCaughtMiddleware());
     }
 }
