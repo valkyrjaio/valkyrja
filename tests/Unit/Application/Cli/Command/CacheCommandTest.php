@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Application\Cli\Command;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Cli\Routing\Collection\Collection as CliCollection;
 use Valkyrja\Event\Collection\Collection as EventCollection;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -43,19 +42,16 @@ class CacheCommandTest extends TestCase
         self::assertFileExists($filepath);
 
         $command   = new CacheCommand();
-        $cli       = new CliCollection();
         $event     = new EventCollection();
 
         $data = new Data(
             event: $event->getData(),
-            cli: $cli->getData(),
         );
 
         $serializedData = serialize($data);
 
         ob_start();
         $output = $command->run(
-            cliCollection: $cli,
             eventCollection: $event,
             env: $env,
             outputFactory: new OutputFactory()
@@ -86,12 +82,10 @@ class CacheCommandTest extends TestCase
         $filepath = $env::APP_CACHE_FILE_PATH;
 
         $command   = new CacheCommand();
-        $cli       = new CliCollection();
         $event     = new EventCollection();
 
         ob_start();
         $output = $command->run(
-            cliCollection: $cli,
             eventCollection: $event,
             env: $env,
             outputFactory: new OutputFactory()

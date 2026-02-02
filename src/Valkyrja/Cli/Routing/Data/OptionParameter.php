@@ -56,6 +56,25 @@ class OptionParameter extends Parameter implements OptionParameterContract
     }
 
     /**
+     * @param array{
+     *     name: non-empty-string,
+     *     description: non-empty-string,
+     *     cast: Cast|null,
+     *     valueDisplayName: non-empty-string|null,
+     *     defaultValue: non-empty-string|null,
+     *     shortNames: non-empty-string[],
+     *     validValues: non-empty-string[],
+     *     options: OptionContract[],
+     *     mode: OptionMode,
+     *     valueMode: OptionValueMode,
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(...$array);
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Format;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 
 class BackgroundColorFormat extends Format
@@ -23,5 +24,19 @@ class BackgroundColorFormat extends Format
             (string) $backgroundColor->value,
             (string) BackgroundColor::DEFAULT
         );
+    }
+
+    /**
+     * @param array{
+     *     setCode: non-empty-string,
+     *     unsetCode: non-empty-string,
+     * } $array The array
+     */
+    #[Override]
+    public static function __set_state(array $array): static
+    {
+        return new static(BackgroundColor::WHITE)
+            ->withSetCode($array['setCode'])
+            ->withUnsetCode($array['unsetCode']);
     }
 }

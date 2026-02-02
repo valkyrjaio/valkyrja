@@ -37,7 +37,6 @@ use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 use function array_column;
-use function array_merge;
 use function is_a;
 
 class AttributeCollector implements Contract
@@ -242,7 +241,8 @@ class AttributeCollector implements Contract
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             exitedMiddleware: $route->getExitedMiddleware(),
-            parameters: array_merge($route->getArguments(), $route->getOptions()),
+            arguments: $route->getArguments(),
+            options: $route->getOptions(),
         );
     }
 

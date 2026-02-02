@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Collection;
 
-use stdClass;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -22,11 +21,8 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-
-use function serialize;
 
 /**
  * Test the Collection class.
@@ -38,7 +34,7 @@ class CollectionTest extends TestCase
         $collection = new Collection();
 
         self::assertEmpty($collection->all());
-        self::assertEmpty($collection->getData()->commands);
+        self::assertEmpty($collection->getData()->routes);
         self::assertNull($collection->get('test'));
         self::assertFalse($collection->has('test'));
     }
@@ -56,7 +52,7 @@ class CollectionTest extends TestCase
         $collection->add($route);
 
         self::assertSame([$route->getName() => $route], $collection->all());
-        self::assertSame([$route->getName() => serialize($route)], $collection->getData()->commands);
+        self::assertSame([$route->getName() => $route], $collection->getData()->routes);
         self::assertSame($route, $collection->get($route->getName()));
         self::assertTrue($collection->has($route->getName()));
     }
@@ -71,14 +67,16 @@ class CollectionTest extends TestCase
                 new NewLine(),
             ),
             dispatch: new MethodDispatch(self::class, '__construct'),
-            parameters: [
+            arguments: [
                 new ArgumentParameter(name: 'test', description: 'test'),
+            ],
+            options: [
                 new OptionParameter(name: 'test', description: 'test'),
             ]
         );
 
         $data = new Data(
-            commands: [$route->getName() => serialize($route)]
+            routes: [$route->getName() => $routeClosure = static fn () => $route]
         );
 
         $collection = new Collection();
@@ -88,7 +86,7 @@ class CollectionTest extends TestCase
 
         self::assertNotEmpty($collection->all());
         self::assertInstanceOf(Route::class, $collection->all()[$route->getName()]);
-        self::assertSame([$route->getName() => serialize($route)], $collection->getData()->commands);
+        self::assertSame([$route->getName() => $routeClosure], $collection->getData()->routes);
         self::assertInstanceOf(Route::class, $routeFromCollection);
         self::assertSame($route->getName(), $routeFromCollection->getName());
         self::assertSame($route->getHelpText()->getText(), $routeFromCollection->getHelpText()->getText());
@@ -105,17 +103,5 @@ class CollectionTest extends TestCase
         self::assertSame($route->getDispatch()->getArguments(), $routeFromCollection->getDispatch()->getArguments());
         self::assertSame($route->getDispatch()->getDependencies(), $routeFromCollection->getDispatch()->getDependencies());
         self::assertTrue($collection->has($route->getName()));
-    }
-
-    public function testSetFromInvalidData(): void
-    {
-        $this->expectException(RuntimeException::class);
-
-        $data = new Data(
-            commands: ['test' => serialize(new stdClass())]
-        );
-
-        $collection = new Collection();
-        $collection->setFromData($data);
     }
 }

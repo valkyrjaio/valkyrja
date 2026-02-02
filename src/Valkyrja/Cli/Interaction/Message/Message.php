@@ -29,6 +29,17 @@ class Message implements MessageContract
     }
 
     /**
+     * @param array{
+     *     text: non-empty-string,
+     *     formatter: FormatterContract|null,
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(...$array);
+    }
+
+    /**
      * @inheritDoc
      *
      * @return non-empty-string

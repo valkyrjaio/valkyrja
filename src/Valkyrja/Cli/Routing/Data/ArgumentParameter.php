@@ -26,12 +26,10 @@ use function count;
 
 class ArgumentParameter extends Parameter implements ArgumentParameterContract
 {
-    /** @var ArgumentContract[] */
-    protected array $arguments = [];
-
     /**
-     * @param non-empty-string $name        The name
-     * @param non-empty-string $description The description
+     * @param non-empty-string   $name        The name
+     * @param non-empty-string   $description The description
+     * @param ArgumentContract[] $arguments   The arguments
      */
     public function __construct(
         string $name,
@@ -39,12 +37,28 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
         Cast|null $cast = null,
         protected ArgumentMode $mode = ArgumentMode::OPTIONAL,
         protected ArgumentValueMode $valueMode = ArgumentValueMode::DEFAULT,
+        protected array $arguments = [],
     ) {
         parent::__construct(
             name: $name,
             description: $description,
             cast: $cast
         );
+    }
+
+    /**
+     * @param array{
+     *     name: non-empty-string,
+     *     description: non-empty-string,
+     *     cast: Cast|null,
+     *     mode: ArgumentMode,
+     *     valueMode: ArgumentValueMode,
+     *     arguments: ArgumentContract[],
+     * } $array The array
+     */
+    public static function __set_state(array $array): static
+    {
+        return new static(...$array);
     }
 
     /**

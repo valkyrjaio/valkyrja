@@ -38,6 +38,20 @@ class BackgroundColorFormatTest extends TestCase
         self::assertInstanceOf(Format::class, $format);
     }
 
+    public function testSetState(): void
+    {
+        $setCode   = (string) BackgroundColor::WHITE->value;
+        $unsetCode = (string) BackgroundColor::DEFAULT;
+
+        $format = BackgroundColorFormat::__set_state([
+            'setCode'   => $setCode,
+            'unsetCode' => $unsetCode,
+        ]);
+
+        self::assertSame($setCode, $format->getSetCode());
+        self::assertSame($unsetCode, $format->getUnsetCode());
+    }
+
     public function testGetSetCode(): void
     {
         $format = new BackgroundColorFormat(BackgroundColor::RED);

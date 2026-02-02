@@ -21,7 +21,6 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
-use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -139,7 +138,6 @@ abstract class App
 
         if ($data instanceof Data) {
             $container->setSingleton(EventData::class, $data->event);
-            $container->setSingleton(CliData::class, $data->cli);
         }
 
         static::loadContainerData(container: $container);

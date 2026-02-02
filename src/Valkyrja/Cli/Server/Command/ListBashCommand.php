@@ -37,7 +37,7 @@ class ListBashCommand
         name: CommandName::LIST_BASH,
         description: 'List all commands for bash completion',
         helpText: new Message('A command to list all the commands present within the Cli component for bash completion.'),
-        parameters: [
+        arguments: [
             new ArgumentParameter(
                 name: 'applicationName',
                 description: 'The application name',

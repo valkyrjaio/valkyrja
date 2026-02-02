@@ -38,6 +38,19 @@ class FormatterTest extends TestCase
         self::assertSame($text, $formatter->formatText($text));
     }
 
+    public function testSetState(): void
+    {
+        $format = new StyleFormat(Style::BOLD);
+
+        $formatter = Formatter::__set_state([
+            'formats' => [
+                $format,
+            ],
+        ]);
+
+        self::assertSame([$format], $formatter->getFormats());
+    }
+
     public function testStyle(): void
     {
         $text     = 'text';

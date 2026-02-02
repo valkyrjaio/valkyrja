@@ -21,7 +21,8 @@ use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -39,7 +40,8 @@ class Route extends Model implements ReflectionAwareAttributeContract
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware          The exited middleware
-     * @param ParameterContract[]                               $parameters                The parameters
+     * @param ArgumentParameterContract[]                       $arguments                 The arguments
+     * @param OptionParameterContract[]                         $options                   The options
      */
     public function __construct(
         protected string $name,
@@ -50,7 +52,8 @@ class Route extends Model implements ReflectionAwareAttributeContract
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $exitedMiddleware = [],
-        array $parameters = [],
+        protected array $arguments = [],
+        protected array $options = [],
     ) {
         parent::__construct(
             name: $name,
@@ -61,7 +64,8 @@ class Route extends Model implements ReflectionAwareAttributeContract
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
             exitedMiddleware: $exitedMiddleware,
-            parameters: $parameters,
+            arguments: $arguments,
+            options: $options,
         );
     }
 }

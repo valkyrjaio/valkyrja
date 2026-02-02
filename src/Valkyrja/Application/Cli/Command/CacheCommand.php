@@ -24,7 +24,6 @@ use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollectionContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Support\Directory\Directory;
 
@@ -40,7 +39,6 @@ class CacheCommand
         helpText: new Message('A command to cache the config.'),
     )]
     public function run(
-        CliCollectionContract $cliCollection,
         EventCollection $eventCollection,
         Env $env,
         OutputFactoryContract $outputFactory
@@ -56,7 +54,6 @@ class CacheCommand
 
         $data = new Data(
             event: $eventCollection->getData(),
-            cli: $cliCollection->getData(),
         );
 
         // Get the results of the cache attempt

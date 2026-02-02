@@ -27,14 +27,16 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Cli\Routing\Constant\AllowedClasses;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
+use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Support\Directory\Directory;
 
 final class ServiceProvider extends Provider
 {
@@ -45,9 +47,10 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            CollectorContract::class  => [self::class, 'publishAttributeCollector'],
-            RouterContract::class     => [self::class, 'publishRouter'],
-            CollectionContract::class => [self::class, 'publishCollection'],
+            CollectorContract::class         => [self::class, 'publishAttributeCollector'],
+            RouterContract::class            => [self::class, 'publishRouter'],
+            CollectionContract::class        => [self::class, 'publishCollection'],
+            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
         ];
     }
 
@@ -61,6 +64,7 @@ final class ServiceProvider extends Provider
             CollectorContract::class,
             RouterContract::class,
             CollectionContract::class,
+            DataFileGeneratorContract::class,
         ];
     }
 
@@ -110,17 +114,36 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string[] $allowedClasses */
-        $allowedClasses = $env::CLI_ROUTING_COLLECTION_ALLOWED_CLASSES
-            ?? AllowedClasses::COLLECTION;
-
         $container->setSingleton(
             CollectionContract::class,
-            $collection = new Collection(
-                allowedClasses: $allowedClasses
-            )
+            $collection = new Collection()
         );
+
+        $data = null;
+        $env  = $container->getSingleton(Env::class);
+
+        /** @var bool $useCache */
+        $useCache = $env::CLI_ROUTING_COLLECTION_USE_CACHE
+            ?? false;
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::CLI_ROUTING_COLLECTION_FILE_PATH
+            ?? '/cli-routes.php';
+        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+
+        if ($useCache && is_file(filename: $absoluteCacheFilePath)) {
+            /**
+             * @psalm-suppress UnresolvableInclude
+             *
+             * @var mixed $data The data
+             */
+            $data = require $absoluteCacheFilePath;
+        }
+
+        if ($data instanceof Data) {
+            $collection->setFromData($data);
+
+            return;
+        }
 
         if ($container->isSingleton(Data::class)) {
             $data = $container->getSingleton(Data::class);
@@ -139,6 +162,34 @@ final class ServiceProvider extends Provider
         // Get all the attributes routes from the list of controllers
         $collection->add(
             ...$collector->getRoutes(...$controllers)
+        );
+
+        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator->generateFile();
+
+        $container->setSingleton(Data::class, $collection->getData());
+    }
+
+    /**
+     * Publish the data file generator service.
+     */
+    public static function publishDataFileGenerator(ContainerContract $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::CLI_ROUTING_COLLECTION_FILE_PATH
+            ?? '/cli-routes.php';
+        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+
+        $collection = $container->getSingleton(CollectionContract::class);
+
+        $container->setSingleton(
+            DataFileGeneratorContract::class,
+            new DataFileGenerator(
+                filePath: $absoluteCacheFilePath,
+                data: $collection->getData(),
+            )
         );
     }
 }

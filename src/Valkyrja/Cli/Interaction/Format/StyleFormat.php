@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Format;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\Style;
 
 class StyleFormat extends Format
@@ -23,5 +24,19 @@ class StyleFormat extends Format
             (string) $style->value,
             (string) Style::DEFAULTS[$style->value]
         );
+    }
+
+    /**
+     * @param array{
+     *     setCode: non-empty-string,
+     *     unsetCode: non-empty-string,
+     * } $array The array
+     */
+    #[Override]
+    public static function __set_state(array $array): static
+    {
+        return new static(Style::BOLD)
+            ->withSetCode($array['setCode'])
+            ->withUnsetCode($array['unsetCode']);
     }
 }
