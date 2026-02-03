@@ -196,25 +196,71 @@ class AttributeCollector implements Contract
         $middlewareClassNames = array_column($middleware, 'name');
 
         foreach ($middlewareClassNames as $middlewareClass) {
-            if (is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)) {
-                $route = $route->withAddedRouteMatchedMiddleware($middlewareClass);
-            }
+            $route = $this->updateRouteMatchedMiddleware($route, $middlewareClass);
+            $route = $this->updateRouteDispatchedMiddleware($route, $middlewareClass);
+            $route = $this->updateThrowableCaughtMiddleware($route, $middlewareClass);
+            $route = $this->updateSendingResponseMiddleware($route, $middlewareClass);
+            $route = $this->updateTerminatedMiddleware($route, $middlewareClass);
+        }
 
-            if (is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true)) {
-                $route = $route->withAddedRouteDispatchedMiddleware($middlewareClass);
-            }
+        return $route;
+    }
 
-            if (is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true)) {
-                $route = $route->withAddedThrowableCaughtMiddleware($middlewareClass);
-            }
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateRouteMatchedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, RouteMatchedMiddlewareContract::class, true)) {
+            $route = $route->withAddedRouteMatchedMiddleware($middleware);
+        }
 
-            if (is_a($middlewareClass, SendingResponseMiddlewareContract::class, true)) {
-                $route = $route->withAddedSendingResponseMiddleware($middlewareClass);
-            }
+        return $route;
+    }
 
-            if (is_a($middlewareClass, TerminatedMiddlewareContract::class, true)) {
-                $route = $route->withAddedTerminatedMiddleware($middlewareClass);
-            }
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateRouteDispatchedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, RouteDispatchedMiddlewareContract::class, true)) {
+            $route = $route->withAddedRouteDispatchedMiddleware($middleware);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateThrowableCaughtMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, ThrowableCaughtMiddlewareContract::class, true)) {
+            $route = $route->withAddedThrowableCaughtMiddleware($middleware);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateSendingResponseMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, SendingResponseMiddlewareContract::class, true)) {
+            $route = $route->withAddedSendingResponseMiddleware($middleware);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateTerminatedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, TerminatedMiddlewareContract::class, true)) {
+            $route = $route->withAddedTerminatedMiddleware($middleware);
         }
 
         return $route;
