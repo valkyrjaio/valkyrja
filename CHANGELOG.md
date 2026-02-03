@@ -1,6 +1,18 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.26.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.26.1...master)
+
+## [v25.26.1](https://github.com/valkyrjaio/valkyrja/compare/v25.26.0...v25.26.1) - 2026-02-02
+
+* [Application] Add missing tests for ComponentProvider methods. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/508
+* [Http] Remove the http:list command from component provider. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/509
+* Revert "[Http] Remove the http:list command from component provider." by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/510
+* [Bin] Update bin with new Env and ComponentProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/513
+* [Http] Fix adding middleware with multiple types in one file by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/511
+* [Cli] Fix adding middleware with multiple types in one file by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/512
+* [Cli] Fix spacing in list command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/514
+* [Http] Refactor middleware collector complexity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/515
+* [Cli] Refactor middleware collector complexity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/516
 
 ## [v25.26.0](https://github.com/valkyrjaio/valkyrja/compare/v25.25.1...v25.26.0) - 2026-02-02
 
