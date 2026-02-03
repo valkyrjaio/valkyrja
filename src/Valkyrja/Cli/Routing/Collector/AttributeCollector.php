@@ -159,21 +159,58 @@ class AttributeCollector implements Contract
         $middlewareClassNames = array_column($middleware, 'name');
 
         foreach ($middlewareClassNames as $middlewareClass) {
-            if (is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)) {
-                $route = $route->withAddedRouteMatchedMiddleware($middlewareClass);
-            }
+            $route = $this->updateRouteMatchedMiddleware($route, $middlewareClass);
+            $route = $this->updateRouteDispatchedMiddleware($route, $middlewareClass);
+            $route = $this->updateThrowableCaughtMiddleware($route, $middlewareClass);
+            $route = $this->updateExitedMiddleware($route, $middlewareClass);
+        }
 
-            if (is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true)) {
-                $route = $route->withAddedRouteDispatchedMiddleware($middlewareClass);
-            }
+        return $route;
+    }
 
-            if (is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true)) {
-                $route = $route->withAddedThrowableCaughtMiddleware($middlewareClass);
-            }
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateRouteMatchedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, RouteMatchedMiddlewareContract::class, true)) {
+            $route = $route->withAddedRouteMatchedMiddleware($middleware);
+        }
 
-            if (is_a($middlewareClass, ExitedMiddlewareContract::class, true)) {
-                $route = $route->withAddedExitedMiddleware($middlewareClass);
-            }
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateRouteDispatchedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, RouteDispatchedMiddlewareContract::class, true)) {
+            $route = $route->withAddedRouteDispatchedMiddleware($middleware);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateThrowableCaughtMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, ThrowableCaughtMiddlewareContract::class, true)) {
+            $route = $route->withAddedThrowableCaughtMiddleware($middleware);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string $middleware The middleware
+     */
+    protected function updateExitedMiddleware(Route $route, string $middleware): Route
+    {
+        if (is_a($middleware, ExitedMiddlewareContract::class, true)) {
+            $route = $route->withAddedExitedMiddleware($middleware);
         }
 
         return $route;
