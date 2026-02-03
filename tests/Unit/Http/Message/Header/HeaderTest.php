@@ -17,7 +17,6 @@ use JsonException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Value;
@@ -192,9 +191,11 @@ class HeaderTest extends TestCase
 
     public function testInvalidHeaderValue(): void
     {
-        $this->expectException(InvalidValueException::class);
+        // This value will be filtered to an empty string
+        $header = new Header('valid', "\x0a");
 
-        new Header('valid', "\x0a");
+        self::assertSame('', $header->getValuesAsString());
+        self::assertSame('', $header->getValues()[0]);
     }
 
     public function testUnsupportedOffsetSetException(): void

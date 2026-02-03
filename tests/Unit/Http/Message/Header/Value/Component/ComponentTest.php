@@ -86,4 +86,13 @@ class ComponentTest extends TestCase
         self::assertSame('', $component3->__toString());
         self::assertSame('token=test4', $component4->__toString());
     }
+
+    public function testInvalidParts(): void
+    {
+        // This value will be filtered to an empty string
+        $component = new Component("\x0a", "\x0a");
+
+        self::assertSame('', $component->getToken());
+        self::assertSame('', $component->getText());
+    }
 }

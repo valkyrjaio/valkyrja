@@ -139,6 +139,14 @@ class ValueTest extends TestCase
         }
     }
 
+    public function testInvalidValue(): void
+    {
+        // This value will be filtered to an empty string
+        $component = new Value("\x0a");
+
+        self::assertSame('', $component->getComponents()[0]);
+    }
+
     public function testUnsupportedOffsetSetException(): void
     {
         $this->expectException(UnsupportedOffsetSetException::class);

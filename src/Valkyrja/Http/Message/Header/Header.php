@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Header;
 
 use Override;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
-use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
@@ -291,19 +291,9 @@ class Header implements HeaderContract
         $this->position = 0;
     }
 
-    /**
-     * Map string values to Value objects.
-     *
-     * @return array<array-key, ValueContract|string>
-     */
-    protected function mapToValue(ValueContract|string ...$values): array
-    {
-        return $values;
-    }
-
     protected function updateName(string $name): void
     {
-        HeaderSecurity::assertValidName($name);
+        HeaderFactory::assertValidName($name);
 
         $this->name = $name;
 
@@ -312,8 +302,7 @@ class Header implements HeaderContract
 
     protected function updateValues(ValueContract|string ...$values): void
     {
-        $this->assertHeaderValues(...$values);
-        $this->values = $this->mapToValue(...$values);
+        $this->values = $this->filterValues(...$values);
     }
 
     protected function nameToString(): string
@@ -344,12 +333,20 @@ class Header implements HeaderContract
      *
      * @return array<array-key, ValueContract|string>
      */
-    protected function assertHeaderValues(ValueContract|string ...$values): array
+    protected function filterValues(ValueContract|string ...$values): array
     {
+        $filteredValues = [];
+
         foreach ($values as $value) {
-            HeaderSecurity::assertValid((string) $value);
+            if (is_string($value)) {
+                $value = HeaderFactory::filterValue($value);
+
+                HeaderFactory::assertValidValue($value);
+            }
+
+            $filteredValues[] = $value;
         }
 
-        return $values;
+        return $filteredValues;
     }
 }

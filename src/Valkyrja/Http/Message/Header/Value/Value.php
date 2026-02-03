@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value;
 
 use Override;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
@@ -50,7 +51,7 @@ class Value implements ValueContract
 
     public function __construct(ComponentContract|string ...$components)
     {
-        $this->components = $this->mapToPart(...$components);
+        $this->components = $this->filterComponents(...$components);
     }
 
     /**
@@ -85,7 +86,7 @@ class Value implements ValueContract
     {
         $new = clone $this;
 
-        $new->components = $this->mapToPart(...$components);
+        $new->components = $this->filterComponents(...$components);
 
         return $new;
     }
@@ -223,8 +224,20 @@ class Value implements ValueContract
      *
      * @return array<array-key, ComponentContract|string>
      */
-    protected function mapToPart(ComponentContract|string ...$parts): array
+    protected function filterComponents(ComponentContract|string ...$components): array
     {
-        return $parts;
+        $filteredComponents = [];
+
+        foreach ($components as $component) {
+            if (is_string($component)) {
+                $component = HeaderFactory::filterValue($component);
+
+                HeaderFactory::assertValidValue($component);
+            }
+
+            $filteredComponents[] = $component;
+        }
+
+        return $filteredComponents;
     }
 }

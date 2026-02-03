@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value\Component;
 
 use Override;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 
 use function explode;
@@ -35,8 +36,14 @@ class Component implements ComponentContract
         protected string $token,
         protected string|null $text = null
     ) {
+        $this->token = $this->filterPart($token);
+        $this->text  = $this->filterText($text);
     }
 
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public static function fromValue(string $value): static
     {
         $token = $value;
@@ -68,7 +75,7 @@ class Component implements ComponentContract
     {
         $new = clone $this;
 
-        $new->token = $token;
+        $new->token = $this->filterPart($token);
 
         return $new;
     }
@@ -90,7 +97,7 @@ class Component implements ComponentContract
     {
         $new = clone $this;
 
-        $new->text = $text;
+        $new->text = $this->filterText($text);
 
         return $new;
     }
@@ -112,5 +119,29 @@ class Component implements ComponentContract
         return $this->token !== '' && $this->text !== null && $this->text !== ''
             ? "$this->token=$this->text"
             : $this->token;
+    }
+
+    /**
+     * Filter text.
+     */
+    protected function filterText(string|null $text = null): string|null
+    {
+        if ($text === null) {
+            return null;
+        }
+
+        return $this->filterPart($text);
+    }
+
+    /**
+     * Filter a part of the component (token or text).
+     */
+    protected function filterPart(string $part): string
+    {
+        $part = HeaderFactory::filterValue($part);
+
+        HeaderFactory::assertValidValue($part);
+
+        return $part;
     }
 }
