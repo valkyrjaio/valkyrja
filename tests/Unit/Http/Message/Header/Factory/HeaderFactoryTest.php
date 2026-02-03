@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -231,5 +233,64 @@ class HeaderFactoryTest extends TestCase
 
         self::assertCount(0, $values);
         self::assertSame([], $values);
+    }
+
+    public function testFilter(): void
+    {
+        self::assertSame('test', HeaderFactory::filterValue('test'));
+        self::assertSame('test ', HeaderFactory::filterValue('test '));
+        self::assertSame('test foo', HeaderFactory::filterValue('test foo'));
+        self::assertSame('test foo', HeaderFactory::filterValue("test\n foo"));
+        self::assertSame("test\r\n foo", HeaderFactory::filterValue("test\r\n foo"));
+        self::assertSame("test\r\n   foo", HeaderFactory::filterValue("test\r\n   foo"));
+        self::assertSame('test foo', HeaderFactory::filterValue("test foo\n"));
+    }
+
+    public function testInvalidHeaderValue(): void
+    {
+        $this->expectException(InvalidValueException::class);
+
+        HeaderFactory::assertValidValue("\x0a");
+    }
+
+    public function testIsValid(): void
+    {
+        self::assertTrue(HeaderFactory::isValidValue('test'));
+        self::assertTrue(HeaderFactory::isValidValue('Test'));
+        self::assertTrue(HeaderFactory::isValidValue('Test-Header'));
+        self::assertTrue(HeaderFactory::isValidValue('Test_Header'));
+
+        self::assertFalse(HeaderFactory::isValidValue("\r"));
+        self::assertFalse(HeaderFactory::isValidValue("\n"));
+        self::assertFalse(HeaderFactory::isValidValue("\r\n"));
+        self::assertFalse(HeaderFactory::isValidValue("\n\r"));
+        self::assertTrue(HeaderFactory::isValidValue("\r\n "));
+        self::assertTrue(HeaderFactory::isValidValue("\r\n  "));
+
+        self::assertTrue(HeaderFactory::isValidValue("\x09"));
+        self::assertFalse(HeaderFactory::isValidValue("\x0a"));
+        self::assertFalse(HeaderFactory::isValidValue("\x0d"));
+        self::assertTrue(HeaderFactory::isValidValue("\x80"));
+        self::assertTrue(HeaderFactory::isValidValue("\xFE"));
+        self::assertFalse(HeaderFactory::isValidValue("\x7F"));
+        self::assertTrue(HeaderFactory::isValidValue("\x7E"));
+    }
+
+    public function testInvalidHeaderName(): void
+    {
+        $this->expectException(InvalidNameException::class);
+
+        HeaderFactory::assertValidName(' ');
+    }
+
+    public function testIsValidName(): void
+    {
+        self::assertTrue(HeaderFactory::isValidName("a-zA-Z0-9'`#$%&*+.^_|~!-"));
+        self::assertFalse(HeaderFactory::isValidName("\x00"));
+        self::assertFalse(HeaderFactory::isValidName(':'));
+        self::assertFalse(HeaderFactory::isValidName("\r\n"));
+        self::assertFalse(HeaderFactory::isValidName("\n"));
+        self::assertFalse(HeaderFactory::isValidName("test\n"));
+        self::assertFalse(HeaderFactory::isValidName(' '));
     }
 }
