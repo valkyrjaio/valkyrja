@@ -554,4 +554,151 @@ class UriFactoryTest extends TestCase
 
         self::assertSame('/path', $result);
     }
+
+    public function testValidateFragment(): void
+    {
+        // validateFragment is currently empty but should not throw for any input
+        UriFactory::validateFragment('');
+        UriFactory::validateFragment('section');
+        UriFactory::validateFragment('section-with-special-chars!@#');
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testValidatePathValid(): void
+    {
+        // Valid paths should not throw
+        UriFactory::validatePath('');
+        UriFactory::validatePath('/');
+        UriFactory::validatePath('/path');
+        UriFactory::validatePath('/path/to/resource');
+        UriFactory::validatePath('relative/path');
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testValidateQueryValid(): void
+    {
+        // Valid queries should not throw
+        UriFactory::validateQuery('');
+        UriFactory::validateQuery('key=value');
+        UriFactory::validateQuery('key1=value1&key2=value2');
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testMarshalUriFromServerWithEmptyHost(): void
+    {
+        $server  = [
+            'REQUEST_URI' => '/path',
+        ];
+        $headers = [];
+
+        $uri = UriFactory::marshalUriFromServer($server, $headers);
+
+        // With no host information, host should be empty
+        self::assertSame('', $uri->getHost());
+        self::assertNull($uri->getPort());
+        self::assertSame('/path', $uri->getPath());
+    }
+
+    public function testMarshalHostAndPortFromHeadersWithHostNoPort(): void
+    {
+        $accumulator = new HostPortAccumulator();
+
+        UriFactory::marshalHostAndPortFromHeaders(
+            $accumulator,
+            [],
+            ['host' => new Header('Host', 'example.com')]
+        );
+
+        self::assertSame('example.com', $accumulator->host);
+        self::assertNull($accumulator->port);
+    }
+
+    public function testMarshalHostAndPortFromHeadersWithServerNameNoPort(): void
+    {
+        $accumulator = new HostPortAccumulator();
+
+        UriFactory::marshalHostAndPortFromHeaders(
+            $accumulator,
+            ['SERVER_NAME' => 'example.com'],
+            []
+        );
+
+        self::assertSame('example.com', $accumulator->host);
+        self::assertNull($accumulator->port);
+    }
+
+    public function testFilterPathWithValidPath(): void
+    {
+        // filterPath calls validatePath internally, then normalizes slashes
+        self::assertSame('/single', UriFactory::filterPath('/single'));
+        self::assertSame('/normalized', UriFactory::filterPath('//normalized'));
+        self::assertSame('/multiple', UriFactory::filterPath('////multiple'));
+    }
+
+    public function testFilterPathThrowsForInvalidPath(): void
+    {
+        $this->expectException(InvalidPathException::class);
+
+        UriFactory::filterPath('/path?with=query');
+    }
+
+    public function testFilterQueryThrowsForInvalidQuery(): void
+    {
+        $this->expectException(InvalidQueryException::class);
+
+        UriFactory::filterQuery('query=value#fragment');
+    }
+
+    public function testMarshalUriFromServerWithNoQueryString(): void
+    {
+        $server = [
+            'SERVER_NAME' => 'example.com',
+            'REQUEST_URI' => '/path',
+        ];
+        $headers = [];
+
+        $uri = UriFactory::marshalUriFromServer($server, $headers);
+
+        self::assertSame('', $uri->getQuery());
+    }
+
+    public function testMarshalUriFromServerWithNoFragment(): void
+    {
+        $server = [
+            'SERVER_NAME' => 'example.com',
+            'REQUEST_URI' => '/path',
+        ];
+        $headers = [];
+
+        $uri = UriFactory::marshalUriFromServer($server, $headers);
+
+        self::assertSame('', $uri->getFragment());
+    }
+
+    public function testToStringWithOnlyPath(): void
+    {
+        $uri = new Uri(path: '/path');
+
+        self::assertSame('/path', UriFactory::toString($uri));
+    }
+
+    public function testToStringWithSchemeAndHost(): void
+    {
+        $uri = new Uri(
+            scheme: Scheme::HTTPS,
+            host: 'example.com'
+        );
+
+        self::assertSame('https://example.com', UriFactory::toString($uri));
+    }
+
+    public function testIsStandardPortWithNoHost(): void
+    {
+        // When host is empty but port is provided with HTTP scheme
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, '', null));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTPS, '', null));
+    }
 }
