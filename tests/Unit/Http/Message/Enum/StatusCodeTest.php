@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Enum;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
-
-use function constant;
 
 class StatusCodeTest extends TestCase
 {
@@ -80,6 +78,6 @@ class StatusCodeTest extends TestCase
     #[DataProvider('casesProvider')]
     public function testText(StatusCode $status): void
     {
-        self::assertSame($status->asPhrase(), constant(StatusText::class . "::$status->name"));
+        self::assertSame($status->asPhrase(), StatusText::{$status->name}->value);
     }
 }

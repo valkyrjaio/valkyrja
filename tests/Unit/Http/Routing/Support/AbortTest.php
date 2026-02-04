@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Support;
 
-use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
@@ -109,7 +109,7 @@ class AbortTest extends TestCase
             );
         } catch (HttpException $exception) {
             self::assertSame(StatusCode::BAD_REQUEST, $exception->getStatusCode());
-            self::assertSame(StatusText::BAD_REQUEST, $exception->getMessage());
+            self::assertSame(StatusText::BAD_REQUEST->value, $exception->getMessage());
             self::assertSame($headers, $exception->getHeaders());
             self::assertNotNull($exceptionResponse = $exception->getResponse());
             self::assertSame($response->getBody()->__toString(), $exceptionResponse->getBody()->__toString());
@@ -133,7 +133,7 @@ class AbortTest extends TestCase
             );
         } catch (HttpException $exception) {
             self::assertSame(StatusCode::NOT_FOUND, $exception->getStatusCode());
-            self::assertSame(StatusText::NOT_FOUND, $exception->getMessage());
+            self::assertSame(StatusText::NOT_FOUND->value, $exception->getMessage());
             self::assertSame($headers, $exception->getHeaders());
             self::assertNotNull($exceptionResponse = $exception->getResponse());
             self::assertSame($response->getBody()->__toString(), $exceptionResponse->getBody()->__toString());
@@ -157,7 +157,7 @@ class AbortTest extends TestCase
             );
         } catch (HttpException $exception) {
             self::assertSame(StatusCode::METHOD_NOT_ALLOWED, $exception->getStatusCode());
-            self::assertSame(StatusText::METHOD_NOT_ALLOWED, $exception->getMessage());
+            self::assertSame(StatusText::METHOD_NOT_ALLOWED->value, $exception->getMessage());
             self::assertSame($headers, $exception->getHeaders());
             self::assertNotNull($exceptionResponse = $exception->getResponse());
             self::assertSame($response->getBody()->__toString(), $exceptionResponse->getBody()->__toString());
@@ -181,7 +181,7 @@ class AbortTest extends TestCase
             );
         } catch (HttpException $exception) {
             self::assertSame(StatusCode::PAYLOAD_TOO_LARGE, $exception->getStatusCode());
-            self::assertSame(StatusText::PAYLOAD_TOO_LARGE, $exception->getMessage());
+            self::assertSame(StatusText::PAYLOAD_TOO_LARGE->value, $exception->getMessage());
             self::assertSame($headers, $exception->getHeaders());
             self::assertNotNull($exceptionResponse = $exception->getResponse());
             self::assertSame($response->getBody()->__toString(), $exceptionResponse->getBody()->__toString());
