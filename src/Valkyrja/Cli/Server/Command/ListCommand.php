@@ -79,8 +79,8 @@ class ListCommand
 
         $output = $this->version->run();
 
-        $this->addHeaderMessages($output, $namespace);
-        $this->addRoutesMessages($output, $routes);
+        $output = $this->addHeaderMessages($output, $namespace);
+        $output = $this->addRoutesMessages($output, $routes);
 
         return $output->withAddedMessages(new NewLine());
     }
