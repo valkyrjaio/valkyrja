@@ -19,9 +19,17 @@ use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Stream\Trait\StreamHelpers;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\NoStreamAvailableException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
 
 use function fclose;
 use function feof;
@@ -30,6 +38,7 @@ use function fseek;
 use function fstat;
 use function ftell;
 use function fwrite;
+use function is_resource;
 use function stream_get_contents;
 use function stream_get_meta_data;
 
@@ -37,7 +46,12 @@ use const SEEK_SET;
 
 class Stream implements StreamContract
 {
-    use StreamHelpers;
+    /**
+     * The stream.
+     *
+     * @var resource|null
+     */
+    protected $resource;
 
     /**
      * @param PhpWrapper|string $stream          The stream
@@ -51,7 +65,7 @@ class Stream implements StreamContract
         protected Mode $mode = Mode::WRITE_READ,
         protected ModeTranslation $modeTranslation = ModeTranslation::BINARY_SAFE
     ) {
-        $this->setStream($stream, $mode, $modeTranslation);
+        $this->resource = StreamFactory::getResourceStream($stream, $mode, $modeTranslation);
     }
 
     /**
@@ -112,7 +126,7 @@ class Stream implements StreamContract
         /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
 
-        return $this->isModeReadable((string) $mode);
+        return StreamFactory::isModeReadable((string) $mode);
     }
 
     /**
@@ -158,7 +172,7 @@ class Stream implements StreamContract
         /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
 
-        return $this->isModeWriteable((string) $mode);
+        return StreamFactory::isModeWriteable((string) $mode);
     }
 
     /**
@@ -374,7 +388,7 @@ class Stream implements StreamContract
         $this->mode            = $data['mode'];
         $this->modeTranslation = $data['modeTranslation'];
 
-        $this->setStream($this->stream, $this->mode, $this->modeTranslation);
+        $this->resource = StreamFactory::getResourceStream($this->stream, $this->mode, $this->modeTranslation);
 
         if ($this->isWritable()) {
             $this->write($data['content']);
@@ -472,5 +486,109 @@ class Stream implements StreamContract
     protected function getStreamStats($stream): array|false
     {
         return fstat($stream);
+    }
+
+    /**
+     * Is the stream valid.
+     */
+    protected function isInvalidStream(): bool
+    {
+        return ! is_resource($this->resource);
+    }
+
+    /**
+     * Verify the stream.
+     */
+    protected function verifyStream(): void
+    {
+        // If there is no stream
+        if ($this->isInvalidStream()) {
+            // Throw a runtime exception
+            throw new NoStreamAvailableException('No stream resource');
+        }
+    }
+
+    /**
+     * Verify the stream is writable.
+     */
+    protected function verifyWritable(): void
+    {
+        // If the stream isn't writable
+        if (! $this->isWritable()) {
+            // Throw a new runtime exception
+            throw new UnwritableStreamException('Stream is not writable');
+        }
+    }
+
+    /**
+     * Verify the write result.
+     */
+    protected function verifyWriteResult(int|false $result): void
+    {
+        // If the write was not successful
+        if ($result === false) {
+            // Throw a runtime exception
+            throw new StreamWriteException('Error writing to stream');
+        }
+    }
+
+    /**
+     * Verify the stream is seekable.
+     */
+    protected function verifySeekable(): void
+    {
+        // If the stream isn't seekable
+        if (! $this->isSeekable()) {
+            // Throw a new runtime exception
+            throw new UnseekableStreamException('Stream is not seekable');
+        }
+    }
+
+    /**
+     * Verify the seek result.
+     */
+    protected function verifySeekResult(int $result): void
+    {
+        // If the result was not a 0, denoting an error occurred
+        if ($result !== 0) {
+            // Throw a new runtime exception
+            throw new StreamSeekException('Error seeking within stream');
+        }
+    }
+
+    /**
+     * Verify the stream is readable.
+     */
+    protected function verifyReadable(): void
+    {
+        // If the stream is not readable
+        if (! $this->isReadable()) {
+            // Throw a runtime exception
+            throw new UnreadableStreamException('Stream is not readable');
+        }
+    }
+
+    /**
+     * Verify the read result.
+     */
+    protected function verifyReadResult(string|false $result): void
+    {
+        // If there was a failure in reading the stream
+        if ($result === false) {
+            // Throw a runtime exception
+            throw new StreamReadException('Error reading stream');
+        }
+    }
+
+    /**
+     * Verify the tell result.
+     */
+    protected function verifyTellResult(int|false $result): void
+    {
+        // If the tell is not an int
+        if ($result === false) {
+            // Throw a runtime exception
+            throw new StreamTellException('Error occurred during tell operation');
+        }
     }
 }
