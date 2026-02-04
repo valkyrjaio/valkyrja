@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Classes\Model\ModelClass;
-use Valkyrja\Tests\Classes\Model\ProtectedExposableModelClass;
+use Valkyrja\Tests\Classes\Type\Model\ModelClass;
+use Valkyrja\Tests\Classes\Type\Model\ProtectedExposableModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const JSON_THROW_ON_ERROR;

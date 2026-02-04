@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Model;
+namespace Valkyrja\Tests\Classes\Type\Model;
 
-use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
+use Valkyrja\Tests\Classes\Type\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ExposableModelContract;
-use Valkyrja\Type\Model\Trait\ProtectedExposable;
+use Valkyrja\Type\Model\Trait\Exposable;
 
 /**
- * Model class to use to test ProtectedExposable model.
+ * Model class to use to test Exposable model.
  *
  * @property string $protected
  */
-class ProtectedExposableModelClass extends Model implements ExposableModelContract
+class ExposableModelClass extends Model implements ExposableModelContract
 {
+    use Exposable;
     use PrivatePropertyTrait;
-    use ProtectedExposable;
 
     public string $public;
 
@@ -34,10 +34,12 @@ class ProtectedExposableModelClass extends Model implements ExposableModelContra
 
     protected string $protected;
 
+    /**
+     * @inheritDoc
+     */
     public static function getExposable(): array
     {
         return [
-            ModelClass::PROTECTED,
             ModelClass::PRIVATE,
         ];
     }
