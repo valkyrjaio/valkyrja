@@ -160,9 +160,11 @@ class HelpCommand
                 ...$optionMessages,
             );
 
-        if ($this->helpRoute->getHelpTextMessage() !== null) {
+        $helpText = $route->getHelpTextMessage();
+
+        if ($helpText !== null) {
             return $output->withAddedMessages(
-                $this->getHelpTextMessages(),
+                $this->getHelpTextMessages($helpText),
                 new NewLine(),
             );
         }
@@ -196,12 +198,12 @@ class HelpCommand
     /**
      * Get help text messages.
      */
-    protected function getHelpTextMessages(): Messages
+    protected function getHelpTextMessages(MessageContract $helpText): Messages
     {
         return new Messages(
             new Message('Help:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText($this->helpRoute->getHelpTextMessage()),
+            $this->getIndentedText($helpText),
             new NewLine(),
         );
     }
