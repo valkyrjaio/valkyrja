@@ -400,7 +400,7 @@ class UriFactoryTest extends TestCase
 
     public function testGetSchemeStringPart(): void
     {
-        $uriWithScheme = new Uri(scheme: Scheme::HTTPS);
+        $uriWithScheme    = new Uri(scheme: Scheme::HTTPS);
         $uriWithoutScheme = new Uri();
 
         self::assertSame('https:', UriFactory::getSchemeStringPart($uriWithScheme));
@@ -409,7 +409,7 @@ class UriFactoryTest extends TestCase
 
     public function testGetAuthorityStringPart(): void
     {
-        $uriWithAuthority = new Uri(host: 'example.com');
+        $uriWithAuthority    = new Uri(host: 'example.com');
         $uriWithoutAuthority = new Uri();
 
         self::assertSame('//example.com', UriFactory::getAuthorityStringPart($uriWithAuthority));
@@ -418,9 +418,9 @@ class UriFactoryTest extends TestCase
 
     public function testGetPathStringPart(): void
     {
-        $uriWithPath = new Uri(path: '/path');
+        $uriWithPath        = new Uri(path: '/path');
         $uriWithPathNoSlash = new Uri(path: 'path');
-        $uriWithoutPath = new Uri();
+        $uriWithoutPath     = new Uri();
 
         self::assertSame('/path', UriFactory::getPathStringPart($uriWithPath));
         self::assertSame('/path', UriFactory::getPathStringPart($uriWithPathNoSlash));
@@ -429,7 +429,7 @@ class UriFactoryTest extends TestCase
 
     public function testGetQueryStringPart(): void
     {
-        $uriWithQuery = new Uri(query: 'key=value');
+        $uriWithQuery    = new Uri(query: 'key=value');
         $uriWithoutQuery = new Uri();
 
         self::assertSame('?key=value', UriFactory::getQueryStringPart($uriWithQuery));
@@ -438,7 +438,7 @@ class UriFactoryTest extends TestCase
 
     public function testGetFragmentStringPart(): void
     {
-        $uriWithFragment = new Uri(fragment: 'section');
+        $uriWithFragment    = new Uri(fragment: 'section');
         $uriWithoutFragment = new Uri();
 
         self::assertSame('#section', UriFactory::getFragmentStringPart($uriWithFragment));
