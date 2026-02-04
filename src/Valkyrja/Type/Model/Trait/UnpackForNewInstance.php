@@ -13,13 +13,22 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Trait;
 
+use Override;
+
 trait UnpackForNewInstance
 {
     /**
      * @inheritDoc
+     *
+     * @param array<string, mixed> $properties The properties
      */
-    protected static function internalGetNew(array $properties): static
+    #[Override]
+    public static function fromArray(array $properties): static
     {
-        return new static(...$properties);
+        $model = new static(...$properties);
+
+        $model->internalSetProperties($properties);
+
+        return $model;
     }
 }

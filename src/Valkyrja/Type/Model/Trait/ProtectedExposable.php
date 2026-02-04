@@ -26,6 +26,6 @@ trait ProtectedExposable
      */
     protected function internalGetAllProperties(): array
     {
-        return array_merge(Obj::getProperties($this), $this->__exposed);
+        return array_merge(Obj::getProperties($this), $this->internalExposed);
     }
 }

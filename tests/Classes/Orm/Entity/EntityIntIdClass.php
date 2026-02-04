@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Orm\Entity;
 
+use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
 /**
@@ -31,5 +32,16 @@ class EntityIntIdClass extends Entity
     public function setId(string|int $id): void
     {
         $this->id = (int) $id;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function internalSetMethods(): array
+    {
+        return [
+            'id' => 'setId',
+        ];
     }
 }

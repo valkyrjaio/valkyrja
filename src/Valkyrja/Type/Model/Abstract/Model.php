@@ -17,21 +17,16 @@ use Closure;
 use JsonException;
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\BuiltIn\Support\StrCase;
 use Valkyrja\Type\Model\Contract\ModelContract;
 use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function array_filter;
 use function array_walk;
 use function in_array;
-use function is_array;
 use function is_bool;
-use function is_string;
-use function json_encode;
 use function property_exists;
 
 use const ARRAY_FILTER_USE_BOTH;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * @phpstan-consistent-constructor
@@ -40,39 +35,25 @@ use const JSON_THROW_ON_ERROR;
 abstract class Model implements ModelContract
 {
     /**
-     * Cached list of validation logic for models.
-     *
-     * @var array<string, string>
-     */
-    protected static array $cachedValidations = [];
-
-    /**
-     * Cached list of property/method exists validation logic for models.
-     *
-     * @var array<string, bool>
-     */
-    protected static array $cachedExistsValidations = [];
-
-    /**
      * Whether to set the original properties on creation via static::fromArray().
      *
      * @var bool
      */
-    protected static bool $shouldSetOriginalProperties = true;
+    protected bool $internalShouldSetOriginalProperties = true;
 
     /**
      * The original properties.
      *
      * @var array<string, mixed>
      */
-    private array $internalOriginalProperties = [];
+    protected array $internalOriginalProperties = [];
 
     /**
      * Whether the original properties have been set.
      *
      * @var bool
      */
-    private bool $internalOriginalPropertiesSet = false;
+    protected bool $internalHaveOriginalPropertiesSet = false;
 
     /**
      * @inheritDoc
@@ -84,7 +65,7 @@ abstract class Model implements ModelContract
     #[Override]
     public static function fromArray(array $properties): static
     {
-        $model = static::internalGetNew($properties);
+        $model = new static();
 
         $model->internalSetProperties($properties);
 
@@ -103,34 +84,10 @@ abstract class Model implements ModelContract
             return $value;
         }
 
-        if (! is_array($value) && ! is_string($value)) {
-            $value = json_encode($value, JSON_THROW_ON_ERROR);
-        }
-
-        if (is_string($value)) {
-            $value = Arr::fromString($value);
-        }
-
         /** @var array<string, mixed> $value */
+        $value = Arr::fromMixed($value);
+
         return static::fromArray($value);
-    }
-
-    /**
-     * Get a new static instance.
-     *
-     * @param array<string, mixed> $properties The properties
-     */
-    protected static function internalGetNew(array $properties): static
-    {
-        return new static();
-    }
-
-    /**
-     * Whether to set the original properties array.
-     */
-    protected static function shouldSetOriginalProperties(): bool
-    {
-        return static::$shouldSetOriginalProperties;
     }
 
     /**
@@ -139,9 +96,9 @@ abstract class Model implements ModelContract
     #[Override]
     public function __get(string $name): mixed
     {
-        $methodName = $this->internalGetPropertyTypeMethodName($name, 'get');
+        $methodName = $this->internalGetMethods()[$name] ?? null;
 
-        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
+        if ($methodName !== null) {
             return $this->$methodName();
         }
 
@@ -154,11 +111,11 @@ abstract class Model implements ModelContract
     #[Override]
     public function __set(string $name, mixed $value): void
     {
-        $methodName = $this->internalGetPropertyTypeMethodName($name, 'set');
-
         $this->internalSetOriginalProperty($name, $value);
 
-        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
+        $methodName = $this->internalSetMethods()[$name] ?? null;
+
+        if ($methodName !== null) {
             $this->$methodName($value);
 
             return;
@@ -173,9 +130,9 @@ abstract class Model implements ModelContract
     #[Override]
     public function __isset(string $name): bool
     {
-        $methodName = $this->internalGetPropertyTypeMethodName($name, 'isset');
+        $methodName = $this->internalIssetMethods()[$name] ?? null;
 
-        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
+        if ($methodName !== null) {
             /** @var mixed $isset */
             $isset = $this->$methodName();
 
@@ -236,7 +193,7 @@ abstract class Model implements ModelContract
     #[Override]
     public function hasProperty(string $property): bool
     {
-        return self::$cachedExistsValidations[static::class . $property] ??= property_exists($this, $property);
+        return property_exists($this, $property);
     }
 
     /**
@@ -367,7 +324,37 @@ abstract class Model implements ModelContract
      */
     public function __clone()
     {
-        $this->internalSetOriginalPropertiesSetProperty();
+        $this->internalHaveOriginalPropertiesSet = true;
+    }
+
+    /**
+     * Get the get custom methods.
+     *
+     * @return array<non-empty-string, non-empty-string>
+     */
+    protected function internalGetMethods(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get the set custom methods.
+     *
+     * @return array<non-empty-string, non-empty-string>
+     */
+    protected function internalSetMethods(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get the isset custom methods.
+     *
+     * @return array<non-empty-string, non-empty-string>
+     */
+    protected function internalIssetMethods(): array
+    {
+        return [];
     }
 
     /**
@@ -381,7 +368,7 @@ abstract class Model implements ModelContract
         array_walk(
             $properties,
             function (mixed $value, string $property) use ($modifyValue): void {
-                $this->internalSetIfPropertyExists(
+                $this->__set(
                     $property,
                     $modifyValue !== null
                         ? $modifyValue($property, $value)
@@ -390,52 +377,7 @@ abstract class Model implements ModelContract
             }
         );
 
-        $this->internalSetOriginalPropertiesSetProperty();
-    }
-
-    /**
-     * Set a property if it exists.
-     *
-     * @param string $property The property
-     * @param mixed  $value    The value
-     */
-    protected function internalSetIfPropertyExists(string $property, mixed $value): void
-    {
-        if ($this->hasProperty($property)) {
-            // Set the property
-            $this->__set($property, $value);
-        }
-    }
-
-    /**
-     * Set that original properties have been set.
-     */
-    protected function internalSetOriginalPropertiesSetProperty(): void
-    {
-        $this->internalOriginalPropertiesSet = true;
-    }
-
-    /**
-     * Get a property's isset method name.
-     *
-     * @param string $property The property
-     * @param string $type     The type (get|set|isset)
-     */
-    protected function internalGetPropertyTypeMethodName(string $property, string $type): string
-    {
-        return self::$cachedValidations[static::class . "$type$property"]
-            ??= $type . StrCase::toStudlyCase($property);
-    }
-
-    /**
-     * Determine if a property type method exists.
-     *
-     * @param string $methodName The method name
-     */
-    protected function internalDoesPropertyTypeMethodExist(string $methodName): bool
-    {
-        return self::$cachedExistsValidations[static::class . "exists$methodName"]
-            ??= method_exists($this, $methodName);
+        $this->internalHaveOriginalPropertiesSet = true;
     }
 
     /**
@@ -446,7 +388,7 @@ abstract class Model implements ModelContract
      */
     protected function internalSetOriginalProperty(string $name, mixed $value): void
     {
-        if (! $this->internalOriginalPropertiesSet && static::shouldSetOriginalProperties()) {
+        if (! $this->internalHaveOriginalPropertiesSet && $this->internalShouldSetOriginalProperties) {
             $this->internalOriginalProperties[$name] ??= $value;
         }
     }
@@ -469,7 +411,11 @@ abstract class Model implements ModelContract
      */
     protected function internalRemoveInternalProperties(array &$properties): void
     {
-        unset($properties['internalOriginalProperties'], $properties['internalOriginalPropertiesSet']);
+        unset(
+            $properties['internalOriginalProperties'],
+            $properties['internalHaveOriginalPropertiesSet'],
+            $properties['internalShouldSetOriginalProperties']
+        );
     }
 
     /**

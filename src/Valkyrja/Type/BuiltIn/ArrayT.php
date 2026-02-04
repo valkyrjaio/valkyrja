@@ -19,8 +19,6 @@ use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Contract\ArrayContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-use function is_string;
-
 /**
  * @extends Type<array<array-key, mixed>>
  */
@@ -42,11 +40,7 @@ class ArrayT extends Type implements ArrayContract
     #[Override]
     public static function fromValue(mixed $value): static
     {
-        if (is_string($value)) {
-            return new static(Arr::fromString($value));
-        }
-
-        return new static((array) $value);
+        return new static(Arr::fromMixed($value));
     }
 
     /**

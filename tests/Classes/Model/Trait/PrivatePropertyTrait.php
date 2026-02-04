@@ -22,6 +22,36 @@ trait PrivatePropertyTrait
 {
     private string $private;
 
+    /**
+     * @inheritDoc
+     */
+    protected function internalGetMethods(): array
+    {
+        return [
+            'private' => 'getPrivate',
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function internalSetMethods(): array
+    {
+        return [
+            'private' => 'setPrivate',
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function internalIssetMethods(): array
+    {
+        return [
+            'private' => 'issetPrivate',
+        ];
+    }
+
     protected function getPrivate(): string
     {
         return $this->private;

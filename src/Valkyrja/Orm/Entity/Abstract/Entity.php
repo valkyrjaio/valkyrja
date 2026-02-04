@@ -81,6 +81,15 @@ abstract class Entity extends Model implements EntityContract
      * @inheritDoc
      */
     #[Override]
+    public static function getExposable(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public static function getTableName(): string
     {
         return static::$tableName;
@@ -163,10 +172,10 @@ abstract class Entity extends Model implements EntityContract
 
         $this->internalRemoveUnStorableFields($allProperties, $unStorableFields);
 
-        /** @var array<non-empty-string, StorableValue> $properties */
-        $properties = $this->internalGetPropertyValuesForDataStore($allProperties, $castings);
+        /** @var array<non-empty-string, StorableValue> $allProperties */
+        $allProperties = $this->internalGetPropertyValuesForDataStore($allProperties, $castings);
 
-        return $properties;
+        return $allProperties;
     }
 
     /**
