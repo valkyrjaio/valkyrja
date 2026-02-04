@@ -21,6 +21,13 @@ use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
 
 use function is_resource;
 
@@ -115,6 +122,120 @@ abstract class StreamFactory
     }
 
     /**
+     * Verify the stream is writable.
+     */
+    public static function verifyWritable(StreamContract $stream): void
+    {
+        // If the stream isn't writable
+        if (! $stream->isWritable()) {
+            // Throw a new runtime exception
+            UnwritableStreamException::throw('Stream is not writable');
+        }
+    }
+
+    /**
+     * Verify the write result.
+     *
+     * @psalm-assert int   $result
+     *
+     * @phpstan-assert int $result
+     */
+    public static function verifyWriteResult(int|false $result): void
+    {
+        // If the write was not successful
+        if ($result === false) {
+            // Throw a runtime exception
+            StreamWriteException::throw('Error writing to stream');
+        }
+    }
+
+    /**
+     * Verify the stream is seekable.
+     */
+    public static function verifySeekable(StreamContract $stream): void
+    {
+        // If the stream isn't seekable
+        if (! $stream->isSeekable()) {
+            // Throw a new runtime exception
+            UnseekableStreamException::throw('Stream is not seekable');
+        }
+    }
+
+    /**
+     * Verify the seek result.
+     *
+     * @psalm-assert int<1, max>   $result
+     *
+     * @phpstan-assert int<1, max> $result
+     */
+    public static function verifySeekResult(int $result): void
+    {
+        // If the result was not a 0, denoting an error occurred
+        if ($result !== 0) {
+            // Throw a new runtime exception
+            StreamSeekException::throw('Error seeking within stream');
+        }
+    }
+
+    /**
+     * Verify the stream is readable.
+     */
+    public static function verifyReadable(StreamContract $stream): void
+    {
+        // If the stream is not readable
+        if (! $stream->isReadable()) {
+            // Throw a runtime exception
+            UnreadableStreamException::throw('Stream is not readable');
+        }
+    }
+
+    /**
+     * Verify the read result.
+     *
+     * @psalm-assert string   $result
+     *
+     * @phpstan-assert string $result
+     */
+    public static function verifyReadResult(string|false $result): void
+    {
+        // If there was a failure in reading the stream
+        if ($result === false) {
+            // Throw a runtime exception
+            StreamReadException::throw('Error reading stream');
+        }
+    }
+
+    /**
+     * Verify the tell result.
+     *
+     * @psalm-assert int   $result
+     *
+     * @phpstan-assert int $result
+     */
+    public static function verifyTellResult(int|false $result): void
+    {
+        // If the tell is not an int
+        if ($result === false) {
+            // Throw a runtime exception
+            StreamTellException::throw('Error occurred during tell operation');
+        }
+    }
+
+    /**
+     * Validate a stream resource.
+     *
+     * @psalm-assert resource $resource
+     *
+     * @phpstan-assert resource $resource
+     */
+    public static function validateStream(mixed $resource): void
+    {
+        if (! self::isStream($resource)) {
+            throw new InvalidStreamException('Invalid stream provided');
+        }
+    }
+
+    /**
      * Open a stream.
      *
      * @return resource|false
@@ -130,19 +251,5 @@ abstract class StreamFactory
     private static function isStream(mixed $resource): bool
     {
         return is_resource($resource) && get_resource_type($resource) === 'stream';
-    }
-
-    /**
-     * Validate a stream resouce.
-     *
-     * @psalm-assert resource $resource
-     *
-     * @phpstan-assert resource $resource
-     */
-    private static function validateStream(mixed $resource): void
-    {
-        if (! self::isStream($resource)) {
-            throw new InvalidStreamException('Invalid stream provided');
-        }
     }
 }
