@@ -127,31 +127,39 @@ class ObjectTest extends TestCase
         $allProperties = Obj::getAllProperties($value);
 
         self::assertSame(['public' => 'test'], $publicOnlyProperties);
-        self::assertSame(['public' => 'test', 'protected' => 'foo'], $includeProtectedProperties);
         self::assertSame(
             [
-                'internalOriginalProperties'    => [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
                     'public'    => 'test',
                     'protected' => 'foo',
                     'private'   => 'bar',
                 ],
-                'internalOriginalPropertiesSet' => true,
-                'public'                        => 'test',
-                'private'                       => 'bar',
+                'internalHaveOriginalPropertiesSet'   => true,
+                'public'                              => 'test',
+                'protected'                           => 'foo',
+            ],
+            $includeProtectedProperties
+        );
+        self::assertSame(
+            [
+                'public'  => 'test',
+                'private' => 'bar',
             ],
             $includePrivateProperties
         );
         self::assertSame(
             [
-                'internalOriginalProperties'    => [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
                     'public'    => 'test',
                     'protected' => 'foo',
                     'private'   => 'bar',
                 ],
-                'internalOriginalPropertiesSet' => true,
-                'public'                        => 'test',
-                'protected'                     => 'foo',
-                'private'                       => 'bar',
+                'internalHaveOriginalPropertiesSet'   => true,
+                'public'                              => 'test',
+                'protected'                           => 'foo',
+                'private'                             => 'bar',
             ],
             $allProperties
         );

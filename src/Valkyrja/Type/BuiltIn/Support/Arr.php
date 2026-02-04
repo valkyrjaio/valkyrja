@@ -21,6 +21,7 @@ use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use function array_filter;
 use function explode;
 use function is_array;
+use function is_string;
 use function json_decode;
 use function json_encode;
 
@@ -149,5 +150,19 @@ class Arr
     public static function filterEmptyStrings(Stringable|string ...$strings): array
     {
         return array_filter($strings, static fn (Stringable|string $string): bool => ((string) $string) !== '');
+    }
+
+    /**
+     * @throws JsonException
+     *
+     * @return array<array-key, mixed>
+     */
+    public static function fromMixed(mixed $value): array
+    {
+        if (is_string($value)) {
+            return self::fromString($value);
+        }
+
+        return (array) $value;
     }
 }

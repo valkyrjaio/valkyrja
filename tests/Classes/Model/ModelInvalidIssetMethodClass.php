@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
+use Override;
 use Valkyrja\Type\Model\Abstract\Model;
 
 /**
@@ -25,5 +26,16 @@ class ModelInvalidIssetMethodClass extends Model
     public function issetTest(): string
     {
         return $this->test;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function internalIssetMethods(): array
+    {
+        return [
+            'test' => 'issetTest',
+        ];
     }
 }

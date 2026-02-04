@@ -495,10 +495,10 @@ class CastableModelTest extends TestCase
         $model = $this->propertyTest(CastableModelClass::MODEL_PROPERTY, $value->asArray(), $value, true);
         self::assertIsObject($model->model);
 
-        // Test an json encoded model
+        // Test a json encoded model
         $model = $this->propertyTest(
             CastableModelClass::MODEL_PROPERTY,
-            json_encode($model, JSON_THROW_ON_ERROR),
+            json_encode($value, JSON_THROW_ON_ERROR),
             $value,
             true
         );

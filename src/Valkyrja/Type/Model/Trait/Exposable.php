@@ -16,28 +16,18 @@ namespace Valkyrja\Type\Model\Trait;
 trait Exposable
 {
     /**
-     * Properties that are exposable.
-     *
-     * @var string[]
-     */
-    protected static array $exposable = [];
-
-    /**
      * The properties to expose.
      *
      * @var array<string, bool>
      */
-    protected array $__exposed = [];
+    protected array $internalExposed = [];
 
     /**
      * @inheritDoc
      *
      * @return string[]
      */
-    public static function getExposable(): array
-    {
-        return static::$exposable;
-    }
+    abstract public static function getExposable(): array;
 
     /**
      * @inheritDoc
@@ -79,7 +69,7 @@ trait Exposable
     public function expose(string ...$properties): void
     {
         foreach ($properties as $property) {
-            $this->__exposed[$property] = true;
+            $this->internalExposed[$property] = true;
         }
     }
 
@@ -91,13 +81,13 @@ trait Exposable
     public function unexpose(string ...$properties): void
     {
         if (empty($properties)) {
-            $this->__exposed = [];
+            $this->internalExposed = [];
 
             return;
         }
 
         foreach ($properties as $property) {
-            unset($this->__exposed[$property]);
+            unset($this->internalExposed[$property]);
         }
     }
 
@@ -108,7 +98,7 @@ trait Exposable
      */
     protected function internalGetAllProperties(): array
     {
-        return array_merge(parent::internalGetAllProperties(), $this->__exposed);
+        return array_merge(parent::internalGetAllProperties(), $this->internalExposed);
     }
 
     /**
@@ -120,7 +110,7 @@ trait Exposable
     {
         parent::internalRemoveInternalProperties($properties);
 
-        unset($properties['__exposed']);
+        unset($properties['internalExposed']);
     }
 
     /**

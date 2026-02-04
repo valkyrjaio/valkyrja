@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 use JsonException;
 use Valkyrja\Tests\Classes\Model\ExposableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
-use Valkyrja\Tests\Classes\Model\SimpleExposableModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
@@ -43,7 +42,6 @@ class ExposableModelTest extends TestCase
     public function testGetExposable(): void
     {
         self::assertSame([ModelClass::PRIVATE], ExposableModelClass::getExposable());
-        self::assertSame([], SimpleExposableModelClass::getExposable());
     }
 
     public function testAsExposedArray(): void
