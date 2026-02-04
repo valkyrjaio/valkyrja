@@ -19,7 +19,6 @@ use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\NoStreamAvailableException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
@@ -121,7 +120,7 @@ class StreamTest extends TestCase
 
     public function testReadAfterDetach(): void
     {
-        $this->expectException(NoStreamAvailableException::class);
+        $this->expectException(InvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -166,7 +165,7 @@ class StreamTest extends TestCase
 
     public function testWriteAfterDetach(): void
     {
-        $this->expectException(NoStreamAvailableException::class);
+        $this->expectException(InvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -303,7 +302,7 @@ class StreamTest extends TestCase
 
     public function testTellInvalidStream(): void
     {
-        $this->expectException(NoStreamAvailableException::class);
+        $this->expectException(InvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
