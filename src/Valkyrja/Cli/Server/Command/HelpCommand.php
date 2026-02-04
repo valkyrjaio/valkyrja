@@ -114,35 +114,8 @@ class HelpCommand
     protected function getHelpText(OutputContract $output): OutputContract
     {
         $route            = $this->helpRoute;
-        $argumentMessages = [];
-        $optionMessages   = [];
-
-        if ($route->hasOptions()) {
-            $optionMessages[] = $this->getOptionsHeadingMessages();
-            $optionMessages[] = new NewLine();
-
-            foreach ($route->getOptions() as $option) {
-                $optionMessages[] = $this->getOptionMessages($option);
-            }
-        }
-
-        $optionMessages[] = $this->getGlobalOptionsHeadingMessages();
-        $optionMessages[] = new NewLine();
-
-        $optionMessages[] = $this->getOptionMessages(new QuietOptionParameter());
-        $optionMessages[] = $this->getOptionMessages(new SilentOptionParameter());
-        $optionMessages[] = $this->getOptionMessages(new NoInteractionOptionParameter());
-        $optionMessages[] = $this->getOptionMessages(new HelpOptionParameter());
-        $optionMessages[] = $this->getOptionMessages(new VersionOptionParameter());
-
-        if ($route->hasArguments()) {
-            $argumentMessages[] = $this->getArgumentsHeadingMessages();
-            $argumentMessages[] = new NewLine();
-
-            foreach ($route->getArguments() as $argument) {
-                $argumentMessages[] = $this->getArgumentMessages($argument);
-            }
-        }
+        $argumentMessages = $this->getArgumentsMessages();
+        $optionMessages   = $this->getOptionsMessages();
 
         $output = $output
             ->withAddedMessages(
@@ -170,6 +143,59 @@ class HelpCommand
         }
 
         return $output;
+    }
+
+    /**
+     * Get the options messages.
+     *
+     * @return array<int, MessageContract>
+     */
+    protected function getOptionsMessages(): array
+    {
+        $route          = $this->helpRoute;
+        $optionMessages = [];
+
+        if ($route->hasOptions()) {
+            $optionMessages[] = $this->getOptionsHeadingMessages();
+            $optionMessages[] = new NewLine();
+
+            foreach ($route->getOptions() as $option) {
+                $optionMessages[] = $this->getOptionMessages($option);
+            }
+        }
+
+        $optionMessages[] = $this->getGlobalOptionsHeadingMessages();
+        $optionMessages[] = new NewLine();
+
+        $optionMessages[] = $this->getOptionMessages(new QuietOptionParameter());
+        $optionMessages[] = $this->getOptionMessages(new SilentOptionParameter());
+        $optionMessages[] = $this->getOptionMessages(new NoInteractionOptionParameter());
+        $optionMessages[] = $this->getOptionMessages(new HelpOptionParameter());
+        $optionMessages[] = $this->getOptionMessages(new VersionOptionParameter());
+
+        return $optionMessages;
+    }
+
+    /**
+     * Get the arguments messages.
+     *
+     * @return array<int, MessageContract>
+     */
+    protected function getArgumentsMessages(): array
+    {
+        $route            = $this->helpRoute;
+        $argumentMessages = [];
+
+        if ($route->hasArguments()) {
+            $argumentMessages[] = $this->getArgumentsHeadingMessages();
+            $argumentMessages[] = new NewLine();
+
+            foreach ($route->getArguments() as $argument) {
+                $argumentMessages[] = $this->getArgumentMessages($argument);
+            }
+        }
+
+        return $argumentMessages;
     }
 
     /**
