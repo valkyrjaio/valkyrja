@@ -29,17 +29,6 @@ class Format implements FormatContract
     }
 
     /**
-     * @param array{
-     *     setCode: non-empty-string,
-     *     unsetCode: non-empty-string,
-     * } $array The array
-     */
-    public static function __set_state(array $array): static
-    {
-        return new static(...$array);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]

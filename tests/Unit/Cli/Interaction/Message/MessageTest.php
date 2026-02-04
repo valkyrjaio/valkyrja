@@ -34,12 +34,12 @@ class MessageTest extends TestCase
         self::assertNull($message->getFormatter());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $text      = 'text';
         $formatter = new HighlightedTextFormatter();
 
-        $message = Message::__set_state([
+        $message = new Message(...[
             'text'      => $text,
             'formatter' => $formatter,
         ]);

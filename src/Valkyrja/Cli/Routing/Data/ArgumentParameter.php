@@ -47,21 +47,6 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
     }
 
     /**
-     * @param array{
-     *     name: non-empty-string,
-     *     description: non-empty-string,
-     *     cast: Cast|null,
-     *     mode: ArgumentMode,
-     *     valueMode: ArgumentValueMode,
-     *     arguments: ArgumentContract[],
-     * } $array The array
-     */
-    public static function __set_state(array $array): static
-    {
-        return new static(...$array);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]

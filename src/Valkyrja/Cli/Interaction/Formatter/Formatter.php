@@ -33,18 +33,6 @@ class Formatter implements FormatterContract
     }
 
     /**
-     * @param array{
-     *     formats: FormatContract[],
-     * } $array The array
-     */
-    public static function __set_state(array $array): static
-    {
-        $formats = $array['formats'];
-
-        return new static(...$formats);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]

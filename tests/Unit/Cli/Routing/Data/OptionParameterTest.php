@@ -58,7 +58,7 @@ class OptionParameterTest extends TestCase
         self::assertTrue($parameter->areValuesValid());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $name             = self::NAME;
         $description      = self::DESCRIPTION;
@@ -74,17 +74,17 @@ class OptionParameterTest extends TestCase
         $defaultValue     = 'b';
         $valueDisplayName = 'test';
 
-        $parameter = OptionParameter::__set_state([
+        $parameter = new OptionParameter(...[
             'name'             => $name,
             'description'      => $description,
+            'valueDisplayName' => $valueDisplayName,
             'cast'             => $cast,
+            'defaultValue'     => $defaultValue,
             'shortNames'       => $shortNames,
-            'mode'             => $mode,
-            'valueMode'        => $valueMode,
             'validValues'      => $validValues,
             'options'          => $options,
-            'defaultValue'     => $defaultValue,
-            'valueDisplayName' => $valueDisplayName,
+            'mode'             => $mode,
+            'valueMode'        => $valueMode,
         ]);
 
         self::assertSame($name, $parameter->getName());

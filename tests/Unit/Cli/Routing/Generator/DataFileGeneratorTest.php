@@ -102,16 +102,16 @@ class DataFileGeneratorTest extends TestCase
         $expected = <<<PHP
             new $dataNamespace(
                 routes: [
-                'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => \Valkyrja\Cli\Routing\Data\Route::__set_state(array(
+                'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
                'name' => 'test',
                'description' => 'description',
                'helpText' => 
-              \Valkyrja\Cli\Interaction\Message\Message::__set_state(array(
+              new \Valkyrja\Cli\Interaction\Message\Message(...array(
                  'text' => 'help text',
                  'formatter' => NULL,
               )),
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
@@ -166,16 +166,16 @@ class DataFileGeneratorTest extends TestCase
         $expected = <<<PHP
             new $dataNamespace(
                 routes: [
-                'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => \Valkyrja\Cli\Routing\Data\Route::__set_state(array(
+                'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
                'name' => 'test',
                'description' => 'description',
                'helpText' => 
-              \Valkyrja\Cli\Interaction\Message\Message::__set_state(array(
+              new \Valkyrja\Cli\Interaction\Message\Message(...array(
                  'text' => 'help text',
                  'formatter' => NULL,
               )),
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
