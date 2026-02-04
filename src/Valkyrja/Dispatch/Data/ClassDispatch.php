@@ -32,18 +32,6 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
     }
 
     /**
-     * @param array{
-     *     class: class-string,
-     *     arguments: array<non-empty-string, mixed>|null,
-     *     dependencies: array<non-empty-string, class-string>|null,
-     * } $array The array
-     */
-    public static function __set_state(array $array): static
-    {
-        return new static(...$array);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]
