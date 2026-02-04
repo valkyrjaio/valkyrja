@@ -48,4 +48,12 @@ class VersionCommandTest extends TestCase
         self::assertInstanceOf(NewLine::class, $output->getMessages()[15]);
         self::assertInstanceOf(NewLine::class, $output->getMessages()[16]);
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to show the application version and info.';
+
+        self::assertSame($text, VersionCommand::help()->getText());
+        self::assertSame($text, VersionCommand::help()->getFormattedText());
+    }
 }

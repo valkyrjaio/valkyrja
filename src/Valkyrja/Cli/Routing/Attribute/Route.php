@@ -35,7 +35,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
-     * @param MessageContract                                   $helpText                  The help text
+     * @param (callable():MessageContract)|null                 $helpText                  The help text
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
@@ -46,7 +46,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
     public function __construct(
         protected string $name,
         protected string $description,
-        protected MessageContract $helpText,
+        callable|null $helpText,
         protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, '__construct'),
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],

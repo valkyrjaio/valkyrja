@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Dispatcher;
 use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Input;
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -82,7 +81,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -106,7 +104,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -133,7 +130,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -161,7 +157,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -181,7 +176,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
 
@@ -203,7 +197,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
             arguments: [
                 new ArgumentParameter(
@@ -237,7 +230,6 @@ class RouterTest extends TestCase
         $route = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
             options: [
                 new OptionParameter(
@@ -264,7 +256,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'help',
             description: 'Help Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -283,7 +274,6 @@ class RouterTest extends TestCase
         $command = new Route(
             name: 'help',
             description: 'Help Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command);
@@ -291,7 +281,6 @@ class RouterTest extends TestCase
         $command2 = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
         );
         $collection->add($command2);
@@ -311,7 +300,6 @@ class RouterTest extends TestCase
         $route = new Route(
             name: 'test-command',
             description: 'Test Command',
-            helpText: new Message('Help text'),
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'invalidDispatch'])
         );
 

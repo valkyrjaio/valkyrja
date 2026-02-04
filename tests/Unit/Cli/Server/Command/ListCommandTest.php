@@ -237,4 +237,12 @@ class ListCommandTest extends TestCase
         self::assertStringContainsString($listRoute2Name, $obOutput);
         self::assertStringContainsString($listRoute2Description, $obOutput);
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to list all the commands present within the Cli component.';
+
+        self::assertSame($text, ListCommand::help()->getText());
+        self::assertSame($text, ListCommand::help()->getFormattedText());
+    }
 }

@@ -269,8 +269,8 @@ class AttributeCollector implements Contract
         return new Route(
             name: $route->getName(),
             description: $route->getDescription(),
-            helpText: $route->getHelpText(),
             dispatch: $route->getDispatch(),
+            helpText: $route->getHelpText(),
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),

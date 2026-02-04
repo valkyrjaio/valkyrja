@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry;
 
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Route;
@@ -89,7 +88,6 @@ class CliTest extends TestCase
             new Route(
                 name: 'version',
                 description: 'test',
-                helpText: new Message('test'),
                 dispatch: MethodDispatch::fromCallableOrArray([self::class, 'routeCallback'])
             )
         );

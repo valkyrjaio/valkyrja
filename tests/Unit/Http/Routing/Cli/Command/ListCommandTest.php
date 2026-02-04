@@ -84,4 +84,12 @@ class ListCommandTest extends TestCase
         self::assertIsString($contents);
         self::assertStringContainsString('No routes were found', $contents);
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to list all the routes present within the Http component.';
+
+        self::assertSame($text, ListCommand::help()->getText());
+        self::assertSame($text, ListCommand::help()->getFormattedText());
+    }
 }

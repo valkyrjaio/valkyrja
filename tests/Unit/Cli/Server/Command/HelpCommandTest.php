@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Output;
@@ -120,8 +121,8 @@ class HelpCommandTest extends TestCase
         $helpRoute   = new Route(
             name: $commandName,
             description: $description,
-            helpText: new Message(text: $helpText),
             dispatch: new MethodDispatch(class: self::class, method: '__construct'),
+            helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(
                     name: 'argument1',
@@ -221,5 +222,77 @@ class HelpCommandTest extends TestCase
         self::assertStringContainsString('--option4', $obOutput);
         self::assertStringContainsString('[=option4value]', $obOutput);
         self::assertStringContainsString('Option 4 description', $obOutput);
+    }
+
+    public function testRunWithNoHelpText(): void
+    {
+        $commandName = 'bar';
+        $description = 'command without help text';
+        $versionText = 'Version Command Output';
+
+        // Create a route WITHOUT helpText to trigger line 199 (return new Messages())
+        $helpRoute = new Route(
+            name: $commandName,
+            description: $description,
+            dispatch: new MethodDispatch(class: self::class, method: '__construct'),
+        );
+
+        $output = new Output();
+        $option = $this->createMock(OptionParameterContract::class);
+        $option->expects($this->once())
+            ->method('getFirstValue')
+            ->willReturn($commandName);
+        $route = $this->createMock(RouteContract::class);
+        $route->expects($this->once())
+            ->method('getOption')
+            ->with('command')
+            ->willReturn($option);
+        $collection = $this->createMock(CollectionContract::class);
+        $collection->expects($this->once())
+            ->method('get')
+            ->with($commandName)
+            ->willReturn($helpRoute);
+        $version = $this->createMock(VersionCommand::class);
+        $version->expects($this->once())
+            ->method('run')
+            ->willReturn($output->withMessages(new Message($versionText)));
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->never())
+            ->method('createOutput');
+
+        $helpCommand   = new HelpCommand(
+            version: $version,
+            route: $route,
+            collection: $collection,
+            outputFactory: $outputFactory
+        );
+        $outputFromRun = $helpCommand->run();
+
+        ob_start();
+        $outputFromRun->writeMessages();
+        $obOutput = ob_get_clean();
+
+        self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
+        self::assertStringContainsString($versionText, $obOutput);
+        self::assertStringContainsString($commandName, $obOutput);
+        self::assertStringContainsString($description, $obOutput);
+        // Should NOT contain "Help:" section since there's no help text
+        self::assertStringNotContainsString('Help:', $obOutput);
+    }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to get help for a specific command.';
+
+        self::assertSame($text, HelpCommand::help()->getText());
+        self::assertSame($text, HelpCommand::help()->getFormattedText());
+    }
+
+    /**
+     * The help text.
+     */
+    public function getHelpText(): MessageContract
+    {
+        return new Message(text: 'Help Command Output');
     }
 }

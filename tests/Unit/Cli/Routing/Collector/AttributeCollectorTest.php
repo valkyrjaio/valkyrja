@@ -69,7 +69,7 @@ class AttributeCollectorTest extends TestCase
         self::assertInstanceOf(Route::class, $command = $commands[0]);
         self::assertSame(CommandClass::NAME, $command->getName());
         self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
-        self::assertSame(CommandClass::HELP_TEXT, $command->getHelpText()->getText());
+        self::assertSame(CommandClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $command->getOptions()[0]);
     }
@@ -91,7 +91,7 @@ class AttributeCollectorTest extends TestCase
         self::assertInstanceOf(Route::class, $command = $commands[0]);
         self::assertSame('className.test2.actionName', $command->getName());
         self::assertSame(CommandWithAllAttributesClass::DESCRIPTION, $command->getDescription());
-        self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpText()->getText());
+        self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertNotEmpty($command->getArguments());
@@ -131,7 +131,7 @@ class AttributeCollectorTest extends TestCase
 
         self::assertSame(CommandWithAllMiddlewareClass::NAME, $route->getName());
         self::assertSame(CommandWithAllMiddlewareClass::DESCRIPTION, $route->getDescription());
-        self::assertSame(CommandWithAllMiddlewareClass::HELP_TEXT, $route->getHelpText()->getText());
+        self::assertSame(CommandWithAllMiddlewareClass::HELP_TEXT, $route->getHelpTextMessage()->getText());
         self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getExitedMiddleware());

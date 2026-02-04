@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Input\Input;
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Manager\Container;
@@ -46,7 +45,6 @@ class HandlerTestCase extends TestCase
         $this->command = new Route(
             name: 'test',
             description: 'Test Command',
-            helpText: new Message('text'),
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
     }

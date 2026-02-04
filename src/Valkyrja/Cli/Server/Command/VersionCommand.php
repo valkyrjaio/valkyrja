@@ -17,6 +17,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -33,10 +34,18 @@ class VersionCommand
     ) {
     }
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to show the application version and info.');
+    }
+
     #[Route(
         name: CommandName::VERSION,
         description: 'Get the application version',
-        helpText: new Message('A command to show the application version and info'),
+        helpText: [self::class, 'help'],
     )]
     public function run(): OutputContract
     {

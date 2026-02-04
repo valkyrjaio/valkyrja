@@ -19,6 +19,7 @@ use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -42,10 +43,18 @@ class ListCommand
     ) {
     }
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to list all the commands present within the Cli component.');
+    }
+
     #[Route(
         name: CommandName::LIST,
         description: 'List all commands',
-        helpText: new Message('A command to list all the commands present within the Cli component.'),
+        helpText: [self::class, 'help'],
         options: [
             new OptionParameter(
                 name: 'namespace',

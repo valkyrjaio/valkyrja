@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
@@ -89,7 +88,6 @@ class DataFileGeneratorTest extends TestCase
                 'route' => new Route(
                     name: 'test',
                     description: 'description',
-                    helpText: new Message('help text'),
                     dispatch: new MethodDispatch(class: 'class', method: 'method')
                 ),
             ]
@@ -104,13 +102,9 @@ class DataFileGeneratorTest extends TestCase
             new $dataNamespace(
                 routes: [
                 'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
+               'helpText' => NULL,
                'name' => 'test',
                'description' => 'description',
-               'helpText' => 
-              new \Valkyrja\Cli\Interaction\Message\Message(...array(
-                 'text' => 'help text',
-                 'formatter' => NULL,
-              )),
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
@@ -155,7 +149,6 @@ class DataFileGeneratorTest extends TestCase
                 'route' => static fn (): Route => new Route(
                     name: 'test',
                     description: 'description',
-                    helpText: new Message('help text'),
                     dispatch: new MethodDispatch(class: 'class', method: 'method')
                 ),
             ]
@@ -170,13 +163,9 @@ class DataFileGeneratorTest extends TestCase
             new $dataNamespace(
                 routes: [
                 'route' => static fn (): Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
+               'helpText' => NULL,
                'name' => 'test',
                'description' => 'description',
-               'helpText' => 
-              new \Valkyrja\Cli\Interaction\Message\Message(...array(
-                 'text' => 'help text',
-                 'formatter' => NULL,
-              )),
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',

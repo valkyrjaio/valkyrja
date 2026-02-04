@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Collection;
 
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -44,7 +45,6 @@ class CollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            helpText: new Message(text: 'help'),
             dispatch: new MethodDispatch(self::class, '__construct')
         );
 
@@ -62,11 +62,8 @@ class CollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            helpText: new Messages(
-                new Message(text: 'help'),
-                new NewLine(),
-            ),
             dispatch: new MethodDispatch(self::class, '__construct'),
+            helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(name: 'test', description: 'test'),
             ],
@@ -89,8 +86,8 @@ class CollectionTest extends TestCase
         self::assertSame([$route->getName() => $routeClosure], $collection->getData()->routes);
         self::assertInstanceOf(Route::class, $routeFromCollection);
         self::assertSame($route->getName(), $routeFromCollection->getName());
-        self::assertSame($route->getHelpText()->getText(), $routeFromCollection->getHelpText()->getText());
-        self::assertSame($route->getHelpText()->getFormattedText(), $routeFromCollection->getHelpText()->getFormattedText());
+        self::assertSame($route->getHelpTextMessage()->getText(), $routeFromCollection->getHelpTextMessage()->getText());
+        self::assertSame($route->getHelpTextMessage()->getFormattedText(), $routeFromCollection->getHelpTextMessage()->getFormattedText());
         self::assertSame($route->getDescription(), $routeFromCollection->getDescription());
         self::assertNotEmpty($routeFromCollection->getOptions());
         self::assertNotEmpty($routeFromCollection->getArguments());
@@ -103,5 +100,13 @@ class CollectionTest extends TestCase
         self::assertSame($route->getDispatch()->getArguments(), $routeFromCollection->getDispatch()->getArguments());
         self::assertSame($route->getDispatch()->getDependencies(), $routeFromCollection->getDispatch()->getDependencies());
         self::assertTrue($collection->has($route->getName()));
+    }
+
+    public function getHelpText(): MessageContract
+    {
+        return new Messages(
+            new Message(text: 'help'),
+            new NewLine(),
+        );
     }
 }

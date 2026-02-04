@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
@@ -23,10 +24,18 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 
 class ClearCacheCommand
 {
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to clear the config cache.');
+    }
+
     #[Route(
         name: 'config:cache:clear',
         description: 'Clear config cache',
-        helpText: new Message('A command to clear the config cache.'),
+        helpText: [self::class, 'help'],
     )]
     public function run(OutputFactoryContract $outputFactory): OutputContract
     {
