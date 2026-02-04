@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Stream;
 
 use Override;
-use Throwable;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
@@ -74,12 +73,6 @@ class Stream implements StreamContract
     #[Override]
     public function isSeekable(): bool
     {
-        // If there is no stream
-        if ($this->isInvalidStream()) {
-            // Don't do anything
-            return false;
-        }
-
         return (bool) $this->getMetadata('seekable');
     }
 
@@ -116,12 +109,6 @@ class Stream implements StreamContract
     #[Override]
     public function isReadable(): bool
     {
-        // If there is no stream
-        if ($this->isInvalidStream()) {
-            // It's not readable
-            return false;
-        }
-
         // Get the stream's mode
         /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
@@ -162,12 +149,6 @@ class Stream implements StreamContract
     #[Override]
     public function isWritable(): bool
     {
-        // If there is no stream
-        if ($this->isInvalidStream()) {
-            // The stream is definitely not writable
-            return false;
-        }
-
         // Get the stream's mode
         /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
@@ -202,22 +183,7 @@ class Stream implements StreamContract
      */
     public function __toString(): string
     {
-        // If the stream is not readable
-        if (! $this->isReadable()) {
-            // Return an empty string
-            return '';
-        }
-
-        try {
-            // Rewind the stream to the start
-            $this->rewind();
-
-            // Get the stream's contents
-            return $this->getContents();
-        } catch (Throwable) {
-            // Return a string
-            return '';
-        }
+        return StreamFactory::toString($this);
     }
 
     /**
@@ -237,7 +203,7 @@ class Stream implements StreamContract
         $resource = $this->detach();
 
         // Close the stream
-        $this->closeStream($resource);
+        fclose($resource);
     }
 
     /**
@@ -464,16 +430,6 @@ class Stream implements StreamContract
     protected function getStreamContents($stream): string|false
     {
         return stream_get_contents($stream);
-    }
-
-    /**
-     * Close a stream.
-     *
-     * @param resource $stream The stream
-     */
-    protected function closeStream($stream): bool
-    {
-        return fclose($stream);
     }
 
     /**
