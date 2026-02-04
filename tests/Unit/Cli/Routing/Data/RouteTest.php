@@ -843,7 +843,7 @@ class RouteTest extends TestCase
             name: self::NAME,
             description: self::DESCRIPTION,
             dispatch: new MethodDispatch(class: self::class, method: '__construct'),
-            helpText: fn (): MessageContract => new Message('closure help text')
+            helpText: static fn (): MessageContract => new Message('closure help text')
         );
     }
 }
