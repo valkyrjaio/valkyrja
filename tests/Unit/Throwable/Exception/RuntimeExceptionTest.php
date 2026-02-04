@@ -35,4 +35,12 @@ class RuntimeExceptionTest extends TestCase
         self::assertSame($traceCode, $traceCode3);
         self::assertSame($traceCode2, $traceCode3);
     }
+
+    public function testThrow(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('message');
+
+        RuntimeException::throw('message');
+    }
 }

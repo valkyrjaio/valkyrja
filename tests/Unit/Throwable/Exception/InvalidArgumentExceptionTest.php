@@ -35,4 +35,12 @@ class InvalidArgumentExceptionTest extends TestCase
         self::assertSame($traceCode, $traceCode3);
         self::assertSame($traceCode2, $traceCode3);
     }
+
+    public function testThrow(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('message');
+
+        InvalidArgumentException::throw('message');
+    }
 }
