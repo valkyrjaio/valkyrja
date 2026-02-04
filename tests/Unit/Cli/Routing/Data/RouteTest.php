@@ -18,6 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
@@ -831,5 +832,18 @@ class RouteTest extends TestCase
     public function getHelpText2(): MessageContract
     {
         return new Message('help text 2');
+    }
+
+    public function testHelpTextWithClosureThrowsException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Help text must be a callable array');
+
+        new Route(
+            name: self::NAME,
+            description: self::DESCRIPTION,
+            dispatch: new MethodDispatch(class: self::class, method: '__construct'),
+            helpText: fn (): MessageContract => new Message('closure help text')
+        );
     }
 }
