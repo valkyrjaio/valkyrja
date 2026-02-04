@@ -101,6 +101,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
     {
         $contract = ListenerContract::class;
         $content  = var_export($route, true);
+        $content  = preg_replace('/([.^\S]*)::__set_state\(/', 'new $1(...', $content);
 
         return <<<PHP
             static fn (): $contract => $content

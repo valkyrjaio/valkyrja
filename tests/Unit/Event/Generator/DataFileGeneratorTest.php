@@ -99,16 +99,17 @@ class DataFileGeneratorTest extends TestCase
 
         $dataNamespace = Data::class;
 
+        // phpcs:disable
         $expected = <<<PHP
             new $dataNamespace(
                 events: array (
             ),
                 listeners: [
-                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => \Valkyrja\Event\Data\Listener::__set_state(array(
+                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
                'eventId' => 'eventId',
                'name' => 'name',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
@@ -120,6 +121,7 @@ class DataFileGeneratorTest extends TestCase
             ],
             )
             PHP;
+        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);
@@ -141,16 +143,17 @@ class DataFileGeneratorTest extends TestCase
 
         $dataNamespace = Data::class;
 
+        // phpcs:disable
         $expected = <<<PHP
             new $dataNamespace(
                 events: array (
             ),
                 listeners: [
-                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => \Valkyrja\Event\Data\Listener::__set_state(array(
+                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
                'eventId' => 'eventId',
                'name' => 'name',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
@@ -162,6 +165,7 @@ class DataFileGeneratorTest extends TestCase
             ],
             )
             PHP;
+        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);
