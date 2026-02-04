@@ -15,11 +15,22 @@ namespace Valkyrja\Throwable\Exception;
 
 use InvalidArgumentException as PhpInvalidArgumentException;
 use Override;
+use Throwable as PhpThrowable;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 class InvalidArgumentException extends PhpInvalidArgumentException implements Throwable
 {
+    /**
+     * Throw an invalid argument exception.
+     *
+     * @throws static
+     */
+    public static function throw(string $message, int $code = 0, PhpThrowable|null $previous = null): void
+    {
+        throw new static($message, $code, $previous);
+    }
+
     /**
      * @inheritDoc
      */

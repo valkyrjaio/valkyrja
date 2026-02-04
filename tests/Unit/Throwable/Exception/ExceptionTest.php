@@ -35,4 +35,12 @@ class ExceptionTest extends TestCase
         self::assertSame($traceCode, $traceCode3);
         self::assertSame($traceCode2, $traceCode3);
     }
+
+    public function testThrow(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('message');
+
+        Exception::throw('message');
+    }
 }
