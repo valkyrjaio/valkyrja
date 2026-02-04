@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Classes\Model\UnpackForNewInstanceModelClass;
+use Valkyrja\Tests\Classes\Type\Model\UnpackForNewInstanceModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

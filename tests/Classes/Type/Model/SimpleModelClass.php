@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Model;
+namespace Valkyrja\Tests\Classes\Type\Model;
 
 use Valkyrja\Type\Model\Abstract\Model;
 

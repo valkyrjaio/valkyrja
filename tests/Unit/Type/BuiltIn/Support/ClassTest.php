@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use stdClass;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Tests\Classes\Model\ModelClass;
+use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Cls;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;

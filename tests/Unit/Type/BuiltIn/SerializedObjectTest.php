@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
 use JsonException;
-use Valkyrja\Tests\Classes\Model\ModelClass;
+use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\SerializedObject;
 
