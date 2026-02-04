@@ -154,6 +154,8 @@ class Arr
 
     /**
      * @throws JsonException
+     *
+     * @return array<array-key, mixed>
      */
     public static function fromMixed(mixed $value): array
     {
