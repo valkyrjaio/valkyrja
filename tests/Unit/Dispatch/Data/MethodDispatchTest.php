@@ -24,14 +24,14 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 class MethodDispatchTest extends TestCase
 {
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $class        = InvalidDispatcherClass::class;
         $method       = 'method';
         $arguments    = ['arg' => 'value'];
         $dependencies = ['dependency' => self::class];
 
-        $dispatch = MethodDispatch::__set_state([
+        $dispatch = new MethodDispatch(...[
             'class'        => $class, 'method' => 'method', 'isStatic' => false,
             'arguments'    => $arguments,
             'dependencies' => $dependencies,
