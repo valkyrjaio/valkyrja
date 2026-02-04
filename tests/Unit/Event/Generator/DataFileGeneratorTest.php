@@ -104,11 +104,11 @@ class DataFileGeneratorTest extends TestCase
                 events: array (
             ),
                 listeners: [
-                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => \Valkyrja\Event\Data\Listener::__set_state(array(
+                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
                'eventId' => 'eventId',
                'name' => 'name',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
@@ -146,11 +146,11 @@ class DataFileGeneratorTest extends TestCase
                 events: array (
             ),
                 listeners: [
-                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => \Valkyrja\Event\Data\Listener::__set_state(array(
+                'name' => static fn (): Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
                'eventId' => 'eventId',
                'name' => 'name',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
