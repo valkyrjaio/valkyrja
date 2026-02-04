@@ -100,11 +100,11 @@ class DataFileGeneratorTest extends TestCase
         $expected = <<<PHP
             new $dataNamespace(
                 routes: [
-                'route' => static fn (): Valkyrja\Http\Routing\Data\Contract\RouteContract => \Valkyrja\Http\Routing\Data\Route::__set_state(array(
+                'route' => static fn (): Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
                'path' => '/',
                'name' => 'route',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,
@@ -168,11 +168,11 @@ class DataFileGeneratorTest extends TestCase
         $expected = <<<PHP
             new $dataNamespace(
                 routes: [
-                'route' => static fn (): Valkyrja\Http\Routing\Data\Contract\RouteContract => \Valkyrja\Http\Routing\Data\Route::__set_state(array(
+                'route' => static fn (): Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
                'path' => '/',
                'name' => 'route',
                'dispatch' => 
-              \Valkyrja\Dispatch\Data\MethodDispatch::__set_state(array(
+              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
                  'arguments' => NULL,
                  'dependencies' => NULL,

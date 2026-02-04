@@ -39,7 +39,7 @@ class ParameterTest extends TestCase
         self::assertNull($parameter->getDefault());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $name          = 'name';
         $regex         = 'regex';
@@ -49,7 +49,7 @@ class ParameterTest extends TestCase
         $default       = 'default';
         $value         = 'value';
 
-        $parameter = Parameter::__set_state([
+        $parameter = new Parameter(...[
             'name'          => $name,
             'regex'         => $regex,
             'cast'          => $cast,

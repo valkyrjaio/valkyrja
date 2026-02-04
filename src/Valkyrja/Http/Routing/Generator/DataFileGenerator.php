@@ -102,11 +102,12 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
 
     protected function getRouteAsContent(RouteContract $route): string
     {
-        $routeContract = RouteContract::class;
-        $routeContent  = var_export($route, true);
+        $contract = RouteContract::class;
+        $content  = var_export($route, true);
+        $content  = preg_replace('/([.^\S]*)::__set_state\(/', 'new $1(...', $content);
 
         return <<<PHP
-            static fn (): $routeContract => $routeContent
+            static fn (): $contract => $content
             PHP;
     }
 }

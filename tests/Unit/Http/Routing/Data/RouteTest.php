@@ -66,7 +66,7 @@ class RouteTest extends TestCase
         self::assertNull($route->getResponseStruct());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $path                      = '/';
         $name                      = 'route';
@@ -82,7 +82,7 @@ class RouteTest extends TestCase
         $requestStruct             = IndexedJsonRequestStructEnum::class;
         $responseStruct            = ResponseStructEnum::class;
 
-        $route = Route::__set_state([
+        $route = new Route(...[
             'path'                      => $path,
             'name'                      => $name,
             'dispatch'                  => $dispatch,
