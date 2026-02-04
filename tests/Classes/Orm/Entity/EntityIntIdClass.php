@@ -38,10 +38,10 @@ class EntityIntIdClass extends Entity
      * @inheritDoc
      */
     #[Override]
-    protected function internalSetMethods(): array
+    protected function internalSetCallables(): array
     {
         return [
-            'id' => 'setId',
+            'id' => [$this, 'setId'],
         ];
     }
 }

@@ -25,30 +25,30 @@ trait PrivatePropertyTrait
     /**
      * @inheritDoc
      */
-    protected function internalGetMethods(): array
+    protected function internalGetCallables(): array
     {
         return [
-            'private' => 'getPrivate',
+            'private' => [$this, 'getPrivate'],
         ];
     }
 
     /**
      * @inheritDoc
      */
-    protected function internalSetMethods(): array
+    protected function internalSetCallables(): array
     {
         return [
-            'private' => 'setPrivate',
+            'private' => [$this, 'setPrivate'],
         ];
     }
 
     /**
      * @inheritDoc
      */
-    protected function internalIssetMethods(): array
+    protected function internalIssetCallables(): array
     {
         return [
-            'private' => 'issetPrivate',
+            'private' => [$this, 'issetPrivate'],
         ];
     }
 

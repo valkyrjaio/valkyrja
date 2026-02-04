@@ -32,10 +32,10 @@ class ModelInvalidIssetMethodClass extends Model
      * @inheritDoc
      */
     #[Override]
-    protected function internalIssetMethods(): array
+    protected function internalIssetCallables(): array
     {
         return [
-            'test' => 'issetTest',
+            'test' => [$this, 'issetTest'],
         ];
     }
 }

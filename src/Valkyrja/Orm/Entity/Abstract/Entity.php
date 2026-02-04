@@ -168,7 +168,7 @@ abstract class Entity extends Model implements EntityContract
         $this->internalRemoveInternalProperties($allProperties);
 
         /** @var array<string, mixed> $allProperties */
-        $allProperties = $this->internalCheckOnlyProperties($allProperties, $properties);
+        $allProperties = $this->internalPropertiesIntersect($allProperties, $properties);
 
         $this->internalRemoveUnStorableFields($allProperties, $unStorableFields);
 

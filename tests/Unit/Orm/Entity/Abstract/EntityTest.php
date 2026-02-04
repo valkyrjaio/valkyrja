@@ -40,6 +40,11 @@ class EntityTest extends TestCase
         self::assertSame('entities_with_features', EntityWithAllFeaturesClass::getTableName());
     }
 
+    public function testExposable(): void
+    {
+        self::assertSame([], EntityClass::getExposable());
+    }
+
     public function testGetIdFieldReturnsDefaultId(): void
     {
         self::assertSame('id', EntityIntIdClass::getIdField());
