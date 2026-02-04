@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Stream\Factory;
 
 use Psr\Http\Message\StreamInterface;
+use Throwable;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
@@ -88,6 +89,29 @@ abstract class StreamFactory
     {
         return str_contains($mode, 'r')
             || str_contains($mode, '+');
+    }
+
+    /**
+     * Get a stream as a string.
+     */
+    public static function toString(StreamContract $stream): string
+    {
+        // If the stream is not readable
+        if (! $stream->isReadable()) {
+            // Return an empty string
+            return '';
+        }
+
+        try {
+            // Rewind the stream to the start
+            $stream->rewind();
+
+            // Get the stream's contents
+            return $stream->getContents();
+        } catch (Throwable) {
+            // Return a string
+            return '';
+        }
     }
 
     /**
