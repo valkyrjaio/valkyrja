@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
