@@ -94,25 +94,11 @@ interface RouteContract
     public function hasRequestMethod(RequestMethod $requestMethod): bool;
 
     /**
-     * Create a new route with the specified request method.
-     *
-     * @param RequestMethod $requestMethod The request method
-     */
-    public function withRequestMethod(RequestMethod $requestMethod): static;
-
-    /**
      * Create a new route with the specified request methods.
      *
      * @param RequestMethod ...$requestMethods The request methods
      */
     public function withRequestMethods(RequestMethod ...$requestMethods): static;
-
-    /**
-     * Create a new route with an additional request method.
-     *
-     * @param RequestMethod $requestMethod The request method
-     */
-    public function withAddedRequestMethod(RequestMethod $requestMethod): static;
 
     /**
      * Create a new route with additional request methods.
@@ -143,25 +129,11 @@ interface RouteContract
     public function getParameters(): array;
 
     /**
-     * Create a new route with given parameter.
-     *
-     * @param ParameterContract $parameter The parameter
-     */
-    public function withParameter(ParameterContract $parameter): static;
-
-    /**
      * Create a new route with given parameters.
      *
      * @param ParameterContract ...$parameters The parameter
      */
     public function withParameters(ParameterContract ...$parameters): static;
-
-    /**
-     * Create a new route with added parameter.
-     *
-     * @param ParameterContract $parameter The parameter
-     */
-    public function withAddedParameter(ParameterContract $parameter): static;
 
     /**
      * Create a new route with added parameters.

@@ -180,39 +180,11 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withRequestMethod(RequestMethod $requestMethod): static
-    {
-        $new = clone $this;
-
-        $new->requestMethods = [$requestMethod];
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public function withRequestMethods(RequestMethod ...$requestMethods): static
     {
         $new = clone $this;
 
         $new->requestMethods = $requestMethods;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAddedRequestMethod(RequestMethod $requestMethod): static
-    {
-        $new = clone $this;
-
-        if (! in_array($requestMethod, $this->requestMethods, true)) {
-            $new->requestMethods[] = $requestMethod;
-        }
 
         return $new;
     }
@@ -271,37 +243,11 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withParameter(ParameterContract $parameter): static
-    {
-        $new = clone $this;
-
-        $new->parameters = [$parameter];
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public function withParameters(ParameterContract ...$parameters): static
     {
         $new = clone $this;
 
         $new->parameters = $parameters;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAddedParameter(ParameterContract $parameter): static
-    {
-        $new = clone $this;
-
-        $new->parameters[] = $parameter;
 
         return $new;
     }

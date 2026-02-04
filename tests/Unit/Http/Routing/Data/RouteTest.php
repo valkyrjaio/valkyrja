@@ -206,8 +206,8 @@ class RouteTest extends TestCase
         );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
-        $route4 = $route->withRequestMethod(RequestMethod::DELETE);
-        $route5 = $route->withAddedRequestMethod(RequestMethod::DELETE);
+        $route4 = $route->withRequestMethods(RequestMethod::DELETE);
+        $route5 = $route->withAddedRequestMethods(RequestMethod::DELETE);
         $route6 = $route->withAddedRequestMethods(...$methods);
 
         self::assertNotSame($route, $route2);
@@ -257,9 +257,9 @@ class RouteTest extends TestCase
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [$parameter]
         );
-        $route2 = $route->withParameter($parameter2);
+        $route2 = $route->withParameters($parameter2);
         $route3 = $route->withParameters($parameter3);
-        $route4 = $route->withAddedParameter($parameter2);
+        $route4 = $route->withAddedParameters($parameter2);
         $route5 = $route->withAddedParameters($parameter3, $parameter4);
 
         self::assertNotSame($route, $route2);
