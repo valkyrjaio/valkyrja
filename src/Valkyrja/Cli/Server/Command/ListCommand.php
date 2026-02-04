@@ -25,10 +25,10 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
 use function is_string;
@@ -54,65 +54,114 @@ class ListCommand
     #[Route(
         name: CommandName::LIST,
         description: 'List all commands',
-        helpText: [self::class, 'help'],
-        options: [
-            new OptionParameter(
-                name: 'namespace',
-                description: 'An optional namespace to filter commands by',
-                valueDisplayName: 'namespace',
-                shortNames: ['n']
-            ),
-        ]
+        helpText: [self::class, 'help']
+    )]
+    #[OptionParameter(
+        name: 'namespace',
+        description: 'An optional namespace to filter commands by',
+        valueDisplayName: 'namespace',
+        shortNames: ['n']
     )]
     public function run(): OutputContract
     {
-        $namespace = $this->route->getOption('namespace')?->getFirstValue();
-        $routes    = $this->collection->all();
+        $namespace    = $this->route->getOption('namespace')?->getFirstValue();
+        $routes       = $this->collection->all();
 
         if (is_string($namespace)) {
-            $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
-
-            if ($routes === []) {
-                return $this->outputFactory
-                    ->createOutput()
-                    ->withExitCode(ExitCode::ERROR)
-                    ->withAddedMessages(
-                        new Banner(new ErrorMessage("Namespace `$namespace` was not found."))
-                    );
-            }
+            $routes = $this->filterRoutesByNamespace($routes, $namespace);
         }
 
         if ($routes === []) {
-            return $this->outputFactory
-                ->createOutput()
-                ->withExitCode(ExitCode::ERROR)
-                ->withAddedMessages(
-                    new Banner(new ErrorMessage('No routes found.'))
-                );
+            return $this->getNoRoutesErrorOutput($namespace);
         }
 
-        $namespace ??= '';
+        $this->sortRoutes($routes);
 
-        usort($routes, static fn (RouteContract $a, RouteContract $b): int => $a->getName() <=> $b->getName());
+        $output = $this->version->run();
 
-        $output = $this->version
-            ->run()
-            ->withAddedMessages(
-                new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
-                new NewLine()
-            );
-
-        foreach ($routes as $route) {
-            $output = $output->withAddedMessages(
-                new Message('  '),
-                new Message($route->getName(), new Formatter(new TextColorFormat(TextColor::MAGENTA))),
-                new NewLine(),
-                new Message('    - '),
-                new Message($route->getDescription(), new HighlightedTextFormatter()),
-                new NewLine(),
-            );
-        }
+        $this->addHeaderMessages($output, $namespace);
+        $this->addRoutesMessages($output, $routes);
 
         return $output->withAddedMessages(new NewLine());
+    }
+
+    protected function getNoRoutesErrorOutput(string|null $namespace = null): OutputContract
+    {
+        $errorMessage = 'No routes found.';
+
+        if (is_string($namespace)) {
+            $errorMessage = "Namespace `$namespace` was not found.";
+        }
+
+        return $this->outputFactory
+            ->createOutput()
+            ->withExitCode(ExitCode::ERROR)
+            ->withAddedMessages(
+                new Banner(new ErrorMessage($errorMessage))
+            );
+    }
+
+    /**
+     * Filter a list of routes by namespace.
+     *
+     * @param RouteContract[] $routes The routes
+     *
+     * @return RouteContract[]
+     */
+    protected function filterRoutesByNamespace(array $routes, string $namespace): array
+    {
+        return array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
+    }
+
+    /**
+     * Sort the list of routes.
+     *
+     * @param RouteContract[] $routes The routes
+     */
+    protected function sortRoutes(array &$routes): void
+    {
+        usort($routes, static fn (RouteContract $a, RouteContract $b): int => $a->getName() <=> $b->getName());
+    }
+
+    /**
+     * Add the header to the output.
+     */
+    protected function addHeaderMessages(OutputContract $output, string|null $namespace = null): OutputContract
+    {
+        $namespace ??= '';
+
+        return $output->withAddedMessages(
+            new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
+            new NewLine()
+        );
+    }
+
+    /**
+     * Add the routes to the output.
+     *
+     * @param RouteContract[] $routes The routes
+     */
+    protected function addRoutesMessages(OutputContract $output, array $routes): OutputContract
+    {
+        foreach ($routes as $route) {
+            $output = $this->addRouteMessages($output, $route);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Add a route to the output.
+     */
+    protected function addRouteMessages(OutputContract $output, RouteContract $route): OutputContract
+    {
+        return $output->withAddedMessages(
+            new Message('  '),
+            new Message($route->getName(), new Formatter(new TextColorFormat(TextColor::MAGENTA))),
+            new NewLine(),
+            new Message('    - '),
+            new Message($route->getDescription(), new HighlightedTextFormatter()),
+            new NewLine(),
+        );
     }
 }
