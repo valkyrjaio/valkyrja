@@ -123,7 +123,7 @@ class Stream implements StreamContract
     public function read(int $length): string
     {
         if ($length < 0) {
-            throw new InvalidLengthException("Invalid length of $length provided. Length must be greater than 0");
+            InvalidLengthException::throw("Invalid length of $length provided. Length must be greater than 0");
         }
 
         /** @var int<1, max> $length */
@@ -460,7 +460,7 @@ class Stream implements StreamContract
         // If there is no stream
         if ($this->isInvalidStream()) {
             // Throw a runtime exception
-            throw new NoStreamAvailableException('No stream resource');
+            NoStreamAvailableException::throw('No stream resource');
         }
     }
 
@@ -472,7 +472,7 @@ class Stream implements StreamContract
         // If the stream isn't writable
         if (! $this->isWritable()) {
             // Throw a new runtime exception
-            throw new UnwritableStreamException('Stream is not writable');
+            UnwritableStreamException::throw('Stream is not writable');
         }
     }
 
@@ -484,7 +484,7 @@ class Stream implements StreamContract
         // If the write was not successful
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamWriteException('Error writing to stream');
+            StreamWriteException::throw('Error writing to stream');
         }
     }
 
@@ -496,7 +496,7 @@ class Stream implements StreamContract
         // If the stream isn't seekable
         if (! $this->isSeekable()) {
             // Throw a new runtime exception
-            throw new UnseekableStreamException('Stream is not seekable');
+            UnseekableStreamException::throw('Stream is not seekable');
         }
     }
 
@@ -508,7 +508,7 @@ class Stream implements StreamContract
         // If the result was not a 0, denoting an error occurred
         if ($result !== 0) {
             // Throw a new runtime exception
-            throw new StreamSeekException('Error seeking within stream');
+            StreamSeekException::throw('Error seeking within stream');
         }
     }
 
@@ -520,7 +520,7 @@ class Stream implements StreamContract
         // If the stream is not readable
         if (! $this->isReadable()) {
             // Throw a runtime exception
-            throw new UnreadableStreamException('Stream is not readable');
+            UnreadableStreamException::throw('Stream is not readable');
         }
     }
 
@@ -532,7 +532,7 @@ class Stream implements StreamContract
         // If there was a failure in reading the stream
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamReadException('Error reading stream');
+            StreamReadException::throw('Error reading stream');
         }
     }
 
@@ -544,7 +544,7 @@ class Stream implements StreamContract
         // If the tell is not an int
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamTellException('Error occurred during tell operation');
+            StreamTellException::throw('Error occurred during tell operation');
         }
     }
 }
