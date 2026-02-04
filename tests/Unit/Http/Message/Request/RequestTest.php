@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -31,7 +32,7 @@ class RequestTest extends TestCase
         $request2 = new Request(uri: new Uri(path: '/path'));
         $request3 = new Request(uri: new Uri(path: '/path', query: 'arg=value'));
         $request4 = $request3->withRequestTarget($requestTarget);
-        $request5 = new Request(uri: Uri::fromString('https://www.example.com/path?arg=value#fragment'));
+        $request5 = new Request(uri: UriFactory::fromString('https://www.example.com/path?arg=value#fragment'));
 
         self::assertNotSame($request3, $request4);
         self::assertSame('/', $request->getRequestTarget());
@@ -96,15 +97,15 @@ class RequestTest extends TestCase
         $request  = new Request();
         $request2 = new Request(headers: [new Header(HeaderName::HOST, $host)]);
         $request3 = new Request(
-            uri: Uri::fromString($uri),
+            uri: UriFactory::fromString($uri),
             headers: [new Header(HeaderName::HOST, $host)]
         );
-        $request4 = $request->withUri(Uri::fromString($uri));
-        $request5 = $request->withUri(Uri::fromString($path));
-        $request6 = $request2->withUri(Uri::fromString($uri));
-        $request7 = $request2->withUri(Uri::fromString($uri), true);
-        $request8 = $request3->withUri(Uri::fromString($path));
-        $request9 = $request->withUri(Uri::fromString($uri2));
+        $request4 = $request->withUri(UriFactory::fromString($uri));
+        $request5 = $request->withUri(UriFactory::fromString($path));
+        $request6 = $request2->withUri(UriFactory::fromString($uri));
+        $request7 = $request2->withUri(UriFactory::fromString($uri), true);
+        $request8 = $request3->withUri(UriFactory::fromString($path));
+        $request9 = $request->withUri(UriFactory::fromString($uri2));
 
         self::assertNotSame($request, $request4);
         self::assertNotSame($request, $request5);

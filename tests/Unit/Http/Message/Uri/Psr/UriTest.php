@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Psr;
 
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Psr\Uri as Psr;
-use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class UriTest extends TestCase
@@ -24,7 +24,7 @@ class UriTest extends TestCase
 
     public function testGetScheme(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -33,7 +33,7 @@ class UriTest extends TestCase
 
     public function testGetAuthority(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -42,7 +42,7 @@ class UriTest extends TestCase
 
     public function testGetUserInfo(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -51,7 +51,7 @@ class UriTest extends TestCase
 
     public function testGetHost(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -60,7 +60,7 @@ class UriTest extends TestCase
 
     public function testGetPort(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -69,7 +69,7 @@ class UriTest extends TestCase
 
     public function testGetPath(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -78,7 +78,7 @@ class UriTest extends TestCase
 
     public function testGetQuery(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -87,7 +87,7 @@ class UriTest extends TestCase
 
     public function testGetFragment(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 
@@ -98,7 +98,7 @@ class UriTest extends TestCase
     {
         $value = Scheme::HTTP->value;
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withScheme($value);
@@ -111,7 +111,7 @@ class UriTest extends TestCase
     {
         $value = 'username2:password2';
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withUserInfo($value);
@@ -124,7 +124,7 @@ class UriTest extends TestCase
     {
         $value = 'test.com';
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withHost($value);
@@ -137,7 +137,7 @@ class UriTest extends TestCase
     {
         $value = 8080;
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withPort($value);
@@ -150,7 +150,7 @@ class UriTest extends TestCase
     {
         $value = '/example';
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withPath($value);
@@ -163,7 +163,7 @@ class UriTest extends TestCase
     {
         $value = 'query=value';
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withQuery($value);
@@ -176,7 +176,7 @@ class UriTest extends TestCase
     {
         $value = 'fragment';
 
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
         $psr = $psr->withFragment($value);
@@ -187,7 +187,7 @@ class UriTest extends TestCase
 
     public function testToString(): void
     {
-        $uri = Uri::fromString(self::URI_ALL_PARTS);
+        $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
         $psr = new Psr($uri);
 

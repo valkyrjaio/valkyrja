@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Uri\Uri;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Routing\Support\Abort;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -77,7 +77,7 @@ class AbortTest extends TestCase
         $statusCode      = StatusCode::PERMANENT_REDIRECT;
         $url             = 'https://example.com/';
         $headers         = ['header' => new Header('Header', 'test')];
-        $uri             = Uri::fromString($url);
+        $uri             = UriFactory::fromString($url);
 
         try {
             Abort::redirect(

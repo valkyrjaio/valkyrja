@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Uri\Uri;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -55,7 +55,7 @@ class GuzzleClientTest extends TestCase
         $body->write($contents);
         $body->rewind();
 
-        $uri = Uri::fromString($stringUri);
+        $uri = UriFactory::fromString($stringUri);
 
         $client  = new GuzzleClient(
             client: $guzzle,

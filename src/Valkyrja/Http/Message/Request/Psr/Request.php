@@ -24,8 +24,8 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
-use Valkyrja\Http\Message\Uri\Uri as ValkyrjaUri;
 
 use function is_array;
 
@@ -231,8 +231,10 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $uri          = ValkyrjaUri::fromString($uri->__toString());
-        $new->request = $this->request->withUri($uri, $preserveHost);
+        $new->request = $this->request->withUri(
+            UriFactory::fromString($uri->__toString()),
+            $preserveHost
+        );
 
         return $new;
     }
