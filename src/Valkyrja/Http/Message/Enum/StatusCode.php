@@ -111,13 +111,9 @@ enum StatusCode: int
      */
     public function asPhrase(): string
     {
-        /** @var StatusText|null $enum */
-        $enum = StatusText::{$this->name} ?? null;
+        /** @var StatusText $enum */
+        $enum = StatusText::{$this->name};
 
-        if ($enum instanceof StatusText) {
-            return $enum->value;
-        }
-
-        return '';
+        return $enum->value;
     }
 }
