@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Message\Uri\Uri;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Routing\Collection\Collection;
@@ -50,7 +50,7 @@ class RouterTest extends TestCase
     {
         $router  = new Router();
         $request = new ServerRequest(
-            uri: Uri::fromString('/non-existing-route'),
+            uri: UriFactory::fromString('/non-existing-route'),
             method: RequestMethod::GET
         );
 
@@ -68,7 +68,7 @@ class RouterTest extends TestCase
 
         $router  = new Router(routeNotMatchedHandler: $routeNotMatchedHandler);
         $request = new ServerRequest(
-            uri: Uri::fromString('/non-existing-route'),
+            uri: UriFactory::fromString('/non-existing-route'),
             method: RequestMethod::GET
         );
 
@@ -83,7 +83,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::POST
         );
 
@@ -110,7 +110,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher, routeNotMatchedHandler: $routeNotMatchedHandler);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::POST
         );
 
@@ -137,7 +137,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher, routeMatchedHandler: $routeNotMatchedHandler);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::GET
         );
 
@@ -161,7 +161,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::GET
         );
 
@@ -184,7 +184,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::GET
         );
 
@@ -208,7 +208,7 @@ class RouterTest extends TestCase
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
-            uri: Uri::fromString('/'),
+            uri: UriFactory::fromString('/'),
             method: RequestMethod::GET
         );
 

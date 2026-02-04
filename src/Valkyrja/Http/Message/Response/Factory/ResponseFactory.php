@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Uri\Uri;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 
 class ResponseFactory implements ResponseFactoryContract
 {
@@ -106,7 +106,7 @@ class ResponseFactory implements ResponseFactoryContract
         array|null $headers = null
     ): RedirectResponseContract {
         return RedirectResponse::createFromUri(
-            uri: Uri::fromString($uri ?? '/'),
+            uri: UriFactory::fromString($uri ?? '/'),
             statusCode: $statusCode,
             headers: $headers
         );

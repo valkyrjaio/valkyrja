@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Uri\Uri;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RequestFactoryTest extends TestCase
@@ -183,7 +183,7 @@ class RequestFactoryTest extends TestCase
 
         $uriString = 'https://username:password@example.com:9090/path?arg=value#anchor';
         $request   = new ServerRequest(
-            uri: Uri::fromString(uri: $uriString),
+            uri: UriFactory::fromString(uri: $uriString),
             method: RequestMethod::DELETE,
             body: $body             = new Stream(),
             headers: $headers       = [new Header('header1', 'test')],

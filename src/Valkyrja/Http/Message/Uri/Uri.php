@@ -14,22 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri;
 
 use Override;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
-use Valkyrja\Http\Message\Uri\Trait\UriHelpers;
 
-use function parse_url;
-use function str_starts_with;
 use function strtolower;
 
 class Uri implements UriContract
 {
-    use UriHelpers;
-
     /**
      * @var string
      */
@@ -72,46 +67,13 @@ class Uri implements UriContract
             $userInfo .= ':' . $password;
         }
 
-        $this->validatePort($port);
+        UriFactory::validatePort($port);
 
-        $this->userInfo = $this->filterUserInfo($userInfo);
+        $this->userInfo = UriFactory::filterUserInfo($userInfo);
         $this->host     = strtolower($host);
-        $this->path     = $this->filterPath($path);
-        $this->query    = $this->filterQuery($query);
-        $this->fragment = $this->filterFragment($fragment);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function fromString(string $uri): static
-    {
-        if (
-            $uri !== ''
-            && ! str_starts_with($uri, '/')
-            && ! str_starts_with($uri, Scheme::HTTP->value)
-            && ! str_starts_with($uri, Scheme::HTTPS->value)
-        ) {
-            $uri = '//' . $uri;
-        }
-
-        $parts = parse_url($uri);
-
-        if ($parts === false) {
-            throw new InvalidArgumentException("Invalid uri `$uri` provided");
-        }
-
-        return new static(
-            scheme: static::filterScheme($parts['scheme'] ?? ''),
-            username: $parts['user'] ?? '',
-            password: $parts['pass'] ?? '',
-            host: $parts['host'] ?? '',
-            port: $parts['port'] ?? null,
-            path: $parts['path'] ?? '',
-            query: $parts['query'] ?? '',
-            fragment: $parts['fragment'] ?? ''
-        );
+        $this->path     = UriFactory::filterPath($path);
+        $this->query    = UriFactory::filterQuery($query);
+        $this->fragment = UriFactory::filterFragment($fragment);
     }
 
     /**
@@ -148,7 +110,7 @@ class Uri implements UriContract
             $authority = $this->userInfo . '@' . $authority;
         }
 
-        if (! $this->isStandardPort()) {
+        if (! UriFactory::isStandardPort($this->scheme, $this->host, $this->port)) {
             $authority .= ':' . ((string) $this->port);
         }
 
@@ -197,7 +159,9 @@ class Uri implements UriContract
     #[Override]
     public function getPort(): int|null
     {
-        return $this->isStandardPort() ? null : $this->port;
+        return UriFactory::isStandardPort($this->scheme, $this->host, $this->port)
+            ? null
+            : $this->port;
     }
 
     /**
@@ -329,7 +293,7 @@ class Uri implements UriContract
     #[Override]
     public function withPort(int|null $port = null): static
     {
-        $this->validatePort($port);
+        UriFactory::validatePort($port);
 
         $new = clone $this;
 
@@ -344,7 +308,7 @@ class Uri implements UriContract
     #[Override]
     public function withPath(string $path): static
     {
-        $path = $this->filterPath($path);
+        $path = UriFactory::filterPath($path);
 
         $new = clone $this;
 
@@ -359,7 +323,7 @@ class Uri implements UriContract
     #[Override]
     public function withQuery(string $query): static
     {
-        $query = $this->filterQuery($query);
+        $query = UriFactory::filterQuery($query);
 
         $new = clone $this;
 
@@ -374,7 +338,7 @@ class Uri implements UriContract
     #[Override]
     public function withFragment(string $fragment): static
     {
-        $fragment = $this->filterFragment($fragment);
+        $fragment = UriFactory::filterFragment($fragment);
 
         $new = clone $this;
 
@@ -388,19 +352,8 @@ class Uri implements UriContract
      */
     public function __toString(): string
     {
-        if ($this->uriString !== null) {
-            return $this->uriString;
-        }
-
-        $uri = '';
-
-        $uri = $this->addSchemeToUri($uri);
-        $uri = $this->addAuthorityToUri($uri);
-        $uri = $this->addPathToUri($uri);
-        $uri = $this->addQueryToUri($uri);
-        $uri = $this->addFragmentToUri($uri);
-
-        return $this->uriString = $uri;
+        return $this->uriString
+            ??= UriFactory::toString($this);
     }
 
     public function __clone()

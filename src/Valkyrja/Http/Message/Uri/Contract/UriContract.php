@@ -37,15 +37,6 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 interface UriContract extends Stringable
 {
     /**
-     * Create a Uri instance from a parsed uri string.
-     *
-     * @param string $uri The uri to parse
-     *
-     * @return static A new instance with the specified uri parsed to its parts
-     */
-    public static function fromString(string $uri): static;
-
-    /**
      * Retrieve the scheme component of the URI.
      * If no scheme is present, this method MUST return an empty string.
      * The value returned MUST be normalized to lowercase, per RFC 3986

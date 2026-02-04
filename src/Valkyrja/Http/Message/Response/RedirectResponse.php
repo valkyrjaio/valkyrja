@@ -24,6 +24,7 @@ use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Uri;
 
 class RedirectResponse extends Response implements RedirectResponseContract
@@ -117,7 +118,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     {
         $refererHeaderLine = $request->getHeaderLine('Referer') ?: '/';
 
-        $refererUri = Uri::fromString($refererHeaderLine);
+        $refererUri = UriFactory::fromString($refererHeaderLine);
         $refererUri = $this->isInternalUri($request, $refererUri)
             ? $refererUri
             : new Uri(path: '/');

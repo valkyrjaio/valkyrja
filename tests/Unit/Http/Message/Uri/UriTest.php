@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri;
 
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
@@ -29,61 +29,12 @@ class UriTest extends TestCase
     protected const string URI_EMPTY     = '//' . self::URI;
     protected const string URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
 
-    public function testFromString(): void
-    {
-        $uri              = Uri::fromString(self::URI);
-        $uriWithAllParts  = Uri::fromString(self::URI_ALL_PARTS);
-        $uriSecure        = Uri::fromString(self::URI_HTTPS);
-        $uriNotSecure     = Uri::fromString(self::URI_HTTP);
-        $uriUnknownSecure = Uri::fromString(self::URI_EMPTY);
-        $uriWithJustPath  = Uri::fromString('/');
-        $uriWithEmptyPath = Uri::fromString('');
-
-        self::assertFalse($uri->isSecure());
-        self::assertTrue($uriWithAllParts->isSecure());
-        self::assertTrue($uriSecure->isSecure());
-        self::assertFalse($uriNotSecure->isSecure());
-        self::assertFalse($uriUnknownSecure->isSecure());
-
-        self::assertSame(Scheme::HTTPS, $uriWithAllParts->getScheme());
-        self::assertSame('username:password@example.com:9090', $uriWithAllParts->getAuthority());
-        self::assertSame('username:password', $uriWithAllParts->getUserInfo());
-        self::assertSame('example.com', $uriWithAllParts->getHost());
-        self::assertSame(9090, $uriWithAllParts->getPort());
-        self::assertSame('example.com:9090', $uriWithAllParts->getHostPort());
-        self::assertSame('https://example.com:9090', $uriWithAllParts->getSchemeHostPort());
-        self::assertSame('/path', $uriWithAllParts->getPath());
-        self::assertSame('arg=value', $uriWithAllParts->getQuery());
-        self::assertSame('anchor', $uriWithAllParts->getFragment());
-
-        self::assertEmpty($uriWithJustPath->getHost());
-        self::assertSame('/', $uriWithJustPath->getPath());
-
-        self::assertEmpty($uriWithEmptyPath->getHost());
-        self::assertSame('', $uriWithEmptyPath->getPath());
-    }
-
-    public function testFromStringWithJustPath(): void
-    {
-        $uri = Uri::fromString('/');
-
-        self::assertSame('', $uri->getHost());
-        self::assertSame('/', $uri->getPath());
-    }
-
-    public function testFromStringException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        Uri::fromString('//');
-    }
-
     public function testIsSecure(): void
     {
-        $uri              = Uri::fromString(self::URI);
-        $uriSecure        = Uri::fromString(self::URI_HTTPS);
-        $uriNotSecure     = Uri::fromString(self::URI_HTTP);
-        $uriUnknownSecure = Uri::fromString(self::URI_EMPTY);
+        $uri              = UriFactory::fromString(self::URI);
+        $uriSecure        = UriFactory::fromString(self::URI_HTTPS);
+        $uriNotSecure     = UriFactory::fromString(self::URI_HTTP);
+        $uriUnknownSecure = UriFactory::fromString(self::URI_EMPTY);
 
         self::assertFalse($uri->isSecure());
         self::assertTrue($uriSecure->isSecure());
@@ -93,10 +44,10 @@ class UriTest extends TestCase
 
     public function testGetScheme(): void
     {
-        $uri      = Uri::fromString(self::URI);
-        $uriHttps = Uri::fromString(self::URI_HTTPS);
-        $uriHttp  = Uri::fromString(self::URI_HTTP);
-        $uriEmpty = Uri::fromString(self::URI_EMPTY);
+        $uri      = UriFactory::fromString(self::URI);
+        $uriHttps = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp  = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty = UriFactory::fromString(self::URI_EMPTY);
 
         self::assertSame(Scheme::EMPTY, $uri->getScheme());
         self::assertSame(Scheme::HTTPS, $uriHttps->getScheme());
@@ -106,7 +57,7 @@ class UriTest extends TestCase
 
     public function testSetScheme(): void
     {
-        $uri = Uri::fromString(self::URI);
+        $uri = UriFactory::fromString(self::URI);
 
         $uriNowWithHttps = $uri->withScheme(Scheme::HTTPS);
         $uriNowWithHttp  = $uri->withScheme(Scheme::HTTP);
@@ -124,11 +75,11 @@ class UriTest extends TestCase
 
     public function testGetAuthority(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriJustPath = Uri::fromString('/path');
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriJustPath = UriFactory::fromString('/path');
 
         self::assertSame(self::URI, $uri->getAuthority());
         self::assertSame(self::URI, $uriHttps->getAuthority());
@@ -139,13 +90,13 @@ class UriTest extends TestCase
 
     public function testGetUsername(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $uriWIthJustUsername = Uri::fromString('https://username@example.com');
+        $uriWIthJustUsername = UriFactory::fromString('https://username@example.com');
 
         self::assertEmpty($uri->getUsername());
         self::assertEmpty($uriHttps->getUsername());
@@ -157,13 +108,13 @@ class UriTest extends TestCase
 
     public function testGetPassword(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $uriWIthJustUsername = Uri::fromString('https://username@example.com');
+        $uriWIthJustUsername = UriFactory::fromString('https://username@example.com');
 
         self::assertEmpty($uri->getPassword());
         self::assertEmpty($uriHttps->getPassword());
@@ -175,13 +126,13 @@ class UriTest extends TestCase
 
     public function testGetUserInfo(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $uriWIthJustUsername = Uri::fromString('https://username@example.com');
+        $uriWIthJustUsername = UriFactory::fromString('https://username@example.com');
 
         self::assertEmpty($uri->getUserInfo());
         self::assertEmpty($uriHttps->getUserInfo());
@@ -193,11 +144,11 @@ class UriTest extends TestCase
 
     public function testGetHost(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertSame(self::URI, $uri->getHost());
         self::assertSame(self::URI, $uriHttps->getHost());
@@ -208,11 +159,11 @@ class UriTest extends TestCase
 
     public function testGetPort(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertNull($uri->getPort());
         self::assertNull($uriHttps->getPort());
@@ -223,11 +174,11 @@ class UriTest extends TestCase
 
     public function testGetHostPort(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertSame(self::URI, $uri->getHostPort());
         self::assertSame(self::URI, $uriHttps->getHostPort());
@@ -238,11 +189,11 @@ class UriTest extends TestCase
 
     public function testGetSchemeHostPort(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertSame(self::URI, $uri->getSchemeHostPort());
         self::assertSame(self::URI_HTTPS, $uriHttps->getSchemeHostPort());
@@ -253,11 +204,11 @@ class UriTest extends TestCase
 
     public function testGetPath(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertSame('', $uri->getPath());
         self::assertSame('', $uriHttps->getPath());
@@ -268,11 +219,11 @@ class UriTest extends TestCase
 
     public function testGetQuery(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertEmpty($uri->getQuery());
         self::assertEmpty($uriHttps->getQuery());
@@ -283,11 +234,11 @@ class UriTest extends TestCase
 
     public function testGetFragment(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         self::assertEmpty($uri->getFragment());
         self::assertEmpty($uriHttps->getFragment());
@@ -298,7 +249,7 @@ class UriTest extends TestCase
 
     public function testWithScheme(): void
     {
-        $uri      = Uri::fromString(self::URI);
+        $uri      = UriFactory::fromString(self::URI);
         $uriHttps = $uri->withScheme(Scheme::HTTPS);
         $uriHttp  = $uri->withScheme(Scheme::HTTP);
         $uriEmpty = $uri->withScheme(Scheme::EMPTY);
@@ -315,7 +266,7 @@ class UriTest extends TestCase
 
     public function testWithUsername(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withUsername('username');
         $uri3 = $uri->withUsername('username');
         $uri4 = $uri->withUsername('username2');
@@ -357,7 +308,7 @@ class UriTest extends TestCase
 
     public function testWithUserInfo(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withUserInfo('username', 'password');
         $uri3 = $uri->withUserInfo('username', 'password');
         $uri4 = $uri->withUserInfo('username2', 'password2');
@@ -393,7 +344,7 @@ class UriTest extends TestCase
 
     public function testWithHost(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withHost('localhost');
         $uri3 = $uri->withHost('website.com');
         $uri4 = $uri->withHost('www.host.com');
@@ -411,7 +362,7 @@ class UriTest extends TestCase
 
     public function testWithPort(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withPort(80);
         $uri3 = $uri->withPort(90);
         $uri4 = $uri->withScheme(Scheme::HTTPS)->withPort(443);
@@ -450,7 +401,7 @@ class UriTest extends TestCase
 
     public function testWithPath(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withPath('/path');
         $uri3 = $uri->withPath('/another-path');
         $uri4 = $uri->withPath('/');
@@ -484,7 +435,7 @@ class UriTest extends TestCase
     {
         $this->expectException(InvalidPathException::class);
 
-        $uri = Uri::fromString(self::URI);
+        $uri = UriFactory::fromString(self::URI);
         $uri->withPath('/path?query=test');
     }
 
@@ -492,13 +443,13 @@ class UriTest extends TestCase
     {
         $this->expectException(InvalidPathException::class);
 
-        $uri = Uri::fromString(self::URI);
+        $uri = UriFactory::fromString(self::URI);
         $uri->withPath('/path#anchor');
     }
 
     public function testWithQuery(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withQuery('arg=value');
         $uri3 = $uri->withQuery('?some=bar&foo[]=1&foo[]=2');
         $uri4 = $uri->withQuery('another=three');
@@ -518,13 +469,13 @@ class UriTest extends TestCase
     {
         $this->expectException(InvalidQueryException::class);
 
-        $uri = Uri::fromString(self::URI);
+        $uri = UriFactory::fromString(self::URI);
         $uri->withQuery('?query=test#anchor');
     }
 
     public function testWithFragment(): void
     {
-        $uri  = Uri::fromString(self::URI);
+        $uri  = UriFactory::fromString(self::URI);
         $uri2 = $uri->withFragment('anchor');
         $uri3 = $uri->withFragment('#something');
         $uri4 = $uri->withFragment('#another');
@@ -542,11 +493,11 @@ class UriTest extends TestCase
 
     public function testToString(): void
     {
-        $uri         = Uri::fromString(self::URI);
-        $uriHttps    = Uri::fromString(self::URI_HTTPS);
-        $uriHttp     = Uri::fromString(self::URI_HTTP);
-        $uriEmpty    = Uri::fromString(self::URI_EMPTY);
-        $uriAllParts = Uri::fromString(self::URI_ALL_PARTS);
+        $uri         = UriFactory::fromString(self::URI);
+        $uriHttps    = UriFactory::fromString(self::URI_HTTPS);
+        $uriHttp     = UriFactory::fromString(self::URI_HTTP);
+        $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
+        $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
         // Since an authority is present the Uri will be prefixed by `//`
         self::assertSame('//' . self::URI, $uri->__toString());
