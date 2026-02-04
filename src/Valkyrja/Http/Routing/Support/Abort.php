@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Support;
 
-use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
@@ -31,7 +31,7 @@ class Abort
      */
     public static function abort400(array|null $headers = null, ResponseContract|null $response = null): never
     {
-        static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST, $headers, $response);
+        static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST->value, $headers, $response);
     }
 
     /**
@@ -42,7 +42,7 @@ class Abort
      */
     public static function abort404(array|null $headers = null, ResponseContract|null $response = null): never
     {
-        static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND, $headers, $response);
+        static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND->value, $headers, $response);
     }
 
     /**
@@ -53,7 +53,7 @@ class Abort
      */
     public static function abort405(array|null $headers = null, ResponseContract|null $response = null): never
     {
-        static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED, $headers, $response);
+        static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED->value, $headers, $response);
     }
 
     /**
@@ -64,7 +64,7 @@ class Abort
      */
     public static function abort413(array|null $headers = null, ResponseContract|null $response = null): never
     {
-        static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE, $headers, $response);
+        static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE->value, $headers, $response);
     }
 
     /**

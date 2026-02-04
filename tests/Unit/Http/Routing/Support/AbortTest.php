@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Support;
 
-use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
