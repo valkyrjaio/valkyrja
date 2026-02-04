@@ -16,13 +16,14 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 use ArrayAccess;
 use Error;
 use JsonException;
+use TypeError;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\ModelInvalidIssetMethodClass;
+use Valkyrja\Tests\Classes\Model\SimpleModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
-use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function json_encode;
 use function method_exists;
@@ -61,6 +62,19 @@ class ModelTest extends TestCase
         self::assertTrue(method_exists(ModelContract::class, '__toString'));
         self::isA(ArrayAccess::class, ModelContract::class);
         self::isA(TypeContract::class, ModelContract::class);
+    }
+
+    public function testDefaults(): void
+    {
+        $model = new SimpleModelClass();
+
+        self::assertSame([], $model->asArray());
+        self::assertFalse($model->__isset('test'));
+        self::assertNull($model->__get('test'));
+
+        $model->__set('protected', 'value');
+
+        self::assertSame('value', $model->__get('protected'));
     }
 
     public function testHas(): void
@@ -146,7 +160,7 @@ class ModelTest extends TestCase
 
     public function testInvalidIssetReturn(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(TypeError::class);
 
         $model = new ModelInvalidIssetMethodClass();
         $model->__isset('test');

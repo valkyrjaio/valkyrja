@@ -18,12 +18,10 @@ use JsonException;
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Model\Contract\ModelContract;
-use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function array_filter;
 use function array_walk;
 use function in_array;
-use function is_bool;
 use function property_exists;
 
 use const ARRAY_FILTER_USE_BOTH;
@@ -96,10 +94,10 @@ abstract class Model implements ModelContract
     #[Override]
     public function __get(string $name): mixed
     {
-        $methodName = $this->internalGetMethods()[$name] ?? null;
+        $callable = $this->internalGetCallables()[$name] ?? null;
 
-        if ($methodName !== null) {
-            return $this->$methodName();
+        if ($callable !== null) {
+            return $callable();
         }
 
         return $this->{$name} ?? null;
@@ -113,10 +111,10 @@ abstract class Model implements ModelContract
     {
         $this->internalSetOriginalProperty($name, $value);
 
-        $methodName = $this->internalSetMethods()[$name] ?? null;
+        $callable = $this->internalSetCallables()[$name] ?? null;
 
-        if ($methodName !== null) {
-            $this->$methodName($value);
+        if ($callable !== null) {
+            $callable($value);
 
             return;
         }
@@ -130,17 +128,10 @@ abstract class Model implements ModelContract
     #[Override]
     public function __isset(string $name): bool
     {
-        $methodName = $this->internalIssetMethods()[$name] ?? null;
+        $callable = $this->internalIssetCallables()[$name] ?? null;
 
-        if ($methodName !== null) {
-            /** @var mixed $isset */
-            $isset = $this->$methodName();
-
-            if (! is_bool($isset)) {
-                throw new RuntimeException("$methodName must return a boolean");
-            }
-
-            return $isset;
+        if ($callable !== null) {
+            return $callable();
         }
 
         return isset($this->$name);
@@ -264,7 +255,7 @@ abstract class Model implements ModelContract
 
         $this->internalRemoveInternalProperties($allProperties);
 
-        $allProperties = $this->internalCheckOnlyProperties($allProperties, $properties);
+        $allProperties = $this->internalPropertiesIntersect($allProperties, $properties);
 
         return $this->internalSetPropertyValues($allProperties, [$this, '__get']);
     }
@@ -306,7 +297,7 @@ abstract class Model implements ModelContract
 
         $this->internalRemoveInternalProperties($allProperties);
 
-        return $this->internalSetPropertyValues($allProperties, [$this, 'internalGetJsonPropertyValue']);
+        return $this->internalSetPropertyValues($allProperties, [$this, '__get']);
     }
 
     /**
@@ -330,9 +321,9 @@ abstract class Model implements ModelContract
     /**
      * Get the get custom methods.
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, callable():mixed>
      */
-    protected function internalGetMethods(): array
+    protected function internalGetCallables(): array
     {
         return [];
     }
@@ -340,9 +331,9 @@ abstract class Model implements ModelContract
     /**
      * Get the set custom methods.
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, callable(mixed):void>
      */
-    protected function internalSetMethods(): array
+    protected function internalSetCallables(): array
     {
         return [];
     }
@@ -350,9 +341,9 @@ abstract class Model implements ModelContract
     /**
      * Get the isset custom methods.
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, callable():bool>
      */
-    protected function internalIssetMethods(): array
+    protected function internalIssetCallables(): array
     {
         return [];
     }
@@ -419,23 +410,6 @@ abstract class Model implements ModelContract
     }
 
     /**
-     * Check if an array of all properties should be filtered by another list of properties.
-     *
-     * @param array<string, mixed> $properties     The properties
-     * @param string[]             $onlyProperties A list of properties to return
-     *
-     * @return array<string, mixed>
-     */
-    protected function internalCheckOnlyProperties(array $properties, array $onlyProperties): array
-    {
-        if (! empty($onlyProperties)) {
-            return $this->internalOnlyProperties($properties, $onlyProperties);
-        }
-
-        return $properties;
-    }
-
-    /**
      * Get an array subset of properties to return from a given list out of the returnable properties.
      *
      * @param array<string, mixed> $allProperties All the properties returnable
@@ -443,8 +417,12 @@ abstract class Model implements ModelContract
      *
      * @return array<string, mixed>
      */
-    protected function internalOnlyProperties(array $allProperties, array $properties): array
+    protected function internalPropertiesIntersect(array $allProperties, array $properties): array
     {
+        if (empty($properties)) {
+            return $allProperties;
+        }
+
         return array_filter(
             $allProperties,
             static fn (mixed $value, string $property) => in_array($property, $properties, true),
@@ -487,15 +465,5 @@ abstract class Model implements ModelContract
 
         /** @var array<string, mixed> $properties */
         return $properties;
-    }
-
-    /**
-     * Get a property's value for jsonSerialize.
-     *
-     * @param string $property The property
-     */
-    protected function internalGetJsonPropertyValue(string $property): mixed
-    {
-        return $this->__get($property);
     }
 }
