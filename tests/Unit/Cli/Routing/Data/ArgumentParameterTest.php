@@ -54,7 +54,7 @@ class ArgumentParameterTest extends TestCase
         self::assertTrue($parameter->areValuesValid());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $name        = self::NAME;
         $description = self::DESCRIPTION;
@@ -63,7 +63,7 @@ class ArgumentParameterTest extends TestCase
         $valueMode   = ArgumentValueMode::ARRAY;
         $arguments   = [new Argument('test')];
 
-        $parameter = ArgumentParameter::__set_state([
+        $parameter = new ArgumentParameter(...[
             'name'        => $name,
             'description' => $description,
             'cast'        => $cast,

@@ -64,7 +64,7 @@ class RouteTest extends TestCase
         self::assertEmpty($route->getExitedMiddleware());
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $name                      = self::NAME;
         $description               = self::DESCRIPTION;
@@ -77,17 +77,17 @@ class RouteTest extends TestCase
         $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
         $exitedMiddleware          = [ExitedMiddlewareClass::class];
 
-        $route = Route::__set_state([
+        $route = new Route(...[
             'name'                      => $name,
             'description'               => $description,
             'helpText'                  => $helpText,
             'dispatch'                  => $dispatch,
-            'arguments'                 => $arguments,
-            'options'                   => $options,
             'routeMatchedMiddleware'    => $routeMatchedMiddleware,
             'routeDispatchedMiddleware' => $routeDispatchedMiddleware,
             'throwableCaughtMiddleware' => $throwableCaughtMiddleware,
             'exitedMiddleware'          => $exitedMiddleware,
+            'arguments'                 => $arguments,
+            'options'                   => $options,
         ]);
 
         self::assertSame($name, $route->getName());

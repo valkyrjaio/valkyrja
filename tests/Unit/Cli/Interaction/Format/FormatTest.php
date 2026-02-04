@@ -29,12 +29,12 @@ class FormatTest extends TestCase
         self::assertInstanceOf(FormatContract::class, $format);
     }
 
-    public function testSetState(): void
+    public function testConstructor(): void
     {
         $setCode   = '1';
         $unsetCode = '22';
 
-        $format  = Format::__set_state([
+        $format  = new Format(...[
             'setCode'   => $setCode,
             'unsetCode' => $unsetCode,
         ]);

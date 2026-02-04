@@ -38,20 +38,6 @@ class StyleFormatTest extends TestCase
         self::assertInstanceOf(Format::class, $format);
     }
 
-    public function testSetState(): void
-    {
-        $setCode   = (string) Style::BOLD->value;
-        $unsetCode = (string) Style::DEFAULTS[Style::BOLD->value];
-
-        $format = StyleFormat::__set_state([
-            'setCode'   => $setCode,
-            'unsetCode' => $unsetCode,
-        ]);
-
-        self::assertSame($setCode, $format->getSetCode());
-        self::assertSame($unsetCode, $format->getUnsetCode());
-    }
-
     public function testGetSetCode(): void
     {
         $format = new StyleFormat(Style::BOLD);

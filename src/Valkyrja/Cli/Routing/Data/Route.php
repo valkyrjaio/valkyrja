@@ -52,25 +52,6 @@ class Route implements RouteContract
     }
 
     /**
-     * @param array{
-     *     name: non-empty-string,
-     *     description: non-empty-string,
-     *     helpText: MessageContract,
-     *     dispatch: MethodDispatchContract,
-     *     routeMatchedMiddleware: class-string<RouteMatchedMiddlewareContract>[],
-     *     routeDispatchedMiddleware: class-string<RouteDispatchedMiddlewareContract>[],
-     *     throwableCaughtMiddleware: class-string<ThrowableCaughtMiddlewareContract>[],
-     *     exitedMiddleware: class-string<ExitedMiddlewareContract>[],
-     *     arguments: ArgumentParameterContract[],
-     *     options: OptionParameterContract[],
-     * } $array The array
-     */
-    public static function __set_state(array $array): static
-    {
-        return new static(...$array);
-    }
-
-    /**
      * @inheritDoc
      */
     #[Override]
