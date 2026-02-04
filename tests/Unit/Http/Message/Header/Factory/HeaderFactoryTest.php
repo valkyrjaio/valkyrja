@@ -293,4 +293,111 @@ class HeaderFactoryTest extends TestCase
         self::assertFalse(HeaderFactory::isValidName("test\n"));
         self::assertFalse(HeaderFactory::isValidName(' '));
     }
+
+    public function testMarshalHeadersSkipsEmptyHttpValues(): void
+    {
+        $server = [
+            'HTTP_EMPTY'     => '',
+            'HTTP_NOT_EMPTY' => 'value',
+        ];
+
+        $headers = HeaderFactory::marshalHeaders($server);
+
+        self::assertArrayNotHasKey('empty', $headers);
+        self::assertArrayHasKey('not-empty', $headers);
+        self::assertSame('value', $headers['not-empty']->getValuesAsString());
+    }
+
+    public function testMarshalHeadersSkipsEmptyContentValues(): void
+    {
+        $server = [
+            'CONTENT_TYPE'   => '',
+            'CONTENT_LENGTH' => '100',
+        ];
+
+        $headers = HeaderFactory::marshalHeaders($server);
+
+        self::assertArrayNotHasKey('content-type', $headers);
+        self::assertArrayHasKey('content-length', $headers);
+        self::assertSame('100', $headers['content-length']->getValuesAsString());
+    }
+
+    public function testFilterValueRemovesDelCharacter(): void
+    {
+        // ASCII 127 is DEL character and should be removed
+        self::assertSame('test', HeaderFactory::filterValue("te\x7Fst"));
+    }
+
+    public function testFilterValueRemovesNullByte(): void
+    {
+        // ASCII 255 (0xFF) should be removed
+        self::assertSame('test', HeaderFactory::filterValue("te\xFFst"));
+    }
+
+    public function testFilterValueRemovesControlCharacters(): void
+    {
+        // Control characters below 32 (except tab at 9) should be removed
+        self::assertSame('test', HeaderFactory::filterValue("te\x00st"));
+        self::assertSame('test', HeaderFactory::filterValue("te\x01st"));
+        self::assertSame('test', HeaderFactory::filterValue("te\x1Fst"));
+    }
+
+    public function testFilterValuePreservesTab(): void
+    {
+        // Tab (ASCII 9) should be preserved
+        self::assertSame("te\tst", HeaderFactory::filterValue("te\tst"));
+    }
+
+    public function testFilterValuePreservesVisibleCharacters(): void
+    {
+        // Characters 32-126 and 128-254 should be preserved
+        self::assertSame(' !"#$%&', HeaderFactory::filterValue(' !"#$%&'));
+        self::assertSame('~', HeaderFactory::filterValue('~'));
+        self::assertSame("\x80\xFE", HeaderFactory::filterValue("\x80\xFE"));
+    }
+
+    public function testAssertValidValueDoesNotThrowForValidValue(): void
+    {
+        HeaderFactory::assertValidValue('valid-value');
+        HeaderFactory::assertValidValue("value\r\n with continuation");
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testAssertValidNameDoesNotThrowForValidName(): void
+    {
+        HeaderFactory::assertValidName('Content-Type');
+        HeaderFactory::assertValidName('X-Custom-Header');
+        HeaderFactory::assertValidName("a-zA-Z0-9'`#\$%&*+.^_|~!-");
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testMarshalHeadersWithRedirectThatHasOriginal(): void
+    {
+        // When REDIRECT_ prefixed version exists but original also exists,
+        // the original should be used (not the redirect)
+        $server = [
+            'REDIRECT_HTTP_HOST' => 'redirect.example.com',
+            'HTTP_HOST'          => 'original.example.com',
+        ];
+
+        $headers = HeaderFactory::marshalHeaders($server);
+
+        self::assertArrayHasKey('host', $headers);
+        self::assertSame('original.example.com', $headers['host']->getValuesAsString());
+    }
+
+    public function testFilterValueWithCrlfContinuation(): void
+    {
+        // CRLF followed by space or tab is a valid continuation and should be preserved
+        self::assertSame("test\r\n value", HeaderFactory::filterValue("test\r\n value"));
+        self::assertSame("test\r\n\tvalue", HeaderFactory::filterValue("test\r\n\tvalue"));
+    }
+
+    public function testFilterValueRemovesCrWithoutLf(): void
+    {
+        // CR not followed by LF should be removed
+        self::assertSame('testvalue', HeaderFactory::filterValue("test\rvalue"));
+    }
 }
