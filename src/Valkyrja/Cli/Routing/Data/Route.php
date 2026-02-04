@@ -22,14 +22,24 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+
+use function is_array;
 
 class Route implements RouteContract
 {
     /**
+     * The help text callable.
+     *
+     * @var (callable():MessageContract)|null
+     */
+    protected $helpText;
+
+    /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
-     * @param MessageContract                                   $helpText                  The help text
+     * @param (callable():MessageContract)|null                 $helpText                  The help text
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
@@ -40,8 +50,8 @@ class Route implements RouteContract
     public function __construct(
         protected string $name,
         protected string $description,
-        protected MessageContract $helpText,
         protected MethodDispatchContract $dispatch,
+        callable|null $helpText = null,
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
@@ -49,6 +59,7 @@ class Route implements RouteContract
         protected array $arguments = [],
         protected array $options = [],
     ) {
+        $this->setHelpText($helpText);
     }
 
     /**
@@ -99,7 +110,7 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getHelpText(): MessageContract
+    public function getHelpText(): callable|null
     {
         return $this->helpText;
     }
@@ -108,11 +119,26 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withHelpText(MessageContract $helpText): static
+    public function getHelpTextMessage(): MessageContract|null
+    {
+        $helpText = $this->helpText;
+
+        if ($helpText === null) {
+            return null;
+        }
+
+        return $helpText();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withHelpText(callable|null $helpText = null): static
     {
         $new = clone $this;
 
-        $new->helpText = $helpText;
+        $new->setHelpText($helpText);
 
         return $new;
     }
@@ -417,5 +443,19 @@ class Route implements RouteContract
         $new->dispatch = $dispatch;
 
         return $new;
+    }
+
+    /**
+     * Set the help text.
+     *
+     * @param (callable():MessageContract)|null $helpText The help text
+     */
+    protected function setHelpText(callable|null $helpText = null): void
+    {
+        if ($helpText !== null && ! is_array($helpText)) {
+            throw new InvalidArgumentException('Help text must be a callable array');
+        }
+
+        $this->helpText = $helpText;
     }
 }

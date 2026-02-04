@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\RouteNotMatched;
 
 use Valkyrja\Cli\Interaction\Input\Input;
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
@@ -46,13 +45,11 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             )
         );
@@ -92,13 +89,11 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             )
         );
@@ -139,13 +134,11 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             )
         );
@@ -186,13 +179,11 @@ class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'nomatch',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             ),
             new Route(
                 name: 'nomatch2',
                 description: 'description',
-                helpText: new Message('help text'),
                 dispatch: new MethodDispatch(class: self::class, method: '__construct')
             )
         );

@@ -38,4 +38,12 @@ class CacheCommandTest extends TestCase
         self::assertIsString($outputContents);
         self::assertStringContainsString($expected, $outputContents);
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to cache the config.';
+
+        self::assertSame($text, CacheCommand::help()->getText());
+        self::assertSame($text, CacheCommand::help()->getFormattedText());
+    }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
@@ -25,10 +26,18 @@ class CacheCommand
 {
     public const string NAME = 'config:cache';
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to cache the config.');
+    }
+
     #[Route(
         name: self::NAME,
         description: 'Cache the config',
-        helpText: new Message('A command to cache the config.'),
+        helpText: [self::class, 'help'],
     )]
     public function run(
         OutputFactoryContract $outputFactory

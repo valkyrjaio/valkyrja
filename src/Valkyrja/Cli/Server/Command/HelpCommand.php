@@ -56,10 +56,18 @@ class HelpCommand
     ) {
     }
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to get help for a specific command.');
+    }
+
     #[Route(
         name: CommandName::HELP,
         description: 'Help for a command',
-        helpText: new Message('A command to get help for a specific command.'),
+        helpText: [self::class, 'help'],
         options: [
             new OptionParameter(
                 name: 'command',
@@ -136,7 +144,7 @@ class HelpCommand
             }
         }
 
-        return $output
+        $output = $output
             ->withAddedMessages(
                 new NewLine(),
                 $this->getNameMessages(),
@@ -150,11 +158,16 @@ class HelpCommand
                 new NewLine(),
                 ...$argumentMessages,
                 ...$optionMessages,
-            )
-            ->withAddedMessages(
+            );
+
+        if ($this->helpRoute->getHelpTextMessage() !== null) {
+            return $output->withAddedMessages(
                 $this->getHelpTextMessages(),
                 new NewLine(),
             );
+        }
+
+        return $output;
     }
 
     /**
@@ -188,7 +201,7 @@ class HelpCommand
         return new Messages(
             new Message('Help:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText($this->helpRoute->getHelpText()),
+            $this->getIndentedText($this->helpRoute->getHelpTextMessage()),
             new NewLine(),
         );
     }

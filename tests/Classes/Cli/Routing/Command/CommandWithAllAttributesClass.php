@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Routing\Command;
 
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -43,10 +44,18 @@ class CommandWithAllAttributesClass
     /** @var non-empty-string */
     public const string HELP_TEXT = 'A test2 command';
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message(self::HELP_TEXT);
+    }
+
     #[Route(
         name: self::NAME,
         description: self::DESCRIPTION,
-        helpText: new Message(self::HELP_TEXT),
+        helpText: [self::class, 'help'],
     )]
     #[Name('actionName')]
     #[OptionParameter(

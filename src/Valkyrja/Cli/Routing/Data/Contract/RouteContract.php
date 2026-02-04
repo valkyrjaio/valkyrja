@@ -52,15 +52,22 @@ interface RouteContract
 
     /**
      * Get the help text.
+     *
+     * @return (callable():MessageContract)|null
      */
-    public function getHelpText(): MessageContract;
+    public function getHelpText(): callable|null;
+
+    /**
+     * Get the help text message.
+     */
+    public function getHelpTextMessage(): MessageContract|null;
 
     /**
      * Create a new route with the specified help text.
      *
-     * @param MessageContract $helpText The help text
+     * @param (callable():MessageContract)|null $helpText The help text
      */
-    public function withHelpText(MessageContract $helpText): static;
+    public function withHelpText(callable|null $helpText = null): static;
 
     /**
      * Determine if the route has arguments.

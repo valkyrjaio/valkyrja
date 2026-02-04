@@ -19,6 +19,7 @@ use Valkyrja\Cli\Interaction\Format\TextColorFormat;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -33,10 +34,18 @@ class ListCommand
 {
     public const string NAME = 'http:list';
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to list all the routes present within the Http component.');
+    }
+
     #[Route(
         name: self::NAME,
         description: 'List all routes',
-        helpText: new Message('A command to list all the routes present within the Http component.'),
+        helpText: [self::class, 'help'],
     )]
     public function run(VersionCommand $version, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
     {

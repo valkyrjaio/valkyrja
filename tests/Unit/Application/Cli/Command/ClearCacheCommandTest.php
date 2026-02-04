@@ -38,4 +38,12 @@ class ClearCacheCommandTest extends TestCase
         self::assertIsString($contents);
         self::assertStringContainsString($expected, $contents);
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to clear the config cache.';
+
+        self::assertSame($text, ClearCacheCommand::help()->getText());
+        self::assertSame($text, ClearCacheCommand::help()->getFormattedText());
+    }
 }

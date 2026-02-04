@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Command;
 
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -33,10 +34,18 @@ class ListBashCommand
     ) {
     }
 
+    /**
+     * The help text.
+     */
+    public static function help(): MessageContract
+    {
+        return new Message('A command to list all the commands present within the Cli component for bash completion.');
+    }
+
     #[Route(
         name: CommandName::LIST_BASH,
         description: 'List all commands for bash completion',
-        helpText: new Message('A command to list all the commands present within the Cli component for bash completion.'),
+        helpText: [self::class, 'help'],
         arguments: [
             new ArgumentParameter(
                 name: 'applicationName',

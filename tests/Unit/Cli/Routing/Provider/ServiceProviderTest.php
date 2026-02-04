@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -120,7 +119,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            helpText: new Message('test'),
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->method('getRoutes')->willReturn([$command]);

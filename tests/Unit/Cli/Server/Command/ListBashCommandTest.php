@@ -190,4 +190,12 @@ class ListBashCommandTest extends TestCase
 
         self::assertSame("$listRouteName $listRoute2Name", $outputFromRun->getMessages()[0]->getText());
     }
+
+    public function testHelp(): void
+    {
+        $text = 'A command to list all the commands present within the Cli component for bash completion.';
+
+        self::assertSame($text, ListBashCommand::help()->getText());
+        self::assertSame($text, ListBashCommand::help()->getFormattedText());
+    }
 }
