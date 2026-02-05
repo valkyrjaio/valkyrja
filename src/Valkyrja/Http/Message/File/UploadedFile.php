@@ -86,11 +86,7 @@ class UploadedFile implements UploadedFileContract
             throw new UploadErrorException($this->uploadError);
         }
 
-        // If the file has already been moved
-        if ($this->hasBeenMoved) {
-            // Throw a runtime exception as subsequent moves are not allowed in PSR-7
-            throw new AlreadyMovedException('Cannot retrieve stream after it has already been moved');
-        }
+        $this->validateHasNotBeenMoved('Cannot retrieve stream after it has already been moved');
 
         // If the stream has been set
         if ($this->stream !== null) {
@@ -176,13 +172,16 @@ class UploadedFile implements UploadedFileContract
         }
     }
 
-    protected function validateHasNotBeenMoved(): void
+    protected function validateHasNotBeenMoved(string|null $message = null): void
     {
         // If the file has already been moved
         if ($this->hasBeenMoved) {
             // Throw a runtime exception as subsequent moves are not allowed
             // in PSR-7
-            throw new AlreadyMovedException('Cannot move file after it has already been moved');
+            throw new AlreadyMovedException(
+                $message
+                    ?? 'Cannot move file after it has already been moved'
+            );
         }
     }
 
