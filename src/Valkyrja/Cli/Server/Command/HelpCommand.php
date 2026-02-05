@@ -291,21 +291,52 @@ class HelpCommand
     {
         $optionMessages = [];
 
-        $shortNames       = $option->getShortNames();
-        $validValues      = $option->getValidValues();
-        $defaultValue     = $option->getDefaultValue();
-        $valueDisplayName = $option->getValueDisplayName();
-
         $optionMessages[] = new Message('  ');
         $optionMessages[] = new Message('--' . $option->getName(), new Formatter(new TextColorFormat(TextColor::MAGENTA)));
 
+        $this->addShortNamesOptionMessages($optionMessages, $option);
+        $this->addValueDisplayNameOptionMessages($optionMessages, $option);
+
+        $optionMessages[] = new NewLine();
+        $optionMessages[] = new Message('    ');
+        $optionMessages[] = new Message($option->getDescription());
+
+        $this->addValidValuesOptionMessages($optionMessages, $option);
+
+        $optionMessages[] = new NewLine();
+        $optionMessages[] = new NewLine();
+
+        return new Messages(
+            ...$optionMessages
+        );
+    }
+
+    /**
+     * Add short names option messages.
+     *
+     * @param MessageContract[] $messages The messages
+     */
+    protected function addShortNamesOptionMessages(array &$messages, OptionParameterContract $option): void
+    {
+        $shortNames = $option->getShortNames();
+
         if ($shortNames !== []) {
-            $optionMessages[] = new Message(', ');
-            $optionMessages[] = new Message('-' . implode('|', $shortNames), new Formatter(new TextColorFormat(TextColor::MAGENTA)));
+            $messages[] = new Message(', ');
+            $messages[] = new Message('-' . implode('|', $shortNames), new Formatter(new TextColorFormat(TextColor::MAGENTA)));
         }
+    }
+
+    /**
+     * Add value display name option messages.
+     *
+     * @param MessageContract[] $messages The messages
+     */
+    protected function addValueDisplayNameOptionMessages(array &$messages, OptionParameterContract $option): void
+    {
+        $valueDisplayName = $option->getValueDisplayName();
 
         if ($valueDisplayName !== null) {
-            $optionMessages[] = new Message(' ');
+            $messages[] = new Message(' ');
 
             $text = '';
 
@@ -319,36 +350,37 @@ class HelpCommand
                 $text .= '[=' . $valueDisplayName . ']';
             }
 
-            $optionMessages[] = new Message($text, new HighlightedTextFormatter());
+            $messages[] = new Message($text, new HighlightedTextFormatter());
         }
+    }
 
-        $optionMessages[] = new NewLine();
-        $optionMessages[] = new Message('    ');
-        $optionMessages[] = new Message($option->getDescription());
+    /**
+     * Add valid values option messages.
+     *
+     * @param MessageContract[] $messages The messages
+     */
+    protected function addValidValuesOptionMessages(array &$messages, OptionParameterContract $option): void
+    {
+        $validValues = $option->getValidValues();
 
         if ($validValues !== []) {
+            $defaultValue = $option->getDefaultValue();
+
             $valueSpacing = "\n      - ";
 
-            $optionMessages[] = new NewLine();
-            $optionMessages[] = new NewLine();
-            $optionMessages[] = new Message('    ');
-            $optionMessages[] = new Message('Valid values:');
+            $messages[] = new NewLine();
+            $messages[] = new NewLine();
+            $messages[] = new Message('    ');
+            $messages[] = new Message('Valid values:');
 
             foreach ($validValues as $validValue) {
-                $optionMessages[] = new Message($valueSpacing . "`$validValue`");
+                $messages[] = new Message($valueSpacing . "`$validValue`");
 
                 if ($validValue === $defaultValue) {
-                    $optionMessages[] = new Message(' (default)', new HighlightedTextFormatter());
+                    $messages[] = new Message(' (default)', new HighlightedTextFormatter());
                 }
             }
         }
-
-        $optionMessages[] = new NewLine();
-        $optionMessages[] = new NewLine();
-
-        return new Messages(
-            ...$optionMessages
-        );
     }
 
     /**
