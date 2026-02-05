@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Enum\Trait;
 
 use BackedEnum;
-use UnitEnum;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
@@ -32,30 +31,56 @@ trait Enumerable
             return $value;
         }
 
-        /** @var class-string<UnitEnum>|class-string<BackedEnum> $class */
-        $class = static::class;
+        static::validateValue($value);
 
+        return static::fromBackedEnum($value)
+            ?? static::fromAllCases($value);
+    }
+
+    /**
+     * Validate a mixed value.
+     *
+     * @psalm-assert string|int $value
+     *
+     * @phpstan-param string|int $value
+     */
+    protected static function validateValue(mixed $value): void
+    {
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException("Invalid value provided for enum $class");
+            throw new InvalidArgumentException('Invalid value provided for enum ' . static::class);
         }
+    }
 
+    /**
+     * Get an enum from all cases by a given value.
+     */
+    protected static function fromBackedEnum(string|int $value): static|null
+    {
         // Need to check BackedEnum first because all Enums are UnitEnum
-        if (is_a($class, BackedEnum::class, true)) {
+        if (is_a(static::class, BackedEnum::class, true)) {
             /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
-            $case = $class::from($value);
+            $case = static::from($value);
 
             return $case;
         }
 
+        return null;
+    }
+
+    /**
+     * Get an enum from all cases by a given value.
+     */
+    protected static function fromAllCases(string|int $value): static
+    {
         // Fallback to iterating over all the cases and find a match
-        foreach ($class::cases() as $case) {
+        foreach (static::cases() as $case) {
             if ($case->name === $value) {
                 /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
                 return $case;
             }
         }
 
-        throw new InvalidArgumentException("Invalid value provided for enum $class");
+        throw new InvalidArgumentException('Invalid value provided for enum ' . static::class);
     }
 
     /**
