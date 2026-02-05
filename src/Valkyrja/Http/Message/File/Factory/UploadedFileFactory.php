@@ -25,6 +25,8 @@ use function array_map;
 use function is_array;
 use function is_string;
 
+use const PHP_SAPI;
+
 abstract class UploadedFileFactory
 {
     /**
@@ -164,5 +166,18 @@ abstract class UploadedFileFactory
         }
 
         return $normalizedFiles;
+    }
+
+    /**
+     * Determine if the current environment is suitable for uploading files.
+     */
+    public static function isValidSapiEnvironmentForUploads(): bool
+    {
+        $sapi = PHP_SAPI;
+
+        // If the PHP_SAPI value is not set to a CLI environment
+        // and not a PHP debugger environment
+        return ! str_starts_with($sapi, 'cli')
+            && ! str_starts_with($sapi, 'phpdbg');
     }
 }

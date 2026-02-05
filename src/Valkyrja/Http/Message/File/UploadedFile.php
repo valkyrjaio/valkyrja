@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Message\File;
 use Override;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
+use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
@@ -35,10 +36,7 @@ use function is_dir;
 use function is_file;
 use function is_writable;
 use function move_uploaded_file;
-use function str_starts_with;
 use function unlink;
-
-use const PHP_SAPI;
 
 class UploadedFile implements UploadedFileContract
 {
@@ -80,12 +78,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function getStream(): StreamContract
     {
-        // If the error status is not OK
-        if ($this->uploadError !== UploadError::OK) {
-            // Throw a runtime exception as there's been an uploaded file error
-            throw new UploadErrorException($this->uploadError);
-        }
-
+        $this->validateNoUploadError();
         $this->validateHasNotBeenMoved('Cannot retrieve stream after it has already been moved');
 
         // If the stream has been set
@@ -259,28 +252,15 @@ class UploadedFile implements UploadedFileContract
     }
 
     /**
-     * Get the PHP_SAPI value.
-     */
-    protected function getPhpSapi(): string
-    {
-        return PHP_SAPI;
-    }
-
-    /**
      * Determine if a new stream should be opened to move the file.
      */
     protected function shouldWriteStream(): bool
     {
-        $sapi = $this->getPhpSapi();
-
-        // If the PHP_SAPI value is empty
-        // or there is no file
+        // If there is no file
         // or the PHP_SAPI value is set to a CLI environment
-        return empty($sapi)
-            || $this->file === null
+        return $this->file === null
             || $this->file === ''
-            || str_starts_with($sapi, 'cli')
-            || str_starts_with($sapi, 'phpdbg');
+            || ! UploadedFileFactory::isValidSapiEnvironmentForUploads();
     }
 
     /**
