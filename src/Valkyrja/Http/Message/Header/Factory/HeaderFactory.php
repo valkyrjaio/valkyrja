@@ -129,16 +129,7 @@ abstract class HeaderFactory
                 continue;
             }
 
-            // Non-visible, non-whitespace characters
-            // 9 === horizontal tab
-            // 32-126, 128-254 === visible
-            // 127 === DEL
-            // 255 === null byte
-            if (
-                ($ascii < 32 && $ascii !== 9)
-                || $ascii === 127
-                || $ascii > 254
-            ) {
+            if (self::isInvalidValueAscii($ascii)) {
                 continue;
             }
 
@@ -206,9 +197,27 @@ abstract class HeaderFactory
         }
     }
 
+    /**
+     * Determine if a header name is valid.
+     */
     public static function isValidName(string $name): bool
     {
         return (bool) preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name);
+    }
+
+    /**
+     * Determine if a given ASCII character is an invalid header value character.
+     */
+    protected static function isInvalidValueAscii(int $ascii): bool
+    {
+        // Non-visible, non-whitespace characters
+        // 9 === horizontal tab
+        // 32-126, 128-254 === visible
+        // 127 === DEL
+        // 255 === null byte
+        return ($ascii < 32 && $ascii !== 9)
+            || $ascii === 127
+            || $ascii > 254;
     }
 
     /**
