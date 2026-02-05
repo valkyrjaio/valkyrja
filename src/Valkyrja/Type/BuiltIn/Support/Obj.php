@@ -132,28 +132,15 @@ class Obj
          * @var mixed  $value
          */
         foreach ($castSubject as $key => $value) {
-            // Explode the key on the \0 character
-            /*
-             * Public members: member_name
-             * Protected members: \0*\0member_name
-             * Private members: \0Class_name\0member_name
-             */
-            $isProtected = str_contains($key, "\0*");
-            $keyParts    = explode("\0", $key);
+            $sanitizedKey = static::sanitizePropertyName($key, $includeProtected, $includePrivate);
 
-            if (count($keyParts) > 1) {
-                if (! $includeProtected && $isProtected) {
-                    continue;
-                }
-
-                if (! $includePrivate && ! $isProtected) {
-                    continue;
-                }
+            if ($sanitizedKey === null) {
+                continue;
             }
 
             // Set the property and value
             /** @psalm-suppress MixedAssignment */
-            $array[end($keyParts)] = $value;
+            $array[$sanitizedKey] = $value;
         }
 
         return $array;
@@ -203,5 +190,37 @@ class Obj
         }
 
         return $value;
+    }
+
+    protected static function sanitizePropertyName(
+        string $name,
+        bool $includeProtected = true,
+        bool $includePrivate = true
+    ): string|null {
+        // Explode the key on the \0 character
+        /*
+         * Public members: member_name
+         * Protected members: \0*\0member_name
+         * Private members: \0Class_name\0member_name
+         */
+        $isProtected = str_contains($name, "\0*");
+        $keyParts    = explode("\0", $name);
+
+        if (count($keyParts) > 1) {
+            if (! $includeProtected && $isProtected) {
+                return null;
+            }
+
+            if (! $includePrivate && ! $isProtected) {
+                return null;
+            }
+        }
+
+        return end($keyParts);
+    }
+
+    protected static function sanitizeCastObjectKey(string $key): string|null
+    {
+        return $key;
     }
 }
