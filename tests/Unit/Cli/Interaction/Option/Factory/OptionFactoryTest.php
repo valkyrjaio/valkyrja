@@ -121,4 +121,12 @@ class OptionFactoryTest extends TestCase
 
         OptionFactory::fromArg(arg: $value3);
     }
+
+    public function testFromArgEmptyOptionNameException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Option name cannot be empty');
+
+        OptionFactory::fromArg(arg: '-');
+    }
 }

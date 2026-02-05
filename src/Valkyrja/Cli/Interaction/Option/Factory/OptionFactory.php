@@ -40,6 +40,8 @@ abstract class OptionFactory
             $value = null;
         }
 
+        self::validateNonEmptyName($name);
+
         // Finds short options combined together
         // e.g. -abc instead of -a -b -c
         if ($type === OptionType::SHORT && strlen($name) > 1) {
@@ -47,8 +49,6 @@ abstract class OptionFactory
 
             return self::splitCombinedShortOptions($type, $name);
         }
-
-        /** @var non-empty-string $name */
 
         return [
             new Option(
@@ -63,8 +63,6 @@ abstract class OptionFactory
      * Validate that an arg is an option.
      *
      * @param non-empty-string $arg The arg
-     *
-     * @return void
      */
     protected static function validateArgIsOption(string $arg): void
     {
@@ -74,11 +72,23 @@ abstract class OptionFactory
     }
 
     /**
+     * Validate that an option name is not empty.
+     *
+     * @psalm-assert non-empty-string $name
+     *
+     * @phpstan-assert non-empty-string $name
+     */
+    protected static function validateNonEmptyName(string $name): void
+    {
+        if ($name === '') {
+            throw new InvalidArgumentException('Option name cannot be empty');
+        }
+    }
+
+    /**
      * Get the type of option based on the name prefix.
      *
      * @param non-empty-string $arg The arg
-     *
-     * @return OptionType
      */
     protected static function getOptionType(string $arg): OptionType
     {
