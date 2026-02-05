@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Override;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -93,6 +94,7 @@ class AppTest extends TestCase
     /**
      * Test the appStart method.
      */
+    #[RunInSeparateProcess]
     public function testAppStart(): void
     {
         Microtime::freeze();

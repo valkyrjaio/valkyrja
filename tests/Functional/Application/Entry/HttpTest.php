@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Application\Entry;
+namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Container\Generator\DataFileGenerator;
@@ -22,7 +22,7 @@ use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 /**
  * Test the Http service.
