@@ -294,7 +294,7 @@ class HeaderFactoryTest extends TestCase
         self::assertFalse(HeaderFactory::isValidName(' '));
     }
 
-    public function testMarshalHeadersSkipsEmptyHttpValues(): void
+    public function testMarshalHeadersDoesNotSkipEmptyHttpValues(): void
     {
         $server = [
             'HTTP_EMPTY'     => '',
@@ -303,12 +303,13 @@ class HeaderFactoryTest extends TestCase
 
         $headers = HeaderFactory::marshalHeaders($server);
 
-        self::assertArrayNotHasKey('empty', $headers);
+        // Empty value is a valid header value
+        self::assertArrayHasKey('empty', $headers);
         self::assertArrayHasKey('not-empty', $headers);
         self::assertSame('value', $headers['not-empty']->getValuesAsString());
     }
 
-    public function testMarshalHeadersSkipsEmptyContentValues(): void
+    public function testMarshalHeadersDoesNotSkipEmptyContentValues(): void
     {
         $server = [
             'CONTENT_TYPE'   => '',
@@ -317,7 +318,8 @@ class HeaderFactoryTest extends TestCase
 
         $headers = HeaderFactory::marshalHeaders($server);
 
-        self::assertArrayNotHasKey('content-type', $headers);
+        // Empty value is a valid header value
+        self::assertArrayHasKey('content-type', $headers);
         self::assertArrayHasKey('content-length', $headers);
         self::assertSame('100', $headers['content-length']->getValuesAsString());
     }

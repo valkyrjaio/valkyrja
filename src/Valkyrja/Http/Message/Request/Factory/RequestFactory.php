@@ -37,12 +37,12 @@ abstract class RequestFactory
     /**
      * Create a request from the supplied superglobal values.
      *
-     * @param array<string, string>|null      $server  [optional] $_SERVER superglobal
-     * @param array<array-key, mixed>|null    $query   [optional] $_GET superglobal
-     * @param array<array-key, mixed>|null    $body    [optional] $_POST superglobal
-     * @param array<string, string|null>|null $cookies [optional] $_COOKIE superglobal
-     * @param array<array-key, mixed>|null    $files   [optional] $_FILES superglobal
-     * @param class-string<ServerRequest>     $class   [optional] The request class to return
+     * @param array<string, string|int|float|array<scalar>>|null $server  [optional] $_SERVER superglobal
+     * @param array<array-key, mixed>|null                       $query   [optional] $_GET superglobal
+     * @param array<array-key, mixed>|null                       $body    [optional] $_POST superglobal
+     * @param array<string, string|null>|null                    $cookies [optional] $_COOKIE superglobal
+     * @param array<array-key, mixed>|null                       $files   [optional] $_FILES superglobal
+     * @param class-string<ServerRequest>                        $class   [optional] The request class to return
      */
     public static function fromGlobals(
         array|null $server = null,

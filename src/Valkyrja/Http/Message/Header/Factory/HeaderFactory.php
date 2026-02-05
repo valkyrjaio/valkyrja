@@ -35,7 +35,7 @@ abstract class HeaderFactory
     /**
      * Marshal headers from $_SERVER.
      *
-     * @param array<string, string> $server
+     * @param array<string, string|int|float|array<scalar>> $server
      *
      * @return array<lowercase-string, HeaderContract>
      */
@@ -214,10 +214,11 @@ abstract class HeaderFactory
     /**
      * Marshal headers from $_SERVER.
      *
-     * @param array<string, string>                   $server  The server variables
-     * @param array<lowercase-string, HeaderContract> $headers The headers
+     * @param array<string, string|int|float|array<scalar>> $server  The server variables
+     * @param array<lowercase-string, HeaderContract>       $headers The headers
+     * @param string|int|float|array<scalar>                $value   The value
      */
-    protected static function marshalHeader(array $server, array &$headers, string $key, string $value): void
+    protected static function marshalHeader(array $server, array &$headers, string $key, string|float|int|array $value): void
     {
         // Apache prefixes environment variables with REDIRECT_
         // if they are added by rewrite rules
@@ -232,7 +233,10 @@ abstract class HeaderFactory
         }
 
         if (static::isValidHttpHeader($key, $value)) {
-            /** @var lowercase-string $name */
+            /**
+             * @var lowercase-string $name
+             * @var string           $value
+             */
             $name           = str_replace('_', '-', strtolower(substr($key, 5)));
             $headers[$name] = new Header($name, $value);
 
@@ -240,24 +244,29 @@ abstract class HeaderFactory
         }
 
         if (static::isValidHttpContentHeader($key, $value)) {
+            /** @var string $value */
             $name           = 'content-' . strtolower(substr($key, 8));
             $headers[$name] = new Header($name, $value);
         }
     }
 
     /**
-     * Determine if a given key is a valid http header.
+     * Determine if a given server name is a valid http header.
+     *
+     * @param string|int|float|array<scalar> $value The value
      */
-    protected static function isValidHttpHeader(string $key, string $value): bool
+    protected static function isValidHttpHeader(string $name, string|float|int|array $value): bool
     {
-        return $value && str_starts_with($key, 'HTTP_');
+        return is_string($value) && str_starts_with($name, 'HTTP_');
     }
 
     /**
-     * Determine if a given key is a valid http content header.
+     * Determine if a given server name is a valid http content header.
+     *
+     * @param string|int|float|array<scalar> $value The value
      */
-    protected static function isValidHttpContentHeader(string $key, string $value): bool
+    protected static function isValidHttpContentHeader(string $name, string|float|int|array $value): bool
     {
-        return $value && str_starts_with($key, 'CONTENT_');
+        return is_string($value) && str_starts_with($name, 'CONTENT_');
     }
 }
