@@ -27,6 +27,7 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 use function is_a;
@@ -85,10 +86,15 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
                 $value = $arguments[$name];
                 $type  = $parameter->getCast()->type ?? null;
 
-                if ($type === null || ! is_a($type, EntityContract::class, true)) {
+                $isParameterEntityType = $this->isParameterEntityType($type);
+
+                if (! $isParameterEntityType) {
                     continue;
                 }
 
+                /** @var class-string<EntityContract> $type */
+
+                // Check if the parameter is an entity
                 $response = $this->checkParameterForEntity(
                     parameter: $parameter,
                     type: $type,
@@ -112,6 +118,21 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
         }
 
         return $route;
+    }
+
+    /**
+     * Determine if a parameter should be skipped.
+     *
+     * @param class-string<TypeContract<mixed>>|null $type The type
+     *
+     * @psalm-assert class-string<EntityContract> $type
+     *
+     * @phpstan-assert class-string<EntityContract> $type
+     */
+    protected function isParameterEntityType(string|null $type): bool
+    {
+        return $type !== null
+            && is_a($type, EntityContract::class, true);
     }
 
     /**
