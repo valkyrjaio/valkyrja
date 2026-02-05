@@ -190,8 +190,19 @@ class Reflector implements ReflectorContract
             && ($name = $type->getName())
             // The name is a string
             && is_string($name)
-            // The class or interface exists
-            && (class_exists($name) || interface_exists($name))
+            && $this->determineStringIsValidClass($type, $name);
+    }
+
+    /**
+     * Determine if a type's name is a valid class.
+     *
+     * @psalm-assert class-string   $name
+     *
+     * @phpstan-assert class-string $name
+     */
+    protected function determineStringIsValidClass(ReflectionNamedType $type, string $name): bool
+    {
+        return (class_exists($name) || interface_exists($name))
             // and it isn't an enum
             && ! is_a($name, UnitEnum::class, true)
             // It's not built in
