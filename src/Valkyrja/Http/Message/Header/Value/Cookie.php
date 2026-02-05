@@ -17,6 +17,7 @@ use DateTimeInterface;
 use Override;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
+use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Support\Time\Time;
 
@@ -67,12 +68,15 @@ class Cookie extends Value implements CookieContract
         $expire = $this->expire;
         $maxAge = $this->getMaxAge();
 
-        if ($this->delete || $value === null) {
+        $shouldDelete = $this->shouldDelete();
+
+        if ($shouldDelete) {
             $expire = Time::get() - 31536001;
             $maxAge = -31536001;
             $value  = 'delete';
         }
 
+        /** @var string $value */
         $arr = [
             new Component(urlencode($this->name), urlencode($value)),
         ];
@@ -83,10 +87,10 @@ class Cookie extends Value implements CookieContract
         }
 
         $arr[] = new Component('path', $this->path);
-        $arr[] = $this->domain !== null ? new Component('domain', $this->domain) : '';
-        $arr[] = $this->secure ? new Component('secure') : '';
-        $arr[] = $this->httpOnly ? new Component('httponly') : '';
-        $arr[] = $this->sameSite ? new Component('samesite', $this->sameSite->value) : '';
+        $arr[] = $this->getDomainComponent();
+        $arr[] = $this->getSecureComponent();
+        $arr[] = $this->getHttpOnlyComponent();
+        $arr[] = $this->getSameSiteComponent();
 
         $arrToString = array_map(static fn (mixed $val): string => (string) $val, $arr);
 
@@ -315,5 +319,57 @@ class Cookie extends Value implements CookieContract
         $new->sameSite = $sameSite;
 
         return $new;
+    }
+
+    /**
+     * Determine if the cookie should be deleted.
+     *
+     * @psalm-assert string $this->value
+     *
+     * @phpstan-assert string $this->value
+     */
+    protected function shouldDelete(): bool
+    {
+        return $this->delete || $this->value === null;
+    }
+
+    /**
+     * Get the domain component.
+     */
+    protected function getDomainComponent(): ComponentContract|string
+    {
+        return $this->domain !== null
+            ? new Component('domain', $this->domain)
+            : '';
+    }
+
+    /**
+     * Get the secure component.
+     */
+    protected function getSecureComponent(): ComponentContract|string
+    {
+        return $this->secure
+            ? new Component('secure')
+            : '';
+    }
+
+    /**
+     * Get the httpOnly component.
+     */
+    protected function getHttpOnlyComponent(): ComponentContract|string
+    {
+        return $this->httpOnly
+            ? new Component('httponly')
+            : '';
+    }
+
+    /**
+     * Get the samesite component.
+     */
+    protected function getSameSiteComponent(): ComponentContract|string
+    {
+        return $this->sameSite
+            ? new Component('samesite', $this->sameSite->value)
+            : '';
     }
 }
