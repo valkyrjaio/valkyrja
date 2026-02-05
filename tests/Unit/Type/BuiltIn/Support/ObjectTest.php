@@ -15,8 +15,10 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
+use Valkyrja\Tests\Classes\Type\BuiltIn\Support\ObjClass;
 use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Type\BuiltIn\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
@@ -118,11 +120,11 @@ class ObjectTest extends TestCase
     {
         $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
         // Only public properties
-        $publicOnlyProperties = Obj::getAllProperties($value, false, false);
+        $publicOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC);
         // All public and protected
-        $includeProtectedProperties = Obj::getAllProperties($value, includePrivate: false);
+        $includeProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PROTECTED);
         // All public and private
-        $includePrivateProperties = Obj::getAllProperties($value, includeProtected: false);
+        $includePrivateProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PRIVATE);
         // All public, protected, and private
         $allProperties = Obj::getAllProperties($value);
 
@@ -240,5 +242,14 @@ class ObjectTest extends TestCase
         self::assertSame($value->first->second->third->foo, $result);
         self::assertSame($default, $resultDefault);
         self::assertSame($default, $resultDefaultNonArray);
+    }
+
+    public function testGetAllPropertiesSkipsEmptyKeyAfterSanitization(): void
+    {
+        $propertyName  = ObjClass::exposeSanitizePropertyName("\0test\0", PropertyVisibilityFilter::ALL);
+        $propertyName2 = ObjClass::exposeSanitizePropertyName('', PropertyVisibilityFilter::ALL);
+
+        self::assertNull($propertyName);
+        self::assertNull($propertyName2);
     }
 }
