@@ -35,7 +35,7 @@ abstract class HeaderFactory
     /**
      * Marshal headers from $_SERVER.
      *
-     * @param array<string, string> $server
+     * @param array<string, string|int|float|array<scalar>> $server
      *
      * @return array<lowercase-string, HeaderContract>
      */
@@ -44,30 +44,7 @@ abstract class HeaderFactory
         $headers = [];
 
         foreach ($server as $key => $value) {
-            // Apache prefixes environment variables with REDIRECT_
-            // if they are added by rewrite rules
-            if (str_starts_with($key, 'REDIRECT_')) {
-                $key = substr($key, 9);
-
-                // We will not overwrite existing variables with the
-                // prefixed versions, though
-                if (array_key_exists($key, $server)) {
-                    continue;
-                }
-            }
-
-            if ($value && str_starts_with($key, 'HTTP_')) {
-                /** @var lowercase-string $name */
-                $name           = str_replace('_', '-', strtolower(substr($key, 5)));
-                $headers[$name] = new Header($name, $value);
-
-                continue;
-            }
-
-            if ($value && str_starts_with($key, 'CONTENT_')) {
-                $name           = 'content-' . strtolower(substr($key, 8));
-                $headers[$name] = new Header($name, $value);
-            }
+            self::marshalHeader($server, $headers, $key, $value);
         }
 
         return $headers;
@@ -232,5 +209,64 @@ abstract class HeaderFactory
     public static function isValidName(string $name): bool
     {
         return (bool) preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name);
+    }
+
+    /**
+     * Marshal headers from $_SERVER.
+     *
+     * @param array<string, string|int|float|array<scalar>> $server  The server variables
+     * @param array<lowercase-string, HeaderContract>       $headers The headers
+     * @param string|int|float|array<scalar>                $value   The value
+     */
+    protected static function marshalHeader(array $server, array &$headers, string $key, string|float|int|array $value): void
+    {
+        // Apache prefixes environment variables with REDIRECT_
+        // if they are added by rewrite rules
+        if (str_starts_with($key, 'REDIRECT_')) {
+            $key = substr($key, 9);
+
+            // We will not overwrite existing variables with the
+            // prefixed versions, though
+            if (array_key_exists($key, $server)) {
+                return;
+            }
+        }
+
+        if (static::isValidHttpHeader($key, $value)) {
+            /**
+             * @var lowercase-string $name
+             * @var string           $value
+             */
+            $name           = str_replace('_', '-', strtolower(substr($key, 5)));
+            $headers[$name] = new Header($name, $value);
+
+            return;
+        }
+
+        if (static::isValidHttpContentHeader($key, $value)) {
+            /** @var string $value */
+            $name           = 'content-' . strtolower(substr($key, 8));
+            $headers[$name] = new Header($name, $value);
+        }
+    }
+
+    /**
+     * Determine if a given server name is a valid http header.
+     *
+     * @param string|int|float|array<scalar> $value The value
+     */
+    protected static function isValidHttpHeader(string $name, string|float|int|array $value): bool
+    {
+        return is_string($value) && str_starts_with($name, 'HTTP_');
+    }
+
+    /**
+     * Determine if a given server name is a valid http content header.
+     *
+     * @param string|int|float|array<scalar> $value The value
+     */
+    protected static function isValidHttpContentHeader(string $name, string|float|int|array $value): bool
+    {
+        return is_string($value) && str_starts_with($name, 'CONTENT_');
     }
 }
