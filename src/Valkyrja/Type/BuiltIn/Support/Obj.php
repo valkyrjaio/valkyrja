@@ -209,23 +209,52 @@ class Obj
         $keyParts    = explode("\0", $name);
 
         if (count($keyParts) > 1) {
-            if ($isProtected && ! $filter->shouldIncludeProtected()) {
+            if (static::shouldExcludeProtected($isProtected, $filter)) {
                 return null;
             }
 
-            if (! $isProtected && ! $filter->shouldIncludePrivate()) {
+            if (static::shouldExcludePrivate($isProtected, $filter)) {
                 return null;
             }
         } elseif (! $filter->shouldIncludePublic()) {
             return null;
         }
 
-        $key = end($keyParts);
+        $key          = end($keyParts);
+        $isInvalidKey = static::isInvalidSanitizedKey($key);
 
-        if ($key === '' || $key === '\0') {
+        if ($isInvalidKey) {
             return null;
         }
 
         return $key;
+    }
+
+    /**
+     * Determine if a property name should be excluded from the sanitized array.
+     */
+    protected static function shouldExcludeProtected(bool $isProtected, PropertyVisibilityFilter $filter): bool
+    {
+        return $isProtected && ! $filter->shouldIncludeProtected();
+    }
+
+    /**
+     * Determine if a property name should be excluded from the sanitized array.
+     */
+    protected static function shouldExcludePrivate(bool $isProtected, PropertyVisibilityFilter $filter): bool
+    {
+        return ! $isProtected && ! $filter->shouldIncludePrivate();
+    }
+
+    /**
+     * Determine if a sanitized property name key is invalid.
+     *
+     * @psalm-assert non-empty-string $key
+     *
+     * @phpstan-assert non-empty-string $key
+     */
+    protected static function isInvalidSanitizedKey(string $key): bool
+    {
+        return $key === '' || $key === '\0';
     }
 }
