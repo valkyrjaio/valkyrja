@@ -102,32 +102,96 @@ class Processor implements ProcessorContract
      */
     protected function replaceParameterNameInRegex(RouteContract $route, ParameterContract $parameter, string $regex): string
     {
-        // Get whether this parameter is optional
-        $isOptional = $parameter->isOptional();
-
         // Get the replacement for this parameter's name (something like {name} or {name?}
         // Prepend \/ if it optional so we can replace the path slash and set it in the
         // regex below as a non-capture-optional group
-        $nameReplacement = ($isOptional ? Regex::PATH : '')
-            . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
+        $nameReplacement = $this->getRegexParameterNameReplacement($parameter);
 
         // Check if the path doesn't contain the parameter's name replacement
         if (! str_contains($regex, $nameReplacement)) {
             throw new InvalidRoutePathException("{$route->getPath()} is missing $nameReplacement");
         }
 
-        // If optional we don't want to capture the / before the value
-        $parameterRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
-            // Start the actual value's capture group
-            . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
-            // Add the parameter name only for a capture group (non capture groups won't be captured so we don't need them to be attributed to a param name)
-            . ($parameter->shouldCapture() ? Regex::START_CAPTURE_GROUP_NAME . $parameter->getName() . Regex::END_CAPTURE_GROUP_NAME : '')
-            // Set the parameter's regex to match the value
-            . $parameter->getRegex()
-            // End the capture group
-            . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
+        // Get the parameter's regex
+        $parameterRegex = $this->getParameterRegex($parameter);
 
         // Replace the {name} or \/{name?} with the finished regex
         return str_replace($nameReplacement, $parameterRegex, $regex);
+    }
+
+    /**
+     * Get the regex parameter name replacement.
+     *
+     * @return non-empty-string
+     */
+    protected function getRegexParameterNameReplacement(ParameterContract $parameter): string
+    {
+        // Get whether this parameter is optional
+        $isOptional = $parameter->isOptional();
+
+        // Get the replacement for this parameter's name (something like {name} or {name?}
+        // Prepend \/ if it optional so we can replace the path slash and set it in the
+        // regex below as a non-capture-optional group
+        return ($isOptional ? Regex::PATH : '')
+            . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
+    }
+
+    /**
+     * Get a parameter's regex.
+     *
+     * @return non-empty-string
+     */
+    protected function getParameterRegex(ParameterContract $parameter): string
+    {
+        return $this->getParameterRegexOptionalCaptureGroupStart($parameter)
+            . $this->getParameterRegexCaptureGroupStart($parameter)
+            . $this->getParameterRegexNameCaptureGroup($parameter)
+            // Set the parameter's regex to match the value
+            . $parameter->getRegex()
+            . $this->getParameterRegexCaptureGroupEnd($parameter);
+    }
+
+    /**
+     * Get a parameter's regex optional capture group start.
+     */
+    protected function getParameterRegexOptionalCaptureGroupStart(ParameterContract $parameter): string
+    {
+        // If optional we don't want to capture the / before the value
+        return $parameter->isOptional()
+            ? Regex::START_OPTIONAL_CAPTURE_GROUP
+            : '';
+    }
+
+    /**
+     * Get a parameter's regex capture group start.
+     */
+    protected function getParameterRegexCaptureGroupStart(ParameterContract $parameter): string
+    {
+        // Start the actual value's capture group
+        return ! $parameter->shouldCapture()
+            ? Regex::START_NON_CAPTURE_GROUP
+            : Regex::START_CAPTURE_GROUP;
+    }
+
+    /**
+     * Get a parameter's regex name capture group.
+     */
+    protected function getParameterRegexNameCaptureGroup(ParameterContract $parameter): string
+    {
+        // Add the parameter name only for a capture group (non capture groups won't be captured so we don't need them to be attributed to a param name)
+        return $parameter->shouldCapture()
+            ? Regex::START_CAPTURE_GROUP_NAME . $parameter->getName() . Regex::END_CAPTURE_GROUP_NAME
+            : '';
+    }
+
+    /**
+     * Get a parameter's regex capture group end.
+     */
+    protected function getParameterRegexCaptureGroupEnd(ParameterContract $parameter): string
+    {
+        // End the capture group
+        return $parameter->isOptional()
+            ? Regex::END_OPTIONAL_CAPTURE_GROUP
+            : Regex::END_CAPTURE_GROUP;
     }
 }
