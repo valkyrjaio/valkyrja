@@ -218,22 +218,59 @@ class JsonData extends Model implements JsonDataContract
     {
         $data = $this->data ?? [];
 
+        $this->addMessagesToData($data);
+        $this->addItemToData($data);
+        $this->addItemsToData($data);
+        $this->addTotalToData($data);
+
+        return $data;
+    }
+
+    /**
+     * Add the messages to the data.
+     *
+     * @param array<array-key, mixed> $data The data
+     */
+    protected function addMessagesToData(array &$data): void
+    {
         if ($this->messages !== null && $this->messages !== []) {
             $data['messages'] = $this->messages;
         }
+    }
 
+    /**
+     * Add the item to the data.
+     *
+     * @param array<array-key, mixed> $data The data
+     */
+    protected function addItemToData(array &$data): void
+    {
         if ($this->item !== null) {
             $data[$this->itemKey] = $this->item;
         }
+    }
 
+    /**
+     * Add the items to the data.
+     *
+     * @param array<array-key, mixed> $data The data
+     */
+    protected function addItemsToData(array &$data): void
+    {
         if ($this->items !== null && $this->items !== []) {
             $data[$this->itemsKey] = $this->items;
         }
+    }
 
+    /**
+     * Add the total to the data.
+     *
+     * @param array<array-key, mixed> $data The data
+     */
+    protected function addTotalToData(array &$data): void
+    {
         if ($this->total !== null) {
             $data['total'] = $this->total;
         }
-
-        return $data;
     }
 }
