@@ -15,8 +15,10 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
+use Valkyrja\Tests\Classes\Type\BuiltIn\Support\ObjClass;
 use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Type\BuiltIn\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
@@ -117,37 +119,22 @@ class ObjectTest extends TestCase
     public function testGetAllProperties(): void
     {
         $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
-        // Only public properties
-        $publicOnlyProperties = Obj::getAllProperties($value, false, false);
-        // All public and protected
-        $includeProtectedProperties = Obj::getAllProperties($value, includePrivate: false);
-        // All public and private
-        $includePrivateProperties = Obj::getAllProperties($value, includeProtected: false);
-        // All public, protected, and private
-        $allProperties = Obj::getAllProperties($value);
 
-        self::assertSame(['public' => 'test'], $publicOnlyProperties);
-        self::assertSame(
-            [
-                'internalShouldSetOriginalProperties' => true,
-                'internalOriginalProperties'          => [
-                    'public'    => 'test',
-                    'protected' => 'foo',
-                    'private'   => 'bar',
-                ],
-                'internalHaveOriginalPropertiesSet'   => true,
-                'public'                              => 'test',
-                'protected'                           => 'foo',
-            ],
-            $includeProtectedProperties
-        );
-        self::assertSame(
-            [
-                'public'  => 'test',
-                'private' => 'bar',
-            ],
-            $includePrivateProperties
-        );
+        // All public, protected, and private
+        $allProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::ALL);
+        // Only public properties
+        $publicOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC);
+        // Only protected properties
+        $protectedOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PROTECTED);
+        // Only private properties
+        $privateOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PRIVATE);
+        // All public and protected
+        $publicProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PROTECTED);
+        // All public and private
+        $publicPrivateProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PRIVATE);
+        // All protected and private
+        $privateProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PRIVATE_PROTECTED);
+
         self::assertSame(
             [
                 'internalShouldSetOriginalProperties' => true,
@@ -162,6 +149,56 @@ class ObjectTest extends TestCase
                 'private'                             => 'bar',
             ],
             $allProperties
+        );
+        self::assertSame(['public' => 'test'], $publicOnlyProperties);
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'protected'                           => 'foo',
+            ],
+            $protectedOnlyProperties
+        );
+        self::assertSame(['private' => 'bar'], $privateOnlyProperties);
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'public'                              => 'test',
+                'protected'                           => 'foo',
+            ],
+            $publicProtectedProperties
+        );
+        self::assertSame(
+            [
+                'public'  => 'test',
+                'private' => 'bar',
+            ],
+            $publicPrivateProperties
+        );
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'protected'                           => 'foo',
+                'private'                             => 'bar',
+            ],
+            $privateProtectedProperties
         );
     }
 
@@ -240,5 +277,14 @@ class ObjectTest extends TestCase
         self::assertSame($value->first->second->third->foo, $result);
         self::assertSame($default, $resultDefault);
         self::assertSame($default, $resultDefaultNonArray);
+    }
+
+    public function testGetAllPropertiesSkipsEmptyKeyAfterSanitization(): void
+    {
+        $propertyName  = ObjClass::exposeSanitizePropertyName("\0test\0", PropertyVisibilityFilter::ALL);
+        $propertyName2 = ObjClass::exposeSanitizePropertyName('', PropertyVisibilityFilter::ALL);
+
+        self::assertNull($propertyName);
+        self::assertNull($propertyName2);
     }
 }

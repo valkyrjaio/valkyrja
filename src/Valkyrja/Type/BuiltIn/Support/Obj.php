@@ -15,6 +15,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
+use Valkyrja\Type\BuiltIn\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function count;
@@ -109,16 +110,13 @@ class Obj
     /**
      * Get all object's properties regardless of visibility.
      *
-     * @param object $subject          The subject object
-     * @param bool   $includeProtected [optional] Whether to include protected members
-     * @param bool   $includePrivate   [optional] Whether to include private members
+     * @param object $subject The subject object
      *
-     * @return array<array-key, mixed>
+     * @return array<non-empty-string, mixed>
      */
     public static function getAllProperties(
         object $subject,
-        bool $includeProtected = true,
-        bool $includePrivate = true
+        PropertyVisibilityFilter $filter = PropertyVisibilityFilter::ALL
     ): array {
         /** @var array<string, mixed> $castSubject */
         // The subject cast as an array
@@ -132,7 +130,7 @@ class Obj
          * @var mixed  $value
          */
         foreach ($castSubject as $key => $value) {
-            $sanitizedKey = static::sanitizePropertyName($key, $includeProtected, $includePrivate);
+            $sanitizedKey = static::sanitizePropertyName($key, $filter);
 
             if ($sanitizedKey === null) {
                 continue;
@@ -192,10 +190,14 @@ class Obj
         return $value;
     }
 
+    /**
+     * Sanitize a cast array key to a property name.
+     *
+     * @return non-empty-string|null
+     */
     protected static function sanitizePropertyName(
         string $name,
-        bool $includeProtected = true,
-        bool $includePrivate = true
+        PropertyVisibilityFilter $filter = PropertyVisibilityFilter::ALL
     ): string|null {
         // Explode the key on the \0 character
         /*
@@ -207,20 +209,52 @@ class Obj
         $keyParts    = explode("\0", $name);
 
         if (count($keyParts) > 1) {
-            if (! $includeProtected && $isProtected) {
+            if (static::shouldExcludeProtected($isProtected, $filter)) {
                 return null;
             }
 
-            if (! $includePrivate && ! $isProtected) {
+            if (static::shouldExcludePrivate($isProtected, $filter)) {
                 return null;
             }
+        } elseif (! $filter->shouldIncludePublic()) {
+            return null;
         }
 
-        return end($keyParts);
+        $key          = end($keyParts);
+        $isInvalidKey = static::isInvalidSanitizedKey($key);
+
+        if ($isInvalidKey) {
+            return null;
+        }
+
+        return $key;
     }
 
-    protected static function sanitizeCastObjectKey(string $key): string|null
+    /**
+     * Determine if a property name should be excluded from the sanitized array.
+     */
+    protected static function shouldExcludeProtected(bool $isProtected, PropertyVisibilityFilter $filter): bool
     {
-        return $key;
+        return $isProtected && ! $filter->shouldIncludeProtected();
+    }
+
+    /**
+     * Determine if a property name should be excluded from the sanitized array.
+     */
+    protected static function shouldExcludePrivate(bool $isProtected, PropertyVisibilityFilter $filter): bool
+    {
+        return ! $isProtected && ! $filter->shouldIncludePrivate();
+    }
+
+    /**
+     * Determine if a sanitized property name key is invalid.
+     *
+     * @psalm-assert non-empty-string $key
+     *
+     * @phpstan-assert non-empty-string $key
+     */
+    protected static function isInvalidSanitizedKey(string $key): bool
+    {
+        return $key === '' || $key === '\0';
     }
 }
