@@ -306,10 +306,7 @@ class RequestHandler implements RequestHandlerContract
     {
         $status = $this->outputBuffersGetStatus();
         $level  = count($status);
-
-        $flushOrCleanFlag = $flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE;
-        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
-        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | $flushOrCleanFlag : -1;
+        $flags  = $this->getOutputDufferFlags($flush);
 
         while (
             $level-- > $targetLevel
@@ -322,6 +319,17 @@ class RequestHandler implements RequestHandlerContract
                 $this->closeOutputBuffersWithClean();
             }
         }
+    }
+
+    /**
+     * Get the output buffer flags to close with.
+     */
+    protected function getOutputDufferFlags(bool $flush): int
+    {
+        $flushOrCleanFlag = $flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE;
+
+        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
+        return defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | $flushOrCleanFlag : -1;
     }
 
     /**
