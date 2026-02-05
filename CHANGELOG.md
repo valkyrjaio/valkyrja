@@ -1,6 +1,44 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.26.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.27.0...master)
+
+## [v25.27.0](https://github.com/valkyrjaio/valkyrja/compare/v25.26.1...v25.27.0) - 2026-02-04
+
+* [Http] Update header filtering and validation by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/517
+* [Http] Refactor the Uri class. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/518
+* [Http] Convert StatusText to enum by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/519
+* [Http] Refactor Stream by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/520
+* [Http] Fix StatusCode asPhrase method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/521
+* [Http] Refactor Stream by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/522
+* [Throwable] Add throw method to exceptions by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/523
+* [Http] Use throw method for exceptions in Stream by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/524
+* [Http] Refactor Stream. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/525
+* [Type] Refactor Model by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/526
+* [Type] Refactor Model by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/527
+* [Http] Removing need for __set_state in DataFileGenerator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/528
+* [Cli] Removing need for __set_state in DataFileGenerator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/529
+* [Event] Removing need for __set_state in DataFileGenerator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/530
+* [Dispatch] Removing need for __set_state. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/531
+* [Http] Add tests for methods added to HeaderFactory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/532
+* [Http] Add tests for methods added to UriFactory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/533
+* [Cli] Change Route help text signature to callable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/534
+* [Http] Remove redundant Route methods by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/535
+* [Cli] Refactor help command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/536
+* [Cli] Refactor list command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/537
+* [Type] Move model test classes to type namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/538
+* [Test] Add test case base for unit and functional tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/539
+* [Application] Move functional entry tests to functional namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/540
+* [Http] Refactor processor parameter regex replacement by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/541
+* [Http] Refactor UploadedFile moveTo method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/542
+* [Http] Refactor UploadedFile getStream method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/544
+* [Reflection] Refactor Reflector get dependencies method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/543
+* [Http] Refactor UploadedFile shouldWriteStream method. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/545
+* [Cli] Refactor the OptionFactory class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/546
+* [Cli] Ensure helpText is optional by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/547
+* [Http] Refactor the request handler closeOutputBuffers method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/548
+* [Http] Refactor the help command option messages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/549
+* [Type] Refactor the enumerable fromValue method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/550
+* [Http] Refactor the Cookie toString method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/551
 
 ## [v25.26.1](https://github.com/valkyrjaio/valkyrja/compare/v25.26.0...v25.26.1) - 2026-02-02
 
