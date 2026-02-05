@@ -216,6 +216,8 @@ class Obj
             if (! $isProtected && ! $filter->shouldIncludePrivate()) {
                 return null;
             }
+        } elseif (! $filter->shouldIncludePublic()) {
+            return null;
         }
 
         $key = end($keyParts);

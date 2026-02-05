@@ -119,37 +119,22 @@ class ObjectTest extends TestCase
     public function testGetAllProperties(): void
     {
         $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
+
+        // All public, protected, and private
+        $allProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::ALL);
         // Only public properties
         $publicOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC);
+        // Only protected properties
+        $protectedOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PROTECTED);
+        // Only private properties
+        $privateOnlyProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PRIVATE);
         // All public and protected
-        $includeProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PROTECTED);
+        $publicProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PROTECTED);
         // All public and private
-        $includePrivateProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PRIVATE);
-        // All public, protected, and private
-        $allProperties = Obj::getAllProperties($value);
+        $publicPrivateProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PUBLIC_PRIVATE);
+        // All protected and private
+        $privateProtectedProperties = Obj::getAllProperties($value, PropertyVisibilityFilter::PRIVATE_PROTECTED);
 
-        self::assertSame(['public' => 'test'], $publicOnlyProperties);
-        self::assertSame(
-            [
-                'internalShouldSetOriginalProperties' => true,
-                'internalOriginalProperties'          => [
-                    'public'    => 'test',
-                    'protected' => 'foo',
-                    'private'   => 'bar',
-                ],
-                'internalHaveOriginalPropertiesSet'   => true,
-                'public'                              => 'test',
-                'protected'                           => 'foo',
-            ],
-            $includeProtectedProperties
-        );
-        self::assertSame(
-            [
-                'public'  => 'test',
-                'private' => 'bar',
-            ],
-            $includePrivateProperties
-        );
         self::assertSame(
             [
                 'internalShouldSetOriginalProperties' => true,
@@ -164,6 +149,56 @@ class ObjectTest extends TestCase
                 'private'                             => 'bar',
             ],
             $allProperties
+        );
+        self::assertSame(['public' => 'test'], $publicOnlyProperties);
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'protected'                           => 'foo',
+            ],
+            $protectedOnlyProperties
+        );
+        self::assertSame(['private' => 'bar'], $privateOnlyProperties);
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'public'                              => 'test',
+                'protected'                           => 'foo',
+            ],
+            $publicProtectedProperties
+        );
+        self::assertSame(
+            [
+                'public'  => 'test',
+                'private' => 'bar',
+            ],
+            $publicPrivateProperties
+        );
+        self::assertSame(
+            [
+                'internalShouldSetOriginalProperties' => true,
+                'internalOriginalProperties'          => [
+                    'public'    => 'test',
+                    'protected' => 'foo',
+                    'private'   => 'bar',
+                ],
+                'internalHaveOriginalPropertiesSet'   => true,
+                'protected'                           => 'foo',
+                'private'                             => 'bar',
+            ],
+            $privateProtectedProperties
         );
     }
 
