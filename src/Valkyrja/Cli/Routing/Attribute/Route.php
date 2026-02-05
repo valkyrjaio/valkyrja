@@ -46,7 +46,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
     public function __construct(
         protected string $name,
         protected string $description,
-        callable|null $helpText,
+        callable|null $helpText = null,
         protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, '__construct'),
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -58,8 +58,8 @@ class Route extends Model implements ReflectionAwareAttributeContract
         parent::__construct(
             name: $name,
             description: $description,
-            helpText: $helpText,
             dispatch: $dispatch,
+            helpText: $helpText,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
