@@ -23,13 +23,14 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
+use ReflectionType;
 use UnitEnum;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
 
 use function class_exists;
 use function interface_exists;
-use function is_callable;
+use function is_string;
 
 class Reflector implements ReflectorContract
 {
@@ -160,25 +161,40 @@ class Reflector implements ReflectorContract
         foreach ($parameters as $parameter) {
             $type = $parameter->getType();
 
-            if (
-                // The type is a ReflectionNamedType
-                $type instanceof ReflectionNamedType
-                // The name is valid
-                && ($name = $type->getName())
-                // The name is not a callable
-                && ! is_callable($name)
-                // The class or interface exists
-                && (class_exists($name) || interface_exists($name))
-                // and it isn't an enum
-                && ! is_a($name, UnitEnum::class, true)
-                // It's not built in
-                && ! $type->isBuiltin()
-            ) {
+            $isDependency = $this->determineIfParameterIsADependency($type);
+
+            if ($isDependency) {
+                /** @var class-string $name */
+                $name = $type->getName();
+
                 // Set the injectable in the array
                 $dependencies[$parameter->getName()] = $name;
             }
         }
 
         return $dependencies;
+    }
+
+    /**
+     * Determine if the parameter is a dependency.
+     *
+     * @psalm-assert ReflectionNamedType $type
+     *
+     * @phpstan-assert ReflectionNamedType $type
+     */
+    protected function determineIfParameterIsADependency(ReflectionType|null $type = null): bool
+    {
+        return // The type is a ReflectionNamedType
+            $type instanceof ReflectionNamedType
+            // The name is valid
+            && ($name = $type->getName())
+            // The name is a string
+            && is_string($name)
+            // The class or interface exists
+            && (class_exists($name) || interface_exists($name))
+            // and it isn't an enum
+            && ! is_a($name, UnitEnum::class, true)
+            // It's not built in
+            && ! $type->isBuiltin();
     }
 }
