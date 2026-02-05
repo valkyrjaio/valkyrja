@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Application\Entry;
+namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Cli\Interaction\Output\Output;
@@ -23,7 +23,7 @@ use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 use function restore_error_handler;
 use function restore_exception_handler;
