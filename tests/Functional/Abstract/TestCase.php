@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional\Abstract;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Tests\Abstract\TestCase as AbstractTestCase;
 use Valkyrja\Tests\EnvClass;
 
 /**
  * Test case for functional tests.
  */
-class TestCase extends PHPUnitTestCase
+class TestCase extends AbstractTestCase
 {
     /**
      * The application.
