@@ -115,44 +115,17 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function moveTo(string $targetPath): void
     {
-        // If the error status is not OK
-        if ($this->uploadError !== UploadError::OK) {
-            // Throw a runtime exception as there's been an uploaded file error
-            throw new UploadErrorException($this->uploadError);
-        }
-
-        // If the file has already been moved
-        if ($this->hasBeenMoved) {
-            // Throw a runtime exception as subsequent moves are not allowed
-            // in PSR-7
-            throw new AlreadyMovedException('Cannot move file after it has already been moved');
-        }
+        $this->validateNoUploadError();
+        $this->validateHasNotBeenMoved();
 
         $targetDirectory = $this->getDirectoryName($targetPath);
 
-        // If the target directory is not a directory
-        // or the target directory is not writable
-        if (! $this->isDir($targetDirectory) || ! $this->isWritable($targetDirectory)) {
-            // Throw a runtime exception
-            throw new InvalidDirectoryException(
-                "The target directory `$targetDirectory` does not exists or is not writable"
-            );
-        }
+        $this->validateMoveToTargetDirectory($targetDirectory);
 
         if ($this->shouldWriteStream()) {
-            // Non-SAPI environment, or no filename present
-            $this->writeStream($targetPath);
-
-            $this->stream?->close();
-
-            if ($this->file !== null && is_file($this->file)) {
-                $this->deleteFile($this->file);
-            }
-        } elseif (! $this->moveUploadedFile($this->file ?? '', $targetPath)) {
-            // Otherwise try to use the move_uploaded_file function
-            // and if the move_uploaded_file function call failed
-            // Throw a runtime exception
-            throw new MoveFailureException('Error occurred while moving uploaded file');
+            $this->moveViaStream($targetPath);
+        } else {
+            $this->validateFileMoved($targetPath);
         }
 
         $this->hasBeenMoved = true;
@@ -192,6 +165,65 @@ class UploadedFile implements UploadedFileContract
     public function getClientMediaType(): string|null
     {
         return $this->mediaType;
+    }
+
+    protected function validateNoUploadError(): void
+    {
+        // If the error status is not OK
+        if ($this->uploadError !== UploadError::OK) {
+            // Throw a runtime exception as there's been an uploaded file error
+            throw new UploadErrorException($this->uploadError);
+        }
+    }
+
+    protected function validateHasNotBeenMoved(): void
+    {
+        // If the file has already been moved
+        if ($this->hasBeenMoved) {
+            // Throw a runtime exception as subsequent moves are not allowed
+            // in PSR-7
+            throw new AlreadyMovedException('Cannot move file after it has already been moved');
+        }
+    }
+
+    protected function validateMoveToTargetDirectory(string $targetDirectory): void
+    {
+        // If the target directory is not a directory
+        // or the target directory is not writable
+        if (! $this->isDir($targetDirectory) || ! $this->isWritable($targetDirectory)) {
+            // Throw a runtime exception
+            throw new InvalidDirectoryException(
+                "The target directory `$targetDirectory` does not exists or is not writable"
+            );
+        }
+    }
+
+    /**
+     * Move the file to a new location using a stream.
+     */
+    protected function moveViaStream(string $targetPath): void
+    {
+        // Non-SAPI environment, or no filename present
+        $this->writeStream($targetPath);
+
+        $this->stream?->close();
+
+        if ($this->file !== null && is_file($this->file)) {
+            $this->deleteFile($this->file);
+        }
+    }
+
+    /**
+     * Validate that the file has been moved.
+     */
+    protected function validateFileMoved(string $targetPath): void
+    {
+        if (! $this->moveUploadedFile($this->file ?? '', $targetPath)) {
+            // Otherwise try to use the move_uploaded_file function
+            // and if the move_uploaded_file function call failed
+            // Throw a runtime exception
+            throw new MoveFailureException('Error occurred while moving uploaded file');
+        }
     }
 
     /**
