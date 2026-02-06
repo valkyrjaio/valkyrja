@@ -17,7 +17,6 @@ use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function array_key_exists;
@@ -48,59 +47,6 @@ abstract class HeaderFactory
         }
 
         return $headers;
-    }
-
-    /**
-     * Convert psr headers to valkyrja headers.
-     *
-     * @param array<string, string[]> $headers The psr headers
-     *
-     * @return HeaderContract[]
-     */
-    public static function fromPsr(array $headers): array
-    {
-        $newHeaders = [];
-
-        foreach ($headers as $name => $values) {
-            $newHeaders[] = new Header($name, ...$values);
-        }
-
-        return $newHeaders;
-    }
-
-    /**
-     * Conver valkyrja headers to psr headers.
-     *
-     * @param HeaderContract[] $headers The valkyrja headers
-     *
-     * @return array<string, string[]>
-     */
-    public static function toPsr(array $headers): array
-    {
-        $newHeaders = [];
-
-        foreach ($headers as $header) {
-            $newHeaders[$header->getName()] = static::toPsrValues($header);
-        }
-
-        return $newHeaders;
-    }
-
-    /**
-     * Convert a header to psr values.
-     *
-     * @param HeaderContract $header The header
-     *
-     * @return string[]
-     */
-    public static function toPsrValues(HeaderContract $header): array
-    {
-        $headersValues = $header->getValues();
-
-        return array_map(
-            static fn (ValueContract|string $value): string => is_string($value) ? $value : $value->__toString(),
-            $headersValues
-        );
     }
 
     /**

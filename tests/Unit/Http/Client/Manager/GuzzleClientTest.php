@@ -20,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
@@ -69,7 +69,7 @@ class GuzzleClientTest extends TestCase
             parsedBody: $parsedBody,
         );
 
-        $psr7Response->expects($this->once())->method('getHeaders')->willReturn(HeaderFactory::toPsr($headers));
+        $psr7Response->expects($this->once())->method('getHeaders')->willReturn(PsrHeaderFactory::toPsr($headers));
         $psr7Response->expects($this->once())->method('getStatusCode')->willReturn(200);
         $psr7Response->expects($this->once())->method('getBody')->willReturn($psr7Body);
         $psr7Body->expects($this->once())->method('getContents')->willReturn($contents);

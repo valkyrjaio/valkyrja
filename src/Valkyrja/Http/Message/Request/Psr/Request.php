@@ -19,10 +19,10 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
-use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
+use Valkyrja\Http\Message\Stream\Factory\PsrStreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
@@ -64,7 +64,7 @@ class Request implements RequestInterface
     #[Override]
     public function getHeaders(): array
     {
-        return HeaderFactory::toPsr($this->request->getHeaders());
+        return PsrHeaderFactory::toPsr($this->request->getHeaders());
     }
 
     /**
@@ -88,7 +88,7 @@ class Request implements RequestInterface
             return [];
         }
 
-        return HeaderFactory::toPsrValues($header);
+        return PsrHeaderFactory::toPsrValues($header);
     }
 
     /**
@@ -162,7 +162,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $stream       = StreamFactory::fromPsr($body);
+        $stream       = PsrStreamFactory::fromPsr($body);
         $new->request = $this->request->withBody($stream);
 
         return $new;

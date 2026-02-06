@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Factory;
 
-use Psr\Http\Message\StreamInterface;
 use Throwable;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
@@ -33,19 +31,6 @@ use function is_resource;
 
 abstract class StreamFactory
 {
-    public static function fromPsr(StreamInterface $stream): StreamContract
-    {
-        $stream->rewind();
-        $contents = $stream->getContents();
-        $stream->rewind();
-
-        $valkyrjaStream = new Stream(PhpWrapper::temp);
-        $valkyrjaStream->write($contents);
-        $valkyrjaStream->rewind();
-
-        return $valkyrjaStream;
-    }
-
     /**
      * Get the resource stream.
      *

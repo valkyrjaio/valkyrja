@@ -18,11 +18,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response as ValkyrjaResponse;
-use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
+use Valkyrja\Http\Message\Stream\Factory\PsrStreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 use function is_array;
@@ -62,7 +62,7 @@ class Response implements ResponseInterface
     #[Override]
     public function getHeaders(): array
     {
-        return HeaderFactory::toPsr($this->response->getHeaders());
+        return PsrHeaderFactory::toPsr($this->response->getHeaders());
     }
 
     /**
@@ -86,7 +86,7 @@ class Response implements ResponseInterface
             return [];
         }
 
-        return HeaderFactory::toPsrValues($header);
+        return PsrHeaderFactory::toPsrValues($header);
     }
 
     /**
@@ -160,7 +160,7 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $stream        = StreamFactory::fromPsr($body);
+        $stream        = PsrStreamFactory::fromPsr($body);
         $new->response = $this->response->withBody($stream);
 
         $new->response->getBody()->rewind();
