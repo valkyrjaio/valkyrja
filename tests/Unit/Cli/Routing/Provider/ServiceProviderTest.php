@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -37,6 +38,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -97,7 +99,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Router::class, $this->container->getSingleton(RouterContract::class));
     }
 
-    public function testPublishCollectionWithData(): void
+    public function testPublishCollectionWithCustomDataProvided(): void
     {
         $this->container->setSingleton(Data::class, new Data());
 
@@ -105,6 +107,33 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
+    }
+
+    public function testPublishCollectionWithData(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
+        $container->setSingleton(Env::class, new class extends Env {
+            public const bool CLI_ROUTING_COLLECTION_USE_DATA         = true;
+            public const string CLI_ROUTING_COLLECTION_DATA_FILE_PATH = 'cli-testPublishCollectionWithData-routes.php';
+        });
+
+        $filePath  = EnvClass::APP_DIR . '/data/cli-testPublishCollectionWithData-routes.php';
+        $generator = new DataFileGenerator($filePath, new Data());
+        $generator->generateFile();
+
+        self::assertFalse($container->has(CollectionContract::class));
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(CollectionContract::class));
+        self::assertTrue($container->isSingleton(CollectionContract::class));
+        self::assertInstanceOf(Collection::class, $container->getSingleton(CollectionContract::class));
+
+        @unlink($filePath);
     }
 
     /**

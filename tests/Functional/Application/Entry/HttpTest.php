@@ -50,27 +50,27 @@ class HttpTest extends TestCase
             /** @var bool */
             public const bool APP_DEBUG_MODE = true;
             /** @var bool|null */
-            public const bool|null CONTAINER_USE_CACHE = true;
+            public const bool|null CONTAINER_USE_DATA = true;
             /** @var non-empty-string|null */
-            public const string|null CONTAINER_CACHE_FILE_PATH = 'AppTestHttp-container.php';
+            public const string|null CONTAINER_DATA_FILE_PATH = 'AppTestHttp-container.php';
             /** @var bool|null */
-            public const bool|null HTTP_ROUTING_COLLECTION_USE_CACHE = true;
+            public const bool|null HTTP_ROUTING_COLLECTION_USE_DATA = true;
             /** @var non-empty-string|null */
-            public const string|null HTTP_ROUTING_COLLECTION_FILE_PATH = 'AppTestHttp-routes.php';
+            public const string|null HTTP_ROUTING_COLLECTION_DATA_FILE_PATH = 'AppTestHttp-routes.php';
         };
         /** @var non-empty-string $dir */
         $dir = $env::APP_DIR;
-        /** @var non-empty-string $containerCacheFilePath */
-        $containerCacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
+        /** @var non-empty-string $containerDataFilePath */
+        $containerDataFilePath = $env::CONTAINER_DATA_FILE_PATH
             ?? '/container.php';
-        $absoluteContainerCacheFilePath = Directory::cachePath($containerCacheFilePath);
-        /** @var non-empty-string $containerCacheFilePath */
-        $routesCacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+        $absoluteContainerDataFilePath = Directory::dataPath($containerDataFilePath);
+        /** @var non-empty-string $containerDataFilePath */
+        $routesDataFilePath = $env::HTTP_ROUTING_COLLECTION_DATA_FILE_PATH
             ?? '/routes.php';
-        $absoluteRoutesCacheFilePath = Directory::cachePath($routesCacheFilePath);
+        $absoluteRoutesDataFilePath = Directory::dataPath($routesDataFilePath);
 
-        @unlink($absoluteContainerCacheFilePath);
-        @unlink($absoluteRoutesCacheFilePath);
+        @unlink($absoluteContainerDataFilePath);
+        @unlink($absoluteRoutesDataFilePath);
 
         $application = Http::app($env);
         $container   = $application->getContainer();
@@ -85,9 +85,9 @@ class HttpTest extends TestCase
             )
         );
 
-        $dataFileGenerator = new DataFileGenerator($absoluteContainerCacheFilePath, $container->getData());
+        $dataFileGenerator = new DataFileGenerator($absoluteContainerDataFilePath, $container->getData());
         $dataFileGenerator->generateFile();
-        $httpDataFileGenerator = new HttpDataFileGenerator($absoluteRoutesCacheFilePath, $http->getData());
+        $httpDataFileGenerator = new HttpDataFileGenerator($absoluteRoutesDataFilePath, $http->getData());
         $httpDataFileGenerator->generateFile();
 
         ob_start();
@@ -96,8 +96,8 @@ class HttpTest extends TestCase
 
         self::assertTrue(self::$runCalled);
 
-        @unlink($absoluteContainerCacheFilePath);
-        @unlink($absoluteRoutesCacheFilePath);
+        @unlink($absoluteContainerDataFilePath);
+        @unlink($absoluteRoutesDataFilePath);
         self::$runCalled = false;
     }
 }

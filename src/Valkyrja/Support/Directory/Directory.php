@@ -25,7 +25,7 @@ class Directory
     /** @var non-empty-string */
     public static string $APP_PATH = 'app';
     /** @var non-empty-string */
-    public static string $CACHE_PATH = 'cache';
+    public static string $DATA_PATH = 'data';
     /** @var non-empty-string */
     public static string $ENV_PATH = 'env';
     /** @var non-empty-string */
@@ -80,15 +80,15 @@ class Directory
     }
 
     /**
-     * Get the cache directory for the application.
+     * Get the data directory for the application.
      *
      * @param non-empty-string|null $path [optional] The path to append
      *
      * @return non-empty-string
      */
-    public static function cachePath(string|null $path = null): string
+    public static function dataPath(string|null $path = null): string
     {
-        return static::basePath(static::$CACHE_PATH . static::path($path));
+        return static::basePath(static::$DATA_PATH . static::path($path));
     }
 
     /**
@@ -172,7 +172,7 @@ class Directory
      */
     public static function frameworkStorageCachePath(string|null $path = null): string
     {
-        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$DATA_PATH . static::path($path));
     }
 
     /**

@@ -28,7 +28,7 @@ class DataFileGeneratorTest extends TestCase
     {
         Directory::$BASE_PATH = EnvClass::APP_DIR;
 
-        $filePath  = Directory::cachePath('testGenerateFile-events.php');
+        $filePath  = Directory::dataPath('testGenerateFile-events.php');
         $data      = new Data();
         $generator = new DataFileGenerator($filePath, $data);
         $results   = $generator->generateFile();

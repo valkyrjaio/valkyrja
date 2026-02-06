@@ -92,7 +92,7 @@ class DirectoryTest extends TestCase
             . '/'
             . Directory::$FRAMEWORK_STORAGE_PATH
             . '/'
-            . Directory::$CACHE_PATH;
+            . Directory::$DATA_PATH;
 
         self::assertSame($expected, Directory::frameworkStorageCachePath());
     }
@@ -108,30 +108,30 @@ class DirectoryTest extends TestCase
             . '/'
             . Directory::$FRAMEWORK_STORAGE_PATH
             . '/'
-            . Directory::$CACHE_PATH
+            . Directory::$DATA_PATH
             . $this->subPath;
 
         self::assertSame($expected, Directory::frameworkStorageCachePath($this->subPath));
     }
 
     /**
-     * Test the cachePath directory helper method.
+     * Test the dataPath directory helper method.
      */
-    public function testCachePath(): void
+    public function testDataPath(): void
     {
-        $expected = $this->basePath . '/' . Directory::$CACHE_PATH;
+        $expected = $this->basePath . '/' . Directory::$DATA_PATH;
 
-        self::assertSame($expected, Directory::cachePath());
+        self::assertSame($expected, Directory::dataPath());
     }
 
     /**
-     * Test the cachePath directory helper method with a sub path.
+     * Test the dataPath directory helper method with a sub path.
      */
-    public function testCachePathSubPath(): void
+    public function testDataPathSubPath(): void
     {
-        $expected = $this->basePath . '/' . Directory::$CACHE_PATH . $this->subPath;
+        $expected = $this->basePath . '/' . Directory::$DATA_PATH . $this->subPath;
 
-        self::assertSame($expected, Directory::cachePath($this->subPath));
+        self::assertSame($expected, Directory::dataPath($this->subPath));
     }
 
     /**

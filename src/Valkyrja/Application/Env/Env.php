@@ -234,9 +234,9 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null CLI_ROUTING_COLLECTION_FILE_PATH = null;
+    public const string|null CLI_ROUTING_COLLECTION_DATA_FILE_PATH = null;
     /** @var bool|null */
-    public const bool|null CLI_ROUTING_COLLECTION_USE_CACHE = null;
+    public const bool|null CLI_ROUTING_COLLECTION_USE_DATA = null;
 
     /************************************************************
      *
@@ -245,9 +245,9 @@ class Env
      ************************************************************/
 
     /** @var bool|null */
-    public const bool|null CONTAINER_USE_CACHE = null;
+    public const bool|null CONTAINER_USE_DATA = null;
     /** @var non-empty-string|null */
-    public const string|null CONTAINER_CACHE_FILE_PATH = null;
+    public const string|null CONTAINER_DATA_FILE_PATH = null;
 
     /************************************************************
      *
@@ -265,9 +265,9 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null EVENT_COLLECTION_FILE_PATH = null;
+    public const string|null EVENT_COLLECTION_DATA_FILE_PATH = null;
     /** @var bool|null */
-    public const bool|null EVENT_COLLECTION_USE_CACHE = null;
+    public const bool|null EVENT_COLLECTION_USE_DATA = null;
 
     /************************************************************
      *
@@ -333,9 +333,9 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null HTTP_ROUTING_COLLECTION_FILE_PATH = null;
+    public const string|null HTTP_ROUTING_COLLECTION_DATA_FILE_PATH = null;
     /** @var bool|null */
-    public const bool|null HTTP_ROUTING_COLLECTION_USE_CACHE = null;
+    public const bool|null HTTP_ROUTING_COLLECTION_USE_DATA = null;
 
     /************************************************************
      *

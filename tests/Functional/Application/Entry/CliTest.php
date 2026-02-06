@@ -57,27 +57,27 @@ class CliTest extends TestCase
 
         $env = new class extends EnvClass {
             /** @var bool|null */
-            public const bool|null CONTAINER_USE_CACHE = true;
+            public const bool|null CONTAINER_USE_DATA = true;
             /** @var non-empty-string|null */
-            public const string|null CONTAINER_CACHE_FILE_PATH = 'AppTestCli-container.php';
+            public const string|null CONTAINER_DATA_FILE_PATH = 'AppTestCli-container.php';
             /** @var bool|null */
-            public const bool|null CLI_ROUTING_COLLECTION_USE_CACHE = true;
+            public const bool|null CLI_ROUTING_COLLECTION_USE_DATA = true;
             /** @var non-empty-string|null */
-            public const string|null CLI_ROUTING_COLLECTION_FILE_PATH = 'AppTestCli-routes.php';
+            public const string|null CLI_ROUTING_COLLECTION_DATA_FILE_PATH = 'AppTestCli-routes.php';
         };
         /** @var non-empty-string $dir */
         $dir = $env::APP_DIR;
-        /** @var non-empty-string $containerCacheFilePath */
-        $containerCacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
+        /** @var non-empty-string $containerDataFilePath */
+        $containerDataFilePath = $env::CONTAINER_DATA_FILE_PATH
             ?? '/container.php';
-        $absoluteContainerCacheFilePath = Directory::cachePath($containerCacheFilePath);
-        /** @var non-empty-string $containerCacheFilePath */
-        $routesCacheFilePath = $env::CLI_ROUTING_COLLECTION_FILE_PATH
+        $absoluteContainerDataFilePath = Directory::dataPath($containerDataFilePath);
+        /** @var non-empty-string $containerDataFilePath */
+        $routesDataFilePath = $env::CLI_ROUTING_COLLECTION_DATA_FILE_PATH
             ?? '/cli-routes.php';
-        $absoluteRoutesCacheFilePath = Directory::cachePath($routesCacheFilePath);
+        $absoluteRoutesDataFilePath = Directory::dataPath($routesDataFilePath);
 
-        @unlink($absoluteContainerCacheFilePath);
-        @unlink($absoluteRoutesCacheFilePath);
+        @unlink($absoluteContainerDataFilePath);
+        @unlink($absoluteRoutesDataFilePath);
 
         $application = Cli::app($env);
         $container   = $application->getContainer();
@@ -92,9 +92,9 @@ class CliTest extends TestCase
             )
         );
 
-        $dataFileGenerator = new DataFileGenerator($absoluteContainerCacheFilePath, $container->getData());
+        $dataFileGenerator = new DataFileGenerator($absoluteContainerDataFilePath, $container->getData());
         $dataFileGenerator->generateFile();
-        $cliDataFileGenerator = new CliDataFileGenerator($absoluteRoutesCacheFilePath, $cli->getData());
+        $cliDataFileGenerator = new CliDataFileGenerator($absoluteRoutesDataFilePath, $cli->getData());
         $cliDataFileGenerator->generateFile();
 
         ob_start();
@@ -106,8 +106,8 @@ class CliTest extends TestCase
 
         self::assertTrue(self::$runCalled);
 
-        @unlink($absoluteContainerCacheFilePath);
-        @unlink($absoluteRoutesCacheFilePath);
+        @unlink($absoluteContainerDataFilePath);
+        @unlink($absoluteRoutesDataFilePath);
         self::$runCalled = false;
         Exiter::unfreeze();
     }
