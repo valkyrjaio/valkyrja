@@ -17,7 +17,7 @@ use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Valkyrja\Http\Message\Request\Factory\RequestFactory;
+use Valkyrja\Http\Message\Request\Factory\PsrRequestFactory;
 use Valkyrja\Http\Message\Response\Psr\Response;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
@@ -34,7 +34,7 @@ class RequestHandler implements RequestHandlerInterface
     #[Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->requestHandler->handle(RequestFactory::fromPsr($request));
+        $response = $this->requestHandler->handle(PsrRequestFactory::fromPsr($request));
 
         return new Response($response);
     }

@@ -17,7 +17,7 @@ use Override;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
+use Valkyrja\Http\Message\File\Factory\PsrUploadedFileFactory;
 use Valkyrja\Http\Message\File\Psr\UploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
@@ -131,7 +131,7 @@ class ServerRequest extends Request implements ServerRequestInterface
 
         /** @var UploadedFileInterface[] $uploadedFiles */
         $new->request = $this->request->withUploadedFiles(
-            UploadedFileFactory::fromPsrArray(...$uploadedFiles)
+            PsrUploadedFileFactory::fromPsrArray(...$uploadedFiles)
         );
 
         return $new;

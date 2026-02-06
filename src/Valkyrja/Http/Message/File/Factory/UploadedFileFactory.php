@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Factory;
 
-use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
-use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
-use function array_map;
 use function is_array;
 use function is_string;
 
@@ -71,28 +68,6 @@ abstract class UploadedFileFactory
         }
 
         return $normalized;
-    }
-
-    public static function fromPsr(UploadedFileInterface $file): UploadedFileContract
-    {
-        return new UploadedFile(
-            stream: StreamFactory::fromPsr($file->getStream()),
-            uploadError: UploadError::from($file->getError()),
-            size: (int) $file->getSize(),
-            fileName: $file->getClientFilename(),
-            mediaType: $file->getClientMediaType(),
-        );
-    }
-
-    /**
-     * @return UploadedFileContract[]
-     */
-    public static function fromPsrArray(UploadedFileInterface ...$files): array
-    {
-        return array_map(
-            static fn (UploadedFileInterface $file): UploadedFileContract => UploadedFileFactory::fromPsr($file),
-            $files,
-        );
     }
 
     /**

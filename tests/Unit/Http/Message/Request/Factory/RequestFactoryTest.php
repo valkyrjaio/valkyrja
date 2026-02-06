@@ -19,13 +19,9 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Header\Factory\CookieFactory;
-use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
-use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
-use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class RequestFactoryTest extends TestCase
@@ -174,109 +170,6 @@ class RequestFactoryTest extends TestCase
         self::assertInstanceOf(
             expected: JsonServerRequest::class,
             actual: $request
-        );
-    }
-
-    public function testFromPsr(): void
-    {
-        [$uploadedFile, $uploadedFile2] = $this->getUploadedFiles();
-
-        $uriString = 'https://username:password@example.com:9090/path?arg=value#anchor';
-        $request   = new ServerRequest(
-            uri: UriFactory::fromString(uri: $uriString),
-            method: RequestMethod::DELETE,
-            body: $body             = new Stream(),
-            headers: $headers       = [new Header('header1', 'test')],
-            server: $server         = ['VAR' => 'val'],
-            cookies: $cookies       = ['param' => 'cookies'],
-            query: $query           = ['param' => 'query'],
-            parsedBody: $parsedBody = ['param' => 'parsedBody'],
-            protocol: ProtocolVersion::V2,
-            files: [$uploadedFile, $uploadedFile2]
-        );
-        $body->write(string: $bodyContents = 'test');
-        $body->rewind();
-
-        $psrRequest = new PsrServerRequest($request);
-
-        $fromPsr = RequestFactory::fromPsr($psrRequest);
-
-        self::assertCount(expectedCount: 2, haystack: $fromPsr->getUploadedFiles());
-        self::assertInstanceOf(
-            expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr = $fromPsr->getUploadedFiles()[0]
-        );
-        self::assertInstanceOf(
-            expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr2 = $fromPsr->getUploadedFiles()[1]
-        );
-        self::assertSame(
-            expected: $uploadedFile->getStream()->__toString(),
-            actual: $uploadedFileFromPsr->getStream()->__toString()
-        );
-        self::assertSame(
-            expected: $uploadedFile2->getStream()->__toString(),
-            actual: $uploadedFileFromPsr2->getStream()->__toString()
-        );
-        self::assertSame(
-            expected: $uploadedFile->getSize(),
-            actual: $uploadedFileFromPsr->getSize()
-        );
-        self::assertSame(
-            expected: $uploadedFile2->getSize(),
-            actual: $uploadedFileFromPsr2->getSize()
-        );
-        self::assertSame(
-            expected: $uploadedFile->getError(),
-            actual: $uploadedFileFromPsr->getError()
-        );
-        self::assertSame(
-            expected: $uploadedFile2->getError(),
-            actual: $uploadedFileFromPsr2->getError()
-        );
-        self::assertSame(
-            expected: $uploadedFile->getClientFilename(),
-            actual: $uploadedFileFromPsr->getClientFilename()
-        );
-        self::assertSame(
-            expected: $uploadedFile2->getClientFilename(),
-            actual: $uploadedFileFromPsr2->getClientFilename()
-        );
-        self::assertSame(
-            expected: $uploadedFile->getClientMediaType(),
-            actual: $uploadedFileFromPsr->getClientMediaType()
-        );
-        self::assertSame(
-            expected: $uploadedFile2->getClientMediaType(),
-            actual: $uploadedFileFromPsr2->getClientMediaType()
-        );
-        self::assertSame(
-            expected: $uriString,
-            actual: $fromPsr->getUri()->__toString()
-        );
-        self::assertSame(
-            expected: 'example.com:9090',
-            actual: $fromPsr->getHeaderLine('Host')
-        );
-        self::assertSame(
-            expected: $server,
-            actual: $fromPsr->getServerParams()
-        );
-        self::assertSame(
-            expected: $cookies,
-            actual: $fromPsr->getCookieParams()
-        );
-        self::assertSame(
-            expected: $query,
-            actual: $fromPsr->getQueryParams()
-        );
-        self::assertSame(
-            expected: $parsedBody,
-            actual: $fromPsr->getParsedBody()
-        );
-        self::assertSame(
-            expected: $bodyContents,
-            actual: $fromPsr->getBody()->getContents()
         );
     }
 

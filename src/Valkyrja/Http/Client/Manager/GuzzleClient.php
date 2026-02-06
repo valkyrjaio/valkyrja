@@ -21,7 +21,7 @@ use Override;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -159,7 +159,7 @@ class GuzzleClient implements ClientContract
         return $this->responseFactory->createResponse(
             content: $guzzleResponse->getBody()->getContents(),
             statusCode: StatusCode::from($guzzleResponse->getStatusCode()),
-            headers: HeaderFactory::fromPsr($guzzleResponse->getHeaders())
+            headers: PsrHeaderFactory::fromPsr($guzzleResponse->getHeaders())
         );
     }
 }

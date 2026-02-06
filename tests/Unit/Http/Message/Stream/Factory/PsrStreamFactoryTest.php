@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Http\Message\Stream\Factory;
 
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
-use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
+use Valkyrja\Http\Message\Stream\Factory\PsrStreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\Stream\Psr\StreamEmptyModeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class StreamFactoryTest extends TestCase
+class PsrStreamFactoryTest extends TestCase
 {
     public function testFromPsr(): void
     {
@@ -47,11 +47,11 @@ class StreamFactoryTest extends TestCase
         $psrStreamNoTranslation = new PsrStream($streamNoTranslation);
         $psrStreamWindows       = new PsrStream($streamWindows);
 
-        $streamFromPsr           = StreamFactory::fromPsr($psrStream);
-        $streamFromNullMode      = StreamFactory::fromPsr($psrStreamNullMode);
-        $streamFromBinarySafe    = StreamFactory::fromPsr($psrStreamBinarySafe);
-        $streamFromNoTranslation = StreamFactory::fromPsr($psrStreamNoTranslation);
-        $streamFromWindows       = StreamFactory::fromPsr($psrStreamWindows);
+        $streamFromPsr           = PsrStreamFactory::fromPsr($psrStream);
+        $streamFromNullMode      = PsrStreamFactory::fromPsr($psrStreamNullMode);
+        $streamFromBinarySafe    = PsrStreamFactory::fromPsr($psrStreamBinarySafe);
+        $streamFromNoTranslation = PsrStreamFactory::fromPsr($psrStreamNoTranslation);
+        $streamFromWindows       = PsrStreamFactory::fromPsr($psrStreamWindows);
 
         // Doesn't matter what the original mode was because we're taking the content and writing it to a new temp stream
         self::assertSame('w+b', $streamFromPsr->getMetadata('mode'));

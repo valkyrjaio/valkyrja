@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Factory;
 
-use Psr\Http\Message\ServerRequestInterface;
 use UnexpectedValueException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -24,10 +23,8 @@ use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory;
-use Valkyrja\Http\Message\Uri\Factory\PsrUriFactory;
 
 use function array_key_exists;
 use function preg_match;
@@ -114,34 +111,6 @@ abstract class RequestFactory
             cookies: $cookies,
             files: $files,
             class: JsonServerRequest::class
-        );
-    }
-
-    /**
-     * Get a ServerRequest from a PSR ServerRequestInterface object.
-     *
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedArgumentTypeCoercion
-     */
-    public static function fromPsr(ServerRequestInterface $psrRequest): ServerRequest
-    {
-        $uri = PsrUriFactory::fromPsr($psrRequest->getUri());
-
-        $body = StreamFactory::fromPsr($psrRequest->getBody());
-
-        $files = UploadedFileFactory::fromPsrArray(...$psrRequest->getUploadedFiles());
-
-        return new ServerRequest(
-            uri: $uri,
-            method: RequestMethod::from($psrRequest->getMethod()),
-            body: $body,
-            headers: HeaderFactory::fromPsr($psrRequest->getHeaders()),
-            server: $psrRequest->getServerParams(),
-            cookies: $psrRequest->getCookieParams(),
-            query: $psrRequest->getQueryParams(),
-            parsedBody: (array) $psrRequest->getParsedBody(),
-            protocol: ProtocolVersion::from($psrRequest->getProtocolVersion()),
-            files: $files
         );
     }
 
