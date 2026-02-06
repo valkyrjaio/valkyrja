@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Trait;
 
-use Valkyrja\Type\BuiltIn\Support\Obj;
+use Valkyrja\Type\Object\Factory\ObjectFactory;
 
 trait ProtectedExposable
 {
@@ -26,6 +26,6 @@ trait ProtectedExposable
      */
     protected function internalGetAllProperties(): array
     {
-        return array_merge(Obj::getProperties($this), $this->internalExposed);
+        return array_merge(ObjectFactory::getProperties($this), $this->internalExposed);
     }
 }

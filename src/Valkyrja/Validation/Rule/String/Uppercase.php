@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\String;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Str;
+use Valkyrja\Type\String\Factory\StringFactory;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
@@ -24,7 +24,7 @@ class Uppercase extends Rule
     #[Override]
     public function isValid(): bool
     {
-        return is_string($this->subject) && Str::isUppercase($this->subject);
+        return is_string($this->subject) && StringFactory::isUppercase($this->subject);
     }
 
     /**

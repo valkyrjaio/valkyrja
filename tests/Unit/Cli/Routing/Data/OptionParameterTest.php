@@ -19,9 +19,9 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\IntT;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Int\IntT;
 
 /**
  * Test the OptionParameter class.

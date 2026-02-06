@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Collection;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Collection\Contract\CollectionContract;
 
 use function array_keys;
@@ -185,6 +185,6 @@ class Collection implements CollectionContract
      */
     public function __toString(): string
     {
-        return Arr::toString($this->collection);
+        return ArrayFactory::toString($this->collection);
     }
 }

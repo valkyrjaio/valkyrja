@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class Tagger implements TaggerContract
 {
@@ -292,7 +292,7 @@ class Tagger implements TaggerContract
 
         if ($keysFromCache !== null && $keysFromCache !== '') {
             /** @var string[] $keys */
-            $keys = Arr::fromString($keysFromCache);
+            $keys = ArrayFactory::fromString($keysFromCache);
 
             return $keys;
         }
@@ -309,6 +309,6 @@ class Tagger implements TaggerContract
      */
     protected function putKeys(string $tag, array $keys): void
     {
-        $this->adapter->forever($tag, Arr::toString($keys));
+        $this->adapter->forever($tag, ArrayFactory::toString($keys));
     }
 }

@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Classes\Type\Model\ModelInvalidIssetMethodClass;
 use Valkyrja\Tests\Classes\Type\Model\SimpleModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
@@ -454,7 +454,7 @@ class ModelTest extends TestCase
         $value = ['public' => 'cheese'];
         $model = ModelClass::fromArray($value);
 
-        self::assertSame(Arr::toString($value), $model->asFlatValue());
+        self::assertSame(ArrayFactory::toString($value), $model->asFlatValue());
     }
 
     public function testModify(): void

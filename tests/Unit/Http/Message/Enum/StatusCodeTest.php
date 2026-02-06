@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\Enum\Support\Enumerable;
+use Valkyrja\Type\Enum\Support\Enumerable;
 
 class StatusCodeTest extends TestCase
 {

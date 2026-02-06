@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\String;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Str;
+use Valkyrja\Type\String\Factory\StringFactory;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
@@ -39,7 +39,7 @@ class Max extends Rule
             return false;
         }
 
-        return Str::max($this->subject, $this->max);
+        return StringFactory::max($this->subject, $this->max);
     }
 
     /**

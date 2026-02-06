@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Response\Trait;
 
-use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
+use Valkyrja\Type\Enum\Trait\Arrayable;
 
 use function array_key_exists;
 

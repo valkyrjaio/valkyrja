@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Enum;
 
-use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
-use Valkyrja\Type\BuiltIn\Enum\Contract\JsonSerializableContract;
-use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
-use Valkyrja\Type\BuiltIn\Enum\Trait\JsonSerializable;
+use Valkyrja\Type\Enum\Contract\ArrayableContract;
+use Valkyrja\Type\Enum\Contract\JsonSerializableContract;
+use Valkyrja\Type\Enum\Trait\Arrayable;
+use Valkyrja\Type\Enum\Trait\JsonSerializable;
 
 /**
  * Enum class to use to test Arrayable Enum.

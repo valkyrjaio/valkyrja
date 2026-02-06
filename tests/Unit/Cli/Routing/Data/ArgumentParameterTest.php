@@ -19,9 +19,9 @@ use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\IntT;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Int\IntT;
 
 /**
  * Test the ArgumentParameter class.

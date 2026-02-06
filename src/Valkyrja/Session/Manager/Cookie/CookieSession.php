@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class CookieSession extends Session
 {
@@ -118,7 +118,7 @@ class CookieSession extends Session
     protected function setDataFromCookieValue(string $value): void
     {
         /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($value);
+        $this->data = ArrayFactory::fromString($value);
     }
 
     /**
@@ -126,7 +126,7 @@ class CookieSession extends Session
      */
     protected function getDataAsCookieValue(): string
     {
-        return Arr::toString($this->data);
+        return ArrayFactory::toString($this->data);
     }
 
     /**

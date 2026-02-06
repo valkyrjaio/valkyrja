@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class CacheSession extends Session
 {
@@ -127,7 +127,7 @@ class CacheSession extends Session
     protected function setDataFromCacheValue(string $value): void
     {
         /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($value);
+        $this->data = ArrayFactory::fromString($value);
     }
 
     /**
@@ -135,7 +135,7 @@ class CacheSession extends Session
      */
     protected function getDataAsCacheValue(): string
     {
-        return Arr::toString($this->data);
+        return ArrayFactory::toString($this->data);
     }
 
     /**

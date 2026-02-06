@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 use function explode;
 use function json_encode;
@@ -93,7 +93,7 @@ class JsonResponse extends Response implements JsonResponseContract
     #[Override]
     public function getBodyAsJson(): array
     {
-        return Arr::fromString((string) $this->getBody());
+        return ArrayFactory::fromString((string) $this->getBody());
     }
 
     /**

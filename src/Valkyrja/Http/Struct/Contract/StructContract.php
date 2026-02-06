@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Struct\Contract;
 
 use UnitEnum;
-use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
+use Valkyrja\Type\Enum\Contract\ArrayableContract;
 
 interface StructContract extends UnitEnum, ArrayableContract
 {

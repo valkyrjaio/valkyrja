@@ -16,7 +16,7 @@ namespace Valkyrja\Jwt\Manager;
 use JsonException;
 use Override;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class NullJwt implements JwtContract
 {
@@ -28,7 +28,7 @@ class NullJwt implements JwtContract
     #[Override]
     public function encode(array $payload): string
     {
-        return Arr::toString($payload);
+        return ArrayFactory::toString($payload);
     }
 
     /**
@@ -39,6 +39,6 @@ class NullJwt implements JwtContract
     #[Override]
     public function decode(string $jwt): array
     {
-        return Arr::fromString($jwt);
+        return ArrayFactory::fromString($jwt);
     }
 }

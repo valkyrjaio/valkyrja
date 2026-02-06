@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class HeaderTokenSession extends Session
 {
@@ -72,6 +72,6 @@ class HeaderTokenSession extends Session
     protected function setDataFromTokenValue(string $value): void
     {
         /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($value);
+        $this->data = ArrayFactory::fromString($value);
     }
 }

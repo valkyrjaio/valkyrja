@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Orm\Entity;
 
 use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
-use Valkyrja\Type\BuiltIn\IntT;
 use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Int\IntT;
 
 /**
  * Entity class with castings for testing.

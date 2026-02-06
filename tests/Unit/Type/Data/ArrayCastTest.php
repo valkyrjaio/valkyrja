@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Data;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\StringT;
 use Valkyrja\Type\Data\ArrayCast;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\String\StringT;
 
 use function json_encode;
 

@@ -18,7 +18,7 @@ use Override;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Data\Contract\MessageContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class LogMailer implements MailerContract
 {
@@ -41,15 +41,15 @@ class LogMailer implements MailerContract
         $this->logger->info('From Email:');
         $this->logger->info($message->getFrom()->getEmail());
         $this->logger->info('Recipients:');
-        $this->logger->info(Arr::toString($message->getRecipients()));
+        $this->logger->info(ArrayFactory::toString($message->getRecipients()));
         $this->logger->info('ReplyTo Recipients:');
-        $this->logger->info(Arr::toString($message->getReplyToRecipients()));
+        $this->logger->info(ArrayFactory::toString($message->getReplyToRecipients()));
         $this->logger->info('Copy Recipients:');
-        $this->logger->info(Arr::toString($message->getCopyRecipients()));
+        $this->logger->info(ArrayFactory::toString($message->getCopyRecipients()));
         $this->logger->info('Blind Copy Recipients:');
-        $this->logger->info(Arr::toString($message->getBlindCopyRecipients()));
+        $this->logger->info(ArrayFactory::toString($message->getBlindCopyRecipients()));
         $this->logger->info('Attachments:');
-        $this->logger->info(Arr::toString($message->getAttachments()));
+        $this->logger->info(ArrayFactory::toString($message->getAttachments()));
         $this->logger->info('Subject:');
         $this->logger->info($message->getSubject());
         $this->logger->info('Body:');

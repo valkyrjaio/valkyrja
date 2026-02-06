@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\Is;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Str;
+use Valkyrja\Type\String\Factory\StringFactory;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
@@ -25,7 +25,7 @@ class Email extends Rule
     public function isValid(): bool
     {
         return is_string($this->subject)
-            && Str::isEmail($this->subject);
+            && StringFactory::isEmail($this->subject);
     }
 
     /**

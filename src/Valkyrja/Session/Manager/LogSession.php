@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class LogSession extends Session
 {
@@ -113,7 +113,7 @@ class LogSession extends Session
      */
     protected function getDataAsLoggableValue(): string
     {
-        return Arr::toString($this->data);
+        return ArrayFactory::toString($this->data);
     }
 
     /**

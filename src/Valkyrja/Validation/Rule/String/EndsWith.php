@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\String;
 
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Str;
+use Valkyrja\Type\String\Factory\StringFactory;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
@@ -37,7 +37,7 @@ class EndsWith extends Rule
     public function isValid(): bool
     {
         return is_string($this->subject)
-            && Str::endsWith($this->subject, $this->needle);
+            && StringFactory::endsWith($this->subject, $this->needle);
     }
 
     /**

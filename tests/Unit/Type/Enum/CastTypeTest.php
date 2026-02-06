@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Enum;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\ArrayT;
-use Valkyrja\Type\BuiltIn\BoolT;
-use Valkyrja\Type\BuiltIn\FalseT;
-use Valkyrja\Type\BuiltIn\FloatT;
-use Valkyrja\Type\BuiltIn\IntT;
-use Valkyrja\Type\BuiltIn\NullT;
-use Valkyrja\Type\BuiltIn\ObjectT;
-use Valkyrja\Type\BuiltIn\SerializedObject;
-use Valkyrja\Type\BuiltIn\StringT;
-use Valkyrja\Type\BuiltIn\TrueT;
+use Valkyrja\Type\Array\ArrayT;
+use Valkyrja\Type\Bool\BoolT;
+use Valkyrja\Type\Bool\FalseT;
+use Valkyrja\Type\Bool\TrueT;
 use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Float\FloatT;
+use Valkyrja\Type\Int\IntT;
 use Valkyrja\Type\Json\Json;
 use Valkyrja\Type\Json\JsonObject;
+use Valkyrja\Type\Null\NullT;
+use Valkyrja\Type\Object\ObjectT;
+use Valkyrja\Type\Object\SerializedObject;
+use Valkyrja\Type\String\StringT;
 
 use function json_encode;
 
