@@ -31,13 +31,6 @@ use function is_string;
 class Value implements ValueContract
 {
     /**
-     * Deliminator to use for value components.
-     *
-     * @var non-empty-string
-     */
-    protected const string DELIMINATOR = ';';
-
-    /**
      * @var array<array-key, ComponentContract|string>
      */
     protected array $components = [];
@@ -62,8 +55,10 @@ class Value implements ValueContract
     {
         $parts = [$value];
 
-        if (str_contains($value, static::DELIMINATOR)) {
-            $parts = explode(static::DELIMINATOR, $value);
+        $deliminator = ';';
+
+        if (str_contains($value, $deliminator)) {
+            $parts = explode($deliminator, $value);
         }
 
         return new static(...$parts);

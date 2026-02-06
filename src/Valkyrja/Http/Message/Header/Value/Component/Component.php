@@ -25,13 +25,6 @@ use function explode;
  */
 class Component implements ComponentContract
 {
-    /**
-     * Deliminator to use for token and text.
-     *
-     * @var non-empty-string
-     */
-    protected const string DELIMINATOR = '=';
-
     public function __construct(
         protected string $token,
         protected string|null $text = null
@@ -49,8 +42,10 @@ class Component implements ComponentContract
         $token = $value;
         $text  = null;
 
-        if (str_contains($value, static::DELIMINATOR)) {
-            [$token, $text] = explode(static::DELIMINATOR, $value);
+        $deliminator = '=';
+
+        if (str_contains($value, $deliminator)) {
+            [$token, $text] = explode($deliminator, $value);
         }
 
         $text = $text !== null ? trim($text) : null;
