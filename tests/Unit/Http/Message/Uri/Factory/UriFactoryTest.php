@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
-use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
@@ -78,33 +77,6 @@ class UriFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         UriFactory::fromString('//');
-    }
-
-    public function testFromPsrArray(): void
-    {
-        $stream = new Uri(
-            scheme: $scheme     = Scheme::HTTPS,
-            username: $username = 'username',
-            password: $password = 'password',
-            host: $host         = 'host',
-            port: $port         = 20,
-            path: $path         = '/path',
-            query: $query       = 'test=test',
-            fragment: $fragment = 'fragment',
-        );
-
-        $psr = new PsrUri($stream);
-
-        $fromPsr = UriFactory::fromPsr($psr);
-
-        self::assertSame($scheme, $fromPsr->getScheme());
-        self::assertSame($username, $fromPsr->getUsername());
-        self::assertSame($password, $fromPsr->getPassword());
-        self::assertSame($host, $fromPsr->getHost());
-        self::assertSame($port, $fromPsr->getPort());
-        self::assertSame($path, $fromPsr->getPath());
-        self::assertSame($query, $fromPsr->getQuery());
-        self::assertSame($fragment, $fromPsr->getFragment());
     }
 
     public function testFilterScheme(): void
@@ -282,42 +254,6 @@ class UriFactoryTest extends TestCase
 
         $emptyUri = new Uri();
         self::assertSame('', UriFactory::toString($emptyUri));
-    }
-
-    public function testFromPsrWithoutPassword(): void
-    {
-        $uri = new Uri(
-            scheme: Scheme::HTTPS,
-            username: 'username',
-            host: 'host',
-            path: '/path',
-        );
-
-        $psr = new PsrUri($uri);
-
-        $fromPsr = UriFactory::fromPsr($psr);
-
-        self::assertSame(Scheme::HTTPS, $fromPsr->getScheme());
-        self::assertSame('username', $fromPsr->getUsername());
-        self::assertSame('', $fromPsr->getPassword());
-        self::assertSame('host', $fromPsr->getHost());
-        self::assertSame('/path', $fromPsr->getPath());
-    }
-
-    public function testFromPsrWithEmptyUserInfo(): void
-    {
-        $uri = new Uri(
-            scheme: Scheme::HTTPS,
-            host: 'host',
-            path: '/path',
-        );
-
-        $psr = new PsrUri($uri);
-
-        $fromPsr = UriFactory::fromPsr($psr);
-
-        self::assertSame('', $fromPsr->getUsername());
-        self::assertSame('', $fromPsr->getPassword());
     }
 
     public function testValidateFragment(): void

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Factory;
 
-use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Constant\Port;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
@@ -23,41 +22,12 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 
-use function explode;
 use function ltrim;
 use function preg_replace;
 use function strtolower;
 
 abstract class UriFactory
 {
-    /**
-     * Get a Uri object from a PSR UriInterface object.
-     *
-     * @param UriInterface $psrUri The PSR uri
-     */
-    public static function fromPsr(UriInterface $psrUri): UriContract
-    {
-        $userInfo = $psrUri->getUserInfo();
-        $password = null;
-
-        if ($userInfo !== '' && str_contains($userInfo, ':')) {
-            [$user, $password] = explode(':', $userInfo);
-        } else {
-            $user = $userInfo;
-        }
-
-        $uri = new Uri();
-
-        return $uri
-            ->withScheme(Scheme::from($psrUri->getScheme()))
-            ->withUserInfo($user, $password)
-            ->withHost($psrUri->getHost())
-            ->withPort($psrUri->getPort())
-            ->withPath($psrUri->getPath())
-            ->withQuery($psrUri->getQuery())
-            ->withFragment($psrUri->getFragment());
-    }
-
     /**
      * Create a Uri instance from a parsed uri string.
      *

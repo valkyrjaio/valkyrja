@@ -27,7 +27,7 @@ use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory;
-use Valkyrja\Http\Message\Uri\Factory\UriFactory;
+use Valkyrja\Http\Message\Uri\Factory\PsrUriFactory;
 
 use function array_key_exists;
 use function preg_match;
@@ -125,7 +125,7 @@ abstract class RequestFactory
      */
     public static function fromPsr(ServerRequestInterface $psrRequest): ServerRequest
     {
-        $uri = UriFactory::fromPsr($psrRequest->getUri());
+        $uri = PsrUriFactory::fromPsr($psrRequest->getUri());
 
         $body = StreamFactory::fromPsr($psrRequest->getBody());
 
