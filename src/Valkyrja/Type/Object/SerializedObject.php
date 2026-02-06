@@ -26,20 +26,6 @@ use function is_string;
  */
 class SerializedObject extends Type implements SerializedObjectContract
 {
-    /**
-     * Allowed classes for serialization of object type properties.
-     *
-     *  <code>
-     *       [
-     *           // An array of allowed classes for serialization for object types
-     *           ClassName::class,
-     *       ]
-     *  </code>
-     *
-     * @return class-string[]
-     */
-    protected const array ALLOWED_CLASSES = [];
-
     public function __construct(object $subject)
     {
         $this->subject = $subject;
@@ -48,15 +34,14 @@ class SerializedObject extends Type implements SerializedObjectContract
     /**
      * @inheritDoc
      *
+     * @param class-string[] $allowedClasses The allowed classes if the value is a serialized string
+     *
      * @throws JsonException
      */
     #[Override]
-    public static function fromValue(mixed $value): static
+    public static function fromValue(mixed $value, array $allowedClasses = []): static
     {
         if (is_string($value)) {
-            /** @var class-string[] $allowedClasses */
-            $allowedClasses = static::ALLOWED_CLASSES;
-
             return new static(ObjectFactory::fromSerializedString($value, $allowedClasses));
         }
 
