@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
@@ -178,11 +177,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCacheResponseMiddleware(): void
     {
-        $this->container->setSingleton(
-            FilesystemContract::class,
-            self::createStub(FilesystemContract::class)
-        );
-
         $callback = ServiceProvider::publishers()[CacheResponseMiddleware::class];
         $callback($this->container);
 

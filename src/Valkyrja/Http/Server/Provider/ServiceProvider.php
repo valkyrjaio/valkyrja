@@ -17,12 +17,10 @@ use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Http\Routing\Constant\AllowedClasses;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
@@ -33,6 +31,7 @@ use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddlewar
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
@@ -179,16 +178,15 @@ final class ServiceProvider extends Provider
         $env = $container->getSingleton(Env::class);
         /** @var bool $debugMode */
         $debugMode = $env::APP_DEBUG_MODE;
-        /** @var class-string[] $allowedClasses */
-        $allowedClasses = $env::HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES
-            ?? AllowedClasses::CACHE_RESPONSE_MIDDLEWARE;
+        /** @var non-empty-string $filePath */
+        $filePath = $env::HTTP_SERVER_RESPONSE_CACHE_FILE_PATH
+            ?? Directory::frameworkStorageCachePath('response/');
 
         $container->setSingleton(
             CacheResponseMiddleware::class,
             new CacheResponseMiddleware(
-                filesystem: $container->getSingleton(FilesystemContract::class),
+                filePath: $filePath,
                 debug: $debugMode,
-                allowedClasses: $allowedClasses
             )
         );
     }

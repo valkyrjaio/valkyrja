@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
+use JsonException;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
-use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
+use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
@@ -40,13 +40,21 @@ use function md5;
 
 class CacheResponseMiddlewareTest extends TestCase
 {
+    /**
+     * @var non-empty-string
+     */
+    protected string $filePath;
+
+    protected function setUp(): void
+    {
+        $this->filePath = Directory::storagePath('app');
+    }
+
     public function testThroughHandler(): void
     {
         $container  = new Container();
-        $filesystem = new InMemoryFilesystem();
 
-        $container->setSingleton(FilesystemContract::class, $filesystem);
-        $container->setCallable(CacheResponseMiddleware::class, static fn () => new CacheResponseMiddleware($filesystem));
+        $container->setCallable(CacheResponseMiddleware::class, fn () => new CacheResponseMiddleware($this->filePath));
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
@@ -72,7 +80,7 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
 
         // Write a bad cache
-        $filesystem->write($this->getCachePathForRequest($request), 'bad-cache-test');
+        file_put_contents($this->getCachePathForRequest($request), '<?php return new \stdClass();');
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
@@ -109,13 +117,12 @@ class CacheResponseMiddlewareTest extends TestCase
         // Unfreeze for future tests
         Time::unfreeze();
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testDirectly(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -137,7 +144,7 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
 
         // Write a bad cache
-        $filesystem->write($this->getCachePathForRequest($request), 'bad-cache-test');
+        file_put_contents($this->getCachePathForRequest($request), '<?php return new \stdClass();');
 
         $beforeHandler = new RequestReceivedHandler();
 
@@ -164,13 +171,12 @@ class CacheResponseMiddlewareTest extends TestCase
         // Unfreeze for future tests
         Time::unfreeze();
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testResponseCanBeSerializedAndUnserialized(): void
+    public function testResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -185,13 +191,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
         self::assertSame('Test content', (string) $cachedResponse->getBody());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testEmptyResponseCanBeSerializedAndUnserialized(): void
+    public function testEmptyResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -205,17 +210,16 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(EmptyResponse::class, $cachedResponse);
         self::assertSame(StatusCode::NO_CONTENT, $cachedResponse->getStatusCode());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testHtmlResponseCanBeSerializedAndUnserialized(): void
+    public function testHtmlResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
-        $htmlContent = '<html><body><h1>Test</h1></body></html>';
+        $htmlContent = '<html lang="en"><body><h1>Test</h1></body></html>';
         $request     = new ServerRequest(uri: new Uri(path: '/html-response-test'));
         $response    = new HtmlResponse($htmlContent, StatusCode::OK);
 
@@ -227,13 +231,15 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
         self::assertSame($htmlContent, (string) $cachedResponse->getBody());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testJsonResponseCanBeSerializedAndUnserialized(): void
+    /**
+     * @throws JsonException
+     */
+    public function testJsonResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -249,13 +255,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
         self::assertSame($jsonData, $cachedResponse->getBodyAsJson());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testRedirectResponseCanBeSerializedAndUnserialized(): void
+    public function testRedirectResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -270,14 +275,14 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, $cachedResponse);
         self::assertSame(StatusCode::FOUND, $cachedResponse->getStatusCode());
         self::assertSame('/redirect-destination', $cachedResponse->getUri()->getPath());
+        self::assertSame('/redirect-destination', $cachedResponse->getHeaderLine(HeaderName::LOCATION));
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testTextResponseCanBeSerializedAndUnserialized(): void
+    public function testTextResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -293,13 +298,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
         self::assertSame($textContent, (string) $cachedResponse->getBody());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testXmlResponseCanBeSerializedAndUnserialized(): void
+    public function testXmlResponseClassWorks(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -315,13 +319,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertSame(StatusCode::OK, $cachedResponse->getStatusCode());
         self::assertSame($xmlContent, (string) $cachedResponse->getBody());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
-    public function testResponseWithHeadersCanBeSerializedAndUnserialized(): void
+    public function testResponseWithHeaders(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -336,13 +339,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(Response::class, $cachedResponse);
         self::assertSame('custom-value', $cachedResponse->getHeaderLine('X-Custom-Header'));
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testServerErrorResponseIsNotCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -356,13 +358,12 @@ class CacheResponseMiddlewareTest extends TestCase
         // Server error responses should not be returned from cache
         self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testBadGatewayResponseIsNotCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -375,13 +376,12 @@ class CacheResponseMiddlewareTest extends TestCase
 
         self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testServiceUnavailableResponseIsNotCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -394,13 +394,12 @@ class CacheResponseMiddlewareTest extends TestCase
 
         self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testGatewayTimeoutResponseIsNotCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -413,13 +412,12 @@ class CacheResponseMiddlewareTest extends TestCase
 
         self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function testNotImplementedResponseIsNotCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -432,13 +430,12 @@ class CacheResponseMiddlewareTest extends TestCase
 
         self::assertInstanceOf(RequestContract::class, $cachedResponse);
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function test4xxResponsesAreCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -453,13 +450,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(ResponseContract::class, $cachedResponse);
         self::assertSame(StatusCode::NOT_FOUND, $cachedResponse->getStatusCode());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function test2xxResponsesAreCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -474,13 +470,12 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(ResponseContract::class, $cachedResponse);
         self::assertSame(StatusCode::CREATED, $cachedResponse->getStatusCode());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
     }
 
     public function test3xxResponsesAreCached(): void
     {
-        $filesystem        = new InMemoryFilesystem();
-        $middleware        = new CacheResponseMiddleware($filesystem);
+        $middleware        = new CacheResponseMiddleware($this->filePath);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
@@ -496,7 +491,25 @@ class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(ResponseContract::class, $cachedResponse);
         self::assertSame(StatusCode::MOVED_PERMANENTLY, $cachedResponse->getStatusCode());
 
-        $filesystem->deleteDir(Directory::frameworkStorageCachePath('response/'));
+        @unlink($this->getCachePathForRequest($request));
+    }
+
+    public function testExceptionCausedByCacheFileShouldReturnRequest(): void
+    {
+        $middleware    = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler = new RequestReceivedHandler();
+
+        $request = new ServerRequest();
+
+        // Write a bad cache
+        file_put_contents($this->getCachePathForRequest($request), '<?php throw new \Exception();');
+
+        $beforeResponseWithBadCache = $middleware->requestReceived($request, $beforeHandler);
+
+        // Test that a subsequent request gets a request when the cached response is not valid
+        self::assertInstanceOf(RequestContract::class, $beforeResponseWithBadCache);
+
+        @unlink($this->getCachePathForRequest($request));
     }
 
     /**
@@ -504,6 +517,6 @@ class CacheResponseMiddlewareTest extends TestCase
      */
     protected function getCachePathForRequest(ServerRequest $request): string
     {
-        return Directory::frameworkStorageCachePath('response/' . md5($request->getUri()->getPath()));
+        return $this->filePath . '/' . md5($request->getUri()->getPath() . $request->getMethod()->value);
     }
 }
