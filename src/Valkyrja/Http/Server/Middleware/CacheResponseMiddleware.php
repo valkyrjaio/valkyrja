@@ -86,7 +86,8 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
         $filePath = $this->getCachePathForRequest($request);
 
-        new ResponseFileGenerator($response, $filePath)->generateFile();
+        $responseFileGenerator = new ResponseFileGenerator($response, $filePath);
+        $responseFileGenerator->generateFile();
 
         $handler->terminated($request, $response);
     }
