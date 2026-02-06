@@ -1,6 +1,31 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.27.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.28.0...master)
+
+## [v25.28.0](https://github.com/valkyrjaio/valkyrja/compare/v25.27.0...v25.28.0) - 2026-02-06
+
+* [Type] Refactor the Obj::getAllProperties method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/552
+* [Api] Refactor the JsonData::asArray method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/553
+* [View] Refactor the ServiceProvider::publishOrkaRenderer method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/554
+* [Type] Refactor the Obj::getAllProperties method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/555
+* [Orm] Refactor the EntityRouteMatchedMiddleware class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/556
+* [Http] Refactor the HeaderFactory class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/557
+* [Http] Refactor the HeaderFactory::filterValue method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/558
+* [Http] Refactor the CacheResponseMiddleware class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/559
+* [Type] Reorganize the Type namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/560
+* [CI] Update scrutinizer config to exclude .github directory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/561
+* [Application] Move constants from classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/562
+* [Support] Move constants from classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/564
+* [Type] Remove constants from classes. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/565
+* [Mail] Reformat shorthand new instances by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/567
+* [Http] Reformat shorthand new instances by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/566
+* [Http] Move constants from classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/563
+* [Application] Move constants from classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/568
+* [Http] Refactor UriFactory. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/569
+* [Http] Move PSR factory methods to new PSR factory classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/570
+* [Http] Remove constants from enums. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/571
+* [Cli] Remove constants from enums. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/572
+* [CI] Update phpunit to v12.5.9 from v12.5.8 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/573
 
 ## [v25.27.0](https://github.com/valkyrjaio/valkyrja/compare/v25.26.1...v25.27.0) - 2026-02-04
 
