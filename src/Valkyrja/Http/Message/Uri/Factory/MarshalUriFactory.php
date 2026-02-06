@@ -123,39 +123,17 @@ abstract class MarshalUriFactory
      */
     public static function marshalRequestUri(array $server): string
     {
-        // IIS7 with URL Rewrite: make sure we get the unencoded url
-        // (double slash problem).
-        /** @var string|null $iisUrlRewritten */
-        $iisUrlRewritten = $server['IIS_WasUrlRewritten'] ?? null;
-        /** @var string $unencodedUrl */
-        $unencodedUrl = $server['UNENCODED_URL'] ?? '';
+        $unencodedUrl = static::marshalRequestUriFromUnencodedUrl($server);
 
-        if ($iisUrlRewritten === '1' && $unencodedUrl !== '') {
+        if ($unencodedUrl !== null) {
             return $unencodedUrl;
         }
 
         /** @var string|null $requestUri */
-        $requestUri = $server['REQUEST_URI'] ?? null;
-
-        // Check this first so IIS will catch.
-        /** @var string|null $httpXRewriteUrl */
-        $httpXRewriteUrl = $server['HTTP_X_REWRITE_URL'] ?? null;
-
-        $isHttpXRewriteUrlValid = static::isValidRequestUri($httpXRewriteUrl);
-
-        if ($isHttpXRewriteUrlValid) {
-            $requestUri = $httpXRewriteUrl;
-        }
-
-        // Check for IIS 7.0 or later with ISAPI_Rewrite
-        /** @var string|null $httpXOriginalUrl */
-        $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
-
-        $isXOriginalUrlValid = static::isValidRequestUri($httpXOriginalUrl);
-
-        if ($isXOriginalUrlValid) {
-            $requestUri = $httpXOriginalUrl;
-        }
+        $requestUri = static::marshalRequestUriFromHttpXRewriteUrl($server)
+            ?? static::marshalRequestUriFromHttpXOriginalUrl($server)
+            ?? $server['REQUEST_URI']
+            ?? null;
 
         $isRequestUriValid = static::isValidRequestUri($requestUri);
 
@@ -163,16 +141,8 @@ abstract class MarshalUriFactory
             return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri) ?? $requestUri;
         }
 
-        /** @var string|null $origPathInfo */
-        $origPathInfo = $server['ORIG_PATH_INFO'] ?? null;
-
-        $isOrigPathValid = static::isValidRequestUri($origPathInfo);
-
-        if ($isOrigPathValid) {
-            return $origPathInfo;
-        }
-
-        return '/';
+        return static::marshalRequestUriFromOrigPathInfo($server)
+            ?? '/';
     }
 
     /**
@@ -185,6 +155,85 @@ abstract class MarshalUriFactory
         }
 
         return $path;
+    }
+
+    /**
+     * Marshal the request URI from the UNENCODED_URL server variable.
+     *
+     * @param array<string, string> $server
+     */
+    protected static function marshalRequestUriFromUnencodedUrl(array $server): string|null
+    {
+        // IIS7 with URL Rewrite: make sure we get the unencoded url
+        // (double slash problem).
+        /** @var string|null $iisUrlRewritten */
+        $iisUrlRewritten = $server['IIS_WasUrlRewritten'] ?? null;
+        /** @var string $unencodedUrl */
+        $unencodedUrl = $server['UNENCODED_URL'] ?? '';
+
+        if ($iisUrlRewritten === '1' && $unencodedUrl !== '') {
+            return $unencodedUrl;
+        }
+
+        return null;
+    }
+
+    /**
+     * Marshal the request URI from the HTTP_X_REWRITE_URL server variable.
+     *
+     * @param array<string, string> $server
+     */
+    protected static function marshalRequestUriFromHttpXRewriteUrl(array $server): string|null
+    {
+        // Check for IIS 7.0 or later with ISAPI_Rewrite
+        /** @var string|null $httpXOriginalUrl */
+        $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
+
+        $isXOriginalUrlValid = static::isValidRequestUri($httpXOriginalUrl);
+
+        if ($isXOriginalUrlValid) {
+            return $httpXOriginalUrl;
+        }
+
+        return null;
+    }
+
+    /**
+     * Marshal the request URI from the HTTP_X_ORIGINAL_URL server variable.
+     *
+     * @param array<string, string> $server
+     */
+    protected static function marshalRequestUriFromHttpXOriginalUrl(array $server): string|null
+    {        // Check for IIS 7.0 or later with ISAPI_Rewrite
+        /** @var string|null $httpXOriginalUrl */
+        $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
+
+        $isXOriginalUrlValid = static::isValidRequestUri($httpXOriginalUrl);
+
+        if ($isXOriginalUrlValid) {
+            return $httpXOriginalUrl;
+        }
+
+        return null;
+    }
+
+    /**
+     * Marshal the request URI from the ORIG_PATH_INFO server variable.
+     *
+     * @param array<string, string> $server
+     */
+    protected static function marshalRequestUriFromOrigPathInfo(array $server): string|null
+    {
+        /** @var string|null $origPathInfo */
+        $origPathInfo = $server['ORIG_PATH_INFO'] ?? null;
+
+        $isOrigPathValid = static::isValidRequestUri($origPathInfo);
+
+        if ($isOrigPathValid) {
+            return $origPathInfo;
+        }
+
+        return null;
     }
 
     /**
