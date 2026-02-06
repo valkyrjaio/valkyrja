@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Cli\Command;
 
+use Valkyrja\Application\Cli\Command\Constant\CommandName;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -33,7 +34,7 @@ class ClearCacheCommand
     }
 
     #[Route(
-        name: 'config:cache:clear',
+        name: CommandName::CONFIG_CACHE_CLEAR,
         description: 'Clear config cache',
         helpText: [self::class, 'help'],
     )]
