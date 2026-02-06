@@ -26,6 +26,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 
 use function array_key_exists;
@@ -77,7 +78,7 @@ abstract class RequestFactory
         /** @var array<string, UploadedFileContract> $files */
 
         return new $class(
-            uri: UriFactory::marshalUriFromServer($server, $headers),
+            uri: MarshalUriFactory::marshalUriFromServer($server, $headers),
             method: RequestMethod::from($server['REQUEST_METHOD']),
             body: new Stream(stream: PhpWrapper::input),
             headers: $headers,
