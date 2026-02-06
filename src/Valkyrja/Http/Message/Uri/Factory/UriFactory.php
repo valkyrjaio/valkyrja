@@ -234,11 +234,11 @@ abstract class UriFactory
     /**
      * Get a Uri object from a PSR UriInterface object.
      *
-     * @param UriInterface $uri The PSR uri
+     * @param UriInterface $psrUri The PSR uri
      */
-    public static function fromPsr(UriInterface $uri): UriContract
+    public static function fromPsr(UriInterface $psrUri): UriContract
     {
-        $userInfo = $uri->getUserInfo();
+        $userInfo = $psrUri->getUserInfo();
         $password = null;
 
         if ($userInfo !== '' && str_contains($userInfo, ':')) {
@@ -247,14 +247,16 @@ abstract class UriFactory
             $user = $userInfo;
         }
 
-        return new Uri()
-            ->withScheme(Scheme::from($uri->getScheme()))
+        $uri = new Uri();
+
+        return $uri
+            ->withScheme(Scheme::from($psrUri->getScheme()))
             ->withUserInfo($user, $password)
-            ->withHost($uri->getHost())
-            ->withPort($uri->getPort())
-            ->withPath($uri->getPath())
-            ->withQuery($uri->getQuery())
-            ->withFragment($uri->getFragment());
+            ->withHost($psrUri->getHost())
+            ->withPort($psrUri->getPort())
+            ->withPath($psrUri->getPath())
+            ->withQuery($psrUri->getQuery())
+            ->withFragment($psrUri->getFragment());
     }
 
     /**
