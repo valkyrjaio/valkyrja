@@ -10,6 +10,7 @@ build:
           - php-scrutinizer-run
 filter:
   excluded_paths:
+    - '.github/*'
     - 'tests/*'
 checks:
   php:
