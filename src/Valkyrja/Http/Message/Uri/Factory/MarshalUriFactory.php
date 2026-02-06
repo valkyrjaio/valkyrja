@@ -141,7 +141,9 @@ abstract class MarshalUriFactory
         /** @var string|null $httpXRewriteUrl */
         $httpXRewriteUrl = $server['HTTP_X_REWRITE_URL'] ?? null;
 
-        if ($httpXRewriteUrl !== null && $httpXRewriteUrl !== '') {
+        $isHttpXRewriteUrlValid = static::isValidRequestUri($httpXRewriteUrl);
+
+        if ($isHttpXRewriteUrlValid) {
             $requestUri = $httpXRewriteUrl;
         }
 
@@ -149,22 +151,28 @@ abstract class MarshalUriFactory
         /** @var string|null $httpXOriginalUrl */
         $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
 
-        if ($httpXOriginalUrl !== null && $httpXOriginalUrl !== '') {
+        $isXOriginalUrlValid = static::isValidRequestUri($httpXOriginalUrl);
+
+        if ($isXOriginalUrlValid) {
             $requestUri = $httpXOriginalUrl;
         }
 
-        if ($requestUri !== null && $requestUri !== '') {
+        $isRequestUriValid = static::isValidRequestUri($requestUri);
+
+        if ($isRequestUriValid) {
             return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri) ?? $requestUri;
         }
 
         /** @var string|null $origPathInfo */
         $origPathInfo = $server['ORIG_PATH_INFO'] ?? null;
 
-        if ($origPathInfo === null || $origPathInfo === '') {
-            return '/';
+        $isOrigPathValid = static::isValidRequestUri($origPathInfo);
+
+        if ($isOrigPathValid) {
+            return $origPathInfo;
         }
 
-        return $origPathInfo;
+        return '/';
     }
 
     /**
@@ -177,6 +185,18 @@ abstract class MarshalUriFactory
         }
 
         return $path;
+    }
+
+    /**
+     * Determine whether the provided request uri is valid.
+     *
+     * @psalm-assert non-empty-string $subject
+     *
+     * @phpstan-assert non-empty-string $subject
+     */
+    protected static function isValidRequestUri(string|null $subject): bool
+    {
+        return $subject !== null && $subject !== '';
     }
 
     /**
