@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
-use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory as UriFactory;
+use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class MarshalUriFactoryTest extends TestCase
@@ -43,7 +43,7 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers  = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame(Scheme::HTTPS, $uri->getScheme());
         self::assertSame($host, $uri->getHost());
@@ -57,7 +57,7 @@ class MarshalUriFactoryTest extends TestCase
     {
         $blankAccumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders($blankAccumulator, [], []);
+        MarshalUriFactory::marshalHostAndPortFromHeaders($blankAccumulator, [], []);
 
         self::assertEmpty($blankAccumulator->host);
         self::assertNull($blankAccumulator->port ?? null);
@@ -70,7 +70,7 @@ class MarshalUriFactoryTest extends TestCase
 
         $hostHeaderAccumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders($hostHeaderAccumulator, [], ['host' => new Header('Host', "$host:$port")]);
+        MarshalUriFactory::marshalHostAndPortFromHeaders($hostHeaderAccumulator, [], ['host' => new Header('Host', "$host:$port")]);
 
         self::assertSame($host, $hostHeaderAccumulator->host);
         self::assertSame($port, $hostHeaderAccumulator->port);
@@ -83,7 +83,7 @@ class MarshalUriFactoryTest extends TestCase
 
         $serverAccumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders(
+        MarshalUriFactory::marshalHostAndPortFromHeaders(
             $serverAccumulator,
             [
                 'SERVER_NAME' => $host,
@@ -102,7 +102,7 @@ class MarshalUriFactoryTest extends TestCase
 
         $ip6FallbackAccumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders(
+        MarshalUriFactory::marshalHostAndPortFromHeaders(
             $ip6FallbackAccumulator,
             [
                 'SERVER_NAME' => '[FE80::0202:B3FF:FE1E:8329]',
@@ -120,7 +120,7 @@ class MarshalUriFactoryTest extends TestCase
     {
         $ip6FallbackAccumulatorNullPort = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders(
+        MarshalUriFactory::marshalHostAndPortFromHeaders(
             $ip6FallbackAccumulatorNullPort,
             [
                 'SERVER_NAME' => '[FE80::0202:B3FF:FE1E:8329]',
@@ -136,52 +136,52 @@ class MarshalUriFactoryTest extends TestCase
 
     public function testMarshalRequestUri(): void
     {
-        $unencodedUrl = UriFactory::marshalRequestUri([
+        $unencodedUrl = MarshalUriFactory::marshalRequestUri([
             'IIS_WasUrlRewritten' => '1',
             'UNENCODED_URL'       => $unencodedUrlExpected = '/unencodedUrl',
         ]);
 
         self::assertSame($unencodedUrlExpected, $unencodedUrl);
 
-        $httpXRewriteUrl = UriFactory::marshalRequestUri([
+        $httpXRewriteUrl = MarshalUriFactory::marshalRequestUri([
             'HTTP_X_REWRITE_URL' => $httpXRewriteUrlExpected = '/httpXRewriteUrl',
         ]);
 
         self::assertSame($httpXRewriteUrlExpected, $httpXRewriteUrl);
 
-        $httpXOriginalUrl = UriFactory::marshalRequestUri([
+        $httpXOriginalUrl = MarshalUriFactory::marshalRequestUri([
             'HTTP_X_ORIGINAL_URL' => $httpXOriginalUrlExpected = '/httpXOriginalUrl',
         ]);
 
         self::assertSame($httpXOriginalUrlExpected, $httpXOriginalUrl);
 
-        $requestUri = UriFactory::marshalRequestUri([
+        $requestUri = MarshalUriFactory::marshalRequestUri([
             'REQUEST_URI' => $requestUriExpected = '/requestUri',
         ]);
 
         self::assertSame($requestUriExpected, $requestUri);
 
-        $origPathInfo = UriFactory::marshalRequestUri([
+        $origPathInfo = MarshalUriFactory::marshalRequestUri([
             'ORIG_PATH_INFO' => $origPathInfoExpected = '/origPathInfo',
         ]);
 
         self::assertSame($origPathInfoExpected, $origPathInfo);
 
-        $origPathInfoEmpty = UriFactory::marshalRequestUri([
+        $origPathInfoEmpty = MarshalUriFactory::marshalRequestUri([
             'ORIG_PATH_INFO' => '',
         ]);
 
         self::assertSame('/', $origPathInfoEmpty);
 
-        $noMatchedServerParams = UriFactory::marshalRequestUri([]);
+        $noMatchedServerParams = MarshalUriFactory::marshalRequestUri([]);
 
         self::assertSame('/', $noMatchedServerParams);
     }
 
     public function testStripQueryString(): void
     {
-        $pathString      = UriFactory::stripQueryString($path = '/path');
-        $pathStringWithQ = UriFactory::stripQueryString('/path?query=string');
+        $pathString      = MarshalUriFactory::stripQueryString($path = '/path');
+        $pathStringWithQ = MarshalUriFactory::stripQueryString('/path?query=string');
 
         self::assertSame($path, $pathString);
         self::assertSame($path, $pathStringWithQ);
@@ -194,16 +194,16 @@ class MarshalUriFactoryTest extends TestCase
             'string' => new Header('String', 'string'),
         ];
 
-        self::assertSame('string', UriFactory::getHeader('String', $headers));
-        self::assertSame('test1, test2', UriFactory::getHeader('Array', $headers));
+        self::assertSame('string', MarshalUriFactory::getHeader('String', $headers));
+        self::assertSame('test1, test2', MarshalUriFactory::getHeader('Array', $headers));
     }
 
     public function testGetHeaderWithDefault(): void
     {
         $headers = [];
 
-        self::assertSame('', UriFactory::getHeader('NonExistent', $headers));
-        self::assertSame('default', UriFactory::getHeader('NonExistent', $headers, 'default'));
+        self::assertSame('', MarshalUriFactory::getHeader('NonExistent', $headers));
+        self::assertSame('default', MarshalUriFactory::getHeader('NonExistent', $headers, 'default'));
     }
 
     public function testMarshalUriFromServerWithXForwardedProto(): void
@@ -217,7 +217,7 @@ class MarshalUriFactoryTest extends TestCase
             'x-forwarded-proto' => new Header('X-Forwarded-Proto', 'https'),
         ];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame(Scheme::HTTPS, $uri->getScheme());
     }
@@ -232,7 +232,7 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame(Scheme::HTTP, $uri->getScheme());
     }
@@ -246,14 +246,14 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame('key=value', $uri->getQuery());
     }
 
     public function testMarshalRequestUriWithFullUrl(): void
     {
-        $result = UriFactory::marshalRequestUri([
+        $result = MarshalUriFactory::marshalRequestUri([
             'REQUEST_URI' => 'http://example.com/path',
         ]);
 
@@ -267,7 +267,7 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         // With no host information, host should be empty
         self::assertSame('', $uri->getHost());
@@ -279,7 +279,7 @@ class MarshalUriFactoryTest extends TestCase
     {
         $accumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders(
+        MarshalUriFactory::marshalHostAndPortFromHeaders(
             $accumulator,
             [],
             ['host' => new Header('Host', 'example.com')]
@@ -293,7 +293,7 @@ class MarshalUriFactoryTest extends TestCase
     {
         $accumulator = new HostPortAccumulator();
 
-        UriFactory::marshalHostAndPortFromHeaders(
+        MarshalUriFactory::marshalHostAndPortFromHeaders(
             $accumulator,
             ['SERVER_NAME' => 'example.com'],
             []
@@ -311,7 +311,7 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame('', $uri->getQuery());
     }
@@ -324,7 +324,7 @@ class MarshalUriFactoryTest extends TestCase
         ];
         $headers = [];
 
-        $uri = UriFactory::marshalUriFromServer($server, $headers);
+        $uri = MarshalUriFactory::marshalUriFromServer($server, $headers);
 
         self::assertSame('', $uri->getFragment());
     }
