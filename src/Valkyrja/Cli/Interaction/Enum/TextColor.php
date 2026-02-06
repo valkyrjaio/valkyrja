@@ -32,5 +32,11 @@ enum TextColor: int
     case LIGHT_CYAN    = 96;
     case LIGHT_WHITE   = 97;
 
-    public const int DEFAULT = 39;
+    /**
+     * Get the default text color.
+     */
+    public function getDefault(): int
+    {
+        return 39;
+    }
 }

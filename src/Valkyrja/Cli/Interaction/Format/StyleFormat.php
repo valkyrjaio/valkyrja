@@ -21,7 +21,7 @@ class StyleFormat extends Format
     {
         parent::__construct(
             (string) $style->value,
-            (string) Style::DEFAULTS[$style->value]
+            (string) $style->getDefault()
         );
     }
 }

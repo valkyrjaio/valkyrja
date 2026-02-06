@@ -21,7 +21,7 @@ class BackgroundColorFormat extends Format
     {
         parent::__construct(
             (string) $backgroundColor->value,
-            (string) BackgroundColor::DEFAULT
+            (string) $backgroundColor->getDefault()
         );
     }
 }

@@ -21,7 +21,7 @@ class TextColorFormat extends Format
     {
         parent::__construct(
             (string) $textColor->value,
-            (string) TextColor::DEFAULT
+            (string) $textColor->getDefault()
         );
     }
 }

@@ -27,7 +27,7 @@ class QuestionFormatterTest extends TestCase
         $text = 'text';
 
         $color    = TextColor::MAGENTA->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::MAGENTA->getDefault();
 
         $formatter = new QuestionFormatter();
 

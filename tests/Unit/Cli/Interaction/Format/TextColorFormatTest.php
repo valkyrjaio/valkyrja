@@ -49,7 +49,7 @@ class TextColorFormatTest extends TestCase
     {
         $format = new TextColorFormat(TextColor::RED);
 
-        self::assertSame((string) TextColor::DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) TextColor::RED->getDefault(), $format->getUnsetCode());
     }
 
     public function testDifferentColors(): void
@@ -65,11 +65,12 @@ class TextColorFormatTest extends TestCase
             TextColor::WHITE,
         ];
 
+        /** @var TextColor $color */
         foreach ($colors as $color) {
             $format = new TextColorFormat($color);
 
             self::assertSame((string) $color->value, $format->getSetCode());
-            self::assertSame((string) TextColor::DEFAULT, $format->getUnsetCode());
+            self::assertSame((string) $color->getDefault(), $format->getUnsetCode());
         }
     }
 }

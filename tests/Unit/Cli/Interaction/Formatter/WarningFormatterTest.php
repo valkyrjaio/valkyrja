@@ -28,10 +28,10 @@ class WarningFormatterTest extends TestCase
         $text = 'text';
 
         $color    = TextColor::BLACK->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::BLACK->getDefault();
 
         $backgroundColor    = BackgroundColor::YELLOW->value;
-        $backgroundColorEnd = BackgroundColor::DEFAULT;
+        $backgroundColorEnd = BackgroundColor::YELLOW->getDefault();
 
         $formatter = new WarningFormatter();
 

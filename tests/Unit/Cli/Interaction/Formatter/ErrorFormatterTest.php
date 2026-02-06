@@ -28,10 +28,10 @@ class ErrorFormatterTest extends TestCase
         $text = 'text';
 
         $color    = TextColor::LIGHT_WHITE->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::LIGHT_WHITE->getDefault();
 
         $backgroundColor    = BackgroundColor::RED->value;
-        $backgroundColorEnd = BackgroundColor::DEFAULT;
+        $backgroundColorEnd = BackgroundColor::RED->getDefault();
 
         $formatter = new ErrorFormatter();
 
