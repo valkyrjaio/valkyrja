@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Contract;
 use UnitEnum;
 use Valkyrja\Http\Struct\Contract\StructContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
+use Valkyrja\Type\Enum\Contract\ArrayableContract;
 
 /**
  * Test the Struct.

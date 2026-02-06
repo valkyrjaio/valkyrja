@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Json;
 use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Json\Contract\JsonContract;
 
 use function is_string;
@@ -43,7 +43,7 @@ class Json extends Type implements JsonContract
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
-            return new static(Arr::fromString($value));
+            return new static(ArrayFactory::fromString($value));
         }
 
         return new static((array) $value);
@@ -66,6 +66,6 @@ class Json extends Type implements JsonContract
     #[Override]
     public function asFlatValue(): string
     {
-        return Arr::toString($this->subject);
+        return ArrayFactory::toString($this->subject);
     }
 }

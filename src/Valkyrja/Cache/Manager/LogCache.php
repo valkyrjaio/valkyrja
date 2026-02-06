@@ -19,7 +19,7 @@ use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class LogCache implements CacheContract
 {
@@ -63,7 +63,7 @@ class LogCache implements CacheContract
     #[Override]
     public function many(string ...$keys): array
     {
-        $keysString = Arr::toString($keys);
+        $keysString = ArrayFactory::toString($keys);
 
         $this->logger->info(self::class . " many: $keysString");
 
@@ -89,7 +89,7 @@ class LogCache implements CacheContract
     #[Override]
     public function putMany(array $values, int $seconds): void
     {
-        $valuesString = Arr::toString($values);
+        $valuesString = ArrayFactory::toString($values);
 
         $this->logger->info(self::class . " putMany: $valuesString, seconds $seconds");
     }

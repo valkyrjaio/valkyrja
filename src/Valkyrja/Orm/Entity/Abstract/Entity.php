@@ -19,7 +19,7 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Model\Abstract\Model;
@@ -267,7 +267,7 @@ abstract class Entity extends Model implements EntityContract
                 throw new InvalidArgumentException("Expecting array, $typeOf provided, for $property cast");
             }
 
-            return Arr::toString(
+            return ArrayFactory::toString(
                 array_map(
                     fn (mixed $data): mixed => $this->internalGetTypeValueForDataStore($cast, $data),
                     $value

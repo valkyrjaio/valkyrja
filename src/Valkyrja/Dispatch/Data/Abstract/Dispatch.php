@@ -16,7 +16,7 @@ namespace Valkyrja\Dispatch\Data\Abstract;
 use JsonException;
 use Override;
 use Valkyrja\Dispatch\Data\Contract\DispatchContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 use function get_object_vars;
 
@@ -29,7 +29,7 @@ abstract class Dispatch implements DispatchContract
      */
     public function __toString(): string
     {
-        return Arr::toString($this->jsonSerialize());
+        return ArrayFactory::toString($this->jsonSerialize());
     }
 
     /**

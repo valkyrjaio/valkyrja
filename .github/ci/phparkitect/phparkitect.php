@@ -243,7 +243,7 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
         ->that(new ResideInOneOfTheseNamespaces('*Enum\\'))
-        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\Enum'))
         ->should(new IsEnum())
         ->because('All non-enums should be in an appropriate namespace');
 
@@ -254,7 +254,7 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
         ->that(new IsNotEnum())
-        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\Enum'))
         ->andThat(new NotHaveNameMatching('EnhancedEnumSupport'))
         ->should(new NotHaveNameMatching('*Enum*'))
         ->because('All non-enums should not be named with Enum');

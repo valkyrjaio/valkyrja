@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Type\BuiltIn\Support\Obj;
+use Valkyrja\Type\Object\Factory\ObjectFactory;
 
 class LogClient implements ClientContract
 {
@@ -37,7 +37,7 @@ class LogClient implements ClientContract
     #[Override]
     public function sendRequest(RequestContract $request): ResponseContract
     {
-        $optionsString = Obj::toString($request);
+        $optionsString = ObjectFactory::toString($request);
 
         $this->logger->info(
             static::class . " request: {$request->getMethod()->value}, uri {$request->getUri()->__toString()}, options $optionsString"

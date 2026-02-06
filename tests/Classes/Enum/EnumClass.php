@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Enum;
 
-use Valkyrja\Type\BuiltIn\Enum\Contract\EnumContract;
-use Valkyrja\Type\BuiltIn\Enum\Trait\Enumerable;
+use Valkyrja\Type\Enum\Contract\EnumContract;
+use Valkyrja\Type\Enum\Trait\Enumerable;
 
 /**
  * Enum class to use to test enums.

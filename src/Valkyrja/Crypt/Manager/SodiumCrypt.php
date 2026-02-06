@@ -20,8 +20,8 @@ use SensitiveParameter;
 use SodiumException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\BuiltIn\Support\Obj;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
+use Valkyrja\Type\Object\Factory\ObjectFactory;
 
 use function bin2hex;
 use function hex2bin;
@@ -91,7 +91,7 @@ class SodiumCrypt implements CryptContract
     #[Override]
     public function encryptArray(array $array, #[SensitiveParameter] string|null $key = null): string
     {
-        return $this->encrypt(Arr::toString($array), $key);
+        return $this->encrypt(ArrayFactory::toString($array), $key);
     }
 
     /**
@@ -105,7 +105,7 @@ class SodiumCrypt implements CryptContract
     public function encryptObject(object $object, #[SensitiveParameter] string|null $key = null): string
     {
         /** @var non-empty-string $objectAsString */
-        $objectAsString = Obj::toString($object);
+        $objectAsString = ObjectFactory::toString($object);
 
         return $this->encrypt($objectAsString, $key);
     }
@@ -135,7 +135,7 @@ class SodiumCrypt implements CryptContract
     #[Override]
     public function decryptArray(string $encrypted, #[SensitiveParameter] string|null $key = null): array
     {
-        return Arr::fromString($this->decrypt($encrypted, $key));
+        return ArrayFactory::fromString($this->decrypt($encrypted, $key));
     }
 
     /**
@@ -147,7 +147,7 @@ class SodiumCrypt implements CryptContract
     #[Override]
     public function decryptObject(string $encrypted, #[SensitiveParameter] string|null $key = null): object
     {
-        return Obj::fromString($this->decrypt($encrypted, $key));
+        return ObjectFactory::fromString($this->decrypt($encrypted, $key));
     }
 
     /**

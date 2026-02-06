@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
+use Valkyrja\Type\Enum\Trait\Arrayable;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 

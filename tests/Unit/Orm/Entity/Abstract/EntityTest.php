@@ -23,7 +23,7 @@ use Valkyrja\Tests\Classes\Orm\Entity\EntityWithCastingsClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
-use Valkyrja\Type\BuiltIn\IntT;
+use Valkyrja\Type\Int\IntT;
 
 class EntityTest extends TestCase
 {
@@ -145,10 +145,10 @@ class EntityTest extends TestCase
 
     public function testAsStorableArrayExcludesUnStorableFields(): void
     {
-        $entity              = EntityWithAllFeaturesClass::fromArray(['entity_id' => 1, 'name' => 'Test']);
-        $entity->entity_id   = 1;
-        $entity->name        = 'Test';
-        $entity->tempField   = 'should be excluded';
+        $entity            = EntityWithAllFeaturesClass::fromArray(['entity_id' => 1, 'name' => 'Test']);
+        $entity->entity_id = 1;
+        $entity->name      = 'Test';
+        $entity->tempField = 'should be excluded';
 
         $storable = $entity->asStorableArray();
 
@@ -207,9 +207,9 @@ class EntityTest extends TestCase
 
     public function testEntityWithNullableProperty(): void
     {
-        $entity              = EntityClass::fromArray(['id' => 1]);
-        $entity->id          = 1;
-        $entity->property    = null;
+        $entity           = EntityClass::fromArray(['id' => 1]);
+        $entity->id       = 1;
+        $entity->property = null;
 
         $storable = $entity->asStorableArray();
 

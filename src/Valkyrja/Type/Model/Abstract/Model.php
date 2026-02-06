@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Model\Abstract;
 use Closure;
 use JsonException;
 use Override;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function array_filter;
@@ -83,7 +83,7 @@ abstract class Model implements ModelContract
         }
 
         /** @var array<string, mixed> $value */
-        $value = Arr::fromMixed($value);
+        $value = ArrayFactory::fromMixed($value);
 
         return static::fromArray($value);
     }
@@ -307,7 +307,7 @@ abstract class Model implements ModelContract
      */
     public function __toString(): string
     {
-        return Arr::toString($this->jsonSerialize());
+        return ArrayFactory::toString($this->jsonSerialize());
     }
 
     /**

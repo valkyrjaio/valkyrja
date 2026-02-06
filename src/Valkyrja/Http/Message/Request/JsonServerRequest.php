@@ -28,7 +28,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 use function array_key_exists;
 
@@ -88,7 +88,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
                 return;
             }
 
-            $this->parsedJson = Arr::fromString($bodyContents);
+            $this->parsedJson = ArrayFactory::fromString($bodyContents);
 
             if (empty($parsedBody)) {
                 $this->parsedBody    = $this->parsedJson;

@@ -18,7 +18,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class OptionTokenSession extends Session
 {
@@ -65,6 +65,6 @@ class OptionTokenSession extends Session
     protected function setDataFromTokenValue(string $value): void
     {
         /** @psalm-suppress MixedPropertyTypeCoercion */
-        $this->data = Arr::fromString($value);
+        $this->data = ArrayFactory::fromString($value);
     }
 }

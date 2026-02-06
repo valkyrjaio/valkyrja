@@ -23,7 +23,7 @@ use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class PusherBroadcasterTest extends TestCase
 {
@@ -81,7 +81,7 @@ class PusherBroadcasterTest extends TestCase
         $event       = 'test-event';
         $message     = 'Test message';
         $data        = ['key' => 'value'];
-        $dataMessage = Arr::toString($data);
+        $dataMessage = ArrayFactory::toString($data);
 
         $broadcastMessage = new Message(
             channel: $channel,

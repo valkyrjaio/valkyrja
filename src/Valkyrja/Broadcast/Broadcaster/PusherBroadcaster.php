@@ -21,7 +21,7 @@ use Pusher\Pusher;
 use Pusher\PusherException;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class PusherBroadcaster implements BroadcasterContract
 {
@@ -73,7 +73,7 @@ class PusherBroadcaster implements BroadcasterContract
         $data = $message->getData();
 
         if ($data !== null && $data !== []) {
-            $message = $message->withMessage(Arr::toString($data));
+            $message = $message->withMessage(ArrayFactory::toString($data));
         }
 
         return $message;

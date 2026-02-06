@@ -18,7 +18,7 @@ use Override;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class LogBroadcaster implements BroadcasterContract
 {
@@ -41,7 +41,7 @@ class LogBroadcaster implements BroadcasterContract
         $this->logger->info('Event:');
         $this->logger->info($message->getEvent());
         $this->logger->info('Data:');
-        $this->logger->info(Arr::toString($message->getData() ?? []));
+        $this->logger->info(ArrayFactory::toString($message->getData() ?? []));
         $this->logger->info('Message:');
         $this->logger->info($message->getMessage());
     }
