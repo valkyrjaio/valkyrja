@@ -16,13 +16,6 @@ namespace Valkyrja\Support\Directory;
 class Directory
 {
     /**
-     * Directory separator.
-     *
-     * @var non-empty-string
-     */
-    public const string DIRECTORY_SEPARATOR = '/';
-
-    /**
      * Base directory path.
      *
      * @var non-empty-string
@@ -81,8 +74,8 @@ class Directory
      */
     public static function path(string|null $path = null): string
     {
-        return $path !== null && $path !== '' && $path[0] !== static::DIRECTORY_SEPARATOR
-            ? static::DIRECTORY_SEPARATOR . $path
+        return $path !== null && $path !== '' && $path[0] !== '/'
+            ? '/' . $path
             : $path ?? '';
     }
 
