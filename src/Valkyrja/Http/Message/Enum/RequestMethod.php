@@ -64,16 +64,23 @@ enum RequestMethod: string
      */
     case PATCH = 'PATCH';
 
-    /** @var RequestMethod[] */
-    public const array ANY = [
-        self::GET,
-        self::HEAD,
-        self::POST,
-        self::PUT,
-        self::DELETE,
-        self::CONNECT,
-        self::OPTIONS,
-        self::TRACE,
-        self::PATCH,
-    ];
+    /**
+     * Get all the request methods.
+     *
+     * @return RequestMethod[]
+     */
+    public static function all(): array
+    {
+        return [
+            self::GET,
+            self::HEAD,
+            self::POST,
+            self::PUT,
+            self::DELETE,
+            self::CONNECT,
+            self::OPTIONS,
+            self::TRACE,
+            self::PATCH,
+        ];
+    }
 }
