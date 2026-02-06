@@ -185,14 +185,13 @@ abstract class MarshalUriFactory
      */
     protected static function marshalRequestUriFromHttpXRewriteUrl(array $server): string|null
     {
-        // Check for IIS 7.0 or later with ISAPI_Rewrite
-        /** @var string|null $httpXOriginalUrl */
-        $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
+        // Check this first so IIS will catch.
+        /** @var string|null $httpXRewriteUrl */
+        $httpXRewriteUrl        = $server['HTTP_X_REWRITE_URL'] ?? null;
+        $isHttpXRewriteUrlValid = static::isValidRequestUri($httpXRewriteUrl);
 
-        $isXOriginalUrlValid = static::isValidRequestUri($httpXOriginalUrl);
-
-        if ($isXOriginalUrlValid) {
-            return $httpXOriginalUrl;
+        if ($isHttpXRewriteUrlValid) {
+            return $httpXRewriteUrl;
         }
 
         return null;
@@ -204,7 +203,8 @@ abstract class MarshalUriFactory
      * @param array<string, string> $server
      */
     protected static function marshalRequestUriFromHttpXOriginalUrl(array $server): string|null
-    {        // Check for IIS 7.0 or later with ISAPI_Rewrite
+    {
+        // Check for IIS 7.0 or later with ISAPI_Rewrite
         /** @var string|null $httpXOriginalUrl */
         $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
 
