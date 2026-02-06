@@ -325,8 +325,6 @@ class Env
     public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
     /** @var class-string<TerminatedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
-    /** @var class-string[]|null */
-    public const array|null HTTP_MIDDLEWARE_NO_CACHE_ALLOWED_CLASSES = null;
 
     /************************************************************
      *
@@ -338,6 +336,15 @@ class Env
     public const string|null HTTP_ROUTING_COLLECTION_FILE_PATH = null;
     /** @var bool|null */
     public const bool|null HTTP_ROUTING_COLLECTION_USE_CACHE = null;
+
+    /************************************************************
+     *
+     * Http Server component env variables.
+     *
+     ************************************************************/
+
+    /** @var non-empty-string|null */
+    public const string|null HTTP_SERVER_RESPONSE_CACHE_FILE_PATH = null;
 
     /************************************************************
      *
