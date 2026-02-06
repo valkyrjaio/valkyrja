@@ -27,7 +27,7 @@ class HighlightedTextFormatterTest extends TestCase
         $text = 'text';
 
         $color    = TextColor::YELLOW->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::YELLOW->getDefault();
 
         $formatter = new HighlightedTextFormatter();
 

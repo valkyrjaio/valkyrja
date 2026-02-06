@@ -49,7 +49,7 @@ class StyleFormatTest extends TestCase
     {
         $format = new StyleFormat(Style::BOLD);
 
-        self::assertSame((string) Style::DEFAULTS[Style::BOLD->value], $format->getUnsetCode());
+        self::assertSame((string) Style::BOLD->getDefault(), $format->getUnsetCode());
     }
 
     public function testAllStyles(): void
@@ -62,11 +62,12 @@ class StyleFormatTest extends TestCase
             Style::CONCEAL,
         ];
 
+        /** @var Style $style */
         foreach ($styles as $style) {
             $format = new StyleFormat($style);
 
             self::assertSame((string) $style->value, $format->getSetCode());
-            self::assertSame((string) Style::DEFAULTS[$style->value], $format->getUnsetCode());
+            self::assertSame((string) $style->getDefault(), $format->getUnsetCode());
         }
     }
 
@@ -75,7 +76,7 @@ class StyleFormatTest extends TestCase
         $format = new StyleFormat(Style::BOLD);
 
         self::assertSame('1', $format->getSetCode());
-        self::assertSame((string) Style::BOLD_DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) Style::BOLD->getDefault(), $format->getUnsetCode());
     }
 
     public function testUnderscoreStyle(): void
@@ -83,7 +84,7 @@ class StyleFormatTest extends TestCase
         $format = new StyleFormat(Style::UNDERSCORE);
 
         self::assertSame('4', $format->getSetCode());
-        self::assertSame((string) Style::UNDERSCORE_DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) Style::UNDERSCORE->getDefault(), $format->getUnsetCode());
     }
 
     public function testBlinkStyle(): void
@@ -91,7 +92,7 @@ class StyleFormatTest extends TestCase
         $format = new StyleFormat(Style::BLINK);
 
         self::assertSame('5', $format->getSetCode());
-        self::assertSame((string) Style::BLINK_DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) Style::BLINK->getDefault(), $format->getUnsetCode());
     }
 
     public function testInverseStyle(): void
@@ -99,7 +100,7 @@ class StyleFormatTest extends TestCase
         $format = new StyleFormat(Style::INVERSE);
 
         self::assertSame('7', $format->getSetCode());
-        self::assertSame((string) Style::INVERSE_DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) Style::INVERSE->getDefault(), $format->getUnsetCode());
     }
 
     public function testConcealStyle(): void
@@ -107,6 +108,6 @@ class StyleFormatTest extends TestCase
         $format = new StyleFormat(Style::CONCEAL);
 
         self::assertSame('8', $format->getSetCode());
-        self::assertSame((string) Style::CONCEAL_DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) Style::CONCEAL->getDefault(), $format->getUnsetCode());
     }
 }

@@ -32,5 +32,11 @@ enum BackgroundColor: int
     case LIGHT_CYAN    = 106;
     case LIGHT_WHITE   = 107;
 
-    public const int DEFAULT = 49;
+    /**
+     * Get the default background color.
+     */
+    public function getDefault(): int
+    {
+        return 49;
+    }
 }

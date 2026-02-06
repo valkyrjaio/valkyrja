@@ -21,20 +21,17 @@ enum Style: int
     case INVERSE    = 7;
     case CONCEAL    = 8;
 
-    public const int BOLD_DEFAULT       = 22;
-    public const int UNDERSCORE_DEFAULT = 24;
-    public const int BLINK_DEFAULT      = 25;
-    public const int INVERSE_DEFAULT    = 27;
-    public const int CONCEAL_DEFAULT    = 28;
-
     /**
-     * @var array<int, int>
+     * Get the default style.
      */
-    public const array DEFAULTS = [
-        1 => self::BOLD_DEFAULT,
-        4 => self::UNDERSCORE_DEFAULT,
-        5 => self::BLINK_DEFAULT,
-        7 => self::INVERSE_DEFAULT,
-        8 => self::CONCEAL_DEFAULT,
-    ];
+    public function getDefault(): int
+    {
+        return match ($this) {
+            self::BOLD       => 22,
+            self::UNDERSCORE => 24,
+            self::BLINK      => 25,
+            self::INVERSE    => 27,
+            self::CONCEAL    => 28,
+        };
+    }
 }

@@ -28,10 +28,10 @@ class SuccessFormatterTest extends TestCase
         $text = 'text';
 
         $color    = TextColor::LIGHT_WHITE->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::LIGHT_WHITE->getDefault();
 
         $backgroundColor    = BackgroundColor::GREEN->value;
-        $backgroundColorEnd = BackgroundColor::DEFAULT;
+        $backgroundColorEnd = BackgroundColor::GREEN->getDefault();
 
         $formatter = new SuccessFormatter();
 

@@ -42,7 +42,7 @@ class FormatterTest extends TestCase
     {
         $text     = 'text';
         $style    = Style::BOLD->value;
-        $styleEnd = Style::DEFAULTS[$style];
+        $styleEnd = Style::BOLD->getDefault();
 
         $formatter = new Formatter(new StyleFormat(Style::BOLD));
 
@@ -50,7 +50,7 @@ class FormatterTest extends TestCase
 
         $formatter2 = $formatter->withFormats(new StyleFormat(Style::UNDERSCORE));
         $style2     = Style::UNDERSCORE->value;
-        $style2End  = Style::DEFAULTS[$style2];
+        $style2End  = Style::UNDERSCORE->getDefault();
 
         self::assertNotSame($formatter, $formatter2);
         self::assertSame("\033[{$style2}m$text\033[{$style2End}m", $formatter2->formatText($text));
@@ -60,14 +60,14 @@ class FormatterTest extends TestCase
     {
         $text     = 'text';
         $color    = TextColor::YELLOW->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::YELLOW->getDefault();
 
         $formatter = new Formatter(new TextColorFormat(TextColor::YELLOW));
 
         self::assertSame("\033[{$color}m$text\033[{$colorEnd}m", $formatter->formatText($text));
 
         $color2    = TextColor::GREEN->value;
-        $color2End = TextColor::DEFAULT;
+        $color2End = TextColor::GREEN->getDefault();
 
         $formatter2 = $formatter->withFormats(new TextColorFormat(TextColor::GREEN));
 
@@ -79,14 +79,14 @@ class FormatterTest extends TestCase
     {
         $text     = 'text';
         $color    = BackgroundColor::YELLOW->value;
-        $colorEnd = BackgroundColor::DEFAULT;
+        $colorEnd = BackgroundColor::YELLOW->getDefault();
 
         $formatter = new Formatter(new BackgroundColorFormat(BackgroundColor::YELLOW));
 
         self::assertSame("\033[{$color}m$text\033[{$colorEnd}m", $formatter->formatText($text));
 
         $color2    = BackgroundColor::BLACK->value;
-        $color2End = BackgroundColor::DEFAULT;
+        $color2End = BackgroundColor::BLACK->getDefault();
 
         $formatter2 = $formatter->withFormats(new BackgroundColorFormat(BackgroundColor::BLACK));
 
@@ -99,13 +99,13 @@ class FormatterTest extends TestCase
         $text = 'text';
 
         $style    = Style::BOLD->value;
-        $styleEnd = Style::DEFAULTS[$style];
+        $styleEnd = Style::BOLD->getDefault();
 
         $color    = TextColor::YELLOW->value;
-        $colorEnd = TextColor::DEFAULT;
+        $colorEnd = TextColor::YELLOW->getDefault();
 
         $backgroundColor    = BackgroundColor::YELLOW->value;
-        $backgroundColorEnd = BackgroundColor::DEFAULT;
+        $backgroundColorEnd = BackgroundColor::YELLOW->getDefault();
 
         $formatter = new Formatter(
             new TextColorFormat(TextColor::YELLOW),

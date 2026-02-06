@@ -49,7 +49,7 @@ class BackgroundColorFormatTest extends TestCase
     {
         $format = new BackgroundColorFormat(BackgroundColor::RED);
 
-        self::assertSame((string) BackgroundColor::DEFAULT, $format->getUnsetCode());
+        self::assertSame((string) BackgroundColor::RED->getDefault(), $format->getUnsetCode());
     }
 
     public function testDifferentColors(): void
@@ -65,11 +65,12 @@ class BackgroundColorFormatTest extends TestCase
             BackgroundColor::WHITE,
         ];
 
+        /** @var BackgroundColor $color */
         foreach ($colors as $color) {
             $format = new BackgroundColorFormat($color);
 
             self::assertSame((string) $color->value, $format->getSetCode());
-            self::assertSame((string) BackgroundColor::DEFAULT, $format->getUnsetCode());
+            self::assertSame((string) $color->getDefault(), $format->getUnsetCode());
         }
     }
 }
