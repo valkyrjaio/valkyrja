@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Orm\Entity;
 
+use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
 /**
@@ -20,11 +21,15 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
  */
 class EntityStringIdClass extends Entity
 {
+    public string $id;
+    public string $name;
+
     /**
      * @inheritDoc
      */
-    protected static string $tableName = 'test';
-
-    public string $id;
-    public string $name;
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'test';
+    }
 }
