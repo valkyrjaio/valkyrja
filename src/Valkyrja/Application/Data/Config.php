@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Data;
 
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Provider\Provider;
 
 readonly class Config
@@ -25,7 +25,7 @@ readonly class Config
      * @param class-string<Provider>[] $providers
      */
     public function __construct(
-        public string $version = ApplicationContract::VERSION,
+        public string $version = ApplicationInfo::VERSION,
         public string $environment = 'production',
         public bool $debugMode = false,
         public string $timezone = 'UTC',

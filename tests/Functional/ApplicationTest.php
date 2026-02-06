@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
@@ -43,7 +43,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        self::assertSame(ApplicationContract::VERSION, $this->app->getVersion());
+        self::assertSame(ApplicationInfo::VERSION, $this->app->getVersion());
     }
 
     /**

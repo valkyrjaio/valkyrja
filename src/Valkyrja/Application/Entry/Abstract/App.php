@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry\Abstract;
 
+use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -145,7 +146,7 @@ abstract class App
         $timezone = $env::APP_TIMEZONE;
         /** @var non-empty-string $version */
         $version = $env::APP_VERSION
-            ?? ApplicationContract::VERSION;
+            ?? ApplicationInfo::VERSION;
         /** @var bool $debugMode */
         $debugMode = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $environment */

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Data;
 
+use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ class ConfigTest extends TestCase
         $data = new Config();
 
         self::assertSame('production', $data->environment);
-        self::assertSame(ApplicationContract::VERSION, $data->version);
+        self::assertSame(ApplicationInfo::VERSION, $data->version);
         self::assertFalse($data->debugMode);
         self::assertEmpty($data->providers);
         self::assertSame('UTC', $data->timezone);
