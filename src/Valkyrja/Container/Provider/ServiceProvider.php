@@ -55,17 +55,17 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
 
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
+        /** @var non-empty-string $dataFilePath */
+        $dataFilePath         = $env::CONTAINER_DATA_FILE_PATH
             ?? '/container.php';
-        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
 
         $data = $container->getData();
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
             new DataFileGenerator(
-                filePath: $absoluteCacheFilePath,
+                filePath: $absoluteDataFilePath,
                 data: $data,
             )
         );
@@ -76,21 +76,21 @@ final class ServiceProvider extends Provider
         $data = null;
         $env  = $container->getSingleton(Env::class);
 
-        /** @var bool $useCache */
-        $useCache = $env::CONTAINER_USE_CACHE
+        /** @var bool $useData */
+        $useData = $env::CONTAINER_USE_DATA
             ?? false;
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
+        /** @var non-empty-string $dataFilePath */
+        $dataFilePath = $env::CONTAINER_DATA_FILE_PATH
             ?? '/container.php';
-        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
 
-        if ($useCache && is_file(filename: $absoluteCacheFilePath)) {
+        if ($useData && is_file(filename: $absoluteDataFilePath)) {
             /**
              * @psalm-suppress UnresolvableInclude
              *
              * @var mixed $data The data
              */
-            $data = require $absoluteCacheFilePath;
+            $data = require $absoluteDataFilePath;
         }
 
         if ($data instanceof Data) {

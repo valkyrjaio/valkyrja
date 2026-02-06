@@ -131,24 +131,32 @@ final class ServiceProvider extends Provider
         $data = null;
         $env  = $container->getSingleton(Env::class);
 
-        /** @var bool $useCache */
-        $useCache = $env::HTTP_ROUTING_COLLECTION_USE_CACHE
+        /** @var bool $useData */
+        $useData = $env::HTTP_ROUTING_COLLECTION_USE_DATA
             ?? false;
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+        /** @var non-empty-string $dataFilePath */
+        $dataFilePath = $env::HTTP_ROUTING_COLLECTION_DATA_FILE_PATH
             ?? '/routes.php';
-        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
 
-        if ($useCache && is_file(filename: $absoluteCacheFilePath)) {
+        if ($useData && is_file(filename: $absoluteDataFilePath)) {
             /**
              * @psalm-suppress UnresolvableInclude
              *
              * @var mixed $data The data
              */
-            $data = require $absoluteCacheFilePath;
+            $data = require $absoluteDataFilePath;
         }
 
         if ($data instanceof Data) {
+            $collection->setFromData($data);
+
+            return;
+        }
+
+        if ($container->has(Data::class)) {
+            $data = $container->getSingleton(Data::class);
+
             $collection->setFromData($data);
 
             return;
@@ -180,17 +188,17 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
 
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::HTTP_ROUTING_COLLECTION_FILE_PATH
+        /** @var non-empty-string $dataFilePath */
+        $dataFilePath = $env::HTTP_ROUTING_COLLECTION_DATA_FILE_PATH
             ?? '/routes.php';
-        $absoluteCacheFilePath = Directory::cachePath($cacheFilePath);
+        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
 
         $collection = $container->getSingleton(CollectionContract::class);
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
             new DataFileGenerator(
-                filePath: $absoluteCacheFilePath,
+                filePath: $absoluteDataFilePath,
                 data: $collection->getData(),
             )
         );

@@ -86,15 +86,25 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));
     }
 
+    public function testPublishCollectionWithCustomDataProvided(): void
+    {
+        $this->container->setSingleton(Data::class, new Data());
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
+    }
+
     public function testPublishCollectionWithData(): void
     {
         $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(Env::class, new class extends Env {
-            public const bool EVENT_COLLECTION_USE_CACHE   = true;
-            public const string EVENT_COLLECTION_FILE_PATH = 'testPublishCollectionWithData-events.php';
+            public const bool EVENT_COLLECTION_USE_DATA         = true;
+            public const string EVENT_COLLECTION_DATA_FILE_PATH = 'testPublishCollectionWithData-events.php';
         });
 
-        $filePath  = EnvClass::APP_DIR . '/cache/testPublishCollectionWithData-events.php';
+        $filePath  = EnvClass::APP_DIR . '/data/testPublishCollectionWithData-events.php';
         $generator = new DataFileGenerator($filePath, new Data());
         $generator->generateFile();
 

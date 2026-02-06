@@ -26,7 +26,7 @@ class ResponseFileGeneratorTest extends TestCase
     {
         Directory::$BASE_PATH = EnvClass::APP_DIR;
 
-        $filePath  = Directory::cachePath('testGenerateFile-response.php');
+        $filePath  = Directory::dataPath('testGenerateFile-response.php');
         $response  = Response::create('Hello World');
         $generator = new ResponseFileGenerator($response, $filePath);
         $results   = $generator->generateFile();

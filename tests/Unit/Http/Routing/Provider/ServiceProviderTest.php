@@ -113,6 +113,16 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Router::class, $container->getSingleton(RouterContract::class));
     }
 
+    public function testPublishCollectionWithCustomDataProvided(): void
+    {
+        $this->container->setSingleton(Data::class, new Data());
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
+    }
+
     public function testPublishCollectionWithData(): void
     {
         $container = $this->container;
@@ -120,11 +130,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $container->setSingleton(Env::class, new class extends Env {
-            public const bool HTTP_ROUTING_COLLECTION_USE_CACHE   = true;
-            public const string HTTP_ROUTING_COLLECTION_FILE_PATH = 'testPublishCollectionWithData-routes.php';
+            public const bool HTTP_ROUTING_COLLECTION_USE_DATA         = true;
+            public const string HTTP_ROUTING_COLLECTION_DATA_FILE_PATH = 'testPublishCollectionWithData-routes.php';
         });
 
-        $filePath  = EnvClass::APP_DIR . '/cache/testPublishCollectionWithData-routes.php';
+        $filePath  = EnvClass::APP_DIR . '/data/testPublishCollectionWithData-routes.php';
         $generator = new DataFileGenerator($filePath, new Data());
         $generator->generateFile();
 

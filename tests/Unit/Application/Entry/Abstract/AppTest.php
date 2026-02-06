@@ -87,8 +87,8 @@ class AppTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        @unlink(EnvClass::APP_DIR . '/cache/container.php');
-        @unlink(EnvClass::APP_DIR . '/cache/routes.php');
+        @unlink(EnvClass::APP_DIR . '/data/container.php');
+        @unlink(EnvClass::APP_DIR . '/data/routes.php');
     }
 
     /**
