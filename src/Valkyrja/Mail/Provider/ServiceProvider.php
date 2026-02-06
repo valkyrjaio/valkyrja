@@ -124,9 +124,11 @@ final class ServiceProvider extends Provider
         $apiKey = $env::MAIL_MAILGUN_API_KEY
             ?? 'api-key';
 
+        $httpClientConfigurator = new HttpClientConfigurator();
+
         $container->setSingleton(
             HttpClientConfigurator::class,
-            new HttpClientConfigurator()
+            $httpClientConfigurator
                 ->setApiKey($apiKey)
                 ->setHttpClient(new Client())
         );
