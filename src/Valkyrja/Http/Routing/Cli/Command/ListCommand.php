@@ -27,13 +27,12 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Http\Routing\Cli\Command\Constant\CommandName;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 class ListCommand
 {
-    public const string NAME = 'http:list';
-
     /**
      * The help text.
      */
@@ -43,7 +42,7 @@ class ListCommand
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::LIST,
         description: 'List all routes',
         helpText: [self::class, 'help'],
     )]

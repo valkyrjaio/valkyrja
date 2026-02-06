@@ -27,9 +27,6 @@ use const PREG_SET_ORDER;
  */
 abstract class CookieFactory
 {
-    /** @var string */
-    protected const string SEPARATOR = '; ';
-
     /**
      * Parse a cookie header according to RFC 6265.
      * PHP will replace special characters in cookie names, which results in other cookies not being available due to
@@ -70,7 +67,7 @@ abstract class CookieFactory
     public static function convertCookieArrayToHeaderString(array $cookies): string
     {
         return implode(
-            self::SEPARATOR,
+            '; ',
             array_map(
                 static fn (string $key, string $value): string => self::combineKeyAndValue($key, $value),
                 array_keys($cookies),

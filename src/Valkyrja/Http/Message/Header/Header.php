@@ -33,20 +33,6 @@ use function strtolower;
 class Header implements HeaderContract
 {
     /**
-     * Deliminator between name and values.
-     *
-     * @var non-empty-string
-     */
-    protected const string DELIMINATOR = ':';
-
-    /**
-     * Deliminator for values.
-     *
-     * @var non-empty-string
-     */
-    protected const string VALUE_DELIMINATOR = ',';
-
-    /**
      * The header name.
      *
      * @var string
@@ -91,13 +77,17 @@ class Header implements HeaderContract
         $valuesAsString = '';
         $values         = [];
 
-        if (str_contains($header, static::DELIMINATOR)) {
-            [$header, $valuesAsString] = explode(static::DELIMINATOR, $value);
+        $deliminator = ':';
+
+        if (str_contains($header, $deliminator)) {
+            [$header, $valuesAsString] = explode($deliminator, $value);
             $values                    = [$valuesAsString];
         }
 
-        if (str_contains($valuesAsString, static::VALUE_DELIMINATOR)) {
-            $values = explode(static::VALUE_DELIMINATOR, $valuesAsString);
+        $valueDeliminator = ',';
+
+        if (str_contains($valuesAsString, $valueDeliminator)) {
+            $values = explode($valueDeliminator, $valuesAsString);
         }
 
         return new static($header, ...$values);
