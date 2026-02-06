@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity;
 
+use Override;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\Trait\UserFields;
 use Valkyrja\Auth\Entity\Trait\UserMethods;
@@ -25,8 +26,10 @@ class User extends Entity implements UserContract
 
     /**
      * @inheritDoc
-     *
-     * @var non-empty-string
      */
-    protected static string $tableName = 'users';
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'users';
+    }
 }

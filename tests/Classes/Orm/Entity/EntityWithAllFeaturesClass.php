@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Orm\Entity;
 
+use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Orm\Repository\Repository;
 
@@ -21,24 +22,54 @@ use Valkyrja\Orm\Repository\Repository;
  */
 class EntityWithAllFeaturesClass extends Entity
 {
-    /** @inheritDoc */
-    protected static string $tableName = 'entities_with_features';
-
-    /** @inheritDoc */
-    protected static string $idField = 'entity_id';
-
-    /** @inheritDoc */
-    protected static string|null $repository = Repository::class;
-
-    /** @inheritDoc */
-    protected static array $relationshipProperties = ['relatedEntity'];
-
-    /** @inheritDoc */
-    protected static array $unStorableFields = ['tempField'];
-
     public int $entity_id;
     public string $name;
     public string|null $description = null;
     public string|null $tempField   = null;
     public mixed $relatedEntity     = null;
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'entities_with_features';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getIdField(): string
+    {
+        return 'entity_id';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRepository(): string|null
+    {
+        return Repository::class;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRelationshipProperties(): array
+    {
+        return ['relatedEntity'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getUnStorableFields(): array
+    {
+        return ['tempField'];
+    }
 }

@@ -16,7 +16,6 @@ namespace Valkyrja\Orm\Entity\Abstract;
 use JsonException;
 use Override;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
-use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
@@ -43,41 +42,6 @@ abstract class Entity extends Model implements EntityContract
     use ProtectedExposable;
 
     /**
-     * The table name.
-     *
-     * @var non-empty-string
-     */
-    protected static string $tableName;
-
-    /**
-     * The id field.
-     *
-     * @var non-empty-string
-     */
-    protected static string $idField = 'id';
-
-    /**
-     * The repository.
-     *
-     * @var class-string<RepositoryContract>|null
-     */
-    protected static string|null $repository = null;
-
-    /**
-     * A list of hidden fields we can expose for storage.
-     *
-     * @var non-empty-string[]
-     */
-    protected static array $relationshipProperties = [];
-
-    /**
-     * A list of fields we do not want to store.
-     *
-     * @var non-empty-string[]
-     */
-    protected static array $unStorableFields = [];
-
-    /**
      * @inheritDoc
      */
     #[Override]
@@ -90,18 +54,9 @@ abstract class Entity extends Model implements EntityContract
      * @inheritDoc
      */
     #[Override]
-    public static function getTableName(): string
-    {
-        return static::$tableName;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public static function getIdField(): string
     {
-        return static::$idField;
+        return 'id';
     }
 
     /**
@@ -110,7 +65,7 @@ abstract class Entity extends Model implements EntityContract
     #[Override]
     public static function getRepository(): string|null
     {
-        return static::$repository;
+        return null;
     }
 
     /**
@@ -119,7 +74,7 @@ abstract class Entity extends Model implements EntityContract
     #[Override]
     public static function getRelationshipProperties(): array
     {
-        return static::$relationshipProperties;
+        return [];
     }
 
     /**
@@ -128,8 +83,14 @@ abstract class Entity extends Model implements EntityContract
     #[Override]
     public static function getUnStorableFields(): array
     {
-        return static::$unStorableFields;
+        return [];
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    abstract public static function getTableName(): string;
 
     /**
      * Get the id field's value.

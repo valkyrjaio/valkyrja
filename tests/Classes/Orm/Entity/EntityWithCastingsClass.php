@@ -23,9 +23,6 @@ use Valkyrja\Type\Int\IntT;
  */
 class EntityWithCastingsClass extends Entity
 {
-    /** @inheritDoc */
-    protected static string $tableName = 'entities_with_castings';
-
     public int $id;
     public string $name;
 
@@ -34,6 +31,15 @@ class EntityWithCastingsClass extends Entity
 
     /** @var int[]|IntT[]|non-empty-string|null Property with IntT array cast */
     public array|string|null $scores = null;
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'entities_with_castings';
+    }
 
     /**
      * @inheritDoc

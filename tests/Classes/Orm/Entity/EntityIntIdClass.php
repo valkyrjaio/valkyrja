@@ -21,13 +21,17 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
  */
 class EntityIntIdClass extends Entity
 {
+    public int $id;
+    public string $name;
+
     /**
      * @inheritDoc
      */
-    protected static string $tableName = 'test';
-
-    public int $id;
-    public string $name;
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'test';
+    }
 
     public function setId(string|int $id): void
     {
