@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Cli\Command;
 
+use Valkyrja\Application\Cli\Command\Constant\CommandName;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -24,8 +25,6 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 
 class CacheCommand
 {
-    public const string NAME = 'config:cache';
-
     /**
      * The help text.
      */
@@ -35,7 +34,7 @@ class CacheCommand
     }
 
     #[Route(
-        name: self::NAME,
+        name: CommandName::CONFIG_CACHE,
         description: 'Cache the config',
         helpText: [self::class, 'help'],
     )]
