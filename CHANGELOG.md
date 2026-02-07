@@ -1,6 +1,18 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.29.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.30.0...master)
+
+## [v25.30.0](https://github.com/valkyrjaio/valkyrja/compare/v25.29.0...v25.30.0) - 2026-02-06
+
+* [Documentation] Update readme by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/578
+* [Documentation] Add supported versions to readme. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/579
+* [Type] Update id types' support classes to factory. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/580
+* [CI] Fix bug in RemoveNonConflictingAliasInUseStatementRector by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/581
+* [Tests] Update all test classes to final by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/582
+* [CI] Add phparkitect rule for final test classes. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/583
+* [CI] Add rector rules for self in final classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/584
+* [CI] Cleanup the phpcodesniffer ruleset file by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/585
+* [Documentation] Update readme formatting. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/586
 
 ## [v25.29.0](https://github.com/valkyrjaio/valkyrja/compare/v25.28.0...v25.29.0) - 2026-02-06
 
