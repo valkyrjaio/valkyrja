@@ -18,7 +18,7 @@ use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Uuid\Contract\UuidV7Contract;
-use Valkyrja\Type\Uuid\Support\UuidV7 as Helper;
+use Valkyrja\Type\Uuid\Factory\UuidV7Factory;
 
 use function gettype;
 use function is_string;
@@ -34,7 +34,7 @@ class UuidV7 extends Type implements UuidV7Contract
      */
     public function __construct(string $subject)
     {
-        Helper::validate($subject);
+        UuidV7Factory::validate($subject);
 
         $this->subject = $subject;
     }

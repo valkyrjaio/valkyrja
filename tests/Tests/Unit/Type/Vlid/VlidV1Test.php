@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid;
 
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Vlid\Support\VlidV1 as Helper;
+use Valkyrja\Type\Vlid\Factory\VlidV1Factory as Helper;
 use Valkyrja\Type\Vlid\VlidV1 as Id;
 
 use function json_encode;

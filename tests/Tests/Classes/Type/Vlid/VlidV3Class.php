@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Type\Vlid;
 
-use Valkyrja\Type\Vlid\Support\VlidV3;
+use Valkyrja\Type\Vlid\Factory\VlidV3Factory;
 
 /**
  * Test wrapper for VlidV3 to expose protected methods and allow state manipulation.
  */
-class VlidV3Class extends VlidV3
+class VlidV3Class extends VlidV3Factory
 {
     /**
      * Set the time static property.
