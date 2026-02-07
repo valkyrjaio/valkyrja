@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Type\Model;
 
+use Override;
 use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
@@ -141,6 +142,7 @@ class CastableModelClass extends CastableModel
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getCastings(): array
     {
         return [
