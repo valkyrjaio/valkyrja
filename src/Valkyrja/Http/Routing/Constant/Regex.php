@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Constant;
 
-use Valkyrja\Type\Ulid\Support\Ulid;
-use Valkyrja\Type\Uuid\Support\Uuid;
-use Valkyrja\Type\Uuid\Support\UuidV1;
-use Valkyrja\Type\Uuid\Support\UuidV3;
-use Valkyrja\Type\Uuid\Support\UuidV4;
-use Valkyrja\Type\Uuid\Support\UuidV5;
-use Valkyrja\Type\Uuid\Support\UuidV6;
-use Valkyrja\Type\Uuid\Support\UuidV7;
-use Valkyrja\Type\Uuid\Support\UuidV8;
-use Valkyrja\Type\Vlid\Support\Vlid;
-use Valkyrja\Type\Vlid\Support\VlidV1;
-use Valkyrja\Type\Vlid\Support\VlidV2;
-use Valkyrja\Type\Vlid\Support\VlidV3;
-use Valkyrja\Type\Vlid\Support\VlidV4;
+use Valkyrja\Type\Ulid\Factory\UlidFactory;
+use Valkyrja\Type\Uuid\Factory\UuidFactory;
+use Valkyrja\Type\Uuid\Factory\UuidV1Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV3Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV4Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV5Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV6Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV7Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV8Factory;
+use Valkyrja\Type\Vlid\Factory\VlidFactory;
+use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
+use Valkyrja\Type\Vlid\Factory\VlidV2Factory;
+use Valkyrja\Type\Vlid\Factory\VlidV3Factory;
+use Valkyrja\Type\Vlid\Factory\VlidV4Factory;
 
 final class Regex
 {
@@ -38,22 +38,22 @@ final class Regex
 
     public const string SLUG = '[a-zA-Z0-9-]+';
 
-    public const string UUID    = Uuid::REGEX;
-    public const string UUID_V1 = UuidV1::REGEX;
-    public const string UUID_V3 = UuidV3::REGEX;
-    public const string UUID_V4 = UuidV4::REGEX;
-    public const string UUID_V5 = UuidV5::REGEX;
-    public const string UUID_V6 = UuidV6::REGEX;
-    public const string UUID_V7 = UuidV7::REGEX;
-    public const string UUID_V8 = UuidV8::REGEX;
+    public const string UUID    = UuidFactory::REGEX;
+    public const string UUID_V1 = UuidV1Factory::REGEX;
+    public const string UUID_V3 = UuidV3Factory::REGEX;
+    public const string UUID_V4 = UuidV4Factory::REGEX;
+    public const string UUID_V5 = UuidV5Factory::REGEX;
+    public const string UUID_V6 = UuidV6Factory::REGEX;
+    public const string UUID_V7 = UuidV7Factory::REGEX;
+    public const string UUID_V8 = UuidV8Factory::REGEX;
 
-    public const string ULID = Ulid::REGEX;
+    public const string ULID = UlidFactory::REGEX;
 
-    public const string VLID    = Vlid::REGEX;
-    public const string VLID_V1 = VlidV1::REGEX;
-    public const string VLID_V2 = VlidV2::REGEX;
-    public const string VLID_V3 = VlidV3::REGEX;
-    public const string VLID_V4 = VlidV4::REGEX;
+    public const string VLID    = VlidFactory::REGEX;
+    public const string VLID_V1 = VlidV1Factory::REGEX;
+    public const string VLID_V2 = VlidV2Factory::REGEX;
+    public const string VLID_V3 = VlidV3Factory::REGEX;
+    public const string VLID_V4 = VlidV4Factory::REGEX;
 
     public const string ALPHA                = '[a-zA-Z]+';
     public const string ALPHA_LOWERCASE      = '[a-z]+';

@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Vlid;
 
 use Valkyrja\Type\Vlid\Contract\VlidV4Contract;
-use Valkyrja\Type\Vlid\Support\VlidV4 as Helper;
+use Valkyrja\Type\Vlid\Factory\VlidV4Factory;
 
 class VlidV4 extends Vlid implements VlidV4Contract
 {
     public function __construct(string|null $subject = null)
     {
         if ($subject !== null) {
-            Helper::validate($subject);
+            VlidV4Factory::validate($subject);
         }
 
-        parent::__construct($subject ?? Helper::generate());
+        parent::__construct($subject ?? VlidV4Factory::generate());
     }
 }

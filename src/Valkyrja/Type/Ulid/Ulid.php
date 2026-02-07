@@ -18,7 +18,7 @@ use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Contract\UlidContract;
-use Valkyrja\Type\Ulid\Support\Ulid as Helper;
+use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 use function gettype;
@@ -37,11 +37,11 @@ class Ulid extends Type implements UlidContract
     public function __construct(string|null $subject = null)
     {
         if ($subject !== null) {
-            Helper::validate($subject);
+            UlidFactory::validate($subject);
         }
 
         $this->subject = $subject
-            ?? Helper::generate();
+            ?? UlidFactory::generate();
     }
 
     /**

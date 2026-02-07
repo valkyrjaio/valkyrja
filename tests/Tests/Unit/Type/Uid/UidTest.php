@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Uid;
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Uid\Support\Uid as Helper;
+use Valkyrja\Type\Uid\Factory\UidFactory as Helper;
 use Valkyrja\Type\Uid\Throwable\Exception\InvalidUidException;
 use Valkyrja\Type\Uid\Uid;
 

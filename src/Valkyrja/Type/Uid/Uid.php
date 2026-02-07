@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Uid\Contract\UidContract;
-use Valkyrja\Type\Uid\Support\Uid as Helper;
+use Valkyrja\Type\Uid\Factory\UidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 use function gettype;
@@ -34,7 +34,7 @@ class Uid extends Type implements UidContract
      */
     public function __construct(string $subject)
     {
-        Helper::validate($subject);
+        UidFactory::validate($subject);
 
         $this->subject = $subject;
     }

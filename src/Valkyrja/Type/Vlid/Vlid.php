@@ -19,7 +19,8 @@ use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Vlid\Contract\VlidContract;
-use Valkyrja\Type\Vlid\Support\Vlid as Helper;
+use Valkyrja\Type\Vlid\Factory\VlidFactory;
+use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
 
 use function gettype;
 use function is_string;
@@ -38,11 +39,11 @@ class Vlid extends Type implements VlidContract
     public function __construct(string|null $subject = null)
     {
         if ($subject !== null) {
-            Helper::validate($subject);
+            VlidFactory::validate($subject);
         }
 
         $this->subject = $subject
-            ?? Helper::generate();
+            ?? VlidV1Factory::generate();
     }
 
     /**
