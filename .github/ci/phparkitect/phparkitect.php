@@ -260,6 +260,17 @@ return static function (Config $config): void {
         ->because('All non-enums should not be named with Enum');
 
     $testRules[] = Rule::allClasses()
+        ->that(new ResideInOneOfTheseNamespaces('*Tests\\'))
+        ->andThat(new NotHaveNameMatching('*TestCase'))
+        ->andThat(new NotHaveNameMatching('*AttributeClass'))
+        ->andThat(new NotHaveNameMatching('*EnvClass'))
+        ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Tests\\Classes\\Vendor'))
+        ->andThat(new IsNotAbstract())
+        ->andThat(new IsNotTrait())
+        ->should(new IsFinal())
+        ->because('All test classes should be final');
+
+    $testRules[] = Rule::allClasses()
         ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
         ->andThat(new NotHaveNameMatching('*Enum'))
         ->andThat(new IsNotTrait())
