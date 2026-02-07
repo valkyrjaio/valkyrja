@@ -1,6 +1,13 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.28.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.29.0...master)
+
+## [v25.29.0](https://github.com/valkyrjaio/valkyrja/compare/v25.28.0...v25.29.0) - 2026-02-06
+
+* [Application] Change cache to data by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/574
+* [Orm] Deprecate entity static properties by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/575
+* [Tests] Reorganize tests directory. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/576
+* [CI] Update rector to v2.3.6 from v2.3.5 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/577
 
 ## [v25.28.0](https://github.com/valkyrjaio/valkyrja/compare/v25.27.0...v25.28.0) - 2026-02-06
 
