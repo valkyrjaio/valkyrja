@@ -22,7 +22,7 @@ use PhpParser\Node\Stmt\Use_;
 use PhpParser\NodeFinder;
 use Rector\PhpParser\Node\FileNode;
 use Rector\Rector\AbstractRector;
-use RectorPrefix202601\Nette\Utils\Strings;
+use RectorPrefix202602\Nette\Utils\Strings;
 use Symplify\RuleDocGenerator\Exception\PoorDocumentationException;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
