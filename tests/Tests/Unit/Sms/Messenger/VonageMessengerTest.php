@@ -21,7 +21,7 @@ use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Tests\Classes\Vendor\Vonage\ClientClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Vonage\Client;
-use Vonage\Client\Exception\Exception as VonageException;
+use Vonage\Client\Exception\Exception;
 use Vonage\SMS\Client as SmsClient;
 use Vonage\SMS\Message\SMS;
 
@@ -48,7 +48,7 @@ class VonageMessengerTest extends TestCase
 
     /**
      * @throws ClientExceptionInterface
-     * @throws VonageException
+     * @throws Exception
      */
     public function testSendSuccess(): void
     {
@@ -97,9 +97,9 @@ class VonageMessengerTest extends TestCase
         $this->smsClient
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new VonageException('Failed to send SMS'));
+            ->willThrowException(new Exception('Failed to send SMS'));
 
-        $this->expectException(VonageException::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Failed to send SMS');
 
         $messenger = new VonageMessenger($this->vonageClient);

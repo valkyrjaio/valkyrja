@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Uuid;
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Uuid\Factory\UuidV1Factory as Helper;
-use Valkyrja\Type\Uuid\UuidV1 as Id;
+use Valkyrja\Type\Uuid\Factory\UuidV1Factory;
+use Valkyrja\Type\Uuid\UuidV1;
 
 use function json_encode;
 
@@ -28,9 +28,9 @@ class UuidV1Test extends TestCase
      */
     public function testConstruct(): void
     {
-        $id = new Id();
+        $id = new UuidV1();
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV1Factory::isValid($id->asValue()));
     }
 
     /**
@@ -38,9 +38,9 @@ class UuidV1Test extends TestCase
      */
     public function testFromValue(): void
     {
-        $id = Id::fromValue(Helper::generate());
+        $id = UuidV1::fromValue(UuidV1Factory::generate());
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV1Factory::isValid($id->asValue()));
     }
 
     /**
@@ -50,14 +50,14 @@ class UuidV1Test extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Id::fromValue(1);
+        UuidV1::fromValue(1);
     }
 
     public function testAsFlatValue(): void
     {
-        $id = new Id();
+        $id = new UuidV1();
 
-        self::assertTrue(Helper::isValid($id->asFlatValue()));
+        self::assertTrue(UuidV1Factory::isValid($id->asFlatValue()));
     }
 
     /**
@@ -65,9 +65,9 @@ class UuidV1Test extends TestCase
      */
     public function testModify(): void
     {
-        $value    = Helper::generate();
-        $type     = new Id($value);
-        $newValue = Helper::generate();
+        $value    = UuidV1Factory::generate();
+        $type     = new UuidV1($value);
+        $newValue = UuidV1Factory::generate();
 
         $modified = $type->modify(static fn (string $subject): string => $newValue);
 
@@ -83,8 +83,8 @@ class UuidV1Test extends TestCase
      */
     public function testIntJsonSerialize(): void
     {
-        $value = Helper::generate();
-        $type  = new Id($value);
+        $value = UuidV1Factory::generate();
+        $type  = new UuidV1($value);
 
         self::assertSame(json_encode($value), json_encode($type));
     }

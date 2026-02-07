@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri\Psr;
 
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
-use Valkyrja\Http\Message\Uri\Psr\Uri as Psr;
+use Valkyrja\Http\Message\Uri\Psr\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 class UriTest extends TestCase
@@ -26,7 +26,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getScheme()->value, $psr->getScheme());
     }
@@ -35,7 +35,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getAuthority(), $psr->getAuthority());
     }
@@ -44,7 +44,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getUserInfo(), $psr->getUserInfo());
     }
@@ -53,7 +53,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getHost(), $psr->getHost());
     }
@@ -62,7 +62,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getPort(), $psr->getPort());
     }
@@ -71,7 +71,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getPath(), $psr->getPath());
     }
@@ -80,7 +80,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getQuery(), $psr->getQuery());
     }
@@ -89,7 +89,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->getFragment(), $psr->getFragment());
     }
@@ -100,7 +100,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withScheme($value);
 
         self::assertSame($value, $psr->getScheme());
@@ -113,7 +113,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withUserInfo($value);
 
         self::assertSame($value, $psr->getUserInfo());
@@ -126,7 +126,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withHost($value);
 
         self::assertSame($value, $psr->getHost());
@@ -139,7 +139,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withPort($value);
 
         self::assertSame($value, $psr->getPort());
@@ -152,7 +152,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withPath($value);
 
         self::assertSame($value, $psr->getPath());
@@ -165,7 +165,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withQuery($value);
 
         self::assertSame($value, $psr->getQuery());
@@ -178,7 +178,7 @@ class UriTest extends TestCase
 
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
         $psr = $psr->withFragment($value);
 
         self::assertSame($value, $psr->getFragment());
@@ -189,7 +189,7 @@ class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        $psr = new Psr($uri);
+        $psr = new Uri($uri);
 
         self::assertSame($uri->__toString(), $psr->__toString());
     }

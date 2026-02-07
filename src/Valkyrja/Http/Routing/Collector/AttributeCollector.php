@@ -17,7 +17,7 @@ use Override;
 use ReflectionException;
 use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -31,7 +31,7 @@ use Valkyrja\Http\Routing\Attribute\Route\Path;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
-use Valkyrja\Http\Routing\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Parameter as DataParameter;
@@ -46,10 +46,10 @@ use Valkyrja\Reflection\Reflector\Reflector;
 use function array_column;
 use function is_a;
 
-class AttributeCollector implements Contract
+class AttributeCollector implements CollectorContract
 {
     public function __construct(
-        protected AttributeContract $attributes = new Collector(),
+        protected AttributeCollectorContract $attributes = new Collector(),
         protected ReflectorContract $reflection = new Reflector(),
         protected ProcessorContract $processor = new Processor()
     ) {

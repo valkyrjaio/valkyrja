@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Constant;
 
-use Valkyrja\Api\Provider\ComponentProvider as ApiComponentProvider;
+use Valkyrja\Api\Provider\ComponentProvider;
 use Valkyrja\Application\Provider\ComponentProvider as ApplicationComponentProvider;
 use Valkyrja\Attribute\Provider\ComponentProvider as AttributeComponentProvider;
 use Valkyrja\Auth\Provider\ComponentProvider as AuthComponentProvider;
@@ -45,7 +45,7 @@ use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 final class ComponentClass
 {
     public const string APPLICATION     = ApplicationComponentProvider::class;
-    public const string API             = ApiComponentProvider::class;
+    public const string API             = ComponentProvider::class;
     public const string ATTRIBUTE       = AttributeComponentProvider::class;
     public const string AUTH            = AuthComponentProvider::class;
     public const string BROADCAST       = BroadcastComponentProvider::class;

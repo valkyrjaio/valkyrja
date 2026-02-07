@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Constant;
 
-use Valkyrja\Api\Provider\ComponentProvider as ApiComponentProvider;
+use Valkyrja\Api\Provider\ComponentProvider;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Provider\ComponentProvider as ApplicationComponentProvider;
 use Valkyrja\Attribute\Provider\ComponentProvider as AttributeComponentProvider;
@@ -52,7 +52,7 @@ class ComponentClassTest extends TestCase
     public function testValues(): void
     {
         self::assertSame(ApplicationComponentProvider::class, ComponentClass::APPLICATION);
-        self::assertSame(ApiComponentProvider::class, ComponentClass::API);
+        self::assertSame(ComponentProvider::class, ComponentClass::API);
         self::assertSame(AttributeComponentProvider::class, ComponentClass::ATTRIBUTE);
         self::assertSame(AuthComponentProvider::class, ComponentClass::AUTH);
         self::assertSame(BroadcastComponentProvider::class, ComponentClass::BROADCAST);

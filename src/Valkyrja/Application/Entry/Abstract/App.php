@@ -19,7 +19,7 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Container\Data\Data as ContainerData;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ServiceProvider;
@@ -131,7 +131,7 @@ abstract class App
     protected static function loadContainerData(ContainerContract $container): void
     {
         ServiceProvider::publishData(container: $container);
-        $containerData = $container->getSingleton(ContainerData::class);
+        $containerData = $container->getSingleton(Data::class);
 
         $container->setFromData($containerData);
     }

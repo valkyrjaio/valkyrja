@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Vlid;
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Vlid\Factory\VlidFactory as Helper;
-use Valkyrja\Type\Vlid\Vlid as Id;
+use Valkyrja\Type\Vlid\Factory\VlidFactory;
+use Valkyrja\Type\Vlid\Vlid;
 
 use function json_encode;
 
@@ -25,9 +25,9 @@ class VlidTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $vlid = new Id();
+        $vlid = new Vlid();
 
-        self::assertTrue(Helper::isValid($vlid->asValue()));
+        self::assertTrue(VlidFactory::isValid($vlid->asValue()));
     }
 
     /**
@@ -35,9 +35,9 @@ class VlidTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $vlid = Id::fromValue(Helper::v1());
+        $vlid = Vlid::fromValue(VlidFactory::v1());
 
-        self::assertTrue(Helper::isValid($vlid->asValue()));
+        self::assertTrue(VlidFactory::isValid($vlid->asValue()));
     }
 
     /**
@@ -47,14 +47,14 @@ class VlidTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Id::fromValue(1);
+        Vlid::fromValue(1);
     }
 
     public function testAsFlatValue(): void
     {
-        $id = new Id();
+        $id = new Vlid();
 
-        self::assertTrue(Helper::isValid($id->asFlatValue()));
+        self::assertTrue(VlidFactory::isValid($id->asFlatValue()));
     }
 
     /**
@@ -62,9 +62,9 @@ class VlidTest extends TestCase
      */
     public function testModify(): void
     {
-        $value    = Helper::generate();
-        $type     = new Id($value);
-        $newValue = Helper::generate();
+        $value    = VlidFactory::generate();
+        $type     = new Vlid($value);
+        $newValue = VlidFactory::generate();
 
         $modified = $type->modify(static fn (string $subject): string => $newValue);
 
@@ -80,8 +80,8 @@ class VlidTest extends TestCase
      */
     public function testIntJsonSerialize(): void
     {
-        $value = Helper::generate();
-        $type  = new Id($value);
+        $value = VlidFactory::generate();
+        $type  = new Vlid($value);
 
         self::assertSame(json_encode($value), json_encode($type));
     }
