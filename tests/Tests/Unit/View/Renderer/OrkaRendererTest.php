@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\View\Renderer;
 
 use Override;
 use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Orka\Replacement\Variable\Unescaped;
@@ -35,7 +36,7 @@ use function unlink;
  */
 class OrkaRendererTest extends TestCase
 {
-    protected const string TEMPLATES_DIR = __DIR__ . '/../../../templates/orka';
+    protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/orka';
 
     protected string $originalBasePath;
 
@@ -43,7 +44,7 @@ class OrkaRendererTest extends TestCase
     protected function setUp(): void
     {
         $this->originalBasePath = Directory::$BASE_PATH;
-        Directory::$BASE_PATH   = __DIR__ . '/../../..';
+        Directory::$BASE_PATH   = EnvClass::APP_DIR;
     }
 
     #[Override]

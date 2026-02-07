@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\View\Renderer;
 
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\View\Renderer\Contract\RendererContract;
@@ -27,7 +28,7 @@ use const DIRECTORY_SEPARATOR;
  */
 class PhpRendererTest extends TestCase
 {
-    protected const string TEMPLATES_DIR = __DIR__ . '/../../../templates/php';
+    protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/php';
 
     public function testImplementsContract(): void
     {

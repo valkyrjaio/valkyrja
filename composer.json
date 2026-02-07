@@ -57,7 +57,7 @@
   },
   "autoload-dev"      : {
     "psr-4" : {
-      "Valkyrja\\Tests\\" : "tests"
+      "Valkyrja\\Tests\\" : "tests/Tests"
     },
     "files" : [
       "functions/helpers.php"
