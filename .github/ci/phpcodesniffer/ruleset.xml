@@ -1,9 +1,7 @@
 <ruleset name="ValkyrjaProjectStandards">
-    <!-- Include the Slevomat standard -->
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
             <property name="rootNamespaces" type="array">
-                <!-- Map your source directories to their root namespaces -->
                 <element key="src/Valkyrja" value="Valkyrja" />
                 <element key="tests/Tests" value="Valkyrja\Tests" />
             </property>
@@ -16,6 +14,7 @@
             </property>
         </properties>
     </rule>
+
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
             <property name="allowPartialUses" type="bool" value="false" />
@@ -23,9 +22,6 @@
             <property name="searchAnnotations" type="bool" value="true" />
         </properties>
     </rule>
-
-    <!-- You can still include other standards if needed -->
-    <!--    <rule ref="PSR12" />-->
 
     <exclude-pattern>*/.github/*</exclude-pattern>
     <exclude-pattern>*/.phpunit.cache/*</exclude-pattern>
