@@ -11,11 +11,11 @@ About Valkyrja
 
 > This repository contains the core code of the Valkyrja framework.
 
-Valkyrja is the Old Norse spelling for Valkryries, a mythical creature that
-would guide warriors to Valhallah (the afterlife and a better place) after
-death. In a similar sense, the Valkyrja framework guides your application to be
-in a better state. Let this fast, light, and robust framework do the heavy
-lifting for your app.
+Valkyrja (pronounced "Valk-ear-ya") is the Old Norse spelling for Valkyrie, a
+mythical creature that would guide warriors to Valhalla (the afterlife and a
+better place) after death. In a similar sense, the Valkyrja framework guides
+your application to be in a better state. Let this fast, light, and robust
+framework do the heavy lifting for your app.
 
 <p>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/require/php" alt="PHP Version Require"></a>
