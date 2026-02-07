@@ -21,7 +21,7 @@ use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogCacheTest extends TestCase
+final class LogCacheTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 

@@ -21,7 +21,7 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ListBashCommandTest extends TestCase
+final class ListBashCommandTest extends TestCase
 {
     public function testRunWithNoRoutes(): void
     {

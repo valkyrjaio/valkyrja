@@ -19,7 +19,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 /**
  * Testable Singleton class.
  */
-class SingletonClass implements ServiceContract
+final class SingletonClass implements ServiceContract
 {
     public static function make(ContainerContract $container, array $arguments = []): static
     {

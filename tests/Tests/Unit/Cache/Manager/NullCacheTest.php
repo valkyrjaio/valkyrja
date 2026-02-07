@@ -18,7 +18,7 @@ use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullCacheTest extends TestCase
+final class NullCacheTest extends TestCase
 {
     protected NullCache $cache;
 

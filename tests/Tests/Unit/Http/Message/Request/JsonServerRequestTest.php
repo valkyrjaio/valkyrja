@@ -26,7 +26,7 @@ use function json_encode;
 use const ARRAY_FILTER_USE_KEY;
 use const JSON_THROW_ON_ERROR;
 
-class JsonServerRequestTest extends TestCase
+final class JsonServerRequestTest extends TestCase
 {
     /**
      * @throws JsonException

@@ -20,7 +20,7 @@ use Valkyrja\Orm\Factory\DateFactory;
 /**
  * Test helper class that simulates DateTime creation failure.
  */
-class DateFactoryWithFailingDateTimeClass extends DateFactory
+final class DateFactoryWithFailingDateTimeClass extends DateFactory
 {
     /**
      * @inheritDoc

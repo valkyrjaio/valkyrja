@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the RetrievalByResetToken class.
  */
-class RetrievalByResetTokenTest extends TestCase
+final class RetrievalByResetTokenTest extends TestCase
 {
     protected const string RESET_TOKEN = 'abc123def456';
 

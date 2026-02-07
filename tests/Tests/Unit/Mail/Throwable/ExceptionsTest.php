@@ -21,7 +21,7 @@ use Valkyrja\Mail\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {

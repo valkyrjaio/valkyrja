@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RequestFactoryTest extends TestCase
+final class RequestFactoryTest extends TestCase
 {
     public function testFromGlobal(): void
     {

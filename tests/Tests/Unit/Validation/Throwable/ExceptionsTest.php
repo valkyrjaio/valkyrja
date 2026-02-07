@@ -22,7 +22,7 @@ use Valkyrja\Validation\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Validation\Throwable\Exception\RuntimeException;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {

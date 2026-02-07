@@ -17,7 +17,7 @@ use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SoftDeleteFieldsTest extends TestCase
+final class SoftDeleteFieldsTest extends TestCase
 {
     public function testHasIsDeletedPropertyWithDefaultFalse(): void
     {

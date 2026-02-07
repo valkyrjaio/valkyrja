@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the PhpPasswordHasher class.
  */
-class PhpPasswordHasherTest extends TestCase
+final class PhpPasswordHasherTest extends TestCase
 {
     protected const string PASSWORD         = 'SecureP@ssw0rd!';
     protected const string WRONG_PASSWORD   = 'WrongPassword';

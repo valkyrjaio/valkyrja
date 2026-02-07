@@ -19,7 +19,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 /**
  * Testable Service class.
  */
-class ServiceClass implements ServiceContract
+final class ServiceClass implements ServiceContract
 {
     public function __construct(
         public ContainerContract $container,

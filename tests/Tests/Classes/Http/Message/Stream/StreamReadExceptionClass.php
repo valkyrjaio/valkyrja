@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 /**
  * Class StreamReadExceptionClass.
  */
-class StreamReadExceptionClass extends Stream
+final class StreamReadExceptionClass extends Stream
 {
     #[Override]
     protected function readFromStream($stream, int $length): string|false

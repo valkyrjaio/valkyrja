@@ -27,7 +27,7 @@ use Valkyrja\Tests\Functional\Abstract\TestCase;
 /**
  * Test the Http service.
  */
-class HttpTest extends TestCase
+final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;
 

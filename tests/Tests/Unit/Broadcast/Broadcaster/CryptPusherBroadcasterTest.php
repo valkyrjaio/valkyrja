@@ -26,7 +26,7 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CryptPusherBroadcasterTest extends TestCase
+final class CryptPusherBroadcasterTest extends TestCase
 {
     protected MockObject&Pusher $pusher;
 

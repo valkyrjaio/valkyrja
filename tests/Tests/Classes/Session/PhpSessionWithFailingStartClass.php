@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\PhpSession;
 /**
  * Test class that simulates session_start() failure.
  */
-class PhpSessionWithFailingStartClass extends PhpSession
+final class PhpSessionWithFailingStartClass extends PhpSession
 {
     /**
      * @inheritDoc

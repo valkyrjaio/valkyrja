@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the RequestStruct attribute.
  */
-class RequestStructTest extends TestCase
+final class RequestStructTest extends TestCase
 {
     public function testAttribute(): void
     {

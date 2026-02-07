@@ -23,7 +23,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the CallableDispatch.
  */
-class CallableDispatchTest extends TestCase
+final class CallableDispatchTest extends TestCase
 {
     /**
      * @throws JsonException

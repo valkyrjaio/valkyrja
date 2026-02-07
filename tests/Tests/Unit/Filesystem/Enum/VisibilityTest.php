@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Filesystem\Enum;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class VisibilityTest extends TestCase
+final class VisibilityTest extends TestCase
 {
     public function testPublicCase(): void
     {

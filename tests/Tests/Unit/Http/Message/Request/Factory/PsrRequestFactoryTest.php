@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrRequestFactoryTest extends TestCase
+final class PsrRequestFactoryTest extends TestCase
 {
     public function testFromPsr(): void
     {

@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Lowercase;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class LowercaseTest extends TestCase
+final class LowercaseTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Path attribute.
  */
-class PathTest extends TestCase
+final class PathTest extends TestCase
 {
     public function testAttribute(): void
     {

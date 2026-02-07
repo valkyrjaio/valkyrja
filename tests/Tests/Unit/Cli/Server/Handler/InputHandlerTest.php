@@ -31,7 +31,7 @@ use Valkyrja\Throwable\Exception\Exception;
 
 use function ob_start;
 
-class InputHandlerTest extends TestCase
+final class InputHandlerTest extends TestCase
 {
     public function testHandle(): void
     {

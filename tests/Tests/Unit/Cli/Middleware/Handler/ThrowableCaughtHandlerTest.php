@@ -23,7 +23,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 /**
  * Test the throwable caught handler.
  */
-class ThrowableCaughtHandlerTest extends HandlerTestCase
+final class ThrowableCaughtHandlerTest extends HandlerTestCase
 {
     protected Exception $exception;
 

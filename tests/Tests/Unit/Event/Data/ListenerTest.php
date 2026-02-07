@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Listener service.
  */
-class ListenerTest extends TestCase
+final class ListenerTest extends TestCase
 {
     public function testEventId(): void
     {

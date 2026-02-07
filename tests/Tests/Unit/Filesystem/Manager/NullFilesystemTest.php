@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
 
-class NullFilesystemTest extends TestCase
+final class NullFilesystemTest extends TestCase
 {
     protected NullFilesystem $filesystem;
 

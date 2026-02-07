@@ -22,7 +22,7 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 /**
  * Class TestRouteMatchedHandler.
  */
-class RouteMatchedHandlerClass extends RouteMatchedHandler
+final class RouteMatchedHandlerClass extends RouteMatchedHandler
 {
     protected int $count = 0;
 

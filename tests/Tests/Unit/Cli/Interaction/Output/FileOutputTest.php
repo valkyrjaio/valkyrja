@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the FileOutput class.
  */
-class FileOutputTest extends TestCase
+final class FileOutputTest extends TestCase
 {
     public function testOutputMessage(): void
     {

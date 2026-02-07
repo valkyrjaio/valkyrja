@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\String\Factory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\Factory\MbStringFactory;
 
-class MbStringFactoryTest extends TestCase
+final class MbStringFactoryTest extends TestCase
 {
     protected const string VALUE     = 'Some Words';
     protected const string UPPERCASE = 'UPPERCASE';

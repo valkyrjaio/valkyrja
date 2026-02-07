@@ -17,7 +17,7 @@ use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\Dateable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class DateableTest extends TestCase
+final class DateableTest extends TestCase
 {
     public function testGetDateFormatReturnsDefaultFormat(): void
     {

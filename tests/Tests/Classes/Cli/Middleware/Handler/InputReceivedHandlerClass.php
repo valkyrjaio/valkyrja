@@ -21,7 +21,7 @@ use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 /**
  * Class TestInputReceivedHandler.
  */
-class InputReceivedHandlerClass extends InputReceivedHandler
+final class InputReceivedHandlerClass extends InputReceivedHandler
 {
     protected int $count = 0;
 

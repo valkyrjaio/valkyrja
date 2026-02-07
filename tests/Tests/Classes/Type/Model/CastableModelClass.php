@@ -29,7 +29,7 @@ use Valkyrja\Type\Model\Abstract\CastableModel;
  *
  * @property string $protected
  */
-class CastableModelClass extends CastableModel
+final class CastableModelClass extends CastableModel
 {
     public const ARRAY_PROPERTY                   = 'array';
     public const ARRAY_ARRAY_PROPERTY             = 'arrayArray';

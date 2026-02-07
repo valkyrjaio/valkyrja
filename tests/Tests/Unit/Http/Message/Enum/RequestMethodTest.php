@@ -18,7 +18,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function count;
 
-class RequestMethodTest extends TestCase
+final class RequestMethodTest extends TestCase
 {
     public function testAllMethod(): void
     {

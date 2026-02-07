@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
 // Testing valid class attributes that will be attached to the constructor
 #[Listener(AttributesCollectorTest::VALUE1, 'Attributed2ClassValue1')]
 #[Listener(AttributesCollectorTest::VALUE2, 'Attributed2ClassValue2')]
-class Attributed2Class
+final class Attributed2Class
 {
     public function __construct()
     {

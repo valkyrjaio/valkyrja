@@ -26,7 +26,7 @@ use Valkyrja\View\Template\Template;
 /**
  * Test the TwigRenderer class.
  */
-class TwigRendererTest extends TestCase
+final class TwigRendererTest extends TestCase
 {
     /**
      * @throws Exception

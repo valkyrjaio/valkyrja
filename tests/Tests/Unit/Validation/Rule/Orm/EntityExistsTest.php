@@ -25,7 +25,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Orm\EntityExists;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class EntityExistsTest extends TestCase
+final class EntityExistsTest extends TestCase
 {
     protected MockObject&ManagerContract $orm;
 

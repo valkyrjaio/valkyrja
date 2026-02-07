@@ -19,7 +19,7 @@ use Attribute;
  * Attribute child class used for unit testing.
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class AttributeClassChildClass extends AttributeClass
+final class AttributeClassChildClass extends AttributeClass
 {
     public mixed $default = null;
 

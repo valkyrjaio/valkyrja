@@ -20,7 +20,7 @@ use Valkyrja\Type\Model\Abstract\Model;
  *
  * @property string $protected
  */
-class SimpleModelClass extends Model
+final class SimpleModelClass extends Model
 {
     protected string $protected;
 }

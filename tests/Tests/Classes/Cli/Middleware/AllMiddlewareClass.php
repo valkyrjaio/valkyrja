@@ -28,7 +28,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-class AllMiddlewareClass implements InputReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, ThrowableCaughtMiddlewareContract, ExitedMiddlewareContract
+final class AllMiddlewareClass implements InputReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, ThrowableCaughtMiddlewareContract, ExitedMiddlewareContract
 {
     public function exited(InputContract $input, OutputContract $output, ExitedHandlerContract $handler): void
     {

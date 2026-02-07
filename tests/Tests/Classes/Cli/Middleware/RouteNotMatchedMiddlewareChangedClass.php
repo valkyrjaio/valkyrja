@@ -20,7 +20,7 @@ use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
-class RouteNotMatchedMiddlewareChangedClass implements RouteNotMatchedMiddlewareContract
+final class RouteNotMatchedMiddlewareChangedClass implements RouteNotMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

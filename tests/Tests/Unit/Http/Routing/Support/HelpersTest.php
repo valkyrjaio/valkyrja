@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class DateFactoryTest.
  */
-class HelpersTest extends TestCase
+final class HelpersTest extends TestCase
 {
     public function testTrimPath(): void
     {

@@ -21,7 +21,7 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrLoggerTest extends TestCase
+final class PsrLoggerTest extends TestCase
 {
     protected PsrLogger $logger;
 

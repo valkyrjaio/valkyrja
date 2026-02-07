@@ -22,7 +22,7 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 /**
  * Class TestThrowableCaughtHandler.
  */
-class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
+final class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
 {
     protected int $count = 0;
 

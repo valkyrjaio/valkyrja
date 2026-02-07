@@ -18,7 +18,7 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NoInteractionOptionParameterTest extends TestCase
+final class NoInteractionOptionParameterTest extends TestCase
 {
     public function testValues(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Container\Throwable\Exception;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class InvalidReferenceExceptionTest extends TestCase
+final class InvalidReferenceExceptionTest extends TestCase
 {
     public function testMessage(): void
     {

@@ -38,7 +38,7 @@ use function ob_start;
 /**
  * Class RequestHandlerTest.
  */
-class RequestHandlerTest extends TestCase
+final class RequestHandlerTest extends TestCase
 {
     /**
      * @throws MockObjectException

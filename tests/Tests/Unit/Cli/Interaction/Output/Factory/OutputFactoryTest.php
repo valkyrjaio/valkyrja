@@ -29,7 +29,7 @@ use function fopen;
 /**
  * Test the OutputFactory class.
  */
-class OutputFactoryTest extends TestCase
+final class OutputFactoryTest extends TestCase
 {
     public function testCreateOutput(): void
     {

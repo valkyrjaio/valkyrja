@@ -24,7 +24,7 @@ use Valkyrja\Session\Manager\Jwt\Cli\EncryptedOptionJwtSession;
 use Valkyrja\Session\Manager\Jwt\Cli\OptionJwtSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EncryptedOptionJwtSessionTest extends TestCase
+final class EncryptedOptionJwtSessionTest extends TestCase
 {
     protected CryptContract&MockObject $crypt;
     protected JwtContract&MockObject $jwt;

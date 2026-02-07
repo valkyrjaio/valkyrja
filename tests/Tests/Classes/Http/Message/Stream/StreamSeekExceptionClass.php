@@ -21,7 +21,7 @@ use const SEEK_SET;
 /**
  * Class StreamSeekExceptionClass.
  */
-class StreamSeekExceptionClass extends Stream
+final class StreamSeekExceptionClass extends Stream
 {
     #[Override]
     protected function seekStream($stream, int $offset, int $whence = SEEK_SET): int

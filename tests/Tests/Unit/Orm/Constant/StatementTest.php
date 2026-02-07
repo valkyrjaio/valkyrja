@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Constant;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class StatementTest extends TestCase
+final class StatementTest extends TestCase
 {
     public function testSelectConstant(): void
     {

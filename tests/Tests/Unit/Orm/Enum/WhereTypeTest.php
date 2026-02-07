@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Enum;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class WhereTypeTest extends TestCase
+final class WhereTypeTest extends TestCase
 {
     public function testDefaultWhereType(): void
     {

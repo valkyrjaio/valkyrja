@@ -30,7 +30,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Api manager class.
  */
-class ApiTest extends TestCase
+final class ApiTest extends TestCase
 {
     protected ResponseFactoryContract&MockObject $responseFactory;
     protected JsonResponseContract&MockObject $jsonResponse;
@@ -158,7 +158,7 @@ class ApiTest extends TestCase
         $data = $result->getData();
         self::assertIsArray($data);
 
-        // The class name should be lowercased
+        // The class  name should be lowercased
         $keys = array_keys($data);
         self::assertCount(1, $keys);
     }

@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ClassDispatch.
  */
-class ClassDispatchTest extends TestCase
+final class ClassDispatchTest extends TestCase
 {
     /**
      * @throws JsonException

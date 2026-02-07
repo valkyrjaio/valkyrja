@@ -47,7 +47,7 @@ use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 /**
  * Test the ComponentClass constant.
  */
-class ComponentClassTest extends TestCase
+final class ComponentClassTest extends TestCase
 {
     public function testValues(): void
     {

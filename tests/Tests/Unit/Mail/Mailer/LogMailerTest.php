@@ -22,7 +22,7 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogMailerTest extends TestCase
+final class LogMailerTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 

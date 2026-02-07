@@ -23,7 +23,7 @@ use function array_filter;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class ServerRequestTest extends TestCase
+final class ServerRequestTest extends TestCase
 {
     public function testServerParams(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\Factory\StringFactory;
 
-class StringFactoryTest extends TestCase
+final class StringFactoryTest extends TestCase
 {
     protected const string VALUE = 'Some Words';
 

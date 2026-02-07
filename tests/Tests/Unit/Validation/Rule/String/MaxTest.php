@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Max;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class MaxTest extends TestCase
+final class MaxTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

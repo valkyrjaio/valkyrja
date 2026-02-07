@@ -18,7 +18,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 
-class EntityCastTest extends TestCase
+final class EntityCastTest extends TestCase
 {
     public function testExtendsCast(): void
     {

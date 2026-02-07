@@ -22,7 +22,7 @@ use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgum
 use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {

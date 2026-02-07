@@ -30,7 +30,7 @@ use function serialize;
 /**
  * Test the SessionAuthenticator class.
  */
-class SessionAuthenticatorTest extends TestCase
+final class SessionAuthenticatorTest extends TestCase
 {
     protected const string USER_ID = 'user-123';
 

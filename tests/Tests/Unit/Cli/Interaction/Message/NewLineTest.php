@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the NewLine class.
  */
-class NewLineTest extends TestCase
+final class NewLineTest extends TestCase
 {
     public function testDefaults(): void
     {

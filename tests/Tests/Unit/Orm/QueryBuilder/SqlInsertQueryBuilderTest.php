@@ -24,7 +24,7 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\SqlInsertQueryBuilder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqlInsertQueryBuilderTest extends TestCase
+final class SqlInsertQueryBuilderTest extends TestCase
 {
     protected SqlInsertQueryBuilder $builder;
 

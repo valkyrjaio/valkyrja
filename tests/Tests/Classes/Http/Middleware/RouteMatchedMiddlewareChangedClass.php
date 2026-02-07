@@ -24,7 +24,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 /**
  * Class TestRouteMatchedMiddlewareChanged.
  */
-class RouteMatchedMiddlewareChangedClass implements RouteMatchedMiddlewareContract
+final class RouteMatchedMiddlewareChangedClass implements RouteMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

@@ -22,7 +22,7 @@ use Valkyrja\Type\Uid\Uid;
 
 use function json_encode;
 
-class UidTest extends TestCase
+final class UidTest extends TestCase
 {
     public function testConstruct(): void
     {

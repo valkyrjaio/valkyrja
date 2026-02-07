@@ -35,7 +35,7 @@ use const PHP_SESSION_ACTIVE;
 
 #[RunTestsInSeparateProcesses]
 #[PreserveGlobalState(false)]
-class PhpSessionTest extends TestCase
+final class PhpSessionTest extends TestCase
 {
     protected CookieParams $cookieParams;
 

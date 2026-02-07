@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Id;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\Id;
 
-class IdTest extends TestCase
+final class IdTest extends TestCase
 {
     protected const int    INT_VALUE    = 1;
     protected const float  FLOAT_VALUE  = 1.0;

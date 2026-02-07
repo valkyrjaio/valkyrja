@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ExiterTest extends TestCase
+final class ExiterTest extends TestCase
 {
     public function testDefault(): void
     {

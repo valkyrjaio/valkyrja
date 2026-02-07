@@ -19,7 +19,7 @@ use Valkyrja\Orm\Schema\Contract\MigrationContract;
 use Valkyrja\Tests\Classes\Orm\Schema\MigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MigrationTest extends TestCase
+final class MigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 

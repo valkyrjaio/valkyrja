@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 /**
  * Class DeferredProviderClass.
  */
-class DeferredProviderClass extends ProviderClass
+final class DeferredProviderClass implements ProviderContract
 {
     public static bool $publishCalled = false;
 
@@ -28,5 +29,33 @@ class DeferredProviderClass extends ProviderClass
     public static function deferred(): bool
     {
         return true;
+    }
+
+    #[Override]
+    public static function publishers(): array
+    {
+        return [
+            ProvidedSecondaryClass::class => [self::class, 'publishSecondary'],
+        ];
+    }
+
+    #[Override]
+    public static function provides(): array
+    {
+        return [
+            ProvidedClass::class,
+            ProvidedSecondaryClass::class,
+        ];
+    }
+
+    #[Override]
+    public static function publish(object $providerAware): void
+    {
+        self::$publishCalled = true;
+    }
+
+    public static function publishSecondary(object $providerAware): void
+    {
+        self::$publishSecondaryCalled = true;
     }
 }

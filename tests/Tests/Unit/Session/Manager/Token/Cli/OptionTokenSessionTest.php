@@ -21,7 +21,7 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class OptionTokenSessionTest extends TestCase
+final class OptionTokenSessionTest extends TestCase
 {
     protected InputContract&MockObject $input;
     protected OptionTokenSession $session;

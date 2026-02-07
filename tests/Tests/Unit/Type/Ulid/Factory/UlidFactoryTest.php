@@ -27,7 +27,7 @@ use Valkyrja\Type\Vlid\Factory\VlidV2Factory;
 use Valkyrja\Type\Vlid\Factory\VlidV3Factory;
 use Valkyrja\Type\Vlid\Factory\VlidV4Factory;
 
-class UlidFactoryTest extends TestCase
+final class UlidFactoryTest extends TestCase
 {
     #[Override]
     protected function setUp(): void

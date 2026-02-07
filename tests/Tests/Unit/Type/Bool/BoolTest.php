@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Bool;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Bool\BoolT;
 
-class BoolTest extends TestCase
+final class BoolTest extends TestCase
 {
     protected const bool VALUE = true;
 

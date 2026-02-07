@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the LogClient service.
  */
-class LogClientTest extends TestCase
+final class LogClientTest extends TestCase
 {
     /**
      * @throws Exception

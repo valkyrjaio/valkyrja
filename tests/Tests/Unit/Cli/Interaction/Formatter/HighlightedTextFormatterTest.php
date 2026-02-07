@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the HighlightedTextFormatter class.
  */
-class HighlightedTextFormatterTest extends TestCase
+final class HighlightedTextFormatterTest extends TestCase
 {
     public function testFormat(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ResponseFileGeneratorTest extends TestCase
+final class ResponseFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {

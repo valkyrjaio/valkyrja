@@ -26,7 +26,7 @@ use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\SqlUpdateQueryBuilder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqlUpdateQueryBuilderTest extends TestCase
+final class SqlUpdateQueryBuilderTest extends TestCase
 {
     protected SqlUpdateQueryBuilder $builder;
 

@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Time support class.
  */
-class TimeTest extends TestCase
+final class TimeTest extends TestCase
 {
     public function testFreezeWithCurrentTime(): void
     {

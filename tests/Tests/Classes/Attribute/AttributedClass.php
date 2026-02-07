@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Attribute\Collector\CollectorTest;
 #[AttributeClass(CollectorTest::VALUE1)]
 #[AttributeClass(CollectorTest::VALUE2)]
 #[AttributeClassChildClass(CollectorTest::VALUE3, CollectorTest::THREE)]
-class AttributedClass
+final class AttributedClass
 {
     #[AttributeClass(CollectorTest::VALUE4)]
     #[AttributeClass(CollectorTest::VALUE5)]
@@ -31,7 +31,7 @@ class AttributedClass
     #[AttributeClass(CollectorTest::VALUE7)]
     #[AttributeClass(CollectorTest::VALUE8)]
     #[AttributeClassChildClass(CollectorTest::VALUE9, CollectorTest::NINE)]
-    protected const string PROTECTED_CONST = 'Protected Const';
+    private const string PROTECTED_CONST = 'Protected Const';
 
     #[AttributeClass(CollectorTest::VALUE10)]
     #[AttributeClass(CollectorTest::VALUE11)]

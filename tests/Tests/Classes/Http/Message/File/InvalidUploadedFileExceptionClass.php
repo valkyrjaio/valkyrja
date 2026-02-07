@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 /**
  * Class InvalidUploadedFileExceptionClass.
  */
-class InvalidUploadedFileExceptionClass extends UploadedFile
+final class InvalidUploadedFileExceptionClass extends UploadedFile
 {
     public function __construct()
     {

@@ -21,7 +21,7 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HeaderTokenSessionTest extends TestCase
+final class HeaderTokenSessionTest extends TestCase
 {
     protected ServerRequestContract&MockObject $request;
 

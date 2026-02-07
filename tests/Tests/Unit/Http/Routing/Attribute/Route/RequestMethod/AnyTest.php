@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Any attribute.
  */
-class AnyTest extends TestCase
+final class AnyTest extends TestCase
 {
     public function testDefaults(): void
     {

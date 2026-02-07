@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the OptionFactory class.
  */
-class OptionFactoryTest extends TestCase
+final class OptionFactoryTest extends TestCase
 {
     public function testFromArgInvalidArg(): void
     {

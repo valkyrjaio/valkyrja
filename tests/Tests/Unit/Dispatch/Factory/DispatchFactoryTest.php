@@ -31,7 +31,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the DispatchFactory.
  */
-class DispatchFactoryTest extends TestCase
+final class DispatchFactoryTest extends TestCase
 {
     /**
      * @throws ReflectionException

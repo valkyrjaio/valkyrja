@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
 
-class FlysystemFilesystemTest extends TestCase
+final class FlysystemFilesystemTest extends TestCase
 {
     protected MockObject&FilesystemOperator $flysystem;
 

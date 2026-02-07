@@ -28,7 +28,7 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 /**
  * Test the functionality of the Application.
  */
-class ApplicationTest extends TestCase
+final class ApplicationTest extends TestCase
 {
     /**
      * Test the container() helper method.

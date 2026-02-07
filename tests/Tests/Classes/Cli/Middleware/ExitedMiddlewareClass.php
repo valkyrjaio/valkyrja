@@ -22,7 +22,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 /**
  * Class TestExitedMiddleware.
  */
-class ExitedMiddlewareClass implements ExitedMiddlewareContract
+final class ExitedMiddlewareClass implements ExitedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

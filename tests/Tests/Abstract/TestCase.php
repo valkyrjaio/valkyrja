@@ -29,7 +29,7 @@ use function trait_exists;
 abstract class TestCase extends PHPUnitTestCase
 {
     /**
-     * Assert if a class is of expected class or has the expected class as one of its parents.
+     * Assert if a final classis of expected final classor has the expected final classas one of its parents.
      *
      * @param class-string $expected The expected class
      * @param class-string $actual   The actual string
@@ -66,8 +66,8 @@ abstract class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * @param class-string $expected The class inherited
-     * @param class-string $actual   The class to test
+     * @param class-string $expected The final classinherited
+     * @param class-string $actual   The final classto test
      */
     protected static function isA(string $expected, string $actual): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ValueTest extends TestCase
+final class ValueTest extends TestCase
 {
     public function testImplementsStringable(): void
     {

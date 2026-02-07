@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 /**
  * Class TestTerminatedHandler.
  */
-class TerminatedHandlerClass extends TerminatedHandler
+final class TerminatedHandlerClass extends TerminatedHandler
 {
     protected int $count = 0;
 

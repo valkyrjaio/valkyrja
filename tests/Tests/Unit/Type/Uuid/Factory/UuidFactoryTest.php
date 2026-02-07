@@ -24,7 +24,7 @@ use Valkyrja\Type\Uuid\Factory\UuidV5Factory;
 use Valkyrja\Type\Uuid\Factory\UuidV6Factory;
 use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidException;
 
-class UuidFactoryTest extends UuidTestCase
+final class UuidFactoryTest extends UuidTestCase
 {
     public function testDefaultVersion(): void
     {

@@ -16,6 +16,6 @@ namespace Valkyrja\Tests\Classes\Container\Provider;
 /**
  * Class ProvidedSecondaryClass.
  */
-class ProvidedSecondaryClass
+final class ProvidedSecondaryClass
 {
 }

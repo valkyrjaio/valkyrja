@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Patch attribute.
  */
-class PatchTest extends TestCase
+final class PatchTest extends TestCase
 {
     public function testDefaults(): void
     {

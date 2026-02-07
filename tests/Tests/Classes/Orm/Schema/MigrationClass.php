@@ -18,7 +18,7 @@ use Valkyrja\Orm\Schema\Abstract\Migration;
 /**
  * Concrete migration class for testing.
  */
-class MigrationClass extends Migration
+final class MigrationClass extends Migration
 {
     public bool $runCalled      = false;
     public bool $rollbackCalled = false;

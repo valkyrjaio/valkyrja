@@ -21,7 +21,7 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
 
-class CommandWithAllMiddlewareClass
+final class CommandWithAllMiddlewareClass
 {
     /** @var non-empty-string */
     public const string NAME = 'test2';

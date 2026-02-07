@@ -39,7 +39,7 @@ use function unserialize;
 
 use const SEEK_END;
 
-class StreamTest extends TestCase
+final class StreamTest extends TestCase
 {
     public function testIsSeekable(): void
     {

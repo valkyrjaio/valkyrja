@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the HttpException class.
  */
-class HttpExceptionTest extends TestCase
+final class HttpExceptionTest extends TestCase
 {
     public function testConstruct(): void
     {

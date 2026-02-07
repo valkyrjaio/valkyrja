@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\EndsWith;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class EndsWithTest extends TestCase
+final class EndsWithTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Enum;
 use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ComparisonTest extends TestCase
+final class ComparisonTest extends TestCase
 {
     public function testEqualsOperator(): void
     {

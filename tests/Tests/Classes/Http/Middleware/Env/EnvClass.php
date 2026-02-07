@@ -32,7 +32,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 /**
  * Class Env.
  */
-class EnvClass extends Env
+final class EnvClass extends Env
 {
     /************************************************************
      *

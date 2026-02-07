@@ -22,7 +22,7 @@ use function serialize;
 /**
  * Test the Data service.
  */
-class DataTest extends TestCase
+final class DataTest extends TestCase
 {
     public function testDefault(): void
     {

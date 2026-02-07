@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Argument class.
  */
-class ArgumentTest extends TestCase
+final class ArgumentTest extends TestCase
 {
     public function testValue(): void
     {

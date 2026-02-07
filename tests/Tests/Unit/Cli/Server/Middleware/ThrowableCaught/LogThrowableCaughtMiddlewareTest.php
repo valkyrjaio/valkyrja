@@ -21,7 +21,7 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
 
-class LogThrowableCaughtMiddlewareTest extends TestCase
+final class LogThrowableCaughtMiddlewareTest extends TestCase
 {
     public function testThrowableCaught(): void
     {

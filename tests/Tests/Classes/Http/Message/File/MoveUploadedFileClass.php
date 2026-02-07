@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 /**
  * Class MoveUploadedFileClass.
  */
-class MoveUploadedFileClass extends UploadedFile
+final class MoveUploadedFileClass extends UploadedFile
 {
     /**
      * @inheritDoc

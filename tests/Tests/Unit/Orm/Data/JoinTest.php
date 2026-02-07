@@ -21,7 +21,7 @@ use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Orm\Enum\JoinType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class JoinTest extends TestCase
+final class JoinTest extends TestCase
 {
     public function testImplementsStringable(): void
     {

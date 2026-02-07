@@ -33,7 +33,7 @@ use function is_string;
 /**
  * Test the ApiThrowableCaughtMiddleware.
  */
-class ApiThrowableCaughtMiddlewareTest extends TestCase
+final class ApiThrowableCaughtMiddlewareTest extends TestCase
 {
     protected ApiContract&MockObject $api;
     protected ResponseFactoryContract&MockObject $responseFactory;

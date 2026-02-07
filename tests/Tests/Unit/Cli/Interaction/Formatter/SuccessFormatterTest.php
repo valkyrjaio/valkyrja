@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the SuccessFormatter class.
  */
-class SuccessFormatterTest extends TestCase
+final class SuccessFormatterTest extends TestCase
 {
     public function testFormat(): void
     {

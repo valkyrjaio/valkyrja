@@ -25,7 +25,7 @@ use Valkyrja\Orm\QueryBuilder\SqlSelectQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\SqlUpdateQueryBuilder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqlQueryBuilderFactoryTest extends TestCase
+final class SqlQueryBuilderFactoryTest extends TestCase
 {
     protected SqlQueryBuilderFactory $factory;
 

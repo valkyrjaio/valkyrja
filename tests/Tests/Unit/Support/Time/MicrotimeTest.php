@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Microtime support class.
  */
-class MicrotimeTest extends TestCase
+final class MicrotimeTest extends TestCase
 {
     public function testFreezeWithCurrentTime(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ClearCacheCommand service.
  */
-class CacheCommandTest extends TestCase
+final class CacheCommandTest extends TestCase
 {
     public function testRun(): void
     {

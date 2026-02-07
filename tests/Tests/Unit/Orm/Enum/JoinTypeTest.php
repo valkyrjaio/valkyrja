@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Enum;
 use Valkyrja\Orm\Enum\JoinType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class JoinTypeTest extends TestCase
+final class JoinTypeTest extends TestCase
 {
     public function testDefaultJoinType(): void
     {

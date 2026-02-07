@@ -18,7 +18,7 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class FirebaseJwtTest extends TestCase
+final class FirebaseJwtTest extends TestCase
 {
     protected FirebaseJwt $jwt;
 

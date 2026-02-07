@@ -22,7 +22,7 @@ use Valkyrja\Type\Enum\CastType;
 /**
  * Test the Parameter service.
  */
-class ParameterTest extends TestCase
+final class ParameterTest extends TestCase
 {
     public function testDefaultValues(): void
     {

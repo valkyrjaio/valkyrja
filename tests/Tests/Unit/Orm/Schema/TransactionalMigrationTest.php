@@ -21,7 +21,7 @@ use Valkyrja\Orm\Schema\Contract\MigrationContract;
 use Valkyrja\Tests\Classes\Orm\Schema\TransactionalMigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class TransactionalMigrationTest extends TestCase
+final class TransactionalMigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 

@@ -18,7 +18,7 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullCryptTest extends TestCase
+final class NullCryptTest extends TestCase
 {
     protected NullCrypt $crypt;
 

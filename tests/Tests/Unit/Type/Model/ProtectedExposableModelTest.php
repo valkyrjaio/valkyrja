@@ -22,7 +22,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the FullyExposed model.
  */
-class ProtectedExposableModelTest extends TestCase
+final class ProtectedExposableModelTest extends TestCase
 {
     public function testGetExposable(): void
     {

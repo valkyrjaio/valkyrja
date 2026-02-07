@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Cookie\CookieSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CookieSessionTest extends TestCase
+final class CookieSessionTest extends TestCase
 {
     protected ServerRequestContract&MockObject $request;
 

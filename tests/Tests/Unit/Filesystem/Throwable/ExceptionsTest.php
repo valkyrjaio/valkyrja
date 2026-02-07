@@ -22,7 +22,7 @@ use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {

@@ -17,7 +17,7 @@ use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class InMemoryFileTest extends TestCase
+final class InMemoryFileTest extends TestCase
 {
     public function testDefaultValues(): void
     {

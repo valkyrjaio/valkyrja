@@ -20,7 +20,7 @@ use function array_key_exists;
 /**
  * Class ProvidersAwareClass.
  */
-class ProvidersAwareClass
+final class ProvidersAwareClass
 {
     use ProvidersAware;
 

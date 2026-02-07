@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the RetrievalByIdAndUsername class.
  */
-class RetrievalByIdAndUsernameTest extends TestCase
+final class RetrievalByIdAndUsernameTest extends TestCase
 {
     protected const string STRING_ID = 'user-uuid-123';
     protected const int INT_ID       = 42;

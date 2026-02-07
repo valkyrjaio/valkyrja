@@ -20,7 +20,7 @@ use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Orm\Enum\JoinType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class InnerJoinTest extends TestCase
+final class InnerJoinTest extends TestCase
 {
     public function testExtendsJoin(): void
     {

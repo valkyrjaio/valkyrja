@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Head attribute.
  */
-class HeadTest extends TestCase
+final class HeadTest extends TestCase
 {
     public function testDefaults(): void
     {

@@ -21,7 +21,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class ComponentTest extends TestCase
+final class ComponentTest extends TestCase
 {
     /**
      * @throws JsonException

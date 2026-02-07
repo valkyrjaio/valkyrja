@@ -18,7 +18,7 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HelpOptionParameterTest extends TestCase
+final class HelpOptionParameterTest extends TestCase
 {
     public function testValues(): void
     {

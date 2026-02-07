@@ -19,7 +19,7 @@ use Valkyrja\Orm\Schema\Abstract\SqlFileMigration;
 /**
  * Concrete SQL file migration class for testing.
  */
-class SqlFileMigrationClass extends SqlFileMigration
+final class SqlFileMigrationClass extends SqlFileMigration
 {
     public string $runFilePath      = '';
     public string $rollbackFilePath = '';

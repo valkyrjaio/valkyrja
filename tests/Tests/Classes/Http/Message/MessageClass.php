@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Trait\Message;
 /**
  * Class MessageClass.
  */
-class MessageClass
+final class MessageClass
 {
     use Message;
 

@@ -22,7 +22,7 @@ use function preg_replace;
 /**
  * Test the EndForeach_ class.
  */
-class EndForeachTest extends TestCase
+final class EndForeachTest extends TestCase
 {
     public function testImplementsContract(): void
     {

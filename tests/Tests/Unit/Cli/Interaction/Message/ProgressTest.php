@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Progress class.
  */
-class ProgressTest extends TestCase
+final class ProgressTest extends TestCase
 {
     public function testIsComplete(): void
     {

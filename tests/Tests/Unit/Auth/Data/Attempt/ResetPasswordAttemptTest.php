@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ResetPasswordAttempt class.
  */
-class ResetPasswordAttemptTest extends TestCase
+final class ResetPasswordAttemptTest extends TestCase
 {
     protected const string RESET_TOKEN  = 'abc123def456';
     protected const string NEW_PASSWORD = 'NewSecureP@ssw0rd!';

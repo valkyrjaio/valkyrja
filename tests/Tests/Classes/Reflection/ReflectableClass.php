@@ -18,7 +18,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 /**
  * Class to test reflections.
  */
-class ReflectableClass
+final class ReflectableClass
 {
     public const string STRING = 'const-string';
 

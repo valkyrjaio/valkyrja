@@ -18,7 +18,7 @@ use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LoggerTest extends TestCase
+final class LoggerTest extends TestCase
 {
     public function testLogWithInvalidLevelThrowsException(): void
     {

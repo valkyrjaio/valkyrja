@@ -19,7 +19,7 @@ use Valkyrja\Type\Bool\FalseT;
 
 use const JSON_THROW_ON_ERROR;
 
-class FalseTest extends TestCase
+final class FalseTest extends TestCase
 {
     protected const false VALUE = false;
 

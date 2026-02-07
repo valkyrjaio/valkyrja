@@ -35,7 +35,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
  * Command class to test commands.
  */
 #[Name('className')]
-class CommandWithAllAttributesClass
+final class CommandWithAllAttributesClass
 {
     /** @var non-empty-string */
     public const string NAME = 'test2';

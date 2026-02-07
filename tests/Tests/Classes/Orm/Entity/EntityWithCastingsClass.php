@@ -21,7 +21,7 @@ use Valkyrja\Type\Int\IntT;
 /**
  * Entity class with castings for testing.
  */
-class EntityWithCastingsClass extends Entity
+final class EntityWithCastingsClass extends Entity
 {
     public int $id;
     public string $name;

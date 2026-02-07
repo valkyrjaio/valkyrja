@@ -20,7 +20,7 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 /**
  * Class LitespeedRequestHandler.
  */
-class LitespeedRequestHandlerClass extends RequestHandler
+final class LitespeedRequestHandlerClass extends RequestHandler
 {
     protected bool $hasRequestBeenFinishedWithLitespeed = false;
 

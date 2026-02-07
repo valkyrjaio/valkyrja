@@ -22,7 +22,7 @@ use Valkyrja\Type\Object\Support\Cls;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
 
-class ClsTest extends TestCase
+final class ClsTest extends TestCase
 {
     protected string $validProperty = 'test';
 

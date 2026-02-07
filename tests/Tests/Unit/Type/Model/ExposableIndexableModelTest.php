@@ -25,7 +25,7 @@ use function method_exists;
 /**
  * Test the ExposableIndexableModel model.
  */
-class ExposableIndexableModelTest extends TestCase
+final class ExposableIndexableModelTest extends TestCase
 {
     public function testContract(): void
     {

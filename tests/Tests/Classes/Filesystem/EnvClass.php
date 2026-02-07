@@ -18,7 +18,7 @@ use Valkyrja\Application\Env\Env;
 /**
  * Class EnvClass.
  */
-class EnvClass extends Env
+final class EnvClass extends Env
 {
     /************************************************************
      *

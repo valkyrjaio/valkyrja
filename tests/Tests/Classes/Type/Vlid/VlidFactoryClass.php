@@ -19,14 +19,14 @@ use Valkyrja\Type\Vlid\Factory\VlidFactory;
 /**
  * Test wrapper for Vlid to expose protected methods and allow state manipulation.
  */
-class VlidFactoryClass extends VlidFactory
+final class VlidFactoryClass extends VlidFactory
 {
     /**
      * Set the time static property.
      */
     public static function setTime(string $time): void
     {
-        static::$time = $time;
+        self::$time = $time;
     }
 
     /**
@@ -34,7 +34,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function getStoredTime(): string
     {
-        return static::$time;
+        return self::$time;
     }
 
     /**
@@ -44,7 +44,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function setRandomBytes(array $randomBytes): void
     {
-        static::$randomBytes = $randomBytes;
+        self::$randomBytes = $randomBytes;
     }
 
     /**
@@ -54,7 +54,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function getRandomBytes(): array
     {
-        return static::$randomBytes;
+        return self::$randomBytes;
     }
 
     /**
@@ -62,7 +62,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function testGetTimeFromDateTime(DateTimeInterface $dateTime): string
     {
-        return static::getTimeFromDateTime($dateTime);
+        return self::getTimeFromDateTime($dateTime);
     }
 
     /**
@@ -70,7 +70,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function testAreAllRandomBytesMax(): bool
     {
-        return static::areAllRandomBytesMax();
+        return self::areAllRandomBytesMax();
     }
 
     /**
@@ -78,7 +78,7 @@ class VlidFactoryClass extends VlidFactory
      */
     public static function reset(): void
     {
-        static::$time        = '';
-        static::$randomBytes = [];
+        self::$time        = '';
+        self::$randomBytes = [];
     }
 }

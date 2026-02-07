@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Message class.
  */
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     public function testDefaults(): void
     {

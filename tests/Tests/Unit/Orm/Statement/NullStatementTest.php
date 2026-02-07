@@ -18,7 +18,7 @@ use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullStatementTest extends TestCase
+final class NullStatementTest extends TestCase
 {
     protected NullStatement $statement;
 

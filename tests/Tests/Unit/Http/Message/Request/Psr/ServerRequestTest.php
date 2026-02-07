@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ServerRequestTest extends TestCase
+final class ServerRequestTest extends TestCase
 {
     public function testServerParam(): void
     {

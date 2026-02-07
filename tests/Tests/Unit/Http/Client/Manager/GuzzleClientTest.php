@@ -32,7 +32,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the GuzzleClient service.
  */
-class GuzzleClientTest extends TestCase
+final class GuzzleClientTest extends TestCase
 {
     /**
      * @throws Exception

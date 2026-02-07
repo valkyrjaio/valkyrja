@@ -23,7 +23,7 @@ use function str_contains;
 /**
  * Test the ErrorMessage class.
  */
-class AnswerTest extends TestCase
+final class AnswerTest extends TestCase
 {
     public function testInvalidCallable(): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Type\Model\Abstract\Model;
 /**
  * Model class to test an invalid isset method.
  */
-class ModelInvalidIssetMethodClass extends Model
+final class ModelInvalidIssetMethodClass extends Model
 {
     public string $test = 'test';
 

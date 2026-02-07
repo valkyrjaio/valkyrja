@@ -31,7 +31,7 @@ use function restore_exception_handler;
 /**
  * Test the Cli service.
  */
-class CliTest extends TestCase
+final class CliTest extends TestCase
 {
     protected static bool $runCalled = false;
 

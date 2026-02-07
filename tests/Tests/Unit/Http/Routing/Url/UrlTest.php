@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class UrlTest.
  */
-class UrlTest extends TestCase
+final class UrlTest extends TestCase
 {
     protected const string ROUTE_NAME  = 'route';
     protected const string ROUTE2_NAME = 'route2';

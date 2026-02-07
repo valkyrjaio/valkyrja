@@ -33,7 +33,7 @@ use Valkyrja\View\Renderer\TwigRenderer;
 /**
  * Test the ServiceProvider.
  */
-class ServiceProviderTest extends ServiceProviderTestCase
+final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;

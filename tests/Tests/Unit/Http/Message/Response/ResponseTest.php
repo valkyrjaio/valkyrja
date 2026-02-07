@@ -26,7 +26,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
     use function ob_get_contents;
     use function ob_start;
 
-    class ResponseTest extends TestCase
+    final class ResponseTest extends TestCase
     {
         /** @var string[] */
         public static array $headers = [];

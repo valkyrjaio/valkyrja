@@ -27,7 +27,7 @@ use function random_bytes;
 
 use const SODIUM_CRYPTO_SECRETBOX_KEYBYTES;
 
-class SodiumCryptTest extends TestCase
+final class SodiumCryptTest extends TestCase
 {
     protected SodiumCrypt $crypt;
 

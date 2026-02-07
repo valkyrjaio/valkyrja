@@ -24,7 +24,7 @@ use Valkyrja\Tests\EnvClass;
 /**
  * Test case for functional tests.
  */
-class TestCase extends AbstractTestCase
+abstract class TestCase extends AbstractTestCase
 {
     /**
      * The application.

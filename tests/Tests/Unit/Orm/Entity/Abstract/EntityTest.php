@@ -25,7 +25,7 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Int\IntT;
 
-class EntityTest extends TestCase
+final class EntityTest extends TestCase
 {
     public function testImplementsEntityContract(): void
     {

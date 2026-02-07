@@ -29,10 +29,10 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the container service.
  */
-class ContainerTest extends TestCase
+final class ContainerTest extends TestCase
 {
     /**
-     * The class to test with.
+     * The class  to test with.
      *
      * @var Container
      */

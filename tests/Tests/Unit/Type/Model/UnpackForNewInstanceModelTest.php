@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the UnpackForNewInstanceModelTest model.
  */
-class UnpackForNewInstanceModelTest extends TestCase
+final class UnpackForNewInstanceModelTest extends TestCase
 {
     public function testConstructUnpacking(): void
     {

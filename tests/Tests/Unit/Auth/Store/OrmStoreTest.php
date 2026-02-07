@@ -28,7 +28,7 @@ use const PASSWORD_DEFAULT;
 /**
  * Test the OrmStore class.
  */
-class OrmStoreTest extends TestCase
+final class OrmStoreTest extends TestCase
 {
     protected const string USER_ID   = 'user-123';
     protected const string USERNAME  = 'testuser';

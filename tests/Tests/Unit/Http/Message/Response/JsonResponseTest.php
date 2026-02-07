@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class JsonResponseTest extends TestCase
+final class JsonResponseTest extends TestCase
 {
     /** @var array[] */
     protected const array  JSON         = ['test' => ['foo', 'bar']];

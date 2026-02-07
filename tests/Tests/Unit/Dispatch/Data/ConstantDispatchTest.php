@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ConstantDispatch.
  */
-class ConstantDispatchTest extends TestCase
+final class ConstantDispatchTest extends TestCase
 {
     /**
      * @throws JsonException

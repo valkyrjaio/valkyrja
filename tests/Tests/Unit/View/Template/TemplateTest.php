@@ -23,7 +23,7 @@ use Valkyrja\View\Throwable\Exception\InvalidArgumentException;
 /**
  * Test the Template class.
  */
-class TemplateTest extends TestCase
+final class TemplateTest extends TestCase
 {
     /**
      * @throws Exception

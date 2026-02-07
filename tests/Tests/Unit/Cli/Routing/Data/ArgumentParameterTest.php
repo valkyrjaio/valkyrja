@@ -26,7 +26,7 @@ use Valkyrja\Type\Int\IntT;
 /**
  * Test the ArgumentParameter class.
  */
-class ArgumentParameterTest extends TestCase
+final class ArgumentParameterTest extends TestCase
 {
     /** @var non-empty-string */
     protected const string NAME = 'name';

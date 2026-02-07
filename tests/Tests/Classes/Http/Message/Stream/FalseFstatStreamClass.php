@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 /**
  * Class FalseFstatStreamClass.
  */
-class FalseFstatStreamClass extends Stream
+final class FalseFstatStreamClass extends Stream
 {
     #[Override]
     protected function getStreamStats($stream): array|false

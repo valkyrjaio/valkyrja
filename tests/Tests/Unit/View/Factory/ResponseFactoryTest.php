@@ -26,7 +26,7 @@ use Valkyrja\View\Template\Contract\TemplateContract;
 /**
  * Test the ResponseFactory class.
  */
-class ResponseFactoryTest extends TestCase
+final class ResponseFactoryTest extends TestCase
 {
     /**
      * @throws Exception

@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ArgumentFactory class.
  */
-class InputFactoryTest extends TestCase
+final class InputFactoryTest extends TestCase
 {
     public function testDefaults(): void
     {

@@ -18,7 +18,7 @@ use Valkyrja\Orm\Data\Id;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class IdTest extends TestCase
+final class IdTest extends TestCase
 {
     public function testExtendsValue(): void
     {

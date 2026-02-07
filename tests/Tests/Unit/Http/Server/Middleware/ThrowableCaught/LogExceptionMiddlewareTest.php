@@ -25,7 +25,7 @@ use Valkyrja\Throwable\Exception\Exception;
 /**
  * Class LogExceptionMiddlewareTest.
  */
-class LogExceptionMiddlewareTest extends TestCase
+final class LogExceptionMiddlewareTest extends TestCase
 {
     public function testException(): void
     {

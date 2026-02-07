@@ -24,7 +24,7 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 /**
  * Command class to test commands.
  */
-class CommandClass
+final class CommandClass
 {
     /** @var non-empty-string */
     public const string NAME = 'test';

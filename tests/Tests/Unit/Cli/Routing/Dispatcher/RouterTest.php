@@ -36,7 +36,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Router service.
  */
-class RouterTest extends TestCase
+final class RouterTest extends TestCase
 {
     public static function dispatch(): Output
     {

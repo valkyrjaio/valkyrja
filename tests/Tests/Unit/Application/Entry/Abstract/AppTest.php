@@ -82,7 +82,7 @@ use function defined;
 /**
  * Test the App service.
  */
-class AppTest extends TestCase
+final class AppTest extends TestCase
 {
     #[Override]
     protected function tearDown(): void

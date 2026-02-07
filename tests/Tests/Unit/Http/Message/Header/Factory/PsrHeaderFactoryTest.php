@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrHeaderFactoryTest extends TestCase
+final class PsrHeaderFactoryTest extends TestCase
 {
     public function testFromPsr(): void
     {

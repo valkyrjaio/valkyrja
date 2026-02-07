@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the GlobalVariableDispatch.
  */
-class GlobalVariableDispatchTest extends TestCase
+final class GlobalVariableDispatchTest extends TestCase
 {
     /**
      * @throws JsonException

@@ -27,7 +27,7 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PgsqlManagerTest extends TestCase
+final class PgsqlManagerTest extends TestCase
 {
     protected PDO&MockObject $pdo;
 

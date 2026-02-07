@@ -17,7 +17,7 @@ use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MiddlewareTest extends TestCase
+final class MiddlewareTest extends TestCase
 {
     public function testName(): void
     {

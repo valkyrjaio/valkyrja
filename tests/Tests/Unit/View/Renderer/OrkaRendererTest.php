@@ -34,7 +34,7 @@ use function unlink;
 /**
  * Test the OrkaRenderer class.
  */
-class OrkaRendererTest extends TestCase
+final class OrkaRendererTest extends TestCase
 {
     protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/orka';
 

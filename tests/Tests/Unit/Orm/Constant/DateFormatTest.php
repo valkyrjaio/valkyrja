@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Constant;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class DateFormatTest extends TestCase
+final class DateFormatTest extends TestCase
 {
     public function testDefaultFormat(): void
     {

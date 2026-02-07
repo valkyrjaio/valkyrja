@@ -37,7 +37,7 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 /**
  * Test the ServiceProvider.
  */
-class ServiceProviderTest extends ServiceProviderTestCase
+final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
@@ -100,7 +100,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(Env::class, new class extends Env {
-            public const bool EVENT_COLLECTION_USE_DATA         = true;
+            public const bool   EVENT_COLLECTION_USE_DATA       = true;
             public const string EVENT_COLLECTION_DATA_FILE_PATH = 'testPublishCollectionWithData-events.php';
         });
 

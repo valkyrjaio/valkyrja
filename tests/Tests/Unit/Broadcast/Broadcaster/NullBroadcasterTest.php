@@ -18,7 +18,7 @@ use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullBroadcasterTest extends TestCase
+final class NullBroadcasterTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

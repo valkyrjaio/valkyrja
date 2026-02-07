@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Id;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\IntId;
 
-class IntIdTest extends TestCase
+final class IntIdTest extends TestCase
 {
     protected const int    VALUE        = 1;
     protected const string STRING_VALUE = '1';

@@ -17,7 +17,7 @@ use Valkyrja\Mail\Data\Attachment;
 use Valkyrja\Mail\Data\Contract\AttachmentContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class AttachmentTest extends TestCase
+final class AttachmentTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

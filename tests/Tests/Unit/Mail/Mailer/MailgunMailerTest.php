@@ -26,7 +26,7 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MailgunMailerTest extends TestCase
+final class MailgunMailerTest extends TestCase
 {
     protected MockObject&Mailgun $mailgunClient;
 

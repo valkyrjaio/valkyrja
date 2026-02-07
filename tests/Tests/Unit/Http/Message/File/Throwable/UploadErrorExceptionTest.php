@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class UploadErrorExceptionTest extends TestCase
+final class UploadErrorExceptionTest extends TestCase
 {
     public function testMessage(): void
     {

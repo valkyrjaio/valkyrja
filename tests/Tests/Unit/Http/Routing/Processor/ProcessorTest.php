@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class ProcessorTest.
  */
-class ProcessorTest extends TestCase
+final class ProcessorTest extends TestCase
 {
     public function testStaticRoute(): void
     {

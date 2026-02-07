@@ -20,7 +20,7 @@ use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function PHPUnit\Framework\assertSame;
 
-class ArrayFactoryTest extends TestCase
+final class ArrayFactoryTest extends TestCase
 {
     /** @var array[] */
     protected const array VALUE = [

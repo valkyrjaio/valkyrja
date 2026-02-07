@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the attributes collector class.
  */
-class AttributesCollectorTest extends TestCase
+final class AttributesCollectorTest extends TestCase
 {
     /**
      * The value to test with.
@@ -43,7 +43,7 @@ class AttributesCollectorTest extends TestCase
     public const string VALUE2 = TestCase::class;
 
     /**
-     * The class to test with.
+     * The class  to test with.
      */
     protected AttributeCollector $class;
 

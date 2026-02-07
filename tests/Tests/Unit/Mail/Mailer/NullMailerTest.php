@@ -19,7 +19,7 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullMailerTest extends TestCase
+final class NullMailerTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

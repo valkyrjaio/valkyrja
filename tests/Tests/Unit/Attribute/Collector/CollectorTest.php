@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collector service.
  */
-class CollectorTest extends TestCase
+final class CollectorTest extends TestCase
 {
     public const int VALUE1  = 1;
     public const int VALUE2  = 2;
@@ -71,7 +71,7 @@ class CollectorTest extends TestCase
     protected Collector $attributes;
 
     /**
-     * The class to test with.
+     * The class  to test with.
      *
      * @var AttributedClass
      */

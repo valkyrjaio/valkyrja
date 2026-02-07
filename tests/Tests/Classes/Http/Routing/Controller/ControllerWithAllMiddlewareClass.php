@@ -22,7 +22,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\AllMiddlewareClass;
 /**
  * Controller class to test routes.
  */
-class ControllerWithAllMiddlewareClass
+final class ControllerWithAllMiddlewareClass
 {
     /** @var non-empty-string */
     public const string WELCOME_PATH = '/';

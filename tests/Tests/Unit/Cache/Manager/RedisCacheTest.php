@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function is_callable;
 
-class RedisCacheTest extends TestCase
+final class RedisCacheTest extends TestCase
 {
     protected MockObject&Client $client;
 

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Status constants.
  */
-class StatusTest extends TestCase
+final class StatusTest extends TestCase
 {
     public function testSuccessConstant(): void
     {

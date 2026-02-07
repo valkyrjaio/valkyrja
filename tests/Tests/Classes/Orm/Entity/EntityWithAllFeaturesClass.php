@@ -20,13 +20,13 @@ use Valkyrja\Orm\Repository\Repository;
 /**
  * Entity class with all configurable features for testing.
  */
-class EntityWithAllFeaturesClass extends Entity
+final class EntityWithAllFeaturesClass extends Entity
 {
     public int $entity_id;
     public string $name;
-    public string|null $description = null;
-    public string|null $tempField   = null;
-    public mixed $relatedEntity     = null;
+    public string|null $description   = null;
+    public string|null $tempField     = null;
+    public mixed $relatedEntity       = null;
 
     /**
      * @inheritDoc

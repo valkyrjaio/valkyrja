@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Contains;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class ContainsTest extends TestCase
+final class ContainsTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

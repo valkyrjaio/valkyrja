@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 
-class RouteNotMatchedHandlerClass extends RouteNotMatchedHandler
+final class RouteNotMatchedHandlerClass extends RouteNotMatchedHandler
 {
     protected int $count = 0;
 

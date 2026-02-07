@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NameTest extends TestCase
+final class NameTest extends TestCase
 {
     public function testValue(): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 /**
  * Class InvalidDirectoryExceptionClass.
  */
-class InvalidDirectoryExceptionClass extends UploadedFile
+final class InvalidDirectoryExceptionClass extends UploadedFile
 {
     /**
      * @inheritDoc

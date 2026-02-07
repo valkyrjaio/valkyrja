@@ -22,7 +22,7 @@ use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
+final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 {
     public function testWithoutHelpOptions(): void
     {

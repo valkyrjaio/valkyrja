@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Post attribute.
  */
-class PostTest extends TestCase
+final class PostTest extends TestCase
 {
     public function testDefaults(): void
     {

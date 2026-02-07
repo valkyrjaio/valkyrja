@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Required;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class RequiredTest extends TestCase
+final class RequiredTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

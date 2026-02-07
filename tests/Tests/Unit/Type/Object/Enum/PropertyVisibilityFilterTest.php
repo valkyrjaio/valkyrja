@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Object\Enum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 
-class PropertyVisibilityFilterTest extends TestCase
+final class PropertyVisibilityFilterTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Enum\StatusText;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\Support\Enumerable;
 
-class StatusCodeTest extends TestCase
+final class StatusCodeTest extends TestCase
 {
     /**
      * @return int[][]

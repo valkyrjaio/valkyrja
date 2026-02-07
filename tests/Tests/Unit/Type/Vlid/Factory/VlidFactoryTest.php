@@ -29,7 +29,7 @@ use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
 use function strlen;
 
-class VlidFactoryTest extends VlidTestCase
+final class VlidFactoryTest extends VlidTestCase
 {
     #[Override]
     protected function setUp(): void

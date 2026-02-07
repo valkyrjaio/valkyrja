@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Factory
     use Valkyrja\Http\Message\Request\Factory\ServerFactory;
     use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-    class ServerFactoryTest extends TestCase
+    final class ServerFactoryTest extends TestCase
     {
         public static bool $defaultAuthorizationTest   = false;
         public static bool $lowercaseAuthorizationTest = false;

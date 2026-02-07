@@ -21,7 +21,7 @@ use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogBroadcasterTest extends TestCase
+final class LogBroadcasterTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 

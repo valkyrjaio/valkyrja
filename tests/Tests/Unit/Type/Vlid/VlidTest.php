@@ -21,7 +21,7 @@ use Valkyrja\Type\Vlid\Vlid;
 
 use function json_encode;
 
-class VlidTest extends TestCase
+final class VlidTest extends TestCase
 {
     public function testConstruct(): void
     {

@@ -29,7 +29,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the route attribute.
  */
-class RouteTest extends TestCase
+final class RouteTest extends TestCase
 {
     public function testDefaults(): void
     {

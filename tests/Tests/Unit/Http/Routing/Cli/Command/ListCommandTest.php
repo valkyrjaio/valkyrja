@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ListCommand service.
  */
-class ListCommandTest extends TestCase
+final class ListCommandTest extends TestCase
 {
     public function testListCommand(): void
     {

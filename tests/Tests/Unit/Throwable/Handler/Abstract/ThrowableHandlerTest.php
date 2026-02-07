@@ -20,7 +20,7 @@ use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 /**
  * Test the abstract throwable handler.
  */
-class ThrowableHandlerTest extends TestCase
+final class ThrowableHandlerTest extends TestCase
 {
     public function testGetTraceCode(): void
     {

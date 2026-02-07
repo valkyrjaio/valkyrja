@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Enum;
 use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class JoinOperatorTest extends TestCase
+final class JoinOperatorTest extends TestCase
 {
     public function testOnOperator(): void
     {

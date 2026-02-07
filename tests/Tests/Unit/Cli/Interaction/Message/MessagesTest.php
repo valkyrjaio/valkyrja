@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Messages class.
  */
-class MessagesTest extends TestCase
+final class MessagesTest extends TestCase
 {
     public function testEmptyTextException(): void
     {

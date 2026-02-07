@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Tests\Classes\Cli\Routing\Controller\ControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ControllerTest extends TestCase
+final class ControllerTest extends TestCase
 {
     public function testConstruct(): void
     {

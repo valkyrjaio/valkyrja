@@ -18,14 +18,14 @@ use Valkyrja\Type\Vlid\Factory\VlidV2Factory;
 /**
  * Test wrapper for VlidV2 to expose protected methods and allow state manipulation.
  */
-class VlidV2Class extends VlidV2Factory
+final class VlidV2Class extends VlidV2Factory
 {
     /**
      * Set the time static property.
      */
     public static function setTime(string $time): void
     {
-        static::$time = $time;
+        self::$time = $time;
     }
 
     /**
@@ -33,7 +33,7 @@ class VlidV2Class extends VlidV2Factory
      */
     public static function getStoredTime(): string
     {
-        return static::$time;
+        return self::$time;
     }
 
     /**
@@ -43,7 +43,7 @@ class VlidV2Class extends VlidV2Factory
      */
     public static function setRandomBytes(array $randomBytes): void
     {
-        static::$randomBytes = $randomBytes;
+        self::$randomBytes = $randomBytes;
     }
 
     /**
@@ -53,7 +53,7 @@ class VlidV2Class extends VlidV2Factory
      */
     public static function getRandomBytes(): array
     {
-        return static::$randomBytes;
+        return self::$randomBytes;
     }
 
     /**
@@ -61,7 +61,7 @@ class VlidV2Class extends VlidV2Factory
      */
     public static function testAreAllRandomBytesMax(): bool
     {
-        return static::areAllRandomBytesMax();
+        return self::areAllRandomBytesMax();
     }
 
     /**
@@ -69,7 +69,7 @@ class VlidV2Class extends VlidV2Factory
      */
     public static function reset(): void
     {
-        static::$time        = '';
-        static::$randomBytes = [];
+        self::$time        = '';
+        self::$randomBytes = [];
     }
 }

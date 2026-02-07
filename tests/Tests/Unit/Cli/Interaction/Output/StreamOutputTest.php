@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the FileOutput class.
  */
-class StreamOutputTest extends TestCase
+final class StreamOutputTest extends TestCase
 {
     public function testOutputMessage(): void
     {

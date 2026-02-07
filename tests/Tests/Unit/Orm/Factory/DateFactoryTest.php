@@ -19,7 +19,7 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Orm\Support\DateFactoryWithFailingDateTimeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class DateFactoryTest extends TestCase
+final class DateFactoryTest extends TestCase
 {
     public function testGetFormattedDateReturnsString(): void
     {

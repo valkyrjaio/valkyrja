@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 /**
  * Class StreamTellExceptionClass.
  */
-class StreamTellExceptionClass extends Stream
+final class StreamTellExceptionClass extends Stream
 {
     #[Override]
     protected function tellStream($stream): int|false

@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\ArrayT;
 
-class ArrayTest extends TestCase
+final class ArrayTest extends TestCase
 {
     /** @var string[] */
     protected const array VALUE = ['test'];

@@ -33,7 +33,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the abstract model.
  */
-class ModelTest extends TestCase
+final class ModelTest extends TestCase
 {
     public function testClone(): void
     {

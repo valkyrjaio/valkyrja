@@ -18,7 +18,7 @@ use Valkyrja\Application\Env\Env;
 /**
  * Class Env.
  */
-class EnvClass extends Env
+final class EnvClass extends Env
 {
     /** @var string|array{0: class-string, 1: string} */
     public const array|string DATA_CONFIG_PUBLIC = 'publicFromEnv';

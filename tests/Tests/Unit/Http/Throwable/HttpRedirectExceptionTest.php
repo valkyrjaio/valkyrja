@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the HttpRedirectException class.
  */
-class HttpRedirectExceptionTest extends TestCase
+final class HttpRedirectExceptionTest extends TestCase
 {
     /**
      * The exception.

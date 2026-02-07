@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Data service.
  */
-class DataTest extends TestCase
+final class DataTest extends TestCase
 {
     public function testDefault(): void
     {

@@ -18,7 +18,7 @@ use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\SerializedObject;
 
-class SerializedObjectTest extends TestCase
+final class SerializedObjectTest extends TestCase
 {
     public function testValue(): void
     {

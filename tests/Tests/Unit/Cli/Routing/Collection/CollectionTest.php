@@ -28,7 +28,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection class.
  */
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     public function testDefaults(): void
     {

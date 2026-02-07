@@ -34,7 +34,7 @@ use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
-class EntityRouteMatchedMiddlewareTest extends TestCase
+final class EntityRouteMatchedMiddlewareTest extends TestCase
 {
     protected ContainerContract&MockObject $container;
 

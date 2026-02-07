@@ -26,7 +26,7 @@ use const PASSWORD_DEFAULT;
 /**
  * Test the InMemoryStore.
  */
-class InMemoryStoreTest extends TestCase
+final class InMemoryStoreTest extends TestCase
 {
     protected const string USERNAME     = 'user1';
     protected const string BAD_USERNAME = 'bad_username';

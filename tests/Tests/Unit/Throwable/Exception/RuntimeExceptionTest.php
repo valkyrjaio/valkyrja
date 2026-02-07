@@ -19,7 +19,7 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 /**
  * Test the runtime exception class.
  */
-class RuntimeExceptionTest extends TestCase
+final class RuntimeExceptionTest extends TestCase
 {
     public function testGetTraceCode(): void
     {

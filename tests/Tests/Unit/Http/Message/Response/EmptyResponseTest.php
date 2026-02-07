@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EmptyResponseTest extends TestCase
+final class EmptyResponseTest extends TestCase
 {
     public function testConstruct(): void
     {

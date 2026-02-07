@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\XmlResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class XmlResponseTest extends TestCase
+final class XmlResponseTest extends TestCase
 {
     protected const string XML = '<?xml version="1.0" encoding="" ?><test></test>';
 

@@ -18,7 +18,7 @@ use Valkyrja\Type\Vlid\Enum\Version;
 
 use function json_encode;
 
-class VersionTest extends TestCase
+final class VersionTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Get attribute.
  */
-class GetTest extends TestCase
+final class GetTest extends TestCase
 {
     public function testDefaults(): void
     {

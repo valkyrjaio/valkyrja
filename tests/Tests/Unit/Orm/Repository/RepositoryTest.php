@@ -30,7 +30,7 @@ use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityStringIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RepositoryTest extends TestCase
+final class RepositoryTest extends TestCase
 {
     protected ManagerContract&MockObject $manager;
 

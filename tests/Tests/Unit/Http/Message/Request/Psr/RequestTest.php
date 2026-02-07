@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RequestTest extends TestCase
+final class RequestTest extends TestCase
 {
     public function testProtocolVersion(): void
     {

@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the WarningFormatter class.
  */
-class WarningFormatterTest extends TestCase
+final class WarningFormatterTest extends TestCase
 {
     public function testFormat(): void
     {

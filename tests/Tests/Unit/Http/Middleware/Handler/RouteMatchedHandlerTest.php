@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 /**
  * Test the route matched handler.
  */
-class RouteMatchedHandlerTest extends HandlerTestCase
+final class RouteMatchedHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

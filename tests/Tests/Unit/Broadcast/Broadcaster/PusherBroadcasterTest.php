@@ -25,7 +25,7 @@ use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
-class PusherBroadcasterTest extends TestCase
+final class PusherBroadcasterTest extends TestCase
 {
     protected MockObject&Pusher $pusher;
 

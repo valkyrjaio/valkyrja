@@ -20,7 +20,7 @@ use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Support\ArrayOf;
 
-class ArrayOfTest extends TestCase
+final class ArrayOfTest extends TestCase
 {
     /**
      * Test the ArrayOf::strings() methods.

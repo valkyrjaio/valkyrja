@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class AbortTest.
  */
-class AbortTest extends TestCase
+final class AbortTest extends TestCase
 {
     public function testAbort(): void
     {

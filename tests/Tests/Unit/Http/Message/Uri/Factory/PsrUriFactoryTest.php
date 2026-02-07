@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Uri\Psr\Uri as PsrUri;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrUriFactoryTest extends TestCase
+final class PsrUriFactoryTest extends TestCase
 {
     protected const string URI           = 'www.example.com';
     protected const string URI_HTTPS     = 'https://' . self::URI;

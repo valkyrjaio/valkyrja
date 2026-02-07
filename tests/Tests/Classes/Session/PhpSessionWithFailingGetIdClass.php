@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\PhpSession;
 /**
  * Test class that simulates session_id() returning false.
  */
-class PhpSessionWithFailingGetIdClass extends PhpSession
+final class PhpSessionWithFailingGetIdClass extends PhpSession
 {
     /**
      * @inheritDoc

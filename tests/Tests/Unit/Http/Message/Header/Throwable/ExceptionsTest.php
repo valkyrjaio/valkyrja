@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as Messag
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
