@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Uuid;
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Uuid\Factory\UuidV8Factory as Helper;
-use Valkyrja\Type\Uuid\UuidV8 as Id;
+use Valkyrja\Type\Uuid\Factory\UuidV8Factory;
+use Valkyrja\Type\Uuid\UuidV8;
 
 use function json_encode;
 
@@ -28,9 +28,9 @@ class UuidV8Test extends TestCase
      */
     public function testConstruct(): void
     {
-        $id = new Id(Helper::generate());
+        $id = new UuidV8(UuidV8Factory::generate());
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV8Factory::isValid($id->asValue()));
     }
 
     /**
@@ -38,9 +38,9 @@ class UuidV8Test extends TestCase
      */
     public function testFromValue(): void
     {
-        $id = Id::fromValue(Helper::generate());
+        $id = UuidV8::fromValue(UuidV8Factory::generate());
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV8Factory::isValid($id->asValue()));
     }
 
     /**
@@ -50,7 +50,7 @@ class UuidV8Test extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Id::fromValue(1);
+        UuidV8::fromValue(1);
     }
 
     /**
@@ -58,9 +58,9 @@ class UuidV8Test extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $id = new Id(Helper::generate());
+        $id = new UuidV8(UuidV8Factory::generate());
 
-        self::assertTrue(Helper::isValid($id->asFlatValue()));
+        self::assertTrue(UuidV8Factory::isValid($id->asFlatValue()));
     }
 
     /**
@@ -68,9 +68,9 @@ class UuidV8Test extends TestCase
      */
     public function testModify(): void
     {
-        $value    = Helper::generate();
-        $type     = new Id($value);
-        $newValue = Helper::generate();
+        $value    = UuidV8Factory::generate();
+        $type     = new UuidV8($value);
+        $newValue = UuidV8Factory::generate();
 
         $modified = $type->modify(static fn (string $subject): string => $newValue);
 
@@ -86,8 +86,8 @@ class UuidV8Test extends TestCase
      */
     public function testIntJsonSerialize(): void
     {
-        $value = Helper::generate();
-        $type  = new Id($value);
+        $value = UuidV8Factory::generate();
+        $type  = new UuidV8($value);
 
         self::assertSame(json_encode($value), json_encode($type));
     }

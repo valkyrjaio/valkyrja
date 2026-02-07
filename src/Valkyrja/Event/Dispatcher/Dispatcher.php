@@ -21,9 +21,9 @@ use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
+use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 
-class Dispatcher implements Contract
+class Dispatcher implements DispatcherContract
 {
     public function __construct(
         protected CollectionContract $collection = new Collection(),

@@ -125,7 +125,7 @@ final class RemoveNonConflictingAliasInUseStatementRector extends AbstractRector
 
                 $use          = $compareStmt->uses[0]->name->toString();
                 $lastName     = Strings::after($use, '\\', -1) ?? $use;
-                $useAliasName = $stmt->uses[0]->alias instanceof Identifier ? $stmt->uses[0]->alias->toString() : null;
+                $useAliasName = $compareStmt->uses[0]->alias instanceof Identifier ? $compareStmt->uses[0]->alias->toString() : null;
                 $useHasAlias  = $useAliasName !== null;
 
                 if (

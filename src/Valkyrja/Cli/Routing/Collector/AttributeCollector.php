@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Collector;
 use Override;
 use ReflectionException;
 use ReflectionMethod;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
@@ -26,7 +26,7 @@ use Valkyrja\Cli\Routing\Attribute\OptionParameter as OptionAttribute;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
-use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
@@ -38,10 +38,10 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use function array_column;
 use function is_a;
 
-class AttributeCollector implements Contract
+class AttributeCollector implements CollectorContract
 {
     public function __construct(
-        protected CollectorContract $attributes,
+        protected AttributeCollectorContract $attributes,
         protected ReflectorContract $reflection,
     ) {
     }

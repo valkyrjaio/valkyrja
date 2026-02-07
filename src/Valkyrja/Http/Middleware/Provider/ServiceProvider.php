@@ -39,7 +39,7 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
-use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as HttpLogThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 
 final class ServiceProvider extends Provider
@@ -129,7 +129,7 @@ final class ServiceProvider extends Provider
         /** @var class-string<ThrowableCaughtMiddlewareContract>[] $middleware */
         $middleware = $env::HTTP_MIDDLEWARE_THROWABLE_CAUGHT
             ?? [
-                HttpLogThrowableCaughtMiddleware::class,
+                LogThrowableCaughtMiddleware::class,
                 ViewThrowableCaughtMiddleware::class,
             ];
 

@@ -20,21 +20,21 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Cli\Interaction\Data\Config as CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract as CliRouteDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract as CliRouteMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as CliRouteNotMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as CliThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliRoutingCollection;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as CliRoutingCollector;
-use Valkyrja\Cli\Routing\Data\Data as CliData;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract as CliRoutingRouter;
+use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand as CliListCommand;
+use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
@@ -73,7 +73,7 @@ use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
+use Valkyrja\View\Provider\ComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
@@ -155,7 +155,7 @@ class AppTest extends TestCase
 
         self::assertTrue($container->has(ContainerData::class));
         self::assertFalse($container->has(EventData::class));
-        self::assertFalse($container->has(CliData::class));
+        self::assertFalse($container->has(Data::class));
         self::assertFalse($container->has(HttpData::class));
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
@@ -178,17 +178,17 @@ class AppTest extends TestCase
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ApplicationContract::class));
         self::assertTrue($container->has(AttributeCollectorContract::class));
-        self::assertTrue($container->has(CliInteractionConfig::class));
+        self::assertTrue($container->has(Config::class));
         self::assertTrue($container->has(OutputFactoryContract::class));
         self::assertTrue($container->has(InputReceivedHandlerContract::class));
-        self::assertTrue($container->has(CliThrowableCaughtHandlerContract::class));
-        self::assertTrue($container->has(CliRouteMatchedHandlerContract::class));
-        self::assertTrue($container->has(CliRouteNotMatchedHandlerContract::class));
-        self::assertTrue($container->has(CliRouteDispatchedHandlerContract::class));
+        self::assertTrue($container->has(ThrowableCaughtHandlerContract::class));
+        self::assertTrue($container->has(RouteMatchedHandlerContract::class));
+        self::assertTrue($container->has(RouteNotMatchedHandlerContract::class));
+        self::assertTrue($container->has(RouteDispatchedHandlerContract::class));
         self::assertTrue($container->has(ExitedHandlerContract::class));
         self::assertTrue($container->has(CliRoutingCollector::class));
-        self::assertTrue($container->has(CliRoutingRouter::class));
-        self::assertTrue($container->has(CliRoutingCollection::class));
+        self::assertTrue($container->has(RouterContract::class));
+        self::assertTrue($container->has(CollectionContract::class));
         self::assertTrue($container->has(InputHandlerContract::class));
         self::assertTrue($container->has(CliLogThrowableCaughtMiddleware::class));
         self::assertTrue($container->has(DispatcherContract::class));
@@ -223,7 +223,7 @@ class AppTest extends TestCase
 
         self::assertContains(HelpCommand::class, $commands);
         self::assertContains(ListBashCommand::class, $commands);
-        self::assertContains(CliListCommand::class, $commands);
+        self::assertContains(ListCommand::class, $commands);
         self::assertContains(VersionCommand::class, $commands);
         self::assertContains(HttpListCommand::class, $commands);
 
@@ -254,7 +254,7 @@ class AppTest extends TestCase
             public const array APP_COMPONENTS = [];
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                ViewComponentProvider::class,
+                ComponentProvider::class,
             ];
         };
         $application2 = App::app($env2);

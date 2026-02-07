@@ -16,20 +16,20 @@ namespace Valkyrja\Event\Collector;
 use Override;
 use ReflectionException;
 use ReflectionMethod;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Attribute\Listener as Attribute;
-use Valkyrja\Event\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-class AttributeCollector implements Contract
+class AttributeCollector implements CollectorContract
 {
     public function __construct(
-        protected CollectorContract $attributes,
+        protected AttributeCollectorContract $attributes,
         protected ReflectorContract $reflection,
     ) {
     }

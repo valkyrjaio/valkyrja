@@ -37,7 +37,7 @@ use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
-use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -131,7 +131,7 @@ final class ServiceProvider extends Provider
         /** @var class-string<ThrowableCaughtMiddlewareContract>[] $middleware */
         $middleware = $env::CLI_MIDDLEWARE_THROWABLE_CAUGHT
             ?? [
-                CliLogThrowableCaughtMiddleware::class,
+                LogThrowableCaughtMiddleware::class,
                 OutputThrowableCaughtMiddleware::class,
             ];
 

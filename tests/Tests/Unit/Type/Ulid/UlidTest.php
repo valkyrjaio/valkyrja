@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Ulid;
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Ulid\Factory\UlidFactory as Helper;
+use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Ulid\Ulid;
 
 use function json_encode;
@@ -30,7 +30,7 @@ class UlidTest extends TestCase
     {
         $id = new Ulid();
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UlidFactory::isValid($id->asValue()));
     }
 
     /**
@@ -38,9 +38,9 @@ class UlidTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $id = Ulid::fromValue(Helper::generate());
+        $id = Ulid::fromValue(UlidFactory::generate());
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UlidFactory::isValid($id->asValue()));
     }
 
     /**
@@ -57,7 +57,7 @@ class UlidTest extends TestCase
     {
         $id = new Ulid();
 
-        self::assertTrue(Helper::isValid($id->asFlatValue()));
+        self::assertTrue(UlidFactory::isValid($id->asFlatValue()));
     }
 
     /**
@@ -65,9 +65,9 @@ class UlidTest extends TestCase
      */
     public function testModify(): void
     {
-        $value    = Helper::generate();
+        $value    = UlidFactory::generate();
         $type     = new Ulid($value);
-        $newValue = Helper::generate();
+        $newValue = UlidFactory::generate();
 
         $modified = $type->modify(static fn (string $subject): string => $newValue);
 
@@ -83,7 +83,7 @@ class UlidTest extends TestCase
      */
     public function testIntJsonSerialize(): void
     {
-        $value = Helper::generate();
+        $value = UlidFactory::generate();
         $type  = new Ulid($value);
 
         self::assertSame(json_encode($value), json_encode($type));

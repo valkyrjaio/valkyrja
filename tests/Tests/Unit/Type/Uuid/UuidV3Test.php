@@ -17,8 +17,8 @@ use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Uuid\Factory\UuidFactory;
-use Valkyrja\Type\Uuid\Factory\UuidV3Factory as Helper;
-use Valkyrja\Type\Uuid\UuidV3 as Id;
+use Valkyrja\Type\Uuid\Factory\UuidV3Factory;
+use Valkyrja\Type\Uuid\UuidV3;
 
 use function json_encode;
 
@@ -29,9 +29,9 @@ class UuidV3Test extends TestCase
      */
     public function testConstruct(): void
     {
-        $id = new Id(Helper::generate(UuidFactory::v1(), 'test'));
+        $id = new UuidV3(UuidV3Factory::generate(UuidFactory::v1(), 'test'));
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV3Factory::isValid($id->asValue()));
     }
 
     /**
@@ -39,9 +39,9 @@ class UuidV3Test extends TestCase
      */
     public function testFromValue(): void
     {
-        $id = Id::fromValue(Helper::generate(UuidFactory::v1(), 'test'));
+        $id = UuidV3::fromValue(UuidV3Factory::generate(UuidFactory::v1(), 'test'));
 
-        self::assertTrue(Helper::isValid($id->asValue()));
+        self::assertTrue(UuidV3Factory::isValid($id->asValue()));
     }
 
     /**
@@ -51,7 +51,7 @@ class UuidV3Test extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Id::fromValue(1);
+        UuidV3::fromValue(1);
     }
 
     /**
@@ -59,9 +59,9 @@ class UuidV3Test extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $id = new Id(Helper::generate(UuidFactory::v1(), 'test'));
+        $id = new UuidV3(UuidV3Factory::generate(UuidFactory::v1(), 'test'));
 
-        self::assertTrue(Helper::isValid($id->asFlatValue()));
+        self::assertTrue(UuidV3Factory::isValid($id->asFlatValue()));
     }
 
     /**
@@ -69,9 +69,9 @@ class UuidV3Test extends TestCase
      */
     public function testModify(): void
     {
-        $value    = Helper::generate(UuidFactory::v1(), 'test');
-        $type     = new Id($value);
-        $newValue = Helper::generate(UuidFactory::v1(), 'test');
+        $value    = UuidV3Factory::generate(UuidFactory::v1(), 'test');
+        $type     = new UuidV3($value);
+        $newValue = UuidV3Factory::generate(UuidFactory::v1(), 'test');
 
         $modified = $type->modify(static fn (string $subject): string => $newValue);
 
@@ -87,8 +87,8 @@ class UuidV3Test extends TestCase
      */
     public function testIntJsonSerialize(): void
     {
-        $value = Helper::generate(UuidFactory::v1(), 'test');
-        $type  = new Id($value);
+        $value = UuidV3Factory::generate(UuidFactory::v1(), 'test');
+        $type  = new UuidV3($value);
 
         self::assertSame(json_encode($value), json_encode($type));
     }

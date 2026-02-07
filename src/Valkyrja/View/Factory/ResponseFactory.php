@@ -18,11 +18,11 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract as Contract;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
-class ResponseFactory implements Contract
+class ResponseFactory implements ResponseFactoryContract
 {
     public function __construct(
         protected HttpMessageResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),
