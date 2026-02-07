@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
 use Override;
 use Valkyrja\Cli\Interaction\Message\Question;
+use Valkyrja\Tests\EnvClass;
 
 /**
  * Testable Question class.
@@ -24,6 +25,6 @@ class QuestionClass extends Question
     #[Override]
     protected function fopen(string $filename, string $mode)
     {
-        return parent::fopen(filename: __DIR__ . '/../../../../storage/.gitignore', mode: 'rb');
+        return parent::fopen(filename: EnvClass::APP_DIR . '/storage/.gitignore', mode: 'rb');
     }
 }

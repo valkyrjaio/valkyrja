@@ -5,7 +5,7 @@
             <property name="rootNamespaces" type="array">
                 <!-- Map your source directories to their root namespaces -->
                 <element key="src/Valkyrja" value="Valkyrja" />
-                <element key="tests" value="Valkyrja\Tests" />
+                <element key="tests/Tests" value="Valkyrja\Tests" />
             </property>
             <property name="skipDirs" type="array">
                 <element value=".github" />

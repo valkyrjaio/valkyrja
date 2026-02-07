@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\String\Factory;
 use Exception;
 use JsonException;
 use stdClass;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\Factory\StringFactory;
 
@@ -159,7 +160,7 @@ class StringFactoryTest extends TestCase
         $obj      = new stdClass();
         $obj->foo = 'bar';
 
-        $resource = fopen(filename: __DIR__ . '/../../../../storage/.gitignore', mode: 'rb');
+        $resource = fopen(filename: EnvClass::APP_DIR . '/storage/.gitignore', mode: 'rb');
 
         self::assertSame('string', StringFactory::fromMixed('string'));
         self::assertSame('3', StringFactory::fromMixed(3));
