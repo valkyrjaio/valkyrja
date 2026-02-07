@@ -7,7 +7,7 @@
 [Valkyrja][Valkyrja url] is a PHP framework for web and console applications.
 
 About Valkyrja
-------------
+--------------
 
 > This repository contains the core code of the Valkyrja framework.
 
@@ -22,24 +22,54 @@ framework do the heavy lifting for your app.
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license" alt="License"></a>
     <!-- <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/downloads" alt="Total Downloads"></a>-->
-</p>
-
-### Coverage Status
-
-<p>
     <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/?branch=master"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
     <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
     <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" alt="Psalm Shepherd" /></a>
 </p>
 
-### Build Status
+Build Status
+------------
 
-|                                                                                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                            |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?branch=master" alt="PHPArkitect Build Status"></a>            | <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=master" alt="PHPUnit Build Status"></a>                               |
-| <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?branch=master" alt="PHP Code Sniffer Build Status"></a> | <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?branch=master" alt="Psalm Build Status"></a>                                     |
-| <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?branch=master" alt="PHP CS Fixer Build Status"></a>             | <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?branch=master" alt="Rector Build Status"></a>                                  |
-| <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?branch=master" alt="PHPStan Build Status"></a>                        | <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=master" alt="Validate Composer Build Status"></a> |
+<table>
+    <tbody>
+        <tr>
+            <td>Linting</td>
+            <td>    
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?branch=master" alt="PHP Code Sniffer Build Status"></a>
+            </td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?branch=master" alt="PHP CS Fixer Build Status"></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Coding Rules</td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?branch=master" alt="PHPArkitect Build Status"></a>
+            </td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?branch=master" alt="Rector Build Status"></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Static Analysis</td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?branch=master" alt="PHPStan Build Status"></a>
+            </td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?branch=master" alt="Psalm Build Status"></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Testing</td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=master" alt="PHPUnit Build Status"></a>
+            </td>
+            <td>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=master" alt="Validate Composer Build Status"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 Documentation
 -------------
@@ -72,7 +102,7 @@ you'll need to create. You can follow the
 Clone the [Valkyrja Application][Valkyrja Application url] and start from there.
 
 Versioning and Release Process
----------------
+------------------------------
 
 Valkyrja uses [semantic versioning][semantic versioning url] with a major
 release every year, and support for each major version for 2 years from the
@@ -86,12 +116,12 @@ For more information view our
 Bug fixes will be provided until 3 months after the next major release. Security
 fixes will be provided for 2 years after the initial release.
 
-| Version | PHP (*)   | Release             | Bug Fixes Until | Security Fixes Until |
-|---------|-----------|---------------------|-----------------|----------------------|
-| 25 (**) | 8.4 - 8.6 | December 11th, 2025 | Q1 2026         | Q1 2026              |
-| 26      | 8.4 - 8.6 | Q1 2026             | Q2 2027         | Q1 2028              |
-| 27      | 8.5 - 8.6 | Q1 2027             | Q2 2028         | Q1 2029              |
-| 28      | 8.6+      | Q1 2028             | Q2 2029         | Q1 2030              |
+| Version  | PHP (*)    | Release              | Bug Fixes Until  | Security Fixes Until  |
+|:---------|:-----------|:---------------------|:-----------------|:----------------------|
+| 25 (**)  | 8.4 - 8.6  | December 11th, 2025  | Q1 2026          | Q1 2026               |
+| 26       | 8.4 - 8.6  | Q1 2026              | Q2 2027          | Q1 2028               |
+| 27       | 8.5 - 8.6  | Q1 2027              | Q2 2028          | Q1 2029               |
+| 28       | 8.6+       | Q1 2028              | Q2 2029          | Q1 2030               |
 
 (*) Supported PHP versions
 (**) Pre-release that is not supported once v26 is released
@@ -114,7 +144,7 @@ If you discover a security vulnerability within Valkyrja, please follow our
 [disclosure procedure][security vulnerabilities url].
 
 License
----------------
+-------
 
 The Valkyrja framework is open-sourced software licensed under
 the [MIT license][MIT license url]. You can view the
