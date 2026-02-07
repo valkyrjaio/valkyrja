@@ -123,7 +123,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     /**
      * Determine if a parameter should be skipped.
      *
-     * @param class-string<TypeContract<mixed>>|null $type The type
+     * @param class-string<TypeContract>|null $type The type
      *
      * @psalm-assert class-string<EntityContract> $type
      *
