@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 /**
  * Class TestSendingResponseHandler.
  */
-class SendingResponseHandlerClass extends SendingResponseHandler
+final class SendingResponseHandlerClass extends SendingResponseHandler
 {
     protected int $count = 0;
 

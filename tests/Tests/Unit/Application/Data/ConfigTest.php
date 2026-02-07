@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Config service.
  */
-class ConfigTest extends TestCase
+final class ConfigTest extends TestCase
 {
     public function testDefault(): void
     {

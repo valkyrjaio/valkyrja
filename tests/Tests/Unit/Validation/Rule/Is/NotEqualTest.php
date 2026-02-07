@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\NotEqual;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class NotEqualTest extends TestCase
+final class NotEqualTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

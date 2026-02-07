@@ -21,7 +21,7 @@ use function ob_start;
 /**
  * Class CloseOutputBuffersRequestHandler.
  */
-class CloseOutputBuffersRequestHandlerClass extends RequestHandler
+final class CloseOutputBuffersRequestHandlerClass extends RequestHandler
 {
     protected bool $hasRequestBeenFinishedByClosingOutputBuffers = false;
 

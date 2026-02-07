@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Min;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class MinTest extends TestCase
+final class MinTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

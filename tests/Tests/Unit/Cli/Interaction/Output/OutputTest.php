@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Output class.
  */
-class OutputTest extends TestCase
+final class OutputTest extends TestCase
 {
     public function testDefaults(): void
     {

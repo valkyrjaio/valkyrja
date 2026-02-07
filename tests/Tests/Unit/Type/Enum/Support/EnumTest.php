@@ -20,7 +20,7 @@ use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\Support\Enumerable;
 
-class EnumTest extends TestCase
+final class EnumTest extends TestCase
 {
     protected const EnumClass VALUE = EnumClass::club;
 

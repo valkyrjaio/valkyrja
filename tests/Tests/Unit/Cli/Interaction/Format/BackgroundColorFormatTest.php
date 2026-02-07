@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the BackgroundColorFormat class.
  */
-class BackgroundColorFormatTest extends TestCase
+final class BackgroundColorFormatTest extends TestCase
 {
     public function testImplementsContract(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Int;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Int\IntT;
 
-class IntTest extends TestCase
+final class IntTest extends TestCase
 {
     protected const int VALUE = 1;
 

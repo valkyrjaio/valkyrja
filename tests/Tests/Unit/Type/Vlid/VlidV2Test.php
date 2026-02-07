@@ -20,7 +20,7 @@ use Valkyrja\Type\Vlid\VlidV2;
 
 use function json_encode;
 
-class VlidV2Test extends TestCase
+final class VlidV2Test extends TestCase
 {
     /**
      * @throws Exception

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CheckForVersionOptionsMiddlewareTest extends TestCase
+final class CheckForVersionOptionsMiddlewareTest extends TestCase
 {
     public function testWithoutVersionOptions(): void
     {

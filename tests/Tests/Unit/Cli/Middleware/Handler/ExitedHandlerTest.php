@@ -20,7 +20,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ExitedHandlerClass;
 /**
  * Test the exited handler.
  */
-class ExitedHandlerTest extends HandlerTestCase
+final class ExitedHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 /**
  * Class UnableToWriteFileExceptionClass.
  */
-class UnableToWriteFileExceptionClass extends UploadedFile
+final class UnableToWriteFileExceptionClass extends UploadedFile
 {
     /**
      * @inheritDoc

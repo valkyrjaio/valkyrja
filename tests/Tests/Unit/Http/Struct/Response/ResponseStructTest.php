@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ResponseStruct.
  */
-class ResponseStructTest extends TestCase
+final class ResponseStructTest extends TestCase
 {
     public function testContract(): void
     {

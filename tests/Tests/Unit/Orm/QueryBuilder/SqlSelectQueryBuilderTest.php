@@ -27,7 +27,7 @@ use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\SqlSelectQueryBuilder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqlSelectQueryBuilderTest extends TestCase
+final class SqlSelectQueryBuilderTest extends TestCase
 {
     protected SqlSelectQueryBuilder $builder;
 

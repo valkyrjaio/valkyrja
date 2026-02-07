@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\Stream\Psr\StreamEmptyModeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrStreamFactoryTest extends TestCase
+final class PsrStreamFactoryTest extends TestCase
 {
     public function testFromPsr(): void
     {

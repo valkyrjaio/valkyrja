@@ -30,7 +30,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the Controller service.
  */
-class ApiControllerTest extends TestCase
+final class ApiControllerTest extends TestCase
 {
     protected ApiControllerClass $controller;
 

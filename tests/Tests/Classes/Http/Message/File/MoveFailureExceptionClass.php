@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 /**
  * Class MoveFailureExceptionClass.
  */
-class MoveFailureExceptionClass extends UploadedFile
+final class MoveFailureExceptionClass extends UploadedFile
 {
     /**
      * @inheritDoc

@@ -28,7 +28,7 @@ use Vonage\Client\Credentials\CredentialsInterface;
 /**
  * Test the ServiceProvider.
  */
-class ServiceProviderTest extends ServiceProviderTestCase
+final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;

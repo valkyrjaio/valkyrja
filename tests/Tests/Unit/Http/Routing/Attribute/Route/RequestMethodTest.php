@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the RequestMethod attribute.
  */
-class RequestMethodTest extends TestCase
+final class RequestMethodTest extends TestCase
 {
     public function testAttribute(): void
     {

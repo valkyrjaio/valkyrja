@@ -23,7 +23,7 @@ use Valkyrja\Type\Model\Trait\ExposableIndexable;
  *
  * @property string $protected
  */
-class ExposedIndexableModelClass extends Model implements ExposableIndexedModelContract
+final class ExposedIndexableModelClass extends Model implements ExposableIndexedModelContract
 {
     use ExposableIndexable;
     use PrivatePropertyTrait;

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Delete attribute.
  */
-class DeleteTest extends TestCase
+final class DeleteTest extends TestCase
 {
     public function testDefaults(): void
     {

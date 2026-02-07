@@ -37,7 +37,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Route service.
  */
-class RouteTest extends TestCase
+final class RouteTest extends TestCase
 {
     public function testDefaultValues(): void
     {

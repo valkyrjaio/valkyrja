@@ -20,7 +20,7 @@ use Valkyrja\Tests\EnvClass;
 /**
  * Testable Question class.
  */
-class QuestionClass extends Question
+final class QuestionClass extends Question
 {
     #[Override]
     protected function fopen(string $filename, string $mode)

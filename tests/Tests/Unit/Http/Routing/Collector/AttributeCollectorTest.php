@@ -31,7 +31,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the AttributeCollector service.
  */
-class AttributeCollectorTest extends TestCase
+final class AttributeCollectorTest extends TestCase
 {
     /**
      * @throws ReflectionException

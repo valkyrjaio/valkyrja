@@ -22,7 +22,7 @@ use Valkyrja\Throwable\Exception\Exception;
 /**
  * Test the throwable caught handler.
  */
-class ThrowableCaughtHandlerTest extends HandlerTestCase
+final class ThrowableCaughtHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

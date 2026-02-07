@@ -21,7 +21,7 @@ use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 /**
  * Class TestExitedHandler.
  */
-class ExitedHandlerClass extends ExitedHandler
+final class ExitedHandlerClass extends ExitedHandler
 {
     protected int $count = 0;
 

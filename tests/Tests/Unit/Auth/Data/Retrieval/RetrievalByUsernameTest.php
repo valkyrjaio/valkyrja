@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the RetrievalByUsername class.
  */
-class RetrievalByUsernameTest extends TestCase
+final class RetrievalByUsernameTest extends TestCase
 {
     protected const string USERNAME = 'testuser';
 

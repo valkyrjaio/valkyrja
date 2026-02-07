@@ -25,7 +25,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Formatter class.
  */
-class FormatterTest extends TestCase
+final class FormatterTest extends TestCase
 {
     public function testDefaults(): void
     {

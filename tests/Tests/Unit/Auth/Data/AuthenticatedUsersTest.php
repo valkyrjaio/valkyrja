@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the AuthenticatedUsers class.
  */
-class AuthenticatedUsersTest extends TestCase
+final class AuthenticatedUsersTest extends TestCase
 {
     protected const string USER_ID_1 = 'user-1';
     protected const string USER_ID_2 = 'user-2';

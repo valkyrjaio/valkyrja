@@ -23,7 +23,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class JsonSerializableTest extends TestCase
+final class JsonSerializableTest extends TestCase
 {
     /**
      * @throws JsonException

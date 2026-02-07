@@ -27,7 +27,7 @@ use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RedirectResponseTest extends TestCase
+final class RedirectResponseTest extends TestCase
 {
     /**
      * @return array<int, array{0: StatusCode}>

@@ -25,7 +25,7 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PdoStatementTest extends TestCase
+final class PdoStatementTest extends TestCase
 {
     protected Statement&MockObject $pdoStatement;
 

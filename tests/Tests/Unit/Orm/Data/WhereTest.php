@@ -21,7 +21,7 @@ use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class WhereTest extends TestCase
+final class WhereTest extends TestCase
 {
     public function testImplementsStringable(): void
     {

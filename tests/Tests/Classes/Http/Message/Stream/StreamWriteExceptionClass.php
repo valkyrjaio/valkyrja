@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 /**
  * Class StreamWriteExceptionClass.
  */
-class StreamWriteExceptionClass extends Stream
+final class StreamWriteExceptionClass extends Stream
 {
     #[Override]
     protected function writeToStream($stream, string $data): int|false

@@ -35,7 +35,7 @@ use const ARRAY_FILTER_USE_KEY;
 /**
  * Test the RequestStruct.
  */
-class RequestStructTest extends TestCase
+final class RequestStructTest extends TestCase
 {
     public function testContract(): void
     {

@@ -23,7 +23,7 @@ use const PASSWORD_DEFAULT;
 /**
  * Test the User entity class.
  */
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     protected const string USER_ID   = 'user-123';
     protected const string USERNAME  = 'testuser';

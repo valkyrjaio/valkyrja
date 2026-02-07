@@ -19,7 +19,7 @@ use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\Enum\SortOrder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class OrderByTest extends TestCase
+final class OrderByTest extends TestCase
 {
     public function testImplementsStringable(): void
     {

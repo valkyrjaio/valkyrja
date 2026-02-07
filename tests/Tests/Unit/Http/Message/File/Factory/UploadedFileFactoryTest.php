@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class UploadedFileFactoryTest extends TestCase
+final class UploadedFileFactoryTest extends TestCase
 {
     public function testNormalizeFilesSingleUpload(): void
     {

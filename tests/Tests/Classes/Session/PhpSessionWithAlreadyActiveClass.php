@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\PhpSession;
 /**
  * Test class that simulates session_id() returning false.
  */
-class PhpSessionWithAlreadyActiveClass extends PhpSession
+final class PhpSessionWithAlreadyActiveClass extends PhpSession
 {
     public int $sessionStartCount = 0;
 

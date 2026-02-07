@@ -23,7 +23,7 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\PhpMailer;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PhpMailerTest extends TestCase
+final class PhpMailerTest extends TestCase
 {
     protected MockObject&PHPMailerClient $phpMailerClient;
 

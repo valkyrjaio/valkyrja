@@ -22,7 +22,7 @@ use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
  *
  * @property string $protected
  */
-class UnpackForNewInstanceModelClass extends Model
+final class UnpackForNewInstanceModelClass extends Model
 {
     use PrivatePropertyTrait;
     use UnpackForNewInstance;

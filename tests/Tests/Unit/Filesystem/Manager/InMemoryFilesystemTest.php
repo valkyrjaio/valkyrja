@@ -27,7 +27,7 @@ use function fopen;
 use function fwrite;
 use function rewind;
 
-class InMemoryFilesystemTest extends TestCase
+final class InMemoryFilesystemTest extends TestCase
 {
     protected InMemoryFilesystem $filesystem;
 

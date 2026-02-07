@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Banner class.
  */
-class BannerTest extends TestCase
+final class BannerTest extends TestCase
 {
     public function testText(): void
     {

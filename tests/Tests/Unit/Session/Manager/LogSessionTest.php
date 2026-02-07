@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogSessionTest extends TestCase
+final class LogSessionTest extends TestCase
 {
     protected LoggerContract&MockObject $logger;
 

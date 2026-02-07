@@ -21,6 +21,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
  *
  * @extends Authenticator<UserContract>
  */
-class AuthenticatorClass extends Authenticator
+final class AuthenticatorClass extends Authenticator
 {
 }

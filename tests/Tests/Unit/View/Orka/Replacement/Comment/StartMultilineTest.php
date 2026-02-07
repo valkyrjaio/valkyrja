@@ -22,7 +22,7 @@ use function preg_replace;
 /**
  * Test the StartMultiline class.
  */
-class StartMultilineTest extends TestCase
+final class StartMultilineTest extends TestCase
 {
     public function testImplementsContract(): void
     {

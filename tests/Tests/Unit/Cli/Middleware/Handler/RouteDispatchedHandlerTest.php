@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
 /**
  * Test the route dispatched handler.
  */
-class RouteDispatchedHandlerTest extends HandlerTestCase
+final class RouteDispatchedHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

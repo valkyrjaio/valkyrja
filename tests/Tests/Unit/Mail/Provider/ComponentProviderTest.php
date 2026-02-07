@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Component service.
  */
-class ComponentProviderTest extends TestCase
+final class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {

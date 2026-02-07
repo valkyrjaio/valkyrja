@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Put attribute.
  */
-class PutTest extends TestCase
+final class PutTest extends TestCase
 {
     public function testDefaults(): void
     {

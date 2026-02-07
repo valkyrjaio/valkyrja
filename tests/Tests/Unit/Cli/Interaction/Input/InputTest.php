@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Input class.
  */
-class InputTest extends TestCase
+final class InputTest extends TestCase
 {
     public function testDefaults(): void
     {

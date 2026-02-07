@@ -18,7 +18,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 /**
  * Invalid dispatcher class to test with.
  */
-class InvalidDispatcherClass
+final class InvalidDispatcherClass
 {
     public const string|null TEST = null;
 
@@ -31,7 +31,7 @@ class InvalidDispatcherClass
      *
      * @var ApplicationContract
      */
-    protected ApplicationContract $app;
+    private ApplicationContract $app;
 
     /**
      * InvalidContainerClass constructor.

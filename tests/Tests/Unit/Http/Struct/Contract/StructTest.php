@@ -21,7 +21,7 @@ use Valkyrja\Type\Enum\Contract\ArrayableContract;
 /**
  * Test the Struct.
  */
-class StructTest extends TestCase
+final class StructTest extends TestCase
 {
     public function testContract(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 use Valkyrja\Http\Message\Header\Factory\CookieFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CookieFactoryTest extends TestCase
+final class CookieFactoryTest extends TestCase
 {
     protected const string SEPARATOR = '; ';
 

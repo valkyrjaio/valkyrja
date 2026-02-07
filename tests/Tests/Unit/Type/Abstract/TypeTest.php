@@ -20,7 +20,7 @@ use Valkyrja\Type\Contract\TypeContract;
 
 use function json_encode;
 
-class TypeTest extends TestCase
+final class TypeTest extends TestCase
 {
     public function testContract(): void
     {

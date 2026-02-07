@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Int\GreaterThan;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class GreaterThanTest extends TestCase
+final class GreaterThanTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

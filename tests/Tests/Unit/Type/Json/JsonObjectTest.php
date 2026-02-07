@@ -19,7 +19,7 @@ use Valkyrja\Type\Json\JsonObject;
 
 use function json_encode;
 
-class JsonObjectTest extends TestCase
+final class JsonObjectTest extends TestCase
 {
     public function testValue(): void
     {

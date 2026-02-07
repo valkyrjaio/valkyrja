@@ -23,7 +23,7 @@ use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullManagerTest extends TestCase
+final class NullManagerTest extends TestCase
 {
     protected NullManager $manager;
 

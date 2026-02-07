@@ -23,7 +23,7 @@ use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CheckCommandForTypoMiddlewareTest extends TestCase
+final class CheckCommandForTypoMiddlewareTest extends TestCase
 {
     public function testRouteNotMatchedDefault(): void
     {

@@ -36,7 +36,7 @@ use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 /**
  * Controller class to test routes.
  */
-class ControllerClass
+final class ControllerClass
 {
     /** @var non-empty-string */
     public const string WELCOME_PATH = '/';

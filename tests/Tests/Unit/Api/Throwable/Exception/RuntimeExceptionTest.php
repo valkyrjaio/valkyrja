@@ -21,7 +21,7 @@ use Valkyrja\Throwable\Exception\RuntimeException as BaseRuntimeException;
 /**
  * Test the RuntimeException.
  */
-class RuntimeExceptionTest extends TestCase
+final class RuntimeExceptionTest extends TestCase
 {
     public function testImplementsThrowable(): void
     {

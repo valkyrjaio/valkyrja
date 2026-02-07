@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
 // Testing invalid attributes that have no method attached to them since this class has no constructor
 #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClassValue1')]
 #[Listener(AttributesCollectorTest::VALUE2, 'AttributedClassValue2')]
-class AttributedClass
+final class AttributedClass
 {
     #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClass::staticMethodValue1')]
     #[Listener(AttributesCollectorTest::VALUE2, 'AttributedClass::staticMethodValue2')]

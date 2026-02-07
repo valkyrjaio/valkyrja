@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Server\Middleware\SendingResponse\NoCacheResponseMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NoCacheMiddlewareTest extends TestCase
+final class NoCacheMiddlewareTest extends TestCase
 {
     public function testThroughHandler(): void
     {

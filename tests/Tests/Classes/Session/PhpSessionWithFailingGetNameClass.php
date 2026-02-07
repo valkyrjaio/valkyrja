@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\PhpSession;
 /**
  * Test class that simulates session_name() returning false.
  */
-class PhpSessionWithFailingGetNameClass extends PhpSession
+final class PhpSessionWithFailingGetNameClass extends PhpSession
 {
     /**
      * @inheritDoc

@@ -20,7 +20,7 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RedirectTrailingSlashMiddlewareTest extends TestCase
+final class RedirectTrailingSlashMiddlewareTest extends TestCase
 {
     public function testBeforeHandling(): void
     {

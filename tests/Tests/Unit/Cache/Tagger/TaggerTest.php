@@ -20,7 +20,7 @@ use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class TaggerTest extends TestCase
+final class TaggerTest extends TestCase
 {
     protected MockObject&CacheContract $cache;
 

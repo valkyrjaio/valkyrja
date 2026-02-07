@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Reflector class.
  */
-class ReflectorTest extends TestCase
+final class ReflectorTest extends TestCase
 {
     /**
      * @throws ReflectionException

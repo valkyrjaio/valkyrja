@@ -25,7 +25,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class EnumTest extends TestCase
+final class EnumTest extends TestCase
 {
     protected const EnumClass VALUE = EnumClass::club;
 

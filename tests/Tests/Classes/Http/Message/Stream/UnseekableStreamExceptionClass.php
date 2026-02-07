@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Stream;
 /**
  * Class UnseekableStreamExceptionClass.
  */
-class UnseekableStreamExceptionClass extends Stream
+final class UnseekableStreamExceptionClass extends Stream
 {
     #[Override]
     public function isSeekable(): bool

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the LockableUser entity class.
  */
-class LockableUserTest extends TestCase
+final class LockableUserTest extends TestCase
 {
     protected const string USER_ID  = 'user-123';
     protected const string USERNAME = 'testuser';

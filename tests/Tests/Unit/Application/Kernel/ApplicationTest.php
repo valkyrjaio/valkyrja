@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Application service.
  */
-class ApplicationTest extends TestCase
+final class ApplicationTest extends TestCase
 {
     /**
      * Test the application with defaults.

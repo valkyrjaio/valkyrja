@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\InputReceivedMiddlewareClass;
 /**
  * Test the input received handler.
  */
-class InputReceivedHandlerTest extends HandlerTestCase
+final class InputReceivedHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

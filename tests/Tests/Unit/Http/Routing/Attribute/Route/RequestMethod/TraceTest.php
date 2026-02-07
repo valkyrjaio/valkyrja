@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Trace attribute.
  */
-class TraceTest extends TestCase
+final class TraceTest extends TestCase
 {
     public function testDefaults(): void
     {

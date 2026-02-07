@@ -20,7 +20,7 @@ use Valkyrja\Type\Uuid\Factory\UuidFactory;
 use Valkyrja\Type\Uuid\Factory\UuidV1Factory;
 use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV1Exception;
 
-class UuidV1FactoryTest extends UuidTestCase
+final class UuidV1FactoryTest extends UuidTestCase
 {
     protected const Version VERSION = Version::V1;
 

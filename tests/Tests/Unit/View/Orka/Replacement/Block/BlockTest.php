@@ -22,7 +22,7 @@ use function preg_replace;
 /**
  * Test the Block class.
  */
-class BlockTest extends TestCase
+final class BlockTest extends TestCase
 {
     public function testImplementsContract(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class S3FlysystemFilesystemTest extends TestCase
+final class S3FlysystemFilesystemTest extends TestCase
 {
     protected MockObject&FilesystemOperator $flysystem;
 

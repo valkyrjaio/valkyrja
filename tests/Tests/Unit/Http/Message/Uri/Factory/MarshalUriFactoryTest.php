@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\MarshalUriFactory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MarshalUriFactoryTest extends TestCase
+final class MarshalUriFactoryTest extends TestCase
 {
     protected const string URI           = 'www.example.com';
     protected const string URI_HTTPS     = 'https://' . self::URI;

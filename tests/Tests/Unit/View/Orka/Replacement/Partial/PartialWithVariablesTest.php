@@ -22,7 +22,7 @@ use function preg_replace;
 /**
  * Test the PartialWithVariables class.
  */
-class PartialWithVariablesTest extends TestCase
+final class PartialWithVariablesTest extends TestCase
 {
     public function testImplementsContract(): void
     {

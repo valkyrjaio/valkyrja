@@ -25,7 +25,7 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {

@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class UriTest extends TestCase
+final class UriTest extends TestCase
 {
     protected const string URI           = 'www.example.com';
     protected const string URI_HTTPS     = 'https://' . self::URI;

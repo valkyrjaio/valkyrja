@@ -20,7 +20,7 @@ use Valkyrja\Orm\Schema\Abstract\TransactionalMigration;
 /**
  * Concrete transactional migration class for testing.
  */
-class TransactionalMigrationClass extends TransactionalMigration
+final class TransactionalMigrationClass extends TransactionalMigration
 {
     public bool $runMigrationCalled      = false;
     public bool $rollbackMigrationCalled = false;

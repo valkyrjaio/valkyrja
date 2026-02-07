@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Alpha;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class AlphaTest extends TestCase
+final class AlphaTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

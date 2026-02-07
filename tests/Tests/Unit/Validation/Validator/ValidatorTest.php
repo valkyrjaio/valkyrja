@@ -19,7 +19,7 @@ use Valkyrja\Validation\Rule\Is\Required;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
-class ValidatorTest extends TestCase
+final class ValidatorTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

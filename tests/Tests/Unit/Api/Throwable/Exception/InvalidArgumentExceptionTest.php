@@ -21,7 +21,7 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException as BaseInvalidArgument
 /**
  * Test the InvalidArgumentException.
  */
-class InvalidArgumentExceptionTest extends TestCase
+final class InvalidArgumentExceptionTest extends TestCase
 {
     public function testImplementsThrowable(): void
     {

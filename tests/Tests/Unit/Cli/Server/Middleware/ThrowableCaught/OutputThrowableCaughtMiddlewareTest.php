@@ -22,7 +22,7 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddlewa
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
 
-class OutputThrowableCaughtMiddlewareTest extends TestCase
+final class OutputThrowableCaughtMiddlewareTest extends TestCase
 {
     public function testThrowableCaught(): void
     {

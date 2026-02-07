@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection service.
  */
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     public function testGetData(): void
     {

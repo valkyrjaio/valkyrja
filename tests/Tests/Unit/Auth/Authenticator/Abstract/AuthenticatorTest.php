@@ -29,7 +29,7 @@ use const PASSWORD_DEFAULT;
 /**
  * Test the abstract Authenticator class.
  */
-class AuthenticatorTest extends TestCase
+final class AuthenticatorTest extends TestCase
 {
     protected const string USER_ID        = 'user-123';
     protected const string USER_ID_2      = 'user-456';

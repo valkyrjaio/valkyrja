@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\NonEmptyArray;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
-class NonEmptyArrayTest extends TestCase
+final class NonEmptyArrayTest extends TestCase
 {
     public function testEmptyArrayThrowsException(): void
     {

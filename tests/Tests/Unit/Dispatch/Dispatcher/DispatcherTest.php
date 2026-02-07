@@ -39,7 +39,7 @@ use const PHP_VERSION;
 /**
  * Test the dispatcher.
  */
-class DispatcherTest extends TestCase
+final class DispatcherTest extends TestCase
 {
     /**
      * A valid constant.
@@ -77,7 +77,7 @@ class DispatcherTest extends TestCase
     protected Container $container;
 
     /**
-     * The class to test with.
+     * The class  to test with.
      *
      * @var Dispatcher
      */
@@ -251,7 +251,7 @@ class DispatcherTest extends TestCase
     }
 
     /**
-     * Test the dispatchClass method with a class from the container.
+     * Test the dispatchClass method with a class  from the container.
      */
     public function testDispatchClassFromContainer(): void
     {
@@ -313,7 +313,7 @@ class DispatcherTest extends TestCase
     }
 
     /**
-     * Test the dispatchConstant method for a class constant.
+     * Test the dispatchConstant method for a class  constant.
      */
     public function testDispatchClassConstant(): void
     {

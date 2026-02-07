@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-class RouteMatchedHandlerClass extends RouteMatchedHandler
+final class RouteMatchedHandlerClass extends RouteMatchedHandler
 {
     protected int $count = 0;
 

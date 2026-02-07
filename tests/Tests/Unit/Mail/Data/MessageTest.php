@@ -19,7 +19,7 @@ use Valkyrja\Mail\Data\Message;
 use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     /** @var non-empty-string */
     protected const string FROM_EMAIL = 'sender@example.com';

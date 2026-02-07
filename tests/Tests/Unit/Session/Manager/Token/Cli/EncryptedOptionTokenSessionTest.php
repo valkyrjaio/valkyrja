@@ -23,7 +23,7 @@ use Valkyrja\Session\Manager\Token\Cli\EncryptedOptionTokenSession;
 use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EncryptedOptionTokenSessionTest extends TestCase
+final class EncryptedOptionTokenSessionTest extends TestCase
 {
     protected CryptContract&MockObject $crypt;
     protected InputContract&MockObject $input;

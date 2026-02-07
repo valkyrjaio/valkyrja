@@ -44,7 +44,7 @@ use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV2Exception;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV3Exception;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV4Exception;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Log\Enum;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogLevelTest extends TestCase
+final class LogLevelTest extends TestCase
 {
     public function testDebugLevel(): void
     {

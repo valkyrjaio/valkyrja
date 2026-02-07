@@ -17,7 +17,7 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     protected string $channel = 'test-channel';
     protected string $event   = 'test-event';

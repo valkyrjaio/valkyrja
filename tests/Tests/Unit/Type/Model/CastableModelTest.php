@@ -46,7 +46,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the castable model.
  */
-class CastableModelTest extends TestCase
+final class CastableModelTest extends TestCase
 {
     public function testContract(): void
     {

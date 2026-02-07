@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Header\Referer;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RefererTest extends TestCase
+final class RefererTest extends TestCase
 {
     public function testImplementsHeaderContract(): void
     {

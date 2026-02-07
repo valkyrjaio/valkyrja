@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the LockAttempt class.
  */
-class LockAttemptTest extends TestCase
+final class LockAttemptTest extends TestCase
 {
     protected const string USER_ID = 'user-123';
 

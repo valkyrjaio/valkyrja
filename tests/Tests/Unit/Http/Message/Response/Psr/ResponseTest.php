@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class ResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     public function testProtocolVersion(): void
     {

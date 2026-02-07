@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Json data model.
  */
-class JsonTest extends TestCase
+final class JsonTest extends TestCase
 {
     protected Json $json;
 

@@ -30,7 +30,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class RequestHandlerTest.
  */
-class RequestHandlerTest extends TestCase
+final class RequestHandlerTest extends TestCase
 {
     /**
      * @throws Throwable

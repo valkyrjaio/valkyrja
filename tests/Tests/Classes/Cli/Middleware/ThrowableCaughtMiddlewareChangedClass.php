@@ -24,7 +24,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 /**
  * Class TestThrowableCaughtMiddlewareChanged.
  */
-class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddlewareContract
+final class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

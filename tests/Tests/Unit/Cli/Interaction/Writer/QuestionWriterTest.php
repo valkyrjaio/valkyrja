@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class QuestionWriterTest extends TestCase
+final class QuestionWriterTest extends TestCase
 {
     public function testInvalidMessage(): void
     {

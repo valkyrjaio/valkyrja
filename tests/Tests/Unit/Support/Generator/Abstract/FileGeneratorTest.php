@@ -21,7 +21,7 @@ use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class FileGeneratorTest extends TestCase
+final class FileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {

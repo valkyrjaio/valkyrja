@@ -17,7 +17,7 @@ use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\DatedFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class DatedFieldsTest extends TestCase
+final class DatedFieldsTest extends TestCase
 {
     public function testHasDateCreatedProperty(): void
     {

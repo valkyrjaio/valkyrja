@@ -25,7 +25,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class ResponseFactoryTest extends TestCase
+final class ResponseFactoryTest extends TestCase
 {
     public function testCreateResponse(): void
     {

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ResponseStruct attribute.
  */
-class ResponseStructTest extends TestCase
+final class ResponseStructTest extends TestCase
 {
     public function testAttribute(): void
     {

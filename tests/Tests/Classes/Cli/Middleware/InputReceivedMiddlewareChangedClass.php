@@ -23,7 +23,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 /**
  * Class TestInputReceivedMiddlewareChanged.
  */
-class InputReceivedMiddlewareChangedClass implements InputReceivedMiddlewareContract
+final class InputReceivedMiddlewareChangedClass implements InputReceivedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

@@ -18,9 +18,9 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 /**
  * Class to test events for unit testing.
  */
-class DispatchCollectableEventClass implements DispatchCollectableEventContract
+final class DispatchCollectableEventClass implements DispatchCollectableEventContract
 {
-    protected array $dispatches = [];
+    private array $dispatches = [];
 
     public function addDispatch(mixed $dispatch): void
     {

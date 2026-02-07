@@ -20,7 +20,7 @@ use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class OrNotWhereTest extends TestCase
+final class OrNotWhereTest extends TestCase
 {
     public function testExtendsWhere(): void
     {

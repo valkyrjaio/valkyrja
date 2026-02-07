@@ -28,7 +28,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 
-class SqlFileMigrationTest extends TestCase
+final class SqlFileMigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 

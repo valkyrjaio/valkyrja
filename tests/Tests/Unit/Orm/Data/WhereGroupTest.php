@@ -22,7 +22,7 @@ use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class WhereGroupTest extends TestCase
+final class WhereGroupTest extends TestCase
 {
     public function testImplementsStringable(): void
     {

@@ -19,7 +19,7 @@ use PDOStatement;
 /**
  * PDO test class.
  */
-class PdoClass extends PDO
+final class PdoClass extends PDO
 {
     public function query(string $query, int|null $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
     {

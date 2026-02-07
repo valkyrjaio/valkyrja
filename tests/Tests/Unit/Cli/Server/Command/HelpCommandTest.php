@@ -32,7 +32,7 @@ use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HelpCommandTest extends TestCase
+final class HelpCommandTest extends TestCase
 {
     public function testRunWithInvalidCommandName(): void
     {

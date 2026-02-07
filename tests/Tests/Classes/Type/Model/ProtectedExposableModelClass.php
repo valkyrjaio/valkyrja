@@ -23,7 +23,7 @@ use Valkyrja\Type\Model\Trait\ProtectedExposable;
  *
  * @property string $protected
  */
-class ProtectedExposableModelClass extends Model implements ExposableModelContract
+final class ProtectedExposableModelClass extends Model implements ExposableModelContract
 {
     use PrivatePropertyTrait;
     use ProtectedExposable;

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Format class.
  */
-class FormatTest extends TestCase
+final class FormatTest extends TestCase
 {
     public function testImplementsContract(): void
     {

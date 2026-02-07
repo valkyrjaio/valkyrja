@@ -19,7 +19,7 @@ use Valkyrja\Type\String\StringT;
 
 use function json_encode;
 
-class StringTest extends TestCase
+final class StringTest extends TestCase
 {
     protected const string VALUE = 'foo';
 

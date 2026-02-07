@@ -25,7 +25,7 @@ use Vonage\Client\Exception\Exception;
 use Vonage\SMS\Client as SmsClient;
 use Vonage\SMS\Message\SMS;
 
-class VonageMessengerTest extends TestCase
+final class VonageMessengerTest extends TestCase
 {
     protected MockObject&Client $vonageClient;
 

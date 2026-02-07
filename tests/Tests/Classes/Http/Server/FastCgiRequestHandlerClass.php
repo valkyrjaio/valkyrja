@@ -20,7 +20,7 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 /**
  * Class FastCgiRequestHandler.
  */
-class FastCgiRequestHandlerClass extends RequestHandler
+final class FastCgiRequestHandlerClass extends RequestHandler
 {
     protected bool $hasRequestBeenFinishedWithFastCgi = false;
 

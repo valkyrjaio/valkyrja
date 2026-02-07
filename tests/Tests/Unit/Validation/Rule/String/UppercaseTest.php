@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Uppercase;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class UppercaseTest extends TestCase
+final class UppercaseTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

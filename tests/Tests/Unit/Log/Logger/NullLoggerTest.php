@@ -20,7 +20,7 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullLoggerTest extends TestCase
+final class NullLoggerTest extends TestCase
 {
     protected NullLogger $logger;
 

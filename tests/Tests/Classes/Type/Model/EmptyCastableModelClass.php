@@ -26,7 +26,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Model class to use to test Castable model.
  */
-class EmptyCastableModelClass extends CastableModel
+final class EmptyCastableModelClass extends CastableModel
 {
     #[Override]
     protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the PropertyDispatch.
  */
-class PropertyDispatchTest extends TestCase
+final class PropertyDispatchTest extends TestCase
 {
     public function testMethod(): void
     {

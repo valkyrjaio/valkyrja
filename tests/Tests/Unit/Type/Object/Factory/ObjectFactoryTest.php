@@ -24,7 +24,7 @@ use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function serialize;
 
-class ObjectFactoryTest extends TestCase
+final class ObjectFactoryTest extends TestCase
 {
     /**
      * @throws JsonException

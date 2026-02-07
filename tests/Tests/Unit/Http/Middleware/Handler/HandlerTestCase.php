@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * The Handler test case.
  */
-class HandlerTestCase extends TestCase
+abstract class HandlerTestCase extends TestCase
 {
     protected Container $container;
 

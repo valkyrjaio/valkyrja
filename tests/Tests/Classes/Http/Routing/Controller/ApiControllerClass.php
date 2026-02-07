@@ -18,6 +18,6 @@ use Valkyrja\Http\Routing\Controller\ApiController;
 /**
  * Controller class to test the abstract ApiController.
  */
-class ApiControllerClass extends ApiController
+final class ApiControllerClass extends ApiController
 {
 }

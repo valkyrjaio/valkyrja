@@ -26,7 +26,7 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\SqlDeleteQueryBuilder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqlDeleteQueryBuilderTest extends TestCase
+final class SqlDeleteQueryBuilderTest extends TestCase
 {
     protected SqlDeleteQueryBuilder $builder;
 

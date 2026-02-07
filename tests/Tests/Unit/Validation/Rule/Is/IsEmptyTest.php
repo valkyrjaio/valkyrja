@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsEmpty;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class IsEmptyTest extends TestCase
+final class IsEmptyTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

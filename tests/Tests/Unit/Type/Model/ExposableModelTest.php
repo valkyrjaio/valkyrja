@@ -27,7 +27,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Test the Exposable model.
  */
-class ExposableModelTest extends TestCase
+final class ExposableModelTest extends TestCase
 {
     public function testContract(): void
     {

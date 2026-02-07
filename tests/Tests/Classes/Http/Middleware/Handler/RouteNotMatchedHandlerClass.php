@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 /**
  * Class TestRouteNotMatchedHandler.
  */
-class RouteNotMatchedHandlerClass extends RouteNotMatchedHandler
+final class RouteNotMatchedHandlerClass extends RouteNotMatchedHandler
 {
     protected int $count = 0;
 

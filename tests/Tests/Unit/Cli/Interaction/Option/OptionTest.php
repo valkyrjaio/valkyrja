@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Option class.
  */
-class OptionTest extends TestCase
+final class OptionTest extends TestCase
 {
     public function testDefaults(): void
     {

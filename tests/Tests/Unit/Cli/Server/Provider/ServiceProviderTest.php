@@ -42,7 +42,7 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 /**
  * Test the ServiceProvider.
  */
-class ServiceProviderTest extends ServiceProviderTestCase
+final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;

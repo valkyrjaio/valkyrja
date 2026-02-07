@@ -16,6 +16,6 @@ namespace Valkyrja\Tests\Classes\Event;
 /**
  * Class to test events for unit testing.
  */
-class EventClass
+final class EventClass
 {
 }

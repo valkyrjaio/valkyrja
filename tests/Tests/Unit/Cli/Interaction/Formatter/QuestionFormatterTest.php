@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the QuestionFormatter class.
  */
-class QuestionFormatterTest extends TestCase
+final class QuestionFormatterTest extends TestCase
 {
     public function testFormat(): void
     {

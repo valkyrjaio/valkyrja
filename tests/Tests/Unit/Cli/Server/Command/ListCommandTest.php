@@ -26,7 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use function ob_get_clean;
 use function ob_start;
 
-class ListCommandTest extends TestCase
+final class ListCommandTest extends TestCase
 {
     public function testRunWithNoRoutes(): void
     {

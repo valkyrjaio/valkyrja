@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the StyleFormat class.
  */
-class StyleFormatTest extends TestCase
+final class StyleFormatTest extends TestCase
 {
     public function testImplementsContract(): void
     {

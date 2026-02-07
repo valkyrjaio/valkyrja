@@ -19,7 +19,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the listener attribute.
  */
-class ListenerTest extends TestCase
+final class ListenerTest extends TestCase
 {
     /**
      * The value to test with.
@@ -36,7 +36,7 @@ class ListenerTest extends TestCase
     protected const string NAME = 'uniqueName';
 
     /**
-     * The class to test with.
+     * The class  to test with.
      */
     protected Listener $class;
 

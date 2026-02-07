@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;
 
-class UploadedFileTest extends TestCase
+final class UploadedFileTest extends TestCase
 {
     public function testStream(): void
     {

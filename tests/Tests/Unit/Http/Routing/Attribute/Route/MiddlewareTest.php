@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Middleware attribute.
  */
-class MiddlewareTest extends TestCase
+final class MiddlewareTest extends TestCase
 {
     public function testAttribute(): void
     {

@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class TextResponseTest extends TestCase
+final class TextResponseTest extends TestCase
 {
     protected const string TEXT = 'test';
 

@@ -29,7 +29,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection service.
  */
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     protected const string ROUTE_PATH = '/version';
     protected const string ROUTE_NAME = 'version';

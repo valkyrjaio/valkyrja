@@ -18,7 +18,7 @@ use Valkyrja\Type\Abstract\Type;
 /**
  * Type class to use to test abstract type.
  */
-class TypeClass extends Type
+final class TypeClass extends Type
 {
     public function __construct(mixed $subject)
     {

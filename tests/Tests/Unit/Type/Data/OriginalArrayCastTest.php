@@ -21,7 +21,7 @@ use Valkyrja\Type\String\StringT;
 
 use function json_encode;
 
-class OriginalArrayCastTest extends TestCase
+final class OriginalArrayCastTest extends TestCase
 {
     public function testInherits(): void
     {

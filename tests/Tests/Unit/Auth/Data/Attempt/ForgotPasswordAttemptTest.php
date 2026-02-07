@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ForgotPasswordAttempt class.
  */
-class ForgotPasswordAttemptTest extends TestCase
+final class ForgotPasswordAttemptTest extends TestCase
 {
     protected const string USERNAME = 'testuser';
 

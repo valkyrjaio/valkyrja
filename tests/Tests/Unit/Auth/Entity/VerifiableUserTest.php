@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the VerifiableUser entity class.
  */
-class VerifiableUserTest extends TestCase
+final class VerifiableUserTest extends TestCase
 {
     protected const string USER_ID  = 'user-123';
     protected const string USERNAME = 'testuser';

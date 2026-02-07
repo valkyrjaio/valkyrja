@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Regex;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class RegexTest extends TestCase
+final class RegexTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

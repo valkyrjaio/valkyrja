@@ -17,7 +17,7 @@ use Valkyrja\Mail\Data\Contract\RecipientContract;
 use Valkyrja\Mail\Data\Recipient;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RecipientTest extends TestCase
+final class RecipientTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

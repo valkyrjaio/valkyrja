@@ -22,7 +22,7 @@ use function preg_replace;
 /**
  * Test the Layout class.
  */
-class LayoutTest extends TestCase
+final class LayoutTest extends TestCase
 {
     public function testImplementsContract(): void
     {

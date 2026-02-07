@@ -27,7 +27,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Question class.
  */
-class QuestionTest extends TestCase
+final class QuestionTest extends TestCase
 {
     public function testInvalidCallable(): void
     {

@@ -19,7 +19,7 @@ use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CacheSessionTest extends TestCase
+final class CacheSessionTest extends TestCase
 {
     protected CacheContract&MockObject $cache;
 

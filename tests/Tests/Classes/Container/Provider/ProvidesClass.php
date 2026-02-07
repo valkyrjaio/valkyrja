@@ -18,7 +18,7 @@ use Valkyrja\Container\Provider\Provider;
 /**
  * Testable Provider/Provides Trait class.
  */
-class ProvidesClass extends Provider
+final class ProvidesClass extends Provider
 {
     public static function provides(): array
     {

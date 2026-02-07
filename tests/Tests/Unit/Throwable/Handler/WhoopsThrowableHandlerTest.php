@@ -19,7 +19,7 @@ use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 /**
  * Test the whoops throwable handler.
  */
-class WhoopsThrowableHandlerTest extends TestCase
+final class WhoopsThrowableHandlerTest extends TestCase
 {
     public function testEnable(): void
     {

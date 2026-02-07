@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CookieParamsTest extends TestCase
+final class CookieParamsTest extends TestCase
 {
     public function testDefaultValues(): void
     {

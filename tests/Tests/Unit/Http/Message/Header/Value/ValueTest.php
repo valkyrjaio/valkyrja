@@ -26,7 +26,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class ValueTest extends TestCase
+final class ValueTest extends TestCase
 {
     public function testFromValue(): void
     {

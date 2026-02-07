@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Header\Value\Cookie;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CookieTest extends TestCase
+final class CookieTest extends TestCase
 {
     protected const string COOKIE_NAME = 'test';
 

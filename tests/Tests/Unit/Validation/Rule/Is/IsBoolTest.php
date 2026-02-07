@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsBool;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class IsBoolTest extends TestCase
+final class IsBoolTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

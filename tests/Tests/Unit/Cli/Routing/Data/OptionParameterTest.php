@@ -26,7 +26,7 @@ use Valkyrja\Type\Int\IntT;
 /**
  * Test the OptionParameter class.
  */
-class OptionParameterTest extends TestCase
+final class OptionParameterTest extends TestCase
 {
     /** @var non-empty-string */
     protected const string NAME = 'name';

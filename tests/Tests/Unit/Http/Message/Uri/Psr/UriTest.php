@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class UriTest extends TestCase
+final class UriTest extends TestCase
 {
     protected const string URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
 

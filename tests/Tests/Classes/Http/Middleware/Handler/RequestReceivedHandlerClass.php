@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 /**
  * Class TestRequestReceivedHandler.
  */
-class RequestReceivedHandlerClass extends RequestReceivedHandler
+final class RequestReceivedHandlerClass extends RequestReceivedHandler
 {
     protected int $count = 0;
 

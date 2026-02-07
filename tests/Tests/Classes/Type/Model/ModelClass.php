@@ -21,7 +21,7 @@ use Valkyrja\Type\Model\Abstract\Model;
  *
  * @property string $protected
  */
-class ModelClass extends Model
+final class ModelClass extends Model
 {
     use PrivatePropertyTrait;
 

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class CheckForHelpOptionsMiddlewareTest extends TestCase
+final class CheckForHelpOptionsMiddlewareTest extends TestCase
 {
     public function testWithoutHelpOptions(): void
     {

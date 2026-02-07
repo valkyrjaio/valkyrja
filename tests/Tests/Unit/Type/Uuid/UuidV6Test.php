@@ -21,7 +21,7 @@ use Valkyrja\Type\Uuid\UuidV6;
 
 use function json_encode;
 
-class UuidV6Test extends TestCase
+final class UuidV6Test extends TestCase
 {
     /**
      * @throws Exception

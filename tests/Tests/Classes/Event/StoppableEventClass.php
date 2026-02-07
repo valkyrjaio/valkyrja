@@ -14,12 +14,25 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
+use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
 /**
  * Class to test events for unit testing.
  */
-class StoppableEventClass extends DispatchCollectableEventClass implements StoppableEventInterface
+final class StoppableEventClass implements DispatchCollectableEventContract, StoppableEventInterface
 {
+    private array $dispatches = [];
+
+    public function addDispatch(mixed $dispatch): void
+    {
+        $this->dispatches[] = $dispatch;
+    }
+
+    public function getDispatches(): array
+    {
+        return $this->dispatches;
+    }
+
     public function isPropagationStopped(): bool
     {
         return true;

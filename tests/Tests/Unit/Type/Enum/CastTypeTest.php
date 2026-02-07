@@ -30,7 +30,7 @@ use Valkyrja\Type\String\StringT;
 
 use function json_encode;
 
-class CastTypeTest extends TestCase
+final class CastTypeTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {

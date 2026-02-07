@@ -20,7 +20,7 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 /**
  * Class SessionCloseRequestHandler.
  */
-class SessionCloseRequestHandlerClass extends RequestHandler
+final class SessionCloseRequestHandlerClass extends RequestHandler
 {
     protected bool $hasSessionBeenClosed = false;
 

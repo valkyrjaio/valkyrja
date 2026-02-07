@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PHP_VERSION;
 
-class VersionCommandTest extends TestCase
+final class VersionCommandTest extends TestCase
 {
     public function testRun(): void
     {

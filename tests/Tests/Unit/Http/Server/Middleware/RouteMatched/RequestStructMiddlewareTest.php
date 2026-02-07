@@ -28,7 +28,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class RequestStructMiddlewareTest.
  */
-class RequestStructMiddlewareTest extends TestCase
+final class RequestStructMiddlewareTest extends TestCase
 {
     public function testRouteMatchedNoRequestStruct(): void
     {

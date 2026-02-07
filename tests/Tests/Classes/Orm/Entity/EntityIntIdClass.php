@@ -19,7 +19,7 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
 /**
  * Model class to use to test abstract model.
  */
-class EntityIntIdClass extends Entity
+final class EntityIntIdClass extends Entity
 {
     public int $id;
     public string $name;

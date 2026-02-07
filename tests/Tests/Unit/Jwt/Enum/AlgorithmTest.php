@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Jwt\Enum;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class AlgorithmTest extends TestCase
+final class AlgorithmTest extends TestCase
 {
     public function testHmacAlgorithms(): void
     {

@@ -22,7 +22,7 @@ use Valkyrja\Type\Model\Trait\Indexable;
  *
  * @property string $protected
  */
-class SimpleIndexableModelClass extends Model implements IndexedModelContract
+final class SimpleIndexableModelClass extends Model implements IndexedModelContract
 {
     use Indexable;
 }

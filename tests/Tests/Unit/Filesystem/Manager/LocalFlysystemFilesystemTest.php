@@ -20,7 +20,7 @@ use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LocalFlysystemFilesystemTest extends TestCase
+final class LocalFlysystemFilesystemTest extends TestCase
 {
     protected MockObject&FilesystemOperator $flysystem;
 

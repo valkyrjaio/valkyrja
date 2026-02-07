@@ -22,7 +22,7 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Jwt\Http\HeaderJwtSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HeaderJwtSessionTest extends TestCase
+final class HeaderJwtSessionTest extends TestCase
 {
     protected JwtContract&MockObject $jwt;
 

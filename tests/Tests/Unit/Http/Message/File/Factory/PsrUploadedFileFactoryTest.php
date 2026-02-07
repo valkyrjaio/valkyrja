@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class PsrUploadedFileFactoryTest extends TestCase
+final class PsrUploadedFileFactoryTest extends TestCase
 {
     public function testFromPsr(): void
     {

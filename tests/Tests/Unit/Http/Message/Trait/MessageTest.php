@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function implode;
 
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     protected const string HEADER_NAME   = 'test';
     protected const string HEADER_VALUE  = 'foo';

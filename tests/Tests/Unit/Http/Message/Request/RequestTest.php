@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RequestTest extends TestCase
+final class RequestTest extends TestCase
 {
     public function testRequestTarget(): void
     {

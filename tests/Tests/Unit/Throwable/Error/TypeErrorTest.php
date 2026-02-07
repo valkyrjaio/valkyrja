@@ -19,7 +19,7 @@ use Valkyrja\Throwable\Error\TypeError;
 /**
  * Test the type error class.
  */
-class TypeErrorTest extends TestCase
+final class TypeErrorTest extends TestCase
 {
     public function testGetTraceCode(): void
     {

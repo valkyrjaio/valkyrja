@@ -20,7 +20,7 @@ use Valkyrja\Type\Ulid\Factory\UlidFactory;
 /**
  * Test wrapper for Ulid to expose protected methods and allow state manipulation.
  */
-class UlidFactoryClass extends UlidFactory
+final class UlidFactoryClass extends UlidFactory
 {
     /**
      * Whether to force unpackRandomBytes to return false.
@@ -32,7 +32,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function setTime(string $time): void
     {
-        static::$time = $time;
+        self::$time = $time;
     }
 
     /**
@@ -40,7 +40,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function getStoredTime(): string
     {
-        return static::$time;
+        return self::$time;
     }
 
     /**
@@ -50,7 +50,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function setRandomBytes(array $randomBytes): void
     {
-        static::$randomBytes = $randomBytes;
+        self::$randomBytes = $randomBytes;
     }
 
     /**
@@ -60,7 +60,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function getRandomBytes(): array
     {
-        return static::$randomBytes;
+        return self::$randomBytes;
     }
 
     /**
@@ -68,7 +68,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function setForceUnpackFail(bool $fail): void
     {
-        static::$forceUnpackFail = $fail;
+        self::$forceUnpackFail = $fail;
     }
 
     /**
@@ -76,7 +76,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testGetTime(DateTimeInterface|null $dateTime = null): string
     {
-        return static::getTime($dateTime);
+        return self::getTime($dateTime);
     }
 
     /**
@@ -84,7 +84,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testGetTimeFromDateTime(DateTimeInterface $dateTime): string
     {
-        return static::getTimeFromDateTime($dateTime);
+        return self::getTimeFromDateTime($dateTime);
     }
 
     /**
@@ -92,7 +92,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testIncreaseTime(string $time): string
     {
-        return static::increaseTime($time);
+        return self::increaseTime($time);
     }
 
     /**
@@ -100,7 +100,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testUpdateRandomBytes(): void
     {
-        static::updateRandomBytes();
+        self::updateRandomBytes();
     }
 
     /**
@@ -108,7 +108,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testAreAllRandomBytesMax(): bool
     {
-        return static::areAllRandomBytesMax();
+        return self::areAllRandomBytesMax();
     }
 
     /**
@@ -116,7 +116,7 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function testConvertRandomBytesPart(int $index): string
     {
-        return static::convertRandomBytesPart($index);
+        return self::convertRandomBytesPart($index);
     }
 
     /**
@@ -124,9 +124,9 @@ class UlidFactoryClass extends UlidFactory
      */
     public static function reset(): void
     {
-        static::$time            = '';
-        static::$randomBytes     = [];
-        static::$forceUnpackFail = false;
+        self::$time            = '';
+        self::$randomBytes     = [];
+        self::$forceUnpackFail = false;
     }
 
     /**
@@ -135,7 +135,7 @@ class UlidFactoryClass extends UlidFactory
     #[Override]
     protected static function unpackRandomBytes(string $bytes): array|false
     {
-        if (static::$forceUnpackFail) {
+        if (self::$forceUnpackFail) {
             return false;
         }
 

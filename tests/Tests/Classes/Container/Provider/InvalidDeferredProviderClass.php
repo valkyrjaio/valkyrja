@@ -14,17 +14,48 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 /**
  * Class InvalidDeferredProviderClass.
  */
-class InvalidDeferredProviderClass extends DeferredProviderClass
+final class InvalidDeferredProviderClass implements ProviderContract
 {
+    public static bool $publishCalled = false;
+
+    public static bool $publishSecondaryCalled = false;
+
+    #[Override]
+    public static function deferred(): bool
+    {
+        return true;
+    }
+
     #[Override]
     public static function publishers(): array
     {
         return [
-            ProvidedSecondaryClass::class => [static::class, 'publishMethodNonExistent'],
+            ProvidedSecondaryClass::class => [self::class, 'publishMethodNonExistent'],
         ];
+    }
+
+    #[Override]
+    public static function provides(): array
+    {
+        return [
+            ProvidedClass::class,
+            ProvidedSecondaryClass::class,
+        ];
+    }
+
+    #[Override]
+    public static function publish(object $providerAware): void
+    {
+        self::$publishCalled = true;
+    }
+
+    public static function publishSecondary(object $providerAware): void
+    {
+        self::$publishSecondaryCalled = true;
     }
 }

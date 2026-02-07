@@ -17,7 +17,7 @@ use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\SoftDeletable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SoftDeletableTest extends TestCase
+final class SoftDeletableTest extends TestCase
 {
     public function testGetDeletedDateFormatReturnsDefaultFormat(): void
     {

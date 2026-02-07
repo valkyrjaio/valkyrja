@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Enum;
 use Valkyrja\Orm\Enum\SortOrder;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SortOrderTest extends TestCase
+final class SortOrderTest extends TestCase
 {
     public function testAscSortOrder(): void
     {

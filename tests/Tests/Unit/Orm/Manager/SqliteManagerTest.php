@@ -27,7 +27,7 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class SqliteManagerTest extends TestCase
+final class SqliteManagerTest extends TestCase
 {
     protected PDO&MockObject $pdo;
 

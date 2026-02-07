@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the AuthenticationAttempt class.
  */
-class AuthenticationAttemptTest extends TestCase
+final class AuthenticationAttemptTest extends TestCase
 {
     protected const string USERNAME = 'testuser';
     protected const string PASSWORD = 'SecureP@ssw0rd!';

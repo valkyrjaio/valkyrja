@@ -28,7 +28,7 @@ use function strtolower;
 
 use const JSON_THROW_ON_ERROR;
 
-class HeaderTest extends TestCase
+final class HeaderTest extends TestCase
 {
     public function testFromValue(): void
     {

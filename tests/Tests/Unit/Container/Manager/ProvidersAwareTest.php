@@ -25,7 +25,7 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 /**
  * Test the ProvidersAware support class.
  */
-class ProvidersAwareTest extends TestCase
+final class ProvidersAwareTest extends TestCase
 {
     public function testRegister(): void
     {

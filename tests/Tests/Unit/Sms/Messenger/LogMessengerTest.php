@@ -20,7 +20,7 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class LogMessengerTest extends TestCase
+final class LogMessengerTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 

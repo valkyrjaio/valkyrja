@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\HtmlResponse;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HtmlResponseTest extends TestCase
+final class HtmlResponseTest extends TestCase
 {
     protected const string HTML = '<html lang="en"></html>';
 

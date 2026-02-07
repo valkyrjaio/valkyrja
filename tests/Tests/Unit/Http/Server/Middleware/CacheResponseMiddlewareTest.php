@@ -38,7 +38,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function md5;
 
-class CacheResponseMiddlewareTest extends TestCase
+final class CacheResponseMiddlewareTest extends TestCase
 {
     /**
      * @var non-empty-string

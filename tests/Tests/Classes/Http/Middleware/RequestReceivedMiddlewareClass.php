@@ -22,7 +22,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 /**
  * Class TestRequestReceivedMiddleware.
  */
-class RequestReceivedMiddlewareClass implements RequestReceivedMiddlewareContract
+final class RequestReceivedMiddlewareClass implements RequestReceivedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

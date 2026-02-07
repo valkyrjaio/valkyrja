@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
 /**
  * Testable Question class.
  */
-class QuestionFalseFgetsClass extends Question
+final class QuestionFalseFgetsClass extends Question
 {
     #[Override]
     protected function fopen(string $filename, string $mode)

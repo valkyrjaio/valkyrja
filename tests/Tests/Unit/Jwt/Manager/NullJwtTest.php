@@ -18,7 +18,7 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullJwtTest extends TestCase
+final class NullJwtTest extends TestCase
 {
     protected NullJwt $jwt;
 

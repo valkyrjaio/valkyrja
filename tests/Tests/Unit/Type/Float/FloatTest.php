@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Float;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Float\FloatT;
 
-class FloatTest extends TestCase
+final class FloatTest extends TestCase
 {
     protected const float VALUE = 1.25;
 

@@ -26,7 +26,7 @@ use const DIRECTORY_SEPARATOR;
 /**
  * Test the PhpRenderer class.
  */
-class PhpRendererTest extends TestCase
+final class PhpRendererTest extends TestCase
 {
     protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/php';
 

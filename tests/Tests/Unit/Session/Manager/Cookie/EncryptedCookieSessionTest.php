@@ -21,7 +21,7 @@ use Valkyrja\Session\Manager\Cookie\CookieSession;
 use Valkyrja\Session\Manager\Cookie\EncryptedCookieSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EncryptedCookieSessionTest extends TestCase
+final class EncryptedCookieSessionTest extends TestCase
 {
     protected CryptContract&MockObject $crypt;
 

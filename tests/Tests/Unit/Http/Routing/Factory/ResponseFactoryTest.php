@@ -28,7 +28,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ResponseFactory service.
  */
-class ResponseFactoryTest extends TestCase
+final class ResponseFactoryTest extends TestCase
 {
     protected const string ROUTE_NAME = 'route';
 

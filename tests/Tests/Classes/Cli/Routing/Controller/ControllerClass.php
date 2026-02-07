@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Controller\Controller;
 
-class ControllerClass extends Controller
+final class ControllerClass extends Controller
 {
     public function getInput(): InputContract
     {

@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class IsNumericTest extends TestCase
+final class IsNumericTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

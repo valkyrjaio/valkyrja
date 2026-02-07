@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class HeaderFactoryTest extends TestCase
+final class HeaderFactoryTest extends TestCase
 {
     public function testMarshalHeaders(): void
     {

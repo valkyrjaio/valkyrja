@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\ObjectT;
 
-class ObjectTest extends TestCase
+final class ObjectTest extends TestCase
 {
     public function testValue(): void
     {

@@ -23,7 +23,7 @@ use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class EncryptedHeaderTokenSessionTest extends TestCase
+final class EncryptedHeaderTokenSessionTest extends TestCase
 {
     protected CryptContract&MockObject $crypt;
 

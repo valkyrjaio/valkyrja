@@ -22,7 +22,7 @@ use Valkyrja\Type\Vlid\Factory\VlidV3Factory;
 use Valkyrja\Type\Vlid\Factory\VlidV4Factory;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV1Exception;
 
-class VlidV1FactoryTest extends VlidTestCase
+final class VlidV1FactoryTest extends VlidTestCase
 {
     protected const Version VERSION = Version::V1;
 

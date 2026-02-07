@@ -19,7 +19,7 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 /**
  * Test the invalid argument exception class.
  */
-class InvalidArgumentExceptionTest extends TestCase
+final class InvalidArgumentExceptionTest extends TestCase
 {
     public function testGetTraceCode(): void
     {

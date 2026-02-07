@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function strlen;
 
-class NullSessionTest extends TestCase
+final class NullSessionTest extends TestCase
 {
     protected NullSession $session;
 

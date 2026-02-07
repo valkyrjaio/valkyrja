@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the TextColorFormat class.
  */
-class TextColorFormatTest extends TestCase
+final class TextColorFormatTest extends TestCase
 {
     public function testImplementsContract(): void
     {

@@ -22,7 +22,7 @@ use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 
-class ExceptionsTest extends TestCase
+final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {

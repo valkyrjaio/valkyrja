@@ -31,7 +31,7 @@ use Valkyrja\Type\Int\IntT;
 /**
  * Test the Matcher service.
  */
-class MatcherTest extends TestCase
+final class MatcherTest extends TestCase
 {
     protected const string STATIC_PATH = '/';
     protected const string STATIC_NAME = 'static';

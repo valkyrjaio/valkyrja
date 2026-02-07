@@ -17,7 +17,7 @@ use Valkyrja\Sms\Data\Contract\MessageContract;
 use Valkyrja\Sms\Data\Message;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class MessageTest extends TestCase
+final class MessageTest extends TestCase
 {
     /** @var non-empty-string */
     protected const string TO = '+15551234567';

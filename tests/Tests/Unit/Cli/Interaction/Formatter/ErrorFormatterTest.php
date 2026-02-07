@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ErrorFormatter class.
  */
-class ErrorFormatterTest extends TestCase
+final class ErrorFormatterTest extends TestCase
 {
     public function testFormat(): void
     {

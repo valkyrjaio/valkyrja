@@ -27,7 +27,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Class ResponseStructMiddlewareTest.
  */
-class ResponseStructMiddlewareTest extends TestCase
+final class ResponseStructMiddlewareTest extends TestCase
 {
     public function testRouteDispatchedNoResponseStruct(): void
     {

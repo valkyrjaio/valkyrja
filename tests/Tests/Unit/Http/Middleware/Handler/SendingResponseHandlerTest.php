@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 /**
  * Test the sending response handler.
  */
-class SendingResponseHandlerTest extends HandlerTestCase
+final class SendingResponseHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

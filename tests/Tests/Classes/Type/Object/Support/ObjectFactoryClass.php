@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Type\Object\Support;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Object\Factory\ObjectFactory;
 
-class ObjectFactoryClass extends ObjectFactory
+final class ObjectFactoryClass extends ObjectFactory
 {
     public static function exposeSanitizePropertyName(
         string $name,

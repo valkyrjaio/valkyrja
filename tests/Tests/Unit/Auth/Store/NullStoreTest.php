@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the NullStore class.
  */
-class NullStoreTest extends TestCase
+final class NullStoreTest extends TestCase
 {
     protected NullStore $store;
 

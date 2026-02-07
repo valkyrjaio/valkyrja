@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the ErrorMessage class.
  */
-class ErrorMessageTest extends TestCase
+final class ErrorMessageTest extends TestCase
 {
     public function testText(): void
     {

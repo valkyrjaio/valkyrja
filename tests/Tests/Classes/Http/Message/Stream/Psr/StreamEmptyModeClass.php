@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
 /**
  * Class StreamEmptyModeClass.
  */
-class StreamEmptyModeClass extends Stream
+final class StreamEmptyModeClass extends Stream
 {
     #[Override]
     public function getMetadata(string|null $key = null): mixed

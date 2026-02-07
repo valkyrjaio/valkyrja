@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function random_int;
 
-class PortTest extends TestCase
+final class PortTest extends TestCase
 {
     public static function validPortsProvider(): array
     {

@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Dispatcher service.
  */
-class DispatcherTest extends TestCase
+final class DispatcherTest extends TestCase
 {
     protected static bool $dispatched = false;
 

@@ -30,7 +30,7 @@ use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class RouteTest extends TestCase
+final class RouteTest extends TestCase
 {
     /** @var non-empty-string */
     protected const string NAME = 'name';

@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Connect attribute.
  */
-class ConnectTest extends TestCase
+final class ConnectTest extends TestCase
 {
     public function testDefaults(): void
     {

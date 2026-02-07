@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the NullClient service.
  */
-class NullClientTest extends TestCase
+final class NullClientTest extends TestCase
 {
     public function testSendRequest(): void
     {

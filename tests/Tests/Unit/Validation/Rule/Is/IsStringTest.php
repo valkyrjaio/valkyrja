@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class IsStringTest extends TestCase
+final class IsStringTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

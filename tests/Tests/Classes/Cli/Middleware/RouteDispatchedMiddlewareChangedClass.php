@@ -21,7 +21,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
-class RouteDispatchedMiddlewareChangedClass implements RouteDispatchedMiddlewareContract
+final class RouteDispatchedMiddlewareChangedClass implements RouteDispatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 

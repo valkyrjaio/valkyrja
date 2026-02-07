@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the JsonData data model.
  */
-class JsonDataTest extends TestCase
+final class JsonDataTest extends TestCase
 {
     protected JsonData $jsonData;
 

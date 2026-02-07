@@ -18,7 +18,7 @@ use Valkyrja\Type\Enum\Type;
 
 use function json_encode;
 
-class TypeTest extends TestCase
+final class TypeTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {

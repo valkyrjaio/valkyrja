@@ -30,7 +30,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-class AllMiddlewareClass implements RequestReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, SendingResponseMiddlewareContract, ThrowableCaughtMiddlewareContract, TerminatedMiddlewareContract
+final class AllMiddlewareClass implements RequestReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, SendingResponseMiddlewareContract, ThrowableCaughtMiddlewareContract, TerminatedMiddlewareContract
 {
     public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {

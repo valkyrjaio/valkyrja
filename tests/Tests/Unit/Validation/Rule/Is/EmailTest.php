@@ -18,7 +18,7 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Email;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
-class EmailTest extends TestCase
+final class EmailTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

@@ -18,6 +18,6 @@ use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 /**
  * Invalid dispatch class to test with.
  */
-class InvalidDispatchClass extends Dispatch
+final class InvalidDispatchClass extends Dispatch
 {
 }

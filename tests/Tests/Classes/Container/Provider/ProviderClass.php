@@ -13,29 +13,33 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
+use Override;
 use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 /**
  * Class ProviderClass.
  */
-class ProviderClass implements ProviderContract
+final class ProviderClass implements ProviderContract
 {
     public static bool $publishCalled = false;
 
     public static bool $publishSecondaryCalled = false;
 
+    #[Override]
     public static function deferred(): bool
     {
         return false;
     }
 
+    #[Override]
     public static function publishers(): array
     {
         return [
-            ProvidedSecondaryClass::class => [static::class, 'publishSecondary'],
+            ProvidedSecondaryClass::class => [self::class, 'publishSecondary'],
         ];
     }
 
+    #[Override]
     public static function provides(): array
     {
         return [
@@ -44,13 +48,14 @@ class ProviderClass implements ProviderContract
         ];
     }
 
+    #[Override]
     public static function publish(object $providerAware): void
     {
-        static::$publishCalled = true;
+        self::$publishCalled = true;
     }
 
     public static function publishSecondary(object $providerAware): void
     {
-        static::$publishSecondaryCalled = true;
+        self::$publishSecondaryCalled = true;
     }
 }

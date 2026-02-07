@@ -21,7 +21,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
 /**
  * Test the request received handler.
  */
-class RequestReceivedHandlerTest extends HandlerTestCase
+final class RequestReceivedHandlerTest extends HandlerTestCase
 {
     /**
      * Test with the default middleware (empty arrays).

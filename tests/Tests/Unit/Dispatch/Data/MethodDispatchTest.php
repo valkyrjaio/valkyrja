@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the MethodDispatch.
  */
-class MethodDispatchTest extends TestCase
+final class MethodDispatchTest extends TestCase
 {
     public function testConstructor(): void
     {

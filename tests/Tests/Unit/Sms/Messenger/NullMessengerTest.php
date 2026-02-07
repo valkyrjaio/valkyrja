@@ -18,7 +18,7 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class NullMessengerTest extends TestCase
+final class NullMessengerTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {

@@ -19,9 +19,9 @@ use Valkyrja\Tests\Classes\Container\Provider\ProvidesClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
- * Test the Provider class and Provides trait.
+ * Test the Provider class  and Provides trait.
  */
-class ProvidesTest extends TestCase
+final class ProvidesTest extends TestCase
 {
     public function testDeferred(): void
     {

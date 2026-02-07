@@ -24,7 +24,7 @@ use Valkyrja\Http\Routing\Attribute\Route\Path;
  */
 #[Path('/controller')]
 #[Name('controller')]
-class ControllerAttributedClass
+final class ControllerAttributedClass
 {
     /** @var non-empty-string */
     public const string WELCOME_PATH = '/welcome';

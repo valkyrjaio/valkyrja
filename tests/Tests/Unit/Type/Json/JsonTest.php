@@ -21,7 +21,7 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-class JsonTest extends TestCase
+final class JsonTest extends TestCase
 {
     /** @var string[] */
     protected const array VALUE = ['test'];

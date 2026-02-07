@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-class StreamTest extends TestCase
+final class StreamTest extends TestCase
 {
     public function testPsr(): void
     {
