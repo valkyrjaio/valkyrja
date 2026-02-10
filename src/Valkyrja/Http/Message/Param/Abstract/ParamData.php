@@ -192,8 +192,16 @@ abstract class ParamData implements ParamDataContract
      */
     protected function validateParam(mixed $param): void
     {
-        if (! is_scalar($param) && ! $param instanceof static) {
+        if (! $this->isValidParam($param)) {
             throw new InvalidArgumentException('Param must be scalar');
         }
+    }
+
+    /**
+     * Determine if a param is valid.
+     */
+    protected function isValidParam(mixed $param): bool
+    {
+        return is_scalar($param) || $param instanceof static;
     }
 }
