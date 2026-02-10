@@ -13,9 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Param\Contract;
 
+use Override;
+
 /**
- * @extends ParamDataContract<scalar|self>
+ * @extends ParamCollectionContract<string|self>
  */
-interface ParsedJsonParamDataContract extends ParamDataContract
+interface QueryParamCollectionContract extends ParamCollectionContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getParam(string|int $name): self|string|null;
 }

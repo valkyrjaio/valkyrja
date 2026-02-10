@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Param\Abstract;
 
-use Valkyrja\Http\Message\Param\Abstract\ParamData;
+use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 
 /**
- * Class ParamDataClass.
- *
- * @extends ParamData<scalar|self>
+ * @extends ParamCollection<scalar|self>
  */
-final class ParamDataClass extends ParamData
+final class ParamCollectionClass extends ParamCollection
 {
 }

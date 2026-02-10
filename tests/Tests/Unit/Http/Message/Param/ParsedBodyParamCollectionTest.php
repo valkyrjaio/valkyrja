@@ -15,27 +15,27 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamDataContract;
-use Valkyrja\Http\Message\Param\ParsedBodyParamData;
+use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class ParsedBodyParamDataTest extends TestCase
+final class ParsedBodyParamCollectionTest extends TestCase
 {
-    protected ParsedBodyParamData $paramData;
+    protected ParsedBodyParamCollection $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new ParsedBodyParamData(name: 'John', email: 'john@example.com');
+        $this->paramData = new ParsedBodyParamCollection(name: 'John', email: 'john@example.com');
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(ParsedBodyParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(ParsedBodyParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new ParsedBodyParamData();
+        $paramData = new ParsedBodyParamCollection();
 
         self::assertEmpty($paramData->getParams());
     }
@@ -48,12 +48,12 @@ final class ParsedBodyParamDataTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParsedBodyParamData(street: '123 Main St', city: 'Springfield');
-        $paramData = new ParsedBodyParamData(address: $nested);
+        $nested    = new ParsedBodyParamCollection(street: '123 Main St', city: 'Springfield');
+        $paramData = new ParsedBodyParamCollection(address: $nested);
 
         $params = $paramData->getParams();
 
-        self::assertInstanceOf(ParsedBodyParamData::class, $params['address']);
+        self::assertInstanceOf(ParsedBodyParamCollection::class, $params['address']);
     }
 
     public function testGetParamReturnsString(): void
@@ -156,6 +156,6 @@ final class ParsedBodyParamDataTest extends TestCase
 
         $params = $paramData->getParams();
 
-        self::assertInstanceOf(ParsedBodyParamData::class, $params['address']);
+        self::assertInstanceOf(ParsedBodyParamCollection::class, $params['address']);
     }
 }

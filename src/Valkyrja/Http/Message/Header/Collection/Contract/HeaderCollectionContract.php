@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Header\Data\Contract;
+namespace Valkyrja\Http\Message\Header\Collection\Contract;
 
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 
-interface HeaderDataContract
+interface HeaderCollectionContract
 {
     /**
      * Determine if a header exists.

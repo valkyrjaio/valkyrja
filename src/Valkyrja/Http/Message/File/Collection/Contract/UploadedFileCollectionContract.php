@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\File\Data\Contract;
+namespace Valkyrja\Http\Message\File\Collection\Contract;
 
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 
 /**
  * @template T of UploadedFileContract|self
  */
-interface UploadedFileDataContract
+interface UploadedFileCollectionContract
 {
     /**
      * Determine if a file exists.

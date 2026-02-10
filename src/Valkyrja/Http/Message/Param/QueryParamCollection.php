@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Param;
 
 use Override;
-use Valkyrja\Http\Message\Param\Abstract\ParamData;
-use Valkyrja\Http\Message\Param\Contract\QueryParamDataContract;
+use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
+use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
 
 /**
- * @extends ParamData<string|self>
+ * @extends ParamCollection<string|self>
  *
  * @phpstan-ignore-next-line
  */
-class QueryParamData extends ParamData implements QueryParamDataContract
+class QueryParamCollection extends ParamCollection implements QueryParamCollectionContract
 {
     /**
      * @inheritDoc

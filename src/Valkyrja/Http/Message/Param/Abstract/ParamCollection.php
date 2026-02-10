@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Param\Abstract;
 
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Http\Message\Param\Contract\ParamDataContract;
+use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
 
 use function in_array;
 use function is_array;
@@ -26,9 +26,9 @@ use const ARRAY_FILTER_USE_KEY;
 /**
  * @template T of scalar|self
  *
- * @implements ParamDataContract<T>
+ * @implements ParamCollectionContract<T>
  */
-abstract class ParamData implements ParamDataContract
+abstract class ParamCollection implements ParamCollectionContract
 {
     /** @var array<array-key, T> */
     protected array $params = [];
@@ -43,7 +43,7 @@ abstract class ParamData implements ParamDataContract
     /**
      * @param T ...$params The params
      */
-    public function __construct(ParamDataContract|float|bool|int|string ...$params)
+    public function __construct(ParamCollectionContract|float|bool|int|string ...$params)
     {
         $this->validateParams($params);
 
@@ -94,7 +94,7 @@ abstract class ParamData implements ParamDataContract
      * @inheritDoc
      */
     #[Override]
-    public function getParam(int|string $name): ParamDataContract|float|bool|int|string|null
+    public function getParam(int|string $name): ParamCollectionContract|float|bool|int|string|null
     {
         return $this->params[$name]
             ?? null;
@@ -156,7 +156,7 @@ abstract class ParamData implements ParamDataContract
      * @param T ...$params The params
      */
     #[Override]
-    public function withAddedParams(ParamDataContract|float|bool|int|string ...$params): static
+    public function withAddedParams(ParamCollectionContract|float|bool|int|string ...$params): static
     {
         $this->validateParams($params);
 

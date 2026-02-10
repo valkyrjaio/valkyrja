@@ -14,23 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Param;
 
 use Override;
-use Valkyrja\Http\Message\Param\Abstract\ParamData;
-use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamDataContract;
+use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
+use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 
 /**
- * @extends ParamData<string|self>
- *
- * @phpstan-ignore-next-line
+ * @extends ParamCollection<string>
  */
-class ParsedBodyParamData extends ParamData implements ParsedBodyParamDataContract
+class CookieParamCollection extends ParamCollection implements CookieParamCollectionContract
 {
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress LessSpecificReturnStatement
      */
     #[Override]
-    public function getParam(string|int $name): self|string|null
+    public function getParam(string|int $name): string|null
     {
         return $this->params[$name]
             ?? null;

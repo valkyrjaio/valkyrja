@@ -15,27 +15,27 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\CookieParamDataContract;
-use Valkyrja\Http\Message\Param\CookieParamData;
+use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class CookieParamDataTest extends TestCase
+final class CookieParamCollectionTest extends TestCase
 {
-    protected CookieParamData $paramData;
+    protected CookieParamCollection $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new CookieParamData(session: 'abc123', theme: 'dark');
+        $this->paramData = new CookieParamCollection(session: 'abc123', theme: 'dark');
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(CookieParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(CookieParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new CookieParamData();
+        $paramData = new CookieParamCollection();
 
         self::assertEmpty($paramData->getParams());
     }

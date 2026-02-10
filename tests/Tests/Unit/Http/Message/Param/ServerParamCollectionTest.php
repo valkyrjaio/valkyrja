@@ -15,27 +15,27 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\ServerParamDataContract;
-use Valkyrja\Http\Message\Param\ServerParamData;
+use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class ServerParamDataTest extends TestCase
+final class ServerParamCollectionTest extends TestCase
 {
-    protected ServerParamData $paramData;
+    protected ServerParamCollection $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new ServerParamData(method: 'GET', port: 443, secure: true);
+        $this->paramData = new ServerParamCollection(method: 'GET', port: 443, secure: true);
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(ServerParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(ServerParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new ServerParamData();
+        $paramData = new ServerParamCollection();
 
         self::assertEmpty($paramData->getParams());
     }
@@ -57,15 +57,15 @@ final class ServerParamDataTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ServerParamData(version: 1.1);
+        $paramData = new ServerParamCollection(version: 1.1);
 
         self::assertSame(1.1, $paramData->getParam('version'));
     }
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ServerParamData(key: 'value');
-        $paramData = new ServerParamData(nested: $nested);
+        $nested    = new ServerParamCollection(key: 'value');
+        $paramData = new ServerParamCollection(nested: $nested);
 
         self::assertSame($nested, $paramData->getParam('nested'));
     }
@@ -166,7 +166,7 @@ final class ServerParamDataTest extends TestCase
 
         $nested = $paramData->getParam('nested');
 
-        self::assertInstanceOf(ServerParamData::class, $nested);
+        self::assertInstanceOf(ServerParamCollection::class, $nested);
         self::assertSame('value', $nested->getParam('inner'));
     }
 }

@@ -16,13 +16,13 @@ namespace Valkyrja\Http\Message\Param\Contract;
 use Override;
 
 /**
- * @extends ParamDataContract<string>
+ * @extends ParamCollectionContract<string|self>
  */
-interface CookieParamDataContract extends ParamDataContract
+interface ParsedBodyParamCollectionContract extends ParamCollectionContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $name): string|null;
+    public function getParam(string|int $name): self|string|null;
 }

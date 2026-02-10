@@ -15,27 +15,27 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamDataContract;
-use Valkyrja\Http\Message\Param\ParsedJsonParamData;
+use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
+use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class ParsedJsonParamDataTest extends TestCase
+final class ParsedJsonParamCollectionTest extends TestCase
 {
-    protected ParsedJsonParamData $paramData;
+    protected ParsedJsonParamCollection $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new ParsedJsonParamData(name: 'John', age: 30, active: true);
+        $this->paramData = new ParsedJsonParamCollection(name: 'John', age: 30, active: true);
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(ParsedJsonParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(ParsedJsonParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new ParsedJsonParamData();
+        $paramData = new ParsedJsonParamCollection();
 
         self::assertEmpty($paramData->getParams());
     }
@@ -57,15 +57,15 @@ final class ParsedJsonParamDataTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ParsedJsonParamData(price: 9.99);
+        $paramData = new ParsedJsonParamCollection(price: 9.99);
 
         self::assertSame(9.99, $paramData->getParam('price'));
     }
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParsedJsonParamData(street: '123 Main St', zip: 12345);
-        $paramData = new ParsedJsonParamData(address: $nested);
+        $nested    = new ParsedJsonParamCollection(street: '123 Main St', zip: 12345);
+        $paramData = new ParsedJsonParamCollection(address: $nested);
 
         self::assertSame($nested, $paramData->getParam('address'));
     }
@@ -166,7 +166,7 @@ final class ParsedJsonParamDataTest extends TestCase
 
         $nested = $paramData->getParam('nested');
 
-        self::assertInstanceOf(ParsedJsonParamData::class, $nested);
+        self::assertInstanceOf(ParsedJsonParamCollection::class, $nested);
         self::assertSame('value', $nested->getParam('inner'));
     }
 }

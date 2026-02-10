@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\File\Data;
+namespace Valkyrja\Http\Message\File\Collection;
 
 use Override;
+use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\File\Data\Contract\UploadedFileDataContract;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
@@ -24,9 +24,9 @@ use function is_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @implements UploadedFileDataContract<UploadedFileContract|self>
+ * @implements UploadedFileCollectionContract<UploadedFileContract|self>
  */
-class UploadedFileData implements UploadedFileDataContract
+class UploadedFileCollection implements UploadedFileCollectionContract
 {
     /** @var array<array-key, UploadedFileContract|self> */
     protected array $files = [];
@@ -151,7 +151,7 @@ class UploadedFileData implements UploadedFileDataContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedFiles(UploadedFileDataContract|UploadedFileContract ...$files): static
+    public function withAddedFiles(UploadedFileCollectionContract|UploadedFileContract ...$files): static
     {
         $this->validateFiles($files);
 

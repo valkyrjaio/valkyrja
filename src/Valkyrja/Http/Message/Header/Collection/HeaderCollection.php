@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Header\Data;
+namespace Valkyrja\Http\Message\Header\Collection;
 
 use Override;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
-use Valkyrja\Http\Message\Header\Data\Contract\HeaderDataContract;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class HeaderData implements HeaderDataContract
+class HeaderCollection implements HeaderCollectionContract
 {
     /** @var array<non-empty-lowercase-string, HeaderContract> */
     protected array $headers = [];
@@ -195,6 +195,9 @@ class HeaderData implements HeaderDataContract
         unset($this->headers[$headerName]);
     }
 
+    /**
+     * Override a header.
+     */
     protected function overrideHeader(HeaderContract $header): void
     {
         $name = $header->getNormalizedName();

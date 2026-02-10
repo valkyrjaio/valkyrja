@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Param;
 
-use Valkyrja\Http\Message\Param\Abstract\ParamData;
-use Valkyrja\Http\Message\Param\Contract\ServerParamDataContract;
+use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
+use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
 
 /**
- * @extends ParamData<scalar|self>
+ * @extends ParamCollection<scalar|self>
  *
  * @phpstan-ignore-next-line
  */
-class ServerParamData extends ParamData implements ServerParamDataContract
+class ParsedJsonParamCollection extends ParamCollection implements ParsedJsonParamCollectionContract
 {
 }

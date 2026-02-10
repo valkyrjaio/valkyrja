@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\Header\Data;
+namespace Valkyrja\Tests\Unit\Http\Message\Header\Collection;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Header\Data\Contract\HeaderDataContract;
-use Valkyrja\Http\Message\Header\Data\HeaderData;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function strtolower;
 
-final class HeaderDataTest extends TestCase
+final class HeaderCollectionTest extends TestCase
 {
-    protected HeaderData $headerData;
+    protected HeaderCollection $headerData;
 
     protected Header $hostHeader;
 
@@ -34,17 +34,17 @@ final class HeaderDataTest extends TestCase
     {
         $this->hostHeader        = new Header(HeaderName::HOST, 'example.com');
         $this->contentTypeHeader = new Header(HeaderName::CONTENT_TYPE, 'application/json');
-        $this->headerData        = new HeaderData($this->hostHeader, $this->contentTypeHeader);
+        $this->headerData        = new HeaderCollection($this->hostHeader, $this->contentTypeHeader);
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(HeaderDataContract::class, $this->headerData);
+        self::assertInstanceOf(HeaderCollectionContract::class, $this->headerData);
     }
 
     public function testConstructorWithNoHeaders(): void
     {
-        $headerData = new HeaderData();
+        $headerData = new HeaderCollection();
 
         self::assertEmpty($headerData->getHeaders());
     }
@@ -271,7 +271,6 @@ final class HeaderDataTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        /* @phpstan-ignore-next-line */
         $this->headerData->fromArray(['invalid' => 'not-a-header']);
     }
 
@@ -279,7 +278,7 @@ final class HeaderDataTest extends TestCase
     {
         $host1      = new Header('Host', 'first.com');
         $host2      = new Header('Host', 'second.com');
-        $headerData = new HeaderData($host1, $host2);
+        $headerData = new HeaderCollection($host1, $host2);
 
         self::assertCount(1, $headerData->getHeaders());
 

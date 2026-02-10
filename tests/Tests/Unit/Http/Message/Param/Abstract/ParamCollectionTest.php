@@ -15,34 +15,34 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param\Abstract;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\ParamDataContract;
-use Valkyrja\Tests\Classes\Http\Message\Param\Abstract\ParamDataClass;
+use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
+use Valkyrja\Tests\Classes\Http\Message\Param\Abstract\ParamCollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class ParamDataTest extends TestCase
+final class ParamCollectionTest extends TestCase
 {
-    protected ParamDataClass $paramData;
+    protected ParamCollectionClass $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new ParamDataClass(foo: 'bar', baz: 'qux');
+        $this->paramData = new ParamCollectionClass(foo: 'bar', baz: 'qux');
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(ParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(ParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new ParamDataClass();
+        $paramData = new ParamCollectionClass();
 
         self::assertEmpty($paramData->getParams());
     }
 
     public function testConstructorWithStringParams(): void
     {
-        $paramData = new ParamDataClass(key: 'value', another: 'test');
+        $paramData = new ParamCollectionClass(key: 'value', another: 'test');
 
         self::assertSame('value', $paramData->getParam('key'));
         self::assertSame('test', $paramData->getParam('another'));
@@ -50,7 +50,7 @@ final class ParamDataTest extends TestCase
 
     public function testConstructorWithIntParams(): void
     {
-        $paramData = new ParamDataClass(count: 42, total: 100);
+        $paramData = new ParamCollectionClass(count: 42, total: 100);
 
         self::assertSame(42, $paramData->getParam('count'));
         self::assertSame(100, $paramData->getParam('total'));
@@ -58,7 +58,7 @@ final class ParamDataTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ParamDataClass(price: 9.99, tax: 0.08);
+        $paramData = new ParamCollectionClass(price: 9.99, tax: 0.08);
 
         self::assertSame(9.99, $paramData->getParam('price'));
         self::assertSame(0.08, $paramData->getParam('tax'));
@@ -66,7 +66,7 @@ final class ParamDataTest extends TestCase
 
     public function testConstructorWithBoolParams(): void
     {
-        $paramData = new ParamDataClass(active: true, deleted: false);
+        $paramData = new ParamCollectionClass(active: true, deleted: false);
 
         self::assertTrue($paramData->getParam('active'));
         self::assertFalse($paramData->getParam('deleted'));
@@ -74,7 +74,7 @@ final class ParamDataTest extends TestCase
 
     public function testConstructorWithMixedScalarParams(): void
     {
-        $paramData = new ParamDataClass(name: 'test', count: 5, rate: 3.14, active: true);
+        $paramData = new ParamCollectionClass(name: 'test', count: 5, rate: 3.14, active: true);
 
         self::assertSame('test', $paramData->getParam('name'));
         self::assertSame(5, $paramData->getParam('count'));
@@ -84,8 +84,8 @@ final class ParamDataTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParamDataClass(inner: 'value');
-        $paramData = new ParamDataClass(nested: $nested);
+        $nested    = new ParamCollectionClass(inner: 'value');
+        $paramData = new ParamCollectionClass(nested: $nested);
 
         self::assertSame($nested, $paramData->getParam('nested'));
     }
@@ -123,7 +123,7 @@ final class ParamDataTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $paramData = new ParamDataClass(a: 'one', b: 'two', c: 'three');
+        $paramData = new ParamCollectionClass(a: 'one', b: 'two', c: 'three');
         $only      = $paramData->onlyParams('a', 'c');
 
         self::assertCount(2, $only);
@@ -141,7 +141,7 @@ final class ParamDataTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $paramData = new ParamDataClass(a: 'one', b: 'two', c: 'three');
+        $paramData = new ParamCollectionClass(a: 'one', b: 'two', c: 'three');
         $except    = $paramData->exceptParams('b');
 
         self::assertCount(2, $except);
@@ -196,7 +196,7 @@ final class ParamDataTest extends TestCase
 
     public function testWithAddedParamsWithNestedParamData(): void
     {
-        $nested = new ParamDataClass(inner: 'value');
+        $nested = new ParamCollectionClass(inner: 'value');
         $new    = $this->paramData->withAddedParams(nested: $nested);
 
         self::assertSame($nested, $new->getParam('nested'));
@@ -234,7 +234,7 @@ final class ParamDataTest extends TestCase
 
         $nested = $paramData->getParam('nested');
 
-        self::assertInstanceOf(ParamDataClass::class, $nested);
+        self::assertInstanceOf(ParamCollectionClass::class, $nested);
         self::assertSame('value', $nested->getParam('inner'));
     }
 
@@ -248,7 +248,7 @@ final class ParamDataTest extends TestCase
 
     public function testHasParamWithIntKey(): void
     {
-        $paramData = new ParamDataClass('first', 'second');
+        $paramData = new ParamCollectionClass('first', 'second');
 
         self::assertTrue($paramData->hasParam(0));
         self::assertTrue($paramData->hasParam(1));
@@ -257,7 +257,7 @@ final class ParamDataTest extends TestCase
 
     public function testGetParamWithIntKey(): void
     {
-        $paramData = new ParamDataClass('first', 'second');
+        $paramData = new ParamCollectionClass('first', 'second');
 
         self::assertSame('first', $paramData->getParam(0));
         self::assertSame('second', $paramData->getParam(1));

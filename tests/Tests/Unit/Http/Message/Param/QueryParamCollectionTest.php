@@ -15,27 +15,27 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
 use stdClass;
-use Valkyrja\Http\Message\Param\Contract\QueryParamDataContract;
-use Valkyrja\Http\Message\Param\QueryParamData;
+use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class QueryParamDataTest extends TestCase
+final class QueryParamCollectionTest extends TestCase
 {
-    protected QueryParamData $paramData;
+    protected QueryParamCollection $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new QueryParamData(page: '1', sort: 'name');
+        $this->paramData = new QueryParamCollection(page: '1', sort: 'name');
     }
 
     public function testInstanceOfContract(): void
     {
-        self::assertInstanceOf(QueryParamDataContract::class, $this->paramData);
+        self::assertInstanceOf(QueryParamCollectionContract::class, $this->paramData);
     }
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new QueryParamData();
+        $paramData = new QueryParamCollection();
 
         self::assertEmpty($paramData->getParams());
     }
@@ -48,12 +48,12 @@ final class QueryParamDataTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new QueryParamData(min: '10', max: '100');
-        $paramData = new QueryParamData(filter: $nested);
+        $nested    = new QueryParamCollection(min: '10', max: '100');
+        $paramData = new QueryParamCollection(filter: $nested);
 
         $params = $paramData->getParams();
 
-        self::assertInstanceOf(QueryParamData::class, $params['filter']);
+        self::assertInstanceOf(QueryParamCollection::class, $params['filter']);
     }
 
     public function testGetParamReturnsString(): void
@@ -157,6 +157,6 @@ final class QueryParamDataTest extends TestCase
 
         $params = $paramData->getParams();
 
-        self::assertInstanceOf(QueryParamData::class, $params['filter']);
+        self::assertInstanceOf(QueryParamCollection::class, $params['filter']);
     }
 }

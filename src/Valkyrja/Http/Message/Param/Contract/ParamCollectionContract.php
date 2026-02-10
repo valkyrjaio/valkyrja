@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Param\Contract;
 /**
  * @template T of scalar|self
  */
-interface ParamDataContract
+interface ParamCollectionContract
 {
     /**
      * Determine if a param exists.
