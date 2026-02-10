@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Param\Abstract;
 
 use InvalidArgumentException;
+use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParamDataContract;
 use Valkyrja\Tests\Classes\Http\Message\Param\Abstract\ParamDataClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -205,15 +206,15 @@ final class ParamDataTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        /** @phpstan-ignore-next-line */
-        $this->paramData->withParams(['invalid' => new \stdClass()]);
+        /* @phpstan-ignore-next-line */
+        $this->paramData->withParams(['invalid' => new stdClass()]);
     }
 
     public function testWithParamsThrowsForArrayParam(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->paramData->withParams(['invalid' => ['nested' => 'array']]);
     }
 
@@ -241,8 +242,8 @@ final class ParamDataTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        /** @phpstan-ignore-next-line */
-        $this->paramData->fromArray(['invalid' => new \stdClass()]);
+        /* @phpstan-ignore-next-line */
+        $this->paramData->fromArray(['invalid' => new stdClass()]);
     }
 
     public function testHasParamWithIntKey(): void

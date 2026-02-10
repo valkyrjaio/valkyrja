@@ -26,9 +26,11 @@ class ParsedBodyParamData extends ParamData implements ParsedBodyParamDataContra
 {
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress LessSpecificReturnStatement
      */
     #[Override]
-    public function getParam(string|int $name): string|null
+    public function getParam(string|int $name): self|string|null
     {
         return $this->params[$name]
             ?? null;

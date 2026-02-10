@@ -26,9 +26,11 @@ class QueryParamData extends ParamData implements QueryParamDataContract
 {
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress LessSpecificReturnStatement
      */
     #[Override]
-    public function getParam(string|int $name): string|null
+    public function getParam(string|int $name): self|string|null
     {
         return $this->params[$name]
             ?? null;

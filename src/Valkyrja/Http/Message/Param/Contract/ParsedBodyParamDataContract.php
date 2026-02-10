@@ -24,5 +24,5 @@ interface ParsedBodyParamDataContract extends ParamDataContract
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $name): string|null;
+    public function getParam(string|int $name): self|string|null;
 }

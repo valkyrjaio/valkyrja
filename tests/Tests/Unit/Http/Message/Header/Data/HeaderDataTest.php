@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Data;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Data\Contract\HeaderDataContract;
 use Valkyrja\Http\Message\Header\Data\HeaderData;
 use Valkyrja\Http\Message\Header\Header;
@@ -272,7 +271,7 @@ final class HeaderDataTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->headerData->fromArray(['invalid' => 'not-a-header']);
     }
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
+use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamDataContract;
 use Valkyrja\Http\Message\Param\ParsedJsonParamData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -148,7 +149,7 @@ final class ParsedJsonParamDataTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->withParams(['invalid' => new \stdClass()]);
+        $this->paramData->withParams(['invalid' => new stdClass()]);
     }
 
     public function testFromArray(): void
