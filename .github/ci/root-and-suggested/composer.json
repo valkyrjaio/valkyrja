@@ -16,7 +16,7 @@
     "mailgun/mailgun-php"        : "^4.3.6",
     "monolog/monolog"            : "^3.10.0",
     "phpmailer/phpmailer"        : "^7.0.2",
-    "predis/predis"              : "^3.3.0",
+    "predis/predis"              : "^3.4.0",
     "pusher/pusher-php-server"   : "^7.2.7",
     "twig/twig"                  : "^3.23.0",
     "vonage/client-core"         : "^4.12.0"

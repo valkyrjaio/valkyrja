@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a4e432f10b9160951177dea608d2321",
+    "content-hash": "fcc572c72ec94783fe251524a9fc24ad",
     "packages": [
         {
             "name": "psr/container",
@@ -326,16 +326,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.20",
+            "version": "3.369.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4"
+                "reference": "4779292a30aa2d4a7ddfd519f80a94c2706ee64e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
-                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4779292a30aa2d4a7ddfd519f80a94c2706ee64e",
+                "reference": "4779292a30aa2d4a7ddfd519f80a94c2706ee64e",
                 "shasum": ""
             },
             "require": {
@@ -417,22 +417,22 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.20"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.32"
             },
-            "time": "2026-01-26T19:14:05+00:00"
+            "time": "2026-02-11T19:29:10+00:00"
         },
         {
             "name": "brick/math",
-            "version": "0.14.1",
+            "version": "0.14.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "f05858549e5f9d7bb45875a75583240a38a281d0"
+                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/f05858549e5f9d7bb45875a75583240a38a281d0",
-                "reference": "f05858549e5f9d7bb45875a75583240a38a281d0",
+                "url": "https://api.github.com/repos/brick/math/zipball/63422359a44b7f06cae63c3b429b59e8efcc0629",
+                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629",
                 "shasum": ""
             },
             "require": {
@@ -471,7 +471,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.14.1"
+                "source": "https://github.com/brick/math/tree/0.14.8"
             },
             "funding": [
                 {
@@ -479,7 +479,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-24T14:40:29+00:00"
+            "time": "2026-02-10T14:33:43+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -2203,16 +2203,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "153097374b39a2f737fe700ebcd725642526cdec"
+                "reference": "1183f5732e6b10efd33f64984a96726eaecb59aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/153097374b39a2f737fe700ebcd725642526cdec",
-                "reference": "153097374b39a2f737fe700ebcd725642526cdec",
+                "url": "https://api.github.com/repos/predis/predis/zipball/1183f5732e6b10efd33f64984a96726eaecb59aa",
+                "reference": "1183f5732e6b10efd33f64984a96726eaecb59aa",
                 "shasum": ""
             },
             "require": {
@@ -2254,7 +2254,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/v3.3.0"
+                "source": "https://github.com/predis/predis/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -2262,7 +2262,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-24T17:48:50+00:00"
+            "time": "2026-02-11T17:30:28+00:00"
         },
         {
             "name": "psr/clock",
