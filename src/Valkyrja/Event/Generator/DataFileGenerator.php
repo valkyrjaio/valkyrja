@@ -71,18 +71,23 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
             PHP;
     }
 
+    /**
+     * Get all listeners as a string.
+     *
+     * @return non-empty-string
+     */
     protected function getListenersAsContent(): string
     {
         $listeners = $this->data->listeners;
 
         $listenersContent = '';
 
-        foreach ($listeners as $key => $route) {
-            if (is_callable($route)) {
-                $route = $route();
+        foreach ($listeners as $key => $listener) {
+            if (is_callable($listener)) {
+                $listener = $listener();
             }
 
-            $listenerContent = $this->getListenerAsContent($route);
+            $listenerContent = $this->getListenerAsContent($listener);
 
             $listenersContent .= <<<PHP
                 '$key' => $listenerContent,
@@ -97,11 +102,15 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
             PHP;
     }
 
-    protected function getListenerAsContent(ListenerContract $route): string
+    /**
+     * Get the listener as a string.
+     *
+     * @return non-empty-string
+     */
+    protected function getListenerAsContent(ListenerContract $listener): string
     {
         $contract = ListenerContract::class;
-        $content  = var_export($route, true);
-        $content  = preg_replace('/([.^\S]*)::__set_state\(/', 'new $1(...', $content);
+        $content  = $this->generateObjectsContents($listener);
 
         return <<<PHP
             static fn (): $contract => $content
