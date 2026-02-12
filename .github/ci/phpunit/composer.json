@@ -6,8 +6,8 @@
     "fakerphp/faker"              : "^1.24.1",
     "mockery/mockery"             : "^1.6.12",
     "php-coveralls/php-coveralls" : "^2.9.1",
-    "phpunit/phpcov"              : "^11.0.4",
-    "phpunit/phpunit"             : "^12.5.9"
+    "phpunit/phpcov"              : "^12.0.0",
+    "phpunit/phpunit"             : "^13.0.2"
   },
   "scripts"           : {
     "check"       : "vendor/bin/phpunit --no-coverage --display-all-issues",

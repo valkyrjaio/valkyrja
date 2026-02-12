@@ -44,8 +44,9 @@ final class ViewRouteNotMatchedMiddlewareTest extends TestCase
 
         $templateText = 'Error: 404';
 
-        $view = self::createStub(RendererContract::class);
-        $view->method('render')
+        $view = $this->createMock(RendererContract::class);
+        $view->expects($this->once())
+            ->method('render')
             ->with('errors/404', $args)
             ->willReturn($templateText);
 
