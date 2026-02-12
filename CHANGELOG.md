@@ -1,6 +1,18 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.30.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.31.0...master)
+
+## [v25.31.0](https://github.com/valkyrjaio/valkyrja/compare/v25.30.0...v25.31.0) - 2026-02-11
+
+* [Documentation] Remove mixed from TypeContract docblocks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/587
+* [Support] Fix framework cache directory path by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/589
+* [Http] Restructure message component. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/588
+* [CI] Update phpstan v2.1.39 from v2.1.37 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/590
+* [Auth] Refactor the AuthenticatedUsers::isUserAuthenticated method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/591
+* [CI] Update phpcsfixer v3.94.0 from v3.93.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/592
+* [Composer] Update predis/predis v3.4.0 from v3.3.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/593
+* [CI] Update psalm v6.15.1 from v6.15.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/594
+* [CI] Update phpunit v13.0.2 from v12.5.9 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/595
 
 ## [v25.30.0](https://github.com/valkyrjaio/valkyrja/compare/v25.29.0...v25.30.0) - 2026-02-06
 
