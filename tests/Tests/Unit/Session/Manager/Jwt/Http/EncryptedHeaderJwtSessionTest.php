@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -48,11 +49,17 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $this->request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
+
+        $this->request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $this->session = new EncryptedHeaderJwtSession($this->crypt, $this->jwt, $this->request);
     }
@@ -73,11 +80,17 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Bearer encrypted-jwt-token');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $crypt
             ->expects($this->once())
@@ -103,10 +116,16 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $crypt
             ->expects($this->never())
@@ -127,10 +146,16 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('Basic sometoken');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $crypt
             ->expects($this->never())
@@ -160,10 +185,16 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request, 'session-id', 'MY_SESSION');
 
@@ -185,11 +216,17 @@ final class EncryptedHeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with('X-Custom-Auth')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new EncryptedHeaderJwtSession($crypt, $jwt, $request, null, null, 'X-Custom-Auth');
 

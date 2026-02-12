@@ -13,21 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Trait;
 
-use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
-
-use function strtolower;
 
 trait Message
 {
     /**
      * The headers with normalized header names.
-     *
-     * @var array<lowercase-string, HeaderContract>
      */
-    protected array $headers = [];
+    protected HeaderCollectionContract $headers;
 
     /**
      * The protocol version.
@@ -65,10 +61,8 @@ trait Message
 
     /**
      * @inheritDoc
-     *
-     * @return array<lowercase-string, HeaderContract>
      */
-    public function getHeaders(): array
+    public function getHeaders(): HeaderCollectionContract
     {
         return $this->headers;
     }
@@ -76,85 +70,11 @@ trait Message
     /**
      * @inheritDoc
      */
-    public function hasHeader(string $name): bool
+    public function withHeaders(HeaderCollectionContract $headers): static
     {
-        return isset($this->headers[strtolower($name)]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getHeader(string $name): HeaderContract|null
-    {
-        if (! $this->hasHeader($name)) {
-            return null;
-        }
-
-        $name = strtolower($name);
-
-        return $this->headers[$name];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getHeaderLine(string $name): string
-    {
-        $header = $this->getHeader($name);
-
-        if ($header === null) {
-            return '';
-        }
-
-        return $header->getValuesAsString();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withHeader(HeaderContract $header): static
-    {
-        $name = $header->getNormalizedName();
-
         $new = clone $this;
 
-        $new->headers[$name] = $header;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withAddedHeader(HeaderContract $header): static
-    {
-        $name           = $header->getNormalizedName();
-        $existingHeader = $this->getHeader($name);
-
-        if ($existingHeader === null) {
-            return $this->withHeader($header);
-        }
-
-        $new = clone $this;
-
-        $new->headers[$name] = $existingHeader->withAddedValues(...$header->getValues());
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withoutHeader(string $name): static
-    {
-        if (! $this->hasHeader($name)) {
-            return clone $this;
-        }
-
-        $headerName = strtolower($name);
-        $new        = clone $this;
-
-        unset($new->headers[$headerName]);
+        $new->headers = $headers;
 
         return $new;
     }
@@ -181,6 +101,9 @@ trait Message
         return $new;
     }
 
+    /**
+     * Clone this message.
+     */
     public function __clone()
     {
         $this->stream = clone $this->stream;
@@ -197,51 +120,26 @@ trait Message
     }
 
     /**
-     * Set headers.
-     *
-     * @param HeaderContract ...$originalHeaders The original headers
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function setHeaders(HeaderContract ...$originalHeaders): void
-    {
-        $headers = [];
-
-        foreach ($originalHeaders as $header) {
-            $headerName = $header->getNormalizedName();
-
-            $headers[$headerName] = $header;
-        }
-
-        $this->headers = $headers;
-    }
-
-    /**
      * Inject a header in a headers array.
      *
-     * @param array<lowercase-string, HeaderContract>|null $headers  [optional] The headers
-     * @param bool                                         $override [optional] Whether to override any existing value
-     *
-     * @return array<lowercase-string, HeaderContract>
+     * @param bool $override [optional] Whether to override any existing value
      */
     protected function injectHeader(
         HeaderContract $header,
-        array|null $headers = null,
+        HeaderCollectionContract $headers,
         bool $override = false
-    ): array {
-        // The headers
-        $headers ??= [];
+    ): HeaderCollectionContract {
         // Get the normalized header name
         $headerName = $header->getNormalizedName();
         // The original value for the header (if it exists in the headers array)
         // Defaults to the value passed in
-        $originalHeader = $headers[$headerName] ?? null;
+        $originalHeader = $headers->getHeader($headerName);
 
         // Set the header in the headers list
-        $headers[$headerName] = $override || $originalHeader === null
+        $newHeader = $override || $originalHeader === null
             ? $header
             : $originalHeader->withAddedValues(...$header->getValues());
 
-        return $headers;
+        return $headers->withHeader($newHeader);
     }
 }

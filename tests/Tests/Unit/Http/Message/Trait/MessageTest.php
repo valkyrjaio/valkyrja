@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Trait;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -30,22 +31,22 @@ final class MessageTest extends TestCase
 
     protected static function assertEmptyHeaders(MessageClass $message): void
     {
-        self::assertEmpty($message->getHeaders());
-        self::assertEmpty($message->getHeader(self::HEADER_NAME));
-        self::assertEmpty($message->getHeaderLine(self::HEADER_NAME));
+        self::assertEmpty($message->getHeaders()->getHeaders());
+        self::assertEmpty($message->getHeaders()->getHeader(self::HEADER_NAME));
+        self::assertEmpty($message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
     protected static function assertNotEmptyHeaders(MessageClass $message): void
     {
-        self::assertNotEmpty($message->getHeaders());
-        self::assertNotEmpty($message->getHeader(self::HEADER_NAME));
-        self::assertNotEmpty($message->getHeaderLine(self::HEADER_NAME));
+        self::assertNotEmpty($message->getHeaders()->getHeaders());
+        self::assertNotEmpty($message->getHeaders()->getHeader(self::HEADER_NAME));
+        self::assertNotEmpty($message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
     protected static function assertHeaderValues(MessageClass $message, string ...$values): void
     {
-        self::assertSame(implode(', ', $values), $message->getHeader(self::HEADER_NAME)->getValuesAsString());
-        self::assertSame(implode(', ', $values), $message->getHeaderLine(self::HEADER_NAME));
+        self::assertSame(implode(', ', $values), $message->getHeaders()->getHeader(self::HEADER_NAME)->getValuesAsString());
+        self::assertSame(implode(', ', $values), $message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
     public function testProtocolVersion(): void
@@ -72,7 +73,9 @@ final class MessageTest extends TestCase
 
         self::assertEmptyHeaders($message);
 
-        $message2 = $message->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE));
+        $message2 = $message->withHeaders(
+            $message->getHeaders()->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE))
+        );
 
         self::assertNotSame($message, $message2);
 
@@ -81,7 +84,9 @@ final class MessageTest extends TestCase
 
         self::assertHeaderValues($message2, self::HEADER_VALUE);
 
-        $message3 = $message2->withAddedHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
+        $message3 = $message2->withHeaders(
+            $message2->getHeaders()->withAddedHeaders(new Header(self::HEADER_NAME, self::HEADER_VALUE2))
+        );
 
         self::assertNotSame($message, $message2);
         self::assertNotSame($message2, $message3);
@@ -93,7 +98,9 @@ final class MessageTest extends TestCase
         self::assertHeaderValues($message2, self::HEADER_VALUE);
         self::assertHeaderValues($message3, self::HEADER_VALUE, self::HEADER_VALUE2);
 
-        $message4 = $message->withAddedHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
+        $message4 = $message->withHeaders(
+            $message->getHeaders()->withAddedHeaders(new Header(self::HEADER_NAME, self::HEADER_VALUE2))
+        );
 
         self::assertNotSame($message, $message4);
 
@@ -102,10 +109,18 @@ final class MessageTest extends TestCase
 
         self::assertHeaderValues($message4, self::HEADER_VALUE2);
 
-        $message5 = $message2->withoutHeader(self::HEADER_NAME);
-        $message6 = $message3->withoutHeader(self::HEADER_NAME);
-        $message7 = $message4->withoutHeader(self::HEADER_NAME);
-        $message8 = $message->withoutHeader(self::HEADER_NAME);
+        $message5 = $message2->withHeaders(
+            $message2->getHeaders()->withoutHeader(self::HEADER_NAME)
+        );
+        $message6 = $message3->withHeaders(
+            $message3->getHeaders()->withoutHeader(self::HEADER_NAME)
+        );
+        $message7 = $message4->withHeaders(
+            $message4->getHeaders()->withoutHeader(self::HEADER_NAME)
+        );
+        $message8 = $message->withHeaders(
+            $message->getHeaders()->withoutHeader(self::HEADER_NAME)
+        );
 
         self::assertNotSame($message, $message5);
         self::assertNotSame($message2, $message5);
@@ -120,7 +135,9 @@ final class MessageTest extends TestCase
         self::assertEmptyHeaders($message7);
         self::assertEmptyHeaders($message8);
 
-        $message9 = $message2->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2));
+        $message9 = $message2->withHeaders(
+            $message2->getHeaders()->withHeader(new Header(self::HEADER_NAME, self::HEADER_VALUE2))
+        );
 
         self::assertNotSame($message, $message9);
 
@@ -146,17 +163,17 @@ final class MessageTest extends TestCase
         $testHeaderOverride = 'test-header-override-override';
 
         $message = new MessageClass(
-            headers: [
+            headers: HeaderCollection::fromArray([
                 new Header('Test-Header', 'test-header-original'),
                 new Header('Test-Header-Override', 'test-header-override-original'),
-            ],
+            ]),
             testHeader: $testHeader,
             testHeaderOverride: $testHeaderOverride
         );
 
         // This shouldn't be overridden since injectHeader is called without the override flag
-        self::assertSame('test-header-original, test-header-override', $message->getHeaderLine('Test-Header'));
+        self::assertSame('test-header-original, test-header-override', $message->getHeaders()->getHeaderLine('Test-Header'));
         // This should be overridden since injectHeader is called with the override flag
-        self::assertSame($testHeaderOverride, $message->getHeaderLine('Test-Header-Override'));
+        self::assertSame($testHeaderOverride, $message->getHeaders()->getHeaderLine('Test-Header-Override'));
     }
 }

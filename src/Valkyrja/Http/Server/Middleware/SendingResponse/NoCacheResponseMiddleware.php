@@ -38,12 +38,15 @@ class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
     #[Override]
     public function sendingResponse(ServerRequestContract $request, ResponseContract $response, SendingResponseHandlerContract $handler): ResponseContract
     {
+        $headers = $response->getHeaders();
+        $headers = $headers
+            ->withHeader(new Header(HeaderName::EXPIRES, ...$this->expires))
+            ->withHeader(new Header(HeaderName::CACHE_CONTROL, ...$this->cacheControl))
+            ->withHeader(new Header(HeaderName::PRAGMA, ...$this->pragma));
+
         return $handler->sendingResponse(
             $request,
-            $response
-                ->withHeader(new Header(HeaderName::EXPIRES, ...$this->expires))
-                ->withHeader(new Header(HeaderName::CACHE_CONTROL, ...$this->cacheControl))
-                ->withHeader(new Header(HeaderName::PRAGMA, ...$this->pragma))
+            $response->withHeaders($headers)
         );
     }
 }

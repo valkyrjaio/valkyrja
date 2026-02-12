@@ -57,20 +57,22 @@ final class NoCacheMiddlewareTest extends TestCase
 
     protected function assertions(ResponseContract $response): void
     {
-        self::assertTrue($response->hasHeader(HeaderName::EXPIRES));
-        self::assertTrue($response->hasHeader(HeaderName::CACHE_CONTROL));
-        self::assertTrue($response->hasHeader(HeaderName::PRAGMA));
+        $headers = $response->getHeaders();
+
+        self::assertTrue($headers->hasHeader(HeaderName::EXPIRES));
+        self::assertTrue($headers->hasHeader(HeaderName::CACHE_CONTROL));
+        self::assertTrue($headers->hasHeader(HeaderName::PRAGMA));
         self::assertSame(
             'Sun, 01 Jan 2014 00:00:00 GMT',
-            $response->getHeader(HeaderName::EXPIRES)->getValuesAsString(),
+            $headers->getHeader(HeaderName::EXPIRES)->getValuesAsString(),
         );
         self::assertSame(
             'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
-            $response->getHeader(HeaderName::CACHE_CONTROL)->getValuesAsString(),
+            $headers->getHeader(HeaderName::CACHE_CONTROL)->getValuesAsString(),
         );
         self::assertSame(
             'no-cache',
-            $response->getHeader(HeaderName::PRAGMA)->getValuesAsString(),
+            $headers->getHeader(HeaderName::PRAGMA)->getValuesAsString(),
         );
     }
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Http;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -39,11 +40,17 @@ final class HeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $this->request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
+
+        $this->request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $this->session = new HeaderJwtSession($this->jwt, $this->request);
     }
@@ -58,11 +65,17 @@ final class HeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $jwt
             ->expects($this->once())
@@ -81,10 +94,16 @@ final class HeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $jwt
             ->expects($this->never())
@@ -100,10 +119,16 @@ final class HeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('Basic sometoken');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $jwt
             ->expects($this->never())
@@ -120,10 +145,16 @@ final class HeaderJwtSessionTest extends TestCase
         $jwt     = $this->createMock(JwtContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('Bearer ');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $jwt
             ->expects($this->never())
@@ -144,10 +175,16 @@ final class HeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderJwtSession($jwt, $request, 'session-id', 'MY_SESSION');
 
@@ -164,11 +201,17 @@ final class HeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with('X-Custom-Auth')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderJwtSession($jwt, $request, null, null, 'X-Custom-Auth');
 

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response\Psr;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Psr\Response as PsrResponse;
 use Valkyrja\Http\Message\Response\Response;
@@ -40,7 +41,7 @@ final class ResponseTest extends TestCase
 
     public function testHeaders(): void
     {
-        $response    = new Response(headers: [new Header('Test', $value = 'test')]);
+        $response    = new Response(headers: new HeaderCollection(new Header('Test', $value = 'test')));
         $psrResponse = new PsrResponse($response);
 
         $psrResponse2 = $psrResponse->withHeader('Cheese', 'foo');
@@ -58,6 +59,38 @@ final class ResponseTest extends TestCase
         self::assertSame([$value], $psrResponse->getHeader('Test'));
         self::assertSame([], $psrResponse->getHeader('Non-Existent'));
         self::assertSame($value, $psrResponse->getHeaderLine('Test'));
+    }
+
+    public function testHasHeaderReturnsFalseForEmptyName(): void
+    {
+        $psrResponse = new PsrResponse();
+
+        self::assertFalse($psrResponse->hasHeader(''));
+    }
+
+    public function testGetHeaderReturnsEmptyArrayForEmptyName(): void
+    {
+        $psrResponse = new PsrResponse();
+
+        self::assertSame([], $psrResponse->getHeader(''));
+    }
+
+    public function testGetHeaderLineReturnsEmptyStringForEmptyName(): void
+    {
+        $psrResponse = new PsrResponse();
+
+        self::assertSame('', $psrResponse->getHeaderLine(''));
+    }
+
+    public function testWithoutHeaderReturnsCloneForEmptyName(): void
+    {
+        $response    = new Response(headers: new HeaderCollection(new Header('Test', 'value')));
+        $psrResponse = new PsrResponse($response);
+
+        $psrResponse2 = $psrResponse->withoutHeader('');
+
+        self::assertNotSame($psrResponse, $psrResponse2);
+        self::assertSame(['Test' => ['value']], $psrResponse2->getHeaders());
     }
 
     public function testBody(): void

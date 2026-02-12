@@ -14,21 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response\Contract;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 
 interface JsonResponseContract extends ResponseContract
 {
     /**
      * Create a JSON response.
      *
-     * @param array<array-key, mixed>|null $data       [optional] The data to set
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param HeaderContract[]|null        $headers    [optional] An array of response headers
+     * @param array<array-key, mixed>|null $data [optional] The data to set
      */
     public static function createFromData(
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): static;
 
     /**

@@ -14,19 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 
 class NotFoundHttpException extends HttpException
 {
     /**
-     * @param StatusCode|null       $statusCode [optional] The status code to use
-     * @param string|null           $message    [optional] The Exception message to throw
-     * @param HeaderContract[]|null $headers    [optional] The headers to send
+     * @param string|null $message [optional] The Exception message to throw
      */
     public function __construct(
         StatusCode|null $statusCode = null,
         string|null $message = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ) {
         parent::__construct($statusCode ?? StatusCode::NOT_FOUND, $message, $headers);
     }

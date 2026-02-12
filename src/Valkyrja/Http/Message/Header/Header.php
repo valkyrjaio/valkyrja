@@ -35,14 +35,14 @@ class Header implements HeaderContract
     /**
      * The header name.
      *
-     * @var string
+     * @var non-empty-string
      */
     protected string $name;
 
     /**
      * The normalized name, useful for comparison.
      *
-     * @var lowercase-string
+     * @var non-empty-lowercase-string
      */
     protected string $normalizedName;
 
@@ -281,6 +281,9 @@ class Header implements HeaderContract
         $this->position = 0;
     }
 
+    /**
+     * Update the header name.
+     */
     protected function updateName(string $name): void
     {
         HeaderFactory::assertValidName($name);
@@ -290,17 +293,27 @@ class Header implements HeaderContract
         $this->normalizedName = strtolower($name);
     }
 
+    /**
+     * Update the header values.
+     */
     protected function updateValues(ValueContract|string ...$values): void
     {
         $this->values = $this->filterValues(...$values);
     }
 
+    /**
+     * Conver the header name to a string.
+     *
+     * @return non-empty-string
+     */
     protected function nameToString(): string
     {
         return $this->name . ': ';
     }
 
     /**
+     * Get the values as a string.
+     *
      * @see https://greenbytes.de/tech/webdav/rfc2616.html#message.headers
      */
     protected function valuesToString(): string

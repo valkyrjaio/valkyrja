@@ -39,9 +39,11 @@ enum QueryRequestStructEnum implements RequestStructContract
     #[Override]
     public static function getValidationRules(ServerRequestContract $request): array|null
     {
-        $first  = $request->getParsedBodyParam(self::first->name);
-        $second = $request->getParsedBodyParam(self::second->name);
-        $third  = $request->getParsedBodyParam(self::third->name);
+        $query = $request->getQueryParams();
+
+        $first  = $query->getParam(self::first->name);
+        $second = $query->getParam(self::second->name);
+        $third  = $query->getParam(self::third->name);
 
         return [
             self::first->name  => [
@@ -49,7 +51,7 @@ enum QueryRequestStructEnum implements RequestStructContract
                 new NotEmpty($first),
             ],
             self::second->name => [
-                new IsNumeric($second),
+                new IsNumeric((int) $second),
             ],
             self::third->name  => [
                 new IsString($third),

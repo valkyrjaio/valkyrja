@@ -15,12 +15,11 @@ namespace Valkyrja\Http\Message\Request\Psr;
 
 use Override;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Factory\PsrUploadedFileFactory;
-use Valkyrja\Http\Message\File\Psr\UploadedFile;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
 
 /**
  * @property ServerRequestContract $request
@@ -40,7 +39,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getServerParams(): array
     {
-        return $this->request->getServerParams();
+        return $this->request->getServerParams()->getParams();
     }
 
     /**
@@ -51,7 +50,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getCookieParams(): array
     {
-        return $this->request->getCookieParams();
+        return $this->request->getCookieParams()->getParams();
     }
 
     /**
@@ -65,7 +64,9 @@ class ServerRequest extends Request implements ServerRequestInterface
         $new = clone $this;
 
         /** @var array<string, string|null> $cookies */
-        $new->request = $this->request->withCookieParams($cookies);
+        $new->request = $this->request->withCookieParams(
+            CookieParamCollection::fromArray($cookies)
+        );
 
         return $new;
     }
@@ -78,7 +79,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getQueryParams(): array
     {
-        return $this->request->getQueryParams();
+        return $this->request->getQueryParams()->getParams();
     }
 
     /**
@@ -91,7 +92,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withQueryParams($query);
+        $new->request = $this->request->withQueryParams(
+            QueryParamCollection::fromArray($query)
+        );
 
         return $new;
     }
@@ -99,24 +102,12 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      *
-     * @return array<array-key, UploadedFile>
+     * @return array<array-key, mixed>
      */
     #[Override]
     public function getUploadedFiles(): array
     {
-        $valkyrjaUploadedFiles = $this->request->getUploadedFiles();
-
-        $uploadedFiles = [];
-
-        foreach ($valkyrjaUploadedFiles as $valkyrjaUploadedFile) {
-            if (! $valkyrjaUploadedFile instanceof UploadedFileContract) {
-                throw new RuntimeException('Invalid uploaded file');
-            }
-
-            $uploadedFiles[] = new UploadedFile($valkyrjaUploadedFile);
-        }
-
-        return $uploadedFiles;
+        return PsrUploadedFileFactory::toPsrArray($this->request->getUploadedFiles());
     }
 
     /**
@@ -129,9 +120,8 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        /** @var UploadedFileInterface[] $uploadedFiles */
         $new->request = $this->request->withUploadedFiles(
-            PsrUploadedFileFactory::fromPsrArray(...$uploadedFiles)
+            PsrUploadedFileFactory::fromPsrArray($uploadedFiles)
         );
 
         return $new;
@@ -145,7 +135,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getParsedBody(): object|array|null
     {
-        return $this->request->getParsedBody();
+        return $this->request->getParsedBody()->getParams();
     }
 
     /**
@@ -158,7 +148,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withParsedBody($data !== null ? (array) $data : []);
+        $new->request = $this->request->withParsedBody(
+            ParsedBodyParamCollection::fromArray($data !== null ? (array) $data : [])
+        );
 
         return $new;
     }

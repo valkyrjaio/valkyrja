@@ -4,7 +4,7 @@
        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
        errorBaseline="psalm-baseline.xml"
        errorLevel="1"
-       findUnusedBaselineEntry="false"
+       findUnusedBaselineEntry="true"
        findUnusedCode="false"
        totallyTyped="true"
        autoloader="./autoload.php"

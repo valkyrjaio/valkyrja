@@ -100,6 +100,7 @@ final class HeaderFactoryTest extends TestCase
     public function testIsValidName(): void
     {
         self::assertTrue(HeaderFactory::isValidName("a-zA-Z0-9'`#$%&*+.^_|~!-"));
+        self::assertFalse(HeaderFactory::isValidName(''));
         self::assertFalse(HeaderFactory::isValidName("\x00"));
         self::assertFalse(HeaderFactory::isValidName(':'));
         self::assertFalse(HeaderFactory::isValidName("\r\n"));

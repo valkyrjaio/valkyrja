@@ -49,7 +49,7 @@ class HeaderTokenSession extends Session
     #[Override]
     public function start(): void
     {
-        $headerLine = $this->request->getHeaderLine($this->headerName);
+        $headerLine = $this->request->getHeaders()->getHeaderLine($this->headerName);
 
         if ($headerLine === '') {
             return;

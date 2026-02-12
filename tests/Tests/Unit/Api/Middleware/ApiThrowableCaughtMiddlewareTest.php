@@ -20,6 +20,8 @@ use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Middleware\ApiThrowableCaughtMiddleware;
 use Valkyrja\Api\Model\Json;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -74,7 +76,7 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
     {
         $exception  = new Exception('Test error');
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
-        $headers    = ['X-Custom' => ['value']];
+        $headers    = new HeaderCollection(new Header('X-Custom', 'value'));
 
         $json = new Json();
 
@@ -126,7 +128,7 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
             ->willReturn($statusCode);
         $this->response->expects($this->once())
             ->method('getHeaders')
-            ->willReturn([]);
+            ->willReturn($headers = new HeaderCollection());
 
         $this->api->expects($this->once())
             ->method('jsonFromArray')
@@ -137,7 +139,7 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
             ->with(
                 self::anything(),
                 $statusCode,
-                []
+                $headers
             )
             ->willReturn($this->jsonResponse);
 
@@ -165,7 +167,7 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
             ->willReturn(StatusCode::INTERNAL_SERVER_ERROR);
         $this->response->expects($this->once())
             ->method('getHeaders')
-            ->willReturn([]);
+            ->willReturn(new HeaderCollection());
 
         $this->api->expects($this->once())
             ->method('jsonFromArray')
@@ -193,11 +195,11 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
 
     public function testThrowableCaughtPreservesResponseHeaders(): void
     {
-        $exception = new Exception('Error');
-        $headers   = [
-            'X-Request-Id' => ['abc123'],
-            'X-Trace-Id'   => ['xyz789'],
-        ];
+        $exception  = new Exception('Error');
+        $headers    = new HeaderCollection(
+            new Header('X-Request-Id', 'abc123'),
+            new Header('X-Trace-Id', 'xyz789')
+        );
         $json = new Json();
 
         $this->request->expects($this->never())->method(self::anything());

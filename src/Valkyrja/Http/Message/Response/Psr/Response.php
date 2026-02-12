@@ -71,7 +71,11 @@ class Response implements ResponseInterface
     #[Override]
     public function hasHeader(string $name): bool
     {
-        return $this->response->hasHeader($name);
+        if ($name === '') {
+            return false;
+        }
+
+        return $this->response->getHeaders()->hasHeader($name);
     }
 
     /**
@@ -80,7 +84,11 @@ class Response implements ResponseInterface
     #[Override]
     public function getHeader(string $name): array
     {
-        $header = $this->response->getHeader($name);
+        if ($name === '') {
+            return [];
+        }
+
+        $header = $this->response->getHeaders()->getHeader($name);
 
         if ($header === null) {
             return [];
@@ -95,7 +103,11 @@ class Response implements ResponseInterface
     #[Override]
     public function getHeaderLine(string $name): string
     {
-        return $this->response->getHeaderLine($name);
+        if ($name === '') {
+            return '';
+        }
+
+        return $this->response->getHeaders()->getHeaderLine($name);
     }
 
     /**
@@ -108,7 +120,9 @@ class Response implements ResponseInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->response = $this->response->withHeader(new Header($name, ...$value));
+        $new->response = $this->response->withHeaders(
+            $this->response->getHeaders()->withHeader(new Header($name, ...$value))
+        );
 
         return $new;
     }
@@ -123,7 +137,9 @@ class Response implements ResponseInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->response = $this->response->withAddedHeader(new Header($name, ...$value));
+        $new->response = $this->response->withHeaders(
+            $this->response->getHeaders()->withAddedHeaders(new Header($name, ...$value))
+        );
 
         return $new;
     }
@@ -136,7 +152,13 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withoutHeader($name);
+        if ($name === '') {
+            return $new;
+        }
+
+        $new->response = $this->response->withHeaders(
+            $this->response->getHeaders()->withoutHeader($name)
+        );
 
         return $new;
     }

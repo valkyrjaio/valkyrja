@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
@@ -76,11 +77,11 @@ final class PsrHeaderFactoryTest extends TestCase
 
     public function testToPsr(): void
     {
-        $headers = [
+        $headers = new HeaderCollection(
             new Header('Content-Type', 'application/json'),
             new Header('Accept', 'text/html', 'application/json'),
             new Header('Cache-Control', 'no-cache', 'no-store'),
-        ];
+        );
 
         $psrHeaders = PsrHeaderFactory::toPsr($headers);
 
@@ -98,7 +99,7 @@ final class PsrHeaderFactoryTest extends TestCase
 
     public function testToPsrWithEmptyArray(): void
     {
-        $psrHeaders = PsrHeaderFactory::toPsr([]);
+        $psrHeaders = PsrHeaderFactory::toPsr(new HeaderCollection());
 
         self::assertCount(0, $psrHeaders);
         self::assertSame([], $psrHeaders);
@@ -109,10 +110,10 @@ final class PsrHeaderFactoryTest extends TestCase
         $value1 = new Value('application/json');
         $value2 = new Value('text/html');
 
-        $headers = [
+        $headers = new HeaderCollection(
             new Header('Content-Type', $value1),
             new Header('Accept', $value2, 'application/xml'),
-        ];
+        );
 
         $psrHeaders = PsrHeaderFactory::toPsr($headers);
 
@@ -189,7 +190,7 @@ final class PsrHeaderFactoryTest extends TestCase
         ];
 
         $valkyrjaHeaders     = PsrHeaderFactory::fromPsr($originalPsrHeaders);
-        $roundTripPsrHeaders = PsrHeaderFactory::toPsr($valkyrjaHeaders);
+        $roundTripPsrHeaders = PsrHeaderFactory::toPsr(new HeaderCollection(...$valkyrjaHeaders));
 
         self::assertSame($originalPsrHeaders, $roundTripPsrHeaders);
     }

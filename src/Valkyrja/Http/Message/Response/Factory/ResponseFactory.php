@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Message\Response\Factory;
 use JsonException;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -37,7 +38,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createResponse(
         string|null $content = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): ResponseContract {
         return Response::create(
             content: $content,
@@ -53,7 +54,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createTextResponse(
         string|null $content = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): TextResponseContract {
         return TextResponse::create(
             content: $content,
@@ -71,7 +72,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createJsonResponse(
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): JsonResponseContract {
         return JsonResponse::createFromData(
             data: $data,
@@ -91,7 +92,7 @@ class ResponseFactory implements ResponseFactoryContract
         string $callback,
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): JsonResponseContract {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
@@ -103,7 +104,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createRedirectResponse(
         string|null $uri = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): RedirectResponseContract {
         return RedirectResponse::createFromUri(
             uri: UriFactory::fromString($uri ?? '/'),

@@ -30,7 +30,7 @@ trait JsonRequestStruct
     ): array {
         static::ensureJsonRequest($request);
 
-        return $request->onlyParsedJson(...$values);
+        return $request->getParsedJson()->onlyParams(...$values);
     }
 
     /**
@@ -42,7 +42,7 @@ trait JsonRequestStruct
     ): array {
         static::ensureJsonRequest($request);
 
-        return $request->exceptParsedJson(...$values);
+        return $request->getParsedJson()->exceptParams(...$values);
     }
 
     /**
@@ -50,7 +50,9 @@ trait JsonRequestStruct
      *
      * @param JsonServerRequestContract|ServerRequestContract $request The request
      *
-     * @psalm-assert JsonServerRequestContract                $request
+     * @psalm-assert JsonServerRequestContract $request
+     *
+     * @phpstan-assert JsonServerRequestContract $request
      */
     protected static function ensureJsonRequest(JsonServerRequestContract|ServerRequestContract $request): void
     {

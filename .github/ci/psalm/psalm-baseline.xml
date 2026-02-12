@@ -1,32 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
-    <file src="src/Valkyrja/Attribute/Attributes.php">
-        <PossiblyInvalidArgument>
-            <code><![CDATA[$member]]></code>
-        </PossiblyInvalidArgument>
-    </file>
-    <file src="src/Valkyrja/Http/Server/RequestHandler.php">
-        <UndefinedFunction>
-            <code><![CDATA[litespeed_finish_request()]]></code>
-        </UndefinedFunction>
-    </file>
-    <file src="src/Valkyrja/Console/Output/Output.php">
-        <RedundantCondition>
-            <code><![CDATA[$outputStyle->value]]></code>
-        </RedundantCondition>
-        <TypeDoesNotContainType>
-            <code><![CDATA[OutputStyle::NORMAL->value]]></code>
-        </TypeDoesNotContainType>
-    </file>
-    <file src="src/Valkyrja/Http/Message/File/Factory/UploadedFileFactory.php">
-        <InvalidArrayOffset>
-            <code><![CDATA[$normalizedFiles[$key]]]></code>
-        </InvalidArrayOffset>
-        <InvalidReturnStatement>
-            <code><![CDATA[$normalizedFiles]]></code>
-        </InvalidReturnStatement>
-        <InvalidReturnType>
-            <code><![CDATA[UploadedFileContract[]]]></code>
-        </InvalidReturnType>
-    </file>
 </files>

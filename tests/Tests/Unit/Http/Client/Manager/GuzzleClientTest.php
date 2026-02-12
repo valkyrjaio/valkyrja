@@ -20,8 +20,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Response\Response;
@@ -41,7 +44,7 @@ final class GuzzleClientTest extends TestCase
     public function testSendRequest(): void
     {
         $contents   = 'test';
-        $headers    = [new Header('header', 'value')];
+        $headers    = new HeaderCollection(new Header('header', 'value'));
         $parsedBody = ['param' => 'value'];
         $stringUri  = 'https://example.com/';
 
@@ -65,8 +68,8 @@ final class GuzzleClientTest extends TestCase
             uri: $uri,
             body: $body,
             headers: $headers,
-            cookies: ['cookie1' => 'value1'],
-            parsedBody: $parsedBody,
+            cookies: CookieParamCollection::fromArray(['cookie1' => 'value1']),
+            parsedBody: ParsedBodyParamCollection::fromArray($parsedBody),
         );
 
         $psr7Response->expects($this->once())->method('getHeaders')->willReturn(PsrHeaderFactory::toPsr($headers));
@@ -91,7 +94,7 @@ final class GuzzleClientTest extends TestCase
 
         self::assertInstanceOf(Response::class, $response);
         self::assertSame($contents, $response->getBody()->getContents());
-        self::assertSame('value', $response->getHeaderLine('header'));
+        self::assertSame('value', $response->getHeaders()->getHeaderLine('header'));
         self::assertSame(StatusCode::OK, $response->getStatusCode());
     }
 }

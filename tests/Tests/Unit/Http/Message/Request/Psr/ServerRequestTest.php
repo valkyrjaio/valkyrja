@@ -13,29 +13,34 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
-use stdClass;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ServerRequestTest extends TestCase
 {
     public function testServerParam(): void
     {
-        $request    = new ServerRequest(server: $server = ['test' => 'value']);
+        $server     = ['test' => 'value'];
+        $request    = new ServerRequest(server: ServerParamCollection::fromArray($server));
         $psrRequest = new PsrServerRequest($request);
 
-        self::assertSame($request->getServerParams(), $psrRequest->getServerParams());
-        self::assertSame($server, $request->getServerParams());
+        self::assertSame($request->getServerParams()->getParams(), $psrRequest->getServerParams());
+        self::assertSame($server, $request->getServerParams()->getParams());
         self::assertSame($server, $psrRequest->getServerParams());
     }
 
     public function testCookies(): void
     {
-        $request    = new ServerRequest(cookies: $cookies = ['test' => 'value']);
+        $cookies    = ['test' => 'value'];
+        $request    = new ServerRequest(cookies: CookieParamCollection::fromArray($cookies));
         $psrRequest = new PsrServerRequest($request);
 
         $cookies2 = ['test2' => 'value2'];
@@ -43,14 +48,15 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withCookieParams($cookies2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getCookieParams(), $psrRequest->getCookieParams());
+        self::assertSame($request->getCookieParams()->getParams(), $psrRequest->getCookieParams());
         self::assertSame($cookies, $psrRequest->getCookieParams());
         self::assertSame($cookies2, $psrRequest2->getCookieParams());
     }
 
     public function testQuery(): void
     {
-        $request    = new ServerRequest(query: $query = ['test' => 'value']);
+        $query      = ['test' => 'value'];
+        $request    = new ServerRequest(query: QueryParamCollection::fromArray($query));
         $psrRequest = new PsrServerRequest($request);
 
         $query2 = ['test2' => 'value2'];
@@ -58,7 +64,7 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withQueryParams($query2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getQueryParams(), $psrRequest->getQueryParams());
+        self::assertSame($request->getQueryParams()->getParams(), $psrRequest->getQueryParams());
         self::assertSame($query, $psrRequest->getQueryParams());
         self::assertSame($query2, $psrRequest2->getQueryParams());
     }
@@ -69,7 +75,7 @@ final class ServerRequestTest extends TestCase
             new UploadedFile(file: 'test'),
             new UploadedFile(file: 'test'),
         ];
-        $request       = new ServerRequest()->withUploadedFiles($uploadedFiles);
+        $request       = new ServerRequest()->withUploadedFiles(UploadedFileCollection::fromArray($uploadedFiles));
         $psrRequest    = new PsrServerRequest($request);
 
         $uploadedFiles2 = [
@@ -84,23 +90,10 @@ final class ServerRequestTest extends TestCase
         self::assertCount(2, $psrRequest2->getUploadedFiles());
     }
 
-    public function testUploadedFilesInvalid(): void
-    {
-        $this->expectException(RuntimeException::class);
-
-        $uploadedFiles = [
-            new UploadedFile(file: 'test'),
-            new stdClass(),
-        ];
-        $request       = new ServerRequest()->withUploadedFiles($uploadedFiles);
-        $psrRequest    = new PsrServerRequest($request);
-
-        $psrRequest->getUploadedFiles();
-    }
-
     public function testParsedBody(): void
     {
-        $request    = new ServerRequest(parsedBody: $parsedBody = ['test' => 'value']);
+        $parsedBody = ['test' => 'value'];
+        $request    = new ServerRequest(parsedBody: ParsedBodyParamCollection::fromArray($parsedBody));
         $psrRequest = new PsrServerRequest($request);
 
         $parsedBody2 = ['test2' => 'value2'];
@@ -108,7 +101,7 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withParsedBody($parsedBody2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getParsedBody(), $psrRequest->getParsedBody());
+        self::assertSame($request->getParsedBody()->getParams(), $psrRequest->getParsedBody());
         self::assertSame($parsedBody, $psrRequest->getParsedBody());
         self::assertSame($parsedBody2, $psrRequest2->getParsedBody());
     }

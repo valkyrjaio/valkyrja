@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Factory;
 
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
@@ -42,15 +43,13 @@ abstract class PsrHeaderFactory
     /**
      * Conver valkyrja headers to psr headers.
      *
-     * @param HeaderContract[] $headers The valkyrja headers
-     *
      * @return array<string, string[]>
      */
-    public static function toPsr(array $headers): array
+    public static function toPsr(HeaderCollectionContract $headers): array
     {
         $newHeaders = [];
 
-        foreach ($headers as $header) {
+        foreach ($headers->getHeaders() as $header) {
             $newHeaders[$header->getName()] = static::toPsrValues($header);
         }
 

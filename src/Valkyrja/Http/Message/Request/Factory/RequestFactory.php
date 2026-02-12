@@ -16,10 +16,14 @@ namespace Valkyrja\Http\Message\Request\Factory;
 use UnexpectedValueException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Factory\CookieFactory;
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -61,9 +65,7 @@ abstract class RequestFactory
         $server  = ServerFactory::normalizeServer($server);
         $headers = HeaderFactory::marshalHeaders($server);
 
-        if (! empty($files)) {
-            $files = UploadedFileFactory::normalizeFiles($files);
-        }
+        $normalizedFiles = UploadedFileFactory::normalizeFiles($files);
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
             $cookies = CookieFactory::parseCookieHeader($headers['cookie']->getValuesAsString());
@@ -72,19 +74,18 @@ abstract class RequestFactory
         $cookies ??= $_COOKIE;
 
         /** @var array<string, string|null> $cookies */
-        /** @var array<string, UploadedFileContract> $files */
 
         return new $class(
             uri: MarshalUriFactory::marshalUriFromServer($server, $headers),
             method: RequestMethod::from($server['REQUEST_METHOD']),
             body: new Stream(stream: PhpWrapper::input),
-            headers: $headers,
-            server: $server,
-            cookies: $cookies,
-            query: $query,
-            parsedBody: $body,
+            headers: HeaderCollection::fromArray($headers),
+            server: ServerParamCollection::fromArray($server),
+            cookies: CookieParamCollection::fromArray($cookies),
+            query: QueryParamCollection::fromArray($query),
+            parsedBody: ParsedBodyParamCollection::fromArray($body),
             protocol: static::getProtocolVersionFromServer($server),
-            files: $files,
+            files: $normalizedFiles,
         );
     }
 

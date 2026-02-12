@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -28,7 +30,7 @@ final class HttpExceptionTest extends TestCase
         $exception = new HttpException();
 
         self::assertSame(StatusCode::INTERNAL_SERVER_ERROR, $exception->getStatusCode());
-        self::assertEmpty($exception->getHeaders());
+        self::assertEmpty($exception->getHeaders()->getHeaders());
         self::assertNull($exception->getResponse());
     }
 
@@ -41,9 +43,10 @@ final class HttpExceptionTest extends TestCase
 
     public function testGetHeaders(): void
     {
-        $exception = new HttpException(headers: $headers = ['test' => ['foo', 'bar']]);
+        $headers   = ['test' => new Header('test', ...['foo', 'bar'])];
+        $exception = new HttpException(headers: HeaderCollection::fromArray($headers));
 
-        self::assertSame($headers, $exception->getHeaders());
+        self::assertSame($headers, $exception->getHeaders()->getHeaders());
     }
 
     public function testGetMessage(): void

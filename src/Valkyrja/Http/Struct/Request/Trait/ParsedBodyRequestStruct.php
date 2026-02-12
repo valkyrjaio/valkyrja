@@ -24,7 +24,7 @@ trait ParsedBodyRequestStruct
      */
     protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
-        return $request->onlyParsedBody(...$values);
+        return $request->getParsedBody()->onlyParams(...$values);
     }
 
     /**
@@ -32,6 +32,6 @@ trait ParsedBodyRequestStruct
      */
     protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
-        return $request->exceptParsedBody(...$values);
+        return $request->getParsedBody()->exceptParams(...$values);
     }
 }

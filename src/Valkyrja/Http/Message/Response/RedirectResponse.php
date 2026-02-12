@@ -15,6 +15,8 @@ namespace Valkyrja\Http\Message\Response;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -30,17 +32,13 @@ use Valkyrja\Http\Message\Uri\Uri;
 class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
-     * @param UriContract      $uri        [optional] The uri
-     * @param StatusCode       $statusCode [optional] The status
-     * @param HeaderContract[] $headers    [optional] The headers
-     *
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
      */
     public function __construct(
         protected UriContract $uri = new Uri(path: '/'),
         StatusCode $statusCode = StatusCode::FOUND,
-        array $headers = []
+        HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         if (! $statusCode->isRedirect()) {
             throw new InvalidArgumentException(
@@ -48,11 +46,9 @@ class RedirectResponse extends Response implements RedirectResponseContract
             );
         }
 
-        $this->setHeaders(...$headers);
-
         parent::__construct(
             statusCode: $statusCode,
-            headers: $this->injectHeader($this->getHeaderFromUri($uri), $this->headers, true)
+            headers: $this->injectHeader($this->getHeaderFromUri($uri), $headers, true)
         );
     }
 
@@ -63,12 +59,12 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public static function createFromUri(
         UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): static {
         return new static(
             $uri ?? new Uri(path: '/'),
             $statusCode ?? StatusCode::FOUND,
-            $headers ?? []
+            $headers ?? new HeaderCollection()
         );
     }
 
@@ -87,8 +83,10 @@ class RedirectResponse extends Response implements RedirectResponseContract
     #[Override]
     public function withUri(UriContract $uri): static
     {
+        $headers = $this->headers->withHeader($this->getHeaderFromUri($uri));
+
         // Set the location header for the redirect
-        $new = $this->withHeader($this->getHeaderFromUri($uri));
+        $new = $this->withHeaders($headers);
         // Set the uri
         $new->uri = $uri;
 
@@ -116,7 +114,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     #[Override]
     public function back(ServerRequestContract $request): static
     {
-        $refererHeaderLine = $request->getHeaderLine('Referer') ?: '/';
+        $refererHeaderLine = $request->getHeaders()->getHeaderLine('Referer') ?: '/';
 
         $refererUri = UriFactory::fromString($refererHeaderLine);
         $refererUri = $this->isInternalUri($request, $refererUri)
@@ -132,7 +130,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     #[Override]
     public function throw(): void
     {
-        throw new HttpRedirectException($this->uri, $this->statusCode, $this->getHeaders(), $this);
+        throw new HttpRedirectException($this->uri, $this->statusCode, $this->headers, $this);
     }
 
     /**

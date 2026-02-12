@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Session\Manager\Token\Http;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
@@ -31,11 +32,17 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $this->request = $this->createMock(ServerRequestContract::class);
 
-        $this->request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('');
+
+        $this->request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $this->session = new HeaderTokenSession($this->request);
     }
@@ -49,11 +56,17 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Bearer {"key":"value","key2":"value2"}');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderTokenSession($request);
 
@@ -65,10 +78,16 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderTokenSession($request);
 
@@ -79,11 +98,17 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Basic sometoken');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
@@ -95,11 +120,17 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with(HeaderName::AUTHORIZATION)
             ->willReturn('Bearer ');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $this->expectException(InvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
@@ -111,10 +142,16 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderTokenSession($request, 'session-id', 'MY_SESSION');
 
@@ -126,11 +163,17 @@ final class HeaderTokenSessionTest extends TestCase
     {
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $headers = $this->createMock(HeaderCollectionContract::class);
+        $headers
             ->expects($this->once())
             ->method('getHeaderLine')
             ->with('X-Custom-Auth')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn($headers);
 
         $session = new HeaderTokenSession($request, null, null, 'X-Custom-Auth');
 

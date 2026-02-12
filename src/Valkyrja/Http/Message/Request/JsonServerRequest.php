@@ -13,74 +13,68 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request;
 
-use JsonException;
 use Override;
 use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
-
-use function array_key_exists;
 
 class JsonServerRequest extends ServerRequest implements JsonServerRequestContract
 {
     protected bool $hadParsedBody = true;
 
-    /**
-     * @param UriContract                  $uri        [optional] The uri
-     * @param RequestMethod                $method     [optional] The method
-     * @param StreamContract               $body       [optional] The body stream
-     * @param HeaderContract[]             $headers    [optional] The headers
-     * @param array<string, mixed>         $server     [optional] The server
-     * @param array<string, string|null>   $cookies    [optional] The cookies
-     * @param array<array-key, mixed>      $query      [optional] The query string
-     * @param array<array-key, mixed>      $parsedBody [optional] The parsed body
-     * @param array<array-key, mixed>      $parsedJson [optional] The parsed json
-     * @param ProtocolVersion              $protocol   [optional] The protocol version
-     * @param UploadedFileContract[]|array $files      [optional] The files
-     *
-     * @throws InvalidArgumentException
-     * @throws JsonException
-     */
     public function __construct(
         UriContract $uri = new Uri(),
         RequestMethod $method = RequestMethod::GET,
         StreamContract $body = new Stream(stream: PhpWrapper::input),
-        array $headers = [],
-        array $server = [],
-        array $cookies = [],
-        array $query = [],
-        array $parsedBody = [],
-        protected array $parsedJson = [],
+        HeaderCollectionContract $headers = new HeaderCollection(),
         ProtocolVersion $protocol = ProtocolVersion::V1_1,
-        protected array $files = []
+        protected ServerParamCollectionContract $server = new ServerParamCollection(),
+        protected CookieParamCollectionContract $cookies = new CookieParamCollection(),
+        protected QueryParamCollectionContract $query = new QueryParamCollection(),
+        protected ParsedBodyParamCollectionContract $parsedBody = new ParsedBodyParamCollection(),
+        protected ParsedJsonParamCollectionContract $parsedJson = new ParsedJsonParamCollection(),
+        protected UploadedFileCollectionContract $files = new UploadedFileCollection()
     ) {
         parent::__construct(
             uri: $uri,
             method: $method,
             body: $body,
             headers: $headers,
+            protocol: $protocol,
             server: $server,
             cookies: $cookies,
             query: $query,
             parsedBody: $parsedBody,
-            protocol: $protocol,
             files: $files
         );
 
+        $contentType = $headers->getHeader(name: HeaderName::CONTENT_TYPE)?->getValuesAsString();
+
         if (
-            $this->hasHeader(name: HeaderName::CONTENT_TYPE)
-            && str_contains($this->getHeaderLine(name: HeaderName::CONTENT_TYPE), ContentTypeValue::APPLICATION_JSON)
+            $contentType !== null
+            && str_contains($contentType, ContentTypeValue::APPLICATION_JSON)
         ) {
             $bodyContents = (string) $body;
 
@@ -88,10 +82,9 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
                 return;
             }
 
-            $this->parsedJson = ArrayFactory::fromString($bodyContents);
+            $this->parsedJson = ParsedJsonParamCollection::fromArray(ArrayFactory::fromString($bodyContents));
 
-            if (empty($parsedBody)) {
-                $this->parsedBody    = $this->parsedJson;
+            if (empty($parsedBody->getParams())) {
                 $this->hadParsedBody = false;
             }
         }
@@ -101,7 +94,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
      * @inheritDoc
      */
     #[Override]
-    public function getParsedJson(): array
+    public function getParsedJson(): ParsedJsonParamCollectionContract
     {
         return $this->parsedJson;
     }
@@ -110,70 +103,12 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
      * @inheritDoc
      */
     #[Override]
-    public function onlyParsedJson(string|int ...$names): array
-    {
-        return $this->onlyParams($this->parsedJson, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function exceptParsedJson(string|int ...$names): array
-    {
-        return $this->exceptParams($this->parsedJson, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withParsedJson(array $data): static
+    public function withParsedJson(ParsedJsonParamCollectionContract $params): static
     {
         $new = clone $this;
 
-        if (! $this->hadParsedBody) {
-            $new->parsedBody = $data;
-        }
-
-        $new->parsedJson = $data;
+        $new->parsedJson = $params;
 
         return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAddedParsedJsonParam(string|int $name, mixed $value): static
-    {
-        $new = clone $this;
-
-        if (! $this->hadParsedBody) {
-            $new->parsedBody[$name] = $value;
-        }
-
-        $new->parsedJson[$name] = $value;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getParsedJsonParam(string|int $name, mixed $default = null): mixed
-    {
-        return $this->parsedJson[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasParsedJsonParam(string|int $name): bool
-    {
-        return isset($this->parsedJson[$name])
-            || array_key_exists($name, $this->parsedJson);
     }
 }

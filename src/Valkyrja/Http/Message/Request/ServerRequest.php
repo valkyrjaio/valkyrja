@@ -17,18 +17,26 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
+use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_filter;
-use function array_key_exists;
 use function in_array;
 
 use const ARRAY_FILTER_USE_KEY;
@@ -42,31 +50,17 @@ class ServerRequest extends Request implements ServerRequestContract
      */
     protected array $attributes = [];
 
-    /**
-     * @param UriContract                                    $uri        [optional] The uri
-     * @param RequestMethod                                  $method     [optional] The method
-     * @param StreamContract                                 $body       [optional] The body stream
-     * @param HeaderContract[]                               $headers    [optional] The headers
-     * @param array<string, mixed>                           $server     [optional] The server
-     * @param array<string, string|null>                     $cookies    [optional] The cookies
-     * @param array<array-key, mixed>                        $query      [optional] The query string
-     * @param array<array-key, mixed>                        $parsedBody [optional] The parsed body
-     * @param ProtocolVersion                                $protocol   [optional] The protocol version
-     * @param UploadedFileContract[]|array<array-key, mixed> $files      [optional] The files
-     *
-     * @throws InvalidArgumentException
-     */
     public function __construct(
         UriContract $uri = new Uri(),
         RequestMethod $method = RequestMethod::GET,
         StreamContract $body = new Stream(stream: PhpWrapper::input),
-        array $headers = [],
-        protected array $server = [],
-        protected array $cookies = [],
-        protected array $query = [],
-        protected array $parsedBody = [],
+        HeaderCollectionContract $headers = new HeaderCollection(),
         ProtocolVersion $protocol = ProtocolVersion::V1_1,
-        protected array $files = []
+        protected ServerParamCollectionContract $server = new ServerParamCollection(),
+        protected CookieParamCollectionContract $cookies = new CookieParamCollection(),
+        protected QueryParamCollectionContract $query = new QueryParamCollection(),
+        protected ParsedBodyParamCollectionContract $parsedBody = new ParsedBodyParamCollection(),
+        protected UploadedFileCollectionContract $files = new UploadedFileCollection()
     ) {
         $this->protocolVersion = $protocol;
 
@@ -77,7 +71,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function getServerParams(): array
+    public function getServerParams(): ServerParamCollectionContract
     {
         return $this->server;
     }
@@ -86,26 +80,20 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function getServerParam(string $name, mixed $default = null): mixed
+    public function withServerParams(ServerParamCollectionContract $server): static
     {
-        return $this->server[$name] ?? $default;
+        $new = clone $this;
+
+        $new->server = $server;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function hasServerParam(string $name): bool
-    {
-        return isset($this->server[$name])
-            || array_key_exists($name, $this->server);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getCookieParams(): array
+    public function getCookieParams(): CookieParamCollectionContract
     {
         return $this->cookies;
     }
@@ -114,7 +102,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function withCookieParams(array $cookies): static
+    public function withCookieParams(CookieParamCollectionContract $cookies): static
     {
         $new = clone $this;
 
@@ -127,39 +115,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedCookieParam(string $name, string|null $value = null): static
-    {
-        $new = clone $this;
-
-        $new->cookies[$name] = $value;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getCookieParam(string $name, string|null $default = null): string|null
-    {
-        return $this->cookies[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasCookieParam(string $name): bool
-    {
-        return isset($this->cookies[$name])
-            || array_key_exists($name, $this->cookies);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getQueryParams(): array
+    public function getQueryParams(): QueryParamCollectionContract
     {
         return $this->query;
     }
@@ -168,25 +124,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function onlyQueryParams(string|int ...$names): array
-    {
-        return $this->onlyParams($this->query, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function exceptQueryParams(string|int ...$names): array
-    {
-        return $this->exceptParams($this->query, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withQueryParams(array $query): static
+    public function withQueryParams(QueryParamCollectionContract $query): static
     {
         $new = clone $this;
 
@@ -199,39 +137,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedQueryParam(string|int $name, mixed $value): static
-    {
-        $new = clone $this;
-
-        $new->query[$name] = $value;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getQueryParam(string|int $name, mixed $default = null): mixed
-    {
-        return $this->query[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasQueryParam(string|int $name): bool
-    {
-        return isset($this->query[$name])
-            || array_key_exists($name, $this->query);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getUploadedFiles(): array
+    public function getUploadedFiles(): UploadedFileCollectionContract
     {
         return $this->files;
     }
@@ -240,7 +146,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function withUploadedFiles(array $uploadedFiles): static
+    public function withUploadedFiles(UploadedFileCollectionContract $uploadedFiles): static
     {
         $new = clone $this;
 
@@ -253,20 +159,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedUploadedFile(UploadedFileContract $uploadedFile): static
-    {
-        $new = clone $this;
-
-        $new->files[] = $uploadedFile;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getParsedBody(): array
+    public function getParsedBody(): ParsedBodyParamCollectionContract
     {
         return $this->parsedBody;
     }
@@ -275,63 +168,13 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function onlyParsedBody(string|int ...$names): array
-    {
-        return $this->onlyParams($this->parsedBody, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function exceptParsedBody(string|int ...$names): array
-    {
-        return $this->exceptParams($this->parsedBody, ...$names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withParsedBody(array $data): static
+    public function withParsedBody(ParsedBodyParamCollectionContract $params): static
     {
         $new = clone $this;
 
-        $new->parsedBody = $data;
+        $new->parsedBody = $params;
 
         return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAddedParsedBodyParam(string|int $name, mixed $value): static
-    {
-        $new = clone $this;
-
-        $new->parsedBody[$name] = $value;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getParsedBodyParam(string|int $name, mixed $default = null): mixed
-    {
-        return $this->parsedBody[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasParsedBodyParam(string|int $name): bool
-    {
-        return isset($this->parsedBody[$name])
-            || array_key_exists($name, $this->parsedBody);
     }
 
     /**
@@ -349,7 +192,11 @@ class ServerRequest extends Request implements ServerRequestContract
     #[Override]
     public function onlyAttributes(string ...$names): array
     {
-        return $this->onlyParams($this->attributes, ...$names);
+        return array_filter(
+            $this->attributes,
+            static fn (string|int $name): bool => in_array($name, $names, true),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     /**
@@ -358,7 +205,11 @@ class ServerRequest extends Request implements ServerRequestContract
     #[Override]
     public function exceptAttributes(string ...$names): array
     {
-        return $this->exceptParams($this->attributes, ...$names);
+        return array_filter(
+            $this->attributes,
+            static fn (string|int $name): bool => ! in_array($name, $names, true),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     /**
@@ -402,40 +253,6 @@ class ServerRequest extends Request implements ServerRequestContract
     #[Override]
     public function isXmlHttpRequest(): bool
     {
-        return $this->getHeaderLine(HeaderName::X_REQUESTED_WITH) === 'XMLHttpRequest';
-    }
-
-    /**
-     * Retrieve only the specified params.
-     *
-     * @param array<array-key, mixed> $params   The params to sort through
-     * @param string|int              ...$names The query param names to retrieve
-     *
-     * @return array<array-key, mixed>
-     */
-    protected function onlyParams(array $params, string|int ...$names): array
-    {
-        return array_filter(
-            $params,
-            static fn (string|int $name): bool => in_array($name, $names, true),
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    /**
-     * Retrieve all params except the ones specified.
-     *
-     * @param array<array-key, mixed> $params   The params to sort through
-     * @param string|int              ...$names The query param names to not retrieve
-     *
-     * @return array<array-key, mixed>
-     */
-    protected function exceptParams(array $params, string|int ...$names): array
-    {
-        return array_filter(
-            $params,
-            static fn (string|int $name): bool => ! in_array($name, $names, true),
-            ARRAY_FILTER_USE_KEY
-        );
+        return $this->headers->getHeader(HeaderName::X_REQUESTED_WITH)?->getValuesAsString() === 'XMLHttpRequest';
     }
 }

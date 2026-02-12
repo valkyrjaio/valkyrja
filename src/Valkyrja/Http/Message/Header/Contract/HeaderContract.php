@@ -36,18 +36,22 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
 
     /**
      * Get the header name.
+     *
+     * @return non-empty-string
      */
     public function getName(): string;
 
     /**
      * Get the normalized header name.
      *
-     * @return lowercase-string
+     * @return non-empty-lowercase-string
      */
     public function getNormalizedName(): string;
 
     /**
      * Create a new Header with the specified name.
+     *
+     * @param non-empty-string $name The name
      */
     public function withName(string $name): static;
 

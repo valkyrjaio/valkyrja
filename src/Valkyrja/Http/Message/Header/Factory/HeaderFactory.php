@@ -135,6 +135,10 @@ abstract class HeaderFactory
      * @see http://tools.ietf.org/html/rfc7230#section-3.2
      *
      * @throws InvalidArgumentException
+     *
+     * @psalm-assert non-empty-string $name
+     *
+     * @phpstan-assert non-empty-string $name
      */
     public static function assertValidName(string $name): void
     {
@@ -148,7 +152,8 @@ abstract class HeaderFactory
      */
     public static function isValidName(string $name): bool
     {
-        return (bool) preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name);
+        return preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name)
+            && $name !== '';
     }
 
     /**
@@ -189,8 +194,8 @@ abstract class HeaderFactory
 
         if (static::isValidHttpHeader($key, $value)) {
             /**
-             * @var lowercase-string $name
-             * @var string           $value
+             * @var non-empty-lowercase-string $name
+             * @var string                     $value
              */
             $name           = str_replace('_', '-', strtolower(substr($key, 5)));
             $headers[$name] = new Header($name, $value);

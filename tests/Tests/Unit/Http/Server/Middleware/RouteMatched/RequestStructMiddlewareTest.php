@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware\RouteMatched;
 
-use JsonException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -51,18 +51,15 @@ final class RequestStructMiddlewareTest extends TestCase
         self::assertSame($route, $responseAfterMiddleware);
     }
 
-    /**
-     * @throws JsonException
-     */
     public function testRouteDispatchedExtraDataPayloadTooLarge(): void
     {
         $request = new JsonServerRequest(
-            parsedJson: [
+            parsedJson: ParsedJsonParamCollection::fromArray([
                 1 => 'test',
                 2 => 'test2',
                 3 => 'test3',
                 4 => 'test4',
-            ]
+            ])
         );
         $route   = new Route(
             path: '/',
@@ -84,17 +81,14 @@ final class RequestStructMiddlewareTest extends TestCase
         self::assertSame(StatusCode::PAYLOAD_TOO_LARGE, $responseAfterMiddleware->getStatusCode());
     }
 
-    /**
-     * @throws JsonException
-     */
     public function testRouteDispatchedBadRequest(): void
     {
         $request = new JsonServerRequest(
-            parsedJson: [
+            parsedJson: ParsedJsonParamCollection::fromArray([
                 1 => 'test',
                 2 => 'test2',
                 3 => 'test3',
-            ]
+            ])
         );
         $route   = new Route(
             path: '/',
@@ -116,17 +110,14 @@ final class RequestStructMiddlewareTest extends TestCase
         self::assertSame(StatusCode::BAD_REQUEST, $responseAfterMiddleware->getStatusCode());
     }
 
-    /**
-     * @throws JsonException
-     */
     public function testRouteDispatched(): void
     {
         $request = new JsonServerRequest(
-            parsedJson: [
+            parsedJson: ParsedJsonParamCollection::fromArray([
                 1 => 'test',
                 2 => 200,
                 3 => 'test3',
-            ]
+            ])
         );
         $route   = new Route(
             path: '/',

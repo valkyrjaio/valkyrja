@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response\Contract;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
@@ -22,15 +22,11 @@ interface RedirectResponseContract extends ResponseContract
 {
     /**
      * Create a redirect response.
-     *
-     * @param UriContract|null      $uri        [optional] The uri to redirect to
-     * @param StatusCode|null       $statusCode [optional] The response status code
-     * @param HeaderContract[]|null $headers    [optional] An array of response headers
      */
     public static function createFromUri(
         UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): static;
 
     /**

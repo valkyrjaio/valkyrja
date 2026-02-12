@@ -18,113 +18,44 @@ use Valkyrja\Http\Message\Contract\MessageContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
-/**
- * Representation of an outgoing, client-side request.
- * Per the HTTP specification, this interface includes properties for
- * each of the following:
- * - Protocol version
- * - HTTP method
- * - URI
- * - Headers
- * - Message body
- * During construction, implementations MUST attempt to set the Host header from
- * a provided URI if no Host header is provided.
- * Requests are considered immutable; all methods that might change state MUST
- * be implemented such that they retain the internal state of the current
- * message and return an instance that contains the changed state.
- */
 interface RequestContract extends MessageContract
 {
     /**
-     * Retrieves the message's request target.
-     * Retrieves the message's request-target either as it will appear (for
-     * clients), as it appeared at request (for servers), or as it was
-     * specified for the instance (see withRequestTarget()).
-     * In most cases, this will be the origin-form of the composed URI,
-     * unless a value was provided to the concrete implementation (see
-     * withRequestTarget() below).
-     * If no URI is available, and no request-target has been specifically
-     * provided, this method MUST return the string "/".
+     * Get the request target.
      */
     public function getRequestTarget(): string;
 
     /**
-     * Return an instance with the specific request-target.
-     * If the request needs a non-origin-form request-target — e.g., for
-     * specifying an absolute-form, authority-form, or asterisk-form —
-     * this method may be used to create an instance with the specified
-     * request-target, verbatim.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request target.
+     * Create a new instance with the specified request target.
      *
      * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     *
-     * @param string $requestTarget The request target
      */
     public function withRequestTarget(string $requestTarget): static;
 
     /**
-     * Retrieves the HTTP method of the request.
-     *
-     * @return RequestMethod Returns the request method
+     * Get the HTTP method of the request.
      */
     public function getMethod(): RequestMethod;
 
     /**
-     * Return an instance with the provided HTTP method.
-     * While HTTP method names are typically all uppercase characters, HTTP
-     * method names are case-sensitive and thus implementations SHOULD NOT
-     * modify the given string.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request method.
-     *
-     * @param RequestMethod $method Case-sensitive method
+     * Create a new instance with the specified HTTP method.
      *
      * @throws InvalidArgumentException for invalid HTTP methods
      */
     public function withMethod(RequestMethod $method): static;
 
     /**
-     * Retrieves the URI instance.
-     * This method MUST return a Uri instance.
+     * Get the Uri for the request.
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
-     *
-     * @return UriContract Returns a Uri instance
-     *                     representing the URI of the request
      */
     public function getUri(): UriContract;
 
     /**
-     * Returns an instance with the provided URI.
-     * This method MUST update the Host header of the returned request by
-     * default if the URI contains a host component. If the URI does not
-     * contain a host component, any pre-existing Host header MUST be carried
-     * over to the returned request.
-     * You can opt-in to preserving the original state of the Host header by
-     * setting `$preserveHost` to `true`. When `$preserveHost` is set to
-     * `true`, this method interacts with the Host header in the following
-     * ways:
-     * - If the Host header is missing or empty, and the new URI contains
-     *   a host component, this method MUST update the Host header in the
-     *   returned request.
-     * - If the Host header is missing or empty, and the new URI does not
-     * contain a host component, this method MUST NOT update the Host header in
-     * the returned request.
-     * - If a Host header is present and non-empty, this method MUST NOT update
-     *   the Host header in the returned request.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new Uri instance.
+     * Create a new instance with the specified Uri.
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
-     *
-     * @param UriContract $uri          New request URI to use
-     * @param bool        $preserveHost Preserve the original state of the Host
-     *                                  header
      */
     public function withUri(UriContract $uri, bool $preserveHost = false): static;
 }
