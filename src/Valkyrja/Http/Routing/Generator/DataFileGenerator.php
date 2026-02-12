@@ -74,6 +74,11 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
             PHP;
     }
 
+    /**
+     * Get all routes as a string.
+     *
+     * @return non-empty-string
+     */
     protected function getRoutesAsContent(): string
     {
         $routes = $this->data->routes;
@@ -100,11 +105,15 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
             PHP;
     }
 
+    /**
+     * Get the route as a string.
+     *
+     * @return non-empty-string
+     */
     protected function getRouteAsContent(RouteContract $route): string
     {
         $contract = RouteContract::class;
-        $content  = var_export($route, true);
-        $content  = preg_replace('/([.^\S]*)::__set_state\(/', 'new $1(...', $content);
+        $content  = $this->generateObjectsContents($route);
 
         return <<<PHP
             static fn (): $contract => $content
