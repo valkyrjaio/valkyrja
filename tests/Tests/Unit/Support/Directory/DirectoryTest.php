@@ -92,7 +92,7 @@ final class DirectoryTest extends TestCase
             . '/'
             . Directory::$FRAMEWORK_STORAGE_PATH
             . '/'
-            . Directory::$DATA_PATH;
+            . Directory::$CACHE_PATH;
 
         self::assertSame($expected, Directory::frameworkStorageCachePath());
     }
@@ -108,7 +108,7 @@ final class DirectoryTest extends TestCase
             . '/'
             . Directory::$FRAMEWORK_STORAGE_PATH
             . '/'
-            . Directory::$DATA_PATH
+            . Directory::$CACHE_PATH
             . $this->subPath;
 
         self::assertSame($expected, Directory::frameworkStorageCachePath($this->subPath));

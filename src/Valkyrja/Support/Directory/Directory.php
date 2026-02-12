@@ -37,6 +37,8 @@ class Directory
     /** @var non-empty-string */
     public static string $FRAMEWORK_STORAGE_PATH = 'framework';
     /** @var non-empty-string */
+    public static string $CACHE_PATH = 'cache';
+    /** @var non-empty-string */
     public static string $LOGS_STORAGE_PATH = 'logs';
     /** @var non-empty-string */
     public static string $TESTS_PATH = 'tests';
@@ -172,7 +174,7 @@ class Directory
      */
     public static function frameworkStorageCachePath(string|null $path = null): string
     {
-        return static::frameworkStoragePath(static::$DATA_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**
