@@ -21,7 +21,6 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Psr\RequestHandler as PsrRequestHandler;
@@ -48,15 +47,14 @@ final class RequestHandlerTest extends TestCase
         $request    = new ServerRequest();
         $psrRequest = new PsrServerRequest(request: $request);
 
-        $router = self::createStub(Router::class);
+        $router = $this->createMock(Router::class);
         $router
+            ->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters()
             ->willReturn($response);
 
         $container = new Container();
-
-        $dispatchedHandler = new RouteDispatchedHandler();
 
         $requestHandler    = new RequestHandler(
             container: $container,
