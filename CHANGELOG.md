@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.31.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.31.1...master)
+
+## [v25.31.1](https://github.com/valkyrjaio/valkyrja/compare/v25.31.0...v25.31.1) - 2026-02-12
+
+* [Cli] Update data file generator to use generateObjectsContents by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/596
+* [Http] Update data file generator to use generateObjectsContents by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/597
+* [Event] Update data file generator to use generateObjectsContents by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/598
 
 ## [v25.31.0](https://github.com/valkyrjaio/valkyrja/compare/v25.30.0...v25.31.0) - 2026-02-11
 
