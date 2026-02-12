@@ -114,19 +114,9 @@ class AuthenticatedUsers implements AuthenticatedUsersContract
     #[Override]
     public function isUserAuthenticated(string|int $id): bool
     {
-        if ($this->currentId === $id) {
-            return true;
-        }
-
-        if ($this->impersonatedId === $id) {
-            return true;
-        }
-
-        if (in_array($id, $this->users, true)) {
-            return true;
-        }
-
-        return false;
+        return $this->currentId === $id
+            || $this->impersonatedId === $id
+            || in_array($id, $this->users, true);
     }
 
     /**
