@@ -32,6 +32,13 @@ interface HeaderCollectionContract
     public function getHeader(string $name): HeaderContract|null;
 
     /**
+     * Get a header's values as a string by name.
+     *
+     * @param non-empty-string $name The header name
+     */
+    public function getHeaderLine(string $name): string;
+
+    /**
      * Get all the headers.
      *
      * @return array<non-empty-lowercase-string, HeaderContract>
@@ -60,6 +67,13 @@ interface HeaderCollectionContract
      * Get a new instance with the specified header overriding any existing header of the same name.
      */
     public function withHeader(HeaderContract $header): static;
+
+    /**
+     * Create a new instance without the specified header.
+     *
+     * @param non-empty-string $name The header name
+     */
+    public function withoutHeader(string $name): static;
 
     /**
      * Get a new instance with the specified headers.

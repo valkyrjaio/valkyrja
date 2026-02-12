@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 {
     use Valkyrja\Http\Message\Constant\HeaderName;
     use Valkyrja\Http\Message\Enum\StatusCode;
+    use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
     use Valkyrja\Http\Message\Header\ContentType;
     use Valkyrja\Http\Message\Header\Value\Cookie;
     use Valkyrja\Http\Message\Response\Response;
@@ -36,22 +37,22 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         public function testCreate(): void
         {
             $response  = Response::create();
-            $response2 = Response::create('test', StatusCode::CREATED, [new ContentType('text/html')]);
+            $response2 = Response::create('test', StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             self::assertEmpty($response->getBody()->getContents());
             self::assertSame(StatusCode::OK, $response->getStatusCode());
-            self::assertEmpty($response->getHeaders());
+            self::assertEmpty($response->getHeaders()->getHeaders());
 
             self::assertSame('test', $response2->getBody()->getContents());
             self::assertSame(StatusCode::CREATED, $response2->getStatusCode());
 
-            self::assertSame('text/html', $response2->getHeaderLine(HeaderName::CONTENT_TYPE));
+            self::assertSame('text/html', $response2->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
         }
 
         public function testGetStatusCode(): void
         {
             $response  = Response::create();
-            $response2 = Response::create('test', StatusCode::CREATED, [new ContentType('text/html')]);
+            $response2 = Response::create('test', StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             self::assertSame(StatusCode::OK, $response->getStatusCode());
             self::assertSame(StatusCode::CREATED, $response2->getStatusCode());
@@ -88,7 +89,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $response2 = $response->withCookie($cookie);
 
             self::assertNotSame($response, $response2);
-            self::assertSame('foo=bar; path=/; httponly', $response2->getHeaderLine(HeaderName::SET_COOKIE));
+            self::assertSame('foo=bar; path=/; httponly', $response2->getHeaders()->getHeaderLine(HeaderName::SET_COOKIE));
         }
 
         public function testWithoutCookie(): void
@@ -102,7 +103,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $response2 = $response->withoutCookie($cookie);
 
             self::assertNotSame($response, $response2);
-            self::assertSame((string) $deletedCookie, $response2->getHeaderLine(HeaderName::SET_COOKIE));
+            self::assertSame((string) $deletedCookie, $response2->getHeaders()->getHeaderLine(HeaderName::SET_COOKIE));
 
             Time::unfreeze();
         }
@@ -111,7 +112,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         {
             $this->resetHeadersAndResponseCode();
 
-            $response = new Response(new Stream(), StatusCode::OK, [new ContentType('text/html')]);
+            $response = new Response(new Stream(), StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             $response->sendHttpLine();
 
@@ -127,7 +128,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         {
             $this->resetHeadersAndResponseCode();
 
-            $response = new Response(new Stream(), StatusCode::OK, [new ContentType('text/html')]);
+            $response = new Response(new Stream(), StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             $response->sendHeaders();
 
@@ -145,7 +146,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $stream->write('test');
             $stream->rewind();
 
-            $response = new Response($stream, StatusCode::OK, [new ContentType('text/html')]);
+            $response = new Response($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             ob_start();
             $response->sendBody();
@@ -163,7 +164,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $stream->write('test');
             $stream->rewind();
 
-            $response = new Response($stream, StatusCode::OK, [new ContentType('text/html')]);
+            $response = new Response($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             ob_start();
             $response->send();

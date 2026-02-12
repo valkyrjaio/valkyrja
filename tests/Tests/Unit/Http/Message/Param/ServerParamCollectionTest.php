@@ -25,7 +25,7 @@ final class ServerParamCollectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->paramData = new ServerParamCollection(method: 'GET', port: 443, secure: true);
+        $this->paramData = new ServerParamCollection(['method' => 'GET', 'port' => 443, 'secure' => true]);
     }
 
     public function testInstanceOfContract(): void
@@ -57,15 +57,15 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ServerParamCollection(version: 1.1);
+        $paramData = new ServerParamCollection(['version' => 1.1]);
 
         self::assertSame(1.1, $paramData->getParam('version'));
     }
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ServerParamCollection(key: 'value');
-        $paramData = new ServerParamCollection(nested: $nested);
+        $nested    = new ServerParamCollection(['key' => 'value']);
+        $paramData = new ServerParamCollection(['nested' => $nested]);
 
         self::assertSame($nested, $paramData->getParam('nested'));
     }
@@ -131,7 +131,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(host: 'localhost');
+        $new = $this->paramData->withAddedParams(['host' => 'localhost']);
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('GET', $new->getParam('method'));
@@ -140,7 +140,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(host: 'localhost');
+        $this->paramData->withAddedParams(['host' => 'localhost']);
 
         self::assertFalse($this->paramData->hasParam('host'));
     }
@@ -154,7 +154,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $paramData = $this->paramData->fromArray(['host' => 'localhost', 'port' => 8080]);
+        $paramData = ServerParamCollection::fromArray(['host' => 'localhost', 'port' => 8080]);
 
         self::assertSame('localhost', $paramData->getParam('host'));
         self::assertSame(8080, $paramData->getParam('port'));
@@ -162,7 +162,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testFromArrayWithNestedArray(): void
     {
-        $paramData = $this->paramData->fromArray(['nested' => ['inner' => 'value']]);
+        $paramData = ServerParamCollection::fromArray(['nested' => ['inner' => 'value']]);
 
         $nested = $paramData->getParam('nested');
 

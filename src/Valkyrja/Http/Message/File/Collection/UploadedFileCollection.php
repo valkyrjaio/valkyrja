@@ -24,11 +24,11 @@ use function is_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @implements UploadedFileCollectionContract<UploadedFileContract|self>
+ * @implements UploadedFileCollectionContract<UploadedFileContract|UploadedFileCollectionContract>
  */
 class UploadedFileCollection implements UploadedFileCollectionContract
 {
-    /** @var array<array-key, UploadedFileContract|self> */
+    /** @var array<array-key, UploadedFileContract|UploadedFileCollectionContract> */
     protected array $files = [];
 
     /**
@@ -39,10 +39,12 @@ class UploadedFileCollection implements UploadedFileCollectionContract
     protected int $position = 0;
 
     /**
-     * @param UploadedFileContract|self ...$files The files
+     * @param array<array-key, UploadedFileContract|UploadedFileCollectionContract> $files The files
      */
-    public function __construct(UploadedFileContract|self ...$files)
+    public function __construct(array $files = [])
     {
+        $this->validateFiles($files);
+
         $this->files = $files;
     }
 
@@ -51,7 +53,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      *
      * @param array<array-key, mixed> $data The data to create from
      */
-    public function fromArray(array $data): static
+    public static function fromArray(array $data): static
     {
         $params = [];
 
@@ -64,12 +66,26 @@ class UploadedFileCollection implements UploadedFileCollectionContract
                 $param = static::fromArray($param);
             }
 
-            $this->validateFile($param);
+            static::validateFile($param);
 
             $params[$name] = $param;
         }
 
-        return new static(...$params);
+        return new static($params);
+    }
+
+    /**
+     * Validate a file.
+     *
+     * @psalm-assert UploadedFileContract|self $param
+     *
+     * @phpstan-assert UploadedFileContract|self $param
+     */
+    protected static function validateFile(mixed $param): void
+    {
+        if (! $param instanceof UploadedFileCollectionContract && ! $param instanceof UploadedFileContract) {
+            throw new InvalidArgumentException('Param must be an UploadedFileContract or UploadedFileData instance');
+        }
     }
 
     /**
@@ -85,7 +101,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getFile(int|string $name): UploadedFileContract|self|null
+    public function getFile(int|string $name): UploadedFileContract|UploadedFileCollectionContract|null
     {
         return $this->files[$name]
             ?? null;
@@ -151,7 +167,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedFiles(UploadedFileCollectionContract|UploadedFileContract ...$files): static
+    public function withAddedFiles(array $files): static
     {
         $this->validateFiles($files);
 
@@ -167,28 +183,17 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      *
      * @param array<array-key, mixed> $params The params to validate
      *
-     * @psalm-assert array<array-key, UploadedFileContract|self> $params
+     * @psalm-assert array<array-key, UploadedFileContract|UploadedFileCollectionContract> $params
      *
-     * @phpstan-assert array<array-key, UploadedFileContract|self> $params
+     * @phpstan-assert array<array-key, UploadedFileContract|UploadedFileCollectionContract> $params
      */
     protected function validateFiles(array $params): void
     {
+        /**
+         * @var mixed $param
+         */
         foreach ($params as $param) {
-            $this->validateFile($param);
-        }
-    }
-
-    /**
-     * Validate a file.
-     *
-     * @psalm-assert UploadedFileContract|self $param
-     *
-     * @phpstan-assert UploadedFileContract|self $param
-     */
-    protected function validateFile(mixed $param): void
-    {
-        if (! $param instanceof static && ! $param instanceof UploadedFileContract) {
-            throw new InvalidArgumentException('Param must be an UploadedFileContract or UploadedFileData instance');
+            static::validateFile($param);
         }
     }
 }

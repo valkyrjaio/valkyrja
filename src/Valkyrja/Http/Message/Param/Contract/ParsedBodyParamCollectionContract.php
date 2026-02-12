@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Param\Contract;
 use Override;
 
 /**
- * @extends ParamCollectionContract<string|self>
+ * @extends ParamCollectionContract<non-empty-string|int, string|ParsedBodyParamCollectionContract>
  */
 interface ParsedBodyParamCollectionContract extends ParamCollectionContract
 {

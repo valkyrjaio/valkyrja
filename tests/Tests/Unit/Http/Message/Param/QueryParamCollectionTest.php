@@ -25,7 +25,7 @@ final class QueryParamCollectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->paramData = new QueryParamCollection(page: '1', sort: 'name');
+        $this->paramData = new QueryParamCollection(['page' => '1', 'sort' => 'name']);
     }
 
     public function testInstanceOfContract(): void
@@ -48,8 +48,8 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new QueryParamCollection(min: '10', max: '100');
-        $paramData = new QueryParamCollection(filter: $nested);
+        $nested    = new QueryParamCollection(['min' => '10', 'max' => '100']);
+        $paramData = new QueryParamCollection(['filter' => $nested]);
 
         $params = $paramData->getParams();
 
@@ -121,7 +121,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(limit: '25');
+        $new = $this->paramData->withAddedParams(['limit' => '25']);
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('1', $new->getParam('page'));
@@ -131,7 +131,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(limit: '25');
+        $this->paramData->withAddedParams(['limit' => '25']);
 
         self::assertFalse($this->paramData->hasParam('limit'));
     }
@@ -145,7 +145,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $paramData = $this->paramData->fromArray(['q' => 'search', 'page' => '2']);
+        $paramData = QueryParamCollection::fromArray(['q' => 'search', 'page' => '2']);
 
         self::assertSame('search', $paramData->getParam('q'));
         self::assertSame('2', $paramData->getParam('page'));
@@ -153,7 +153,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testFromArrayWithNestedArray(): void
     {
-        $paramData = $this->paramData->fromArray(['filter' => ['min' => '10']]);
+        $paramData = QueryParamCollection::fromArray(['filter' => ['min' => '10']]);
 
         $params = $paramData->getParams();
 

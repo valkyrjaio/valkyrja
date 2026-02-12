@@ -17,6 +17,7 @@ use JsonException;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -275,7 +276,7 @@ final class CacheResponseMiddlewareTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, $cachedResponse);
         self::assertSame(StatusCode::FOUND, $cachedResponse->getStatusCode());
         self::assertSame('/redirect-destination', $cachedResponse->getUri()->getPath());
-        self::assertSame('/redirect-destination', $cachedResponse->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/redirect-destination', $cachedResponse->getHeaders()->getHeaderLine(HeaderName::LOCATION));
 
         @unlink($this->getCachePathForRequest($request));
     }
@@ -328,7 +329,7 @@ final class CacheResponseMiddlewareTest extends TestCase
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
 
-        $headers  = [new Header('X-Custom-Header', 'custom-value')];
+        $headers  = HeaderCollection::fromArray([new Header('X-Custom-Header', 'custom-value')]);
         $request  = new ServerRequest(uri: new Uri(path: '/headers-response-test'));
         $response = Response::create('Content with headers', StatusCode::OK, $headers);
 
@@ -337,7 +338,7 @@ final class CacheResponseMiddlewareTest extends TestCase
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
         self::assertInstanceOf(Response::class, $cachedResponse);
-        self::assertSame('custom-value', $cachedResponse->getHeaderLine('X-Custom-Header'));
+        self::assertSame('custom-value', $cachedResponse->getHeaders()->getHeaderLine('X-Custom-Header'));
 
         @unlink($this->getCachePathForRequest($request));
     }

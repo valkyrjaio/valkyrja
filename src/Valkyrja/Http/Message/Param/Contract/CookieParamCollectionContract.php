@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Param\Contract;
 use Override;
 
 /**
- * @extends ParamCollectionContract<string>
+ * @extends ParamCollectionContract<non-empty-string, string>
  */
 interface CookieParamCollectionContract extends ParamCollectionContract
 {

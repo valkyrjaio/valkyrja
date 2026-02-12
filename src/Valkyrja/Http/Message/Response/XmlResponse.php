@@ -18,7 +18,8 @@ use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\HtmlResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -27,9 +28,7 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class XmlResponse extends Response implements HtmlResponseContract
 {
     /**
-     * @param string           $xml        The xml
-     * @param StatusCode       $statusCode [optional] The status
-     * @param HeaderContract[] $headers    [optional] The headers
+     * @param string $xml The xml
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
@@ -38,18 +37,16 @@ class XmlResponse extends Response implements HtmlResponseContract
     public function __construct(
         string $xml = '',
         StatusCode $statusCode = StatusCode::OK,
-        array $headers = []
+        HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         $body = new Stream();
         $body->write($xml);
         $body->rewind();
 
-        $this->setHeaders(...$headers);
-
         parent::__construct(
             $body,
             $statusCode,
-            $this->injectHeader(new Header(HeaderName::CONTENT_TYPE, ContentTypeValue::APPLICATION_XML_UTF8), $this->headers, true)
+            $this->injectHeader(new Header(HeaderName::CONTENT_TYPE, ContentTypeValue::APPLICATION_XML_UTF8), $headers, true)
         );
     }
 }

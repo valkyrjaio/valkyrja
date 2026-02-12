@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Abstract;
 
+use Countable;
 use Override;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Tests\EnvClass;
 
 use function class_exists;
+use function count;
 use function interface_exists;
 use function is_a;
 use function method_exists;
@@ -72,6 +74,15 @@ abstract class TestCase extends PHPUnitTestCase
     protected static function isA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));
+    }
+
+    /**
+     * @param array<array-key, mixed>|Countable $expected The expected count
+     * @param array<array-key, mixed>|Countable $actual   The actual count
+     */
+    protected static function assertSameCount(array|Countable $expected, array|Countable $actual): void
+    {
+        self::assertCount(count($expected), $actual);
     }
 
     /**

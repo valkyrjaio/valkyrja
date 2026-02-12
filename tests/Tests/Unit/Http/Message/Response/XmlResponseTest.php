@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use Valkyrja\Http\Message\Constant\ContentTypeValue;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\ContentType;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\XmlResponse;
@@ -27,19 +28,19 @@ final class XmlResponseTest extends TestCase
 
     public function testConstruct(): void
     {
-        $response = new XmlResponse(self::XML, headers: [new Header('Random-Header', 'test')]);
+        $response = new XmlResponse(self::XML, headers: HeaderCollection::fromArray([new Header('Random-Header', 'test')]));
 
         self::assertSame(self::XML, $response->getBody()->getContents());
         self::assertSame(StatusCode::OK, $response->getStatusCode());
         self::assertSame(StatusCode::OK->asPhrase(), $response->getReasonPhrase());
-        self::assertSame('test', $response->getHeaderLine('Random-Header'));
-        self::assertSame(ContentTypeValue::APPLICATION_XML_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
+        self::assertSame('test', $response->getHeaders()->getHeaderLine('Random-Header'));
+        self::assertSame(ContentTypeValue::APPLICATION_XML_UTF8, $response->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 
     public function testCannotReplaceContentTypeFromConstruct(): void
     {
-        $response = new XmlResponse(self::XML, headers: [new ContentType('xml')]);
+        $response = new XmlResponse(self::XML, headers: HeaderCollection::fromArray([new ContentType('xml')]));
 
-        self::assertSame(ContentTypeValue::APPLICATION_XML_UTF8, $response->getHeaderLine(HeaderName::CONTENT_TYPE));
+        self::assertSame(ContentTypeValue::APPLICATION_XML_UTF8, $response->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
 }

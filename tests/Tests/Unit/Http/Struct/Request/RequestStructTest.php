@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Struct\Request;
 
 use JsonException;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Struct\Contract\StructContract;
@@ -51,42 +54,48 @@ final class RequestStructTest extends TestCase
      */
     public function testStruct(): void
     {
+        $query = [
+            'first'  => 'first1',
+            'second' => '1',
+            'third'  => 'third1',
+        ];
+        $body = [
+            'first'  => 'first2',
+            'second' => '2',
+            'third'  => 'third2',
+        ];
+        $json = [
+            'first'  => 'first3',
+            'second' => '3',
+            'third'  => 'third3',
+        ];
         $request  = new JsonServerRequest(
-            query: $query = [
-                'first'  => 'first1',
-                'second' => 1,
-                'third'  => 'third1',
-            ],
-            parsedBody: $body = [
-                'first'  => 'first2',
-                'second' => 2,
-                'third'  => 'third2',
-            ],
-            parsedJson: $json = [
-                'first'  => 'first3',
-                'second' => 3,
-                'third'  => 'third3',
-            ],
+            query: QueryParamCollection::fromArray($query),
+            parsedBody: ParsedBodyParamCollection::fromArray($body),
+            parsedJson: ParsedJsonParamCollection::fromArray($json),
         );
+        $query2 = [
+            'first'  => '',
+            'second' => '1',
+            'third'  => 'third1',
+            'fourth' => 'pie',
+        ];
+        $body2 = [
+            'first'  => '',
+            'second' => '2',
+            'third'  => 'third2',
+            'fourth' => 'pie',
+        ];
+        $json2 = [
+            'first'  => '',
+            'second' => '3',
+            'third'  => 'third3',
+            'fourth' => 'pie',
+        ];
         $request2 = new JsonServerRequest(
-            query: $query2 = [
-                'first'  => '',
-                'second' => 1,
-                'third'  => 'third1',
-                'fourth' => 'pie',
-            ],
-            parsedBody: $body2 = [
-                'first'  => '',
-                'second' => 2,
-                'third'  => 'third2',
-                'fourth' => 'pie',
-            ],
-            parsedJson: $json2 = [
-                'first'  => '',
-                'second' => 3,
-                'third'  => 'third3',
-                'fourth' => 'pie',
-            ],
+            query: QueryParamCollection::fromArray($query2),
+            parsedBody: ParsedBodyParamCollection::fromArray($body2),
+            parsedJson: ParsedJsonParamCollection::fromArray($json2),
         );
 
         self::assertNull(WithNoRulesQueryRequestStructEnum::getValidationRules($request));
@@ -156,43 +165,49 @@ final class RequestStructTest extends TestCase
      */
     public function testIndexedStruct(): void
     {
+        $query = [
+            1 => 'first1',
+            2 => '1',
+            3 => 'third1',
+        ];
+        $body = [
+            1 => 'first2',
+            2 => '2',
+            3 => 'third2',
+        ];
+        $json = [
+            1 => 'first3',
+            2 => 3,
+            3 => 'third3',
+        ];
         $request = new JsonServerRequest(
-            query: $query = [
-                1 => 'first1',
-                2 => 1,
-                3 => 'third1',
-            ],
-            parsedBody: $body = [
-                1 => 'first2',
-                2 => 2,
-                3 => 'third2',
-            ],
-            parsedJson: $json = [
-                1 => 'first3',
-                2 => 3,
-                3 => 'third3',
-            ],
+            query: QueryParamCollection::fromArray($query),
+            parsedBody: ParsedBodyParamCollection::fromArray($body),
+            parsedJson: ParsedJsonParamCollection::fromArray($json),
         );
 
+        $query2 = [
+            1 => '',
+            2 => '1',
+            3 => 'third1',
+            4 => 'pie',
+        ];
+        $body2 = [
+            1 => '',
+            2 => '2',
+            3 => 'third2',
+            4 => 'pie',
+        ];
+        $json2 = [
+            1 => '',
+            2 => 3,
+            3 => 'third3',
+            4 => 'pie',
+        ];
         $request2 = new JsonServerRequest(
-            query: $query2 = [
-                1 => '',
-                2 => 1,
-                3 => 'third1',
-                4 => 'pie',
-            ],
-            parsedBody: $body2 = [
-                1 => '',
-                2 => 2,
-                3 => 'third2',
-                4 => 'pie',
-            ],
-            parsedJson: $json2 = [
-                1 => '',
-                2 => 3,
-                3 => 'third3',
-                4 => 'pie',
-            ],
+            query: QueryParamCollection::fromArray($query2),
+            parsedBody: ParsedBodyParamCollection::fromArray($body2),
+            parsedJson: ParsedJsonParamCollection::fromArray($json2),
         );
 
         self::assertNotEmpty(IndexedQueryRequestStructEnum::getValidationRules($request));

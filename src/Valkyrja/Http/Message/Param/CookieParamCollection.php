@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 
 /**
- * @extends ParamCollection<string>
+ * @extends ParamCollection<non-empty-string, string>
  */
 class CookieParamCollection extends ParamCollection implements CookieParamCollectionContract
 {

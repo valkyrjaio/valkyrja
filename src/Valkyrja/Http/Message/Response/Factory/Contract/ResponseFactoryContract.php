@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response\Factory\Contract;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -25,67 +25,57 @@ interface ResponseFactoryContract
     /**
      * Create a response.
      *
-     * @param string|null           $content    [optional] The response content
-     * @param StatusCode|null       $statusCode [optional] The response status code
-     * @param HeaderContract[]|null $headers    [optional] An array of response headers
+     * @param string|null $content [optional] The response content
      */
     public function createResponse(
         string|null $content = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): ResponseContract;
 
     /**
      * Create a text response.
      *
-     * @param string|null           $content    [optional] The response content
-     * @param StatusCode|null       $statusCode [optional] The response status code
-     * @param HeaderContract[]|null $headers    [optional] An array of response headers
+     * @param string|null $content [optional] The response content
      */
     public function createTextResponse(
         string|null $content = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): TextResponseContract;
 
     /**
      * Create a JSON response.
      *
-     * @param array<array-key, mixed>|null $data       [optional] The data to set
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param HeaderContract[]|null        $headers    [optional] An array of response headers
+     * @param array<array-key, mixed>|null $data [optional] The data to set
      */
     public function createJsonResponse(
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): JsonResponseContract;
 
     /**
      * Create a JSONP response.
      *
-     * @param string                       $callback   The jsonp callback
-     * @param array<array-key, mixed>|null $data       [optional] The data to set
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param HeaderContract[]|null        $headers    [optional] An array of response headers
+     * @param string                       $callback The jsonp callback
+     * @param array<array-key, mixed>|null $data     [optional] The data to set
      */
     public function createJsonpResponse(
         string $callback,
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): JsonResponseContract;
 
     /**
      * Create a redirect response.
      *
-     * @param string|null           $uri        [optional] The uri to redirect to
-     * @param StatusCode|null       $statusCode [optional] The response status code
-     * @param HeaderContract[]|null $headers    [optional] An array of response headers
+     * @param string|null $uri [optional] The uri to redirect to
      */
     public function createRedirectResponse(
         string|null $uri = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): RedirectResponseContract;
 }

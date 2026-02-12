@@ -21,6 +21,7 @@ use Override;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
@@ -82,11 +83,11 @@ class GuzzleClient implements ClientContract
      */
     protected function setGuzzleHeaders(RequestContract $request, array &$options): void
     {
-        if ($headers = $request->getHeaders()) {
+        if ($headers = $request->getHeaders()->getHeaders()) {
             $options['headers'] = [];
 
-            foreach ($headers as $header => $value) {
-                $options['headers'][$header] = $value;
+            foreach ($headers as $value) {
+                $options['headers'][$value->getName()] = $value->getValuesAsString();
             }
         }
     }
@@ -99,14 +100,14 @@ class GuzzleClient implements ClientContract
      */
     protected function setGuzzleCookies(ServerRequestContract $request, array &$options): void
     {
-        if ($cookies = $request->getCookieParams()) {
+        if ($cookies = $request->getCookieParams()->getParams()) {
             $jar = new CookieJar();
 
             foreach ($cookies as $name => $value) {
                 $guzzleCookie = new SetCookie();
 
                 $guzzleCookie->setName($name);
-                $guzzleCookie->setValue($value ?? '');
+                $guzzleCookie->setValue($value);
 
                 $jar->setCookie($guzzleCookie);
             }
@@ -124,8 +125,8 @@ class GuzzleClient implements ClientContract
     protected function setGuzzleFormParams(ServerRequestContract $request, array &$options): void
     {
         if (
-            ($body = $request->getParsedBody())
-            && ! ($request instanceof JsonServerRequestContract && $request->getParsedJson())
+            ($body = $request->getParsedBody()->getParams())
+            && ! ($request instanceof JsonServerRequestContract && $request->getParsedJson()->getParams())
         ) {
             $options['form_params'] = $body;
         }
@@ -156,10 +157,12 @@ class GuzzleClient implements ClientContract
      */
     protected function fromPsr7(ResponseInterface $guzzleResponse): ResponseContract
     {
+        $headers = PsrHeaderFactory::fromPsr($guzzleResponse->getHeaders());
+
         return $this->responseFactory->createResponse(
             content: $guzzleResponse->getBody()->getContents(),
             statusCode: StatusCode::from($guzzleResponse->getStatusCode()),
-            headers: PsrHeaderFactory::fromPsr($guzzleResponse->getHeaders())
+            headers: HeaderCollection::fromArray($headers)
         );
     }
 }

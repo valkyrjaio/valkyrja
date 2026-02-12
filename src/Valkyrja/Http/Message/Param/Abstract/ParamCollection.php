@@ -24,26 +24,20 @@ use function is_scalar;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template T of scalar|self
+ * @template K of non-empty-string|int
+ * @template T of scalar|ParamCollectionContract|null
  *
- * @implements ParamCollectionContract<T>
+ * @implements ParamCollectionContract<K, T>
  */
 abstract class ParamCollection implements ParamCollectionContract
 {
-    /** @var array<array-key, T> */
+    /** @var array<K, T> */
     protected array $params = [];
 
     /**
-     * The position during iteration.
-     *
-     * @var int
+     * @param array<K, T> $params The params
      */
-    protected int $position = 0;
-
-    /**
-     * @param T ...$params The params
-     */
-    public function __construct(ParamCollectionContract|float|bool|int|string ...$params)
+    public function __construct(array $params = [])
     {
         $this->validateParams($params);
 
@@ -55,7 +49,7 @@ abstract class ParamCollection implements ParamCollectionContract
      *
      * @param array<array-key, mixed> $data The data to create from
      */
-    public function fromArray(array $data): static
+    public static function fromArray(array $data): static
     {
         $params = [];
 
@@ -68,17 +62,39 @@ abstract class ParamCollection implements ParamCollectionContract
                 $param = static::fromArray($param);
             }
 
-            $this->validateParam($param);
+            static::validateParam($param);
 
             $params[$name] = $param;
         }
 
         /**
-         * @var array<array-key, scalar|self<scalar|self>> $params
+         * @var array<K, scalar|ParamCollectionContract> $params
          *
          * @phpstan-ignore-next-line
          */
-        return new static(...$params);
+        return new static($params);
+    }
+
+    /**
+     * Validate a param.
+     *
+     * @psalm-assert T $param
+     *
+     * @phpstan-assert T $param
+     */
+    protected static function validateParam(mixed $param): void
+    {
+        if (! static::isValidParam($param)) {
+            throw new InvalidArgumentException('Param must be scalar, null, or a ParamCollectionContract instance');
+        }
+    }
+
+    /**
+     * Determine if a param is valid.
+     */
+    protected static function isValidParam(mixed $param): bool
+    {
+        return is_scalar($param) || $param instanceof static || $param === null;
     }
 
     /**
@@ -153,16 +169,19 @@ abstract class ParamCollection implements ParamCollectionContract
     /**
      * @inheritDoc
      *
-     * @param T ...$params The params
+     * @param array<K, T> $params The params
      */
     #[Override]
-    public function withAddedParams(ParamCollectionContract|float|bool|int|string ...$params): static
+    public function withAddedParams(array $params): static
     {
         $this->validateParams($params);
 
         $new = clone $this;
 
-        $new->params = array_merge($new->params, $params);
+        // Do not use array_merge as it would rewrite int keys when mixed with string keys
+        foreach ($params as $name => $param) {
+            $new->params[$name] = $param;
+        }
 
         return $new;
     }
@@ -170,38 +189,19 @@ abstract class ParamCollection implements ParamCollectionContract
     /**
      * Validate params.
      *
-     * @param array<array-key, mixed> $params The params to validate
+     * @param array<K, mixed> $params The params to validate
      *
-     * @psalm-assert array<array-key, T> $params
+     * @psalm-assert array<K, T> $params
      *
-     * @phpstan-assert array<array-key, T> $params
+     * @phpstan-assert array<K, T> $params
      */
     protected function validateParams(array $params): void
     {
+        /**
+         * @var mixed $param
+         */
         foreach ($params as $param) {
-            $this->validateParam($param);
+            static::validateParam($param);
         }
-    }
-
-    /**
-     * Validate a param.
-     *
-     * @psalm-assert T $param
-     *
-     * @phpstan-assert T $param
-     */
-    protected function validateParam(mixed $param): void
-    {
-        if (! $this->isValidParam($param)) {
-            throw new InvalidArgumentException('Param must be scalar');
-        }
-    }
-
-    /**
-     * Determine if a param is valid.
-     */
-    protected function isValidParam(mixed $param): bool
-    {
-        return is_scalar($param) || $param instanceof static;
     }
 }

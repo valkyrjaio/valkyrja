@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Session\Manager\Cookie;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\Cookie\CookieSession;
@@ -38,11 +39,17 @@ final class EncryptedCookieSessionTest extends TestCase
             ->expects($this->never())
             ->method('decryptArray');
 
-        $this->request
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
             ->expects($this->once())
-            ->method('getCookieParam')
+            ->method('getParam')
             ->with('VALKYRJA_SESSION')
             ->willReturn(null);
+
+        $this->request
+            ->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $this->session = new EncryptedCookieSession($this->crypt, $this->request);
     }
@@ -62,11 +69,17 @@ final class EncryptedCookieSessionTest extends TestCase
         $crypt   = $this->createMock(CryptContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
             ->expects($this->once())
-            ->method('getCookieParam')
+            ->method('getParam')
             ->with('session-id')
             ->willReturn('encrypted-cookie-data');
+
+        $request
+            ->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $crypt
             ->expects($this->once())
@@ -85,11 +98,17 @@ final class EncryptedCookieSessionTest extends TestCase
         $crypt   = $this->createMock(CryptContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
             ->expects($this->once())
-            ->method('getCookieParam')
+            ->method('getParam')
             ->with('session-id')
             ->willReturn(null);
+
+        $request
+            ->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $crypt
             ->expects($this->never())
@@ -105,11 +124,17 @@ final class EncryptedCookieSessionTest extends TestCase
         $crypt   = $this->createMock(CryptContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
-        $request
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
             ->expects($this->once())
-            ->method('getCookieParam')
+            ->method('getParam')
             ->with('session-id')
             ->willReturn('');
+
+        $request
+            ->expects($this->once())
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $crypt
             ->expects($this->never())
@@ -169,10 +194,16 @@ final class EncryptedCookieSessionTest extends TestCase
             ->expects($this->never())
             ->method('decryptArray');
 
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
+            ->expects($this->once())
+            ->method('getParam')
+            ->willReturn(null);
+
         $request
             ->expects($this->once())
-            ->method('getCookieParam')
-            ->willReturn(null);
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $session = new EncryptedCookieSession($crypt, $request, 'session-id', 'MY_SESSION');
 
@@ -185,10 +216,16 @@ final class EncryptedCookieSessionTest extends TestCase
         $crypt   = $this->createMock(CryptContract::class);
         $request = $this->createMock(ServerRequestContract::class);
 
+        $cookies = $this->createMock(CookieParamCollectionContract::class);
+        $cookies
+            ->expects($this->once())
+            ->method('getParam')
+            ->willReturn(null);
+
         $request
             ->expects($this->once())
-            ->method('getCookieParam')
-            ->willReturn(null);
+            ->method('getCookieParams')
+            ->willReturn($cookies);
 
         $crypt
             ->expects($this->once())

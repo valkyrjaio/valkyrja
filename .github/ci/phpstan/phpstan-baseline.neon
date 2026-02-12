@@ -1,6 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Method Valkyrja\\\\Http\\\\Message\\\\File\\\\Factory\\\\UploadedFileFactory\\:\\:normalizeNestedFileSpec\\(\\) should return array\\<Valkyrja\\\\Http\\\\Message\\\\File\\\\Contract\\\\UploadedFileContract\\> but returns array\\<array\\<Valkyrja\\\\Http\\\\Message\\\\File\\\\Contract\\\\UploadedFileContract\\>\\|Valkyrja\\\\Http\\\\Message\\\\File\\\\Contract\\\\UploadedFileContract\\>\\.$#"
-			count: 1
-			path: ../../../src/Valkyrja/Http/Message/File/Factory/UploadedFileFactory.php

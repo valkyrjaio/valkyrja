@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory as MessageResponseFactory;
 use Valkyrja\Http\Routing\Collection\Collection;
@@ -63,7 +64,7 @@ final class ResponseFactoryTest extends TestCase
 
         self::assertSame('/', $response->getUri()->__toString());
         self::assertSame(StatusCode::FOUND, $response->getStatusCode());
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testWithArguments(): void
@@ -71,12 +72,12 @@ final class ResponseFactoryTest extends TestCase
         $response = $this->responseFactory->createRouteRedirectResponse(
             name: self::ROUTE_NAME,
             statusCode: StatusCode::MOVED_PERMANENTLY,
-            headers: [new Header('Test', 'fire')]
+            headers: HeaderCollection::fromArray([new Header('Test', 'fire')])
         );
 
         self::assertSame('/', $response->getUri()->__toString());
         self::assertSame(StatusCode::MOVED_PERMANENTLY, $response->getStatusCode());
-        self::assertSame('fire', $response->getHeaderLine('Test'));
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('fire', $response->getHeaders()->getHeaderLine('Test'));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 }

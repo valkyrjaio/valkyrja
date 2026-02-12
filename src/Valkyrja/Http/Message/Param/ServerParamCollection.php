@@ -17,9 +17,7 @@ use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
 
 /**
- * @extends ParamCollection<scalar|self>
- *
- * @phpstan-ignore-next-line
+ * @extends ParamCollection<non-empty-string|int, scalar|ServerParamCollectionContract>
  */
 class ServerParamCollection extends ParamCollection implements ServerParamCollectionContract
 {

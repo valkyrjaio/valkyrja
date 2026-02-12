@@ -18,19 +18,15 @@ use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
 
 /**
- * @extends ParamCollection<string|self>
- *
- * @phpstan-ignore-next-line
+ * @extends ParamCollection<non-empty-string|int, string|ParsedBodyParamCollectionContract>
  */
 class ParsedBodyParamCollection extends ParamCollection implements ParsedBodyParamCollectionContract
 {
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress LessSpecificReturnStatement
      */
     #[Override]
-    public function getParam(string|int $name): self|string|null
+    public function getParam(string|int $name): ParsedBodyParamCollectionContract|string|null
     {
         return $this->params[$name]
             ?? null;

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Psr\Request as PsrRequest;
 use Valkyrja\Http\Message\Request\Request;
@@ -42,7 +43,7 @@ final class RequestTest extends TestCase
 
     public function testHeaders(): void
     {
-        $request    = new Request(headers: [new Header('Test', $value = 'test')]);
+        $request    = new Request(headers: new HeaderCollection(new Header('Test', $value = 'test')));
         $psrRequest = new PsrRequest($request);
 
         $psrRequest2 = $psrRequest->withHeader('Cheese', 'foo');
@@ -60,6 +61,14 @@ final class RequestTest extends TestCase
         self::assertSame([$value], $psrRequest->getHeader('Test'));
         self::assertSame([], $psrRequest->getHeader('Non-Existent'));
         self::assertSame($value, $psrRequest->getHeaderLine('Test'));
+    }
+
+    public function testHasHeaderReturnsFalseForEmptyName(): void
+    {
+        $request    = new Request();
+        $psrRequest = new PsrRequest($request);
+
+        self::assertFalse($psrRequest->hasHeader(''));
     }
 
     public function testBody(): void
@@ -108,6 +117,33 @@ final class RequestTest extends TestCase
         self::assertNotSame($psrRequest, $psrRequest2);
         self::assertSame($value->value, $psrRequest->getMethod());
         self::assertSame($value2, $psrRequest2->getMethod());
+    }
+
+    public function testGetHeaderReturnsEmptyArrayForEmptyName(): void
+    {
+        $request    = new Request();
+        $psrRequest = new PsrRequest($request);
+
+        self::assertSame([], $psrRequest->getHeader(''));
+    }
+
+    public function testGetHeaderLineReturnsEmptyStringForEmptyName(): void
+    {
+        $request    = new Request();
+        $psrRequest = new PsrRequest($request);
+
+        self::assertSame('', $psrRequest->getHeaderLine(''));
+    }
+
+    public function testWithoutHeaderReturnsCloneForEmptyName(): void
+    {
+        $request    = new Request(headers: new HeaderCollection(new Header('Test', 'value')));
+        $psrRequest = new PsrRequest($request);
+
+        $psrRequest2 = $psrRequest->withoutHeader('');
+
+        self::assertNotSame($psrRequest, $psrRequest2);
+        self::assertSame(['Test' => ['value']], $psrRequest2->getHeaders());
     }
 
     public function testUri(): void

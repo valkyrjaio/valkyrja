@@ -16,7 +16,8 @@ namespace Valkyrja\Http\Message\Request;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
@@ -42,21 +43,15 @@ class Request implements RequestContract
     protected string|null $requestTarget = null;
 
     /**
-     * @param UriContract      $uri     [optional] The uri
-     * @param RequestMethod    $method  [optional] The method
-     * @param StreamContract   $body    [optional] The body stream
-     * @param HeaderContract[] $headers [optional] The headers
-     *
      * @throws InvalidArgumentException
      */
     public function __construct(
         protected UriContract $uri = new Uri(),
         protected RequestMethod $method = RequestMethod::GET,
         StreamContract $body = new Stream(PhpWrapper::input),
-        array $headers = []
+        protected HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         $this->setBody($body);
-        $this->setHeaders(...$headers);
         $this->addHostHeaderFromUri();
     }
 
@@ -139,7 +134,7 @@ class Request implements RequestContract
 
         $new->uri = $uri;
 
-        if ($preserveHost && $this->hasHeader(HeaderName::HOST)) {
+        if ($preserveHost && $this->headers->hasHeader(HeaderName::HOST)) {
             return $new;
         }
 
@@ -149,7 +144,7 @@ class Request implements RequestContract
 
         $host = $new->getHostFromUri();
 
-        $new->headers = $this->injectHeader(new Header(HeaderName::HOST, $host), $this->headers, true);
+        $new->headers = $this->headers->withHeader(new Header(HeaderName::HOST, $host));
 
         return $new;
     }
@@ -197,10 +192,10 @@ class Request implements RequestContract
      */
     protected function addHostHeaderFromUri(): void
     {
-        if (! $this->hasHeader(HeaderName::HOST) && $this->uri->getHost()) {
+        if (! $this->headers->hasHeader(HeaderName::HOST) && $this->uri->getHost()) {
             $header = new Header(HeaderName::HOST, $this->getHostFromUri());
 
-            $this->headers[$header->getNormalizedName()] = $header;
+            $this->headers = $this->headers->withHeader($header);
         }
     }
 }

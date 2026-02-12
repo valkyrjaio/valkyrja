@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Factory;
 
+use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
@@ -34,10 +36,8 @@ abstract class UploadedFileFactory
      * @param array<array-key, mixed> $files The files
      *
      * @throws InvalidArgumentException for unrecognized values
-     *
-     * @return array<array-key, mixed>
      */
-    public static function normalizeFiles(array $files): array
+    public static function normalizeFiles(array $files): UploadedFileCollectionContract
     {
         $normalized = [];
 
@@ -67,7 +67,7 @@ abstract class UploadedFileFactory
             throw new InvalidArgumentException('Invalid value in files specification');
         }
 
-        return $normalized;
+        return new UploadedFileCollection($normalized);
     }
 
     /**
@@ -78,10 +78,8 @@ abstract class UploadedFileFactory
      * @param array<array-key, mixed> $value $_FILES struct
      *
      * @throws InvalidArgumentException
-     *
-     * @return UploadedFileContract|UploadedFileContract[]
      */
-    public static function createUploadedFileFromSpec(array $value): UploadedFileContract|array
+    public static function createUploadedFileFromSpec(array $value): UploadedFileContract|UploadedFileCollectionContract
     {
         /** @var mixed $tmpName */
         $tmpName = $value['tmp_name'] ?? null;
@@ -112,18 +110,12 @@ abstract class UploadedFileFactory
      * @param array<array-key, mixed> $files
      *
      * @throws InvalidArgumentException
-     *
-     * @return UploadedFileContract[]
-     *
-     * @psalm-suppress InvalidReturnType Cannot do recursive return type
-     * @psalm-suppress InvalidReturnStatement Cannot do recursive return type
-     * @psalm-suppress MixedArrayAccess tmp_name should exist
      */
-    public static function normalizeNestedFileSpec(array $files = []): array
+    public static function normalizeNestedFileSpec(array $files = []): UploadedFileCollectionContract
     {
         $normalizedFiles = [];
         /** @var mixed $filesTmpName */
-        $filesTmpName    = $files['tmp_name'] ?? null;
+        $filesTmpName = $files['tmp_name'] ?? null;
 
         if (! is_array($filesTmpName)) {
             throw new InvalidArgumentException('Expecting tmp name to be a nested array of files');
@@ -140,7 +132,7 @@ abstract class UploadedFileFactory
             $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
         }
 
-        return $normalizedFiles;
+        return new UploadedFileCollection($normalizedFiles);
     }
 
     /**

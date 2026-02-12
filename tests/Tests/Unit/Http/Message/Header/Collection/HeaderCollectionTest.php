@@ -262,7 +262,7 @@ final class HeaderCollectionTest extends TestCase
     public function testFromArray(): void
     {
         $header     = new Header('X-Test', 'value');
-        $headerData = $this->headerData->fromArray(['x-test' => $header]);
+        $headerData = HeaderCollection::fromArray(['x-test' => $header]);
 
         self::assertNotNull($headerData->getHeader('X-Test'));
     }
@@ -271,7 +271,7 @@ final class HeaderCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->headerData->fromArray(['invalid' => 'not-a-header']);
+        HeaderCollection::fromArray(['invalid' => 'not-a-header']);
     }
 
     public function testConstructorDeduplicatesByNormalizedName(): void

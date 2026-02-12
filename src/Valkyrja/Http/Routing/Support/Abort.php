@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Support;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Enum\StatusText;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
@@ -25,44 +25,32 @@ class Abort
 {
     /**
      * Abort with a 400.
-     *
-     * @param HeaderContract[]|null $headers  [optional] The headers
-     * @param ResponseContract|null $response [optional] The response to send
      */
-    public static function abort400(array|null $headers = null, ResponseContract|null $response = null): never
+    public static function abort400(HeaderCollectionContract|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST->value, $headers, $response);
     }
 
     /**
      * Abort with a 404.
-     *
-     * @param HeaderContract[]|null $headers  [optional] The headers
-     * @param ResponseContract|null $response [optional] The response to send
      */
-    public static function abort404(array|null $headers = null, ResponseContract|null $response = null): never
+    public static function abort404(HeaderCollectionContract|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND->value, $headers, $response);
     }
 
     /**
      * Abort with a 405.
-     *
-     * @param HeaderContract[]|null $headers  [optional] The headers
-     * @param ResponseContract|null $response [optional] The response to send
      */
-    public static function abort405(array|null $headers = null, ResponseContract|null $response = null): never
+    public static function abort405(HeaderCollectionContract|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED->value, $headers, $response);
     }
 
     /**
      * Abort with a 413.
-     *
-     * @param HeaderContract[]|null $headers  [optional] The headers
-     * @param ResponseContract|null $response [optional] The response to send
      */
-    public static function abort413(array|null $headers = null, ResponseContract|null $response = null): never
+    public static function abort413(HeaderCollectionContract|null $headers = null, ResponseContract|null $response = null): never
     {
         static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE->value, $headers, $response);
     }
@@ -70,15 +58,12 @@ class Abort
     /**
      * Abort.
      *
-     * @param StatusCode|null       $statusCode [optional] The status code
-     * @param string|null           $message    [optional] The message
-     * @param HeaderContract[]|null $headers    [optional] The headers
-     * @param ResponseContract|null $response   [optional] The response to send
+     * @param string|null $message [optional] The message
      */
     public static function abort(
         StatusCode|null $statusCode = null,
         string|null $message = null,
-        array|null $headers = null,
+        HeaderCollectionContract|null $headers = null,
         ResponseContract|null $response = null
     ): never {
         throw new HttpException($statusCode, $message, $headers, $response);
@@ -87,16 +72,12 @@ class Abort
     /**
      * Redirect to a given uri, and abort.
      *
-     * @param UriContract|null      $uri        [optional] The URI to redirect to
-     * @param StatusCode|null       $statusCode [optional] The response status code
-     * @param HeaderContract[]|null $headers    [optional] An array of response headers
-     *
      * @throws HttpRedirectException
      */
     public static function redirect(
         UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): never {
         throw new HttpRedirectException($uri, $statusCode, $headers);
     }

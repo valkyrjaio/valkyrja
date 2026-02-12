@@ -25,7 +25,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->paramData = new ParsedJsonParamCollection(name: 'John', age: 30, active: true);
+        $this->paramData = new ParsedJsonParamCollection(['name' => 'John', 'age' => 30, 'active' => true]);
     }
 
     public function testInstanceOfContract(): void
@@ -57,15 +57,15 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ParsedJsonParamCollection(price: 9.99);
+        $paramData = new ParsedJsonParamCollection(['price' => 9.99]);
 
         self::assertSame(9.99, $paramData->getParam('price'));
     }
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParsedJsonParamCollection(street: '123 Main St', zip: 12345);
-        $paramData = new ParsedJsonParamCollection(address: $nested);
+        $nested    = new ParsedJsonParamCollection(['street' => '123 Main St', 'zip' => 12345]);
+        $paramData = new ParsedJsonParamCollection(['address' => $nested]);
 
         self::assertSame($nested, $paramData->getParam('address'));
     }
@@ -131,7 +131,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(extra: 'added');
+        $new = $this->paramData->withAddedParams(['extra' => 'added']);
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('John', $new->getParam('name'));
@@ -140,7 +140,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(extra: 'added');
+        $this->paramData->withAddedParams(['extra' => 'added']);
 
         self::assertFalse($this->paramData->hasParam('extra'));
     }
@@ -154,7 +154,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $paramData = $this->paramData->fromArray(['key' => 'value', 'num' => 42]);
+        $paramData = ParsedJsonParamCollection::fromArray(['key' => 'value', 'num' => 42]);
 
         self::assertSame('value', $paramData->getParam('key'));
         self::assertSame(42, $paramData->getParam('num'));
@@ -162,7 +162,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testFromArrayWithNestedArray(): void
     {
-        $paramData = $this->paramData->fromArray(['nested' => ['inner' => 'value']]);
+        $paramData = ParsedJsonParamCollection::fromArray(['nested' => ['inner' => 'value']]);
 
         $nested = $paramData->getParam('nested');
 

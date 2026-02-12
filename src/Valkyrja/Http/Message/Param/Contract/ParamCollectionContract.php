@@ -14,21 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Param\Contract;
 
 /**
- * @template T of scalar|self
+ * @template K of non-empty-string|int
+ * @template T of scalar|ParamCollectionContract|null
  */
 interface ParamCollectionContract
 {
     /**
      * Determine if a param exists.
      *
-     * @param non-empty-string|int $name The param name
+     * @param K $name The param name
      */
     public function hasParam(string|int $name): bool;
 
     /**
      * Get a param.
      *
-     * @param non-empty-string|int $name The param name
+     * @param K $name The param name
      *
      * @return T|null
      */
@@ -37,39 +38,39 @@ interface ParamCollectionContract
     /**
      * Get all the params.
      *
-     * @return array<array-key, T>
+     * @return array<K, T>
      */
     public function getParams(): array;
 
     /**
      * Get only the specified params.
      *
-     * @param non-empty-string|int ...$names The param names
+     * @param K ...$names The param names
      *
-     * @return array<array-key, T>
+     * @return array<K, T>
      */
     public function onlyParams(string|int ...$names): array;
 
     /**
      * Get all the params except the specified ones.
      *
-     * @param non-empty-string|int ...$names The param names
+     * @param K ...$names The param names
      *
-     * @return array<array-key, T>
+     * @return array<K, T>
      */
     public function exceptParams(string|int ...$names): array;
 
     /**
      * Get a new instance with the specified params.
      *
-     * @param array<array-key, T> $params The params
+     * @param array<K, T> $params The params
      */
     public function withParams(array $params): static;
 
     /**
      * Get a new instance with the added params.
      *
-     * @param T ...$params The params
+     * @param array<K, T> $params The params
      */
-    public function withAddedParams(self|float|bool|int|string ...$params): static;
+    public function withAddedParams(array $params): static;
 }

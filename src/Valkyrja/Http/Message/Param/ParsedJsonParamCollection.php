@@ -17,9 +17,7 @@ use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
 
 /**
- * @extends ParamCollection<scalar|self>
- *
- * @phpstan-ignore-next-line
+ * @extends ParamCollection<non-empty-string|int, scalar|ParsedJsonParamCollectionContract|null>
  */
 class ParsedJsonParamCollection extends ParamCollection implements ParsedJsonParamCollectionContract
 {

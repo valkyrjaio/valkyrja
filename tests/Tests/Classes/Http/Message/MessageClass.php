@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Message;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -27,18 +28,13 @@ final class MessageClass
 {
     use Message;
 
-    /**
-     * @param HeaderContract[] $headers The headers
-     */
     public function __construct(
         protected StreamContract $stream = new Stream(),
         protected ProtocolVersion $protocol = ProtocolVersion::V1_1,
-        array $headers = [],
+        protected HeaderCollectionContract $headers = new HeaderCollection(),
         string|null $testHeader = null,
         string|null $testHeaderOverride = null,
     ) {
-        $this->setHeaders(...$headers);
-
         if ($testHeader !== null) {
             $this->headers = $this->injectHeader(new Header('Test-Header', $testHeader), $this->headers);
         }

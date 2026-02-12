@@ -39,9 +39,11 @@ enum IndexedParsedBodyRequestStructEnum: int implements RequestStructContract
     #[Override]
     public static function getValidationRules(ServerRequestContract $request): array|null
     {
-        $first  = $request->getParsedBodyParam(self::first->value);
-        $second = $request->getParsedBodyParam(self::second->value);
-        $third  = $request->getParsedBodyParam(self::third->value);
+        $parsedBody = $request->getParsedBody();
+
+        $first  = $parsedBody->getParam(self::first->value);
+        $second = $parsedBody->getParam(self::second->value);
+        $third  = $parsedBody->getParam(self::third->value);
 
         return [
             self::first->name  => [
@@ -49,7 +51,7 @@ enum IndexedParsedBodyRequestStructEnum: int implements RequestStructContract
                 new NotEmpty($first),
             ],
             self::second->name => [
-                new IsNumeric($second),
+                new IsNumeric((int) $second),
             ],
             self::third->name  => [
                 new IsString($third),

@@ -24,7 +24,7 @@ trait QueryRequestStruct
      */
     protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
-        return $request->onlyQueryParams(...$values);
+        return $request->getQueryParams()->onlyParams(...$values);
     }
 
     /**
@@ -32,6 +32,6 @@ trait QueryRequestStruct
      */
     protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
-        return $request->exceptQueryParams(...$values);
+        return $request->getQueryParams()->exceptParams(...$values);
     }
 }

@@ -44,10 +44,6 @@ class Stream implements StreamContract
     protected $resource;
 
     /**
-     * @param PhpWrapper|string $stream          The stream
-     * @param Mode              $mode            [optional] The mode
-     * @param ModeTranslation   $modeTranslation [optional] The mode translation
-     *
      * @throws InvalidStreamException
      */
     public function __construct(

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Param\Contract;
 
 /**
- * @extends ParamCollectionContract<scalar|self>
+ * @extends ParamCollectionContract<non-empty-string|int, scalar|ServerParamCollectionContract>
  */
 interface ServerParamCollectionContract extends ParamCollectionContract
 {

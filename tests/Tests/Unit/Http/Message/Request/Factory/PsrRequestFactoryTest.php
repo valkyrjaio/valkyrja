@@ -15,9 +15,15 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Factory;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\Factory\PsrRequestFactory;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -36,13 +42,13 @@ final class PsrRequestFactoryTest extends TestCase
             uri: UriFactory::fromString(uri: $uriString),
             method: RequestMethod::DELETE,
             body: $body             = new Stream(),
-            headers: $headers       = [new Header('header1', 'test')],
-            server: $server         = ['VAR' => 'val'],
-            cookies: $cookies       = ['param' => 'cookies'],
-            query: $query           = ['param' => 'query'],
-            parsedBody: $parsedBody = ['param' => 'parsedBody'],
+            headers: $headers       = new HeaderCollection(new Header('header1', 'test')),
             protocol: ProtocolVersion::V2,
-            files: [$uploadedFile, $uploadedFile2]
+            server: $server         = new ServerParamCollection(['VAR' => 'val']),
+            cookies: $cookies       = new CookieParamCollection(['param' => 'cookies']),
+            query: $query           = new QueryParamCollection(['param' => 'query']),
+            parsedBody: $parsedBody = new ParsedBodyParamCollection(['param' => 'parsedBody']),
+            files: new UploadedFileCollection([$uploadedFile, $uploadedFile2])
         );
         $body->write(string: $bodyContents = 'test');
         $body->rewind();
@@ -51,14 +57,14 @@ final class PsrRequestFactoryTest extends TestCase
 
         $fromPsr = PsrRequestFactory::fromPsr($psrRequest);
 
-        self::assertCount(expectedCount: 2, haystack: $fromPsr->getUploadedFiles());
+        self::assertCount(expectedCount: 2, haystack: $fromPsr->getUploadedFiles()->getFiles());
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr = $fromPsr->getUploadedFiles()[0]
+            actual: $uploadedFileFromPsr = $fromPsr->getUploadedFiles()->getFile(0)
         );
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr2 = $fromPsr->getUploadedFiles()[1]
+            actual: $uploadedFileFromPsr2 = $fromPsr->getUploadedFiles()->getFile(1)
         );
         self::assertSame(
             expected: $uploadedFile->getStream()->__toString(),
@@ -106,23 +112,23 @@ final class PsrRequestFactoryTest extends TestCase
         );
         self::assertSame(
             expected: 'example.com:9090',
-            actual: $fromPsr->getHeaderLine('Host')
+            actual: $fromPsr->getHeaders()->getHeaderLine('Host')
         );
         self::assertSame(
-            expected: $server,
-            actual: $fromPsr->getServerParams()
+            expected: $server->getParams(),
+            actual: $fromPsr->getServerParams()->getParams()
         );
         self::assertSame(
-            expected: $cookies,
-            actual: $fromPsr->getCookieParams()
+            expected: $cookies->getParams(),
+            actual: $fromPsr->getCookieParams()->getParams()
         );
         self::assertSame(
-            expected: $query,
-            actual: $fromPsr->getQueryParams()
+            expected: $query->getParams(),
+            actual: $fromPsr->getQueryParams()->getParams()
         );
         self::assertSame(
-            expected: $parsedBody,
-            actual: $fromPsr->getParsedBody()
+            expected: $parsedBody->getParams(),
+            actual: $fromPsr->getParsedBody()->getParams()
         );
         self::assertSame(
             expected: $bodyContents,

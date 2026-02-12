@@ -44,7 +44,14 @@ class CookieSession extends Session
     #[Override]
     public function start(): void
     {
-        $dataString = $this->request->getCookieParam($this->getId());
+        $id = $this->getId();
+
+        // If the session failed to start
+        if ($id === '') {
+            return;
+        }
+
+        $dataString = $this->request->getCookieParams()->getParam($id);
 
         // If the session failed to start
         if ($dataString === null || $dataString === '') {

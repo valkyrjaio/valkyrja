@@ -14,8 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Param\CookieParamCollection;
+use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\ServerParamCollection;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -27,145 +33,204 @@ final class ServerRequestTest extends TestCase
 {
     public function testServerParams(): void
     {
+        $server = [
+            'test'  => 'value',
+            'test2' => 'foo',
+            'bar'   => [],
+            'int'   => 1,
+            'float' => 1.0,
+        ];
         $request  = new ServerRequest();
         $request2 = new ServerRequest(
-            server: [
-                'test'  => 'value',
-                'test2' => 'foo',
-                'bar'   => [],
-                'int'   => 1,
-                'float' => 1.0,
-                'null'  => null,
-            ]
+            server: ServerParamCollection::fromArray($server)
+        );
+        $request3 = $request2->withServerParams(
+            ServerParamCollection::fromArray([
+                'test4' => 'test',
+                'test5' => 'value',
+            ])
+        );
+        $request4 = $request2->withServerParams(
+            $request2->getServerParams()->withAddedParams(['test6' => 'null'])
+        );
+        $request5 = $request2->withServerParams(
+            $request2->getServerParams()->withAddedParams(['test6' => 'value5'])
         );
 
         self::assertNotSame($request, $request2);
+        self::assertNotSame($request2, $request3);
+        self::assertNotSame($request2, $request4);
+        self::assertNotSame($request2, $request5);
 
-        self::assertEmpty($request->getServerParams());
-        self::assertNotEmpty($request2->getServerParams());
+        self::assertEmpty($request->getServerParams()->getParams());
+        self::assertNotEmpty($request2->getServerParams()->getParams());
+        self::assertNotEmpty($request3->getServerParams()->getParams());
+        self::assertNotEmpty($request4->getServerParams()->getParams());
+        self::assertNotEmpty($request5->getServerParams()->getParams());
 
-        self::assertTrue($request2->hasServerParam('test'));
-        self::assertTrue($request2->hasServerParam('test2'));
-        self::assertTrue($request2->hasServerParam('bar'));
-        self::assertTrue($request2->hasServerParam('int'));
-        self::assertTrue($request2->hasServerParam('float'));
-        self::assertTrue($request2->hasServerParam('null'));
-        self::assertFalse($request2->hasServerParam('nonexistent'));
+        self::assertTrue($request2->getServerParams()->hasParam('test'));
+        self::assertTrue($request2->getServerParams()->hasParam('test2'));
+        self::assertTrue($request2->getServerParams()->hasParam('bar'));
+        self::assertTrue($request2->getServerParams()->hasParam('int'));
+        self::assertTrue($request2->getServerParams()->hasParam('float'));
+        self::assertFalse($request2->getServerParams()->hasParam('null'));
+        self::assertFalse($request2->getServerParams()->hasParam('nonexistent'));
 
-        self::assertSame('value', $request2->getServerParam('test'));
-        self::assertSame('foo', $request2->getServerParam('test2'));
-        self::assertSame([], $request2->getServerParam('bar'));
-        self::assertSame(1, $request2->getServerParam('int'));
-        self::assertSame(1.0, $request2->getServerParam('float'));
-        self::assertNull($request2->getServerParam('null'));
+        self::assertFalse($request3->getServerParams()->hasParam('test'));
+        self::assertFalse($request3->getServerParams()->hasParam('test2'));
+        self::assertTrue($request3->getServerParams()->hasParam('test4'));
+        self::assertTrue($request3->getServerParams()->hasParam('test5'));
+
+        self::assertTrue($request4->getServerParams()->hasParam('test'));
+        self::assertTrue($request4->getServerParams()->hasParam('test2'));
+        self::assertFalse($request4->getServerParams()->hasParam('test4'));
+        self::assertFalse($request4->getServerParams()->hasParam('test5'));
+        self::assertTrue($request4->getServerParams()->hasParam('test6'));
+
+        self::assertTrue($request5->getServerParams()->hasParam('test'));
+        self::assertTrue($request5->getServerParams()->hasParam('test2'));
+        self::assertFalse($request5->getServerParams()->hasParam('test4'));
+        self::assertFalse($request5->getServerParams()->hasParam('test5'));
+        self::assertTrue($request5->getServerParams()->hasParam('test6'));
+
+        self::assertSame('value', $request2->getServerParams()->getParam('test'));
+        self::assertSame('foo', $request2->getServerParams()->getParam('test2'));
+        self::assertInstanceOf(ServerParamCollection::class, $request2->getServerParams()->getParam('bar'));
+        self::assertSame(1, $request2->getServerParams()->getParam('int'));
+        self::assertSame(1.0, $request2->getServerParams()->getParam('float'));
+        self::assertNull($request2->getServerParams()->getParam('null'));
+
+        self::assertSame('test', $request3->getServerParams()->getParam('test4'));
+        self::assertSame('value', $request3->getServerParams()->getParam('test5'));
+
+        self::assertSame('value', $request4->getServerParams()->getParam('test'));
+        self::assertSame('foo', $request4->getServerParams()->getParam('test2'));
+        self::assertSame('null', $request4->getServerParams()->getParam('test6'));
+
+        self::assertSame('value', $request5->getServerParams()->getParam('test'));
+        self::assertSame('foo', $request5->getServerParams()->getParam('test2'));
+        self::assertSame('value5', $request5->getServerParams()->getParam('test6'));
     }
 
     public function testCookies(): void
     {
+        $cookies = [
+            'cookie'  => 'value',
+            'cookie2' => 'foo',
+            'cookie3' => 'null',
+        ];
         $request  = new ServerRequest();
         $request2 = new ServerRequest(
-            cookies: [
-                'cookie'  => 'value',
-                'cookie2' => 'foo',
-                'cookie3' => null,
-            ]
+            cookies: CookieParamCollection::fromArray($cookies)
         );
-        $request3 = $request2->withCookieParams([
-            'cookie4' => 'test',
-            'cookie5' => 'value',
-        ]);
-        $request4 = $request2->withAddedCookieParam('cookie6', null);
-        $request5 = $request2->withAddedCookieParam('cookie6', 'value5');
+        $request3 = $request2->withCookieParams(
+            CookieParamCollection::fromArray([
+                'cookie4' => 'test',
+                'cookie5' => 'value',
+            ])
+        );
+        $request4 = $request2->withCookieParams(
+            $request2->getCookieParams()->withAddedParams(['cookie6' => 'null'])
+        );
+        $request5 = $request2->withCookieParams(
+            $request2->getCookieParams()->withAddedParams(['cookie6' => 'value5'])
+        );
 
         self::assertNotSame($request, $request2);
         self::assertNotSame($request2, $request3);
         self::assertNotSame($request2, $request4);
         self::assertNotSame($request2, $request5);
 
-        self::assertEmpty($request->getCookieParams());
-        self::assertNotEmpty($request2->getCookieParams());
-        self::assertNotEmpty($request3->getCookieParams());
-        self::assertNotEmpty($request4->getCookieParams());
-        self::assertNotEmpty($request5->getCookieParams());
+        self::assertEmpty($request->getCookieParams()->getParams());
+        self::assertNotEmpty($request2->getCookieParams()->getParams());
+        self::assertNotEmpty($request3->getCookieParams()->getParams());
+        self::assertNotEmpty($request4->getCookieParams()->getParams());
+        self::assertNotEmpty($request5->getCookieParams()->getParams());
 
-        self::assertTrue($request2->hasCookieParam('cookie'));
-        self::assertTrue($request2->hasCookieParam('cookie2'));
-        self::assertTrue($request2->hasCookieParam('cookie3'));
-        self::assertFalse($request2->hasCookieParam('cookie4'));
-        self::assertFalse($request2->hasCookieParam('cookie5'));
-        self::assertFalse($request2->hasCookieParam('cookie6'));
+        self::assertTrue($request2->getCookieParams()->hasParam('cookie'));
+        self::assertTrue($request2->getCookieParams()->hasParam('cookie2'));
+        self::assertTrue($request2->getCookieParams()->hasParam('cookie3'));
+        self::assertFalse($request2->getCookieParams()->hasParam('cookie4'));
+        self::assertFalse($request2->getCookieParams()->hasParam('cookie5'));
+        self::assertFalse($request2->getCookieParams()->hasParam('cookie6'));
 
-        self::assertFalse($request3->hasCookieParam('cookie'));
-        self::assertFalse($request3->hasCookieParam('cookie2'));
-        self::assertFalse($request3->hasCookieParam('cookie3'));
-        self::assertTrue($request3->hasCookieParam('cookie4'));
-        self::assertTrue($request3->hasCookieParam('cookie5'));
+        self::assertFalse($request3->getCookieParams()->hasParam('cookie'));
+        self::assertFalse($request3->getCookieParams()->hasParam('cookie2'));
+        self::assertFalse($request3->getCookieParams()->hasParam('cookie3'));
+        self::assertTrue($request3->getCookieParams()->hasParam('cookie4'));
+        self::assertTrue($request3->getCookieParams()->hasParam('cookie5'));
 
-        self::assertTrue($request4->hasCookieParam('cookie'));
-        self::assertTrue($request4->hasCookieParam('cookie2'));
-        self::assertTrue($request4->hasCookieParam('cookie3'));
-        self::assertFalse($request4->hasCookieParam('cookie4'));
-        self::assertFalse($request4->hasCookieParam('cookie5'));
-        self::assertTrue($request4->hasCookieParam('cookie6'));
+        self::assertTrue($request4->getCookieParams()->hasParam('cookie'));
+        self::assertTrue($request4->getCookieParams()->hasParam('cookie2'));
+        self::assertTrue($request4->getCookieParams()->hasParam('cookie3'));
+        self::assertFalse($request4->getCookieParams()->hasParam('cookie4'));
+        self::assertFalse($request4->getCookieParams()->hasParam('cookie5'));
+        self::assertTrue($request4->getCookieParams()->hasParam('cookie6'));
 
-        self::assertTrue($request5->hasCookieParam('cookie'));
-        self::assertTrue($request5->hasCookieParam('cookie2'));
-        self::assertTrue($request5->hasCookieParam('cookie3'));
-        self::assertFalse($request5->hasCookieParam('cookie4'));
-        self::assertFalse($request5->hasCookieParam('cookie5'));
-        self::assertTrue($request5->hasCookieParam('cookie6'));
+        self::assertTrue($request5->getCookieParams()->hasParam('cookie'));
+        self::assertTrue($request5->getCookieParams()->hasParam('cookie2'));
+        self::assertTrue($request5->getCookieParams()->hasParam('cookie3'));
+        self::assertFalse($request5->getCookieParams()->hasParam('cookie4'));
+        self::assertFalse($request5->getCookieParams()->hasParam('cookie5'));
+        self::assertTrue($request5->getCookieParams()->hasParam('cookie6'));
 
-        self::assertSame('value', $request2->getCookieParam('cookie'));
-        self::assertSame('foo', $request2->getCookieParam('cookie2'));
-        self::assertNull($request2->getCookieParam('cookie3'));
-        self::assertNull($request2->getCookieParam('nonexistent'));
-        self::assertSame('default', $request2->getCookieParam('nonexistentWithDefault', 'default'));
+        self::assertSame('value', $request2->getCookieParams()->getParam('cookie'));
+        self::assertSame('foo', $request2->getCookieParams()->getParam('cookie2'));
+        self::assertSame('null', $request2->getCookieParams()->getParam('cookie3'));
+        self::assertNull($request2->getCookieParams()->getParam('nonexistent'));
+        self::assertNull($request2->getCookieParams()->getParam('nonexistentWithDefault'));
 
-        self::assertSame('test', $request3->getCookieParam('cookie4'));
-        self::assertSame('value', $request3->getCookieParam('cookie5'));
+        self::assertSame('test', $request3->getCookieParams()->getParam('cookie4'));
+        self::assertSame('value', $request3->getCookieParams()->getParam('cookie5'));
 
-        self::assertSame('value', $request4->getCookieParam('cookie'));
-        self::assertSame('foo', $request4->getCookieParam('cookie2'));
-        self::assertNull($request4->getCookieParam('cookie3'));
-        self::assertNull($request4->getCookieParam('cookie6'));
+        self::assertSame('value', $request4->getCookieParams()->getParam('cookie'));
+        self::assertSame('foo', $request4->getCookieParams()->getParam('cookie2'));
+        self::assertSame('null', $request4->getCookieParams()->getParam('cookie3'));
+        self::assertSame('null', $request4->getCookieParams()->getParam('cookie6'));
 
-        self::assertSame('value', $request5->getCookieParam('cookie'));
-        self::assertSame('foo', $request5->getCookieParam('cookie2'));
-        self::assertNull($request5->getCookieParam('cookie3'));
-        self::assertSame('value5', $request5->getCookieParam('cookie6'));
+        self::assertSame('value', $request5->getCookieParams()->getParam('cookie'));
+        self::assertSame('foo', $request5->getCookieParams()->getParam('cookie2'));
+        self::assertSame('null', $request5->getCookieParams()->getParam('cookie3'));
+        self::assertSame('value5', $request5->getCookieParams()->getParam('cookie6'));
     }
 
     public function testQuery(): void
     {
+        $queryParams = [
+            'test'  => 'value',
+            'test2' => 'foo',
+            'bar'   => [],
+            'int'   => '1',
+            'float' => '1.0',
+            2       => 'number',
+        ];
         $request  = new ServerRequest();
         $request2 = new ServerRequest(
-            query: $queryParams = [
-                'test'  => 'value',
-                'test2' => 'foo',
-                'bar'   => [],
-                'int'   => 1,
-                'float' => 1.0,
-                'null'  => null,
-                2       => 'number',
-            ]
+            query: QueryParamCollection::fromArray($queryParams)
         );
-        $request3 = $request2->withQueryParams([
-            'param'  => 'test',
-            'param2' => 'value',
-        ]);
-        $request4 = $request2->withAddedQueryParam('param3', null);
-        $request5 = $request2->withAddedQueryParam('param3', 'value5');
+        $request3 = $request2->withQueryParams(
+            QueryParamCollection::fromArray([
+                'param'  => 'test',
+                'param2' => 'value',
+            ])
+        );
+        $request4 = $request2->withQueryParams(
+            $request2->getQueryParams()->withAddedParams(['param3' => 'null'])
+        );
+        $request5 = $request2->withQueryParams(
+            $request2->getQueryParams()->withAddedParams(['param3' => 'value5'])
+        );
 
         self::assertNotSame($request, $request2);
         self::assertNotSame($request2, $request3);
         self::assertNotSame($request2, $request4);
         self::assertNotSame($request2, $request5);
 
-        self::assertEmpty($request->getQueryParams());
-        self::assertNotEmpty($request2->getQueryParams());
-        self::assertNotEmpty($request3->getQueryParams());
-        self::assertNotEmpty($request4->getQueryParams());
-        self::assertNotEmpty($request5->getQueryParams());
+        self::assertEmpty($request->getQueryParams()->getParams());
+        self::assertNotEmpty($request2->getQueryParams()->getParams());
+        self::assertNotEmpty($request3->getQueryParams()->getParams());
+        self::assertNotEmpty($request4->getQueryParams()->getParams());
+        self::assertNotEmpty($request5->getQueryParams()->getParams());
 
         self::assertSame(
             array_filter(
@@ -173,146 +238,156 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->onlyQueryParams('test2', 'null')
+            $request2->getQueryParams()->onlyParams('test2', 'null')
         );
-        self::assertSame(
+        self::assertSameCount(
             array_filter(
                 $queryParams,
                 static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->exceptQueryParams('test2', 'null')
+            $request2->getQueryParams()->exceptParams('test2', 'null')
         );
 
-        self::assertTrue($request2->hasQueryParam('test'));
-        self::assertTrue($request2->hasQueryParam('test2'));
-        self::assertTrue($request2->hasQueryParam('bar'));
-        self::assertTrue($request2->hasQueryParam('int'));
-        self::assertTrue($request2->hasQueryParam('float'));
-        self::assertTrue($request2->hasQueryParam('null'));
-        self::assertTrue($request2->hasQueryParam(2));
-        self::assertFalse($request2->hasQueryParam('nonexistent'));
-        self::assertFalse($request2->hasQueryParam('param'));
-        self::assertFalse($request2->hasQueryParam('param2'));
-        self::assertFalse($request2->hasQueryParam('param3'));
+        self::assertTrue($request2->getQueryParams()->hasParam('test'));
+        self::assertTrue($request2->getQueryParams()->hasParam('test2'));
+        self::assertTrue($request2->getQueryParams()->hasParam('bar'));
+        self::assertTrue($request2->getQueryParams()->hasParam('int'));
+        self::assertTrue($request2->getQueryParams()->hasParam('float'));
+        self::assertFalse($request2->getQueryParams()->hasParam('null'));
+        self::assertTrue($request2->getQueryParams()->hasParam(2));
+        self::assertFalse($request2->getQueryParams()->hasParam('nonexistent'));
+        self::assertFalse($request2->getQueryParams()->hasParam('param'));
+        self::assertFalse($request2->getQueryParams()->hasParam('param2'));
+        self::assertFalse($request2->getQueryParams()->hasParam('param3'));
 
-        self::assertFalse($request3->hasQueryParam('test'));
-        self::assertFalse($request3->hasQueryParam('test2'));
-        self::assertFalse($request3->hasQueryParam('bar'));
-        self::assertFalse($request3->hasQueryParam('int'));
-        self::assertFalse($request3->hasQueryParam('float'));
-        self::assertFalse($request3->hasQueryParam('null'));
-        self::assertFalse($request3->hasQueryParam(2));
-        self::assertTrue($request3->hasQueryParam('param'));
-        self::assertTrue($request3->hasQueryParam('param2'));
-        self::assertFalse($request3->hasQueryParam('param3'));
+        self::assertFalse($request3->getQueryParams()->hasParam('test'));
+        self::assertFalse($request3->getQueryParams()->hasParam('test2'));
+        self::assertFalse($request3->getQueryParams()->hasParam('bar'));
+        self::assertFalse($request3->getQueryParams()->hasParam('int'));
+        self::assertFalse($request3->getQueryParams()->hasParam('float'));
+        self::assertFalse($request3->getQueryParams()->hasParam('null'));
+        self::assertFalse($request3->getQueryParams()->hasParam(2));
+        self::assertTrue($request3->getQueryParams()->hasParam('param'));
+        self::assertTrue($request3->getQueryParams()->hasParam('param2'));
+        self::assertFalse($request3->getQueryParams()->hasParam('param3'));
 
-        self::assertTrue($request4->hasQueryParam('test'));
-        self::assertTrue($request4->hasQueryParam('test2'));
-        self::assertTrue($request4->hasQueryParam('bar'));
-        self::assertTrue($request4->hasQueryParam('int'));
-        self::assertTrue($request4->hasQueryParam('float'));
-        self::assertTrue($request4->hasQueryParam('null'));
-        self::assertTrue($request4->hasQueryParam(2));
-        self::assertFalse($request4->hasQueryParam('param'));
-        self::assertFalse($request4->hasQueryParam('param2'));
-        self::assertTrue($request4->hasQueryParam('param3'));
+        self::assertTrue($request4->getQueryParams()->hasParam('test'));
+        self::assertTrue($request4->getQueryParams()->hasParam('test2'));
+        self::assertTrue($request4->getQueryParams()->hasParam('bar'));
+        self::assertTrue($request4->getQueryParams()->hasParam('int'));
+        self::assertTrue($request4->getQueryParams()->hasParam('float'));
+        self::assertFalse($request4->getQueryParams()->hasParam('null'));
+        self::assertTrue($request4->getQueryParams()->hasParam(2));
+        self::assertFalse($request4->getQueryParams()->hasParam('param'));
+        self::assertFalse($request4->getQueryParams()->hasParam('param2'));
+        self::assertTrue($request4->getQueryParams()->hasParam('param3'));
 
-        self::assertTrue($request5->hasQueryParam('test'));
-        self::assertTrue($request5->hasQueryParam('test2'));
-        self::assertTrue($request5->hasQueryParam('bar'));
-        self::assertTrue($request5->hasQueryParam('int'));
-        self::assertTrue($request5->hasQueryParam('float'));
-        self::assertTrue($request5->hasQueryParam('null'));
-        self::assertTrue($request5->hasQueryParam(2));
-        self::assertFalse($request5->hasQueryParam('param'));
-        self::assertFalse($request5->hasQueryParam('param2'));
-        self::assertTrue($request5->hasQueryParam('param3'));
+        self::assertTrue($request5->getQueryParams()->hasParam('test'));
+        self::assertTrue($request5->getQueryParams()->hasParam('test2'));
+        self::assertTrue($request5->getQueryParams()->hasParam('bar'));
+        self::assertTrue($request5->getQueryParams()->hasParam('int'));
+        self::assertTrue($request5->getQueryParams()->hasParam('float'));
+        self::assertFalse($request5->getQueryParams()->hasParam('null'));
+        self::assertTrue($request5->getQueryParams()->hasParam(2));
+        self::assertFalse($request5->getQueryParams()->hasParam('param'));
+        self::assertFalse($request5->getQueryParams()->hasParam('param2'));
+        self::assertTrue($request5->getQueryParams()->hasParam('param3'));
 
-        self::assertSame('value', $request2->getQueryParam('test'));
-        self::assertSame('foo', $request2->getQueryParam('test2'));
-        self::assertSame([], $request2->getQueryParam('bar'));
-        self::assertSame(1, $request2->getQueryParam('int'));
-        self::assertSame(1.0, $request2->getQueryParam('float'));
-        self::assertNull($request2->getQueryParam('null'));
-        self::assertSame('number', $request2->getQueryParam(2));
-        self::assertSame('default', $request2->getQueryParam('nonexistentWithDefault', 'default'));
+        self::assertSame('value', $request2->getQueryParams()->getParam('test'));
+        self::assertSame('foo', $request2->getQueryParams()->getParam('test2'));
+        self::assertInstanceOf(QueryParamCollection::class, $request2->getQueryParams()->getParam('bar'));
+        self::assertSame('1', $request2->getQueryParams()->getParam('int'));
+        self::assertSame('1.0', $request2->getQueryParams()->getParam('float'));
+        self::assertNull($request2->getQueryParams()->getParam('null'));
+        self::assertSame('number', $request2->getQueryParams()->getParam(2));
+        self::assertNull($request2->getQueryParams()->getParam('nonexistentWithDefault'));
 
-        self::assertSame('test', $request3->getQueryParam('param'));
-        self::assertSame('value', $request3->getQueryParam('param2'));
+        self::assertSame('test', $request3->getQueryParams()->getParam('param'));
+        self::assertSame('value', $request3->getQueryParams()->getParam('param2'));
 
-        self::assertSame('value', $request4->getQueryParam('test'));
-        self::assertSame('foo', $request4->getQueryParam('test2'));
-        self::assertSame([], $request4->getQueryParam('bar'));
-        self::assertSame(1, $request4->getQueryParam('int'));
-        self::assertSame(1.0, $request4->getQueryParam('float'));
-        self::assertNull($request4->getQueryParam('null'));
-        self::assertSame('number', $request4->getQueryParam(2));
-        self::assertNull($request4->getQueryParam('param3'));
+        self::assertSame('value', $request4->getQueryParams()->getParam('test'));
+        self::assertSame('foo', $request4->getQueryParams()->getParam('test2'));
+        self::assertInstanceOf(QueryParamCollection::class, $request4->getQueryParams()->getParam('bar'));
+        self::assertSame('1', $request4->getQueryParams()->getParam('int'));
+        self::assertSame('1.0', $request4->getQueryParams()->getParam('float'));
+        self::assertNull($request4->getQueryParams()->getParam('null'));
+        self::assertSame('number', $request4->getQueryParams()->getParam(2));
+        self::assertSame('null', $request4->getQueryParams()->getParam('param3'));
 
-        self::assertSame('value', $request5->getQueryParam('test'));
-        self::assertSame('foo', $request5->getQueryParam('test2'));
-        self::assertSame([], $request5->getQueryParam('bar'));
-        self::assertSame(1, $request5->getQueryParam('int'));
-        self::assertSame(1.0, $request5->getQueryParam('float'));
-        self::assertNull($request5->getQueryParam('null'));
-        self::assertSame('number', $request5->getQueryParam(2));
-        self::assertSame('value5', $request5->getQueryParam('param3'));
+        self::assertSame('value', $request5->getQueryParams()->getParam('test'));
+        self::assertSame('foo', $request5->getQueryParams()->getParam('test2'));
+        self::assertInstanceOf(QueryParamCollection::class, $request5->getQueryParams()->getParam('bar'));
+        self::assertSame('1', $request5->getQueryParams()->getParam('int'));
+        self::assertSame('1.0', $request5->getQueryParams()->getParam('float'));
+        self::assertNull($request5->getQueryParams()->getParam('null'));
+        self::assertSame('number', $request5->getQueryParams()->getParam(2));
+        self::assertSame('value5', $request5->getQueryParams()->getParam('param3'));
     }
 
     public function testUploadedFiles(): void
     {
         $request  = new ServerRequest();
-        $request2 = $request->withUploadedFiles([
-            new UploadedFile(file: 'test'),
-            new UploadedFile(file: 'test'),
-        ]);
-        $request3 = $request->withAddedUploadedFile(
-            new UploadedFile(file: 'test')
+        $request2 = $request->withUploadedFiles(
+            new UploadedFileCollection([
+                new UploadedFile(file: 'test'),
+                new UploadedFile(file: 'test'),
+            ])
+        );
+        $request3 = $request->withUploadedFiles(
+            $request->getUploadedFiles()->withAddedFiles(
+                [new UploadedFile(file: 'test')]
+            )
         );
 
         self::assertNotSame($request, $request2);
         self::assertNotSame($request, $request3);
 
-        self::assertEmpty($request->getUploadedFiles());
-        self::assertNotEmpty($request2->getUploadedFiles());
-        self::assertNotEmpty($request3->getUploadedFiles());
+        self::assertEmpty($request->getUploadedFiles()->getFiles());
+        self::assertNotEmpty($request2->getUploadedFiles()->getFiles());
+        self::assertNotEmpty($request3->getUploadedFiles()->getFiles());
 
-        self::assertCount(2, $request2->getUploadedFiles());
-        self::assertCount(1, $request3->getUploadedFiles());
+        self::assertCount(2, $request2->getUploadedFiles()->getFiles());
+        self::assertCount(1, $request3->getUploadedFiles()->getFiles());
     }
 
     public function testParsedBody(): void
     {
+        $bodyParams = [
+            'test'  => 'value',
+            'test2' => 'foo',
+            'bar'   => [],
+            'int'   => '1',
+            'float' => '1.0',
+            2       => 'number',
+        ];
         $request  = new ServerRequest();
         $request2 = new ServerRequest(
-            parsedBody: $bodyParams = [
-                'test'  => 'value',
-                'test2' => 'foo',
-                'bar'   => [],
-                'int'   => 1,
-                'float' => 1.0,
-                'null'  => null,
-                2       => 'number',
-            ]
+            parsedBody: ParsedBodyParamCollection::fromArray($bodyParams)
         );
-        $request3 = $request2->withParsedBody([
-            'param'  => 'test',
-            'param2' => 'value',
-        ]);
-        $request4 = $request2->withAddedParsedBodyParam('param3', null);
-        $request5 = $request2->withAddedParsedBodyParam('param3', 'value5');
+        $request3 = $request2->withParsedBody(
+            ParsedBodyParamCollection::fromArray([
+                'param'  => 'test',
+                'param2' => 'value',
+            ])
+        );
+        $request4 = $request2->withParsedBody(
+            $request2->getParsedBody()->withAddedParams(['param3' => 'null'])
+        );
+        $request5 = $request2->withParsedBody(
+            $request2->getParsedBody()->withAddedParams(['param3' => 'value5'])
+        );
 
         self::assertNotSame($request, $request2);
         self::assertNotSame($request2, $request3);
         self::assertNotSame($request2, $request4);
         self::assertNotSame($request2, $request5);
 
-        self::assertEmpty($request->getParsedBody());
-        self::assertNotEmpty($request2->getParsedBody());
-        self::assertNotEmpty($request3->getParsedBody());
-        self::assertNotEmpty($request4->getParsedBody());
-        self::assertNotEmpty($request5->getParsedBody());
+        self::assertEmpty($request->getParsedBody()->getParams());
+        self::assertNotEmpty($request2->getParsedBody()->getParams());
+        self::assertNotEmpty($request3->getParsedBody()->getParams());
+        self::assertNotEmpty($request4->getParsedBody()->getParams());
+        self::assertNotEmpty($request5->getParsedBody()->getParams());
 
         self::assertSame(
             array_filter(
@@ -320,91 +395,91 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->onlyParsedBody('test2', 'null')
+            $request2->getParsedBody()->onlyParams('test2', 'null')
         );
-        self::assertSame(
+        self::assertSameCount(
             array_filter(
                 $bodyParams,
                 static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->exceptParsedBody('test2', 'null')
+            $request2->getParsedBody()->exceptParams('test2', 'null')
         );
 
-        self::assertTrue($request2->hasParsedBodyParam('test'));
-        self::assertTrue($request2->hasParsedBodyParam('test2'));
-        self::assertTrue($request2->hasParsedBodyParam('bar'));
-        self::assertTrue($request2->hasParsedBodyParam('int'));
-        self::assertTrue($request2->hasParsedBodyParam('float'));
-        self::assertTrue($request2->hasParsedBodyParam('null'));
-        self::assertTrue($request2->hasParsedBodyParam(2));
-        self::assertFalse($request2->hasParsedBodyParam('nonexistent'));
-        self::assertFalse($request2->hasParsedBodyParam('param'));
-        self::assertFalse($request2->hasParsedBodyParam('param2'));
-        self::assertFalse($request2->hasParsedBodyParam('param3'));
+        self::assertTrue($request2->getParsedBody()->hasParam('test'));
+        self::assertTrue($request2->getParsedBody()->hasParam('test2'));
+        self::assertTrue($request2->getParsedBody()->hasParam('bar'));
+        self::assertTrue($request2->getParsedBody()->hasParam('int'));
+        self::assertTrue($request2->getParsedBody()->hasParam('float'));
+        self::assertFalse($request2->getParsedBody()->hasParam('null'));
+        self::assertTrue($request2->getParsedBody()->hasParam(2));
+        self::assertFalse($request2->getParsedBody()->hasParam('nonexistent'));
+        self::assertFalse($request2->getParsedBody()->hasParam('param'));
+        self::assertFalse($request2->getParsedBody()->hasParam('param2'));
+        self::assertFalse($request2->getParsedBody()->hasParam('param3'));
 
-        self::assertFalse($request3->hasParsedBodyParam('test'));
-        self::assertFalse($request3->hasParsedBodyParam('test2'));
-        self::assertFalse($request3->hasParsedBodyParam('bar'));
-        self::assertFalse($request3->hasParsedBodyParam('int'));
-        self::assertFalse($request3->hasParsedBodyParam('float'));
-        self::assertFalse($request3->hasParsedBodyParam('null'));
-        self::assertFalse($request3->hasParsedBodyParam(2));
-        self::assertTrue($request3->hasParsedBodyParam('param'));
-        self::assertTrue($request3->hasParsedBodyParam('param2'));
-        self::assertFalse($request3->hasParsedBodyParam('param3'));
+        self::assertFalse($request3->getParsedBody()->hasParam('test'));
+        self::assertFalse($request3->getParsedBody()->hasParam('test2'));
+        self::assertFalse($request3->getParsedBody()->hasParam('bar'));
+        self::assertFalse($request3->getParsedBody()->hasParam('int'));
+        self::assertFalse($request3->getParsedBody()->hasParam('float'));
+        self::assertFalse($request3->getParsedBody()->hasParam('null'));
+        self::assertFalse($request3->getParsedBody()->hasParam(2));
+        self::assertTrue($request3->getParsedBody()->hasParam('param'));
+        self::assertTrue($request3->getParsedBody()->hasParam('param2'));
+        self::assertFalse($request3->getParsedBody()->hasParam('param3'));
 
-        self::assertTrue($request4->hasParsedBodyParam('test'));
-        self::assertTrue($request4->hasParsedBodyParam('test2'));
-        self::assertTrue($request4->hasParsedBodyParam('bar'));
-        self::assertTrue($request4->hasParsedBodyParam('int'));
-        self::assertTrue($request4->hasParsedBodyParam('float'));
-        self::assertTrue($request4->hasParsedBodyParam('null'));
-        self::assertTrue($request4->hasParsedBodyParam(2));
-        self::assertFalse($request4->hasParsedBodyParam('param'));
-        self::assertFalse($request4->hasParsedBodyParam('param2'));
-        self::assertTrue($request4->hasParsedBodyParam('param3'));
+        self::assertTrue($request4->getParsedBody()->hasParam('test'));
+        self::assertTrue($request4->getParsedBody()->hasParam('test2'));
+        self::assertTrue($request4->getParsedBody()->hasParam('bar'));
+        self::assertTrue($request4->getParsedBody()->hasParam('int'));
+        self::assertTrue($request4->getParsedBody()->hasParam('float'));
+        self::assertFalse($request4->getParsedBody()->hasParam('null'));
+        self::assertTrue($request4->getParsedBody()->hasParam(2));
+        self::assertFalse($request4->getParsedBody()->hasParam('param'));
+        self::assertFalse($request4->getParsedBody()->hasParam('param2'));
+        self::assertTrue($request4->getParsedBody()->hasParam('param3'));
 
-        self::assertTrue($request5->hasParsedBodyParam('test'));
-        self::assertTrue($request5->hasParsedBodyParam('test2'));
-        self::assertTrue($request5->hasParsedBodyParam('bar'));
-        self::assertTrue($request5->hasParsedBodyParam('int'));
-        self::assertTrue($request5->hasParsedBodyParam('float'));
-        self::assertTrue($request5->hasParsedBodyParam('null'));
-        self::assertTrue($request5->hasParsedBodyParam(2));
-        self::assertFalse($request5->hasParsedBodyParam('param'));
-        self::assertFalse($request5->hasParsedBodyParam('param2'));
-        self::assertTrue($request5->hasParsedBodyParam('param3'));
+        self::assertTrue($request5->getParsedBody()->hasParam('test'));
+        self::assertTrue($request5->getParsedBody()->hasParam('test2'));
+        self::assertTrue($request5->getParsedBody()->hasParam('bar'));
+        self::assertTrue($request5->getParsedBody()->hasParam('int'));
+        self::assertTrue($request5->getParsedBody()->hasParam('float'));
+        self::assertFalse($request5->getParsedBody()->hasParam('null'));
+        self::assertTrue($request5->getParsedBody()->hasParam(2));
+        self::assertFalse($request5->getParsedBody()->hasParam('param'));
+        self::assertFalse($request5->getParsedBody()->hasParam('param2'));
+        self::assertTrue($request5->getParsedBody()->hasParam('param3'));
 
-        self::assertSame('value', $request2->getParsedBodyParam('test'));
-        self::assertSame('foo', $request2->getParsedBodyParam('test2'));
-        self::assertSame([], $request2->getParsedBodyParam('bar'));
-        self::assertSame(1, $request2->getParsedBodyParam('int'));
-        self::assertSame(1.0, $request2->getParsedBodyParam('float'));
-        self::assertNull($request2->getParsedBodyParam('null'));
-        self::assertSame('number', $request2->getParsedBodyParam(2));
-        self::assertSame('default', $request2->getParsedBodyParam('nonexistentWithDefault', 'default'));
+        self::assertSame('value', $request2->getParsedBody()->getParam('test'));
+        self::assertSame('foo', $request2->getParsedBody()->getParam('test2'));
+        self::assertInstanceOf(ParsedBodyParamCollection::class, $request2->getParsedBody()->getParam('bar'));
+        self::assertSame('1', $request2->getParsedBody()->getParam('int'));
+        self::assertSame('1.0', $request2->getParsedBody()->getParam('float'));
+        self::assertNull($request2->getParsedBody()->getParam('null'));
+        self::assertSame('number', $request2->getParsedBody()->getParam(2));
+        self::assertNull($request2->getParsedBody()->getParam('nonexistentWithDefault'));
 
-        self::assertSame('test', $request3->getParsedBodyParam('param'));
-        self::assertSame('value', $request3->getParsedBodyParam('param2'));
+        self::assertSame('test', $request3->getParsedBody()->getParam('param'));
+        self::assertSame('value', $request3->getParsedBody()->getParam('param2'));
 
-        self::assertSame('value', $request4->getParsedBodyParam('test'));
-        self::assertSame('foo', $request4->getParsedBodyParam('test2'));
-        self::assertSame([], $request4->getParsedBodyParam('bar'));
-        self::assertSame(1, $request4->getParsedBodyParam('int'));
-        self::assertSame(1.0, $request4->getParsedBodyParam('float'));
-        self::assertNull($request4->getParsedBodyParam('null'));
-        self::assertSame('number', $request4->getParsedBodyParam(2));
-        self::assertNull($request4->getParsedBodyParam('param3'));
+        self::assertSame('value', $request4->getParsedBody()->getParam('test'));
+        self::assertSame('foo', $request4->getParsedBody()->getParam('test2'));
+        self::assertInstanceOf(ParsedBodyParamCollection::class, $request4->getParsedBody()->getParam('bar'));
+        self::assertSame('1', $request4->getParsedBody()->getParam('int'));
+        self::assertSame('1.0', $request4->getParsedBody()->getParam('float'));
+        self::assertNull($request4->getParsedBody()->getParam('null'));
+        self::assertSame('number', $request4->getParsedBody()->getParam(2));
+        self::assertSame('null', $request4->getParsedBody()->getParam('param3'));
 
-        self::assertSame('value', $request5->getParsedBodyParam('test'));
-        self::assertSame('foo', $request5->getParsedBodyParam('test2'));
-        self::assertSame([], $request5->getParsedBodyParam('bar'));
-        self::assertSame(1, $request5->getParsedBodyParam('int'));
-        self::assertSame(1.0, $request5->getParsedBodyParam('float'));
-        self::assertNull($request5->getParsedBodyParam('null'));
-        self::assertSame('number', $request5->getParsedBodyParam(2));
-        self::assertSame('value5', $request5->getParsedBodyParam('param3'));
+        self::assertSame('value', $request5->getParsedBody()->getParam('test'));
+        self::assertSame('foo', $request5->getParsedBody()->getParam('test2'));
+        self::assertInstanceOf(ParsedBodyParamCollection::class, $request5->getParsedBody()->getParam('bar'));
+        self::assertSame('1', $request5->getParsedBody()->getParam('int'));
+        self::assertSame('1.0', $request5->getParsedBody()->getParam('float'));
+        self::assertNull($request5->getParsedBody()->getParam('null'));
+        self::assertSame('number', $request5->getParsedBody()->getParam(2));
+        self::assertSame('value5', $request5->getParsedBody()->getParam('param3'));
     }
 
     public function testAttributes(): void
@@ -453,9 +528,13 @@ final class ServerRequestTest extends TestCase
     public function testIsXmlHttpRequest(): void
     {
         $request  = new ServerRequest();
-        $request2 = new ServerRequest(headers: [new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest')]);
-        $request3 = $request->withHeader(new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest'));
-        $request4 = $request->withoutHeader(HeaderName::X_REQUESTED_WITH);
+        $request2 = new ServerRequest(headers: new HeaderCollection(new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest')));
+        $request3 = $request->withHeaders(
+            $request->getHeaders()->withHeader(new Header(HeaderName::X_REQUESTED_WITH, 'XMLHttpRequest'))
+        );
+        $request4 = $request->withHeaders(
+            $request->getHeaders()->withoutHeader(HeaderName::X_REQUESTED_WITH)
+        );
 
         self::assertNotSame($request, $request2);
         self::assertNotSame($request, $request3);

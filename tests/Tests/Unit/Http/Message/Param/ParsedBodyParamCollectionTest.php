@@ -25,7 +25,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->paramData = new ParsedBodyParamCollection(name: 'John', email: 'john@example.com');
+        $this->paramData = new ParsedBodyParamCollection(['name' => 'John', 'email' => 'john@example.com']);
     }
 
     public function testInstanceOfContract(): void
@@ -48,8 +48,8 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParsedBodyParamCollection(street: '123 Main St', city: 'Springfield');
-        $paramData = new ParsedBodyParamCollection(address: $nested);
+        $nested    = new ParsedBodyParamCollection(['street' => '123 Main St', 'city' => 'Springfield']);
+        $paramData = new ParsedBodyParamCollection(['address' => $nested]);
 
         $params = $paramData->getParams();
 
@@ -121,7 +121,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(age: '30');
+        $new = $this->paramData->withAddedParams(['age' => '30']);
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('John', $new->getParam('name'));
@@ -131,7 +131,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(age: '30');
+        $this->paramData->withAddedParams(['age' => '30']);
 
         self::assertFalse($this->paramData->hasParam('age'));
     }
@@ -145,14 +145,14 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $paramData = $this->paramData->fromArray(['field' => 'value']);
+        $paramData = ParsedBodyParamCollection::fromArray(['field' => 'value']);
 
         self::assertSame('value', $paramData->getParam('field'));
     }
 
     public function testFromArrayWithNestedArray(): void
     {
-        $paramData = $this->paramData->fromArray(['address' => ['street' => '123 Main St']]);
+        $paramData = ParsedBodyParamCollection::fromArray(['address' => ['street' => '123 Main St']]);
 
         $params = $paramData->getParams();
 

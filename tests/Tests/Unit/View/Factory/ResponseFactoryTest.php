@@ -15,6 +15,8 @@ namespace Valkyrja\Tests\Unit\View\Factory;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -146,7 +148,7 @@ final class ResponseFactoryTest extends TestCase
     {
         $templateContent = '<html lang="en"><body>Test</body></html>';
         $templateName    = 'test-template';
-        $headers         = ['X-Custom-Header' => ['value1', 'value2']];
+        $headers         = HeaderCollection::fromArray([new Header('X-Custom-Header', 'value1', 'value2')]);
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())
@@ -182,7 +184,7 @@ final class ResponseFactoryTest extends TestCase
         $templateName    = 'errors/500';
         $data            = ['error' => 'Something went wrong'];
         $statusCode      = StatusCode::INTERNAL_SERVER_ERROR;
-        $headers         = ['X-Error-Id' => ['abc123']];
+        $headers         = HeaderCollection::fromArray([new Header('X-Error-Id', 'abc123')]);
 
         $template = $this->createMock(TemplateContract::class);
         $template->expects($this->once())

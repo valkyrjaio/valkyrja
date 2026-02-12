@@ -15,7 +15,8 @@ namespace Valkyrja\Http\Message\Response;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Response\Contract\EmptyResponseContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -24,13 +25,12 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class EmptyResponse extends Response implements EmptyResponseContract
 {
     /**
-     * @param HeaderContract[] $headers [optional] The headers
-     *
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
      */
-    public function __construct(array $headers = [])
-    {
+    public function __construct(
+        HeaderCollectionContract $headers = new HeaderCollection()
+    ) {
         parent::__construct(
             body: new Stream(mode: Mode::READ),
             statusCode: StatusCode::NO_CONTENT,

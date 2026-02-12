@@ -38,13 +38,15 @@ enum IndexedJsonRequestStructEnum: int implements RequestStructContract
      * @inheritDoc
      */
     #[Override]
-    public static function getValidationRules(JsonServerRequestContract|ServerRequestContract $request): array|null
+    public static function getValidationRules(JsonServerRequestContract|ServerRequestContract $request): array
     {
         self::ensureJsonRequest($request);
 
-        $first  = $request->getParsedJsonParam(self::first->value);
-        $second = $request->getParsedJsonParam(self::second->value);
-        $third  = $request->getParsedJsonParam(self::third->value);
+        $parsedJson = $request->getParsedJson();
+
+        $first  = $parsedJson->getParam(self::first->value);
+        $second = $parsedJson->getParam(self::second->value);
+        $third  = $parsedJson->getParam(self::third->value);
 
         return [
             self::first->name  => [

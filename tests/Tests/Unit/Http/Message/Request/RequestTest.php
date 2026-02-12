@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
@@ -95,10 +96,10 @@ final class RequestTest extends TestCase
         $path  = '/path?arg=value#fragment';
 
         $request  = new Request();
-        $request2 = new Request(headers: [new Header(HeaderName::HOST, $host)]);
+        $request2 = new Request(headers: new HeaderCollection(new Header(HeaderName::HOST, $host)));
         $request3 = new Request(
             uri: UriFactory::fromString($uri),
-            headers: [new Header(HeaderName::HOST, $host)]
+            headers: new HeaderCollection(new Header(HeaderName::HOST, $host))
         );
         $request4 = $request->withUri(UriFactory::fromString($uri));
         $request5 = $request->withUri(UriFactory::fromString($path));
@@ -123,14 +124,14 @@ final class RequestTest extends TestCase
         self::assertSame($path, (string) $request8->getUri());
         self::assertSame($uri2, (string) $request9->getUri());
 
-        self::assertSame('', $request->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host, $request2->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host, $request3->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host2, $request4->getHeaderLine(HeaderName::HOST));
-        self::assertSame('', $request5->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host2, $request6->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host, $request7->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host, $request8->getHeaderLine(HeaderName::HOST));
-        self::assertSame($host3, $request9->getHeaderLine(HeaderName::HOST));
+        self::assertSame('', $request->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host, $request2->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host, $request3->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host2, $request4->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame('', $request5->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host2, $request6->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host, $request7->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host, $request8->getHeaders()->getHeaderLine(HeaderName::HOST));
+        self::assertSame($host3, $request9->getHeaders()->getHeaderLine(HeaderName::HOST));
     }
 }

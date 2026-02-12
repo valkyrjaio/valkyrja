@@ -18,19 +18,15 @@ use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
 
 /**
- * @extends ParamCollection<string|self>
- *
- * @phpstan-ignore-next-line
+ * @extends ParamCollection<non-empty-string|int, string|QueryParamCollectionContract>
  */
 class QueryParamCollection extends ParamCollection implements QueryParamCollectionContract
 {
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress LessSpecificReturnStatement
      */
     #[Override]
-    public function getParam(string|int $name): self|string|null
+    public function getParam(string|int $name): QueryParamCollectionContract|string|null
     {
         return $this->params[$name]
             ?? null;

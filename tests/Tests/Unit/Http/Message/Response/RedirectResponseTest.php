@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\ContentType;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Location;
@@ -65,29 +66,29 @@ final class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse(
             new Uri(path: '/'),
-            headers: [
+            headers: HeaderCollection::fromArray([
                 new Header('Random-Header', 'test'),
-            ]
+            ])
         );
 
         self::assertSame(StatusCode::FOUND, $response->getStatusCode());
         self::assertSame(StatusCode::FOUND->asPhrase(), $response->getReasonPhrase());
-        self::assertSame('test', $response->getHeaderLine('Random-Header'));
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('test', $response->getHeaders()->getHeaderLine('Random-Header'));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testCannotReplaceLocationHeaderFromConstruct(): void
     {
         $response = new RedirectResponse(
             new Uri(path: '/'),
-            headers: [
+            headers: HeaderCollection::fromArray([
                 new ContentType('text'),
                 new Location('uri.com'),
-            ]
+            ])
         );
 
-        self::assertSame('text', $response->getHeaderLine(HeaderName::CONTENT_TYPE));
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('text', $response->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testGetUri(): void
@@ -112,8 +113,8 @@ final class RedirectResponseTest extends TestCase
         self::assertNotSame($uri, $uri2);
         self::assertSame($uri, $response->getUri());
         self::assertSame($uri2, $response2->getUri());
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
-        self::assertSame('/', $response2->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response2->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testSecure(): void
@@ -131,7 +132,7 @@ final class RedirectResponseTest extends TestCase
         self::assertNotSame($uri, $response2->getUri());
         self::assertSame($host, $response2->getUri()->getHost());
         self::assertSame('https://www.example.com/new-path', (string) $response2->getUri());
-        self::assertSame('https://www.example.com/new-path', $response2->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('https://www.example.com/new-path', $response2->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testBack(): void
@@ -140,18 +141,18 @@ final class RedirectResponseTest extends TestCase
             $uri = new Uri(path: '/')
         );
         $response2 = $response->back(
-            new ServerRequest(headers: [new Referer($path = '/path')]),
+            new ServerRequest(headers: HeaderCollection::fromArray([new Referer($path = '/path')])),
         );
         $response3 = $response->back(
             new ServerRequest(),
         );
         $response4 = $response->back(
-            new ServerRequest(headers: [new Referer('//www.external-uri.com/path')]),
+            new ServerRequest(headers: HeaderCollection::fromArray([new Referer('//www.external-uri.com/path')])),
         );
         $response5 = $response->back(
             new ServerRequest(
                 uri: new Uri(host: 'www.example.com'),
-                headers: [new Referer($url = '//www.example.com/path')]
+                headers: HeaderCollection::fromArray([new Referer($url = '//www.example.com/path')])
             ),
         );
 
@@ -162,16 +163,16 @@ final class RedirectResponseTest extends TestCase
         self::assertNotSame($uri, $response3->getUri());
 
         self::assertSame($path, (string) $response2->getUri());
-        self::assertSame($path, $response2->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame($path, $response2->getHeaders()->getHeaderLine(HeaderName::LOCATION));
 
         self::assertSame('/', (string) $response3->getUri());
-        self::assertSame('/', $response3->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response3->getHeaders()->getHeaderLine(HeaderName::LOCATION));
 
         self::assertSame('/', (string) $response4->getUri());
-        self::assertSame('/', $response4->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response4->getHeaders()->getHeaderLine(HeaderName::LOCATION));
 
         self::assertSame($url, (string) $response5->getUri());
-        self::assertSame($url, $response5->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame($url, $response5->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 
     public function testThrow(): void
@@ -216,6 +217,6 @@ final class RedirectResponseTest extends TestCase
         $response = new RedirectResponse($emptyUri);
 
         // The Location header should default to '/' when the URI is empty
-        self::assertSame('/', $response->getHeaderLine(HeaderName::LOCATION));
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
 }

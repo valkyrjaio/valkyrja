@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\File\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
+use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
+use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
+use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Factory\PsrStreamFactory;
 
-use function array_map;
+use function is_array;
 
 abstract class PsrUploadedFileFactory
 {
@@ -40,13 +43,53 @@ abstract class PsrUploadedFileFactory
     /**
      * Get an array of UploadedFile objects from an array of PSR UploadedFileInterface objects.
      *
-     * @return UploadedFileContract[]
+     * @param array<array-key, mixed> $files The files
      */
-    public static function fromPsrArray(UploadedFileInterface ...$files): array
+    public static function fromPsrArray(array $files): UploadedFileCollectionContract
     {
-        return array_map(
-            static fn (UploadedFileInterface $file): UploadedFileContract => PsrUploadedFileFactory::fromPsr($file),
-            $files,
-        );
+        $collection = [];
+
+        /**
+         * @var mixed $file
+         */
+        foreach ($files as $file) {
+            if (is_array($file)) {
+                $file = self::fromPsrArray($file);
+            }
+
+            if ($file instanceof UploadedFileInterface) {
+                $file = self::fromPsr($file);
+            }
+
+            if ($file instanceof UploadedFileContract || $file instanceof UploadedFileCollectionContract) {
+                $collection[] = $file;
+            }
+        }
+
+        return UploadedFileCollection::fromArray($collection);
+    }
+
+    /**
+     * Get an array of PSR UploadedFileInterface objects from an UploadedFileCollection object.
+     *
+     * @return array<array-key, mixed>
+     */
+    public static function toPsrArray(UploadedFileCollectionContract $collection): array
+    {
+        $files = [];
+
+        foreach ($collection->getFiles() as $item) {
+            if ($item instanceof UploadedFileCollectionContract) {
+                $item = self::toPsrArray($item);
+            }
+
+            if ($item instanceof UploadedFileContract) {
+                $item = new PsrUploadedFile($item);
+            }
+
+            $files[] = $item;
+        }
+
+        return $files;
     }
 }

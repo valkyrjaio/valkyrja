@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\File\Collection\Contract;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 
 /**
- * @template T of UploadedFileContract|self
+ * @template T of UploadedFileContract|UploadedFileCollectionContract
  */
 interface UploadedFileCollectionContract
 {
@@ -70,6 +70,8 @@ interface UploadedFileCollectionContract
 
     /**
      * Get a new instance with the added files.
+     *
+     * @param array<array-key, T> $files The files
      */
-    public function withAddedFiles(UploadedFileContract|self ...$files): static;
+    public function withAddedFiles(array $files): static;
 }

@@ -73,7 +73,11 @@ class Request implements RequestInterface
     #[Override]
     public function hasHeader(string $name): bool
     {
-        return $this->request->hasHeader($name);
+        if ($name === '') {
+            return false;
+        }
+
+        return $this->request->getHeaders()->hasHeader($name);
     }
 
     /**
@@ -82,7 +86,11 @@ class Request implements RequestInterface
     #[Override]
     public function getHeader(string $name): array
     {
-        $header = $this->request->getHeader($name);
+        if ($name === '') {
+            return [];
+        }
+
+        $header = $this->request->getHeaders()->getHeader($name);
 
         if ($header === null) {
             return [];
@@ -97,7 +105,11 @@ class Request implements RequestInterface
     #[Override]
     public function getHeaderLine(string $name): string
     {
-        return $this->request->getHeaderLine($name);
+        if ($name === '') {
+            return '';
+        }
+
+        return $this->request->getHeaders()->getHeaderLine($name);
     }
 
     /**
@@ -110,7 +122,9 @@ class Request implements RequestInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->request = $this->request->withHeader(new Header($name, ...$value));
+        $new->request = $this->request->withHeaders(
+            $this->request->getHeaders()->withHeader(new Header($name, ...$value))
+        );
 
         return $new;
     }
@@ -125,7 +139,9 @@ class Request implements RequestInterface
 
         $value = is_array($value) ? $value : [$value];
 
-        $new->request = $this->request->withAddedHeader(new Header($name, ...$value));
+        $new->request = $this->request->withHeaders(
+            $this->request->getHeaders()->withAddedHeaders(new Header($name, ...$value))
+        );
 
         return $new;
     }
@@ -138,7 +154,13 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withoutHeader($name);
+        if ($name === '') {
+            return $new;
+        }
+
+        $new->request = $this->request->withHeaders(
+            $this->request->getHeaders()->withoutHeader($name)
+        );
 
         return $new;
     }

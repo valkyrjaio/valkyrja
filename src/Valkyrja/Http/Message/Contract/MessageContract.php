@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Contract;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
 interface MessageContract
@@ -32,49 +32,13 @@ interface MessageContract
 
     /**
      * Get all the headers.
-     *
-     * @return array<lowercase-string, HeaderContract>
      */
-    public function getHeaders(): array;
+    public function getHeaders(): HeaderCollectionContract;
 
     /**
-     * Determine if a header exists.
+     * Create a new instance with the provided headers.
      */
-    public function hasHeader(string $name): bool;
-
-    /**
-     * Get a header by name.
-     */
-    public function getHeader(string $name): HeaderContract|null;
-
-    /**
-     * Get the header's values as a string.
-     */
-    public function getHeaderLine(string $name): string;
-
-    /**
-     * Create a new instance with the specified header, overriding any existing header with the same name.
-     *
-     * @throws InvalidArgumentException for invalid header names or values
-     */
-    public function withHeader(HeaderContract $header): static;
-
-    /**
-     * Create a new instance with the specified header appended.
-     * Existing values for the specified header will be maintained. The new
-     * value(s) will be appended to the existing list. If the header did not
-     * exist previously, it will be added.
-     *
-     * @throws InvalidArgumentException for invalid header names or values
-     */
-    public function withAddedHeader(HeaderContract $header): static;
-
-    /**
-     * Create a new instance without the specified header.
-     *
-     * @param string $name Case-insensitive header field name to remove
-     */
-    public function withoutHeader(string $name): static;
+    public function withHeaders(HeaderCollectionContract $headers): static;
 
     /**
      * Gets the body of the message.

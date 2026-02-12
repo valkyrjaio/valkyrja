@@ -25,7 +25,7 @@ final class CookieParamCollectionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->paramData = new CookieParamCollection(session: 'abc123', theme: 'dark');
+        $this->paramData = new CookieParamCollection(['session' => 'abc123', 'theme' => 'dark']);
     }
 
     public function testInstanceOfContract(): void
@@ -111,7 +111,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(lang: 'en');
+        $new = $this->paramData->withAddedParams(['lang' => 'en']);
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('abc123', $new->getParam('session'));
@@ -121,7 +121,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(lang: 'en');
+        $this->paramData->withAddedParams(['lang' => 'en']);
 
         self::assertFalse($this->paramData->hasParam('lang'));
     }
@@ -135,7 +135,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testFromArray(): void
     {
-        $paramData = $this->paramData->fromArray(['token' => 'xyz', 'user' => 'john']);
+        $paramData = CookieParamCollection::fromArray(['token' => 'xyz', 'user' => 'john']);
 
         self::assertSame('xyz', $paramData->getParam('token'));
         self::assertSame('john', $paramData->getParam('user'));

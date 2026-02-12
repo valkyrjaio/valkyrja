@@ -15,6 +15,7 @@ namespace Valkyrja\View\Factory;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory as HttpMessageResponseFactory;
@@ -38,7 +39,7 @@ class ResponseFactory implements ResponseFactoryContract
         string $template,
         array|null $data = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): ResponseContract {
         $content = $this->renderer->createTemplate($template, $data ?? [])->render();
 

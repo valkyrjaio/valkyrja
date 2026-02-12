@@ -16,7 +16,8 @@ namespace Valkyrja\Http\Message\Response;
 use InvalidArgumentException;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\SetCookie;
 use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -39,22 +40,17 @@ class Response implements ResponseContract
     protected string $statusPhrase;
 
     /**
-     * @param StreamContract   $body       [optional] The body
-     * @param StatusCode       $statusCode [optional] The status
-     * @param HeaderContract[] $headers    [optional] The headers
-     *
      * @throws InvalidArgumentException
      * @throws InvalidStreamException
      */
     public function __construct(
         StreamContract $body = new Stream(),
         protected StatusCode $statusCode = StatusCode::OK,
-        array $headers = []
+        protected HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         $this->statusPhrase = $statusCode->asPhrase();
 
         $this->setBody($body);
-        $this->setHeaders(...$headers);
     }
 
     /**
@@ -64,7 +60,7 @@ class Response implements ResponseContract
     public static function create(
         string|null $content = null,
         StatusCode|null $statusCode = null,
-        array|null $headers = null
+        HeaderCollectionContract|null $headers = null
     ): static {
         $stream = new Stream();
         $stream->write($content ?? '');
@@ -73,7 +69,7 @@ class Response implements ResponseContract
         return new static(
             $stream,
             $statusCode ?? StatusCode::OK,
-            $headers ?? []
+            $headers ?? new HeaderCollection()
         );
     }
 
@@ -115,7 +111,9 @@ class Response implements ResponseContract
     #[Override]
     public function withCookie(CookieContract $cookie): static
     {
-        return $this->withAddedHeader(new SetCookie($cookie));
+        $headers = $this->headers->withAddedHeaders(new SetCookie($cookie));
+
+        return $this->withHeaders($headers);
     }
 
     /**
@@ -124,7 +122,9 @@ class Response implements ResponseContract
     #[Override]
     public function withoutCookie(CookieContract $cookie): static
     {
-        return $this->withAddedHeader(new SetCookie($cookie->delete()));
+        $headers = $this->headers->withAddedHeaders(new SetCookie($cookie->delete()));
+
+        return $this->withHeaders($headers);
     }
 
     /**
@@ -151,7 +151,7 @@ class Response implements ResponseContract
     #[Override]
     public function sendHeaders(): static
     {
-        foreach ($this->headers as $header) {
+        foreach ($this->headers->getHeaders() as $header) {
             header($header->__toString(), false);
         }
 

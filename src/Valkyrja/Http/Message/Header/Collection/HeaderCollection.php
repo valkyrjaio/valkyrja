@@ -47,7 +47,7 @@ class HeaderCollection implements HeaderCollectionContract
      *
      * @param array<array-key, mixed> $data The data to create from
      */
-    public function fromArray(array $data): static
+    public static function fromArray(array $data): static
     {
         $headers = [];
 
@@ -56,12 +56,26 @@ class HeaderCollection implements HeaderCollectionContract
          * @var mixed     $param
          */
         foreach ($data as $name => $param) {
-            $this->validateHeader($param);
+            static::validateHeader($param);
 
             $headers[$name] = $param;
         }
 
         return new static(...$headers);
+    }
+
+    /**
+     * Validate a header.
+     *
+     * @psalm-assert HeaderContract $param
+     *
+     * @phpstan-assert HeaderContract $param
+     */
+    protected static function validateHeader(mixed $param): void
+    {
+        if (! $param instanceof HeaderContract) {
+            throw new InvalidArgumentException('Param must be header');
+        }
     }
 
     /**
@@ -86,6 +100,21 @@ class HeaderCollection implements HeaderCollectionContract
         $name = strtolower($name);
 
         return $this->headers[$name];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getHeaderLine(string $name): string
+    {
+        $header = $this->getHeader($name);
+
+        if ($header === null) {
+            return '';
+        }
+
+        return $header->getValuesAsString();
     }
 
     /**
@@ -132,6 +161,24 @@ class HeaderCollection implements HeaderCollectionContract
         $new = clone $this;
 
         $new->overrideHeader($header);
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutHeader(string $name): static
+    {
+        if (! $this->hasHeader($name)) {
+            return clone $this;
+        }
+
+        $headerName = strtolower($name);
+        $new        = clone $this;
+
+        unset($new->headers[$headerName]);
 
         return $new;
     }
@@ -240,19 +287,5 @@ class HeaderCollection implements HeaderCollectionContract
         }
 
         $this->headers = $headers;
-    }
-
-    /**
-     * Validate a header.
-     *
-     * @psalm-assert HeaderContract $param
-     *
-     * @phpstan-assert HeaderContract $param
-     */
-    protected function validateHeader(mixed $param): void
-    {
-        if (! $param instanceof HeaderContract) {
-            throw new InvalidArgumentException('Param must be header');
-        }
     }
 }

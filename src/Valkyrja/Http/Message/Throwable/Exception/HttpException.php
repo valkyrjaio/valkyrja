@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 class HttpException extends RuntimeException
@@ -28,29 +29,24 @@ class HttpException extends RuntimeException
 
     /**
      * The headers for this exception.
-     *
-     * @var HeaderContract[]
      */
-    protected array $headers = [];
+    protected HeaderCollectionContract $headers;
 
     /**
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param StatusCode|null       $statusCode [optional] The status code to use
-     * @param string|null           $message    [optional] The Exception message to throw
-     * @param HeaderContract[]|null $headers    [optional] The headers to send
-     * @param ResponseContract|null $response   [optional] The Response to send
+     * @param string|null $message [optional] The Exception message to throw
      */
     public function __construct(
         StatusCode|null $statusCode = null,
         string|null $message = null,
-        array|null $headers = [],
+        HeaderCollectionContract|null $headers = null,
         protected ResponseContract|null $response = null
     ) {
         $this->statusCode = $statusCode
             ?? $response?->getStatusCode()
             ?? StatusCode::INTERNAL_SERVER_ERROR;
-        $this->headers    = $headers ?? [];
+        $this->headers    = $headers ?? new HeaderCollection();
         $this->response   = $response?->withStatus($this->statusCode);
 
         parent::__construct($message ?? '');
@@ -66,10 +62,8 @@ class HttpException extends RuntimeException
 
     /**
      * Get the headers set for this exception.
-     *
-     * @return HeaderContract[]
      */
-    public function getHeaders(): array
+    public function getHeaders(): HeaderCollectionContract
     {
         return $this->headers;
     }

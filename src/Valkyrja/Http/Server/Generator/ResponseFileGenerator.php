@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Server\Generator;
 
 use Override;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -48,10 +49,13 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
         $statusCodeContents = $this->generateObjectsContents($response->getStatusCode());
         $statusPhrase       = $response->getReasonPhrase();
 
+        $headerCollectionClassName = HeaderCollection::class;
+
         $headersContentsAsString = $this->getHeadersContents();
 
         $additionalResponseWithMethods = $this->getAdditionalResponseWithMethods();
 
+        // withBody is used because not all responses may allow a body to be passed via the constructor
         return <<<PHP
             <?php
 
@@ -62,9 +66,9 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
             $streamContents
 
             \$response = new $responseClassName(
-                headers: [
+                headers: new $headerCollectionClassName(
                     $headersContentsAsString
-                ]
+                )
             )
                 ->withStatus($statusCodeContents, '$statusPhrase')
                 ->withBody(\$stream)
@@ -140,7 +144,7 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
      */
     protected function getHeadersContents(): string
     {
-        $headers = $this->response->getHeaders();
+        $headers = $this->response->getHeaders()->getHeaders();
 
         $headersContents = [];
 
