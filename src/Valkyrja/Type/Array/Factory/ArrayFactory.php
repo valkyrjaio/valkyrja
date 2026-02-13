@@ -202,6 +202,6 @@ class ArrayFactory
      */
     public static function ensureKeysAreStrings(array $array): array
     {
-        return array_combine(array_map('strval', array_keys($array)), $array);
+        return array_combine(array_map(static fn (string|int $key): string => (string) $key, array_keys($array)), $array);
     }
 }

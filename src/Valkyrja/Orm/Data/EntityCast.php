@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Data;
 
 use Valkyrja\Orm\Entity\Contract\EntityContract;
-use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 
 class EntityCast extends Cast
 {
     /**
-     * @param CastType|class-string<TypeContract>|class-string<EntityContract> $type          The type
-     * @param string[]|null                                                    $relationships [optional] The relationships
+     * @param CastType|class-string<EntityContract> $type          The type
+     * @param string[]|null                         $relationships [optional] The relationships
      */
     public function __construct(
         CastType|string $type,

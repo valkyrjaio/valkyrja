@@ -362,6 +362,9 @@ abstract class Model implements ModelContract
     {
         array_walk(
             $properties,
+            /**
+             * @param scalar|object|array<array-key, mixed>|resource|null $value The value
+             */
             function (mixed $value, string $property) use ($modifyValue): void {
                 $this->__set(
                     $property,
@@ -429,6 +432,9 @@ abstract class Model implements ModelContract
 
         return array_filter(
             $allProperties,
+            /**
+             * @param scalar|object|array<array-key, mixed>|resource|null $value The value
+             */
             static fn (mixed $value, string $property): bool => in_array($property, $properties, true),
             ARRAY_FILTER_USE_BOTH
         );
@@ -445,6 +451,9 @@ abstract class Model implements ModelContract
     {
         return array_filter(
             $properties,
+            /**
+             * @param scalar|object|array<array-key, mixed>|resource|null $value The value
+             */
             fn (mixed $value, string $property) => ($this->internalOriginalProperties[$property] ?? null) !== $value,
             ARRAY_FILTER_USE_BOTH
         );
