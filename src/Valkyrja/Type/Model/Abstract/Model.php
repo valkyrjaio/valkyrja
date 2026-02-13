@@ -82,8 +82,9 @@ abstract class Model implements ModelContract
             return $value;
         }
 
-        /** @var array<string, mixed> $value */
         $value = ArrayFactory::fromMixed($value);
+
+        ArrayFactory::validateKeysAreStrings($value);
 
         return static::fromArray($value);
     }
@@ -139,31 +140,34 @@ abstract class Model implements ModelContract
 
     /**
      * @inheritDoc
+     *
+     * @param string $offset The offset
      */
     #[Override]
     public function offsetExists($offset): bool
     {
-        /** @var string $offset */
         return isset($this->{$offset});
     }
 
     /**
      * @inheritDoc
+     *
+     * @param string $offset The offset
      */
     #[Override]
     public function offsetGet($offset): mixed
     {
-        /** @var string $offset */
         return $this->__get($offset);
     }
 
     /**
      * @inheritDoc
+     *
+     * @param string $offset The offset
      */
     #[Override]
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
-        /** @var string $offset */
         $this->__set($offset, $value);
     }
 
@@ -425,7 +429,7 @@ abstract class Model implements ModelContract
 
         return array_filter(
             $allProperties,
-            static fn (mixed $value, string $property) => in_array($property, $properties, true),
+            static fn (mixed $value, string $property): bool => in_array($property, $properties, true),
             ARRAY_FILTER_USE_BOTH
         );
     }
@@ -441,12 +445,7 @@ abstract class Model implements ModelContract
     {
         return array_filter(
             $properties,
-            function (mixed $value, string $property) {
-                /** @var mixed $originalProperty */
-                $originalProperty = $this->internalOriginalProperties[$property] ?? null;
-
-                return $originalProperty !== $value;
-            },
+            fn (mixed $value, string $property) => ($this->internalOriginalProperties[$property] ?? null) !== $value,
             ARRAY_FILTER_USE_BOTH
         );
     }
@@ -454,14 +453,17 @@ abstract class Model implements ModelContract
     /**
      * Set property values.
      *
-     * @param array<string, mixed> $properties The properties
-     * @param callable             $callable   The callable
+     * @param array<string, mixed>   $properties The properties
+     * @param callable(string):mixed $callable   The callable
      *
      * @return array<string, mixed>
      */
     protected function internalSetPropertyValues(array $properties, callable $callable): array
     {
-        array_walk($properties, static fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value = $callable($property));
+        array_walk(
+            $properties,
+            static fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value = $callable($property)
+        );
 
         /** @var array<string, mixed> $properties */
         return $properties;
