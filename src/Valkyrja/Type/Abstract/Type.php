@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * @implements TypeContract<T>
+ * @template T of scalar|object|array<array-key, mixed>|null
  *
- * @template T
+ * @implements TypeContract<T>
  */
 abstract class Type implements TypeContract
 {

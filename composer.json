@@ -120,6 +120,7 @@
     "psalm-shepherd"                                  : "cd .github/ci/psalm && composer shepherd",
     "psalm-shepherd-with-stats"                       : "cd .github/ci/psalm && composer shepherd-with-stats",
     "psalm-stats"                                     : "cd .github/ci/psalm && composer stats",
+    "psalm-update-baseline"                           : "cd .github/ci/psalm && composer update-baseline",
     "psalm-outdated-check"                            : "cd .github/ci/psalm && composer install && composer outdated --direct --minor-only",
     "psalm-outdated-check-major-release"              : "cd .github/ci/psalm && composer install && composer outdated --direct",
     "psalm-composer-update"                           : "cd .github/ci/psalm && composer update",

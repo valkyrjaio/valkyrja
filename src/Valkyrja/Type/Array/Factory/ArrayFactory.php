@@ -55,7 +55,7 @@ class ArrayFactory
                 return $defaultValue;
             }
 
-            /** @var mixed $value */
+            /** @var scalar|object|array<array-key, mixed>|resource|null $value */
             // Trying to get the item from the current value or set the default
             $value = $value[$item] ?? null;
 
@@ -127,8 +127,8 @@ class ArrayFactory
     public static function withoutNull(array &$subject): array
     {
         /**
-         * @var array-key $key
-         * @var mixed     $value
+         * @var array-key                                           $key
+         * @var scalar|object|array<array-key, mixed>|resource|null $value
          */
         foreach ($subject as $key => &$value) {
             if (is_array($value)) {
@@ -202,6 +202,6 @@ class ArrayFactory
      */
     public static function ensureKeysAreStrings(array $array): array
     {
-        return array_combine(array_map('strval', array_keys($array)), $array);
+        return array_combine(array_map(static fn (string|int $key): string => (string) $key, array_keys($array)), $array);
     }
 }

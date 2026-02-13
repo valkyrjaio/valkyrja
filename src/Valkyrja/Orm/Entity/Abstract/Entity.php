@@ -98,7 +98,7 @@ abstract class Entity extends Model implements EntityContract
     #[Override]
     public function getIdValue(): string|int
     {
-        /** @var mixed $id */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $id */
         $id = $this->__get(static::getIdField());
 
         if (is_int($id) || (is_string($id) && $id !== '')) {
@@ -192,7 +192,7 @@ abstract class Entity extends Model implements EntityContract
     {
         array_walk(
             $allProperties,
-            fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value
+            fn (mixed &$value, string $property): mixed => /** @var scalar|object|array<array-key, mixed>|resource|null $value */ $value
                 = $this->internalGetPropertyValueForDataStore($castings, $property)
         );
 
@@ -210,7 +210,7 @@ abstract class Entity extends Model implements EntityContract
      */
     protected function internalGetPropertyValueForDataStore(array $castings, string $property): mixed
     {
-        /** @var mixed $value */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $value */
         $value = $this->__get($property);
 
         // If there is no type specified or the value is null just return the value

@@ -290,7 +290,6 @@ class OptionParameter extends Parameter implements OptionParameterContract
             $value = $castType::fromValue($option->getValue());
 
             if ($cast->convert) {
-                /** @psalm-suppress MixedAssignment */
                 $values[] = $value->asValue();
 
                 continue;

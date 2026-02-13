@@ -211,7 +211,7 @@ abstract class Session implements SessionContract
             return false;
         }
 
-        /** @var mixed $sessionToken */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $sessionToken */
         $sessionToken = $this->get($id);
 
         if (is_string($sessionToken) && hash_equals($token, $sessionToken)) {

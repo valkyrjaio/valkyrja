@@ -82,7 +82,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
             // Iterate through the params
             foreach ($parameters as $parameter) {
                 $name = $parameter->getName();
-                /** @var mixed $value */
+                /** @var scalar|object|array<array-key, mixed>|resource|null $value */
                 $value = $arguments[$name];
                 $type  = $parameter->getCast()->type ?? null;
 

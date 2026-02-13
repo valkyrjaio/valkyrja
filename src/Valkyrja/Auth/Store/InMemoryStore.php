@@ -83,7 +83,7 @@ class InMemoryStore implements StoreContract
         $match = null;
 
         foreach ($retrievalFields as $field => $retrievalField) {
-            /** @var mixed $value */
+            /** @var scalar|object|array<array-key, mixed>|resource|null $value */
             $value = $user->__get($field);
 
             if ($match === null) {

@@ -50,7 +50,7 @@ abstract class PsrUploadedFileFactory
         $collection = [];
 
         /**
-         * @var mixed $file
+         * @var scalar|object|array<array-key, mixed>|resource|null $file
          */
         foreach ($files as $file) {
             if (is_array($file)) {

@@ -57,7 +57,7 @@ trait UserMethods
      */
     public function getUsernameValue(): string
     {
-        /** @var mixed $value */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $value */
         $value = $this->__get(static::getUsernameField());
 
         if (is_string($value) && $value !== '') {
@@ -75,7 +75,7 @@ trait UserMethods
      */
     public function getPasswordValue(): string
     {
-        /** @var mixed $value */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $value */
         $value = $this->__get(static::getPasswordField());
 
         if (is_string($value) && $value !== '') {
