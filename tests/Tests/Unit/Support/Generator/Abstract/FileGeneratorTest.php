@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Support\Generator\Abstract;
 
 use Override;
 use RuntimeException;
-use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;

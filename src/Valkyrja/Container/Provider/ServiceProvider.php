@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Override;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Support\Directory\Directory;
 
 final class ServiceProvider extends Provider
 {

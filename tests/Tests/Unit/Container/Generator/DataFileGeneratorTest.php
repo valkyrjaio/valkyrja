@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Generator;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\DataFileGenerator;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
