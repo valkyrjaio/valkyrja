@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Dispatcher;
 
+use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Dispatcher;
+use Valkyrja\Tests\Classes\Event\ArgumentsCapableEventClass;
 use Valkyrja\Tests\Classes\Event\DispatchCollectableEventClass;
 use Valkyrja\Tests\Classes\Event\StoppableEventClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -164,5 +166,29 @@ final class DispatcherTest extends TestCase
         self::assertSame(['test'], $eventAfterDispatchById->getDispatches());
 
         self::$dispatched = false;
+    }
+
+    /**
+     * Test dispatchById with a non-existent class returns stdClass.
+     */
+    public function testDispatchByIdWithNonExistentClassReturnsStdClass(): void
+    {
+        $dispatcher = new Dispatcher();
+
+        $result = $dispatcher->dispatchById('NonExistent\\Class\\Name');
+
+        self::assertInstanceOf(stdClass::class, $result);
+    }
+
+    /**
+     * Test dispatchById with a class implementing ArgumentsCapableEventContract.
+     */
+    public function testDispatchByIdWithArgumentsCapableEvent(): void
+    {
+        $dispatcher = new Dispatcher();
+
+        $result = $dispatcher->dispatchById(ArgumentsCapableEventClass::class);
+
+        self::assertInstanceOf(ArgumentsCapableEventClass::class, $result);
     }
 }
