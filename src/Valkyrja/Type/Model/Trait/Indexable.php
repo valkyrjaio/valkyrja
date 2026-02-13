@@ -71,7 +71,6 @@ trait Indexable
             $name = $reversedIndexes[$index] ?? null;
 
             if ($name !== null) {
-                /** @psalm-suppress MixedAssignment */
                 $mappedProperties[$name] = $value;
             }
         }
@@ -102,7 +101,6 @@ trait Indexable
             $index = $indexes[$name] ?? null;
 
             if ($index !== null) {
-                /** @psalm-suppress MixedAssignment */
                 $indexedArray[$index] = $value;
             }
         }

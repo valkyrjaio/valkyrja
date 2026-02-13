@@ -1,3 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+<files psalm-version="6.15.1@28dc127af1b5aecd52314f6f645bafc10d0e11f9">
+  <file src="../../../src/Valkyrja/Cli/Routing/Data/ArgumentParameter.php">
+    <MixedAssignment>
+      <code><![CDATA[$values[]]]></code>
+    </MixedAssignment>
+  </file>
+  <file src="../../../src/Valkyrja/Cli/Routing/Data/OptionParameter.php">
+    <MixedAssignment>
+      <code><![CDATA[$values[]]]></code>
+    </MixedAssignment>
+  </file>
+  <file src="../../../src/Valkyrja/Cli/Routing/Provider/ServiceProvider.php">
+    <UnresolvableInclude>
+      <code><![CDATA[require $absoluteDataFilePath]]></code>
+    </UnresolvableInclude>
+  </file>
+  <file src="../../../src/Valkyrja/Container/Provider/ServiceProvider.php">
+    <UnresolvableInclude>
+      <code><![CDATA[require $absoluteDataFilePath]]></code>
+    </UnresolvableInclude>
+  </file>
+  <file src="../../../src/Valkyrja/Dispatch/Dispatcher/Dispatcher.php">
+    <MixedAssignment>
+      <code><![CDATA[$dependencies[$key]]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[$class::$method(...$arguments)]]></code>
+      <code><![CDATA[$method]]></code>
+    </MixedMethodCall>
+  </file>
+  <file src="../../../src/Valkyrja/Event/Dispatcher/Dispatcher.php">
+    <MixedMethodCall>
+      <code><![CDATA[new $eventId()]]></code>
+    </MixedMethodCall>
+  </file>
+  <file src="../../../src/Valkyrja/Event/Provider/ServiceProvider.php">
+    <UnresolvableInclude>
+      <code><![CDATA[require $absoluteDataFilePath]]></code>
+    </UnresolvableInclude>
+  </file>
+  <file src="../../../src/Valkyrja/Http/Routing/Provider/ServiceProvider.php">
+    <UnresolvableInclude>
+      <code><![CDATA[require $absoluteDataFilePath]]></code>
+    </UnresolvableInclude>
+  </file>
+  <file src="../../../src/Valkyrja/Type/Model/Trait/Indexable.php">
+    <MixedAssignment>
+      <code><![CDATA[$indexedArray[$index]]]></code>
+      <code><![CDATA[$mappedProperties[$name]]]></code>
+    </MixedAssignment>
+  </file>
+  <file src="../../../src/Valkyrja/Type/Object/Factory/ObjectFactory.php">
+    <MixedAssignment>
+      <code><![CDATA[$array[$sanitizedKey]]]></code>
+    </MixedAssignment>
+  </file>
 </files>

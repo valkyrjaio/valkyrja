@@ -15,10 +15,12 @@ namespace Valkyrja\Event\Dispatcher;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
+use stdClass;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
+use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
@@ -127,7 +129,16 @@ class Dispatcher implements DispatcherContract
      */
     protected function getEventClassFromId(string $eventId, array $arguments = []): object
     {
-        /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments for the class */
-        return new $eventId(...$arguments);
+        if (! class_exists($eventId)) {
+            return new stdClass();
+        }
+
+        $event = new $eventId();
+
+        if ($event instanceof ArgumentsCapableEventContract) {
+            return $event->setArguments($arguments);
+        }
+
+        return $event;
     }
 }

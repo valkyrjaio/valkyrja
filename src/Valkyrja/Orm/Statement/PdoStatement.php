@@ -171,7 +171,7 @@ class PdoStatement implements StatementContract
             return 0;
         }
 
-        /** @var mixed $count */
+        /** @var scalar $count */
         $count = $firstResults['COUNT(*)']
             ?? $firstResults['count']
             ?? 0;

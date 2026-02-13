@@ -42,8 +42,8 @@ abstract class UploadedFileFactory
         $normalized = [];
 
         /**
-         * @var array-key $key
-         * @var mixed     $value
+         * @var array-key                                         $key
+         * @var array<array-key, mixed>|UploadedFileContract|null $value
          */
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFileContract) {
@@ -81,7 +81,7 @@ abstract class UploadedFileFactory
      */
     public static function createUploadedFileFromSpec(array $value): UploadedFileContract|UploadedFileCollectionContract
     {
-        /** @var mixed $tmpName */
+        /** @var array<array-key, mixed>|string|null $tmpName */
         $tmpName = $value['tmp_name'] ?? null;
 
         if (is_array($tmpName)) {
@@ -114,7 +114,7 @@ abstract class UploadedFileFactory
     public static function normalizeNestedFileSpec(array $files = []): UploadedFileCollectionContract
     {
         $normalizedFiles = [];
-        /** @var mixed $filesTmpName */
+        /** @var array<array-key, mixed>|null $filesTmpName */
         $filesTmpName = $files['tmp_name'] ?? null;
 
         if (! is_array($filesTmpName)) {

@@ -52,7 +52,7 @@ class ObjectFactory
      */
     public static function fromString(string $subject): object
     {
-        /** @var mixed $decoded */
+        /** @var object|scalar|null $decoded */
         $decoded = json_decode($subject, false, 512, JSON_THROW_ON_ERROR);
 
         if (! is_object($decoded)) {
@@ -86,7 +86,7 @@ class ObjectFactory
             $options['allowed_classes'] = $allowedClasses;
         }
 
-        /** @var mixed $unserialized */
+        /** @var object|scalar|array<array-key, mixed>|null $unserialized */
         $unserialized = unserialize($subject, $options);
 
         if (! is_object($unserialized)) {
@@ -138,7 +138,6 @@ class ObjectFactory
             }
 
             // Set the property and value
-            /** @psalm-suppress MixedAssignment */
             $array[$sanitizedKey] = $value;
         }
 

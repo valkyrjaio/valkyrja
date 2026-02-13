@@ -131,11 +131,7 @@ final class ServiceProvider extends Provider
         $absoluteDataFilePath = Directory::dataPath($dataFilePath);
 
         if ($useData && is_file(filename: $absoluteDataFilePath)) {
-            /**
-             * @psalm-suppress UnresolvableInclude
-             *
-             * @var mixed $data The data
-             */
+            /** @var scalar|object|array<array-key, mixed>|null $data The data */
             $data = require $absoluteDataFilePath;
         }
 

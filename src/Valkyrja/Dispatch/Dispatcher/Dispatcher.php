@@ -66,11 +66,7 @@ class Dispatcher implements DispatcherContract
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         // Get the class
         $class = $dispatch->getClass();
-        /**
-         * @psalm-suppress MixedMethodCall The developer should have passed the proper arguments
-         *
-         * @var mixed $response
-         */
+        /** @var mixed $response */
         $response = $dispatch->isStatic()
             ? $class::$method(...$arguments)
             : $this->container->get($class)->$method(...$arguments);
@@ -90,7 +86,7 @@ class Dispatcher implements DispatcherContract
         $class = $dispatch->getClass();
         /** @var mixed $response */
         $response = $dispatch->isStatic()
-            ? $class::$$property
+            ? $class::${$property}
             : $this->container->get($class)->{$property};
 
         return $response;
@@ -151,9 +147,9 @@ class Dispatcher implements DispatcherContract
     {
         $variable = $dispatch->getVariable();
 
-        global $$variable;
+        global ${$variable};
 
-        return $$variable;
+        return ${$variable};
     }
 
     /**
@@ -182,7 +178,6 @@ class Dispatcher implements DispatcherContract
         /** @var mixed $argument */
         foreach ($arguments as $key => $argument) {
             // Append the argument to the arguments list
-            /** @psalm-suppress MixedAssignment */
             $dependencies[$key] = $this->getArgumentValue($argument);
         }
 
