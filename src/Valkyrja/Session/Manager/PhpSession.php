@@ -102,7 +102,7 @@ class PhpSession extends Session
     {
         parent::setId($id);
 
-        $this->sessionId($id);
+        $this->sessionId();
     }
 
     /**
@@ -165,9 +165,9 @@ class PhpSession extends Session
     /**
      * Get or set the session id.
      */
-    protected function sessionId(string|null $sessionId = null): string|false
+    protected function sessionId(): string|false
     {
-        return session_id($sessionId);
+        return session_id();
     }
 
     /**
