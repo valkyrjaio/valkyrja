@@ -49,7 +49,7 @@ final class UploadedFileTest extends TestCase
 
     public function testMoveTo(): void
     {
-        Directory::$BASE_PATH = EnvClass::APP_DIR;
+        Directory::$basePath = EnvClass::APP_DIR;
 
         $file  = Directory::storagePath('/PsrUploadedFileTest-testMoveTo.txt');
         $file2 = Directory::storagePath('/PsrUploadedFileTest-testMoveTo2.txt');

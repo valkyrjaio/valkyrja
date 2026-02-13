@@ -118,7 +118,7 @@ final class AppTest extends TestCase
 
         App::directory($path);
 
-        self::assertSame($path, Directory::$BASE_PATH);
+        self::assertSame($path, Directory::$basePath);
     }
 
     /**

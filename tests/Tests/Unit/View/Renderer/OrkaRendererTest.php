@@ -43,8 +43,8 @@ final class OrkaRendererTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        $this->originalBasePath = Directory::$BASE_PATH;
-        Directory::$BASE_PATH   = EnvClass::APP_DIR;
+        $this->originalBasePath = Directory::$basePath;
+        Directory::$basePath    = EnvClass::APP_DIR;
     }
 
     #[Override]
@@ -69,7 +69,7 @@ final class OrkaRendererTest extends TestCase
             }
         }
 
-        Directory::$BASE_PATH = $this->originalBasePath;
+        Directory::$basePath = $this->originalBasePath;
 
         parent::tearDown();
     }
