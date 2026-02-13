@@ -15,6 +15,7 @@ namespace Valkyrja\Application\Entry\Abstract;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
@@ -23,7 +24,6 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ServiceProvider;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;

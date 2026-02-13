@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Server\Provider;
 
 use Override;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -31,7 +32,6 @@ use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddlewar
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 

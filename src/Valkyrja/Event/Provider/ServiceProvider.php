@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Provider;
 
 use Override;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
@@ -30,7 +31,6 @@ use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Support\Directory\Directory;
 
 final class ServiceProvider extends Provider
 {

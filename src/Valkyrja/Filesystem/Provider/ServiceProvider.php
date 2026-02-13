@@ -18,6 +18,7 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Override;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -27,7 +28,6 @@ use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
-use Valkyrja\Support\Directory\Directory;
 
 final class ServiceProvider extends Provider
 {

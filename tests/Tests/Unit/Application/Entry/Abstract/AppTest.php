@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Override;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -69,7 +70,6 @@ use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddlewar
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;

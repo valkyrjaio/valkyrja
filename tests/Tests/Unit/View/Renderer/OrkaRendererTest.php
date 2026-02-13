@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\View\Renderer;
 
 use Override;
-use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;

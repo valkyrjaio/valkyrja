@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
 use JsonException;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -33,7 +34,6 @@ use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 

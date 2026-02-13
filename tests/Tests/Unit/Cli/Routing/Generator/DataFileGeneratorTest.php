@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;

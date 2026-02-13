@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Directory;
 
-use Valkyrja\Support\Directory\Directory;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
