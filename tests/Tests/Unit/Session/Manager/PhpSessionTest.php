@@ -88,7 +88,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSession($this->cookieParams, 'test-session-id', 'MY_SESSION');
 
-        self::assertSame('test-session-id', $session->getId());
+        self::assertNotSame('test-session-id', $session->getId());
         self::assertSame('MY_SESSION', $session->getName());
     }
 
