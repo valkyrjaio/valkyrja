@@ -16,6 +16,7 @@ namespace Valkyrja\Type\Array\Factory;
 use ArrayAccess;
 use JsonException;
 use Stringable;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function array_filter;
@@ -92,7 +93,7 @@ class ArrayFactory
      */
     public static function fromString(string $subject): array
     {
-        /** @var mixed $decoded */
+        /** @var scalar|array<array-key, mixed>|bool|null $decoded */
         $decoded = json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
 
         if (! is_array($decoded)) {
@@ -164,5 +165,43 @@ class ArrayFactory
         }
 
         return (array) $value;
+    }
+
+    /**
+     * Validate an array's keys are strings.
+     *
+     * @param array<array-key, mixed> $array The array
+     *
+     * @psalm-assert array<string, mixed> $array
+     *
+     * @phpstan-assert array<string, mixed> $array
+     */
+    public static function validateKeysAreStrings(array $array): void
+    {
+        if (! static::determineIfKeysAreStrings($array)) {
+            throw new InvalidArgumentException('Array keys must be strings.');
+        }
+    }
+
+    /**
+     * Determine if an array's keys are strings.
+     *
+     * @param array<array-key, mixed> $array The array
+     */
+    public static function determineIfKeysAreStrings(array $array): bool
+    {
+        return ! array_any(array_keys($array), static fn (string|int $key): bool => ! is_string($key));
+    }
+
+    /**
+     * Ensure an array's keys are strings.
+     *
+     * @param array<array-key, mixed> $array The array
+     *
+     * @return array<string, mixed>
+     */
+    public static function ensureKeysAreStrings(array $array): array
+    {
+        return array_combine(array_map('strval', array_keys($array)), $array);
     }
 }

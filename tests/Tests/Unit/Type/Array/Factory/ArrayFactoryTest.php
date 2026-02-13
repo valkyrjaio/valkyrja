@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Array\Factory;
 use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function PHPUnit\Framework\assertSame;
@@ -117,5 +118,81 @@ final class ArrayFactoryTest extends TestCase
         $filtered = ArrayFactory::filterEmptyStrings(...$arr);
 
         assertSame([1 => 'test'], $filtered);
+    }
+
+    public function testDetermineIfKeysAreStringsWithIntKeys(): void
+    {
+        self::assertFalse(ArrayFactory::determineIfKeysAreStrings([0 => 'a', 1 => 'b']));
+    }
+
+    public function testDetermineIfKeysAreStringsWithStringKeys(): void
+    {
+        self::assertTrue(ArrayFactory::determineIfKeysAreStrings(['key' => 'a', 'key2' => 'b']));
+    }
+
+    public function testDetermineIfKeysAreStringsWithMixedKeys(): void
+    {
+        self::assertFalse(ArrayFactory::determineIfKeysAreStrings(['key' => 'a', 0 => 'b']));
+    }
+
+    public function testValidateKeysAreStringsDoesNotThrowForIntKeys(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        ArrayFactory::validateKeysAreStrings([1 => 'a', 'key2' => 'b']);
+    }
+
+    public function testValidateKeysAreStringsThrowsForStringKeys(): void
+    {
+        ArrayFactory::validateKeysAreStrings(['key' => 'a', 'key2' => 'b']);
+
+        self::assertTrue(true);
+    }
+
+    public function testDetermineIfKeysAreStringsWithEmptyArray(): void
+    {
+        self::assertTrue(ArrayFactory::determineIfKeysAreStrings([]));
+    }
+
+    public function testDetermineIfKeysAreStringsForIntKeys(): void
+    {
+        $result = ArrayFactory::determineIfKeysAreStrings([1 => 'a', 'key2' => 'b']);
+
+        self::assertFalse($result);
+    }
+
+    public function testDetermineIfKeysAreStringsForStringKeys(): void
+    {
+        $result = ArrayFactory::determineIfKeysAreStrings(['key' => 'a', 'key2' => 'b']);
+
+        self::assertTrue($result);
+    }
+
+    public function testEnsureKeysAreStringsConvertsIntKeys(): void
+    {
+        $result = ArrayFactory::ensureKeysAreStrings([0 => 'a', 1 => 'b']);
+
+        self::assertSame(['0' => 'a', '1' => 'b'], $result);
+    }
+
+    public function testEnsureKeysAreStringsPreservesStringKeys(): void
+    {
+        $result = ArrayFactory::ensureKeysAreStrings(['key' => 'a', 'key2' => 'b']);
+
+        self::assertSame(['key' => 'a', 'key2' => 'b'], $result);
+    }
+
+    public function testEnsureKeysAreStringsWithMixedKeys(): void
+    {
+        $result = ArrayFactory::ensureKeysAreStrings(['key' => 'a', 0 => 'b']);
+
+        self::assertSame(['key' => 'a', '0' => 'b'], $result);
+    }
+
+    public function testEnsureKeysAreStringsWithEmptyArray(): void
+    {
+        $result = ArrayFactory::ensureKeysAreStrings([]);
+
+        self::assertSame([], $result);
     }
 }
