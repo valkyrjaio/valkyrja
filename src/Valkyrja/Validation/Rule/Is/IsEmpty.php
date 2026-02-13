@@ -21,12 +21,7 @@ class IsEmpty extends Rule
     #[Override]
     public function isValid(): bool
     {
-        /** @var mixed $subject */
-        $subject = $this->subject;
-
-        return $subject === null
-            || $subject === ''
-            || empty($subject);
+        return empty($this->subject);
     }
 
     /**
