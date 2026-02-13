@@ -127,8 +127,8 @@ class ObjectFactory
 
         // Iterate through each subject
         /**
-         * @var string $key
-         * @var mixed  $value
+         * @var string                                              $key
+         * @var scalar|object|array<array-key, mixed>|resource|null $value
          */
         foreach ($castSubject as $key => $value) {
             $sanitizedKey = static::sanitizePropertyName($key, $filter);
@@ -177,7 +177,7 @@ class ObjectFactory
                 return $default;
             }
 
-            /** @var mixed $value */
+            /** @var scalar|object|array<array-key, mixed>|resource|null $value */
             // Trying to get the item from the current value or set the default
             $value = $value->$item ?? null;
 

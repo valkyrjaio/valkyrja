@@ -109,7 +109,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchListener(object $event, ListenerContract $listener): object
     {
         // Dispatch the listener with the event
-        /** @var mixed $dispatch */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $dispatch */
         $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), ['event' => $event]);
 
         // If the event is a dispatch collectable event

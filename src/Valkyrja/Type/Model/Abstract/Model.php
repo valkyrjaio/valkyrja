@@ -462,7 +462,7 @@ abstract class Model implements ModelContract
     {
         array_walk(
             $properties,
-            static fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value = $callable($property)
+            static fn (mixed &$value, string $property): mixed => /** @var scalar|object|array<array-key, mixed>|resource|null $value */ $value = $callable($property)
         );
 
         /** @var array<string, mixed> $properties */

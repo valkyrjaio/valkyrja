@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="6.15.1@28dc127af1b5aecd52314f6f645bafc10d0e11f9">
-  <file src="../../../src/Valkyrja/Cli/Routing/Data/ArgumentParameter.php">
-    <MixedAssignment>
-      <code><![CDATA[$values[]]]></code>
-    </MixedAssignment>
-  </file>
-  <file src="../../../src/Valkyrja/Cli/Routing/Data/OptionParameter.php">
-    <MixedAssignment>
-      <code><![CDATA[$values[]]]></code>
-    </MixedAssignment>
-  </file>
   <file src="../../../src/Valkyrja/Cli/Routing/Provider/ServiceProvider.php">
     <UnresolvableInclude>
       <code><![CDATA[require $absoluteDataFilePath]]></code>
@@ -21,9 +11,6 @@
     </UnresolvableInclude>
   </file>
   <file src="../../../src/Valkyrja/Dispatch/Dispatcher/Dispatcher.php">
-    <MixedAssignment>
-      <code><![CDATA[$dependencies[$key]]]></code>
-    </MixedAssignment>
     <MixedMethodCall>
       <code><![CDATA[$class::$method(...$arguments)]]></code>
       <code><![CDATA[$method]]></code>
@@ -44,15 +31,9 @@
       <code><![CDATA[require $absoluteDataFilePath]]></code>
     </UnresolvableInclude>
   </file>
-  <file src="../../../src/Valkyrja/Type/Model/Trait/Indexable.php">
-    <MixedAssignment>
-      <code><![CDATA[$indexedArray[$index]]]></code>
-      <code><![CDATA[$mappedProperties[$name]]]></code>
-    </MixedAssignment>
-  </file>
-  <file src="../../../src/Valkyrja/Type/Object/Factory/ObjectFactory.php">
-    <MixedAssignment>
-      <code><![CDATA[$array[$sanitizedKey]]]></code>
-    </MixedAssignment>
+  <file src="../../../src/Valkyrja/Orm/Data/EntityCast.php">
+    <PossiblyInvalidArgument>
+      <code><![CDATA[$type]]></code>
+    </PossiblyInvalidArgument>
   </file>
 </files>

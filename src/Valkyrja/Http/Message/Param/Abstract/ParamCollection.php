@@ -54,8 +54,8 @@ abstract class ParamCollection implements ParamCollectionContract
         $params = [];
 
         /**
-         * @var array-key $name
-         * @var mixed     $param
+         * @var array-key                                           $name
+         * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($data as $name => $param) {
             if (is_array($param)) {
@@ -198,7 +198,7 @@ abstract class ParamCollection implements ParamCollectionContract
     protected function validateParams(array $params): void
     {
         /**
-         * @var mixed $param
+         * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($params as $param) {
             static::validateParam($param);

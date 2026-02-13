@@ -111,7 +111,9 @@ class UuidFactory extends UidFactory
 
         // Convert Namespace UUID to bits
         for ($i = 0; $i < $length; $i += 2) {
-            $string .= chr((int) hexdec($hex[$i] . $hex[$i + 1]));
+            /** @var int<0, 255> $codepoint */
+            $codepoint = (int) hexdec($hex[$i] . $hex[$i + 1]);
+            $string .= chr($codepoint);
         }
 
         return $string;

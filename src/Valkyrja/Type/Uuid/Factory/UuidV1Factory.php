@@ -83,8 +83,10 @@ class UuidV1Factory extends UuidFactory
         } else {
             // base node off random sequence
             $node = random_bytes(6);
+            /** @var int<0, 255> $codepoint */
+            $codepoint = ord($node[0]) | 1;
             // set multicast bit not IEEE 802 MAC
-            $node[0] = chr(ord($node[0]) | 1);
+            $node[0] = chr($codepoint);
             $node    = bin2hex($node);
         }
 

@@ -66,7 +66,7 @@ class Dispatcher implements DispatcherContract
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         // Get the class
         $class = $dispatch->getClass();
-        /** @var mixed $response */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $response */
         $response = $dispatch->isStatic()
             ? $class::$method(...$arguments)
             : $this->container->get($class)->$method(...$arguments);
@@ -84,7 +84,7 @@ class Dispatcher implements DispatcherContract
         $property = $dispatch->getProperty();
         // Get the class
         $class = $dispatch->getClass();
-        /** @var mixed $response */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $response */
         $response = $dispatch->isStatic()
             ? $class::${$property}
             : $this->container->get($class)->{$property};
@@ -175,7 +175,7 @@ class Dispatcher implements DispatcherContract
         }
 
         // Iterate through the arguments
-        /** @var mixed $argument */
+        /** @var scalar|object|array<array-key, mixed>|resource|null $argument */
         foreach ($arguments as $key => $argument) {
             // Append the argument to the arguments list
             $dependencies[$key] = $this->getArgumentValue($argument);
@@ -211,14 +211,18 @@ class Dispatcher implements DispatcherContract
      * Get argument value.
      *
      * @param mixed $argument The argument
+     *
+     * @return scalar|object|array<array-key, mixed>|resource|null
      */
     protected function getArgumentValue(mixed $argument): mixed
     {
         if ($argument instanceof DispatchContract) {
-            /** @var mixed $argument */
             // Dispatch the argument and set the results to the argument
-            $argument = $this->dispatch($argument);
+            /** @var scalar|object|array<array-key, mixed>|resource|null */
+            return $this->dispatch($argument);
         }
+
+        /** @var scalar|object|array<array-key, mixed>|resource|null */
 
         return $argument;
     }

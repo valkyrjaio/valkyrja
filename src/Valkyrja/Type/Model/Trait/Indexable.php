@@ -64,8 +64,8 @@ trait Indexable
         $reversedIndexes  = static::getReversedIndexes();
 
         /**
-         * @var int   $index
-         * @var mixed $value
+         * @var int                                                 $index
+         * @var scalar|object|array<array-key, mixed>|resource|null $value
          */
         foreach ($properties as $index => $value) {
             $name = $reversedIndexes[$index] ?? null;
@@ -94,8 +94,8 @@ trait Indexable
         $indexes      = static::getIndexes();
 
         /**
-         * @var string $name
-         * @var mixed  $value
+         * @var string                                              $name
+         * @var scalar|object|array<array-key, mixed>|resource|null $value
          */
         foreach ($properties as $name => $value) {
             $index = $indexes[$name] ?? null;

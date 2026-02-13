@@ -52,8 +52,8 @@ class HeaderCollection implements HeaderCollectionContract
         $headers = [];
 
         /**
-         * @var array-key $name
-         * @var mixed     $param
+         * @var array-key                                           $name
+         * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($data as $name => $param) {
             static::validateHeader($param);
