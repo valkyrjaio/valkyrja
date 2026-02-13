@@ -51,7 +51,7 @@ abstract class TestCase extends AbstractTestCase
             $this->env = new EnvClass()
         );
 
-        Directory::$BASE_PATH = EnvClass::APP_DIR;
+        Directory::$basePath = EnvClass::APP_DIR;
 
         $container = $app->getContainer();
 

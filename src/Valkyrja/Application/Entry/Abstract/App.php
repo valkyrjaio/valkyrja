@@ -66,7 +66,7 @@ abstract class App
      */
     public static function directory(string $dir): void
     {
-        Directory::$BASE_PATH = $dir;
+        Directory::$basePath = $dir;
     }
 
     /**

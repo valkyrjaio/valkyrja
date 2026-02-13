@@ -15,35 +15,30 @@ namespace Valkyrja\Support\Directory;
 
 class Directory
 {
-    /**
-     * Base directory path.
-     *
-     * @var non-empty-string
-     */
-    public static string $BASE_PATH = __DIR__;
-
     /** @var non-empty-string */
-    public static string $APP_PATH = 'app';
+    public static string $basePath = __DIR__;
     /** @var non-empty-string */
-    public static string $DATA_PATH = 'data';
+    public static string $appPath = 'app';
     /** @var non-empty-string */
-    public static string $ENV_PATH = 'env';
+    public static string $dataPath = 'data';
     /** @var non-empty-string */
-    public static string $PUBLIC_PATH = 'public';
+    public static string $envPath = 'env';
     /** @var non-empty-string */
-    public static string $RESOURCES_PATH = 'resources';
+    public static string $publicPath = 'public';
     /** @var non-empty-string */
-    public static string $STORAGE_PATH = 'storage';
+    public static string $resourcesPath = 'resources';
     /** @var non-empty-string */
-    public static string $FRAMEWORK_STORAGE_PATH = 'framework';
+    public static string $storagePath = 'storage';
     /** @var non-empty-string */
-    public static string $CACHE_PATH = 'cache';
+    public static string $frameworkStoragePath = 'framework';
     /** @var non-empty-string */
-    public static string $LOGS_STORAGE_PATH = 'logs';
+    public static string $cacheStoragePath = 'cache';
     /** @var non-empty-string */
-    public static string $TESTS_PATH = 'tests';
+    public static string $logsStoragePath = 'logs';
     /** @var non-empty-string */
-    public static string $VENDOR_PATH = 'vendor';
+    public static string $testsPath = 'tests';
+    /** @var non-empty-string */
+    public static string $vendorPath = 'vendor';
 
     /**
      * Get the app directory for the application.
@@ -54,7 +49,7 @@ class Directory
      */
     public static function appPath(string|null $path = null): string
     {
-        return static::basePath(static::$APP_PATH . static::path($path));
+        return static::basePath(static::$appPath . static::path($path));
     }
 
     /**
@@ -66,7 +61,7 @@ class Directory
      */
     public static function basePath(string|null $path = null): string
     {
-        return static::$BASE_PATH . static::path($path);
+        return static::$basePath . static::path($path);
     }
 
     /**
@@ -90,7 +85,7 @@ class Directory
      */
     public static function dataPath(string|null $path = null): string
     {
-        return static::basePath(static::$DATA_PATH . static::path($path));
+        return static::basePath(static::$dataPath . static::path($path));
     }
 
     /**
@@ -102,7 +97,7 @@ class Directory
      */
     public static function envPath(string|null $path = null): string
     {
-        return static::basePath(static::$ENV_PATH . static::path($path));
+        return static::basePath(static::$envPath . static::path($path));
     }
 
     /**
@@ -114,7 +109,7 @@ class Directory
      */
     public static function publicPath(string|null $path = null): string
     {
-        return static::basePath(static::$PUBLIC_PATH . static::path($path));
+        return static::basePath(static::$publicPath . static::path($path));
     }
 
     /**
@@ -126,7 +121,7 @@ class Directory
      */
     public static function resourcesPath(string|null $path = null): string
     {
-        return static::basePath(static::$RESOURCES_PATH . static::path($path));
+        return static::basePath(static::$resourcesPath . static::path($path));
     }
 
     /**
@@ -138,7 +133,7 @@ class Directory
      */
     public static function storagePath(string|null $path = null): string
     {
-        return static::basePath(static::$STORAGE_PATH . static::path($path));
+        return static::basePath(static::$storagePath . static::path($path));
     }
 
     /**
@@ -150,7 +145,7 @@ class Directory
      */
     public static function frameworkStoragePath(string|null $path = null): string
     {
-        return static::storagePath(static::$FRAMEWORK_STORAGE_PATH . static::path($path));
+        return static::storagePath(static::$frameworkStoragePath . static::path($path));
     }
 
     /**
@@ -162,7 +157,7 @@ class Directory
      */
     public static function logsStoragePath(string|null $path = null): string
     {
-        return static::storagePath(static::$LOGS_STORAGE_PATH . static::path($path));
+        return static::storagePath(static::$logsStoragePath . static::path($path));
     }
 
     /**
@@ -174,7 +169,7 @@ class Directory
      */
     public static function frameworkStorageCachePath(string|null $path = null): string
     {
-        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$cacheStoragePath . static::path($path));
     }
 
     /**
@@ -186,7 +181,7 @@ class Directory
      */
     public static function testsPath(string|null $path = null): string
     {
-        return static::basePath(static::$TESTS_PATH . static::path($path));
+        return static::basePath(static::$testsPath . static::path($path));
     }
 
     /**
@@ -198,6 +193,6 @@ class Directory
      */
     public static function vendorPath(string|null $path = null): string
     {
-        return static::basePath(static::$VENDOR_PATH . static::path($path));
+        return static::basePath(static::$vendorPath . static::path($path));
     }
 }
