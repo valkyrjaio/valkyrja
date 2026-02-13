@@ -25,6 +25,7 @@ framework do the heavy lifting for your app.
     <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/?branch=master"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
     <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
     <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" alt="Psalm Shepherd" /></a>
+    <a href="https://sonarcloud.io/summary/new_code?id=valkyrjaio_valkyrja"><img src="https://sonarcloud.io/api/project_badges/measure?project=valkyrjaio_valkyrja&metric=sqale_rating" alt="Maintainability Rating" /></a>
 </p>
 
 Build Status
