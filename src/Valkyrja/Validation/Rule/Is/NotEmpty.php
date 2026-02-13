@@ -21,12 +21,8 @@ class NotEmpty extends Rule
     #[Override]
     public function isValid(): bool
     {
-        /** @var mixed $subject */
-        $subject = $this->subject;
-
-        return $subject !== null
-            && $subject !== ''
-            && ! empty($subject);
+        return $this->subject !== ''
+            && ! empty($this->subject);
     }
 
     /**
