@@ -122,14 +122,28 @@ abstract class UploadedFileFactory
         }
 
         foreach (array_keys($filesTmpName) as $key) {
-            $spec                  = [
-                'tmp_name' => $files['tmp_name'][$key] ?? '',
-                'size'     => $files['size'][$key] ?? 0,
-                'error'    => $files['error'][$key] ?? 0,
-                'name'     => $files['name'][$key] ?? null,
-                'type'     => $files['type'][$key] ?? null,
-            ];
-            $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
+            /**
+             * @var array{
+             *     tmp_name: array<array-key, string|array<array-key, mixed>|null>,
+             *     size: array<array-key, int|null>,
+             *     error: array<array-key, int|null>,
+             *     name: array<array-key, string|null>,
+             *     type: array<array-key, string|null>
+             * }                                   $files
+             */
+            $tmpName = $files['tmp_name'][$key] ?? '';
+            $size    = $files['size'][$key] ?? 0;
+            $error   = $files['error'][$key] ?? 0;
+            $name    = $files['name'][$key] ?? null;
+            $type    = $files['type'][$key] ?? null;
+
+            $normalizedFiles[$key] = self::createUploadedFileFromSpec([
+                'tmp_name' => $tmpName,
+                'size'     => $size,
+                'error'    => $error,
+                'name'     => $name,
+                'type'     => $type,
+            ]);
         }
 
         return new UploadedFileCollection($normalizedFiles);
