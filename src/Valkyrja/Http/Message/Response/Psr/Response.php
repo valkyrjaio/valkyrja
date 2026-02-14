@@ -75,7 +75,7 @@ class Response implements ResponseInterface
             return false;
         }
 
-        return $this->response->getHeaders()->hasHeader($name);
+        return $this->response->getHeaders()->has($name);
     }
 
     /**
@@ -88,7 +88,7 @@ class Response implements ResponseInterface
             return [];
         }
 
-        $header = $this->response->getHeaders()->getHeader($name);
+        $header = $this->response->getHeaders()->get($name);
 
         if ($header === null) {
             return [];

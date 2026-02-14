@@ -77,7 +77,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->onlyParams('session');
+        $only = $this->paramData->getOnlyParams('session');
 
         self::assertCount(1, $only);
         self::assertSame('abc123', $only['session']);
@@ -86,7 +86,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $except = $this->paramData->exceptParams('session');
+        $except = $this->paramData->getAllExcept('session');
 
         self::assertCount(1, $except);
         self::assertSame('dark', $except['theme']);

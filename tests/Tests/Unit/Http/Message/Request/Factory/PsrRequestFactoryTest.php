@@ -57,14 +57,14 @@ final class PsrRequestFactoryTest extends TestCase
 
         $fromPsr = PsrRequestFactory::fromPsr($psrRequest);
 
-        self::assertCount(expectedCount: 2, haystack: $fromPsr->getUploadedFiles()->getFiles());
+        self::assertCount(expectedCount: 2, haystack: $fromPsr->getUploadedFiles()->getAll());
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr = $fromPsr->getUploadedFiles()->getFile(0)
+            actual: $uploadedFileFromPsr = $fromPsr->getUploadedFiles()->get(0)
         );
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromPsr2 = $fromPsr->getUploadedFiles()->getFile(1)
+            actual: $uploadedFileFromPsr2 = $fromPsr->getUploadedFiles()->get(1)
         );
         self::assertSame(
             expected: $uploadedFile->getStream()->__toString(),

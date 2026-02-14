@@ -26,9 +26,9 @@ class QueryParamCollection extends ParamCollection implements QueryParamCollecti
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $name): QueryParamCollectionContract|string|null
+    public function getParam(string|int $key): QueryParamCollectionContract|string|null
     {
-        return $this->params[$name]
+        return $this->params[$key]
             ?? null;
     }
 }

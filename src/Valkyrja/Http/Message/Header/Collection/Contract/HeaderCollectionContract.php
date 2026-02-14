@@ -22,14 +22,14 @@ interface HeaderCollectionContract
      *
      * @param non-empty-string $name The header name
      */
-    public function hasHeader(string $name): bool;
+    public function has(string $name): bool;
 
     /**
      * Get a header.
      *
      * @param non-empty-string $name The header name
      */
-    public function getHeader(string $name): HeaderContract|null;
+    public function get(string $name): HeaderContract|null;
 
     /**
      * Get a header's values as a string by name.
@@ -43,7 +43,7 @@ interface HeaderCollectionContract
      *
      * @return array<non-empty-lowercase-string, HeaderContract>
      */
-    public function getHeaders(): array;
+    public function getAll(): array;
 
     /**
      * Get only the specified headers.
@@ -52,7 +52,7 @@ interface HeaderCollectionContract
      *
      * @return array<non-empty-lowercase-string, HeaderContract>
      */
-    public function onlyHeaders(string ...$names): array;
+    public function getOnly(string ...$names): array;
 
     /**
      * Get all the headers except the specified ones.
@@ -61,7 +61,7 @@ interface HeaderCollectionContract
      *
      * @return array<non-empty-lowercase-string, HeaderContract>
      */
-    public function exceptHeaders(string ...$names): array;
+    public function getAllExcept(string ...$names): array;
 
     /**
      * Get a new instance with the specified header overriding any existing header of the same name.

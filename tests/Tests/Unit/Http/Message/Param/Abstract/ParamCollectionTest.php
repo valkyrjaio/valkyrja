@@ -124,7 +124,7 @@ final class ParamCollectionTest extends TestCase
     public function testOnlyParams(): void
     {
         $paramData = new ParamCollectionClass(['a' => 'one', 'b' => 'two', 'c' => 'three']);
-        $only      = $paramData->onlyParams('a', 'c');
+        $only      = $paramData->getOnlyParams('a', 'c');
 
         self::assertCount(2, $only);
         self::assertSame('one', $only['a']);
@@ -134,7 +134,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testOnlyParamsWithNonexistentNames(): void
     {
-        $only = $this->paramData->onlyParams('nonexistent');
+        $only = $this->paramData->getOnlyParams('nonexistent');
 
         self::assertEmpty($only);
     }
@@ -142,7 +142,7 @@ final class ParamCollectionTest extends TestCase
     public function testExceptParams(): void
     {
         $paramData = new ParamCollectionClass(['a' => 'one', 'b' => 'two', 'c' => 'three']);
-        $except    = $paramData->exceptParams('b');
+        $except    = $paramData->getAllExcept('b');
 
         self::assertCount(2, $except);
         self::assertSame('one', $except['a']);
@@ -152,7 +152,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testExceptParamsWithNonexistentNames(): void
     {
-        $except = $this->paramData->exceptParams('nonexistent');
+        $except = $this->paramData->getAllExcept('nonexistent');
 
         self::assertCount(2, $except);
         self::assertSame('bar', $except['foo']);

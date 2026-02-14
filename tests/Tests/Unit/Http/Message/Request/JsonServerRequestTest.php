@@ -91,7 +91,7 @@ final class JsonServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request3->getParsedJson()->onlyParams('test', 'null')
+            $request3->getParsedJson()->getOnlyParams('test', 'null')
         );
         self::assertSameCount(
             array_filter(
@@ -99,7 +99,7 @@ final class JsonServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name !== 'test' && $name !== 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request3->getParsedJson()->exceptParams('test', 'null')
+            $request3->getParsedJson()->getAllExcept('test', 'null')
         );
 
         self::assertEmpty($request3->getParsedBody()->getParams());

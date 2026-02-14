@@ -49,7 +49,7 @@ abstract class PsrHeaderFactory
     {
         $newHeaders = [];
 
-        foreach ($headers->getHeaders() as $header) {
+        foreach ($headers->getAll() as $header) {
             $newHeaders[$header->getName()] = static::toPsrValues($header);
         }
 

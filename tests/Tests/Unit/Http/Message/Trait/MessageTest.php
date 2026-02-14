@@ -31,21 +31,21 @@ final class MessageTest extends TestCase
 
     protected static function assertEmptyHeaders(MessageClass $message): void
     {
-        self::assertEmpty($message->getHeaders()->getHeaders());
-        self::assertEmpty($message->getHeaders()->getHeader(self::HEADER_NAME));
+        self::assertEmpty($message->getHeaders()->getAll());
+        self::assertEmpty($message->getHeaders()->get(self::HEADER_NAME));
         self::assertEmpty($message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
     protected static function assertNotEmptyHeaders(MessageClass $message): void
     {
-        self::assertNotEmpty($message->getHeaders()->getHeaders());
-        self::assertNotEmpty($message->getHeaders()->getHeader(self::HEADER_NAME));
+        self::assertNotEmpty($message->getHeaders()->getAll());
+        self::assertNotEmpty($message->getHeaders()->get(self::HEADER_NAME));
         self::assertNotEmpty($message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
     protected static function assertHeaderValues(MessageClass $message, string ...$values): void
     {
-        self::assertSame(implode(', ', $values), $message->getHeaders()->getHeader(self::HEADER_NAME)->getValuesAsString());
+        self::assertSame(implode(', ', $values), $message->getHeaders()->get(self::HEADER_NAME)->getValuesAsString());
         self::assertSame(implode(', ', $values), $message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 

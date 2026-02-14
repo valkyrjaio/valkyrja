@@ -95,7 +95,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->onlyParams('method', 'port');
+        $only = $this->paramData->getOnlyParams('method', 'port');
 
         self::assertCount(2, $only);
         self::assertSame('GET', $only['method']);
@@ -105,7 +105,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $except = $this->paramData->exceptParams('secure');
+        $except = $this->paramData->getAllExcept('secure');
 
         self::assertCount(2, $except);
         self::assertSame('GET', $except['method']);

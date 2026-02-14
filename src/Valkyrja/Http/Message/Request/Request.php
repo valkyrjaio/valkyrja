@@ -134,7 +134,7 @@ class Request implements RequestContract
 
         $new->uri = $uri;
 
-        if ($preserveHost && $this->headers->hasHeader(HeaderName::HOST)) {
+        if ($preserveHost && $this->headers->has(HeaderName::HOST)) {
             return $new;
         }
 
@@ -192,7 +192,7 @@ class Request implements RequestContract
      */
     protected function addHostHeaderFromUri(): void
     {
-        if (! $this->headers->hasHeader(HeaderName::HOST) && $this->uri->getHost()) {
+        if (! $this->headers->has(HeaderName::HOST) && $this->uri->getHost()) {
             $header = new Header(HeaderName::HOST, $this->getHostFromUri());
 
             $this->headers = $this->headers->withHeader($header);

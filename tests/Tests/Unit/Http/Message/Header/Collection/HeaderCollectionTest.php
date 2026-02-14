@@ -46,12 +46,12 @@ final class HeaderCollectionTest extends TestCase
     {
         $headerData = new HeaderCollection();
 
-        self::assertEmpty($headerData->getHeaders());
+        self::assertEmpty($headerData->getAll());
     }
 
     public function testConstructorNormalizesHeaderNames(): void
     {
-        $headers = $this->headerData->getHeaders();
+        $headers = $this->headerData->getAll();
 
         self::assertArrayHasKey(strtolower(HeaderName::HOST), $headers);
         self::assertArrayHasKey(strtolower(HeaderName::CONTENT_TYPE), $headers);
@@ -59,25 +59,25 @@ final class HeaderCollectionTest extends TestCase
 
     public function testHasHeaderReturnsTrue(): void
     {
-        self::assertTrue($this->headerData->hasHeader(HeaderName::HOST));
-        self::assertTrue($this->headerData->hasHeader(HeaderName::CONTENT_TYPE));
+        self::assertTrue($this->headerData->has(HeaderName::HOST));
+        self::assertTrue($this->headerData->has(HeaderName::CONTENT_TYPE));
     }
 
     public function testHasHeaderIsCaseInsensitive(): void
     {
-        self::assertTrue($this->headerData->hasHeader('host'));
-        self::assertTrue($this->headerData->hasHeader('HOST'));
-        self::assertTrue($this->headerData->hasHeader('Host'));
+        self::assertTrue($this->headerData->has('host'));
+        self::assertTrue($this->headerData->has('HOST'));
+        self::assertTrue($this->headerData->has('Host'));
     }
 
     public function testHasHeaderReturnsFalse(): void
     {
-        self::assertFalse($this->headerData->hasHeader('X-Custom'));
+        self::assertFalse($this->headerData->has('X-Custom'));
     }
 
     public function testGetHeaderReturnsHeader(): void
     {
-        $header = $this->headerData->getHeader(HeaderName::HOST);
+        $header = $this->headerData->get(HeaderName::HOST);
 
         self::assertNotNull($header);
         self::assertSame(HeaderName::HOST, $header->getName());
@@ -85,9 +85,9 @@ final class HeaderCollectionTest extends TestCase
 
     public function testGetHeaderIsCaseInsensitive(): void
     {
-        $header1 = $this->headerData->getHeader('host');
-        $header2 = $this->headerData->getHeader('HOST');
-        $header3 = $this->headerData->getHeader('Host');
+        $header1 = $this->headerData->get('host');
+        $header2 = $this->headerData->get('HOST');
+        $header3 = $this->headerData->get('Host');
 
         self::assertNotNull($header1);
         self::assertNotNull($header2);
@@ -98,19 +98,19 @@ final class HeaderCollectionTest extends TestCase
 
     public function testGetHeaderReturnsNullForMissing(): void
     {
-        self::assertNull($this->headerData->getHeader('X-Custom'));
+        self::assertNull($this->headerData->get('X-Custom'));
     }
 
     public function testGetHeaders(): void
     {
-        $headers = $this->headerData->getHeaders();
+        $headers = $this->headerData->getAll();
 
         self::assertCount(2, $headers);
     }
 
     public function testOnlyHeaders(): void
     {
-        $only = $this->headerData->onlyHeaders(strtolower(HeaderName::HOST));
+        $only = $this->headerData->getOnly(strtolower(HeaderName::HOST));
 
         self::assertCount(1, $only);
         self::assertArrayHasKey(strtolower(HeaderName::HOST), $only);
@@ -119,14 +119,14 @@ final class HeaderCollectionTest extends TestCase
 
     public function testOnlyHeadersWithNonexistentNames(): void
     {
-        $only = $this->headerData->onlyHeaders('x-nonexistent');
+        $only = $this->headerData->getOnly('x-nonexistent');
 
         self::assertEmpty($only);
     }
 
     public function testExceptHeaders(): void
     {
-        $except = $this->headerData->exceptHeaders(strtolower(HeaderName::HOST));
+        $except = $this->headerData->getAllExcept(strtolower(HeaderName::HOST));
 
         self::assertCount(1, $except);
         self::assertArrayNotHasKey(strtolower(HeaderName::HOST), $except);
@@ -135,7 +135,7 @@ final class HeaderCollectionTest extends TestCase
 
     public function testExceptHeadersWithNonexistentNames(): void
     {
-        $except = $this->headerData->exceptHeaders('x-nonexistent');
+        $except = $this->headerData->getAllExcept('x-nonexistent');
 
         self::assertCount(2, $except);
     }
@@ -146,8 +146,8 @@ final class HeaderCollectionTest extends TestCase
         $new       = $this->headerData->withHeader($newHeader);
 
         self::assertNotSame($this->headerData, $new);
-        self::assertTrue($new->hasHeader('X-Custom'));
-        self::assertCount(3, $new->getHeaders());
+        self::assertTrue($new->has('X-Custom'));
+        self::assertCount(3, $new->getAll());
     }
 
     public function testWithHeaderDoesNotModifyOriginal(): void
@@ -155,8 +155,8 @@ final class HeaderCollectionTest extends TestCase
         $newHeader = new Header('X-Custom', 'value');
         $this->headerData->withHeader($newHeader);
 
-        self::assertFalse($this->headerData->hasHeader('X-Custom'));
-        self::assertCount(2, $this->headerData->getHeaders());
+        self::assertFalse($this->headerData->has('X-Custom'));
+        self::assertCount(2, $this->headerData->getAll());
     }
 
     public function testWithHeaderOverridesExisting(): void
@@ -164,9 +164,9 @@ final class HeaderCollectionTest extends TestCase
         $replacement = new Header(HeaderName::HOST, 'new-host.com');
         $new         = $this->headerData->withHeader($replacement);
 
-        self::assertCount(2, $new->getHeaders());
+        self::assertCount(2, $new->getAll());
 
-        $header = $new->getHeader(HeaderName::HOST);
+        $header = $new->get(HeaderName::HOST);
 
         self::assertNotNull($header);
         self::assertSame('new-host.com', $header->getValuesAsString());
@@ -179,10 +179,10 @@ final class HeaderCollectionTest extends TestCase
         $new     = $this->headerData->withHeaders($header1, $header2);
 
         self::assertNotSame($this->headerData, $new);
-        self::assertCount(2, $new->getHeaders());
-        self::assertTrue($new->hasHeader('X-First'));
-        self::assertTrue($new->hasHeader('X-Second'));
-        self::assertFalse($new->hasHeader(HeaderName::HOST));
+        self::assertCount(2, $new->getAll());
+        self::assertTrue($new->has('X-First'));
+        self::assertTrue($new->has('X-Second'));
+        self::assertFalse($new->has(HeaderName::HOST));
     }
 
     public function testWithHeadersDoesNotModifyOriginal(): void
@@ -190,8 +190,8 @@ final class HeaderCollectionTest extends TestCase
         $header = new Header('X-Custom', 'value');
         $this->headerData->withHeaders($header);
 
-        self::assertTrue($this->headerData->hasHeader(HeaderName::HOST));
-        self::assertTrue($this->headerData->hasHeader(HeaderName::CONTENT_TYPE));
+        self::assertTrue($this->headerData->has(HeaderName::HOST));
+        self::assertTrue($this->headerData->has(HeaderName::CONTENT_TYPE));
     }
 
     public function testWithAddedHeadersReturnsNewInstance(): void
@@ -200,10 +200,10 @@ final class HeaderCollectionTest extends TestCase
         $new       = $this->headerData->withAddedHeaders($newHeader);
 
         self::assertNotSame($this->headerData, $new);
-        self::assertCount(3, $new->getHeaders());
-        self::assertTrue($new->hasHeader(HeaderName::HOST));
-        self::assertTrue($new->hasHeader(HeaderName::CONTENT_TYPE));
-        self::assertTrue($new->hasHeader('X-Custom'));
+        self::assertCount(3, $new->getAll());
+        self::assertTrue($new->has(HeaderName::HOST));
+        self::assertTrue($new->has(HeaderName::CONTENT_TYPE));
+        self::assertTrue($new->has('X-Custom'));
     }
 
     public function testWithAddedHeadersMergesExisting(): void
@@ -211,9 +211,9 @@ final class HeaderCollectionTest extends TestCase
         $additionalHost = new Header(HeaderName::HOST, 'another.com');
         $new            = $this->headerData->withAddedHeaders($additionalHost);
 
-        self::assertCount(2, $new->getHeaders());
+        self::assertCount(2, $new->getAll());
 
-        $header = $new->getHeader(HeaderName::HOST);
+        $header = $new->get(HeaderName::HOST);
 
         self::assertNotNull($header);
         self::assertSame('example.com, another.com', $header->getValuesAsString());
@@ -224,7 +224,7 @@ final class HeaderCollectionTest extends TestCase
         $newHeader = new Header('X-Custom', 'value');
         $this->headerData->withAddedHeaders($newHeader);
 
-        self::assertFalse($this->headerData->hasHeader('X-Custom'));
+        self::assertFalse($this->headerData->has('X-Custom'));
     }
 
     public function testWithoutHeadersReturnsNewInstance(): void
@@ -232,31 +232,31 @@ final class HeaderCollectionTest extends TestCase
         $new = $this->headerData->withoutHeaders(HeaderName::HOST);
 
         self::assertNotSame($this->headerData, $new);
-        self::assertCount(1, $new->getHeaders());
-        self::assertFalse($new->hasHeader(HeaderName::HOST));
-        self::assertTrue($new->hasHeader(HeaderName::CONTENT_TYPE));
+        self::assertCount(1, $new->getAll());
+        self::assertFalse($new->has(HeaderName::HOST));
+        self::assertTrue($new->has(HeaderName::CONTENT_TYPE));
     }
 
     public function testWithoutHeadersDoesNotModifyOriginal(): void
     {
         $this->headerData->withoutHeaders(HeaderName::HOST);
 
-        self::assertTrue($this->headerData->hasHeader(HeaderName::HOST));
-        self::assertCount(2, $this->headerData->getHeaders());
+        self::assertTrue($this->headerData->has(HeaderName::HOST));
+        self::assertCount(2, $this->headerData->getAll());
     }
 
     public function testWithoutHeadersWithMultipleNames(): void
     {
         $new = $this->headerData->withoutHeaders(HeaderName::HOST, HeaderName::CONTENT_TYPE);
 
-        self::assertEmpty($new->getHeaders());
+        self::assertEmpty($new->getAll());
     }
 
     public function testWithoutHeadersWithNonexistentName(): void
     {
         $new = $this->headerData->withoutHeaders('X-Nonexistent');
 
-        self::assertCount(2, $new->getHeaders());
+        self::assertCount(2, $new->getAll());
     }
 
     public function testFromArray(): void
@@ -264,7 +264,7 @@ final class HeaderCollectionTest extends TestCase
         $header     = new Header('X-Test', 'value');
         $headerData = HeaderCollection::fromArray(['x-test' => $header]);
 
-        self::assertNotNull($headerData->getHeader('X-Test'));
+        self::assertNotNull($headerData->get('X-Test'));
     }
 
     public function testFromArrayThrowsForInvalidData(): void
@@ -280,9 +280,9 @@ final class HeaderCollectionTest extends TestCase
         $host2      = new Header('Host', 'second.com');
         $headerData = new HeaderCollection($host1, $host2);
 
-        self::assertCount(1, $headerData->getHeaders());
+        self::assertCount(1, $headerData->getAll());
 
-        $header = $headerData->getHeader('Host');
+        $header = $headerData->get('Host');
 
         self::assertNotNull($header);
         self::assertSame('second.com', $header->getValuesAsString());

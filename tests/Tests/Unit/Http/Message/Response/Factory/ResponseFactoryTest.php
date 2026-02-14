@@ -43,7 +43,7 @@ final class ResponseFactoryTest extends TestCase
 
         self::assertSame('', $default->getBody()->getContents());
         self::assertSame(StatusCode::OK, $default->getStatusCode());
-        self::assertSame([], $default->getHeaders()->getHeaders());
+        self::assertSame([], $default->getHeaders()->getAll());
 
         self::assertSame($content, $response->getBody()->getContents());
         self::assertSame($statusCode, $response->getStatusCode());

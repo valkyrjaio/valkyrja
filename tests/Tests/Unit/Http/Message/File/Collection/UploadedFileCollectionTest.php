@@ -43,13 +43,13 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $fileData = new UploadedFileCollection();
 
-        self::assertEmpty($fileData->getFiles());
+        self::assertEmpty($fileData->getAll());
     }
 
     public function testConstructorWithFiles(): void
     {
-        self::assertSame($this->file, $this->fileData->getFile('avatar'));
-        self::assertSame($this->file2, $this->fileData->getFile('document'));
+        self::assertSame($this->file, $this->fileData->get('avatar'));
+        self::assertSame($this->file2, $this->fileData->get('document'));
     }
 
     public function testConstructorWithNestedFileData(): void
@@ -57,33 +57,33 @@ final class UploadedFileCollectionTest extends TestCase
         $nested   = new UploadedFileCollection(['inner' => $this->file]);
         $fileData = new UploadedFileCollection(['nested' => $nested]);
 
-        self::assertSame($nested, $fileData->getFile('nested'));
+        self::assertSame($nested, $fileData->get('nested'));
     }
 
     public function testHasFileReturnsTrue(): void
     {
-        self::assertTrue($this->fileData->hasFile('avatar'));
-        self::assertTrue($this->fileData->hasFile('document'));
+        self::assertTrue($this->fileData->has('avatar'));
+        self::assertTrue($this->fileData->has('document'));
     }
 
     public function testHasFileReturnsFalse(): void
     {
-        self::assertFalse($this->fileData->hasFile('nonexistent'));
+        self::assertFalse($this->fileData->has('nonexistent'));
     }
 
     public function testGetFileReturnsFile(): void
     {
-        self::assertSame($this->file, $this->fileData->getFile('avatar'));
+        self::assertSame($this->file, $this->fileData->get('avatar'));
     }
 
     public function testGetFileReturnsNullForMissing(): void
     {
-        self::assertNull($this->fileData->getFile('nonexistent'));
+        self::assertNull($this->fileData->get('nonexistent'));
     }
 
     public function testGetFiles(): void
     {
-        $files = $this->fileData->getFiles();
+        $files = $this->fileData->getAll();
 
         self::assertCount(2, $files);
         self::assertSame($this->file, $files['avatar']);
@@ -92,7 +92,7 @@ final class UploadedFileCollectionTest extends TestCase
 
     public function testOnlyFiles(): void
     {
-        $only = $this->fileData->onlyFiles('avatar');
+        $only = $this->fileData->getOnly('avatar');
 
         self::assertCount(1, $only);
         self::assertSame($this->file, $only['avatar']);
@@ -103,7 +103,7 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $fileMock3 = self::createStub(UploadedFileContract::class);
         $fileData  = new UploadedFileCollection(['a' => $this->file, 'b' => $this->file2, 'c' => $fileMock3]);
-        $only      = $fileData->onlyFiles('a', 'c');
+        $only      = $fileData->getOnly('a', 'c');
 
         self::assertCount(2, $only);
         self::assertSame($this->file, $only['a']);
@@ -113,14 +113,14 @@ final class UploadedFileCollectionTest extends TestCase
 
     public function testOnlyFilesWithNonexistentNames(): void
     {
-        $only = $this->fileData->onlyFiles('nonexistent');
+        $only = $this->fileData->getOnly('nonexistent');
 
         self::assertEmpty($only);
     }
 
     public function testExceptFiles(): void
     {
-        $except = $this->fileData->exceptFiles('avatar');
+        $except = $this->fileData->getAllExcept('avatar');
 
         self::assertCount(1, $except);
         self::assertSame($this->file2, $except['document']);
@@ -131,7 +131,7 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $fileMock3 = self::createStub(UploadedFileContract::class);
         $fileData  = new UploadedFileCollection(['a' => $this->file, 'b' => $this->file2, 'c' => $fileMock3]);
-        $except    = $fileData->exceptFiles('a', 'c');
+        $except    = $fileData->getAllExcept('a', 'c');
 
         self::assertCount(1, $except);
         self::assertSame($this->file2, $except['b']);
@@ -139,7 +139,7 @@ final class UploadedFileCollectionTest extends TestCase
 
     public function testExceptFilesWithNonexistentNames(): void
     {
-        $except = $this->fileData->exceptFiles('nonexistent');
+        $except = $this->fileData->getAllExcept('nonexistent');
 
         self::assertCount(2, $except);
     }
@@ -147,20 +147,20 @@ final class UploadedFileCollectionTest extends TestCase
     public function testWithFilesReturnsNewInstance(): void
     {
         $newFile = self::createStub(UploadedFileContract::class);
-        $new     = $this->fileData->withFiles(['new' => $newFile]);
+        $new     = $this->fileData->with(['new' => $newFile]);
 
         self::assertNotSame($this->fileData, $new);
-        self::assertSame($newFile, $new->getFile('new'));
-        self::assertNull($new->getFile('avatar'));
+        self::assertSame($newFile, $new->get('new'));
+        self::assertNull($new->get('avatar'));
     }
 
     public function testWithFilesDoesNotModifyOriginal(): void
     {
         $newFile = self::createStub(UploadedFileContract::class);
-        $this->fileData->withFiles(['new' => $newFile]);
+        $this->fileData->with(['new' => $newFile]);
 
-        self::assertSame($this->file, $this->fileData->getFile('avatar'));
-        self::assertSame($this->file2, $this->fileData->getFile('document'));
+        self::assertSame($this->file, $this->fileData->get('avatar'));
+        self::assertSame($this->file2, $this->fileData->get('document'));
     }
 
     public function testWithFilesThrowsForInvalidFile(): void
@@ -168,34 +168,34 @@ final class UploadedFileCollectionTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         /* @phpstan-ignore-next-line */
-        $this->fileData->withFiles(['invalid' => 'not-a-file']);
+        $this->fileData->with(['invalid' => 'not-a-file']);
     }
 
     public function testWithAddedFilesReturnsNewInstance(): void
     {
         $newFile = self::createStub(UploadedFileContract::class);
-        $new     = $this->fileData->withAddedFiles(['extra' => $newFile]);
+        $new     = $this->fileData->withAdded(['extra' => $newFile]);
 
         self::assertNotSame($this->fileData, $new);
-        self::assertSame($this->file, $new->getFile('avatar'));
-        self::assertSame($this->file2, $new->getFile('document'));
-        self::assertSame($newFile, $new->getFile('extra'));
+        self::assertSame($this->file, $new->get('avatar'));
+        self::assertSame($this->file2, $new->get('document'));
+        self::assertSame($newFile, $new->get('extra'));
     }
 
     public function testWithAddedFilesDoesNotModifyOriginal(): void
     {
         $newFile = self::createStub(UploadedFileContract::class);
-        $this->fileData->withAddedFiles(['extra' => $newFile]);
+        $this->fileData->withAdded(['extra' => $newFile]);
 
-        self::assertFalse($this->fileData->hasFile('extra'));
+        self::assertFalse($this->fileData->has('extra'));
     }
 
     public function testWithAddedFilesWithNestedFileData(): void
     {
         $nested = new UploadedFileCollection(['inner' => $this->file]);
-        $new    = $this->fileData->withAddedFiles(['nested' => $nested]);
+        $new    = $this->fileData->withAdded(['nested' => $nested]);
 
-        self::assertSame($nested, $new->getFile('nested'));
+        self::assertSame($nested, $new->get('nested'));
     }
 
     public function testFromArray(): void
@@ -203,7 +203,7 @@ final class UploadedFileCollectionTest extends TestCase
         $file     = self::createStub(UploadedFileContract::class);
         $fileData = UploadedFileCollection::fromArray(['uploaded' => $file]);
 
-        self::assertSame($file, $fileData->getFile('uploaded'));
+        self::assertSame($file, $fileData->get('uploaded'));
     }
 
     public function testFromArrayWithNestedArray(): void
@@ -211,10 +211,10 @@ final class UploadedFileCollectionTest extends TestCase
         $file     = self::createStub(UploadedFileContract::class);
         $fileData = UploadedFileCollection::fromArray(['nested' => [$file]]);
 
-        $nested = $fileData->getFile('nested');
+        $nested = $fileData->get('nested');
 
         self::assertInstanceOf(UploadedFileCollection::class, $nested);
-        self::assertSame($file, $nested->getFile(0));
+        self::assertSame($file, $nested->get(0));
     }
 
     public function testFromArrayThrowsForInvalidData(): void
@@ -228,18 +228,18 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $fileData = new UploadedFileCollection([$this->file, $this->file2]);
 
-        self::assertTrue($fileData->hasFile(0));
-        self::assertTrue($fileData->hasFile(1));
-        self::assertFalse($fileData->hasFile(2));
+        self::assertTrue($fileData->has(0));
+        self::assertTrue($fileData->has(1));
+        self::assertFalse($fileData->has(2));
     }
 
     public function testGetFileWithIntKey(): void
     {
         $fileData = new UploadedFileCollection([1 => $this->file, 2 => $this->file2]);
 
-        self::assertNull($fileData->getFile(0));
-        self::assertSame($this->file, $fileData->getFile(1));
-        self::assertSame($this->file2, $fileData->getFile(2));
-        self::assertNull($fileData->getFile(3));
+        self::assertNull($fileData->get(0));
+        self::assertSame($this->file, $fileData->get(1));
+        self::assertSame($this->file2, $fileData->get(2));
+        self::assertNull($fileData->get(3));
     }
 }

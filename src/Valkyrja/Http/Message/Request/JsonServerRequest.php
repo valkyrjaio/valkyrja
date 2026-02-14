@@ -70,7 +70,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
             files: $files
         );
 
-        $contentType = $headers->getHeader(name: HeaderName::CONTENT_TYPE)?->getValuesAsString();
+        $contentType = $headers->get(name: HeaderName::CONTENT_TYPE)?->getValuesAsString();
 
         if (
             $contentType !== null

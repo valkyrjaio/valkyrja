@@ -92,18 +92,18 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function hasFile(int|string $name): bool
+    public function has(int|string $key): bool
     {
-        return isset($this->files[$name]);
+        return isset($this->files[$key]);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getFile(int|string $name): UploadedFileContract|UploadedFileCollectionContract|null
+    public function get(int|string $key): UploadedFileContract|UploadedFileCollectionContract|null
     {
-        return $this->files[$name]
+        return $this->files[$key]
             ?? null;
     }
 
@@ -113,7 +113,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @psalm-suppress InvalidReturnStatement
      */
     #[Override]
-    public function getFiles(): array
+    public function getAll(): array
     {
         return $this->files;
     }
@@ -124,11 +124,11 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @psalm-suppress InvalidReturnStatement
      */
     #[Override]
-    public function onlyFiles(string|int ...$names): array
+    public function getOnly(string|int ...$keys): array
     {
         return array_filter(
             $this->files,
-            static fn (string|int $name): bool => in_array($name, $names, true),
+            static fn (string|int $name): bool => in_array($name, $keys, true),
             ARRAY_FILTER_USE_KEY
         );
     }
@@ -139,11 +139,11 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @psalm-suppress InvalidReturnStatement
      */
     #[Override]
-    public function exceptFiles(string|int ...$names): array
+    public function getAllExcept(string|int ...$keys): array
     {
         return array_filter(
             $this->files,
-            static fn (string|int $name): bool => ! in_array($name, $names, true),
+            static fn (string|int $name): bool => ! in_array($name, $keys, true),
             ARRAY_FILTER_USE_KEY
         );
     }
@@ -152,13 +152,13 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function withFiles(array $files): static
+    public function with(array $collection): static
     {
-        $this->validateFiles($files);
+        $this->validateFiles($collection);
 
         $new = clone $this;
 
-        $new->files = $files;
+        $new->files = $collection;
 
         return $new;
     }
@@ -167,13 +167,13 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedFiles(array $files): static
+    public function withAdded(array $collection): static
     {
-        $this->validateFiles($files);
+        $this->validateFiles($collection);
 
         $new = clone $this;
 
-        $new->files = array_merge($new->files, $files);
+        $new->files = array_merge($new->files, $collection);
 
         return $new;
     }

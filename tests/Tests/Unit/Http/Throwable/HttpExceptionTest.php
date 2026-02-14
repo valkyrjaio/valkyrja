@@ -30,7 +30,7 @@ final class HttpExceptionTest extends TestCase
         $exception = new HttpException();
 
         self::assertSame(StatusCode::INTERNAL_SERVER_ERROR, $exception->getStatusCode());
-        self::assertEmpty($exception->getHeaders()->getHeaders());
+        self::assertEmpty($exception->getHeaders()->getAll());
         self::assertNull($exception->getResponse());
     }
 
@@ -46,7 +46,7 @@ final class HttpExceptionTest extends TestCase
         $headers   = ['test' => new Header('test', ...['foo', 'bar'])];
         $exception = new HttpException(headers: HeaderCollection::fromArray($headers));
 
-        self::assertSame($headers, $exception->getHeaders()->getHeaders());
+        self::assertSame($headers, $exception->getHeaders()->getAll());
     }
 
     public function testGetMessage(): void

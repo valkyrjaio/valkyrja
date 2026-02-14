@@ -238,7 +238,7 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getQueryParams()->onlyParams('test2', 'null')
+            $request2->getQueryParams()->getOnlyParams('test2', 'null')
         );
         self::assertSameCount(
             array_filter(
@@ -246,7 +246,7 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getQueryParams()->exceptParams('test2', 'null')
+            $request2->getQueryParams()->getAllExcept('test2', 'null')
         );
 
         self::assertTrue($request2->getQueryParams()->hasParam('test'));
@@ -335,7 +335,7 @@ final class ServerRequestTest extends TestCase
             ])
         );
         $request3 = $request->withUploadedFiles(
-            $request->getUploadedFiles()->withAddedFiles(
+            $request->getUploadedFiles()->withAdded(
                 [new UploadedFile(file: 'test')]
             )
         );
@@ -343,12 +343,12 @@ final class ServerRequestTest extends TestCase
         self::assertNotSame($request, $request2);
         self::assertNotSame($request, $request3);
 
-        self::assertEmpty($request->getUploadedFiles()->getFiles());
-        self::assertNotEmpty($request2->getUploadedFiles()->getFiles());
-        self::assertNotEmpty($request3->getUploadedFiles()->getFiles());
+        self::assertEmpty($request->getUploadedFiles()->getAll());
+        self::assertNotEmpty($request2->getUploadedFiles()->getAll());
+        self::assertNotEmpty($request3->getUploadedFiles()->getAll());
 
-        self::assertCount(2, $request2->getUploadedFiles()->getFiles());
-        self::assertCount(1, $request3->getUploadedFiles()->getFiles());
+        self::assertCount(2, $request2->getUploadedFiles()->getAll());
+        self::assertCount(1, $request3->getUploadedFiles()->getAll());
     }
 
     public function testParsedBody(): void
@@ -395,7 +395,7 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getParsedBody()->onlyParams('test2', 'null')
+            $request2->getParsedBody()->getOnlyParams('test2', 'null')
         );
         self::assertSameCount(
             array_filter(
@@ -403,7 +403,7 @@ final class ServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getParsedBody()->exceptParams('test2', 'null')
+            $request2->getParsedBody()->getAllExcept('test2', 'null')
         );
 
         self::assertTrue($request2->getParsedBody()->hasParam('test'));

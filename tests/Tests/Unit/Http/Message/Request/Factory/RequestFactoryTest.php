@@ -31,10 +31,10 @@ final class RequestFactoryTest extends TestCase
         $request = RequestFactory::fromGlobals();
 
         self::assertNotEmpty($request->getServerParams()->getParams());
-        self::assertNotEmpty($request->getHeaders()->getHeaders());
+        self::assertNotEmpty($request->getHeaders()->getAll());
         self::assertEmpty($request->getQueryParams()->getParams());
         self::assertEmpty($request->getParsedBody()->getParams());
-        self::assertEmpty($request->getUploadedFiles()->getFiles());
+        self::assertEmpty($request->getUploadedFiles()->getAll());
         self::assertEmpty($request->getBody()->getContents());
         self::assertSame(expected: ProtocolVersion::V1_1, actual: $request->getProtocolVersion());
         self::assertSame(expected: RequestMethod::GET, actual: $request->getMethod());
@@ -91,11 +91,11 @@ final class RequestFactoryTest extends TestCase
 
         self::assertEmpty($default->getCookieParams()->getParams());
         self::assertSame(expected: $cookies, actual: $cookiesFromHeader->getCookieParams()->getParams());
-        self::assertSame(expected: 'value', actual: $cookiesFromHeader->getCookieParams()->getParam(name: 'cookie'));
-        self::assertSame(expected: 'value2', actual: $cookiesFromHeader->getCookieParams()->getParam(name: 'cookie2'));
+        self::assertSame(expected: 'value', actual: $cookiesFromHeader->getCookieParams()->getParam(key: 'cookie'));
+        self::assertSame(expected: 'value2', actual: $cookiesFromHeader->getCookieParams()->getParam(key: 'cookie2'));
         self::assertSame(expected: $cookies, actual: $cookiesPassedIn->getCookieParams()->getParams());
-        self::assertSame(expected: 'value', actual: $cookiesPassedIn->getCookieParams()->getParam(name: 'cookie'));
-        self::assertSame(expected: 'value2', actual: $cookiesPassedIn->getCookieParams()->getParam(name: 'cookie2'));
+        self::assertSame(expected: 'value', actual: $cookiesPassedIn->getCookieParams()->getParam(key: 'cookie'));
+        self::assertSame(expected: 'value2', actual: $cookiesPassedIn->getCookieParams()->getParam(key: 'cookie2'));
     }
 
     public function testFiles(): void
@@ -105,15 +105,15 @@ final class RequestFactoryTest extends TestCase
         $default       = RequestFactory::fromGlobals();
         $filesPassedIn = RequestFactory::fromGlobals(files: [$uploadedFile, $uploadedFile2]);
 
-        self::assertEmpty($default->getUploadedFiles()->getFiles());
-        self::assertCount(expectedCount: 2, haystack: $filesPassedIn->getUploadedFiles()->getFiles());
+        self::assertEmpty($default->getUploadedFiles()->getAll());
+        self::assertCount(expectedCount: 2, haystack: $filesPassedIn->getUploadedFiles()->getAll());
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromGlobal = $filesPassedIn->getUploadedFiles()->getFiles()[0]
+            actual: $uploadedFileFromGlobal = $filesPassedIn->getUploadedFiles()->getAll()[0]
         );
         self::assertInstanceOf(
             expected: UploadedFile::class,
-            actual: $uploadedFileFromGlobal2 = $filesPassedIn->getUploadedFiles()->getFiles()[1]
+            actual: $uploadedFileFromGlobal2 = $filesPassedIn->getUploadedFiles()->getAll()[1]
         );
         self::assertSame(
             expected: $uploadedFile->getStream()->__toString(),

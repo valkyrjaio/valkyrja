@@ -87,7 +87,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->onlyParams('name');
+        $only = $this->paramData->getOnlyParams('name');
 
         self::assertCount(1, $only);
         self::assertSame('John', $only['name']);
@@ -96,7 +96,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $except = $this->paramData->exceptParams('name');
+        $except = $this->paramData->getAllExcept('name');
 
         self::assertCount(1, $except);
         self::assertSame('john@example.com', $except['email']);

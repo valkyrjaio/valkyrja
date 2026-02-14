@@ -133,7 +133,7 @@ trait Message
         $headerName = $header->getNormalizedName();
         // The original value for the header (if it exists in the headers array)
         // Defaults to the value passed in
-        $originalHeader = $headers->getHeader($headerName);
+        $originalHeader = $headers->get($headerName);
 
         // Set the header in the headers list
         $newHeader = $override || $originalHeader === null

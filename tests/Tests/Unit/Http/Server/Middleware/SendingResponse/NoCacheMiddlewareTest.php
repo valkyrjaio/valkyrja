@@ -59,20 +59,20 @@ final class NoCacheMiddlewareTest extends TestCase
     {
         $headers = $response->getHeaders();
 
-        self::assertTrue($headers->hasHeader(HeaderName::EXPIRES));
-        self::assertTrue($headers->hasHeader(HeaderName::CACHE_CONTROL));
-        self::assertTrue($headers->hasHeader(HeaderName::PRAGMA));
+        self::assertTrue($headers->has(HeaderName::EXPIRES));
+        self::assertTrue($headers->has(HeaderName::CACHE_CONTROL));
+        self::assertTrue($headers->has(HeaderName::PRAGMA));
         self::assertSame(
             'Sun, 01 Jan 2014 00:00:00 GMT',
-            $headers->getHeader(HeaderName::EXPIRES)->getValuesAsString(),
+            $headers->get(HeaderName::EXPIRES)->getValuesAsString(),
         );
         self::assertSame(
             'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
-            $headers->getHeader(HeaderName::CACHE_CONTROL)->getValuesAsString(),
+            $headers->get(HeaderName::CACHE_CONTROL)->getValuesAsString(),
         );
         self::assertSame(
             'no-cache',
-            $headers->getHeader(HeaderName::PRAGMA)->getValuesAsString(),
+            $headers->get(HeaderName::PRAGMA)->getValuesAsString(),
         );
     }
 }
