@@ -146,8 +146,9 @@ abstract class Session implements SessionContract
      * @inheritDoc
      */
     #[Override]
-    public function set(string $id, $value): void
+    public function set(string $id, mixed $value): void
     {
+        /** @var scalar|object|array<array-key, mixed>|null $value */
         $this->data[$id] = $value;
     }
 

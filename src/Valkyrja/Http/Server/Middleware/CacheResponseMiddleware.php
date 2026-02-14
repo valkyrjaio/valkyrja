@@ -55,12 +55,14 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
             try {
                 /** @psalm-suppress UnresolvableInclude */
+                /** @var scalar|object|array<array-key, mixed>|null $response The response */
                 $response = require $filePath;
 
                 $isValidResponse = $this->isValidCachedResponse($response);
 
                 // Ensure a valid response before returning it
                 if ($isValidResponse) {
+                    /** @var ResponseContract $response */
                     return $response;
                 }
             } catch (Throwable) {

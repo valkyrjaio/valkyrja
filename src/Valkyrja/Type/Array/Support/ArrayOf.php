@@ -78,6 +78,9 @@ class ArrayOf
      */
     public static function null(mixed ...$values): void
     {
+        /**
+         * @var scalar|object|array<array-key, mixed>|null $value
+         */
         foreach ($values as $key => $value) {
             if ($value !== null) {
                 $type = gettype($value);
