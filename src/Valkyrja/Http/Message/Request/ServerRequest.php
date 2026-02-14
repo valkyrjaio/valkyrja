@@ -229,6 +229,7 @@ class ServerRequest extends Request implements ServerRequestContract
     {
         $new = clone $this;
 
+        /** @var scalar|object|array<array-key, mixed>|null $value */
         $new->attributes[$name] = $value;
 
         return $new;

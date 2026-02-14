@@ -120,6 +120,7 @@ abstract class Model implements ModelContract
             return;
         }
 
+        /** @var scalar|object|array<array-key, mixed>|null $value */
         $this->{$name} = $value;
     }
 
@@ -386,9 +387,22 @@ abstract class Model implements ModelContract
      */
     protected function internalSetOriginalProperty(string $name, mixed $value): void
     {
-        if (! $this->internalHaveOriginalPropertiesSet && $this->internalShouldSetOriginalProperties) {
-            $this->internalOriginalProperties[$name] ??= $value;
+        if ($this->internalShouldSetOriginalProperty($name)) {
+            /** @var scalar|object|array<array-key, mixed>|null $value */
+            $this->internalOriginalProperties[$name] = $value;
         }
+    }
+
+    /**
+     * Determine if an original property should be set.
+     *
+     * @param string $name The property name
+     */
+    protected function internalShouldSetOriginalProperty(string $name): bool
+    {
+        return ! $this->internalHaveOriginalPropertiesSet
+            && $this->internalShouldSetOriginalProperties
+            && ! isset($this->internalOriginalProperties[$name]);
     }
 
     /**

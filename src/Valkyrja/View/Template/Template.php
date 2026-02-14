@@ -127,6 +127,7 @@ class Template implements TemplateContract
     #[Override]
     public function setVariable(string $key, mixed $value): static
     {
+        /** @var scalar|object|array<array-key, mixed>|null $value */
         $this->variables[$key] = $value;
 
         return $this;
