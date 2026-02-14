@@ -56,7 +56,6 @@ class Dispatcher implements DispatcherContract
     /**
      * Dispatch a class method.
      *
-     * @param MethodDispatch                      $dispatch  The dispatch
      * @param array<non-empty-string, mixed>|null $arguments The arguments
      */
     protected function dispatchClassMethod(MethodDispatch $dispatch, array|null $arguments = null): mixed
@@ -64,14 +63,21 @@ class Dispatcher implements DispatcherContract
         $method = $dispatch->getMethod();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
+        // Get the class name
+        $className = $dispatch->getClass();
         // Get the class
-        $class = $dispatch->getClass();
-        /** @var scalar|object|array<array-key, mixed>|resource|null $response */
-        $response = $dispatch->isStatic()
-            ? $class::$method(...$arguments)
-            : $this->container->get($class)->$method(...$arguments);
+        $class = $dispatch->isStatic()
+            ? $className
+            : $this->container->get($className);
 
-        return $response;
+        // Do not try to determine if the method exists or not here because the method may be called via __call
+        // Allow PHP to throw an error if the method does not exist and it is tried to be called here
+
+        /** @var callable $callable */
+        $callable = [$class, $method];
+
+        /** @var scalar|object|array<array-key, mixed>|resource|null */
+        return $callable(...$arguments);
     }
 
     /**
@@ -84,12 +90,16 @@ class Dispatcher implements DispatcherContract
         $property = $dispatch->getProperty();
         // Get the class
         $class = $dispatch->getClass();
-        /** @var scalar|object|array<array-key, mixed>|resource|null $response */
-        $response = $dispatch->isStatic()
-            ? $class::${$property}
-            : $this->container->get($class)->{$property};
 
-        return $response;
+        // No null coalescing operator because we want to throw an error if the property does not exist
+
+        if ($dispatch->isStatic()) {
+            /** @var scalar|object|array<array-key, mixed>|resource|null */
+            return $class::${$property};
+        }
+
+        /** @var scalar|object|array<array-key, mixed>|resource|null */
+        return $this->container->get($class)->{$property};
     }
 
     /**

@@ -10,12 +10,6 @@
       <code><![CDATA[require $absoluteDataFilePath]]></code>
     </UnresolvableInclude>
   </file>
-  <file src="../../../src/Valkyrja/Dispatch/Dispatcher/Dispatcher.php">
-    <MixedMethodCall>
-      <code><![CDATA[$class::$method(...$arguments)]]></code>
-      <code><![CDATA[$method]]></code>
-    </MixedMethodCall>
-  </file>
   <file src="../../../src/Valkyrja/Event/Dispatcher/Dispatcher.php">
     <MixedMethodCall>
       <code><![CDATA[new $eventId()]]></code>
