@@ -78,7 +78,7 @@ abstract class PsrUploadedFileFactory
     {
         $files = [];
 
-        foreach ($collection->getFiles() as $item) {
+        foreach ($collection->getAll() as $item) {
             if ($item instanceof UploadedFileCollectionContract) {
                 $item = self::toPsrArray($item);
             }

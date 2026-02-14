@@ -41,7 +41,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             self::assertEmpty($response->getBody()->getContents());
             self::assertSame(StatusCode::OK, $response->getStatusCode());
-            self::assertEmpty($response->getHeaders()->getHeaders());
+            self::assertEmpty($response->getHeaders()->getAll());
 
             self::assertSame('test', $response2->getBody()->getContents());
             self::assertSame(StatusCode::CREATED, $response2->getStatusCode());

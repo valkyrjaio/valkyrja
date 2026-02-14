@@ -144,7 +144,7 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
      */
     protected function getHeadersContents(): string
     {
-        $headers = $this->response->getHeaders()->getHeaders();
+        $headers = $this->response->getHeaders()->getAll();
 
         $headersContents = [];
 

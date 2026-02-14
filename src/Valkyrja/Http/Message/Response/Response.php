@@ -151,7 +151,7 @@ class Response implements ResponseContract
     #[Override]
     public function sendHeaders(): static
     {
-        foreach ($this->headers->getHeaders() as $header) {
+        foreach ($this->headers->getAll() as $header) {
             header($header->__toString(), false);
         }
 

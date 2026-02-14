@@ -26,9 +26,9 @@ class CookieParamCollection extends ParamCollection implements CookieParamCollec
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $name): string|null
+    public function getParam(string|int $key): string|null
     {
-        return $this->params[$name]
+        return $this->params[$key]
             ?? null;
     }
 }

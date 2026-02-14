@@ -101,18 +101,18 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function hasParam(int|string $name): bool
+    public function hasParam(int|string $key): bool
     {
-        return isset($this->params[$name]);
+        return isset($this->params[$key]);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getParam(int|string $name): ParamCollectionContract|float|bool|int|string|null
+    public function getParam(int|string $key): ParamCollectionContract|float|bool|int|string|null
     {
-        return $this->params[$name]
+        return $this->params[$key]
             ?? null;
     }
 
@@ -129,11 +129,11 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function onlyParams(string|int ...$names): array
+    public function getOnlyParams(string|int ...$keys): array
     {
         return array_filter(
             $this->params,
-            static fn (string|int $name): bool => in_array($name, $names, true),
+            static fn (string|int $name): bool => in_array($name, $keys, true),
             ARRAY_FILTER_USE_KEY
         );
     }
@@ -142,11 +142,11 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function exceptParams(string|int ...$names): array
+    public function getAllExcept(string|int ...$keys): array
     {
         return array_filter(
             $this->params,
-            static fn (string|int $name): bool => ! in_array($name, $names, true),
+            static fn (string|int $name): bool => ! in_array($name, $keys, true),
             ARRAY_FILTER_USE_KEY
         );
     }

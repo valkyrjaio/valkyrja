@@ -33,8 +33,8 @@ final class UploadedFileFactoryTest extends TestCase
         ];
         $uploadedFiles = UploadedFileFactory::normalizeFiles($files);
 
-        self::assertCount(1, $uploadedFiles->getFiles());
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->getFile('avatar'));
+        self::assertCount(1, $uploadedFiles->getAll());
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->get('avatar'));
     }
 
     public function testNormalizeFilesSingleUploadInvalidTmpName(): void
@@ -78,10 +78,10 @@ final class UploadedFileFactoryTest extends TestCase
 
         $uploadedFiles = UploadedFileFactory::normalizeFiles($nestedFiles);
 
-        self::assertCount(1, $uploadedFiles->getFiles());
-        self::assertCount(2, $uploadedFiles->getFile('files')->getFiles());
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->getFile('files')->getFile(0));
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->getFile('files')->getFile(1));
+        self::assertCount(1, $uploadedFiles->getAll());
+        self::assertCount(2, $uploadedFiles->get('files')->getAll());
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->get('files')->get(0));
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->get('files')->get(1));
     }
 
     public function testNormalizeFilesUploadFilesAlready(): void
@@ -93,7 +93,7 @@ final class UploadedFileFactoryTest extends TestCase
 
         $uploadedFiles = UploadedFileFactory::normalizeFiles($files);
 
-        self::assertCount(2, $uploadedFiles->getFiles());
+        self::assertCount(2, $uploadedFiles->getAll());
     }
 
     public function testNormalizeFilesSingleDeeplyNested(): void
@@ -130,10 +130,10 @@ final class UploadedFileFactoryTest extends TestCase
 
         $uploadedFiles = UploadedFileFactory::normalizeFiles($nestedSingleFiles);
 
-        self::assertCount(1, $uploadedFiles->getFiles());
-        self::assertCount(1, $uploadedFiles->getFile('my-form')->getFiles());
-        self::assertCount(1, $uploadedFiles->getFile('my-form')->getFile('details')->getFiles());
-        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->getFile('my-form')->getFile('details')->getFile('avatar'));
+        self::assertCount(1, $uploadedFiles->getAll());
+        self::assertCount(1, $uploadedFiles->get('my-form')->getAll());
+        self::assertCount(1, $uploadedFiles->get('my-form')->get('details')->getAll());
+        self::assertInstanceOf(UploadedFile::class, $uploadedFiles->get('my-form')->get('details')->get('avatar'));
     }
 
     public function testNormalizeFilesMultiDeeplyNested(): void
@@ -190,16 +190,16 @@ final class UploadedFileFactoryTest extends TestCase
 
         $uploadedFiles = UploadedFileFactory::normalizeFiles($nestedMultipleFiles);
 
-        self::assertCount(1, $uploadedFiles->getFiles());
-        self::assertCount(1, $uploadedFiles->getFile('my-form')->getFiles());
-        self::assertCount(1, $uploadedFiles->getFile('my-form')->getFile('details')->getFiles());
-        self::assertCount(3, $uploadedFiles->getFile('my-form')->getFile('details')->getFile('avatars')->getFiles());
+        self::assertCount(1, $uploadedFiles->getAll());
+        self::assertCount(1, $uploadedFiles->get('my-form')->getAll());
+        self::assertCount(1, $uploadedFiles->get('my-form')->get('details')->getAll());
+        self::assertCount(3, $uploadedFiles->get('my-form')->get('details')->get('avatars')->getAll());
 
-        $avatars = $uploadedFiles->getFile('my-form')->getFile('details')->getFile('avatars');
+        $avatars = $uploadedFiles->get('my-form')->get('details')->get('avatars');
 
-        self::assertInstanceOf(UploadedFile::class, $avatars->getFile(0));
-        self::assertInstanceOf(UploadedFile::class, $avatars->getFile(1));
-        self::assertInstanceOf(UploadedFile::class, $avatars->getFile(2));
+        self::assertInstanceOf(UploadedFile::class, $avatars->get(0));
+        self::assertInstanceOf(UploadedFile::class, $avatars->get(1));
+        self::assertInstanceOf(UploadedFile::class, $avatars->get(2));
     }
 
     public function testNormalizeFilesInvalid(): void

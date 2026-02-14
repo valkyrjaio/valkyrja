@@ -95,7 +95,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->onlyParams('name', 'age');
+        $only = $this->paramData->getOnlyParams('name', 'age');
 
         self::assertCount(2, $only);
         self::assertSame('John', $only['name']);
@@ -105,7 +105,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $except = $this->paramData->exceptParams('active');
+        $except = $this->paramData->getAllExcept('active');
 
         self::assertCount(2, $except);
         self::assertSame('John', $except['name']);

@@ -83,7 +83,7 @@ class GuzzleClient implements ClientContract
      */
     protected function setGuzzleHeaders(RequestContract $request, array &$options): void
     {
-        if ($headers = $request->getHeaders()->getHeaders()) {
+        if ($headers = $request->getHeaders()->getAll()) {
             $options['headers'] = [];
 
             foreach ($headers as $value) {

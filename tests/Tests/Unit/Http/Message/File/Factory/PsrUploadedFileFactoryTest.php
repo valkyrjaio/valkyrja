@@ -76,8 +76,8 @@ final class PsrUploadedFileFactoryTest extends TestCase
 
         $fromPsrArray = PsrUploadedFileFactory::fromPsrArray([$psrUploadedFile, $psrUploadedFile2]);
 
-        $uploadedFileFromFactory  = $fromPsrArray->getFile(0);
-        $uploadedFileFromFactory2 = $fromPsrArray->getFile(1);
+        $uploadedFileFromFactory  = $fromPsrArray->get(0);
+        $uploadedFileFromFactory2 = $fromPsrArray->get(1);
 
         self::assertSame($contents, $uploadedFileFromFactory->getStream()->getContents());
         self::assertSame($size, $uploadedFileFromFactory->getSize());
@@ -108,11 +108,11 @@ final class PsrUploadedFileFactoryTest extends TestCase
 
         $fromPsrArray = PsrUploadedFileFactory::fromPsrArray([[$psrUploadedFile]]);
 
-        $nestedCollection = $fromPsrArray->getFile(0);
+        $nestedCollection = $fromPsrArray->get(0);
 
         self::assertInstanceOf(UploadedFileCollectionContract::class, $nestedCollection);
 
-        $nestedFile = $nestedCollection->getFile(0);
+        $nestedFile = $nestedCollection->get(0);
 
         self::assertInstanceOf(UploadedFileContract::class, $nestedFile);
         self::assertSame($contents, $nestedFile->getStream()->getContents());

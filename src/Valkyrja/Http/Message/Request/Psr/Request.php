@@ -77,7 +77,7 @@ class Request implements RequestInterface
             return false;
         }
 
-        return $this->request->getHeaders()->hasHeader($name);
+        return $this->request->getHeaders()->has($name);
     }
 
     /**
@@ -90,7 +90,7 @@ class Request implements RequestInterface
             return [];
         }
 
-        $header = $this->request->getHeaders()->getHeader($name);
+        $header = $this->request->getHeaders()->get($name);
 
         if ($header === null) {
             return [];

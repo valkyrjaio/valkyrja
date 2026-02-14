@@ -82,7 +82,7 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function hasHeader(string $name): bool
+    public function has(string $name): bool
     {
         return isset($this->headers[strtolower($name)]);
     }
@@ -91,9 +91,9 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getHeader(string $name): HeaderContract|null
+    public function get(string $name): HeaderContract|null
     {
-        if (! $this->hasHeader($name)) {
+        if (! $this->has($name)) {
             return null;
         }
 
@@ -108,7 +108,7 @@ class HeaderCollection implements HeaderCollectionContract
     #[Override]
     public function getHeaderLine(string $name): string
     {
-        $header = $this->getHeader($name);
+        $header = $this->get($name);
 
         if ($header === null) {
             return '';
@@ -121,7 +121,7 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getHeaders(): array
+    public function getAll(): array
     {
         return $this->headers;
     }
@@ -130,7 +130,7 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function onlyHeaders(string ...$names): array
+    public function getOnly(string ...$names): array
     {
         return array_filter(
             $this->headers,
@@ -143,7 +143,7 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function exceptHeaders(string ...$names): array
+    public function getAllExcept(string ...$names): array
     {
         return array_filter(
             $this->headers,
@@ -171,7 +171,7 @@ class HeaderCollection implements HeaderCollectionContract
     #[Override]
     public function withoutHeader(string $name): static
     {
-        if (! $this->hasHeader($name)) {
+        if (! $this->has($name)) {
             return clone $this;
         }
 
@@ -233,7 +233,7 @@ class HeaderCollection implements HeaderCollectionContract
      */
     protected function removeHeader(string $name): void
     {
-        if (! $this->hasHeader($name)) {
+        if (! $this->has($name)) {
             return;
         }
 
@@ -258,7 +258,7 @@ class HeaderCollection implements HeaderCollectionContract
     protected function addHeader(HeaderContract $header): void
     {
         $name           = $header->getNormalizedName();
-        $existingHeader = $this->getHeader($name);
+        $existingHeader = $this->get($name);
 
         if ($existingHeader === null) {
             $this->headers[$name] = $header;

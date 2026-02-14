@@ -87,7 +87,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->onlyParams('page');
+        $only = $this->paramData->getOnlyParams('page');
 
         self::assertCount(1, $only);
         self::assertSame('1', $only['page']);
@@ -96,7 +96,7 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $except = $this->paramData->exceptParams('page');
+        $except = $this->paramData->getAllExcept('page');
 
         self::assertCount(1, $except);
         self::assertSame('name', $except['sort']);

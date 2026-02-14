@@ -24,5 +24,5 @@ interface QueryParamCollectionContract extends ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $name): self|string|null;
+    public function getParam(string|int $key): self|string|null;
 }

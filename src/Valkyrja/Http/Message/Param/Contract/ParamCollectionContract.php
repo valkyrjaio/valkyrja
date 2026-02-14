@@ -22,18 +22,18 @@ interface ParamCollectionContract
     /**
      * Determine if a param exists.
      *
-     * @param K $name The param name
+     * @param K $key The param name
      */
-    public function hasParam(string|int $name): bool;
+    public function hasParam(string|int $key): bool;
 
     /**
      * Get a param.
      *
-     * @param K $name The param name
+     * @param K $key The param name
      *
      * @return T|null
      */
-    public function getParam(string|int $name): self|float|bool|int|string|null;
+    public function getParam(string|int $key): self|float|bool|int|string|null;
 
     /**
      * Get all the params.
@@ -45,20 +45,20 @@ interface ParamCollectionContract
     /**
      * Get only the specified params.
      *
-     * @param K ...$names The param names
+     * @param K ...$keys The param keys
      *
      * @return array<K, T>
      */
-    public function onlyParams(string|int ...$names): array;
+    public function getOnlyParams(string|int ...$keys): array;
 
     /**
      * Get all the params except the specified ones.
      *
-     * @param K ...$names The param names
+     * @param K ...$keys The param names
      *
      * @return array<K, T>
      */
-    public function exceptParams(string|int ...$names): array;
+    public function getAllExcept(string|int ...$keys): array;
 
     /**
      * Get a new instance with the specified params.
