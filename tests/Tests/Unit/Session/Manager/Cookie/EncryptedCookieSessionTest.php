@@ -42,7 +42,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('VALKYRJA_SESSION')
             ->willReturn(null);
 
@@ -72,7 +72,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn('encrypted-cookie-data');
 
@@ -101,7 +101,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn(null);
 
@@ -127,7 +127,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn('');
 
@@ -197,7 +197,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->willReturn(null);
 
         $request
@@ -219,7 +219,7 @@ final class EncryptedCookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->willReturn(null);
 
         $request

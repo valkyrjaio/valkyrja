@@ -30,7 +30,7 @@ trait JsonRequestStruct
     ): array {
         static::ensureJsonRequest($request);
 
-        return $request->getParsedJson()->getOnlyParams(...$values);
+        return $request->getParsedJson()->getOnly(...$values);
     }
 
     /**

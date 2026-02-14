@@ -41,9 +41,9 @@ enum IndexedParsedBodyRequestStructEnum: int implements RequestStructContract
     {
         $parsedBody = $request->getParsedBody();
 
-        $first  = $parsedBody->getParam(self::first->value);
-        $second = $parsedBody->getParam(self::second->value);
-        $third  = $parsedBody->getParam(self::third->value);
+        $first  = $parsedBody->get(self::first->value);
+        $second = $parsedBody->get(self::second->value);
+        $third  = $parsedBody->get(self::third->value);
 
         return [
             self::first->name  => [

@@ -24,5 +24,5 @@ interface CookieParamCollectionContract extends ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $key): string|null;
+    public function get(string|int $key): string|null;
 }

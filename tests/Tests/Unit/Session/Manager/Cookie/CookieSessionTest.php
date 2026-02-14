@@ -33,7 +33,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('VALKYRJA_SESSION')
             ->willReturn(null);
 
@@ -57,7 +57,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn('{"key":"value","key2":"value2"}');
 
@@ -79,7 +79,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn(null);
 
@@ -100,7 +100,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn('');
 
@@ -162,7 +162,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->with('session-id')
             ->willReturn(null);
 
@@ -189,7 +189,7 @@ final class CookieSessionTest extends TestCase
         $cookies = $this->createMock(CookieParamCollectionContract::class);
         $cookies
             ->expects($this->once())
-            ->method('getParam')
+            ->method('get')
             ->willReturn(null);
 
         $request

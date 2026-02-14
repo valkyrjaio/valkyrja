@@ -32,8 +32,8 @@ final class ServerRequestTest extends TestCase
         $request    = new ServerRequest(server: ServerParamCollection::fromArray($server));
         $psrRequest = new PsrServerRequest($request);
 
-        self::assertSame($request->getServerParams()->getParams(), $psrRequest->getServerParams());
-        self::assertSame($server, $request->getServerParams()->getParams());
+        self::assertSame($request->getServerParams()->getAll(), $psrRequest->getServerParams());
+        self::assertSame($server, $request->getServerParams()->getAll());
         self::assertSame($server, $psrRequest->getServerParams());
     }
 
@@ -48,7 +48,7 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withCookieParams($cookies2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getCookieParams()->getParams(), $psrRequest->getCookieParams());
+        self::assertSame($request->getCookieParams()->getAll(), $psrRequest->getCookieParams());
         self::assertSame($cookies, $psrRequest->getCookieParams());
         self::assertSame($cookies2, $psrRequest2->getCookieParams());
     }
@@ -64,7 +64,7 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withQueryParams($query2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getQueryParams()->getParams(), $psrRequest->getQueryParams());
+        self::assertSame($request->getQueryParams()->getAll(), $psrRequest->getQueryParams());
         self::assertSame($query, $psrRequest->getQueryParams());
         self::assertSame($query2, $psrRequest2->getQueryParams());
     }
@@ -101,7 +101,7 @@ final class ServerRequestTest extends TestCase
         $psrRequest2 = $psrRequest->withParsedBody($parsedBody2);
 
         self::assertNotSame($psrRequest, $psrRequest2);
-        self::assertSame($request->getParsedBody()->getParams(), $psrRequest->getParsedBody());
+        self::assertSame($request->getParsedBody()->getAll(), $psrRequest->getParsedBody());
         self::assertSame($parsedBody, $psrRequest->getParsedBody());
         self::assertSame($parsedBody2, $psrRequest2->getParsedBody());
     }

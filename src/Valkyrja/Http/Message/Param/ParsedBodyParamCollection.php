@@ -26,7 +26,7 @@ class ParsedBodyParamCollection extends ParamCollection implements ParsedBodyPar
      * @inheritDoc
      */
     #[Override]
-    public function getParam(string|int $key): ParsedBodyParamCollectionContract|string|null
+    public function get(string|int $key): ParsedBodyParamCollectionContract|string|null
     {
         return $this->params[$key]
             ?? null;

@@ -41,9 +41,9 @@ enum QueryRequestStructEnum implements RequestStructContract
     {
         $query = $request->getQueryParams();
 
-        $first  = $query->getParam(self::first->name);
-        $second = $query->getParam(self::second->name);
-        $third  = $query->getParam(self::third->name);
+        $first  = $query->get(self::first->name);
+        $second = $query->get(self::second->name);
+        $third  = $query->get(self::third->name);
 
         return [
             self::first->name  => [

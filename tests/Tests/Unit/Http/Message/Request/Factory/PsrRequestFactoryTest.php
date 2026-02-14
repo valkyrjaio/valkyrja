@@ -115,20 +115,20 @@ final class PsrRequestFactoryTest extends TestCase
             actual: $fromPsr->getHeaders()->getHeaderLine('Host')
         );
         self::assertSame(
-            expected: $server->getParams(),
-            actual: $fromPsr->getServerParams()->getParams()
+            expected: $server->getAll(),
+            actual: $fromPsr->getServerParams()->getAll()
         );
         self::assertSame(
-            expected: $cookies->getParams(),
-            actual: $fromPsr->getCookieParams()->getParams()
+            expected: $cookies->getAll(),
+            actual: $fromPsr->getCookieParams()->getAll()
         );
         self::assertSame(
-            expected: $query->getParams(),
-            actual: $fromPsr->getQueryParams()->getParams()
+            expected: $query->getAll(),
+            actual: $fromPsr->getQueryParams()->getAll()
         );
         self::assertSame(
-            expected: $parsedBody->getParams(),
-            actual: $fromPsr->getParsedBody()->getParams()
+            expected: $parsedBody->getAll(),
+            actual: $fromPsr->getParsedBody()->getAll()
         );
         self::assertSame(
             expected: $bodyContents,

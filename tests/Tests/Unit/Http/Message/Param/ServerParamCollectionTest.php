@@ -37,29 +37,29 @@ final class ServerParamCollectionTest extends TestCase
     {
         $paramData = new ServerParamCollection();
 
-        self::assertEmpty($paramData->getParams());
+        self::assertEmpty($paramData->getAll());
     }
 
     public function testConstructorWithStringParams(): void
     {
-        self::assertSame('GET', $this->paramData->getParam('method'));
+        self::assertSame('GET', $this->paramData->get('method'));
     }
 
     public function testConstructorWithIntParams(): void
     {
-        self::assertSame(443, $this->paramData->getParam('port'));
+        self::assertSame(443, $this->paramData->get('port'));
     }
 
     public function testConstructorWithBoolParams(): void
     {
-        self::assertTrue($this->paramData->getParam('secure'));
+        self::assertTrue($this->paramData->get('secure'));
     }
 
     public function testConstructorWithFloatParams(): void
     {
         $paramData = new ServerParamCollection(['version' => 1.1]);
 
-        self::assertSame(1.1, $paramData->getParam('version'));
+        self::assertSame(1.1, $paramData->get('version'));
     }
 
     public function testConstructorWithNestedParamData(): void
@@ -67,25 +67,25 @@ final class ServerParamCollectionTest extends TestCase
         $nested    = new ServerParamCollection(['key' => 'value']);
         $paramData = new ServerParamCollection(['nested' => $nested]);
 
-        self::assertSame($nested, $paramData->getParam('nested'));
+        self::assertSame($nested, $paramData->get('nested'));
     }
 
     public function testGetParamReturnsNullForMissing(): void
     {
-        self::assertNull($this->paramData->getParam('nonexistent'));
+        self::assertNull($this->paramData->get('nonexistent'));
     }
 
     public function testHasParam(): void
     {
-        self::assertTrue($this->paramData->hasParam('method'));
-        self::assertTrue($this->paramData->hasParam('port'));
-        self::assertTrue($this->paramData->hasParam('secure'));
-        self::assertFalse($this->paramData->hasParam('nonexistent'));
+        self::assertTrue($this->paramData->has('method'));
+        self::assertTrue($this->paramData->has('port'));
+        self::assertTrue($this->paramData->has('secure'));
+        self::assertFalse($this->paramData->has('nonexistent'));
     }
 
     public function testGetParams(): void
     {
-        $params = $this->paramData->getParams();
+        $params = $this->paramData->getAll();
 
         self::assertCount(3, $params);
         self::assertSame('GET', $params['method']);
@@ -95,7 +95,7 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->getOnlyParams('method', 'port');
+        $only = $this->paramData->getOnly('method', 'port');
 
         self::assertCount(2, $only);
         self::assertSame('GET', $only['method']);
@@ -115,58 +115,58 @@ final class ServerParamCollectionTest extends TestCase
 
     public function testWithParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withParams(['host' => 'localhost']);
+        $new = $this->paramData->with(['host' => 'localhost']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('localhost', $new->getParam('host'));
-        self::assertNull($new->getParam('method'));
+        self::assertSame('localhost', $new->get('host'));
+        self::assertNull($new->get('method'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withParams(['host' => 'localhost']);
+        $this->paramData->with(['host' => 'localhost']);
 
-        self::assertSame('GET', $this->paramData->getParam('method'));
+        self::assertSame('GET', $this->paramData->get('method'));
     }
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(['host' => 'localhost']);
+        $new = $this->paramData->withAdded(['host' => 'localhost']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('GET', $new->getParam('method'));
-        self::assertSame('localhost', $new->getParam('host'));
+        self::assertSame('GET', $new->get('method'));
+        self::assertSame('localhost', $new->get('host'));
     }
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(['host' => 'localhost']);
+        $this->paramData->withAdded(['host' => 'localhost']);
 
-        self::assertFalse($this->paramData->hasParam('host'));
+        self::assertFalse($this->paramData->has('host'));
     }
 
     public function testWithParamsThrowsForInvalidParam(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->withParams(['invalid' => new stdClass()]);
+        $this->paramData->with(['invalid' => new stdClass()]);
     }
 
     public function testFromArray(): void
     {
         $paramData = ServerParamCollection::fromArray(['host' => 'localhost', 'port' => 8080]);
 
-        self::assertSame('localhost', $paramData->getParam('host'));
-        self::assertSame(8080, $paramData->getParam('port'));
+        self::assertSame('localhost', $paramData->get('host'));
+        self::assertSame(8080, $paramData->get('port'));
     }
 
     public function testFromArrayWithNestedArray(): void
     {
         $paramData = ServerParamCollection::fromArray(['nested' => ['inner' => 'value']]);
 
-        $nested = $paramData->getParam('nested');
+        $nested = $paramData->get('nested');
 
         self::assertInstanceOf(ServerParamCollection::class, $nested);
-        self::assertSame('value', $nested->getParam('inner'));
+        self::assertSame('value', $nested->get('inner'));
     }
 }

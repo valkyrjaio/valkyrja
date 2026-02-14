@@ -24,7 +24,7 @@ interface ParamCollectionContract
      *
      * @param K $key The param name
      */
-    public function hasParam(string|int $key): bool;
+    public function has(string|int $key): bool;
 
     /**
      * Get a param.
@@ -33,14 +33,14 @@ interface ParamCollectionContract
      *
      * @return T|null
      */
-    public function getParam(string|int $key): self|float|bool|int|string|null;
+    public function get(string|int $key): self|float|bool|int|string|null;
 
     /**
      * Get all the params.
      *
      * @return array<K, T>
      */
-    public function getParams(): array;
+    public function getAll(): array;
 
     /**
      * Get only the specified params.
@@ -49,7 +49,7 @@ interface ParamCollectionContract
      *
      * @return array<K, T>
      */
-    public function getOnlyParams(string|int ...$keys): array;
+    public function getOnly(string|int ...$keys): array;
 
     /**
      * Get all the params except the specified ones.
@@ -65,12 +65,12 @@ interface ParamCollectionContract
      *
      * @param array<K, T> $params The params
      */
-    public function withParams(array $params): static;
+    public function with(array $params): static;
 
     /**
      * Get a new instance with the added params.
      *
      * @param array<K, T> $params The params
      */
-    public function withAddedParams(array $params): static;
+    public function withAdded(array $params): static;
 }

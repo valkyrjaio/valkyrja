@@ -41,9 +41,9 @@ enum IndexedQueryRequestStructEnum: int implements RequestStructContract
     {
         $query = $request->getQueryParams();
 
-        $first  = $query->getParam(self::first->value);
-        $second = $query->getParam(self::second->value);
-        $third  = $query->getParam(self::third->value);
+        $first  = $query->get(self::first->value);
+        $second = $query->get(self::second->value);
+        $third  = $query->get(self::third->value);
 
         return [
             self::first->name  => [
