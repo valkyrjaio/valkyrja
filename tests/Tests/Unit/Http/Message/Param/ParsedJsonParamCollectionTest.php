@@ -37,29 +37,29 @@ final class ParsedJsonParamCollectionTest extends TestCase
     {
         $paramData = new ParsedJsonParamCollection();
 
-        self::assertEmpty($paramData->getParams());
+        self::assertEmpty($paramData->getAll());
     }
 
     public function testConstructorWithStringParams(): void
     {
-        self::assertSame('John', $this->paramData->getParam('name'));
+        self::assertSame('John', $this->paramData->get('name'));
     }
 
     public function testConstructorWithIntParams(): void
     {
-        self::assertSame(30, $this->paramData->getParam('age'));
+        self::assertSame(30, $this->paramData->get('age'));
     }
 
     public function testConstructorWithBoolParams(): void
     {
-        self::assertTrue($this->paramData->getParam('active'));
+        self::assertTrue($this->paramData->get('active'));
     }
 
     public function testConstructorWithFloatParams(): void
     {
         $paramData = new ParsedJsonParamCollection(['price' => 9.99]);
 
-        self::assertSame(9.99, $paramData->getParam('price'));
+        self::assertSame(9.99, $paramData->get('price'));
     }
 
     public function testConstructorWithNestedParamData(): void
@@ -67,25 +67,25 @@ final class ParsedJsonParamCollectionTest extends TestCase
         $nested    = new ParsedJsonParamCollection(['street' => '123 Main St', 'zip' => 12345]);
         $paramData = new ParsedJsonParamCollection(['address' => $nested]);
 
-        self::assertSame($nested, $paramData->getParam('address'));
+        self::assertSame($nested, $paramData->get('address'));
     }
 
     public function testGetParamReturnsNullForMissing(): void
     {
-        self::assertNull($this->paramData->getParam('nonexistent'));
+        self::assertNull($this->paramData->get('nonexistent'));
     }
 
     public function testHasParam(): void
     {
-        self::assertTrue($this->paramData->hasParam('name'));
-        self::assertTrue($this->paramData->hasParam('age'));
-        self::assertTrue($this->paramData->hasParam('active'));
-        self::assertFalse($this->paramData->hasParam('nonexistent'));
+        self::assertTrue($this->paramData->has('name'));
+        self::assertTrue($this->paramData->has('age'));
+        self::assertTrue($this->paramData->has('active'));
+        self::assertFalse($this->paramData->has('nonexistent'));
     }
 
     public function testGetParams(): void
     {
-        $params = $this->paramData->getParams();
+        $params = $this->paramData->getAll();
 
         self::assertCount(3, $params);
         self::assertSame('John', $params['name']);
@@ -95,7 +95,7 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->getOnlyParams('name', 'age');
+        $only = $this->paramData->getOnly('name', 'age');
 
         self::assertCount(2, $only);
         self::assertSame('John', $only['name']);
@@ -115,58 +115,58 @@ final class ParsedJsonParamCollectionTest extends TestCase
 
     public function testWithParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withParams(['key' => 'value']);
+        $new = $this->paramData->with(['key' => 'value']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('value', $new->getParam('key'));
-        self::assertNull($new->getParam('name'));
+        self::assertSame('value', $new->get('key'));
+        self::assertNull($new->get('name'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withParams(['key' => 'value']);
+        $this->paramData->with(['key' => 'value']);
 
-        self::assertSame('John', $this->paramData->getParam('name'));
+        self::assertSame('John', $this->paramData->get('name'));
     }
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(['extra' => 'added']);
+        $new = $this->paramData->withAdded(['extra' => 'added']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('John', $new->getParam('name'));
-        self::assertSame('added', $new->getParam('extra'));
+        self::assertSame('John', $new->get('name'));
+        self::assertSame('added', $new->get('extra'));
     }
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(['extra' => 'added']);
+        $this->paramData->withAdded(['extra' => 'added']);
 
-        self::assertFalse($this->paramData->hasParam('extra'));
+        self::assertFalse($this->paramData->has('extra'));
     }
 
     public function testWithParamsThrowsForInvalidParam(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->withParams(['invalid' => new stdClass()]);
+        $this->paramData->with(['invalid' => new stdClass()]);
     }
 
     public function testFromArray(): void
     {
         $paramData = ParsedJsonParamCollection::fromArray(['key' => 'value', 'num' => 42]);
 
-        self::assertSame('value', $paramData->getParam('key'));
-        self::assertSame(42, $paramData->getParam('num'));
+        self::assertSame('value', $paramData->get('key'));
+        self::assertSame(42, $paramData->get('num'));
     }
 
     public function testFromArrayWithNestedArray(): void
     {
         $paramData = ParsedJsonParamCollection::fromArray(['nested' => ['inner' => 'value']]);
 
-        $nested = $paramData->getParam('nested');
+        $nested = $paramData->get('nested');
 
         self::assertInstanceOf(ParsedJsonParamCollection::class, $nested);
-        self::assertSame('value', $nested->getParam('inner'));
+        self::assertSame('value', $nested->get('inner'));
     }
 }

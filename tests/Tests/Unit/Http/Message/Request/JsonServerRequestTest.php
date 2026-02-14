@@ -65,10 +65,10 @@ final class JsonServerRequestTest extends TestCase
             ParsedJsonParamCollection::fromArray($json2)
         );
         $request7 = $request3->withParsedJson(
-            $request3->getParsedJson()->withAddedParams(['test3' => 'fire'])
+            $request3->getParsedJson()->withAdded(['test3' => 'fire'])
         );
         $request8 = $request4->withParsedJson(
-            $request3->getParsedJson()->withAddedParams(['test3' => 'pie'])
+            $request3->getParsedJson()->withAdded(['test3' => 'pie'])
         );
 
         self::assertNotSame($request3, $request5);
@@ -76,14 +76,14 @@ final class JsonServerRequestTest extends TestCase
         self::assertNotSame($request3, $request7);
         self::assertNotSame($request4, $request8);
 
-        self::assertEmpty($request->getParsedJson()->getParams());
-        self::assertEmpty($request2->getParsedJson()->getParams());
-        self::assertNotEmpty($request3->getParsedJson()->getParams());
-        self::assertNotEmpty($request4->getParsedJson()->getParams());
-        self::assertNotEmpty($request5->getParsedJson()->getParams());
-        self::assertNotEmpty($request6->getParsedJson()->getParams());
-        self::assertNotEmpty($request7->getParsedJson()->getParams());
-        self::assertNotEmpty($request8->getParsedJson()->getParams());
+        self::assertEmpty($request->getParsedJson()->getAll());
+        self::assertEmpty($request2->getParsedJson()->getAll());
+        self::assertNotEmpty($request3->getParsedJson()->getAll());
+        self::assertNotEmpty($request4->getParsedJson()->getAll());
+        self::assertNotEmpty($request5->getParsedJson()->getAll());
+        self::assertNotEmpty($request6->getParsedJson()->getAll());
+        self::assertNotEmpty($request7->getParsedJson()->getAll());
+        self::assertNotEmpty($request8->getParsedJson()->getAll());
 
         self::assertSame(
             array_filter(
@@ -91,7 +91,7 @@ final class JsonServerRequestTest extends TestCase
                 static fn (string|int $name): bool => $name === 'test' || $name === 'null',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request3->getParsedJson()->getOnlyParams('test', 'null')
+            $request3->getParsedJson()->getOnly('test', 'null')
         );
         self::assertSameCount(
             array_filter(
@@ -102,65 +102,65 @@ final class JsonServerRequestTest extends TestCase
             $request3->getParsedJson()->getAllExcept('test', 'null')
         );
 
-        self::assertEmpty($request3->getParsedBody()->getParams());
-        self::assertNotEmpty($request4->getParsedBody()->getParams());
-        self::assertEmpty($request5->getParsedBody()->getParams());
-        self::assertNotEmpty($request6->getParsedBody()->getParams());
-        self::assertEmpty($request7->getParsedBody()->getParams());
-        self::assertNotEmpty($request8->getParsedBody()->getParams());
+        self::assertEmpty($request3->getParsedBody()->getAll());
+        self::assertNotEmpty($request4->getParsedBody()->getAll());
+        self::assertEmpty($request5->getParsedBody()->getAll());
+        self::assertNotEmpty($request6->getParsedBody()->getAll());
+        self::assertEmpty($request7->getParsedBody()->getAll());
+        self::assertNotEmpty($request8->getParsedBody()->getAll());
 
-        self::assertTrue($request3->getParsedJson()->hasParam('test'));
-        self::assertTrue($request3->getParsedJson()->hasParam('foo'));
-        self::assertTrue($request3->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request3->getParsedJson()->hasParam('null'));
+        self::assertTrue($request3->getParsedJson()->has('test'));
+        self::assertTrue($request3->getParsedJson()->has('foo'));
+        self::assertTrue($request3->getParsedJson()->has('bar'));
+        self::assertFalse($request3->getParsedJson()->has('null'));
 
-        self::assertTrue($request4->getParsedJson()->hasParam('test'));
-        self::assertTrue($request4->getParsedJson()->hasParam('foo'));
-        self::assertTrue($request4->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request4->getParsedJson()->hasParam('null'));
+        self::assertTrue($request4->getParsedJson()->has('test'));
+        self::assertTrue($request4->getParsedJson()->has('foo'));
+        self::assertTrue($request4->getParsedJson()->has('bar'));
+        self::assertFalse($request4->getParsedJson()->has('null'));
 
-        self::assertFalse($request5->getParsedJson()->hasParam('test'));
-        self::assertFalse($request5->getParsedJson()->hasParam('foo'));
-        self::assertFalse($request5->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request5->getParsedJson()->hasParam('null'));
-        self::assertTrue($request5->getParsedJson()->hasParam('test2'));
-        self::assertTrue($request5->getParsedJson()->hasParam('foo2'));
+        self::assertFalse($request5->getParsedJson()->has('test'));
+        self::assertFalse($request5->getParsedJson()->has('foo'));
+        self::assertFalse($request5->getParsedJson()->has('bar'));
+        self::assertFalse($request5->getParsedJson()->has('null'));
+        self::assertTrue($request5->getParsedJson()->has('test2'));
+        self::assertTrue($request5->getParsedJson()->has('foo2'));
 
-        self::assertFalse($request6->getParsedJson()->hasParam('test'));
-        self::assertFalse($request6->getParsedJson()->hasParam('foo'));
-        self::assertFalse($request6->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request6->getParsedJson()->hasParam('null'));
-        self::assertTrue($request6->getParsedJson()->hasParam('test2'));
-        self::assertTrue($request6->getParsedJson()->hasParam('foo2'));
+        self::assertFalse($request6->getParsedJson()->has('test'));
+        self::assertFalse($request6->getParsedJson()->has('foo'));
+        self::assertFalse($request6->getParsedJson()->has('bar'));
+        self::assertFalse($request6->getParsedJson()->has('null'));
+        self::assertTrue($request6->getParsedJson()->has('test2'));
+        self::assertTrue($request6->getParsedJson()->has('foo2'));
 
-        self::assertTrue($request7->getParsedJson()->hasParam('test'));
-        self::assertTrue($request7->getParsedJson()->hasParam('foo'));
-        self::assertTrue($request7->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request7->getParsedJson()->hasParam('null'));
-        self::assertTrue($request7->getParsedJson()->hasParam('test3'));
+        self::assertTrue($request7->getParsedJson()->has('test'));
+        self::assertTrue($request7->getParsedJson()->has('foo'));
+        self::assertTrue($request7->getParsedJson()->has('bar'));
+        self::assertFalse($request7->getParsedJson()->has('null'));
+        self::assertTrue($request7->getParsedJson()->has('test3'));
 
-        self::assertTrue($request8->getParsedJson()->hasParam('test'));
-        self::assertTrue($request8->getParsedJson()->hasParam('foo'));
-        self::assertTrue($request8->getParsedJson()->hasParam('bar'));
-        self::assertFalse($request8->getParsedJson()->hasParam('null'));
-        self::assertTrue($request8->getParsedJson()->hasParam('test3'));
+        self::assertTrue($request8->getParsedJson()->has('test'));
+        self::assertTrue($request8->getParsedJson()->has('foo'));
+        self::assertTrue($request8->getParsedJson()->has('bar'));
+        self::assertFalse($request8->getParsedJson()->has('null'));
+        self::assertTrue($request8->getParsedJson()->has('test3'));
 
-        self::assertSame('foo', $request3->getParsedJson()->getParam('test'));
-        self::assertSame('foo', $request3->getParsedJson()->getParam('test'));
-        self::assertSame(2, $request3->getParsedJson()->getParam('foo'));
-        self::assertInstanceOf(ParsedJsonParamCollection::class, $request3->getParsedJson()->getParam('bar'));
-        self::assertNull($request3->getParsedJson()->getParam('null'));
+        self::assertSame('foo', $request3->getParsedJson()->get('test'));
+        self::assertSame('foo', $request3->getParsedJson()->get('test'));
+        self::assertSame(2, $request3->getParsedJson()->get('foo'));
+        self::assertInstanceOf(ParsedJsonParamCollection::class, $request3->getParsedJson()->get('bar'));
+        self::assertNull($request3->getParsedJson()->get('null'));
 
-        self::assertSame('foo', $request4->getParsedJson()->getParam('test'));
-        self::assertSame('notFoo', $request4->getParsedBody()->getParam('test'));
+        self::assertSame('foo', $request4->getParsedJson()->get('test'));
+        self::assertSame('notFoo', $request4->getParsedBody()->get('test'));
 
-        self::assertSame('bar', $request5->getParsedJson()->getParam('test2'));
-        self::assertSame(1, $request5->getParsedJson()->getParam('foo2'));
+        self::assertSame('bar', $request5->getParsedJson()->get('test2'));
+        self::assertSame(1, $request5->getParsedJson()->get('foo2'));
 
-        self::assertSame('bar', $request6->getParsedJson()->getParam('test2'));
-        self::assertSame(1, $request6->getParsedJson()->getParam('foo2'));
+        self::assertSame('bar', $request6->getParsedJson()->get('test2'));
+        self::assertSame(1, $request6->getParsedJson()->get('foo2'));
 
-        self::assertSame('fire', $request7->getParsedJson()->getParam('test3'));
-        self::assertSame('pie', $request8->getParsedJson()->getParam('test3'));
+        self::assertSame('fire', $request7->getParsedJson()->get('test3'));
+        self::assertSame('pie', $request8->getParsedJson()->get('test3'));
     }
 }

@@ -30,10 +30,10 @@ final class RequestFactoryTest extends TestCase
     {
         $request = RequestFactory::fromGlobals();
 
-        self::assertNotEmpty($request->getServerParams()->getParams());
+        self::assertNotEmpty($request->getServerParams()->getAll());
         self::assertNotEmpty($request->getHeaders()->getAll());
-        self::assertEmpty($request->getQueryParams()->getParams());
-        self::assertEmpty($request->getParsedBody()->getParams());
+        self::assertEmpty($request->getQueryParams()->getAll());
+        self::assertEmpty($request->getParsedBody()->getAll());
         self::assertEmpty($request->getUploadedFiles()->getAll());
         self::assertEmpty($request->getBody()->getContents());
         self::assertSame(expected: ProtocolVersion::V1_1, actual: $request->getProtocolVersion());
@@ -89,13 +89,13 @@ final class RequestFactoryTest extends TestCase
         );
         $cookiesPassedIn   = RequestFactory::fromGlobals(cookies: $cookies);
 
-        self::assertEmpty($default->getCookieParams()->getParams());
-        self::assertSame(expected: $cookies, actual: $cookiesFromHeader->getCookieParams()->getParams());
-        self::assertSame(expected: 'value', actual: $cookiesFromHeader->getCookieParams()->getParam(key: 'cookie'));
-        self::assertSame(expected: 'value2', actual: $cookiesFromHeader->getCookieParams()->getParam(key: 'cookie2'));
-        self::assertSame(expected: $cookies, actual: $cookiesPassedIn->getCookieParams()->getParams());
-        self::assertSame(expected: 'value', actual: $cookiesPassedIn->getCookieParams()->getParam(key: 'cookie'));
-        self::assertSame(expected: 'value2', actual: $cookiesPassedIn->getCookieParams()->getParam(key: 'cookie2'));
+        self::assertEmpty($default->getCookieParams()->getAll());
+        self::assertSame(expected: $cookies, actual: $cookiesFromHeader->getCookieParams()->getAll());
+        self::assertSame(expected: 'value', actual: $cookiesFromHeader->getCookieParams()->get(key: 'cookie'));
+        self::assertSame(expected: 'value2', actual: $cookiesFromHeader->getCookieParams()->get(key: 'cookie2'));
+        self::assertSame(expected: $cookies, actual: $cookiesPassedIn->getCookieParams()->getAll());
+        self::assertSame(expected: 'value', actual: $cookiesPassedIn->getCookieParams()->get(key: 'cookie'));
+        self::assertSame(expected: 'value2', actual: $cookiesPassedIn->getCookieParams()->get(key: 'cookie2'));
     }
 
     public function testFiles(): void

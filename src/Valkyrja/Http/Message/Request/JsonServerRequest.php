@@ -84,7 +84,7 @@ class JsonServerRequest extends ServerRequest implements JsonServerRequestContra
 
             $this->parsedJson = ParsedJsonParamCollection::fromArray(ArrayFactory::fromString($bodyContents));
 
-            if (empty($parsedBody->getParams())) {
+            if (empty($parsedBody->getAll())) {
                 $this->hadParsedBody = false;
             }
         }

@@ -39,7 +39,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getServerParams(): array
     {
-        return $this->request->getServerParams()->getParams();
+        return $this->request->getServerParams()->getAll();
     }
 
     /**
@@ -50,7 +50,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getCookieParams(): array
     {
-        return $this->request->getCookieParams()->getParams();
+        return $this->request->getCookieParams()->getAll();
     }
 
     /**
@@ -79,7 +79,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getQueryParams(): array
     {
-        return $this->request->getQueryParams()->getParams();
+        return $this->request->getQueryParams()->getAll();
     }
 
     /**
@@ -135,7 +135,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getParsedBody(): object|array|null
     {
-        return $this->request->getParsedBody()->getParams();
+        return $this->request->getParsedBody()->getAll();
     }
 
     /**

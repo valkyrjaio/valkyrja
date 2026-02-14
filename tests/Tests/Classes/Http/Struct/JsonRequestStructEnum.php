@@ -44,9 +44,9 @@ enum JsonRequestStructEnum implements RequestStructContract
 
         $parsedJson = $request->getParsedJson();
 
-        $first  = $parsedJson->getParam(self::first->name);
-        $second = $parsedJson->getParam(self::second->name);
-        $third  = $parsedJson->getParam(self::third->name);
+        $first  = $parsedJson->get(self::first->name);
+        $second = $parsedJson->get(self::second->name);
+        $third  = $parsedJson->get(self::third->name);
 
         return [
             self::first->name  => [

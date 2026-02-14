@@ -37,18 +37,18 @@ final class CookieParamCollectionTest extends TestCase
     {
         $paramData = new CookieParamCollection();
 
-        self::assertEmpty($paramData->getParams());
+        self::assertEmpty($paramData->getAll());
     }
 
     public function testConstructorWithStringParams(): void
     {
-        self::assertSame('abc123', $this->paramData->getParam('session'));
-        self::assertSame('dark', $this->paramData->getParam('theme'));
+        self::assertSame('abc123', $this->paramData->get('session'));
+        self::assertSame('dark', $this->paramData->get('theme'));
     }
 
     public function testGetParamReturnsString(): void
     {
-        $result = $this->paramData->getParam('session');
+        $result = $this->paramData->get('session');
 
         self::assertIsString($result);
         self::assertSame('abc123', $result);
@@ -56,19 +56,19 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testGetParamReturnsNullForMissing(): void
     {
-        self::assertNull($this->paramData->getParam('nonexistent'));
+        self::assertNull($this->paramData->get('nonexistent'));
     }
 
     public function testHasParam(): void
     {
-        self::assertTrue($this->paramData->hasParam('session'));
-        self::assertTrue($this->paramData->hasParam('theme'));
-        self::assertFalse($this->paramData->hasParam('nonexistent'));
+        self::assertTrue($this->paramData->has('session'));
+        self::assertTrue($this->paramData->has('theme'));
+        self::assertFalse($this->paramData->has('nonexistent'));
     }
 
     public function testGetParams(): void
     {
-        $params = $this->paramData->getParams();
+        $params = $this->paramData->getAll();
 
         self::assertCount(2, $params);
         self::assertSame('abc123', $params['session']);
@@ -77,7 +77,7 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $only = $this->paramData->getOnlyParams('session');
+        $only = $this->paramData->getOnly('session');
 
         self::assertCount(1, $only);
         self::assertSame('abc123', $only['session']);
@@ -95,49 +95,49 @@ final class CookieParamCollectionTest extends TestCase
 
     public function testWithParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withParams(['lang' => 'en']);
+        $new = $this->paramData->with(['lang' => 'en']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('en', $new->getParam('lang'));
-        self::assertNull($new->getParam('session'));
+        self::assertSame('en', $new->get('lang'));
+        self::assertNull($new->get('session'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withParams(['lang' => 'en']);
+        $this->paramData->with(['lang' => 'en']);
 
-        self::assertSame('abc123', $this->paramData->getParam('session'));
+        self::assertSame('abc123', $this->paramData->get('session'));
     }
 
     public function testWithAddedParamsReturnsNewInstance(): void
     {
-        $new = $this->paramData->withAddedParams(['lang' => 'en']);
+        $new = $this->paramData->withAdded(['lang' => 'en']);
 
         self::assertNotSame($this->paramData, $new);
-        self::assertSame('abc123', $new->getParam('session'));
-        self::assertSame('dark', $new->getParam('theme'));
-        self::assertSame('en', $new->getParam('lang'));
+        self::assertSame('abc123', $new->get('session'));
+        self::assertSame('dark', $new->get('theme'));
+        self::assertSame('en', $new->get('lang'));
     }
 
     public function testWithAddedParamsDoesNotModifyOriginal(): void
     {
-        $this->paramData->withAddedParams(['lang' => 'en']);
+        $this->paramData->withAdded(['lang' => 'en']);
 
-        self::assertFalse($this->paramData->hasParam('lang'));
+        self::assertFalse($this->paramData->has('lang'));
     }
 
     public function testWithParamsThrowsForInvalidParam(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->withParams(['invalid' => new stdClass()]);
+        $this->paramData->with(['invalid' => new stdClass()]);
     }
 
     public function testFromArray(): void
     {
         $paramData = CookieParamCollection::fromArray(['token' => 'xyz', 'user' => 'john']);
 
-        self::assertSame('xyz', $paramData->getParam('token'));
-        self::assertSame('john', $paramData->getParam('user'));
+        self::assertSame('xyz', $paramData->get('token'));
+        self::assertSame('john', $paramData->get('user'));
     }
 }

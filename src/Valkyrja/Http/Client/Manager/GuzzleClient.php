@@ -100,7 +100,7 @@ class GuzzleClient implements ClientContract
      */
     protected function setGuzzleCookies(ServerRequestContract $request, array &$options): void
     {
-        if ($cookies = $request->getCookieParams()->getParams()) {
+        if ($cookies = $request->getCookieParams()->getAll()) {
             $jar = new CookieJar();
 
             foreach ($cookies as $name => $value) {
@@ -125,8 +125,8 @@ class GuzzleClient implements ClientContract
     protected function setGuzzleFormParams(ServerRequestContract $request, array &$options): void
     {
         if (
-            ($body = $request->getParsedBody()->getParams())
-            && ! ($request instanceof JsonServerRequestContract && $request->getParsedJson()->getParams())
+            ($body = $request->getParsedBody()->getAll())
+            && ! ($request instanceof JsonServerRequestContract && $request->getParsedJson()->getAll())
         ) {
             $options['form_params'] = $body;
         }

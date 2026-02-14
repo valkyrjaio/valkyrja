@@ -44,9 +44,9 @@ enum IndexedJsonRequestStructEnum: int implements RequestStructContract
 
         $parsedJson = $request->getParsedJson();
 
-        $first  = $parsedJson->getParam(self::first->value);
-        $second = $parsedJson->getParam(self::second->value);
-        $third  = $parsedJson->getParam(self::third->value);
+        $first  = $parsedJson->get(self::first->value);
+        $second = $parsedJson->get(self::second->value);
+        $third  = $parsedJson->get(self::third->value);
 
         return [
             self::first->name  => [

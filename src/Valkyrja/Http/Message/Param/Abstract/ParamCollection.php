@@ -101,7 +101,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function hasParam(int|string $key): bool
+    public function has(int|string $key): bool
     {
         return isset($this->params[$key]);
     }
@@ -110,7 +110,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getParam(int|string $key): ParamCollectionContract|float|bool|int|string|null
+    public function get(int|string $key): ParamCollectionContract|float|bool|int|string|null
     {
         return $this->params[$key]
             ?? null;
@@ -120,7 +120,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getParams(): array
+    public function getAll(): array
     {
         return $this->params;
     }
@@ -129,7 +129,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getOnlyParams(string|int ...$keys): array
+    public function getOnly(string|int ...$keys): array
     {
         return array_filter(
             $this->params,
@@ -155,7 +155,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function withParams(array $params): static
+    public function with(array $params): static
     {
         $this->validateParams($params);
 
@@ -172,7 +172,7 @@ abstract class ParamCollection implements ParamCollectionContract
      * @param array<K, T> $params The params
      */
     #[Override]
-    public function withAddedParams(array $params): static
+    public function withAdded(array $params): static
     {
         $this->validateParams($params);
 
