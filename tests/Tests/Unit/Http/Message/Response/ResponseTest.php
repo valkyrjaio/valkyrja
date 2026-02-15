@@ -32,6 +32,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         /** @var string[] */
         public static array $headers = [];
 
+        public static bool $obFlushCalled = false;
+        public static bool $flushCalled   = false;
+
         public static int $responseCode = 0;
 
         public function testCreate(): void
@@ -112,16 +115,17 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         {
             $this->resetHeadersAndResponseCode();
 
-            $response = new Response(new Stream(), StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+            $response = new Response(new Stream(), StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
 
             $response->sendHttpLine();
 
-            /** @var string[] $headers */
+            /** @var array<string|true> $headers */
             $headers = self::$headers;
 
-            self::assertCount(1, $headers);
+            self::assertCount(2, $headers);
             self::assertNotNull($headers[0] ?? null);
-            self::assertSame('HTTP/1.1 200 OK', $headers[0]);
+            self::assertSame('HTTP/1.1 201 Created', $headers[0]);
+            self::assertTrue($headers[1]);
         }
 
         public function testSendHeaders(): void
@@ -132,12 +136,13 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             $response->sendHeaders();
 
-            /** @var string[] $headers */
+            /** @var array<string|true> $headers */
             $headers = self::$headers;
 
-            self::assertCount(1, $headers);
+            self::assertCount(2, $headers);
             self::assertNotNull($headers[0] ?? null);
             self::assertSame('Content-Type: text/html', $headers[0]);
+            self::assertFalse($headers[1]);
         }
 
         public function testSendBody(): void
@@ -148,12 +153,17 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             $response = new Response($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
+            self::assertSame('test', $stream->getContents());
+
             ob_start();
             $response->sendBody();
             $contents = ob_get_contents();
             ob_get_clean();
 
-            self::assertSame($stream->getContents(), $contents);
+            self::assertSame('test', $contents);
+            self::assertSame('test', $stream->getContents());
+            self::assertTrue(self::$obFlushCalled);
+            self::assertTrue(self::$flushCalled);
         }
 
         public function testSend(): void
@@ -164,28 +174,37 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $stream->write('test');
             $stream->rewind();
 
-            $response = new Response($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+            $response = new Response($stream, StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
+
+            self::assertSame('test', $stream->getContents());
 
             ob_start();
             $response->send();
             $contents = ob_get_contents();
             ob_get_clean();
 
-            /** @var string[] $headers */
+            /** @var array<string|true> $headers */
             $headers = self::$headers;
 
-            self::assertSame($stream->getContents(), $contents);
-            self::assertCount(2, $headers);
+            self::assertSame('test', $contents);
+            self::assertSame('test', $stream->getContents());
+            self::assertCount(4, $headers);
             self::assertNotNull($headers[0] ?? null);
-            self::assertSame('HTTP/1.1 200 OK', $headers[0]);
-            self::assertNotNull($headers[1] ?? null);
-            self::assertSame('Content-Type: text/html', $headers[1]);
+            self::assertSame('HTTP/1.1 201 Created', $headers[0]);
+            self::assertTrue($headers[1]);
+            self::assertNotNull($headers[2] ?? null);
+            self::assertSame('Content-Type: text/html', $headers[2]);
+            self::assertFalse($headers[3]);
+            self::assertTrue(self::$obFlushCalled);
+            self::assertTrue(self::$flushCalled);
         }
 
         protected function resetHeadersAndResponseCode(): void
         {
-            self::$headers      = [];
-            self::$responseCode = 0;
+            self::$headers       = [];
+            self::$responseCode  = 0;
+            self::$obFlushCalled = false;
+            self::$flushCalled   = false;
         }
     }
 }
@@ -197,6 +216,7 @@ namespace Valkyrja\Http\Message\Response
     function header(string $header, bool $replace = true, int $response_code = 0): void
     {
         ResponseTest::$headers[] = $header;
+        ResponseTest::$headers[] = $replace;
 
         if ($response_code > 0) {
             ResponseTest::$responseCode = $response_code;
@@ -205,9 +225,11 @@ namespace Valkyrja\Http\Message\Response
 
     function ob_flush(): void
     {
+        ResponseTest::$obFlushCalled = true;
     }
 
     function flush(): void
     {
+        ResponseTest::$flushCalled = true;
     }
 }
