@@ -16,7 +16,7 @@
         "github": true,
         "gitlab": "gitlab-code-quality.json",
         "stryker": {
-            "badge": "/^release-.*$/"
+            "badge": "/^*$/"
         },
         "summaryJson": "summary.json"
     },
