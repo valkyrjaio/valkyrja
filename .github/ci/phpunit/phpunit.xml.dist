@@ -13,6 +13,8 @@
          displayDetailsOnTestsThatTriggerErrors="true"
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
+         executionOrder="defects,random"
+         resolveDependencies="true"
 >
     <coverage>
         <report>

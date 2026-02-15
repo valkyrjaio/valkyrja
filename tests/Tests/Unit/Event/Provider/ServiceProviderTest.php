@@ -99,6 +99,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithData(): void
     {
         $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $this->container->setSingleton(Env::class, new class extends Env {
             public const bool   EVENT_COLLECTION_USE_DATA       = true;
             public const string EVENT_COLLECTION_DATA_FILE_PATH = 'testPublishCollectionWithData-events.php';
@@ -107,6 +108,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $filePath  = EnvClass::APP_DIR . '/data/testPublishCollectionWithData-events.php';
         $generator = new DataFileGenerator($filePath, new Data());
         $generator->generateFile();
+
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator);
 
         self::assertFalse($this->container->has(CollectionContract::class));
 

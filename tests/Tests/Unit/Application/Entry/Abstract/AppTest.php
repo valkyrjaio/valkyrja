@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 
 use Override;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
@@ -82,8 +83,15 @@ use function defined;
 /**
  * Test the App service.
  */
+#[RunTestsInSeparateProcesses]
 final class AppTest extends TestCase
 {
+    #[Override]
+    protected function setUp(): void
+    {
+        Directory::$basePath = EnvClass::APP_DIR;
+    }
+
     #[Override]
     protected function tearDown(): void
     {

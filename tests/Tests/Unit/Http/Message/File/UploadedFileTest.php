@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\File;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
@@ -30,6 +31,7 @@ use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveUploadedFileClass;
 use Valkyrja\Tests\Classes\Http\Message\File\UnableToWriteFileExceptionClass;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;
@@ -47,6 +49,12 @@ final class UploadedFileTest extends TestCase
             [UploadError::CANT_WRITE],
             [UploadError::EXTENSION],
         ];
+    }
+
+    #[Override]
+    protected function setUp(): void
+    {
+        Directory::$basePath = EnvClass::APP_DIR;
     }
 
     public function testInvalidFile(): void
