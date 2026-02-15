@@ -1,0 +1,6 @@
+*
+!.gitignore
+!autoloader.php
+!composer.json
+!composer.lock
+!infection.json5.dist
