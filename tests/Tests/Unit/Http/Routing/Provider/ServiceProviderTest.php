@@ -138,6 +138,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $generator = new DataFileGenerator($filePath, new Data());
         $generator->generateFile();
 
+        $container->setSingleton(DataFileGeneratorContract::class, $generator);
+
         self::assertFalse($container->has(CollectionContract::class));
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];

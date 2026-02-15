@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional\Application\Entry;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Cli\Interaction\Output\Output;
@@ -31,6 +32,7 @@ use function restore_exception_handler;
 /**
  * Test the Cli service.
  */
+#[RunTestsInSeparateProcesses]
 final class CliTest extends TestCase
 {
     protected static bool $runCalled = false;

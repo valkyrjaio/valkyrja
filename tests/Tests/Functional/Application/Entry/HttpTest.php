@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional\Application\Entry;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Container\Generator\DataFileGenerator;
@@ -27,6 +28,7 @@ use Valkyrja\Tests\Functional\Abstract\TestCase;
 /**
  * Test the Http service.
  */
+#[RunTestsInSeparateProcesses]
 final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;

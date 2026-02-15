@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
 use JsonException;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Constant\HeaderName;
@@ -35,10 +36,12 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Support\Time\Time;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function md5;
 
+#[RunTestsInSeparateProcesses]
 final class CacheResponseMiddlewareTest extends TestCase
 {
     /**
@@ -48,7 +51,8 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->filePath = Directory::storagePath('app');
+        Directory::$basePath = EnvClass::APP_DIR;
+        $this->filePath      = Directory::storagePath('app');
     }
 
     public function testThroughHandler(): void
