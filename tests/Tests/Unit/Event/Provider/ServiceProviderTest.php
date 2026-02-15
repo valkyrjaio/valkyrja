@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Provider;
 
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
@@ -31,12 +33,12 @@ use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\ServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.
  */
+#[RunTestsInSeparateProcesses]
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
@@ -100,12 +102,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
-        $this->container->setSingleton(Env::class, new class extends Env {
+        $this->container->setSingleton(Env::class, $env = new class extends Env {
             public const bool   EVENT_COLLECTION_USE_DATA       = true;
             public const string EVENT_COLLECTION_DATA_FILE_PATH = 'testPublishCollectionWithData-events.php';
         });
 
-        $filePath  = EnvClass::APP_DIR . '/data/testPublishCollectionWithData-events.php';
+        $filePath  = Directory::dataPath($env::EVENT_COLLECTION_DATA_FILE_PATH);
         $generator = new DataFileGenerator($filePath, new Data());
         $generator->generateFile();
 

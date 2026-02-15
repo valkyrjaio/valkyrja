@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
 use JsonException;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Constant\HeaderName;
@@ -40,6 +41,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function md5;
 
+#[RunTestsInSeparateProcesses]
 final class CacheResponseMiddlewareTest extends TestCase
 {
     /**
