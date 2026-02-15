@@ -1,0 +1,18 @@
+{
+  "require"           : {
+    "php" : ">=8.4"
+  },
+  "require-dev"       : {
+    "infection/infection" : "^0.32.4"
+  },
+  "scripts"           : {
+    "check" : "php -d memory_limit=-1 vendor/bin/infection --threads=4"
+  },
+  "minimum-stability" : "dev",
+  "prefer-stable"     : true,
+  "config"            : {
+    "allow-plugins" : {
+      "infection/extension-installer" : true
+    }
+  }
+}

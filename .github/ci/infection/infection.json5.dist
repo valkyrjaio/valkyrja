@@ -1,0 +1,48 @@
+{
+    "bootstrap": "./autoloader.php",
+    "source": {
+        "directories": [
+            "../../../src"
+        ]
+    },
+    "timeout": 10,
+    "threads": "max",
+    "logs": {
+        "text": "infection.log",
+        "html": "infection.html",
+        "summary": "summary.log",
+        "json": "infection-log.json",
+        "perMutator": "per-mutator.md",
+        "github": true,
+        "gitlab": "gitlab-code-quality.json",
+        "stryker": {
+            "badge": "/^release-.*$/"
+        },
+        "summaryJson": "summary.json"
+    },
+    "tmpDir": "./tmp-folder",
+    "phpUnit": {
+        "configDir": "../phpunit",
+        "customPath": "../phpunit/vendor/bin/phpunit"
+    },
+    "mutators": {
+        "global-ignore": [
+        ],
+        "global-ignoreSourceCodeByRegex": [
+            "Assert::.*"
+        ],
+        "@default": true,
+        "@function_signature": false,
+        "TrueValue": {
+            "ignore": [
+            ],
+            "ignoreSourceCodeByRegex": [
+            ]
+        }
+    },
+    "timeoutsAsEscaped": true,
+    "maxTimeouts": 10,
+    "testFramework":"phpunit",
+    "testFrameworkOptions": "--filter=Unit",
+    "initialTestsPhpOptions": "-d memory_limit=-1"
+}
