@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Response
 {
+    use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
     use Valkyrja\Http\Message\Constant\HeaderName;
     use Valkyrja\Http\Message\Enum\StatusCode;
     use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
@@ -27,10 +28,13 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
     use function ob_get_contents;
     use function ob_start;
 
+    #[RunTestsInSeparateProcesses]
     final class ResponseTest extends TestCase
     {
         /** @var string[] */
         public static array $headers = [];
+
+        public static bool $obFlushShouldBeCalled = true;
 
         public static bool $obFlushCalled = false;
         public static bool $flushCalled   = false;
@@ -116,6 +120,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $this->resetHeadersAndResponseCode();
 
             $response = new Response(new Stream(), StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
+            $response = $response->withStatus(StatusCode::CREATED, 'Created Phrase');
 
             $response->sendHttpLine();
 
@@ -124,7 +129,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
 
             self::assertCount(2, $headers);
             self::assertNotNull($headers[0] ?? null);
-            self::assertSame('HTTP/1.1 201 Created', $headers[0]);
+            self::assertSame('HTTP/1.1 201 Created Phrase', $headers[0]);
             self::assertTrue($headers[1]);
         }
 
@@ -166,6 +171,31 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             self::assertTrue(self::$flushCalled);
         }
 
+        public function testSendBodyWithoutObFlush(): void
+        {
+            self::$obFlushShouldBeCalled = false;
+
+            $stream = new Stream();
+            $stream->write('test');
+            $stream->rewind();
+
+            $response = new Response($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+
+            self::assertSame('test', $stream->getContents());
+
+            ob_start();
+            $response->sendBody();
+            $contents = ob_get_contents();
+            ob_get_clean();
+
+            self::assertSame('test', $contents);
+            self::assertSame('test', $stream->getContents());
+            self::assertFalse(self::$obFlushCalled);
+            self::assertTrue(self::$flushCalled);
+
+            self::$obFlushShouldBeCalled = true;
+        }
+
         public function testSend(): void
         {
             $this->resetHeadersAndResponseCode();
@@ -205,6 +235,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             self::$responseCode  = 0;
             self::$obFlushCalled = false;
             self::$flushCalled   = false;
+
+            self::$obFlushShouldBeCalled   = true;
         }
     }
 }
@@ -231,5 +263,12 @@ namespace Valkyrja\Http\Message\Response
     function flush(): void
     {
         ResponseTest::$flushCalled = true;
+    }
+
+    function ob_get_level(): int
+    {
+        return ResponseTest::$obFlushShouldBeCalled
+            ? 1
+            : 0;
     }
 }
