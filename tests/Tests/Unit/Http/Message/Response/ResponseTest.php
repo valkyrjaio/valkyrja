@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Response
 {
+    use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
     use Valkyrja\Http\Message\Constant\HeaderName;
     use Valkyrja\Http\Message\Enum\StatusCode;
     use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
@@ -27,6 +28,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
     use function ob_get_contents;
     use function ob_start;
 
+    #[RunTestsInSeparateProcesses]
     final class ResponseTest extends TestCase
     {
         /** @var string[] */
