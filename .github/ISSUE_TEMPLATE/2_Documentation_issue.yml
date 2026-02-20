@@ -1,0 +1,19 @@
+name: Documentation Issue
+description: "Report an issue with the Valkyrja documentation."
+body:
+  - type: markdown
+    attributes:
+      value: "If you have found an issue with the documentation, please provide the following information:"
+  - type: input
+    attributes:
+      label: Framework Version
+      description: Provide the version that you are using.
+      placeholder: 26.0.0
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: Provide a detailed description of the issue you are seeing.
+    validations:
+      required: true
