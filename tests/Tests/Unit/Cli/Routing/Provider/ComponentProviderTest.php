@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Cli\Routing\Provider\CliRouteProvider;
 use Valkyrja\Cli\Routing\Provider\ComponentProvider;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
-use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -28,14 +26,17 @@ final class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
-        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
     }
 
-    public function testGetCliControllers(): void
+    public function testGetCliProviders(): void
     {
-        self::assertContains(HelpCommand::class, ComponentProvider::getCliControllers());
-        self::assertContains(ListBashCommand::class, ComponentProvider::getCliControllers());
-        self::assertContains(ListCommand::class, ComponentProvider::getCliControllers());
-        self::assertContains(VersionCommand::class, ComponentProvider::getCliControllers());
+        $app = self::createStub(ApplicationContract::class);
+
+        $providers = ComponentProvider::getCliProviders($app);
+
+        self::assertContains(CliRouteProvider::class, $providers);
     }
 }

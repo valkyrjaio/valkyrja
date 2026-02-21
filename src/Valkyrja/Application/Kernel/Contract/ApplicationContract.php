@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Kernel\Contract;
 
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Provider\Contract\ProviderContract;
+use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract as CliProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider as ContainerProvider;
+use Valkyrja\Container\Provider\Contract\ProviderContract as ContainerProvider;
+use Valkyrja\Event\Provider\Contract\ProviderContract as EventProvider;
+use Valkyrja\Http\Routing\Provider\Contract\ProviderContract as HttpProvider;
 
 interface ApplicationContract
 {
@@ -27,7 +30,7 @@ interface ApplicationContract
     /**
      * Get the registered component providers.
      *
-     * @return class-string<Provider>[]
+     * @return class-string<ProviderContract>[]
      */
     public function getProviders(): array;
 
@@ -39,25 +42,25 @@ interface ApplicationContract
     public function getContainerProviders(): array;
 
     /**
-     * Get all the registered components' event listeners.
+     * Get all the registered components' event providers.
      *
-     * @return class-string[]
+     * @return class-string<EventProvider>[]
      */
-    public function getEventListeners(): array;
+    public function getEventProviders(): array;
 
     /**
-     * Get all the registered components' cli controllers.
+     * Get all the registered components' cli providers.
      *
-     * @return class-string[]
+     * @return class-string<CliProvider>[]
      */
-    public function getCliControllers(): array;
+    public function getCliProviders(): array;
 
     /**
-     * Get all the registered components' http controllers.
+     * Get all the registered components' http providers.
      *
-     * @return class-string[]
+     * @return class-string<HttpProvider>[]
      */
-    public function getHttpControllers(): array;
+    public function getHttpProviders(): array;
 
     /**
      * Whether the application is running in debug mode or not.

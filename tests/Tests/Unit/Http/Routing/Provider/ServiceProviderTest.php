@@ -53,6 +53,7 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -156,7 +157,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
 
@@ -170,6 +171,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $collector->method('getRoutes')->willReturn([$route]);
         $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
+        $application->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
+
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
@@ -178,6 +181,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
 
         self::assertNotNull($collection->get('/'));
+        self::assertNotNull($collection->get('/from-provider'));
     }
 
     public function testPublishDataFileGenerator(): void

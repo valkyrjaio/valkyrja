@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Client\Provider;
 
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Client\Provider\ComponentProvider;
 use Valkyrja\Http\Client\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -24,6 +25,8 @@ final class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
-        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
     }
 }

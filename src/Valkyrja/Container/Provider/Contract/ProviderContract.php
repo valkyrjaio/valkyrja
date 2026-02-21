@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider\Contract;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
 interface ProviderContract
 {
     /**
@@ -21,16 +23,19 @@ interface ProviderContract
     public static function deferred(): bool;
 
     /**
-     * The items provided by this provider.
+     * Any custom publishers for services provided by this provider.
+     * Any service provided by the `publish` method does not need to be defined here.
      *
      * <code>
      *      [
-     *          Provided::class => [self::class, 'publish'],
      *          Provided::class => [self::class, 'publishProvidedClass'],
      *      ]
      *
      * ...
-     *      public static function publishProvidedClass(Application $app): void
+     *      public static function publishProvidedClass(Container $container): void
+     *      {
+     *          $container->setSingleton(Provided::class, new Provided());
+     *      }
      * </code>
      *
      * @return array<class-string, callable>
@@ -38,7 +43,7 @@ interface ProviderContract
     public static function publishers(): array;
 
     /**
-     * The items provided by this provider.
+     * The services provided by this provider.
      *
      * @return class-string[]
      */
@@ -46,8 +51,6 @@ interface ProviderContract
 
     /**
      * Publish the provider.
-     *
-     * @param object $providerAware The providers aware class
      */
-    public static function publish(object $providerAware): void;
+    public static function publish(ContainerContract $container): void;
 }

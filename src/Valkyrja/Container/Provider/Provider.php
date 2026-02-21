@@ -13,51 +13,41 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider;
 
+use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 
-abstract class Provider
+abstract class Provider implements ProviderContract
 {
     /**
-     * Whether this provider is deferred.
+     * @inheritDoc
      */
+    #[Override]
     public static function deferred(): bool
     {
         return true;
     }
 
     /**
-     * Any custom publishers for items provided by this provider.
-     *
-     * <code>
-     *      [
-     *          Provided::class => [self::class, 'publish'],
-     *          Provided::class => [self::class, 'publishProvidedClass'],
-     *      ]
-     *
-     * ...
-     *      public static function publishProvidedClass(Container $container): void
-     * </code>
-     *
-     * @return array<class-string, callable>
+     * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [];
     }
 
     /**
-     * Publish the provider.
-     *
-     * @param ContainerContract $container The container
+     * @inheritDoc
      */
+    #[Override]
     public static function publish(ContainerContract $container): void
     {
     }
 
     /**
-     * The items provided by this provider.
-     *
-     * @return class-string[]
+     * @inheritDoc
      */
+    #[Override]
     abstract public static function provides(): array;
 }

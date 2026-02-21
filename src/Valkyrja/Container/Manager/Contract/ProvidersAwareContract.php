@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Contract;
 
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 interface ProvidersAwareContract
 {
     /**
      * Register a provider.
      *
-     * @param class-string<Provider> $provider The provider
-     * @param bool                   $force    [optional] Whether to force regardless of deferred status
+     * @param class-string<ProviderContract> $provider The provider
+     * @param bool                           $force    [optional] Whether to force regardless of deferred status
      */
     public function register(string $provider, bool $force = false): void;
 
@@ -42,7 +42,7 @@ interface ProvidersAwareContract
     /**
      * Determine whether a provider has been registered.
      *
-     * @param class-string<Provider> $provider The provider
+     * @param class-string<ProviderContract> $provider The provider
      */
     public function isRegistered(string $provider): bool;
 

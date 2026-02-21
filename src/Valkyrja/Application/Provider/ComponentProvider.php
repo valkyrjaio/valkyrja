@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Provider;
 
 use Override;
-use Valkyrja\Application\Cli\Command\CacheCommand;
-use Valkyrja\Application\Cli\Command\ClearCacheCommand;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 class ComponentProvider extends Provider
 {
@@ -23,11 +22,10 @@ class ComponentProvider extends Provider
      * @inheritDoc
      */
     #[Override]
-    public static function getCliControllers(): array
+    public static function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CacheCommand::class,
-            ClearCacheCommand::class,
+            CliRouteProvider::class,
         ];
     }
 }

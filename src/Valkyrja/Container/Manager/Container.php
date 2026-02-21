@@ -20,7 +20,7 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
 use function array_filter;
@@ -477,7 +477,7 @@ class Container implements ContainerContract
     /**
      * Register a list of providers.
      *
-     * @param class-string<Provider>[] $providers The providers
+     * @param class-string<ProviderContract>[] $providers The providers
      */
     protected function registerProviders(array $providers): void
     {

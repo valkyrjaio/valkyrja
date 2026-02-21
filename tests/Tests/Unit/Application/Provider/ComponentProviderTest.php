@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Provider;
 
-use Valkyrja\Application\Cli\Command\CacheCommand;
-use Valkyrja\Application\Cli\Command\ClearCacheCommand;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\CliRouteProvider;
 use Valkyrja\Application\Provider\ComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -23,24 +23,31 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class ComponentProviderTest extends TestCase
 {
-    public function testGetCliControllers(): void
+    public function testGetCliProviders(): void
     {
-        self::assertContains(CacheCommand::class, ComponentProvider::getCliControllers());
-        self::assertContains(ClearCacheCommand::class, ComponentProvider::getCliControllers());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertContains(CliRouteProvider::class, ComponentProvider::getCliProviders($app));
     }
 
     public function testGetContainerProviders(): void
     {
-        self::assertEmpty(ComponentProvider::getContainerProviders());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ComponentProvider::getContainerProviders($app));
     }
 
-    public function testGetEventListeners(): void
+    public function testGetEventProviders(): void
     {
-        self::assertEmpty(ComponentProvider::getEventListeners());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ComponentProvider::getEventProviders($app));
     }
 
-    public function testGetHttpControllers(): void
+    public function testGetHttpProviders(): void
     {
-        self::assertEmpty(ComponentProvider::getHttpControllers());
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ComponentProvider::getHttpProviders($app));
     }
 }

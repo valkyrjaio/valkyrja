@@ -33,6 +33,7 @@ use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\ServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\Classes\Event\Provider\ListenerProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -129,7 +130,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCollectionWithoutData(): void
     {
-        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
 
@@ -139,6 +140,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $collector->method('getListeners')->willReturn([$listener]);
         $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+
+        $application->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
         self::assertFalse($this->container->has(Data::class));
 
@@ -151,6 +154,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($collection->hasListenerById($listenerName));
         self::assertTrue($collection->hasListener($listener));
         self::assertTrue($collection->hasListenersForEventById($eventId));
+        self::assertContains(ListenerProviderClass::class, $collection->getEvents());
+        self::assertTrue($collection->hasListenerById('listener-from-provider-name'));
+        self::assertTrue($collection->hasListenersForEventById(ListenerProviderClass::class));
     }
 
     public function testPublishDataFileGenerator(): void
