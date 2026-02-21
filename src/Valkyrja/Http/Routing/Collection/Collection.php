@@ -233,17 +233,20 @@ class Collection implements CollectionContract
     protected function setRouteToRequestMethod(RouteContract $route, RequestMethod $requestMethod): void
     {
         $name  = $route->getName();
+        $path  = $route->getPath();
         $regex = $route->getRegex();
 
         // If this is a dynamic route
         if ($regex !== null) {
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod->value][$regex] = $name;
-        } else {
-            // Otherwise set it in the static routes array
-            // Set the route in the static routes list
-            $this->static[$requestMethod->value][$route->getPath()] = $name;
+            $this->dynamic[$requestMethod->value][$path] = $name;
+
+            return;
         }
+
+        // Otherwise set it in the static routes array
+        // Set the route in the static routes list
+        $this->static[$requestMethod->value][$path] = $name;
     }
 
     /**
