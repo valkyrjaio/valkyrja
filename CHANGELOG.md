@@ -1,6 +1,35 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.31.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.32.0...master)
+
+## [v25.32.0](https://github.com/valkyrjaio/valkyrja/compare/v25.31.1...v25.32.0) - 2026-02-21
+
+* [Support] Update Directory class static properties to camelCase by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/599
+* [Application] Move Directory class from Support namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/600
+* [Validation] Update IsEmpty and NotEmpty rules logic by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/601
+* [Type] Add methods to ArrayFactory for string keys by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/602
+* [Type] Reformat Model by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/603
+* [Documentation] Strengthening mixed type hinting by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/604
+* [Documentation] Add SonarQube maintainability rating badge by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/605
+* [Session] Remove ability to specify session id. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/606
+* [Event] Add missing tests for dispatcher by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/607
+* [Http] Rename collection methods and parameters for better clarity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/608
+* [Http] Rename param collection methods for better clarity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/609
+* [Documentation] Update mixed types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/610
+* [Http] Update UploadedFileFactory typehinting for better clarity by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/611
+* [Dispatch] Update Dispatcher logic for properties and methods by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/612
+* [Tests] Fixing tests that fail when run randomly by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/613
+* [CI] Add infection by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/614
+* [Http] Add more tests for the Response class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/615
+* [CI] Update infection to cover all branches by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/616
+* [CI] Fix infection to run on all branches by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/617
+* [Http] Add more tests for the Response class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/618
+* [GitHub] Fix issue templates by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/620
+* [GitHub] Fix bug report template by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/621
+* [Application] Update component providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/622
+* [CI] Update phpcsfixer to v3.94.2 from v3.94.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/623
+* [CI] Update phpunit to v13.0.5 from v13.0.2 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/624
+* [CI] Update rector to v2.3.7 from v2.3.6 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/625
 
 ## [v25.31.1](https://github.com/valkyrjaio/valkyrja/compare/v25.31.0...v25.31.1) - 2026-02-12
 
