@@ -102,9 +102,7 @@ interface CollectionContract
     /**
      * Get static routes of a certain request method.
      *
-     * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return array<string, RouteContract>|array<string, array<string, RouteContract>>
+     * @return ($method is null ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
      */
     public function allStatic(RequestMethod|null $method = null): array;
 
@@ -131,7 +129,7 @@ interface CollectionContract
     /**
      * Get the dynamic routes in this collection.
      *
-     * @return array<string, RouteContract>|array<string, array<string, RouteContract>>
+     * @return ($method is null ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
      */
     public function allDynamic(RequestMethod|null $method = null): array;
 

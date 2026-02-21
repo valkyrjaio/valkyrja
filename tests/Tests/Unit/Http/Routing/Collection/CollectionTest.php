@@ -135,7 +135,7 @@ final class CollectionTest extends TestCase
     public function testHas(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $collection = $this->collection;
 
@@ -164,7 +164,7 @@ final class CollectionTest extends TestCase
     public function testGet(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $route        = $this->route;
         $dynamicRoute = $this->dynamicRoute;
@@ -195,7 +195,7 @@ final class CollectionTest extends TestCase
     public function testHasStatic(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $collection = $this->collection;
 
@@ -224,7 +224,7 @@ final class CollectionTest extends TestCase
     public function testGetStatic(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $route      = $this->route;
         $collection = $this->collection;
@@ -254,7 +254,7 @@ final class CollectionTest extends TestCase
     public function testHasDynamic(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $collection = $this->collection;
 
@@ -283,7 +283,7 @@ final class CollectionTest extends TestCase
     public function testGetDynamic(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $dynamicRoute = $this->dynamicRoute;
         $collection   = $this->collection;
@@ -338,7 +338,7 @@ final class CollectionTest extends TestCase
     public function testAll(): void
     {
         $routePath        = self::ROUTE_PATH;
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $route        = $this->route;
         $dynamicRoute = $this->dynamicRoute;
@@ -403,7 +403,7 @@ final class CollectionTest extends TestCase
 
     public function testAllDynamic(): void
     {
-        $dynamicRoutePath = self::DYNAMIC_ROUTE_REGEX;
+        $dynamicRoutePath = self::DYNAMIC_ROUTE_PATH;
 
         $dynamicRoute = $this->dynamicRoute;
         $collection   = $this->collection;

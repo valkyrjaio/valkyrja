@@ -75,7 +75,9 @@ class Matcher implements MatcherContract
     #[Override]
     public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
     {
-        return $this->matchDynamicFromArray($this->collection->allDynamic($requestMethod), $path);
+        $routes = $this->collection->allDynamic($requestMethod);
+
+        return $this->matchDynamicFromArray($routes, $path);
     }
 
     /**
@@ -90,8 +92,14 @@ class Matcher implements MatcherContract
     protected function matchDynamicFromArray(array $routes, string $path): RouteContract|null
     {
         // Attempt to find a match using dynamic routes that are set
-        foreach ($routes as $regex => $route) {
-            if (($match = $this->matchDynamicFromRouteOrArray($route, $path, $regex)) !== null) {
+        foreach ($routes as $route) {
+            if (is_array($route)) {
+                $match = $this->matchDynamicFromArray($route, $path);
+            } else {
+                $match = $this->matchDynamicFromRoute($route, $path);
+            }
+
+            if ($match !== null) {
                 return $match;
             }
         }
@@ -100,20 +108,17 @@ class Matcher implements MatcherContract
     }
 
     /**
-     * Match a dynamic route by path from a given route or array.
+     * Match a dynamic route by path from a given route.
      *
-     * @param RouteContract|array<string, RouteContract> $route The route
-     * @param string                                     $path  The path
-     * @param string                                     $regex The regex
+     * @param RouteContract $route The route
+     * @param string        $path  The path
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
-    protected function matchDynamicFromRouteOrArray(RouteContract|array $route, string $path, string $regex): RouteContract|null
+    protected function matchDynamicFromRoute(RouteContract $route, string $path): RouteContract|null
     {
-        if (is_array($route)) {
-            return $this->matchDynamicFromArray($route, $path);
-        }
+        $regex = $route->getRegex() ?? '';
 
         // If the preg match is successful, we've found our route!
         if ($regex !== '' && preg_match($regex, $path, $matches)) {
