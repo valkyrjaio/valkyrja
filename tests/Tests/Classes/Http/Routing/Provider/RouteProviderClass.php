@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Routing\Provider;
 
+use Override;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Provider\Provider;
 
 final class RouteProviderClass extends Provider
 {
+    #[Override]
     public static function getRoutes(): array
     {
         return [

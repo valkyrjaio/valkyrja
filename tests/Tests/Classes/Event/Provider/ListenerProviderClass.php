@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Event\Provider;
 
+use Override;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Provider\Provider;
 
 final class ListenerProviderClass extends Provider
 {
+    #[Override]
     public static function getListeners(): array
     {
         return [
