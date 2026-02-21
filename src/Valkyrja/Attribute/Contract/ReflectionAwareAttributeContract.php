@@ -20,7 +20,7 @@ interface ReflectionAwareAttributeContract
     /**
      * Get the reflection.
      */
-    public function getReflection(): Reflector|null;
+    public function getReflection(): Reflector;
 
     /**
      * Set the reflection.
