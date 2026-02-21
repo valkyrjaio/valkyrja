@@ -157,9 +157,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
-        $container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
-        $container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
+        $container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
+        $container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
+        $container->setSingleton(ProcessorContract::class, $processor = $this->createMock(ProcessorContract::class));
 
         self::assertFalse($container->has(CollectionContract::class));
 
@@ -168,10 +169,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
-        $collector->method('getRoutes')->willReturn([$route]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
+        $generator->expects($this->once())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
-        $application->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
+        $application->expects($this->once())->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
+        $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
