@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
 
 class ComponentProvider extends Provider
 {
@@ -26,7 +23,7 @@ class ComponentProvider extends Provider
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(): array
+    public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
             ServiceProvider::class,
@@ -37,13 +34,10 @@ class ComponentProvider extends Provider
      * @inheritDoc
      */
     #[Override]
-    public static function getCliControllers(): array
+    public static function getCliProviders(ApplicationContract $app): array
     {
         return [
-            HelpCommand::class,
-            ListBashCommand::class,
-            ListCommand::class,
-            VersionCommand::class,
+            CliRouteProvider::class,
         ];
     }
 }

@@ -34,10 +34,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as CliRoutingCollector;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Cli\Routing\Provider\CliRouteProvider;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Container\Data\Data as ContainerData;
@@ -54,7 +51,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as 
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as HttpThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Cli\Command\ListCommand as HttpListCommand;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpRoutingCollection;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
@@ -62,6 +58,7 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as HttpRoutingRoute
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as HttpRoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
+use Valkyrja\Http\Routing\Provider\CliRouteProvider as HttpCliRouteProvider;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
@@ -227,16 +224,13 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(ViewThrowableCaughtMiddleware::class));
         self::assertTrue($container->has(ReflectorContract::class));
 
-        $commands = $application->getCliControllers();
+        $cliProviders = $application->getCliProviders();
 
-        self::assertContains(HelpCommand::class, $commands);
-        self::assertContains(ListBashCommand::class, $commands);
-        self::assertContains(ListCommand::class, $commands);
-        self::assertContains(VersionCommand::class, $commands);
-        self::assertContains(HttpListCommand::class, $commands);
+        self::assertContains(CliRouteProvider::class, $cliProviders);
+        self::assertContains(HttpCliRouteProvider::class, $cliProviders);
 
-        self::assertEmpty($application->getEventListeners());
-        self::assertEmpty($application->getHttpControllers());
+        self::assertEmpty($application->getEventProviders());
+        self::assertEmpty($application->getHttpProviders());
     }
 
     /**

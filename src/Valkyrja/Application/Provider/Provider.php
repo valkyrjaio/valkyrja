@@ -13,46 +13,44 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Provider;
 
-use Valkyrja\Container\Provider\Provider as ContainerProvider;
+use Override;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ProviderContract;
 
-abstract class Provider
+abstract class Provider implements ProviderContract
 {
     /**
-     * Get the component's container service providers.
-     *
-     * @return class-string<ContainerProvider>[]
+     * @inheritDoc
      */
-    public static function getContainerProviders(): array
+    #[Override]
+    public static function getContainerProviders(ApplicationContract $app): array
     {
         return [];
     }
 
     /**
-     * Get the component's event listeners.
-     *
-     * @return class-string[]
+     * @inheritDoc
      */
-    public static function getEventListeners(): array
+    #[Override]
+    public static function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
 
     /**
-     * Get the component's cli controllers.
-     *
-     * @return class-string[]
+     * @inheritDoc
      */
-    public static function getCliControllers(): array
+    #[Override]
+    public static function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
 
     /**
-     * Get the component's http controllers.
-     *
-     * @return class-string[]
+     * @inheritDoc
      */
-    public static function getHttpControllers(): array
+    #[Override]
+    public static function getHttpProviders(ApplicationContract $app): array
     {
         return [];
     }

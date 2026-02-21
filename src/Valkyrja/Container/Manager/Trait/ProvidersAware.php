@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Manager\Trait;
 
 use Valkyrja\Container\Provider\Contract\ProviderContract;
-use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
@@ -45,14 +44,14 @@ trait ProvidersAware
     /**
      * The registered providers.
      *
-     * @var array<class-string<Provider>, bool>
+     * @var array<class-string<ProviderContract>, bool>
      */
     protected array $registered = [];
 
     /**
      * The providers.
      *
-     * @var class-string<Provider>[]
+     * @var class-string<ProviderContract>[]
      */
     protected array $providers = [];
 
@@ -66,7 +65,7 @@ trait ProvidersAware
     /**
      * @inheritDoc
      *
-     * @param class-string<Provider> $provider The provider
+     * @param class-string<ProviderContract> $provider The provider
      */
     public function register(string $provider, bool $force = false): void
     {
@@ -76,8 +75,6 @@ trait ProvidersAware
         }
 
         $this->providers[] = $provider;
-
-        // DateFactory::validateClass($provider, Provides::class);
 
         /** @var class-string<ProviderContract> $providerClass */
         $providerClass = $provider;
@@ -125,7 +122,7 @@ trait ProvidersAware
     /**
      * @inheritDoc
      *
-     * @param class-string<Provider> $provider The provider
+     * @param class-string<ProviderContract> $provider The provider
      */
     public function isRegistered(string $provider): bool
     {
@@ -174,8 +171,8 @@ trait ProvidersAware
     /**
      * Register a deferred provider.
      *
-     * @param class-string<Provider> $provider    The provider
-     * @param class-string           ...$provides The provided items
+     * @param class-string<ProviderContract> $provider    The provider
+     * @param class-string                   ...$provides The provided items
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Provider;
 
 use Override;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 
 class ComponentProvider extends Provider
@@ -22,7 +23,7 @@ class ComponentProvider extends Provider
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(): array
+    public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
             ServiceProvider::class,

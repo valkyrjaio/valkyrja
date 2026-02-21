@@ -54,7 +54,7 @@ class Valkyrja implements ApplicationContract
         $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $providers[] = $provider::getContainerProviders();
+            $providers[] = $provider::getContainerProviders($this);
         }
 
         return array_merge(...$providers);
@@ -64,45 +64,45 @@ class Valkyrja implements ApplicationContract
      * @inheritDoc
      */
     #[Override]
-    public function getEventListeners(): array
+    public function getEventProviders(): array
     {
-        $listeners = [];
+        $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $listeners[] = $provider::getEventListeners();
+            $providers[] = $provider::getEventProviders($this);
         }
 
-        return array_merge(...$listeners);
+        return array_merge(...$providers);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getCliControllers(): array
+    public function getCliProviders(): array
     {
-        $controllers = [];
+        $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $controllers[] = $provider::getCliControllers();
+            $providers[] = $provider::getCliProviders($this);
         }
 
-        return array_merge(...$controllers);
+        return array_merge(...$providers);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getHttpControllers(): array
+    public function getHttpProviders(): array
     {
-        $controllers = [];
+        $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $controllers[] = $provider::getHttpControllers();
+            $providers[] = $provider::getHttpProviders($this);
         }
 
-        return array_merge(...$controllers);
+        return array_merge(...$providers);
     }
 
     /**

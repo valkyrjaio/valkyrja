@@ -43,6 +43,7 @@ use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
+use Valkyrja\Http\Routing\Provider\Contract\ProviderContract;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
@@ -158,23 +159,7 @@ final class ServiceProvider extends Provider
             return;
         }
 
-        $application = $container->getSingleton(ApplicationContract::class);
-
-        /** @var CollectorContract $collector */
-        $collector   = $container->getSingleton(CollectorContract::class);
-        $controllers = $application->getHttpControllers();
-
-        // Get all the attributes routes from the list of controllers
-        // Iterate through the routes
-        foreach ($collector->getRoutes(...$controllers) as $route) {
-            // Set the route
-            $collection->add($route);
-        }
-
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
-        $dataGenerator->generateFile();
-
-        $container->setSingleton(Data::class, $collection->getData());
+        self::addRoutesToCollection($container, $collection);
     }
 
     /**
@@ -274,5 +259,50 @@ final class ServiceProvider extends Provider
                 url: $container->getSingleton(UrlContract::class),
             )
         );
+    }
+
+    /**
+     * Add routes to the collection.
+     */
+    protected static function addRoutesToCollection(ContainerContract $container, CollectionContract $collection): void
+    {
+        $application = $container->getSingleton(ApplicationContract::class);
+
+        /** @var CollectorContract $collector */
+        $collector   = $container->getSingleton(CollectorContract::class);
+
+        $providers = $application->getHttpProviders();
+
+        $controllers     = [];
+        $routes          = [];
+
+        /** @var ProviderContract $provider */
+        foreach ($providers as $provider) {
+            $controllers = [
+                ...$controllers,
+                ...$provider::getControllerClasses(),
+            ];
+
+            $routes = [
+                ...$routes,
+                ...$provider::getRoutes(),
+            ];
+        }
+
+        // Get all the attributes routes from the list of controllers
+        // Iterate through the routes
+        foreach ($collector->getRoutes(...$controllers) as $route) {
+            // Add the route
+            $collection->add($route);
+        }
+
+        foreach ($routes as $route) {
+            $collection->add($route);
+        }
+
+        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator->generateFile();
+
+        $container->setSingleton(Data::class, $collection->getData());
     }
 }
