@@ -269,7 +269,8 @@ final class ServiceProvider extends Provider
         $application = $container->getSingleton(ApplicationContract::class);
 
         /** @var CollectorContract $collector */
-        $collector   = $container->getSingleton(CollectorContract::class);
+        $collector = $container->getSingleton(CollectorContract::class);
+        $processor = $container->getSingleton(ProcessorContract::class);
 
         $providers = $application->getHttpProviders();
 
@@ -297,7 +298,9 @@ final class ServiceProvider extends Provider
         }
 
         foreach ($routes as $route) {
-            $collection->add($route);
+            $collection->add(
+                $processor->route($route)
+            );
         }
 
         $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
