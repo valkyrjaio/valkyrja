@@ -17,12 +17,12 @@ use Reflector;
 
 trait ReflectionAwareAttribute
 {
-    protected Reflector|null $reflection = null;
+    protected Reflector $reflection;
 
     /**
      * Get the reflection.
      */
-    public function getReflection(): Reflector|null
+    public function getReflection(): Reflector
     {
         return $this->reflection;
     }
