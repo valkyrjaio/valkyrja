@@ -113,6 +113,8 @@ class Env
     /** @var class-string<Provider>[] */
     public const array APP_CUSTOM_COMPONENTS = [];
     /** @var non-empty-string|null */
+    public const string|null APP_CLI_DEFAULT_APPLICATION_NAME = null;
+    /** @var non-empty-string|null */
     public const string|null APP_CLI_DEFAULT_COMMAND_NAME = null;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';

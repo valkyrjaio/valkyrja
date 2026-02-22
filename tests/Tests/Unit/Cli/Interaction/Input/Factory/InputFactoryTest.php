@@ -23,9 +23,11 @@ final class InputFactoryTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $_SERVER['argv'] = [];
-
-        $input = InputFactory::fromGlobals();
+        $input = InputFactory::fromGlobals(
+            args: [],
+            applicationName: 'valkyrja',
+            commandName: 'list',
+        );
 
         self::assertSame('valkyrja', $input->getCaller());
         self::assertSame('list', $input->getCommandName());
@@ -37,7 +39,11 @@ final class InputFactoryTest extends TestCase
     {
         $_SERVER['argv'] = [];
 
-        $input = InputFactory::fromGlobals(applicationName: 'test');
+        $input = InputFactory::fromGlobals(
+            args: [],
+            applicationName: 'test',
+            commandName: 'list',
+        );
 
         self::assertSame('test', $input->getCaller());
         self::assertSame('list', $input->getCommandName());
@@ -49,7 +55,11 @@ final class InputFactoryTest extends TestCase
     {
         $_SERVER['argv'] = [];
 
-        $input = InputFactory::fromGlobals(commandName: 'test');
+        $input = InputFactory::fromGlobals(
+            args: [],
+            applicationName: 'valkyrja',
+            commandName: 'test'
+        );
 
         self::assertSame('valkyrja', $input->getCaller());
         self::assertSame('test', $input->getCommandName());
@@ -59,7 +69,7 @@ final class InputFactoryTest extends TestCase
 
     public function testFromGlobals(): void
     {
-        $_SERVER['argv'] = [
+        $args = $_SERVER['argv'] = [
             'cli',
             'command',
             '-t',
@@ -70,7 +80,11 @@ final class InputFactoryTest extends TestCase
             'argument2',
         ];
 
-        $input = InputFactory::fromGlobals();
+        $input = InputFactory::fromGlobals(
+            args: $args,
+            applicationName: 'valkyrja',
+            commandName: 'list'
+        );
 
         self::assertSame('cli', $input->getCaller());
         self::assertSame('command', $input->getCommandName());
@@ -91,7 +105,11 @@ final class InputFactoryTest extends TestCase
             'argument2',
         ];
 
-        $input = InputFactory::fromGlobals(args: $args);
+        $input = InputFactory::fromGlobals(
+            args: $args,
+            applicationName: 'valkyrja',
+            commandName: 'list'
+        );
 
         self::assertSame('cli', $input->getCaller());
         self::assertSame('command', $input->getCommandName());

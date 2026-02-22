@@ -14,30 +14,37 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Input\Factory;
 
 use Valkyrja\Cli\Interaction\Argument\Factory\ArgumentFactory;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Factory\OptionFactory;
 
 abstract class InputFactory
 {
     /**
-     * @param non-empty-string[]|null $args            The arguments
-     * @param class-string<Input>     $class           The Input class to return
-     * @param non-empty-string        $applicationName The default application name (this will be overridden by the actual entry point)
-     * @param non-empty-string        $commandName     The default command name to use in case one was not passed in
+     * Create an input from given global variables.
+     *
+     * @param non-empty-string[] $args            The arguments
+     * @param non-empty-string   $applicationName The default application name (this will be overridden by the actual entry point)
+     * @param non-empty-string   $commandName     The default command name to use in case one was not passed in
      */
-    public static function fromGlobals(
-        array|null $args = null,
-        string $class = Input::class,
-        string $applicationName = 'valkyrja',
-        string $commandName = 'list',
-    ): Input {
-        $args ??= $_SERVER['argv'] ?? [];
+    public static function fromGlobals(array $args, string $applicationName, string $commandName): InputContract
+    {
+        $input = new Input();
 
-        /** @var non-empty-string[] $args */
+        return static::inputWithProperties($input, $args, $applicationName, $commandName);
+    }
+
+    /**
+     * Create a new instance of a given input with all properties set.
+     *
+     * @param non-empty-string[] $args            The arguments
+     * @param non-empty-string   $applicationName The default application name (this will be overridden by the actual entry point)
+     * @param non-empty-string   $commandName     The default command name to use in case one was not passed in
+     */
+    protected static function inputWithProperties(InputContract $input, array $args, string $applicationName, string $commandName): InputContract
+    {
         $arguments = [];
         $options   = [];
-
-        $input = new $class();
 
         /** @var non-empty-string $arg */
         foreach ($args as $key => $arg) {
