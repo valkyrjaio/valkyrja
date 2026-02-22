@@ -41,7 +41,7 @@ class LogBroadcaster implements BroadcasterContract
         $this->logger->info('Event:');
         $this->logger->info($message->getEvent());
         $this->logger->info('Data:');
-        $this->logger->info(ArrayFactory::toString($message->getData() ?? []));
+        $this->logger->info(ArrayFactory::toString($message->getData()));
         $this->logger->info('Message:');
         $this->logger->info($message->getMessage());
     }
