@@ -35,7 +35,7 @@ interface TaggerContract
     /**
      * Retrieve an item from the cache by key.
      */
-    public function get(string $key): string|null;
+    public function get(string $key): string;
 
     /**
      * Retrieve multiple items from the cache by key.

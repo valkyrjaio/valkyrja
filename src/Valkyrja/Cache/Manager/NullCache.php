@@ -38,7 +38,7 @@ class NullCache implements CacheContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $key): string|null
+    public function get(string $key): string
     {
         return '';
     }

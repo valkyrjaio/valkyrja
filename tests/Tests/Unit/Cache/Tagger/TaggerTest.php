@@ -18,6 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
+use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class TaggerTest extends TestCase
@@ -88,17 +89,22 @@ final class TaggerTest extends TestCase
     /**
      * @throws JsonException
      */
-    public function testGetReturnsNullWhenKeyNotInTags(): void
+    public function testGetThrowsWhenKeyNotInTags(): void
     {
+        $key = 'my-key';
+
+        $this->expectException(InvalidCacheKeyException::class);
+        $this->expectExceptionMessage("Cache miss for key: $key");
+
         $this->cache
             ->expects($this->once())
             ->method('get')
             ->with('tag1')
-            ->willReturn('');
+            ->willReturn('{}');
 
         $tagger = new Tagger($this->cache, 'tag1');
 
-        self::assertNull($tagger->get('my-key'));
+        $tagger->get($key);
     }
 
     /**
@@ -182,34 +188,6 @@ final class TaggerTest extends TestCase
         $tagger = new Tagger($this->cache, 'tag1');
 
         self::assertSame(['value1', 'value2'], $tagger->many('key1', 'key2'));
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function testManySkipsNullValues(): void
-    {
-        // Covers lines 107-108 (continue when value is null)
-        $this->cache
-            ->expects($this->exactly(3))
-            ->method('get')
-            ->willReturnCallback(
-                static function (string $key): string|null {
-                    if ($key === 'tag1') {
-                        return '{"key1":"key1","key2":"key2"}';
-                    }
-
-                    if ($key === 'key1') {
-                        return null;
-                    }
-
-                    return 'value2';
-                }
-            );
-
-        $tagger = new Tagger($this->cache, 'tag1');
-
-        self::assertSame(['value2'], $tagger->many('key1', 'key2'));
     }
 
     /**

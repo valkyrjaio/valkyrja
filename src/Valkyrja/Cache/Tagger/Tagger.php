@@ -17,6 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
+use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class Tagger implements TaggerContract
@@ -76,7 +77,7 @@ class Tagger implements TaggerContract
      * @throws JsonException
      */
     #[Override]
-    public function get(string $key): string|null
+    public function get(string $key): string
     {
         foreach ($this->tags as $tag) {
             if (isset($this->getKeys($tag)[$key])) {
@@ -84,7 +85,7 @@ class Tagger implements TaggerContract
             }
         }
 
-        return null;
+        throw new InvalidCacheKeyException("Cache miss for key: $key");
     }
 
     /**
@@ -103,10 +104,6 @@ class Tagger implements TaggerContract
             foreach ($keys as $key) {
                 if (isset($cachedKeys[$key])) {
                     $value = $this->adapter->get($key);
-
-                    if ($value === null) {
-                        continue;
-                    }
 
                     $items[] = $value;
                 }
@@ -290,7 +287,7 @@ class Tagger implements TaggerContract
     {
         $keysFromCache = $this->adapter->get($tag);
 
-        if ($keysFromCache !== null && $keysFromCache !== '') {
+        if ($keysFromCache !== '') {
             /** @var string[] $keys */
             $keys = ArrayFactory::fromString($keysFromCache);
 
