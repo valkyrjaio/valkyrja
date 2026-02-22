@@ -48,11 +48,19 @@ class Cli extends App
      */
     protected static function getInput(Env $env): InputContract
     {
+        /** @var non-empty-string $applicationName */
+        $applicationName = $env::APP_CLI_DEFAULT_APPLICATION_NAME
+            ?? 'valkyrja';
         /** @var non-empty-string $commandName */
         $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME
             ?? CommandName::LIST;
 
+        /** @var non-empty-string[] $args */
+        $args = $_SERVER['argv'] ?? [];
+
         $input = InputFactory::fromGlobals(
+            args: $args,
+            applicationName: $applicationName,
             commandName: $commandName
         );
 
