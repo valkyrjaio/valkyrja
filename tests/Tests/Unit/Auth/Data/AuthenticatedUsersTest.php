@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Auth\Data;
 
 use Valkyrja\Auth\Data\AuthenticatedUsers;
+use Valkyrja\Auth\Throwable\Exception\NoCurrentUserException;
+use Valkyrja\Auth\Throwable\Exception\NoImpersonatedUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -30,9 +32,7 @@ final class AuthenticatedUsersTest extends TestCase
         $users = new AuthenticatedUsers();
 
         self::assertFalse($users->hasCurrent());
-        self::assertNull($users->getCurrent());
         self::assertFalse($users->isImpersonating());
-        self::assertNull($users->getImpersonated());
         self::assertEmpty($users->all());
     }
 
@@ -152,6 +152,11 @@ final class AuthenticatedUsersTest extends TestCase
         $users->remove(self::USER_ID_1);
 
         self::assertFalse($users->hasCurrent());
+
+        // Ensure the getCurrent method throws once the current user is removed
+        $this->expectException(NoCurrentUserException::class);
+        $this->expectExceptionMessage('No current user');
+
         self::assertNull($users->getCurrent());
     }
 
@@ -164,6 +169,11 @@ final class AuthenticatedUsersTest extends TestCase
         $users->remove(self::USER_ID_2);
 
         self::assertFalse($users->isImpersonating());
+
+        // Ensure the getImpersonated method throws once the impersonated user is removed
+        $this->expectException(NoImpersonatedUserException::class);
+        $this->expectExceptionMessage('No impersonated user');
+
         self::assertNull($users->getImpersonated());
     }
 

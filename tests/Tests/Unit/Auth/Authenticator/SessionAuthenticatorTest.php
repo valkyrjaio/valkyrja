@@ -15,14 +15,15 @@ namespace Valkyrja\Tests\Unit\Auth\Authenticator;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Valkyrja\Auth\Authenticator\SessionAuthenticator;
 use Valkyrja\Auth\Constant\SessionItemId;
 use Valkyrja\Auth\Data\AuthenticatedUsers;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticatedUsersSessionValueException;
+use Valkyrja\Auth\Throwable\Exception\InvalidUnserializedAuthenticatedUsersException;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Tests\Classes\Auth\Authenticator\SessionAuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
@@ -54,95 +55,144 @@ final class SessionAuthenticatorTest extends TestCase
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, null, self::USER_ID);
         $serialized         = serialize($authenticatedUsers);
 
-        $this->session->expects($this->atLeastOnce())
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
             entity: User::class,
         );
 
-        $result = $authenticator->testGetAuthenticatedUsersFromSession();
+        $result = $authenticator->getAuthenticatedUsers();
 
-        self::assertInstanceOf(AuthenticatedUsersContract::class, $result);
         self::assertSame(self::USER_ID, $result->getCurrent());
     }
 
     /**
-     * Test getAuthenticatedUsersFromSession returns null when unserialized data is not AuthenticatedUsersContract (lines 74-76).
+     * Test getAuthenticatedUsersFromSession throws when unserialized data is not AuthenticatedUsersContract.
      */
-    public function testGetAuthenticatedUsersFromSessionReturnsNullForInvalidObject(): void
+    public function testGetAuthenticatedUsersFromSessionThrowsForInvalidObject(): void
     {
+        $this->expectException(InvalidUnserializedAuthenticatedUsersException::class);
+        $this->expectExceptionMessage('Session contains invalid authenticated users');
+
         // Serialize an object that is not AuthenticatedUsersContract
         $invalidObject = new stdClass();
         $serialized    = serialize($invalidObject);
 
-        $this->session->expects($this->atLeastOnce())
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorClass(
+        new SessionAuthenticator(
+            session: $this->session,
+            store: $this->store,
+            hasher: $this->hasher,
+            entity: User::class,
+        );
+    }
+
+    /**
+     * Test getAuthenticatedUsersFromSession returns an empty data model when session does not exist.
+     */
+    public function testGetAuthenticatedUsersFromSessionReturnsEmptyDataModelForNonExistentValue(): void
+    {
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(false);
+
+        $this->session->expects($this->never())
+            ->method('get');
+
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
             entity: User::class,
         );
 
-        $result = $authenticator->testGetAuthenticatedUsersFromSession();
+        $result = $authenticator->getAuthenticatedUsers();
 
-        self::assertNull($result);
+        self::assertFalse($authenticator->isAuthenticated());
+        self::assertFalse($result->hasCurrent());
+        self::assertFalse($result->isImpersonating());
     }
 
     /**
-     * Test getAuthenticatedUsersFromSession returns null when session returns non-string (lines 64-66).
+     * Test getAuthenticatedUsersFromSession throws when session returns non-string (lines 64-66).
      */
-    public function testGetAuthenticatedUsersFromSessionReturnsNullForNonString(): void
+    public function testGetAuthenticatedUsersFromSessionThrowsForNonString(): void
     {
-        $this->session->expects($this->atLeastOnce())
+        $this->expectException(InvalidAuthenticatedUsersSessionValueException::class);
+        $this->expectExceptionMessage('Session contains invalid authenticated users');
+
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn(null);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
             entity: User::class,
         );
 
-        $result = $authenticator->testGetAuthenticatedUsersFromSession();
-
-        self::assertNull($result);
+        $result = $authenticator->getAuthenticatedUsers();
     }
 
     /**
-     * Test getAuthenticatedUsersFromSession returns null when unserialize produces invalid data (lines 74-76).
+     * Test getAuthenticatedUsersFromSession throws when unserialize produces invalid data.
      */
-    public function testGetAuthenticatedUsersFromSessionReturnsNullForInvalidSerializedData(): void
+    public function testGetAuthenticatedUsersFromSessionThrowsForInvalidSerializedData(): void
     {
+        $this->expectException(InvalidUnserializedAuthenticatedUsersException::class);
+        $this->expectExceptionMessage('Session contains invalid authenticated users');
+
         // Serialize an array instead of an object
         $serialized = serialize(['not' => 'an object']);
 
-        $this->session->expects($this->atLeastOnce())
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $this->session->expects($this->once())
+            ->method('remove')
+            ->with(SessionItemId::AUTHENTICATED_USERS);
+
+        new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
             entity: User::class,
         );
-
-        $result = $authenticator->testGetAuthenticatedUsersFromSession();
-
-        self::assertNull($result);
     }
 
     /**
@@ -153,12 +203,17 @@ final class SessionAuthenticatorTest extends TestCase
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, null, self::USER_ID);
         $serialized         = serialize($authenticatedUsers);
 
-        $this->session->expects($this->atLeastOnce())
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with(SessionItemId::AUTHENTICATED_USERS)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with(SessionItemId::AUTHENTICATED_USERS)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -178,9 +233,12 @@ final class SessionAuthenticatorTest extends TestCase
 
         // Session returns different user but should be ignored
         $this->session->expects($this->never())
+            ->method('has');
+
+        $this->session->expects($this->never())
             ->method('get');
 
-        $authenticator = new SessionAuthenticatorClass(
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -196,12 +254,15 @@ final class SessionAuthenticatorTest extends TestCase
      */
     public function testConstructorCreatesNewAuthenticatedUsersWhenSessionEmpty(): void
     {
-        $this->session->expects($this->atLeastOnce())
-            ->method('get')
+        $this->session->expects($this->once())
+            ->method('has')
             ->with(SessionItemId::AUTHENTICATED_USERS)
-            ->willReturn(null);
+            ->willReturn(false);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $this->session->expects($this->never())
+            ->method('get');
+
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,
@@ -209,7 +270,6 @@ final class SessionAuthenticatorTest extends TestCase
         );
 
         self::assertFalse($authenticator->isAuthenticated());
-        self::assertInstanceOf(AuthenticatedUsersContract::class, $authenticator->getAuthenticatedUsers());
     }
 
     /**
@@ -221,12 +281,17 @@ final class SessionAuthenticatorTest extends TestCase
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, null, self::USER_ID);
         $serialized         = serialize($authenticatedUsers);
 
-        $this->session->expects($this->atLeastOnce())
+        $this->session->expects($this->once())
+            ->method('has')
+            ->with($customSessionId)
+            ->willReturn(true);
+
+        $this->session->expects($this->once())
             ->method('get')
             ->with($customSessionId)
             ->willReturn($serialized);
 
-        $authenticator = new SessionAuthenticatorClass(
+        $authenticator = new SessionAuthenticator(
             session: $this->session,
             store: $this->store,
             hasher: $this->hasher,

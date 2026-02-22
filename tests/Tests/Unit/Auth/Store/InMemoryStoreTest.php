@@ -18,7 +18,7 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\InMemoryStore;
-use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PASSWORD_DEFAULT;
@@ -51,14 +51,13 @@ final class InMemoryStoreTest extends TestCase
      */
     public function testCreate(): void
     {
-        $user = $this->retrieveUser();
-
-        self::assertNull($user);
+        self::assertFalse($this->hasRetrieveUser());
 
         $this->store->create($this->user);
 
         $user = $this->retrieveUser();
 
+        self::assertTrue($this->hasRetrieveUser());
         self::assertNotNull($user);
         self::assertSame($this->user->username, $user->username);
         self::assertSame($this->user->password, $user->password);
@@ -67,8 +66,6 @@ final class InMemoryStoreTest extends TestCase
 
     /**
      * Test saving a user.
-     *
-     * @throws InvalidUserException
      */
     public function testSave(): void
     {
@@ -76,6 +73,7 @@ final class InMemoryStoreTest extends TestCase
 
         $user = $this->retrieveUser();
 
+        self::assertTrue($this->hasRetrieveUser());
         self::assertNotNull($user);
         self::assertNull($user->reset_token);
 
@@ -92,12 +90,11 @@ final class InMemoryStoreTest extends TestCase
 
     /**
      * Test saving with a non-existent user.
-     *
-     * @throws InvalidUserException
      */
     public function testNonExistentUserSave(): void
     {
-        $this->expectException(InvalidUserException::class);
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $nonExistentUser           = new User();
         $nonExistentUser->id       = 'test';
@@ -120,6 +117,7 @@ final class InMemoryStoreTest extends TestCase
 
         $user = $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
 
+        self::assertTrue($this->hasRetrieveUser());
         self::assertNotNull($user);
         self::assertSame(self::USERNAME, $user->username);
         self::assertSame(self::RESET_TOKEN, $user->reset_token);
@@ -127,9 +125,11 @@ final class InMemoryStoreTest extends TestCase
 
     public function testFailedUserRetrieval(): void
     {
-        $user = $this->store->retrieve(new RetrievalByUsername(self::BAD_USERNAME), User::class);
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
-        self::assertNull($user);
+        self::assertFalse($this->hasRetrieveUser());
+        $this->store->retrieve(new RetrievalByUsername(self::BAD_USERNAME), User::class);
     }
 
     /**
@@ -145,6 +145,7 @@ final class InMemoryStoreTest extends TestCase
 
         $user = $this->store->retrieve($retrieval, User::class);
 
+        self::assertTrue($this->hasRetrieveUser());
         self::assertNotNull($user);
         self::assertSame('test', $user->id);
         self::assertSame(self::USERNAME, $user->username);
@@ -161,17 +162,23 @@ final class InMemoryStoreTest extends TestCase
         // Use correct id but wrong username - should not match
         $retrieval = new RetrievalByIdAndUsername('test', 'wrong_username');
 
-        $user = $this->store->retrieve($retrieval, User::class);
-
-        self::assertNull($user);
+        self::assertFalse($this->store->hasRetrievable($retrieval, User::class));
     }
 
     /**
      * Retrieve an existing user.
      */
-    protected function retrieveUser(): UserContract|null
+    protected function retrieveUser(): UserContract
     {
         return $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
+    }
+
+    /**
+     * Determine if a user is retrievable.
+     */
+    protected function hasRetrieveUser(): bool
+    {
+        return $this->store->hasRetrievable($this->getAuthenticationRetrieval(), User::class);
     }
 
     /**

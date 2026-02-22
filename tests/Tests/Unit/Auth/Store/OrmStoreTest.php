@@ -19,6 +19,7 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\OrmStore;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -56,14 +57,16 @@ final class OrmStoreTest extends TestCase
     {
         $retrieval = new RetrievalById(self::USER_ID);
 
-        $this->orm->expects($this->once())
+        $this->orm->expects($this->exactly(2))
             ->method('createRepository')
             ->with(User::class)
             ->willReturn($this->repository);
 
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
             ->method('findBy')
             ->willReturn($this->user);
+
+        self::assertTrue($this->store->hasRetrievable($retrieval, User::class));
 
         $result = $this->store->retrieve($retrieval, User::class);
 
@@ -74,14 +77,16 @@ final class OrmStoreTest extends TestCase
     {
         $retrieval = new RetrievalByUsername(self::USERNAME);
 
-        $this->orm->expects($this->once())
+        $this->orm->expects($this->exactly(2))
             ->method('createRepository')
             ->with(User::class)
             ->willReturn($this->repository);
 
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
             ->method('findBy')
             ->willReturn($this->user);
+
+        self::assertTrue($this->store->hasRetrievable($retrieval, User::class));
 
         $result = $this->store->retrieve($retrieval, User::class);
 
@@ -92,36 +97,41 @@ final class OrmStoreTest extends TestCase
     {
         $retrieval = new RetrievalByIdAndUsername(self::USER_ID, self::USERNAME);
 
-        $this->orm->expects($this->once())
+        $this->orm->expects($this->exactly(2))
             ->method('createRepository')
             ->with(User::class)
             ->willReturn($this->repository);
 
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
             ->method('findBy')
             ->willReturn($this->user);
+
+        self::assertTrue($this->store->hasRetrievable($retrieval, User::class));
 
         $result = $this->store->retrieve($retrieval, User::class);
 
         self::assertSame($this->user, $result);
     }
 
-    public function testRetrieveReturnsNullWhenUserNotFound(): void
+    public function testRetrieveThrowsWhenUserNotFound(): void
     {
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
+
         $retrieval = new RetrievalById('non-existent-id');
 
-        $this->orm->expects($this->once())
+        $this->orm->expects($this->exactly(2))
             ->method('createRepository')
             ->with(User::class)
             ->willReturn($this->repository);
 
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
             ->method('findBy')
             ->willReturn(null);
 
-        $result = $this->store->retrieve($retrieval, User::class);
+        self::assertFalse($this->store->hasRetrievable($retrieval, User::class));
 
-        self::assertNull($result);
+        $this->store->retrieve($retrieval, User::class);
     }
 
     public function testCreateCallsRepositoryCreate(): void

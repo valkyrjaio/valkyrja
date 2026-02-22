@@ -23,9 +23,9 @@ interface AuthenticatedUsersContract
     /**
      * Get the current user.
      *
-     * @return non-empty-string|int|null
+     * @return non-empty-string|int
      */
-    public function getCurrent(): string|int|null;
+    public function getCurrent(): string|int;
 
     /**
      * Set the current user.
@@ -42,9 +42,9 @@ interface AuthenticatedUsersContract
     /**
      * Get the impersonated user.
      *
-     * @return non-empty-string|int|null
+     * @return non-empty-string|int
      */
-    public function getImpersonated(): string|int|null;
+    public function getImpersonated(): string|int;
 
     /**
      * Set a user to impersonate.

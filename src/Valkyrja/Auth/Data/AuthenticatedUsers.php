@@ -15,6 +15,8 @@ namespace Valkyrja\Auth\Data;
 
 use Override;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
+use Valkyrja\Auth\Throwable\Exception\NoCurrentUserException;
+use Valkyrja\Auth\Throwable\Exception\NoImpersonatedUserException;
 
 use function in_array;
 
@@ -55,9 +57,10 @@ class AuthenticatedUsers implements AuthenticatedUsersContract
      * @inheritDoc
      */
     #[Override]
-    public function getCurrent(): string|int|null
+    public function getCurrent(): string|int
     {
-        return $this->currentId ?? null;
+        return $this->currentId
+            ?? throw new NoCurrentUserException('No current user');
     }
 
     /**
@@ -88,9 +91,10 @@ class AuthenticatedUsers implements AuthenticatedUsersContract
      * @inheritDoc
      */
     #[Override]
-    public function getImpersonated(): string|int|null
+    public function getImpersonated(): string|int
     {
-        return $this->impersonatedId ?? null;
+        return $this->impersonatedId
+            ?? throw new NoImpersonatedUserException('No impersonated user');
     }
 
     /**

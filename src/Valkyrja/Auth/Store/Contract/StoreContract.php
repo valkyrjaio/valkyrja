@@ -22,14 +22,22 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 interface StoreContract
 {
     /**
+     * Determine if a user is retrievable with given criteria.
+     *
+     * @param RetrievalContract $retrieval The retrieval criteria
+     * @param class-string<U>   $user      The user class
+     */
+    public function hasRetrievable(RetrievalContract $retrieval, string $user): bool;
+
+    /**
      * Retrieve a user with given criteria.
      *
      * @param RetrievalContract $retrieval The retrieval criteria
      * @param class-string<U>   $user      The user class
      *
-     * @return U|null
+     * @return U
      */
-    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null;
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract;
 
     /**
      * Create a new user.

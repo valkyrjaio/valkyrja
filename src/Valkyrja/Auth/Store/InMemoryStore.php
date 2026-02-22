@@ -18,7 +18,7 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 
 /**
  * @template U of UserContract
@@ -41,11 +41,23 @@ class InMemoryStore implements StoreContract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
+    public function hasRetrievable(RetrievalContract $retrieval, string $user): bool
     {
         $retrievalFields = $retrieval->getRetrievalFields($user);
 
-        return $this->getUserViaRetrievalFields($retrievalFields);
+        return $this->getUserViaRetrievalFields($retrievalFields) !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract
+    {
+        $retrievalFields = $retrieval->getRetrievalFields($user);
+
+        return $this->getUserViaRetrievalFields($retrievalFields)
+            ?? throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**
@@ -64,10 +76,6 @@ class InMemoryStore implements StoreContract
     public function update(UserContract $user): void
     {
         $existingUser = $this->retrieve(new RetrievalById($user->getIdValue()), $user::class);
-
-        if ($existingUser === null) {
-            throw new InvalidUserException('User does not exist.');
-        }
 
         $existingUser->updateProperties($user->asStorableChangedArray());
     }

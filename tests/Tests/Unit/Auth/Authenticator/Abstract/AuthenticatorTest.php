@@ -21,6 +21,8 @@ use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\NoCurrentUserException;
+use Valkyrja\Auth\Throwable\Exception\NoImpersonatedUserException;
 use Valkyrja\Tests\Classes\Auth\Authenticator\Abstract\AuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -70,6 +72,9 @@ final class AuthenticatorTest extends TestCase
     public function testIsAuthenticatedReturnsTrueWhenUserAuthenticated(): void
     {
         $this->store->expects($this->once())
+            ->method('hasRetrievable')
+            ->willReturn(true);
+        $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($this->user);
         $this->hasher->expects($this->once())
@@ -86,16 +91,22 @@ final class AuthenticatorTest extends TestCase
         self::assertTrue($this->authenticator->isAuthenticated());
     }
 
-    public function testGetAuthenticatedReturnsNullWhenNoUserAuthenticated(): void
+    public function testGetAuthenticatedThrowsWhenNoUserAuthenticated(): void
     {
+        $this->expectException(NoCurrentUserException::class);
+        $this->expectExceptionMessage('No current user');
+
         $this->store->expects($this->never())->method(self::anything());
         $this->hasher->expects($this->never())->method(self::anything());
 
-        self::assertNull($this->authenticator->getAuthenticated());
+        $this->authenticator->getAuthenticated();
     }
 
     public function testGetAuthenticatedReturnsUserAfterAuthentication(): void
     {
+        $this->store->expects($this->once())
+            ->method('hasRetrievable')
+            ->willReturn(true);
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($this->user);
@@ -113,12 +124,15 @@ final class AuthenticatorTest extends TestCase
         self::assertSame($this->user, $this->authenticator->getAuthenticated());
     }
 
-    public function testGetImpersonatedReturnsNullWhenNotImpersonating(): void
+    public function testGetImpersonatedThrowsWhenNotImpersonating(): void
     {
+        $this->expectException(NoImpersonatedUserException::class);
+        $this->expectExceptionMessage('No impersonated user');
+
         $this->store->expects($this->never())->method(self::anything());
         $this->hasher->expects($this->never())->method(self::anything());
 
-        self::assertNull($this->authenticator->getImpersonated());
+        $this->authenticator->getImpersonated();
     }
 
     public function testGetImpersonatedReturnsUserWhenImpersonating(): void
@@ -168,6 +182,9 @@ final class AuthenticatorTest extends TestCase
     public function testAuthenticateSuccess(): void
     {
         $this->store->expects($this->once())
+            ->method('hasRetrievable')
+            ->willReturn(true);
+        $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($this->user);
 
@@ -189,9 +206,12 @@ final class AuthenticatorTest extends TestCase
 
     public function testAuthenticateThrowsWhenUserNotFound(): void
     {
+        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectExceptionMessage('User not found');
+
         $this->store->expects($this->once())
-            ->method('retrieve')
-            ->willReturn(null);
+            ->method('hasRetrievable')
+            ->willReturn(false);
         $this->hasher->expects($this->never())->method(self::anything());
 
         $attempt = new AuthenticationAttempt(
@@ -199,14 +219,14 @@ final class AuthenticatorTest extends TestCase
             self::PASSWORD
         );
 
-        $this->expectException(InvalidAuthenticationException::class);
-        $this->expectExceptionMessage('User not found');
-
         $this->authenticator->authenticate($attempt);
     }
 
     public function testAuthenticateThrowsWhenPasswordIncorrect(): void
     {
+        $this->store->expects($this->once())
+            ->method('hasRetrievable')
+            ->willReturn(true);
         $this->store->expects($this->once())
             ->method('retrieve')
             ->willReturn($this->user);
@@ -228,6 +248,9 @@ final class AuthenticatorTest extends TestCase
 
     public function testUnauthenticate(): void
     {
+        $this->store->expects($this->once())
+            ->method('hasRetrievable')
+            ->willReturn(true);
         // First authenticate a user
         $this->store->expects($this->once())
             ->method('retrieve')
@@ -249,6 +272,11 @@ final class AuthenticatorTest extends TestCase
 
         self::assertSame($this->authenticator, $result);
         self::assertFalse($this->authenticator->isAuthenticated());
+
+        // Ensure the getAuthenticated method throws once the user is unauthenticated
+        $this->expectException(NoCurrentUserException::class);
+        $this->expectExceptionMessage('No current user');
+
         self::assertNull($this->authenticator->getAuthenticated());
     }
 

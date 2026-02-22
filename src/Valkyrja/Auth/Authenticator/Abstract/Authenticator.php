@@ -62,13 +62,9 @@ abstract class Authenticator implements AuthenticatorContract
      * Get the current authenticated user if one exists.
      */
     #[Override]
-    public function getAuthenticated(): UserContract|null
+    public function getAuthenticated(): UserContract
     {
         $id = $this->authenticatedUsers->getCurrent();
-
-        if ($id === null) {
-            return null;
-        }
 
         return $this->current ??= $this->store->retrieve(
             retrieval: new RetrievalById($id),
@@ -80,13 +76,9 @@ abstract class Authenticator implements AuthenticatorContract
      * Get the current impersonated user if one exists.
      */
     #[Override]
-    public function getImpersonated(): UserContract|null
+    public function getImpersonated(): UserContract
     {
         $id = $this->authenticatedUsers->getImpersonated();
-
-        if ($id === null) {
-            return null;
-        }
 
         return $this->impersonated ??= $this->store->retrieve(
             retrieval: new RetrievalById($id),
@@ -120,11 +112,13 @@ abstract class Authenticator implements AuthenticatorContract
     #[Override]
     public function authenticate(AuthenticationAttemptContract $attempt): UserContract
     {
-        $user = $this->store->retrieve($attempt->getRetrieval(), $this->entity);
+        $retrieval = $attempt->getRetrieval();
 
-        if ($user === null) {
+        if (! $this->store->hasRetrievable($retrieval, $this->entity)) {
             throw new InvalidAuthenticationException('User not found');
         }
+
+        $user = $this->store->retrieve($retrieval, $this->entity);
 
         if (! $this->hasher->confirmPassword($attempt->getPassword(), $user->getPasswordValue())) {
             throw new InvalidAuthenticationException('Incorrect password');
