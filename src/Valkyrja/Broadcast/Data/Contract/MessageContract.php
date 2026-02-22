@@ -46,16 +46,16 @@ interface MessageContract
     /**
      * Get the data to broadcast.
      *
-     * @return array<array-key, mixed>|null
+     * @return array<array-key, mixed>
      */
-    public function getData(): array|null;
+    public function getData(): array;
 
     /**
      * Set the data to broadcast.
      *
-     * @param array<array-key, mixed>|null $data [optional] The data
+     * @param array<array-key, mixed> $data The data
      */
-    public function withData(array|null $data = null): static;
+    public function withData(array $data): static;
 
     /**
      * Get the message to broadcast.

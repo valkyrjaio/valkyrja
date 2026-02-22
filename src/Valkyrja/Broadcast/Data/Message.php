@@ -19,16 +19,16 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 class Message implements MessageContract
 {
     /**
-     * @param non-empty-string             $channel The channel
-     * @param non-empty-string             $event   The event
-     * @param non-empty-string             $message The message
-     * @param array<array-key, mixed>|null $data    [optional] The data
+     * @param non-empty-string        $channel The channel
+     * @param non-empty-string        $event   The event
+     * @param non-empty-string        $message The message
+     * @param array<array-key, mixed> $data    The data
      */
     public function __construct(
         protected string $channel,
         protected string $event,
         protected string $message,
-        protected array|null $data = null
+        protected array $data = []
     ) {
     }
 
@@ -80,7 +80,7 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function getData(): array|null
+    public function getData(): array
     {
         return $this->data;
     }
@@ -89,7 +89,7 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withData(array|null $data = null): static
+    public function withData(array $data): static
     {
         $new = clone $this;
 

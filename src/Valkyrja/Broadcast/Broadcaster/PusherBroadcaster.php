@@ -72,7 +72,7 @@ class PusherBroadcaster implements BroadcasterContract
     {
         $data = $message->getData();
 
-        if ($data !== null && $data !== []) {
+        if ($data !== []) {
             $message = $message->withMessage(ArrayFactory::toString($data));
         }
 
