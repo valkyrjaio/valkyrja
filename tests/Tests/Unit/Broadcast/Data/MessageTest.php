@@ -38,7 +38,7 @@ final class MessageTest extends TestCase
         self::assertSame($this->channel, $message->getChannel());
         self::assertSame($this->event, $message->getEvent());
         self::assertSame($this->message, $message->getMessage());
-        self::assertNull($message->getData());
+        self::assertEmpty($message->getData());
     }
 
     public function testWithData(): void
@@ -69,7 +69,7 @@ final class MessageTest extends TestCase
         self::assertSame($newChannel, $newMessage->getChannel());
         self::assertSame($this->event, $newMessage->getEvent());
         self::assertSame($this->message, $newMessage->getMessage());
-        self::assertNull($newMessage->getData());
+        self::assertEmpty($newMessage->getData());
     }
 
     public function testEvent(): void
@@ -88,7 +88,7 @@ final class MessageTest extends TestCase
         self::assertSame($newEvent, $newMessage->getEvent());
         self::assertSame($this->channel, $newMessage->getChannel());
         self::assertSame($this->message, $newMessage->getMessage());
-        self::assertNull($newMessage->getData());
+        self::assertEmpty($newMessage->getData());
     }
 
     public function testMessage(): void
@@ -107,7 +107,7 @@ final class MessageTest extends TestCase
         self::assertSame($newMessageText, $newMessage->getMessage());
         self::assertSame($this->channel, $newMessage->getChannel());
         self::assertSame($this->event, $newMessage->getEvent());
-        self::assertNull($newMessage->getData());
+        self::assertEmpty($newMessage->getData());
     }
 
     public function testData(): void
@@ -122,14 +122,14 @@ final class MessageTest extends TestCase
         $newMessage = $message->withData($newData);
 
         self::assertNotSame($message, $newMessage);
-        self::assertNull($message->getData());
+        self::assertEmpty($message->getData());
         self::assertSame($newData, $newMessage->getData());
         self::assertSame($this->channel, $newMessage->getChannel());
         self::assertSame($this->event, $newMessage->getEvent());
         self::assertSame($this->message, $newMessage->getMessage());
     }
 
-    public function testDataSetToNull(): void
+    public function testDataSetToEmpty(): void
     {
         $message = new Message(
             channel: $this->channel,
@@ -138,10 +138,10 @@ final class MessageTest extends TestCase
             data: $this->data
         );
 
-        $newMessage = $message->withData(null);
+        $newMessage = $message->withData([]);
 
         self::assertNotSame($message, $newMessage);
         self::assertSame($this->data, $message->getData());
-        self::assertNull($newMessage->getData());
+        self::assertEmpty($newMessage->getData());
     }
 }
