@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -38,23 +39,19 @@ class OrmStore implements StoreContract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
+    public function hasRetrievable(RetrievalContract $retrieval, string $user): bool
     {
-        /** @var RepositoryContract<U> $repository */
-        $repository = $this->orm->createRepository($user);
+        return $this->internalRetrieval($retrieval, $user) !== null;
+    }
 
-        $where = [];
-
-        foreach ($retrieval->getRetrievalFields($user) as $field => $value) {
-            $where[] = new Where(
-                value: new Value(
-                    name: $field,
-                    value: $value
-                )
-            );
-        }
-
-        return $repository->findBy(...$where);
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract
+    {
+        return $this->internalRetrieval($retrieval, $user)
+            ?? throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**
@@ -77,5 +74,32 @@ class OrmStore implements StoreContract
         $repository = $this->orm->createRepository($user::class);
 
         $repository->update($user);
+    }
+
+    /**
+     * Retrieve a user with given criteria.
+     *
+     * @param RetrievalContract $retrieval The retrieval criteria
+     * @param class-string<U>   $user      The user class
+     *
+     * @return U|null
+     */
+    protected function internalRetrieval(RetrievalContract $retrieval, string $user): UserContract|null
+    {
+        /** @var RepositoryContract<U> $repository */
+        $repository = $this->orm->createRepository($user);
+
+        $where = [];
+
+        foreach ($retrieval->getRetrievalFields($user) as $field => $value) {
+            $where[] = new Where(
+                value: new Value(
+                    name: $field,
+                    value: $value
+                )
+            );
+        }
+
+        return $repository->findBy(...$where);
     }
 }

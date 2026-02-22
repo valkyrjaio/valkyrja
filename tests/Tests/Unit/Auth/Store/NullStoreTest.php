@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Auth\Store;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\NullStore;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -30,40 +31,44 @@ final class NullStoreTest extends TestCase
         $this->store = new NullStore();
     }
 
-    public function testRetrieveAlwaysReturnsNull(): void
+    public function testHasRetrievableUser(): void
     {
         $retrieval = new RetrievalByUsername('testuser');
 
-        $result = $this->store->retrieve($retrieval, User::class);
+        self::assertFalse($this->store->hasRetrievable($retrieval, User::class));
+    }
 
-        self::assertNull($result);
+    public function testRetrieveAlwaysReturnsNull(): void
+    {
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
+
+        $retrieval = new RetrievalByUsername('testuser');
+
+        $this->store->retrieve($retrieval, User::class);
     }
 
     public function testCreateDoesNotThrow(): void
     {
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
+
         $user           = new User();
         $user->id       = 'test-id';
         $user->username = 'testuser';
 
-        // Should not throw - just a no-op
         $this->store->create($user);
-
-        // Verify user is not actually stored
-        $retrieval = new RetrievalByUsername('testuser');
-        self::assertNull($this->store->retrieve($retrieval, User::class));
     }
 
     public function testUpdateDoesNotThrow(): void
     {
+        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
+
         $user           = new User();
         $user->id       = 'test-id';
         $user->username = 'testuser';
 
-        // Should not throw - just a no-op
         $this->store->update($user);
-
-        // Verify user is not actually stored
-        $retrieval = new RetrievalByUsername('testuser');
-        self::assertNull($this->store->retrieve($retrieval, User::class));
     }
 }

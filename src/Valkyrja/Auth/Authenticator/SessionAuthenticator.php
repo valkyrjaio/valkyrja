@@ -20,6 +20,8 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticatedUsersSessionValueException;
+use Valkyrja\Auth\Throwable\Exception\InvalidUnserializedAuthenticatedUsersException;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
 use function is_string;
@@ -51,20 +53,28 @@ class SessionAuthenticator extends Authenticator
             entity: $entity,
             authenticatedUsers: $authenticatedUsers
                 ?? $this->getAuthenticatedUsersFromSession()
-                ?? new AuthenticatedUsers(),
         );
     }
 
     /**
      * Attempt to get the authenticated users from the session.
      */
-    protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract|null
+    protected function getAuthenticatedUsersFromSession(): AuthenticatedUsersContract
     {
+        // If the session does not contain the authenticated users
+        if (! $this->session->has($this->sessionItemId)) {
+            // Return an empty authenticated users
+            return new AuthenticatedUsers();
+        }
+
         /** @var scalar|object|array<array-key, mixed>|resource|null $sessionSerializedUsers */
         $sessionSerializedUsers = $this->session->get($this->sessionItemId);
 
+        // If the session does not contain a valid serialized authenticated users string
         if (! is_string($sessionSerializedUsers)) {
-            return null;
+            $this->session->remove($this->sessionItemId);
+
+            throw new InvalidAuthenticatedUsersSessionValueException('Session contains invalid authenticated users');
         }
 
         /** @var scalar|object|array<array-key, mixed>|resource|null $sessionUsers */
@@ -74,7 +84,9 @@ class SessionAuthenticator extends Authenticator
         );
 
         if (! $sessionUsers instanceof AuthenticatedUsersContract) {
-            return null;
+            $this->session->remove($this->sessionItemId);
+
+            throw new InvalidUnserializedAuthenticatedUsersException('Session contains invalid authenticated users');
         }
 
         return $sessionUsers;

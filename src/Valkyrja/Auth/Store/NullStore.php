@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
+use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
 
 /**
  * @template U of UserContract
@@ -29,9 +30,18 @@ class NullStore implements StoreContract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
+    public function hasRetrievable(RetrievalContract $retrieval, string $user): bool
     {
-        return null;
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract
+    {
+        throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**
@@ -40,6 +50,7 @@ class NullStore implements StoreContract
     #[Override]
     public function create(UserContract $user): void
     {
+        throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**
@@ -48,5 +59,6 @@ class NullStore implements StoreContract
     #[Override]
     public function update(UserContract $user): void
     {
+        throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 }

@@ -28,14 +28,14 @@ interface AuthenticatorContract
     public function isAuthenticated(): bool;
 
     /**
-     * Get the current authenticated user if one exists.
+     * Get the current authenticated user.
      */
-    public function getAuthenticated(): UserContract|null;
+    public function getAuthenticated(): UserContract;
 
     /**
-     * Get the current impersonated user if one exists.
+     * Get the current impersonated user.
      */
-    public function getImpersonated(): UserContract|null;
+    public function getImpersonated(): UserContract;
 
     /**
      * Get the authenticated users.
