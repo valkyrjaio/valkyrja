@@ -46,7 +46,7 @@ class LogCache implements CacheContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $key): string|null
+    public function get(string $key): string
     {
         $key = $this->getKey($key);
 

@@ -18,6 +18,7 @@ use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
+use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 
 class RedisCache implements CacheContract
 {
@@ -40,9 +41,10 @@ class RedisCache implements CacheContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $key): string|null
+    public function get(string $key): string
     {
-        return $this->client->get($this->getKey($key));
+        return $this->client->get($this->getKey($key))
+            ?? throw new InvalidCacheKeyException("Cache miss for key: $key");
     }
 
     /**

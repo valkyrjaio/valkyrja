@@ -44,10 +44,15 @@ class CacheSession extends Session
     #[Override]
     public function start(): void
     {
+        // If the session data isn't present
+        if (! $this->cache->has($this->getCacheSessionId())) {
+            return;
+        }
+
         $cachedData = $this->cache->get($this->getCacheSessionId());
 
         // If the session data isn't present
-        if ($cachedData === null || $cachedData === '') {
+        if ($cachedData === '') {
             return;
         }
 

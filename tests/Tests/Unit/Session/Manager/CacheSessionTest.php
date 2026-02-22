@@ -31,9 +31,15 @@ final class CacheSessionTest extends TestCase
 
         $this->cache
             ->expects($this->once())
+            ->method('has')
+            ->with('_session')
+            ->willReturn(true);
+
+        $this->cache
+            ->expects($this->once())
             ->method('get')
             ->with('_session')
-            ->willReturn(null);
+            ->willReturn('');
 
         $this->session = new CacheSession($this->cache);
     }
@@ -46,6 +52,12 @@ final class CacheSessionTest extends TestCase
     public function testStartLoadsCachedDataWhenAvailable(): void
     {
         $cache = $this->createMock(CacheContract::class);
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with('test-session_session')
+            ->willReturn(true);
 
         $cache
             ->expects($this->once())
@@ -65,9 +77,9 @@ final class CacheSessionTest extends TestCase
 
         $cache
             ->expects($this->once())
-            ->method('get')
+            ->method('has')
             ->with('test-session_session')
-            ->willReturn(null);
+            ->willReturn(false);
 
         $session = new CacheSession($cache, 'test-session');
 
@@ -77,6 +89,12 @@ final class CacheSessionTest extends TestCase
     public function testStartDoesNotLoadDataWhenCacheReturnsEmptyString(): void
     {
         $cache = $this->createMock(CacheContract::class);
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with('test-session_session')
+            ->willReturn(true);
 
         $cache
             ->expects($this->once())
@@ -95,9 +113,9 @@ final class CacheSessionTest extends TestCase
 
         $cache
             ->expects($this->once())
-            ->method('get')
+            ->method('has')
             ->with('session-id_session')
-            ->willReturn(null);
+            ->willReturn(false);
 
         $cache
             ->expects($this->once())
@@ -113,6 +131,12 @@ final class CacheSessionTest extends TestCase
     public function testRemoveUpdatesCacheSessionWhenItemExists(): void
     {
         $cache = $this->createMock(CacheContract::class);
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with('session-id_session')
+            ->willReturn(true);
 
         $cache
             ->expects($this->once())
@@ -138,9 +162,9 @@ final class CacheSessionTest extends TestCase
 
         $cache
             ->expects($this->once())
-            ->method('get')
+            ->method('has')
             ->with('session-id_session')
-            ->willReturn(null);
+            ->willReturn(false);
 
         $cache
             ->expects($this->never())
@@ -155,6 +179,12 @@ final class CacheSessionTest extends TestCase
     public function testClearUpdatesCacheSession(): void
     {
         $cache = $this->createMock(CacheContract::class);
+
+        $cache
+            ->expects($this->once())
+            ->method('has')
+            ->with('session-id_session')
+            ->willReturn(true);
 
         $cache
             ->expects($this->once())
@@ -179,6 +209,12 @@ final class CacheSessionTest extends TestCase
 
         $cache
             ->expects($this->once())
+            ->method('has')
+            ->with('session-id_session')
+            ->willReturn(true);
+
+        $cache
+            ->expects($this->once())
             ->method('get')
             ->with('session-id_session')
             ->willReturn('{"key":"value"}');
@@ -200,8 +236,8 @@ final class CacheSessionTest extends TestCase
 
         $cache
             ->expects($this->once())
-            ->method('get')
-            ->willReturn(null);
+            ->method('has')
+            ->willReturn(false);
 
         $session = new CacheSession($cache, 'session-id', 'MY_SESSION');
 
