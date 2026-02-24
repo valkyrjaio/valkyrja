@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
 
 use function in_array;
 use function is_callable;
@@ -150,22 +151,45 @@ class Answer extends Message implements AnswerContract
      * @inheritDoc
      */
     #[Override]
-    public function getValidationCallable(): callable|null
+    public function hasValidationCallable(): bool
     {
-        return $this->validationCallable;
+        return $this->validationCallable !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getValidationCallable(): callable
+    {
+        return $this->validationCallable
+            ?? throw new NoValidationCallableException('No validation callable has been set');
     }
 
     /**
      * @inheritDoc
      *
-     * @param callable(non-empty-string):bool|null $validationCallable The validation callable
+     * @param callable(non-empty-string):bool $validationCallable The validation callable
      */
     #[Override]
-    public function withValidationCallable(callable|null $validationCallable): static
+    public function withValidationCallable(callable $validationCallable): static
     {
         $new = clone $this;
 
         $new->validationCallable = $validationCallable;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutValidationCallable(): static
+    {
+        $new = clone $this;
+
+        $new->validationCallable = null;
 
         return $new;
     }
