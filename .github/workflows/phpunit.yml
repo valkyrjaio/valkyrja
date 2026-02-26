@@ -107,6 +107,7 @@ jobs:
       - name: Upload Coveralls coverage report
         uses: coverallsapp/github-action@v2.3.6
         if: ${{ matrix.php == '8.4' && steps.changes.outputs.files == 'true' }}
+        continue-on-error: true
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: ".github/ci/phpunit/build/logs/clover.xml"
