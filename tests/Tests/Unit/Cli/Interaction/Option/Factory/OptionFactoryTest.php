@@ -41,7 +41,7 @@ final class OptionFactoryTest extends TestCase
         self::assertCount(1, $options);
         self::assertSame('value', $options[0]->getName());
         self::assertSame(OptionType::LONG, $options[0]->getType());
-        self::assertNull($options[0]->getValue());
+        self::assertFalse($options[0]->hasValue());
     }
 
     public function testFromArgLongOptionWithValue(): void
@@ -65,7 +65,7 @@ final class OptionFactoryTest extends TestCase
         self::assertCount(1, $options);
         self::assertSame('value', $options[0]->getName());
         self::assertSame(OptionType::LONG, $options[0]->getType());
-        self::assertNull($options[0]->getValue());
+        self::assertFalse($options[0]->hasValue());
     }
 
     public function testFromArgShortOption(): void
@@ -77,7 +77,7 @@ final class OptionFactoryTest extends TestCase
         self::assertCount(1, $options);
         self::assertSame('v', $options[0]->getName());
         self::assertSame(OptionType::SHORT, $options[0]->getType());
-        self::assertNull($options[0]->getValue());
+        self::assertFalse($options[0]->hasValue());
     }
 
     public function testFromArgShortOptionWithValue(): void
@@ -102,15 +102,15 @@ final class OptionFactoryTest extends TestCase
 
         self::assertSame('v', $options[0]->getName());
         self::assertSame(OptionType::SHORT, $options[0]->getType());
-        self::assertNull($options[0]->getValue());
+        self::assertFalse($options[0]->hasValue());
 
         self::assertSame('w', $options[1]->getName());
         self::assertSame(OptionType::SHORT, $options[1]->getType());
-        self::assertNull($options[1]->getValue());
+        self::assertFalse($options[1]->hasValue());
 
         self::assertSame('f', $options[2]->getName());
         self::assertSame(OptionType::SHORT, $options[2]->getType());
-        self::assertNull($options[2]->getValue());
+        self::assertFalse($options[2]->hasValue());
     }
 
     public function testFromArgMultipleShortOptionsWithValueException(): void

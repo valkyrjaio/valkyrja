@@ -59,6 +59,11 @@ final class OptionJwtSessionTest extends TestCase
 
         $option
             ->expects($this->once())
+            ->method('hasValue')
+            ->willReturn(true);
+
+        $option
+            ->expects($this->once())
             ->method('getValue')
             ->willReturn('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test');
 
@@ -108,8 +113,12 @@ final class OptionJwtSessionTest extends TestCase
 
         $option
             ->expects($this->once())
-            ->method('getValue')
-            ->willReturn(null);
+            ->method('hasValue')
+            ->willReturn(false);
+
+        $option
+            ->expects($this->never())
+            ->method('getValue');
 
         $input
             ->expects($this->once())

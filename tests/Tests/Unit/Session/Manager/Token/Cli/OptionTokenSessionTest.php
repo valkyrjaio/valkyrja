@@ -51,6 +51,11 @@ final class OptionTokenSessionTest extends TestCase
 
         $option
             ->expects($this->once())
+            ->method('hasValue')
+            ->willReturn(true);
+
+        $option
+            ->expects($this->once())
             ->method('getValue')
             ->willReturn('{"key":"value","key2":"value2"}');
 
@@ -88,8 +93,12 @@ final class OptionTokenSessionTest extends TestCase
 
         $option
             ->expects($this->once())
-            ->method('getValue')
-            ->willReturn(null);
+            ->method('hasValue')
+            ->willReturn(false);
+
+        $option
+            ->expects($this->never())
+            ->method('getValue');
 
         $input
             ->expects($this->once())

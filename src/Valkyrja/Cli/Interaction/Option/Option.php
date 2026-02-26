@@ -16,6 +16,7 @@ namespace Valkyrja\Cli\Interaction\Option;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoValueException;
 
 class Option implements OptionContract
 {
@@ -56,20 +57,43 @@ class Option implements OptionContract
      * @inheritDoc
      */
     #[Override]
-    public function getValue(): string|null
+    public function hasValue(): bool
     {
-        return $this->value;
+        return $this->value !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withValue(string|null $value): static
+    public function getValue(): string
+    {
+        return $this->value
+            ?? throw new NoValueException('No value exists');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withValue(string $value): static
     {
         $new = clone $this;
 
         $new->value = $value;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutValue(): static
+    {
+        $new = clone $this;
+
+        $new->value = null;
 
         return $new;
     }
