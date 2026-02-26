@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -28,7 +29,7 @@ final class NewLineTest extends TestCase
 
         self::assertSame("\n", $message->getText());
         self::assertSame("\n", $message->getFormattedText());
-        self::assertNull($message->getFormatter());
+        self::assertFalse($message->hasFormatter());
     }
 
     public function testFormatter(): void
@@ -40,5 +41,15 @@ final class NewLineTest extends TestCase
         self::assertSame("\n", $message->getText());
         self::assertSame($formatter->formatText("\n"), $message->getFormattedText());
         self::assertSame($formatter, $message->getFormatter());
+    }
+
+    public function testFormatterThrowsWhenNoneSet(): void
+    {
+        $this->expectException(NoFormatterException::class);
+        $this->expectExceptionMessage('No formatter has been set');
+
+        $message = new NewLine();
+
+        $message->getFormatter();
     }
 }

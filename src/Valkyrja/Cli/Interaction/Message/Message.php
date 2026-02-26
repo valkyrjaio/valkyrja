@@ -16,6 +16,7 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
 
 class Message implements MessageContract
 {
@@ -74,20 +75,43 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function getFormatter(): FormatterContract|null
+    public function hasFormatter(): bool
     {
-        return $this->formatter;
+        return $this->formatter !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withFormatter(FormatterContract|null $formatter): static
+    public function getFormatter(): FormatterContract
+    {
+        return $this->formatter
+            ?? throw new NoFormatterException('No formatter has been set');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withFormatter(FormatterContract $formatter): static
     {
         $new = clone $this;
 
         $new->formatter = $formatter;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutFormatter(): static
+    {
+        $new = clone $this;
+
+        $new->formatter = null;
 
         return $new;
     }

@@ -58,18 +58,28 @@ interface AnswerContract extends MessageContract
     public function withUserResponse(string $userResponse): static;
 
     /**
+     * Determine if there is a validation callable.
+     */
+    public function hasValidationCallable(): bool;
+
+    /**
      * Get the validation callable.
      *
-     * @return callable(non-empty-string):bool|null
+     * @return callable(non-empty-string):bool
      */
-    public function getValidationCallable(): callable|null;
+    public function getValidationCallable(): callable;
 
     /**
      * Create a new Answer with the specified validation callable.
      *
-     * @param callable(non-empty-string):bool|null $validationCallable The validation callable
+     * @param callable(non-empty-string):bool $validationCallable The validation callable
      */
-    public function withValidationCallable(callable|null $validationCallable): static;
+    public function withValidationCallable(callable $validationCallable): static;
+
+    /**
+     * Create a new Answer without a validation callable.
+     */
+    public function withoutValidationCallable(): static;
 
     /**
      * Determine whether this Answer was answered.

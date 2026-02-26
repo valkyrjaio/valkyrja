@@ -39,14 +39,24 @@ interface MessageContract
     public function withText(string $text): static;
 
     /**
+     * Determine if the message has a formatter.
+     */
+    public function hasFormatter(): bool;
+
+    /**
      * Get the formatter.
      */
-    public function getFormatter(): FormatterContract|null;
+    public function getFormatter(): FormatterContract;
 
     /**
      * Create a new Message with the specified Formatter.
      *
-     * @param FormatterContract|null $formatter The formatter
+     * @param FormatterContract $formatter The formatter
      */
-    public function withFormatter(FormatterContract|null $formatter): static;
+    public function withFormatter(FormatterContract $formatter): static;
+
+    /**
+     * Create a new Message without a Formatter.
+     */
+    public function withoutFormatter(): static;
 }
