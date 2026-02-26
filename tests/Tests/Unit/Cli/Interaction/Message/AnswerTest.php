@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function str_contains;
@@ -122,15 +123,34 @@ final class AnswerTest extends TestCase
 
         $message = new Answer(defaultResponse: $defaultResponse, validationCallable: $validationCallback);
 
+        self::assertTrue($message->hasValidationCallable());
         self::assertSame($validationCallback, $message->getValidationCallable());
         self::assertTrue($message->isValidResponse());
 
         $message2 = $message->withValidationCallable($validationCallback2);
 
         self::assertNotSame($message, $message2);
+        self::assertTrue($message2->hasValidationCallable());
         self::assertSame($validationCallback2, $message2->getValidationCallable());
         self::assertFalse($message2->withUserResponse('text2')->isValidResponse());
         self::assertTrue($message2->withUserResponse('test')->isValidResponse());
+
+        $message3 = $message->withoutValidationCallable();
+
+        self::assertNotSame($message, $message3);
+        self::assertFalse($message3->hasValidationCallable());
+        self::assertTrue($message3->isValidResponse());
+        self::assertFalse($message3->withUserResponse('test')->isValidResponse());
+    }
+
+    public function testValidationCallbackThrowsWhenNotSet(): void
+    {
+        $this->expectException(NoValidationCallableException::class);
+        $this->expectExceptionMessage('No validation callable has been set');
+
+        $message = new Answer(defaultResponse: 'text');
+
+        $message->getValidationCallable();
     }
 
     public function testAllowedResponses(): void

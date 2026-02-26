@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -31,7 +32,7 @@ final class MessageTest extends TestCase
 
         self::assertSame($text, $message->getText());
         self::assertSame($text, $message->getFormattedText());
-        self::assertNull($message->getFormatter());
+        self::assertFalse($message->hasFormatter());
     }
 
     public function testConstructor(): void
@@ -84,5 +85,24 @@ final class MessageTest extends TestCase
         self::assertSame($text, $message2->getText());
         self::assertSame($newFormatter->formatText($text), $message2->getFormattedText());
         self::assertSame($newFormatter, $message2->getFormatter());
+
+        $message3 = $message->withoutFormatter();
+
+        self::assertNotSame($message, $message3);
+        self::assertSame($text, $message3->getText());
+        self::assertSame($text, $message3->getFormattedText());
+        self::assertFalse($message3->hasFormatter());
+    }
+
+    public function testFormatterThrowsWhenNoneSet(): void
+    {
+        $this->expectException(NoFormatterException::class);
+        $this->expectExceptionMessage('No formatter has been set');
+
+        $text = 'text';
+
+        $message = new Message(text: $text);
+
+        $message->getFormatter();
     }
 }
