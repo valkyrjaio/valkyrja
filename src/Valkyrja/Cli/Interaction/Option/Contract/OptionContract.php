@@ -32,18 +32,28 @@ interface OptionContract
     public function withName(string $name): static;
 
     /**
+     * Determine if a value exists.
+     */
+    public function hasValue(): bool;
+
+    /**
      * Get the value.
      *
-     * @return non-empty-string|null
+     * @return non-empty-string
      */
-    public function getValue(): string|null;
+    public function getValue(): string;
 
     /**
      * Create a new Option with the specified value.
      *
-     * @param non-empty-string|null $value The value
+     * @param non-empty-string $value The value
      */
-    public function withValue(string|null $value): static;
+    public function withValue(string $value): static;
+
+    /**
+     * Create a new Option without a value.
+     */
+    public function withoutValue(): static;
 
     /**
      * Get the option type.

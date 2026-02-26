@@ -73,6 +73,11 @@ final class EncryptedOptionJwtSessionTest extends TestCase
 
         $option
             ->expects($this->once())
+            ->method('hasValue')
+            ->willReturn(true);
+
+        $option
+            ->expects($this->once())
             ->method('getValue')
             ->willReturn('encrypted-jwt-token');
 
@@ -133,8 +138,12 @@ final class EncryptedOptionJwtSessionTest extends TestCase
 
         $option
             ->expects($this->once())
-            ->method('getValue')
-            ->willReturn(null);
+            ->method('hasValue')
+            ->willReturn(false);
+
+        $option
+            ->expects($this->never())
+            ->method('getValue');
 
         $input
             ->expects($this->once())

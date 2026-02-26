@@ -241,7 +241,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $new->options = [];
 
         foreach ($options as $option) {
-            if ($this->valueMode === OptionValueMode::NONE && $option->getValue() !== null) {
+            if ($this->valueMode === OptionValueMode::NONE && $option->hasValue()) {
                 throw new InvalidArgumentException("$this->name should have no value");
             }
 
@@ -260,7 +260,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $new = clone $this;
 
         foreach ($options as $option) {
-            if ($this->valueMode === OptionValueMode::NONE && $option->getValue() !== null) {
+            if ($this->valueMode === OptionValueMode::NONE && $option->hasValue()) {
                 throw new InvalidArgumentException("$this->name should have no value");
             }
 
@@ -281,13 +281,17 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $castType = $cast->type ?? null;
 
         foreach ($this->options as $option) {
+            $optionValue = $option->hasValue()
+                ? $option->getValue()
+                : null;
+
             if ($cast === null || $castType === null) {
-                $values[] = $option->getValue();
+                $values[] = $optionValue;
 
                 continue;
             }
 
-            $value = $castType::fromValue($option->getValue());
+            $value = $castType::fromValue($optionValue);
 
             if ($cast->convert) {
                 $values[] = $value->asValue();

@@ -48,11 +48,12 @@ class OptionTokenSession extends Session
     public function start(): void
     {
         $option = $this->input->getOption($this->optionName)[0] ?? null;
-        $token  = $option?->getValue();
 
-        if ($token === null) {
+        if ($option === null || ! $option->hasValue()) {
             return;
         }
+
+        $token  = $option->getValue();
 
         $this->setDataFromTokenValue($token);
     }

@@ -29,7 +29,7 @@ final class OptionTest extends TestCase
         $option = new Option(name: $name);
 
         self::assertSame($name, $option->getName());
-        self::assertNull($option->getValue());
+        self::assertFalse($option->hasValue());
         self::assertSame(OptionType::LONG, $option->getType());
     }
 
@@ -61,6 +61,11 @@ final class OptionTest extends TestCase
 
         self::assertNotSame($option, $argument2);
         self::assertSame($newValue, $argument2->getValue());
+
+        $argument3 = $option->withoutValue();
+
+        self::assertNotSame($option, $argument3);
+        self::assertFalse($argument3->hasValue());
     }
 
     public function testType(): void
