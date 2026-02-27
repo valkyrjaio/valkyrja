@@ -22,6 +22,7 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -36,8 +37,19 @@ final class CollectionTest extends TestCase
 
         self::assertEmpty($collection->all());
         self::assertEmpty($collection->getData()->routes);
-        self::assertNull($collection->get('test'));
         self::assertFalse($collection->has('test'));
+    }
+
+    public function testGetThrowsForNonExistentRoute(): void
+    {
+        $name = 'test';
+
+        $this->expectException(InvalidRouteNameException::class);
+        $this->expectExceptionMessage("The route `$name` was not found.");
+
+        $collection = new Collection();
+
+        $collection->get($name);
     }
 
     public function testAddRoute(): void

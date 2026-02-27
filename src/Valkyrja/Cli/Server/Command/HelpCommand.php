@@ -90,9 +90,7 @@ class HelpCommand
                 );
         }
 
-        $helpRoute = $this->collection->get($commandName);
-
-        if ($helpRoute === null) {
+        if (! $this->collection->has($commandName)) {
             return $this->outputFactory
                 ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
@@ -101,7 +99,7 @@ class HelpCommand
                 );
         }
 
-        $this->helpRoute = $helpRoute;
+        $this->helpRoute = $this->collection->get($commandName);
 
         $output = $this->version->run();
 

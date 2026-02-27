@@ -135,14 +135,11 @@ class Router implements RouterContract
     {
         $commandName = $input->getCommandName();
 
-        // Try to get the command
-        $route = $this->collection->get(
-            name: $commandName
-        );
-
         // Return the command if it was found
-        if ($route !== null) {
-            return $route;
+        if ($this->collection->has($commandName)) {
+            return $this->collection->get(
+                name: $commandName
+            );
         }
 
         $errorText = "Command `$commandName` was not found.";
