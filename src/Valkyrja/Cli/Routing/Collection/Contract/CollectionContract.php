@@ -40,7 +40,7 @@ interface CollectionContract
      *
      * @param string $name The command name
      */
-    public function get(string $name): RouteContract|null;
+    public function get(string $name): RouteContract;
 
     /**
      * Determine if a command exists.

@@ -44,6 +44,8 @@ final class HelpCommandTest extends TestCase
             ->willReturn(null);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->never())
+            ->method('has');
+        $collection->expects($this->never())
             ->method('get');
         $version = $this->createMock(VersionCommand::class);
         $version->expects($this->never())
@@ -85,9 +87,11 @@ final class HelpCommandTest extends TestCase
             ->willReturn($option);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
-            ->method('get')
+            ->method('has')
             ->with($commandName)
-            ->willReturn(null);
+            ->willReturn(false);
+        $collection->expects($this->never())
+            ->method('get');
         $version = $this->createMock(VersionCommand::class);
         $version->expects($this->never())
             ->method('run');
@@ -173,6 +177,10 @@ final class HelpCommandTest extends TestCase
             ->willReturn($option);
         $collection = $this->createMock(CollectionContract::class);
         $collection->expects($this->once())
+            ->method('has')
+            ->with($commandName)
+            ->willReturn(true);
+        $collection->expects($this->once())
             ->method('get')
             ->with($commandName)
             ->willReturn($helpRoute);
@@ -248,6 +256,10 @@ final class HelpCommandTest extends TestCase
             ->with('command')
             ->willReturn($option);
         $collection = $this->createMock(CollectionContract::class);
+        $collection->expects($this->once())
+            ->method('has')
+            ->with($commandName)
+            ->willReturn(true);
         $collection->expects($this->once())
             ->method('get')
             ->with($commandName)

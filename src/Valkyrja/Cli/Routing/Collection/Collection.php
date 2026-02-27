@@ -18,6 +18,7 @@ use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function is_callable;
 
@@ -63,7 +64,7 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $name): RouteContract|null
+    public function get(string $name): RouteContract
     {
         $route = $this->routes[$name]
             ?? null;
@@ -72,7 +73,7 @@ class Collection implements CollectionContract
             return $this->ensureRoute($route);
         }
 
-        return null;
+        throw new InvalidRouteNameException("The route `$name` was not found.");
     }
 
     /**
