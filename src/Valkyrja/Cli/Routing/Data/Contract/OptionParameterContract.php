@@ -65,18 +65,28 @@ interface OptionParameterContract extends ParameterContract
     public function withValueMode(OptionValueMode $valueMode): static;
 
     /**
+     * Determine if there is a value display name.
+     */
+    public function hasValueDisplayName(): bool;
+
+    /**
      * Get the value display name.
      *
-     * @return non-empty-string|null
+     * @return non-empty-string
      */
-    public function getValueDisplayName(): string|null;
+    public function getValueDisplayName(): string;
 
     /**
      * Create a new Option parameter with the specified value display name.
      *
-     * @param non-empty-string|null $valueName The value name
+     * @param non-empty-string $valueName The value name
      */
-    public function withValueDisplayName(string|null $valueName): static;
+    public function withValueDisplayName(string $valueName): static;
+
+    /**
+     * Create a new Option parameter without a value display name.
+     */
+    public function withoutValueDisplayName(): static;
 
     /**
      * Get the valid values.
@@ -100,18 +110,28 @@ interface OptionParameterContract extends ParameterContract
     public function withAddedValidValues(string ...$validValues): static;
 
     /**
+     * Determine if there is a default value.
+     */
+    public function hasDefaultValue(): bool;
+
+    /**
      * Get the default value.
      *
-     * @return non-empty-string|null
+     * @return non-empty-string
      */
-    public function getDefaultValue(): string|null;
+    public function getDefaultValue(): string;
 
     /**
      * Create a new Option parameter with the specified default value.
      *
-     * @param non-empty-string|null $defaultValue The default value
+     * @param non-empty-string $defaultValue The default value
      */
-    public function withDefaultValue(string|null $defaultValue = null): static;
+    public function withDefaultValue(string $defaultValue): static;
+
+    /**
+     * Create a new Option parameter without a default value.
+     */
+    public function withoutDefaultValue(): static;
 
     /**
      * Get the options.

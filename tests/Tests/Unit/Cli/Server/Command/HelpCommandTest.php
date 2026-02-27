@@ -34,43 +34,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class HelpCommandTest extends TestCase
 {
-    public function testRunWithInvalidCommandName(): void
-    {
-        $output = new Output();
-        $route  = $this->createMock(RouteContract::class);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->with('command')
-            ->willReturn(null);
-        $collection = $this->createMock(CollectionContract::class);
-        $collection->expects($this->never())
-            ->method('has');
-        $collection->expects($this->never())
-            ->method('get');
-        $version = $this->createMock(VersionCommand::class);
-        $version->expects($this->never())
-            ->method('run');
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->once())
-            ->method('createOutput')
-            ->willReturn($output);
-
-        $helpCommand   = new HelpCommand(
-            version: $version,
-            route: $route,
-            collection: $collection,
-            outputFactory: $outputFactory
-        );
-        $outputFromRun = $helpCommand->run();
-
-        ob_start();
-        $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
-
-        self::assertSame(ExitCode::ERROR, $outputFromRun->getExitCode());
-        self::assertStringContainsString('Command name is required', $obOutput);
-    }
-
     public function testRunWithNonExistentCommandName(): void
     {
         $commandName = 'foo';

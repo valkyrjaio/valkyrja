@@ -51,23 +51,33 @@ interface RouteContract
     public function withDescription(string $description): static;
 
     /**
+     * Determine whether there is help text.
+     */
+    public function hasHelpText(): bool;
+
+    /**
      * Get the help text.
      *
-     * @return (callable():MessageContract)|null
+     * @return (callable():MessageContract)
      */
-    public function getHelpText(): callable|null;
+    public function getHelpText(): callable;
 
     /**
      * Get the help text message.
      */
-    public function getHelpTextMessage(): MessageContract|null;
+    public function getHelpTextMessage(): MessageContract;
 
     /**
      * Create a new route with the specified help text.
      *
-     * @param (callable():MessageContract)|null $helpText The help text
+     * @param (callable():MessageContract) $helpText The help text
      */
-    public function withHelpText(callable|null $helpText = null): static;
+    public function withHelpText(callable $helpText): static;
+
+    /**
+     * Create a new route without help text.
+     */
+    public function withoutHelpText(): static;
 
     /**
      * Determine if the route has arguments.
@@ -82,11 +92,18 @@ interface RouteContract
     public function getArguments(): array;
 
     /**
-     * Get an argument.
+     * Determine if an argument exists by name.
      *
      * @param string $name The name
      */
-    public function getArgument(string $name): ArgumentParameterContract|null;
+    public function hasArgument(string $name): bool;
+
+    /**
+     * Get an argument by name.
+     *
+     * @param string $name The name
+     */
+    public function getArgument(string $name): ArgumentParameterContract;
 
     /**
      * Create a new route with the specified argument parameters.
@@ -115,11 +132,16 @@ interface RouteContract
     public function getOptions(): array;
 
     /**
+     * Determine if an option parameter exists by name.
+     */
+    public function hasOption(string $name): bool;
+
+    /**
      * Get an option parameter by name.
      *
      * @param string $name The option name
      */
-    public function getOption(string $name): OptionParameterContract|null;
+    public function getOption(string $name): OptionParameterContract;
 
     /**
      * Create a new route with the specified option parameters.

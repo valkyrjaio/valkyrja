@@ -42,8 +42,6 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
-use function is_string;
-
 class HelpCommand
 {
     protected RouteContract $helpRoute;
@@ -79,16 +77,7 @@ class HelpCommand
     )]
     public function run(): OutputContract
     {
-        $commandName = $this->route->getOption('command')?->getFirstValue();
-
-        if (! is_string($commandName)) {
-            return $this->outputFactory
-                ->createOutput()
-                ->withExitCode(ExitCode::ERROR)
-                ->withAddedMessages(
-                    new Banner(new ErrorMessage('Command name is required.'))
-                );
-        }
+        $commandName = $this->route->getOption('command')->getFirstValue();
 
         if (! $this->collection->has($commandName)) {
             return $this->outputFactory
@@ -131,9 +120,9 @@ class HelpCommand
                 ...$optionMessages,
             );
 
-        $helpText = $route->getHelpTextMessage();
+        if ($route->hasHelpText()) {
+            $helpText = $route->getHelpTextMessage();
 
-        if ($helpText !== null) {
             return $output->withAddedMessages(
                 $this->getHelpTextMessages($helpText),
                 new NewLine(),
@@ -331,9 +320,9 @@ class HelpCommand
      */
     protected function addValueDisplayNameOptionMessages(array &$messages, OptionParameterContract $option): void
     {
-        $valueDisplayName = $option->getValueDisplayName();
+        if ($option->hasValueDisplayName()) {
+            $valueDisplayName = $option->getValueDisplayName();
 
-        if ($valueDisplayName !== null) {
             $messages[] = new Message(' ');
 
             $text = '';

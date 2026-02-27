@@ -18,6 +18,8 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -45,16 +47,16 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getOptions());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
     }
 
@@ -117,30 +119,30 @@ final class OptionParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name2, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -159,30 +161,30 @@ final class OptionParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description2, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -201,30 +203,30 @@ final class OptionParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
         self::assertSame($cast, $parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -251,72 +253,72 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertSame(['s'], $parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
-        self::assertNull($parameter3->getValueDisplayName());
-        self::assertNull($parameter3->getDefaultValue());
+        self::assertFalse($parameter3->hasCast());
+        self::assertFalse($parameter3->hasValueDisplayName());
+        self::assertFalse($parameter3->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertEmpty($parameter3->getValidValues());
         self::assertSame(['ss'], $parameter3->getShortNames());
         self::assertEmpty($parameter3->getOptions());
         self::assertEmpty($parameter3->getCastValues());
-        self::assertNull($parameter3->getFirstValue());
+        self::assertFalse($parameter3->hasFirstValue());
         self::assertTrue($parameter3->areValuesValid());
 
         self::assertSame($name, $parameter4->getName());
         self::assertSame($description, $parameter4->getDescription());
-        self::assertNull($parameter4->getCast());
-        self::assertNull($parameter4->getValueDisplayName());
-        self::assertNull($parameter4->getDefaultValue());
+        self::assertFalse($parameter4->hasCast());
+        self::assertFalse($parameter4->hasValueDisplayName());
+        self::assertFalse($parameter4->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
         self::assertEmpty($parameter4->getValidValues());
         self::assertSame(['s', 'ss'], $parameter4->getShortNames());
         self::assertEmpty($parameter4->getOptions());
         self::assertEmpty($parameter4->getCastValues());
-        self::assertNull($parameter4->getFirstValue());
+        self::assertFalse($parameter4->hasFirstValue());
         self::assertTrue($parameter4->areValuesValid());
 
         self::assertSame($name, $parameter5->getName());
         self::assertSame($description, $parameter5->getDescription());
-        self::assertNull($parameter5->getCast());
-        self::assertNull($parameter5->getValueDisplayName());
-        self::assertNull($parameter5->getDefaultValue());
+        self::assertFalse($parameter5->hasCast());
+        self::assertFalse($parameter5->hasValueDisplayName());
+        self::assertFalse($parameter5->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
         self::assertEmpty($parameter5->getValidValues());
         self::assertSame(['ss'], $parameter5->getShortNames());
         self::assertEmpty($parameter5->getOptions());
         self::assertEmpty($parameter5->getCastValues());
-        self::assertNull($parameter5->getFirstValue());
+        self::assertFalse($parameter5->hasFirstValue());
         self::assertTrue($parameter5->areValuesValid());
     }
 
@@ -335,30 +337,30 @@ final class OptionParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::REQUIRED, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertFalse($parameter2->areValuesValid());
     }
 
@@ -377,30 +379,30 @@ final class OptionParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::ARRAY, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -415,51 +417,51 @@ final class OptionParameterTest extends TestCase
             description: $description
         );
         $parameter2 = $parameter->withValueDisplayName($valueDisplayName);
-        $parameter3 = $parameter2->withValueDisplayName(null);
+        $parameter3 = $parameter2->withoutValueDisplayName();
 
         self::assertNotSame($parameter, $parameter2);
         self::assertNotSame($parameter2, $parameter3);
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame($valueDisplayName, $parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
-        self::assertNull($parameter3->getValueDisplayName());
-        self::assertNull($parameter3->getDefaultValue());
+        self::assertFalse($parameter3->hasCast());
+        self::assertFalse($parameter3->hasValueDisplayName());
+        self::assertFalse($parameter3->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertEmpty($parameter3->getValidValues());
         self::assertEmpty($parameter3->getShortNames());
         self::assertEmpty($parameter3->getOptions());
         self::assertEmpty($parameter3->getCastValues());
-        self::assertNull($parameter3->getFirstValue());
+        self::assertFalse($parameter3->hasFirstValue());
         self::assertTrue($parameter3->areValuesValid());
     }
 
@@ -474,29 +476,29 @@ final class OptionParameterTest extends TestCase
             description: $description
         );
         $parameter2 = $parameter->withDefaultValue($defaultValue);
-        $parameter3 = $parameter2->withDefaultValue(null);
+        $parameter3 = $parameter2->withoutDefaultValue();
 
         self::assertNotSame($parameter, $parameter2);
         self::assertNotSame($parameter2, $parameter3);
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
         self::assertSame($defaultValue, $parameter2->getDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
@@ -504,21 +506,21 @@ final class OptionParameterTest extends TestCase
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
-        self::assertNull($parameter3->getValueDisplayName());
-        self::assertNull($parameter3->getDefaultValue());
+        self::assertFalse($parameter3->hasCast());
+        self::assertFalse($parameter3->hasValueDisplayName());
+        self::assertFalse($parameter3->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertEmpty($parameter3->getValidValues());
         self::assertEmpty($parameter3->getShortNames());
         self::assertEmpty($parameter3->getOptions());
         self::assertEmpty($parameter3->getCastValues());
-        self::assertNull($parameter3->getFirstValue());
+        self::assertFalse($parameter3->hasFirstValue());
         self::assertTrue($parameter3->areValuesValid());
     }
 
@@ -544,72 +546,72 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertSame([$validValue], $parameter2->getValidValues());
         self::assertEmpty($parameter2->getShortNames());
         self::assertEmpty($parameter2->getOptions());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
-        self::assertNull($parameter3->getValueDisplayName());
-        self::assertNull($parameter3->getDefaultValue());
+        self::assertFalse($parameter3->hasCast());
+        self::assertFalse($parameter3->hasValueDisplayName());
+        self::assertFalse($parameter3->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertSame([$validValue, $validValue2], $parameter3->getValidValues());
         self::assertEmpty($parameter3->getShortNames());
         self::assertEmpty($parameter3->getOptions());
         self::assertEmpty($parameter3->getCastValues());
-        self::assertNull($parameter3->getFirstValue());
+        self::assertFalse($parameter3->hasFirstValue());
         self::assertTrue($parameter3->areValuesValid());
 
         self::assertSame($name, $parameter4->getName());
         self::assertSame($description, $parameter4->getDescription());
-        self::assertNull($parameter4->getCast());
-        self::assertNull($parameter4->getValueDisplayName());
-        self::assertNull($parameter4->getDefaultValue());
+        self::assertFalse($parameter4->hasCast());
+        self::assertFalse($parameter4->hasValueDisplayName());
+        self::assertFalse($parameter4->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
         self::assertSame([$validValue2], $parameter4->getValidValues());
         self::assertEmpty($parameter4->getShortNames());
         self::assertEmpty($parameter4->getOptions());
         self::assertEmpty($parameter4->getCastValues());
-        self::assertNull($parameter4->getFirstValue());
+        self::assertFalse($parameter4->hasFirstValue());
         self::assertTrue($parameter4->areValuesValid());
 
         self::assertSame($name, $parameter5->getName());
         self::assertSame($description, $parameter5->getDescription());
-        self::assertNull($parameter5->getCast());
-        self::assertNull($parameter5->getValueDisplayName());
-        self::assertNull($parameter5->getDefaultValue());
+        self::assertFalse($parameter5->hasCast());
+        self::assertFalse($parameter5->hasValueDisplayName());
+        self::assertFalse($parameter5->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
         self::assertSame([$validValue3], $parameter5->getValidValues());
         self::assertEmpty($parameter5->getShortNames());
         self::assertEmpty($parameter5->getOptions());
         self::assertEmpty($parameter5->getCastValues());
-        self::assertNull($parameter5->getFirstValue());
+        self::assertFalse($parameter5->hasFirstValue());
         self::assertTrue($parameter5->areValuesValid());
     }
 
@@ -635,23 +637,23 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
-        self::assertNull($parameter->getValueDisplayName());
-        self::assertNull($parameter->getDefaultValue());
+        self::assertFalse($parameter->hasCast());
+        self::assertFalse($parameter->hasValueDisplayName());
+        self::assertFalse($parameter->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getValidValues());
         self::assertEmpty($parameter->getShortNames());
         self::assertEmpty($parameter->getOptions());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
-        self::assertNull($parameter2->getValueDisplayName());
-        self::assertNull($parameter2->getDefaultValue());
+        self::assertFalse($parameter2->hasCast());
+        self::assertFalse($parameter2->hasValueDisplayName());
+        self::assertFalse($parameter2->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getValidValues());
@@ -663,9 +665,9 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
-        self::assertNull($parameter3->getValueDisplayName());
-        self::assertNull($parameter3->getDefaultValue());
+        self::assertFalse($parameter3->hasCast());
+        self::assertFalse($parameter3->hasValueDisplayName());
+        self::assertFalse($parameter3->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertEmpty($parameter3->getValidValues());
@@ -677,9 +679,9 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter4->getName());
         self::assertSame($description, $parameter4->getDescription());
-        self::assertNull($parameter4->getCast());
-        self::assertNull($parameter4->getValueDisplayName());
-        self::assertNull($parameter4->getDefaultValue());
+        self::assertFalse($parameter4->hasCast());
+        self::assertFalse($parameter4->hasValueDisplayName());
+        self::assertFalse($parameter4->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter4->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter4->getValueMode());
         self::assertEmpty($parameter4->getValidValues());
@@ -691,9 +693,9 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($name, $parameter5->getName());
         self::assertSame($description, $parameter5->getDescription());
-        self::assertNull($parameter5->getCast());
-        self::assertNull($parameter5->getValueDisplayName());
-        self::assertNull($parameter5->getDefaultValue());
+        self::assertFalse($parameter5->hasCast());
+        self::assertFalse($parameter5->hasValueDisplayName());
+        self::assertFalse($parameter5->hasDefaultValue());
         self::assertSame(OptionMode::OPTIONAL, $parameter5->getMode());
         self::assertSame(OptionValueMode::DEFAULT, $parameter5->getValueMode());
         self::assertEmpty($parameter5->getValidValues());
@@ -702,6 +704,22 @@ final class OptionParameterTest extends TestCase
         self::assertSame(['value3'], $parameter5->getCastValues());
         self::assertSame('value3', $parameter5->getFirstValue());
         self::assertTrue($parameter5->areValuesValid());
+    }
+
+    public function testGetFirstValueThrowsWhenNoArguments(): void
+    {
+        $this->expectException(NoFirstValueException::class);
+        $this->expectExceptionMessage('No first value exists');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+
+        $parameter->getFirstValue();
     }
 
     public function testInvalidOptionsWithValues(): void
@@ -794,7 +812,7 @@ final class OptionParameterTest extends TestCase
         $parameter2 = $parameter->withOptions($option, $option2);
         $parameter3 = $parameter2->withCast($cast2);
         $parameter4 = $parameter2
-            ->withCast(null)
+            ->withoutCast()
             ->withOptions($option3);
 
         self::assertEmpty($parameter->getCastValues());
@@ -808,6 +826,22 @@ final class OptionParameterTest extends TestCase
         self::assertSame(1, $value1->asValue());
         self::assertInstanceOf(IntT::class, $value2 = $parameter3->getCastValues()[1]);
         self::assertSame(2, $value2->asValue());
+    }
+
+    public function testGetCastThrowsWhenNoCastSet(): void
+    {
+        $this->expectException(NoCastException::class);
+        $this->expectExceptionMessage('No cast exists');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter  = new OptionParameter(
+            name: $name,
+            description: $description,
+        );
+
+        $parameter->getCast();
     }
 
     public function testAreValuesValid(): void

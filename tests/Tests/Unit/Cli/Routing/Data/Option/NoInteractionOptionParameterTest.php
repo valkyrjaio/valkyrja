@@ -28,9 +28,9 @@ final class NoInteractionOptionParameterTest extends TestCase
         self::assertSame('No interactive questions are asked.', $option->getDescription());
         self::assertSame(['N'], $option->getShortNames());
         self::assertSame(OptionValueMode::NONE, $option->getValueMode());
-        self::assertNull($option->getValueDisplayName());
-        self::assertNull($option->getDefaultValue());
-        self::assertNull($option->getCast());
+        self::assertFalse($option->hasValueDisplayName());
+        self::assertFalse($option->hasDefaultValue());
+        self::assertFalse($option->hasCast());
         self::assertEmpty($option->getValidValues());
         self::assertSame(OptionMode::OPTIONAL, $option->getMode());
     }

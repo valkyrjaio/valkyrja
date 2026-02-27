@@ -19,6 +19,9 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
@@ -51,11 +54,10 @@ final class RouteTest extends TestCase
 
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
-        self::assertNull($route->getHelpText());
-        self::assertNull($route->getHelpTextMessage());
+        self::assertFalse($route->hasHelpText());
         self::assertSame($dispatch, $route->getDispatch());
         self::assertFalse($route->hasArguments());
-        self::assertNull($route->getArgument('test'));
+        self::assertFalse($route->hasArgument('test'));
         self::assertEmpty($route->getArguments());
         self::assertFalse($route->hasOptions());
         self::assertEmpty($route->getOptions());
@@ -217,6 +219,7 @@ final class RouteTest extends TestCase
             helpText: $helpText
         );
         $route2 = $route->withHelpText($helpText2);
+        $route3 = $route->withoutHelpText();
 
         self::assertNotSame($route, $route2);
 
@@ -247,6 +250,55 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
         self::assertEmpty($route2->getExitedMiddleware());
+
+        self::assertSame($name, $route3->getName());
+        self::assertSame($description, $route3->getDescription());
+        self::assertFalse($route3->hasHelpText());
+        self::assertSame($dispatch, $route3->getDispatch());
+        self::assertFalse($route3->hasArguments());
+        self::assertEmpty($route3->getArguments());
+        self::assertFalse($route3->hasOptions());
+        self::assertEmpty($route3->getOptions());
+        self::assertEmpty($route3->getRouteMatchedMiddleware());
+        self::assertEmpty($route3->getRouteDispatchedMiddleware());
+        self::assertEmpty($route3->getThrowableCaughtMiddleware());
+        self::assertEmpty($route3->getExitedMiddleware());
+    }
+
+    public function testHelpTextThrowsWhenNotExists(): void
+    {
+        $this->expectException(NoHelpTextException::class);
+        $this->expectExceptionMessage('No help text has been set for this route');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $dispatch    = new MethodDispatch(class: self::class, method: '__construct');
+
+        $route = new Route(
+            name: $name,
+            description: $description,
+            dispatch: $dispatch
+        );
+
+        $route->getHelpText();
+    }
+
+    public function testHelpTextMessageThrowsWhenNotExists(): void
+    {
+        $this->expectException(NoHelpTextException::class);
+        $this->expectExceptionMessage('No help text has been set for this route');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $dispatch    = new MethodDispatch(class: self::class, method: '__construct');
+
+        $route = new Route(
+            name: $name,
+            description: $description,
+            dispatch: $dispatch
+        );
+
+        $route->getHelpText();
     }
 
     public function testDispatch(): void
@@ -332,6 +384,7 @@ final class RouteTest extends TestCase
         self::assertSame($dispatch, $route->getDispatch());
         self::assertTrue($route->hasArguments());
         self::assertSame([$argument], $route->getArguments());
+        self::assertTrue($route->hasArgument('name'));
         self::assertSame($argument, $route->getArgument('name'));
         self::assertFalse($route->hasOptions());
         self::assertEmpty($route->getOptions());
@@ -347,6 +400,7 @@ final class RouteTest extends TestCase
         self::assertSame($dispatch, $route2->getDispatch());
         self::assertTrue($route2->hasArguments());
         self::assertSame([$argument2], $route2->getArguments());
+        self::assertTrue($route2->hasArgument('name2'));
         self::assertSame($argument2, $route2->getArgument('name2'));
         self::assertFalse($route2->hasOptions());
         self::assertEmpty($route2->getOptions());
@@ -362,6 +416,8 @@ final class RouteTest extends TestCase
         self::assertSame($dispatch, $route3->getDispatch());
         self::assertTrue($route3->hasArguments());
         self::assertSame([$argument, $argument2], $route3->getArguments());
+        self::assertTrue($route3->hasArgument('name'));
+        self::assertTrue($route3->hasArgument('name2'));
         self::assertSame($argument, $route3->getArgument('name'));
         self::assertSame($argument2, $route3->getArgument('name2'));
         self::assertFalse($route3->hasOptions());
@@ -378,6 +434,7 @@ final class RouteTest extends TestCase
         self::assertSame($dispatch, $route4->getDispatch());
         self::assertTrue($route4->hasArguments());
         self::assertSame([$argument3], $route4->getArguments());
+        self::assertTrue($route4->hasArgument('name3'));
         self::assertSame($argument3, $route4->getArgument('name3'));
         self::assertFalse($route4->hasOptions());
         self::assertEmpty($route4->getOptions());
@@ -385,6 +442,24 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
         self::assertEmpty($route4->getExitedMiddleware());
+    }
+
+    public function testGetArgumentThrowsWhenNonExistent(): void
+    {
+        $this->expectException(InvalidArgumentNameException::class);
+        $this->expectExceptionMessage('The argument `name` was not found');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $dispatch    = new MethodDispatch(class: self::class, method: '__construct');
+
+        $route = new Route(
+            name: $name,
+            description: $description,
+            dispatch: $dispatch,
+        );
+
+        $route->getArgument('name');
     }
 
     public function testOptions(): void
@@ -425,6 +500,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getArguments());
         self::assertTrue($route->hasOptions());
         self::assertSame([$option], $route->getOptions());
+        self::assertTrue($route->hasOption('name'));
         self::assertSame($option, $route->getOption('name'));
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
@@ -440,6 +516,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getArguments());
         self::assertTrue($route2->hasOptions());
         self::assertSame([$option2], $route2->getOptions());
+        self::assertTrue($route2->hasOption('name2'));
         self::assertSame($option2, $route2->getOption('name2'));
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
@@ -455,6 +532,8 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getArguments());
         self::assertTrue($route3->hasOptions());
         self::assertSame([$option, $option2], $route3->getOptions());
+        self::assertTrue($route3->hasOption('name'));
+        self::assertTrue($route3->hasOption('name2'));
         self::assertSame($option, $route3->getOption('name'));
         self::assertSame($option2, $route3->getOption('name2'));
         self::assertEmpty($route3->getRouteMatchedMiddleware());
@@ -471,11 +550,30 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getArguments());
         self::assertTrue($route4->hasOptions());
         self::assertSame([$option3], $route4->getOptions());
+        self::assertTrue($route4->hasOption('name3'));
         self::assertSame($option3, $route4->getOption('name3'));
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
         self::assertEmpty($route4->getExitedMiddleware());
+    }
+
+    public function testGetOptionThrowsWhenNonExistent(): void
+    {
+        $this->expectException(InvalidOptionNameException::class);
+        $this->expectExceptionMessage('The option `name` was not found');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $dispatch    = new MethodDispatch(class: self::class, method: '__construct');
+
+        $route = new Route(
+            name: $name,
+            description: $description,
+            dispatch: $dispatch,
+        );
+
+        $route->getOption('name');
     }
 
     public function testRouteMatchedMiddleware(): void

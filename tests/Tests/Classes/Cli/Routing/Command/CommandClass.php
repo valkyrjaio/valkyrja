@@ -18,7 +18,9 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
 /**
@@ -45,6 +47,13 @@ final class CommandClass
         name: self::NAME,
         description: self::DESCRIPTION,
         helpText: [self::class, 'help'],
+        arguments: [
+            new ArgumentParameter(
+                name: 'argument',
+                description: 'The argument',
+                mode: ArgumentMode::REQUIRED
+            ),
+        ],
         options: [
             new OptionParameter(
                 name: 'command',
