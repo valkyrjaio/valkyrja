@@ -23,6 +23,9 @@ use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 use function is_array;
@@ -59,7 +62,9 @@ class Route implements RouteContract
         protected array $arguments = [],
         protected array $options = [],
     ) {
-        $this->setHelpText($helpText);
+        $this->validateHelpText($helpText);
+
+        $this->helpText = $helpText;
     }
 
     /**
@@ -110,22 +115,28 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getHelpText(): callable|null
+    public function hasHelpText(): bool
     {
-        return $this->helpText;
+        return $this->helpText !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getHelpTextMessage(): MessageContract|null
+    public function getHelpText(): callable
     {
-        $helpText = $this->helpText;
+        return $this->helpText
+            ?? throw new NoHelpTextException('No help text has been set for this route');
+    }
 
-        if ($helpText === null) {
-            return null;
-        }
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getHelpTextMessage(): MessageContract
+    {
+        $helpText = $this->getHelpText();
 
         return $helpText();
     }
@@ -134,11 +145,26 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withHelpText(callable|null $helpText = null): static
+    public function withHelpText(callable $helpText): static
     {
         $new = clone $this;
 
-        $new->setHelpText($helpText);
+        $new->validateHelpText($helpText);
+
+        $new->helpText = $helpText;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutHelpText(): static
+    {
+        $new = clone $this;
+
+        $new->helpText = null;
 
         return $new;
     }
@@ -165,11 +191,21 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getArgument(string $name): ArgumentParameterContract|null
+    public function hasArgument(string $name): bool
     {
-        $arguments = array_filter($this->arguments, static fn (ArgumentParameterContract $argument) => $argument->getName() === $name);
+        return $this->filterArgumentByName($name) !== [];
+    }
 
-        return reset($arguments) ?: null;
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getArgument(string $name): ArgumentParameterContract
+    {
+        $arguments = $this->filterArgumentByName($name);
+
+        return reset($arguments)
+            ?: throw new InvalidArgumentNameException("The argument `$name` was not found");
     }
 
     /**
@@ -223,11 +259,21 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getOption(string $name): OptionParameterContract|null
+    public function hasOption(string $name): bool
     {
-        $options = array_filter($this->options, static fn (OptionParameterContract $option) => $option->getName() === $name);
+        return $this->filterOptionByName($name) !== [];
+    }
 
-        return reset($options) ?: null;
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getOption(string $name): OptionParameterContract
+    {
+        $options = $this->filterOptionByName($name);
+
+        return reset($options)
+            ?: throw new InvalidOptionNameException("The option `$name` was not found");
     }
 
     /**
@@ -446,16 +492,44 @@ class Route implements RouteContract
     }
 
     /**
-     * Set the help text.
+     * Validate help text.
      *
      * @param (callable():MessageContract)|null $helpText The help text
      */
-    protected function setHelpText(callable|null $helpText = null): void
+    protected function validateHelpText(callable|null $helpText = null): void
     {
         if ($helpText !== null && ! is_array($helpText)) {
             throw new InvalidArgumentException('Help text must be a callable array');
         }
+    }
 
-        $this->helpText = $helpText;
+    /**
+     * Filter the arguments by a given name.
+     *
+     * @param string $name The name
+     *
+     * @return ArgumentParameterContract[]
+     */
+    protected function filterArgumentByName(string $name): array
+    {
+        return array_filter(
+            $this->arguments,
+            static fn (ArgumentParameterContract $argument) => $argument->getName() === $name
+        );
+    }
+
+    /**
+     * Filter the options by a given name.
+     *
+     * @param string $name The name
+     *
+     * @return OptionParameterContract[]
+     */
+    protected function filterOptionByName(string $name): array
+    {
+        return array_filter(
+            $this->options,
+            static fn (OptionParameterContract $option) => $option->getName() === $name
+        );
     }
 }

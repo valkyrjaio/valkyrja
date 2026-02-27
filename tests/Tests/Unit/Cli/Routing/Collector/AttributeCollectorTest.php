@@ -33,6 +33,7 @@ use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllAttributesClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Type\Enum\CastType;
 
 /**
  * Test the AttributeCollector class.
@@ -71,7 +72,11 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
         self::assertSame(CommandClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
         self::assertNotEmpty($command->getOptions());
-        self::assertInstanceOf(OptionParameter::class, $command->getOptions()[0]);
+        self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
+        self::assertFalse($option->hasCast());
+        self::assertNotEmpty($command->getArguments());
+        self::assertInstanceOf(ArgumentParameter::class, $argument = $command->getArguments()[0]);
+        self::assertFalse($argument->hasCast());
     }
 
     /**
@@ -97,6 +102,7 @@ final class AttributeCollectorTest extends TestCase
         self::assertNotEmpty($command->getArguments());
         self::assertSame('optionName', $option->getName());
         self::assertSame('The option for the command', $option->getDescription());
+        self::assertSame(CastType::string->value, $option->getCast()->type);
         self::assertSame('name', $option->getValueDisplayName());
         self::assertSame('foo', $option->getDefaultValue());
         self::assertSame(['o'], $option->getShortNames());
@@ -108,6 +114,7 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame('The argument for the command', $argument->getDescription());
         self::assertSame(ArgumentMode::REQUIRED, $argument->getMode());
         self::assertSame(ArgumentValueMode::ARRAY, $argument->getValueMode());
+        self::assertSame(CastType::string->value, $argument->getCast()->type);
         self::assertSame([RouteDispatchedMiddlewareClass::class], $command->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareClass::class], $command->getRouteMatchedMiddleware());
         self::assertSame([ThrowableCaughtMiddlewareClass::class], $command->getThrowableCaughtMiddleware());

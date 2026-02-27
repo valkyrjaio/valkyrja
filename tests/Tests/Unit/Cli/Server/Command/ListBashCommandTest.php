@@ -36,8 +36,10 @@ final class ListBashCommandTest extends TestCase
             ->willReturn([]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-            ->method('getArgument')
-            ->willReturn(null);
+            ->method('hasArgument')
+            ->willReturn(false);
+        $route->expects($this->never())
+            ->method('getArgument');
 
         $command = new ListBashCommand(
             route: $route,
@@ -75,8 +77,10 @@ final class ListBashCommandTest extends TestCase
             ->willReturn([$listRoute, $listRoute2]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-            ->method('getArgument')
-            ->willReturn(null);
+            ->method('hasArgument')
+            ->willReturn(false);
+        $route->expects($this->never())
+            ->method('getArgument');
 
         $command = new ListBashCommand(
             route: $route,
@@ -125,6 +129,9 @@ final class ListBashCommandTest extends TestCase
             ->method('getFirstValue')
             ->willReturn($namespace);
         $route = $this->createMock(Route::class);
+        $route->expects($this->once())
+            ->method('hasArgument')
+            ->willReturn(true);
         $route->expects($this->once())
             ->method('getArgument')
             ->willReturn($argument);
@@ -176,6 +183,9 @@ final class ListBashCommandTest extends TestCase
             ->method('getFirstValue')
             ->willReturn($namespace);
         $route = $this->createMock(Route::class);
+        $route->expects($this->once())
+            ->method('hasArgument')
+            ->willReturn(true);
         $route->expects($this->once())
             ->method('getArgument')
             ->willReturn($argument);

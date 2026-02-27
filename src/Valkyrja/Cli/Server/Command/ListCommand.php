@@ -31,8 +31,6 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
-use function is_string;
-
 class ListCommand
 {
     public function __construct(
@@ -64,11 +62,12 @@ class ListCommand
     )]
     public function run(): OutputContract
     {
-        $namespace    = $this->route->getOption('namespace')?->getFirstValue();
-        $routes       = $this->collection->all();
+        $namespace = '';
+        $routes    = $this->collection->all();
 
-        if (is_string($namespace)) {
-            $routes = $this->filterRoutesByNamespace($routes, $namespace);
+        if ($this->route->hasOption('namespace')) {
+            $namespace = $this->route->getOption('namespace')->getFirstValue();
+            $routes    = $this->filterRoutesByNamespace($routes, $namespace);
         }
 
         if ($routes === []) {
@@ -85,11 +84,11 @@ class ListCommand
         return $output->withAddedMessages(new NewLine());
     }
 
-    protected function getNoRoutesErrorOutput(string|null $namespace = null): OutputContract
+    protected function getNoRoutesErrorOutput(string $namespace): OutputContract
     {
         $errorMessage = 'No routes found.';
 
-        if (is_string($namespace)) {
+        if ($namespace !== '') {
             $errorMessage = "Namespace `$namespace` was not found.";
         }
 
@@ -126,10 +125,8 @@ class ListCommand
     /**
      * Add the header to the output.
      */
-    protected function addHeaderMessages(OutputContract $output, string|null $namespace = null): OutputContract
+    protected function addHeaderMessages(OutputContract $output, string $namespace): OutputContract
     {
-        $namespace ??= '';
-
         return $output->withAddedMessages(
             new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
             new NewLine()

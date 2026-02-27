@@ -23,8 +23,6 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
-use function is_string;
-
 class ListBashCommand
 {
     public function __construct(
@@ -62,12 +60,12 @@ class ListBashCommand
         $output = $this->outputFactory
             ->createOutput();
 
-        $namespace = $this->route->getArgument('namespace')?->getFirstValue();
         $routes    = $this->collection->all();
         $colonAt   = false;
 
-        if (is_string($namespace)) {
-            $colonAt = strpos($namespace, ':');
+        if ($this->route->hasArgument('namespace')) {
+            $namespace = $this->route->getArgument('namespace')->getFirstValue();
+            $colonAt   = strpos($namespace, ':');
 
             $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
         }

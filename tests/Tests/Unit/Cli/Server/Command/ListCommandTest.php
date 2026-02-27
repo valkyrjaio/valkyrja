@@ -44,8 +44,10 @@ final class ListCommandTest extends TestCase
             ->willReturn([]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-            ->method('getOption')
-            ->willReturn(null);
+            ->method('hasOption')
+            ->willReturn(false);
+        $route->expects($this->never())
+            ->method('getOption');
 
         $command = new ListCommand(
             version: $versionCommand,
@@ -82,6 +84,9 @@ final class ListCommandTest extends TestCase
             ->method('getFirstValue')
             ->willReturn('non-existent namespace');
         $route = $this->createMock(Route::class);
+        $route->expects($this->once())
+            ->method('hasOption')
+            ->willReturn(true);
         $route->expects($this->once())
             ->method('getOption')
             ->willReturn($option);
@@ -139,8 +144,10 @@ final class ListCommandTest extends TestCase
             ->willReturn([$listRoute, $listRoute2]);
         $route = $this->createMock(Route::class);
         $route->expects($this->once())
-            ->method('getOption')
-            ->willReturn(null);
+            ->method('hasOption')
+            ->willReturn(false);
+        $route->expects($this->never())
+            ->method('getOption');
 
         $command = new ListCommand(
             version: $versionCommand,
@@ -213,6 +220,9 @@ final class ListCommandTest extends TestCase
             ->method('getFirstValue')
             ->willReturn($namespace);
         $route = $this->createMock(Route::class);
+        $route->expects($this->once())
+            ->method('hasOption')
+            ->willReturn(true);
         $route->expects($this->once())
             ->method('getOption')
             ->willReturn($option);

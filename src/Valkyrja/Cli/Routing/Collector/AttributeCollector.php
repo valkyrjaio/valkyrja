@@ -270,7 +270,9 @@ class AttributeCollector implements CollectorContract
             name: $route->getName(),
             description: $route->getDescription(),
             dispatch: $route->getDispatch(),
-            helpText: $route->getHelpText(),
+            helpText: $route->hasHelpText()
+                ? $route->getHelpText()
+                : null,
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
@@ -285,7 +287,9 @@ class AttributeCollector implements CollectorContract
         return new ArgumentParameter(
             name: $parameter->getName(),
             description: $parameter->getDescription(),
-            cast: $parameter->getCast(),
+            cast: $parameter->hasCast()
+                ? $parameter->getCast()
+                : null,
             mode: $parameter->getMode(),
             valueMode: $parameter->getValueMode(),
         );
@@ -296,9 +300,15 @@ class AttributeCollector implements CollectorContract
         return new OptionParameter(
             name: $parameter->getName(),
             description: $parameter->getDescription(),
-            valueDisplayName: $parameter->getValueDisplayName(),
-            cast: $parameter->getCast(),
-            defaultValue: $parameter->getDefaultValue(),
+            valueDisplayName: $parameter->hasValueDisplayName()
+                ? $parameter->getValueDisplayName()
+                : null,
+            cast: $parameter->hasCast()
+                ? $parameter->getCast()
+                : null,
+            defaultValue: $parameter->hasDefaultValue()
+                ? $parameter->getDefaultValue()
+                : null,
             shortNames: $parameter->getShortNames(),
             validValues: $parameter->getValidValues(),
             options: $parameter->getOptions(),

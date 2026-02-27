@@ -20,6 +20,9 @@ use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoDefaultValueException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoValueDisplayNameException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -142,20 +145,43 @@ class OptionParameter extends Parameter implements OptionParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function getValueDisplayName(): string|null
+    public function hasValueDisplayName(): bool
     {
-        return $this->valueDisplayName;
+        return $this->valueDisplayName !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withValueDisplayName(string|null $valueName): static
+    public function getValueDisplayName(): string
+    {
+        return $this->valueDisplayName
+            ?? throw new NoValueDisplayNameException('No value display name exists');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withValueDisplayName(string $valueName): static
     {
         $new = clone $this;
 
         $new->valueDisplayName = $valueName;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutValueDisplayName(): static
+    {
+        $new = clone $this;
+
+        $new->valueDisplayName = null;
 
         return $new;
     }
@@ -203,20 +229,43 @@ class OptionParameter extends Parameter implements OptionParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultValue(): string|null
+    public function hasDefaultValue(): bool
     {
-        return $this->defaultValue;
+        return $this->defaultValue !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withDefaultValue(string|null $defaultValue = null): static
+    public function getDefaultValue(): string
+    {
+        return $this->defaultValue
+            ?? throw new NoDefaultValueException('No default value exists');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withDefaultValue(string $defaultValue): static
     {
         $new = clone $this;
 
         $new->defaultValue = $defaultValue;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutDefaultValue(): static
+    {
+        $new = clone $this;
+
+        $new->defaultValue = null;
 
         return $new;
     }
@@ -309,11 +358,24 @@ class OptionParameter extends Parameter implements OptionParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function getFirstValue(): string|null
+    public function hasFirstValue(): bool
+    {
+        return isset($this->options[0]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getFirstValue(): string
     {
         $firstItem = $this->options[0] ?? null;
 
-        return $firstItem?->getValue();
+        if ($firstItem === null || ! $firstItem->hasValue()) {
+            throw new NoFirstValueException('No first value exists');
+        }
+
+        return $firstItem->getValue();
     }
 
     /**

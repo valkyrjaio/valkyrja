@@ -30,6 +30,8 @@ use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Enum\CastType;
 
 /**
  * Command class to test commands.
@@ -62,6 +64,7 @@ final class CommandWithAllAttributesClass
         name: 'optionName',
         description: 'The option for the command',
         valueDisplayName: 'name',
+        cast: new Cast(CastType::string),
         defaultValue: 'foo',
         shortNames: ['o'],
         validValues: ['foo', 'bar'],
@@ -71,6 +74,7 @@ final class CommandWithAllAttributesClass
     #[ArgumentParameter(
         name: 'argumentName',
         description: 'The argument for the command',
+        cast: new Cast(CastType::string),
         mode: ArgumentMode::REQUIRED,
         valueMode: ArgumentValueMode::ARRAY,
     )]

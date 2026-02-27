@@ -20,6 +20,7 @@ use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -162,11 +163,24 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function getFirstValue(): string|null
+    public function hasFirstValue(): bool
+    {
+        return isset($this->arguments[0]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getFirstValue(): string
     {
         $firstItem = $this->arguments[0] ?? null;
 
-        return $firstItem?->getValue();
+        if ($firstItem === null) {
+            throw new NoFirstValueException('No first value exists');
+        }
+
+        return $firstItem->getValue();
     }
 
     /**

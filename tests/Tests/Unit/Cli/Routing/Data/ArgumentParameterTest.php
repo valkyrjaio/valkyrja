@@ -18,6 +18,8 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -45,12 +47,12 @@ final class ArgumentParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
     }
 
@@ -98,22 +100,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name2, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getArguments());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -132,22 +134,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description2, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getArguments());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -166,12 +168,12 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
@@ -181,7 +183,7 @@ final class ArgumentParameterTest extends TestCase
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getArguments());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -200,22 +202,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame(ArgumentMode::REQUIRED, $parameter2->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getArguments());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertFalse($parameter2->areValuesValid());
     }
 
@@ -234,22 +236,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(ArgumentValueMode::ARRAY, $parameter2->getValueMode());
         self::assertEmpty($parameter2->getArguments());
         self::assertEmpty($parameter2->getCastValues());
-        self::assertNull($parameter2->getFirstValue());
+        self::assertFalse($parameter2->hasFirstValue());
         self::assertTrue($parameter2->areValuesValid());
     }
 
@@ -271,17 +273,17 @@ final class ArgumentParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($name, $parameter->getName());
         self::assertSame($description, $parameter->getDescription());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter->getValueMode());
         self::assertEmpty($parameter->getArguments());
         self::assertEmpty($parameter->getCastValues());
-        self::assertNull($parameter->getFirstValue());
+        self::assertFalse($parameter->hasFirstValue());
         self::assertTrue($parameter->areValuesValid());
 
         self::assertSame($name, $parameter2->getName());
         self::assertSame($description, $parameter2->getDescription());
-        self::assertNull($parameter2->getCast());
+        self::assertFalse($parameter2->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter2->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter2->getValueMode());
         self::assertNotEmpty($parameter2->getArguments());
@@ -292,7 +294,7 @@ final class ArgumentParameterTest extends TestCase
 
         self::assertSame($name, $parameter3->getName());
         self::assertSame($description, $parameter3->getDescription());
-        self::assertNull($parameter3->getCast());
+        self::assertFalse($parameter3->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter3->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter3->getValueMode());
         self::assertNotEmpty($parameter3->getArguments());
@@ -303,7 +305,7 @@ final class ArgumentParameterTest extends TestCase
 
         self::assertSame($name, $parameter4->getName());
         self::assertSame($description, $parameter4->getDescription());
-        self::assertNull($parameter4->getCast());
+        self::assertFalse($parameter4->hasCast());
         self::assertSame(ArgumentMode::OPTIONAL, $parameter4->getMode());
         self::assertSame(ArgumentValueMode::DEFAULT, $parameter4->getValueMode());
         self::assertNotEmpty($parameter4->getArguments());
@@ -311,6 +313,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertSame(['test', 'test2'], $parameter4->getCastValues());
         self::assertSame('test', $parameter4->getFirstValue());
         self::assertFalse($parameter4->areValuesValid());
+    }
+
+    public function testGetFirstValueThrowsWhenNoArguments(): void
+    {
+        $this->expectException(NoFirstValueException::class);
+        $this->expectExceptionMessage('No first value exists');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter  = new ArgumentParameter(
+            name: $name,
+            description: $description,
+        );
+
+        $parameter->getFirstValue();
     }
 
     public function testGetCastValue(): void
@@ -340,6 +358,22 @@ final class ArgumentParameterTest extends TestCase
         self::assertSame(1, $value1->asValue());
         self::assertInstanceOf(IntT::class, $value2 = $parameter3->getCastValues()[1]);
         self::assertSame(2, $value2->asValue());
+    }
+
+    public function testGetCastThrowsWhenNoCastSet(): void
+    {
+        $this->expectException(NoCastException::class);
+        $this->expectExceptionMessage('No cast exists');
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+
+        $parameter  = new ArgumentParameter(
+            name: $name,
+            description: $description,
+        );
+
+        $parameter->getCast();
     }
 
     public function testAreValuesValid(): void

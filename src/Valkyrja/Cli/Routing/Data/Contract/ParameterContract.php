@@ -32,16 +32,26 @@ interface ParameterContract
     public function withName(string $name): static;
 
     /**
+     * Determine if a cast exists.
+     */
+    public function hasCast(): bool;
+
+    /**
      * Get the cast.
      */
-    public function getCast(): Cast|null;
+    public function getCast(): Cast;
 
     /**
      * Create a new Parameter with the specified cast.
      *
-     * @param Cast|null $cast The cast
+     * @param Cast $cast The cast
      */
-    public function withCast(Cast|null $cast = null): static;
+    public function withCast(Cast $cast): static;
+
+    /**
+     * Create a new Parameter without a cast.
+     */
+    public function withoutCast(): static;
 
     /**
      * Get the description.
@@ -65,11 +75,16 @@ interface ParameterContract
     public function getCastValues(): array;
 
     /**
-     * Get the first value.
-     *
-     * @return non-empty-string|null
+     * Determine if there is a first item value.
      */
-    public function getFirstValue(): string|null;
+    public function hasFirstValue(): bool;
+
+    /**
+     * Get the first item's value.
+     *
+     * @return non-empty-string
+     */
+    public function getFirstValue(): string;
 
     /**
      * Determine if the values are valid.
