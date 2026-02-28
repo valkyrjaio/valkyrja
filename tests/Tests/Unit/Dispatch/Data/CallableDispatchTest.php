@@ -45,14 +45,14 @@ final class CallableDispatchTest extends TestCase
         self::assertSame(
             '{"callable":['
             . json_encode(InvalidDispatcherClass::class, JSON_THROW_ON_ERROR)
-            . ',"staticMethod"],"arguments":null,"dependencies":null}',
+            . ',"staticMethod"],"arguments":[],"dependencies":[]}',
             $newDispatch->__toString()
         );
         self::assertSame(
             [
                 'callable'     => $callable2,
-                'arguments'    => null,
-                'dependencies' => null,
+                'arguments'    => [],
+                'dependencies' => [],
             ],
             $newDispatch->jsonSerialize()
         );
@@ -65,12 +65,12 @@ final class CallableDispatchTest extends TestCase
 
         $dispatch = new CallableDispatch(callable: $callable);
 
-        self::assertNull($dispatch->getArguments());
+        self::assertEmpty($dispatch->getArguments());
 
         $newDispatch = $dispatch->withArguments($arguments);
 
         self::assertNotSame($dispatch, $newDispatch);
-        self::assertNull($dispatch->getArguments());
+        self::assertEmpty($dispatch->getArguments());
         self::assertSame($arguments, $newDispatch->getArguments());
     }
 
@@ -81,12 +81,12 @@ final class CallableDispatchTest extends TestCase
 
         $dispatch = new CallableDispatch(callable: $callable);
 
-        self::assertNull($dispatch->getDependencies());
+        self::assertEmpty($dispatch->getDependencies());
 
         $newDispatch = $dispatch->withDependencies($dependencies);
 
         self::assertNotSame($dispatch, $newDispatch);
-        self::assertNull($dispatch->getDependencies());
+        self::assertEmpty($dispatch->getDependencies());
         self::assertSame($dependencies, $newDispatch->getDependencies());
     }
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
+use Valkyrja\Dispatch\Throwable\Exception\NoClassException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -54,14 +55,36 @@ final class ConstantDispatchTest extends TestCase
 
         $dispatch = new ConstantDispatch(constant: $constant);
 
-        self::assertNull($dispatch->getClass());
+        self::assertFalse($dispatch->hasClass());
 
         $newDispatch = $dispatch->withClass($class);
 
         self::assertNotSame($dispatch, $newDispatch);
-        self::assertNull($dispatch->getClass());
+        self::assertFalse($dispatch->hasClass());
+        self::assertTrue($newDispatch->hasClass());
         self::assertSame($class, $newDispatch->getClass());
         self::assertSame($constant, $dispatch->__toString());
         self::assertSame("$class::$constant", $newDispatch->__toString());
+
+        $newDispatch2 = $newDispatch->withoutClass();
+
+        self::assertNotSame($newDispatch, $newDispatch2);
+        self::assertFalse($newDispatch2->hasClass());
+        self::assertTrue($newDispatch->hasClass());
+        self::assertSame($class, $newDispatch->getClass());
+        self::assertSame($constant, $newDispatch2->__toString());
+        self::assertSame("$class::$constant", $newDispatch->__toString());
+    }
+
+    public function testClassThrowsWhenNoClassSet(): void
+    {
+        $this->expectException(NoClassException::class);
+        $this->expectExceptionMessage('No class set');
+
+        $constant = 'TEST';
+
+        $dispatch = new ConstantDispatch(constant: $constant);
+
+        $dispatch->getClass();
     }
 }

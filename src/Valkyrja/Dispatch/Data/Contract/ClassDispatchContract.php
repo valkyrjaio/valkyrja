@@ -30,28 +30,28 @@ interface ClassDispatchContract extends DispatchContract
     /**
      * Get the arguments.
      *
-     * @return array<non-empty-string, mixed>|null
+     * @return array<non-empty-string, mixed>
      */
-    public function getArguments(): array|null;
+    public function getArguments(): array;
 
     /**
      * Create a new dispatch with the specified arguments.
      *
-     * @param array<non-empty-string, mixed>|null $arguments The arguments
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    public function withArguments(array|null $arguments = null): static;
+    public function withArguments(array $arguments): static;
 
     /**
      * Get the dependencies.
      *
-     * @return array<non-empty-string, class-string>|null
+     * @return array<non-empty-string, class-string>
      */
-    public function getDependencies(): array|null;
+    public function getDependencies(): array;
 
     /**
      * Create a new dispatch with the specified dependencies.
      *
-     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
+     * @param array<non-empty-string, class-string> $dependencies The dependencies
      */
-    public function withDependencies(array|null $dependencies = null): static;
+    public function withDependencies(array $dependencies): static;
 }

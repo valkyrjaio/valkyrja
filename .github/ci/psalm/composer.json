@@ -6,7 +6,7 @@
     "vimeo/psalm" : "^6.15.1"
   },
   "scripts"           : {
-    "check"               : "vendor/bin/psalm --config=psalm.xml --memory-limit=-1 --threads=4 --show-info=true",
+    "check"               : "vendor/bin/psalm --config=psalm.xml --memory-limit=-1 --threads=4 --show-info=false",
     "no-cache"            : "vendor/bin/psalm --config=psalm.xml --no-cache --memory-limit=-1 --threads=4",
     "shepherd"            : "vendor/bin/psalm --config=psalm.xml --shepherd --memory-limit=-1 --threads=4",
     "shepherd-with-stats" : "vendor/bin/psalm --config=psalm.xml --shepherd --memory-limit=-1 --threads=4 --stats",

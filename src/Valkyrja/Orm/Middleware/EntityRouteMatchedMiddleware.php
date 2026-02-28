@@ -76,8 +76,8 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
         $dispatch   = $route->getDispatch();
 
         if ($parameters !== []) {
-            $arguments    = $dispatch->getArguments() ?? [];
-            $dependencies = $dispatch->getDependencies() ?? [];
+            $arguments    = $dispatch->getArguments();
+            $dependencies = $dispatch->getDependencies();
 
             // Iterate through the params
             foreach ($parameters as $parameter) {

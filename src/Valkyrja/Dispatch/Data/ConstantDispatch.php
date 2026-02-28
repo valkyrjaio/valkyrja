@@ -16,6 +16,7 @@ namespace Valkyrja\Dispatch\Data;
 use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract;
+use Valkyrja\Dispatch\Throwable\Exception\NoClassException;
 
 class ConstantDispatch extends Dispatch implements ConstantDispatchContract
 {
@@ -55,20 +56,43 @@ class ConstantDispatch extends Dispatch implements ConstantDispatchContract
      * @inheritDoc
      */
     #[Override]
-    public function getClass(): string|null
+    public function hasClass(): bool
     {
-        return $this->class;
+        return $this->class !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withClass(string|null $class = null): static
+    public function getClass(): string
+    {
+        return $this->class
+            ?? throw new NoClassException('No class set');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withClass(string $class): static
     {
         $new = clone $this;
 
         $new->class = $class;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withoutClass(): static
+    {
+        $new = clone $this;
+
+        $new->class = null;
 
         return $new;
     }
