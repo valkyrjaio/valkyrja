@@ -296,24 +296,6 @@ final class ContainerTest extends TestCase
         );
     }
 
-    public function testNullInvalidReferenceMode(): void
-    {
-        $container = new Container();
-
-        $object = $container->get(ServiceClass::class, mode: InvalidReferenceMode::NULL);
-
-        self::assertNull($object);
-    }
-
-    public function testNewInstanceOrNullInvalidReferenceMode(): void
-    {
-        $container = new Container();
-
-        $object = $container->get(SingletonClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
-
-        self::assertInstanceOf(SingletonClass::class, $object);
-    }
-
     public function testNewInstanceOrThrowInvalidReferenceMode(): void
     {
         $container = new Container();
@@ -321,16 +303,6 @@ final class ContainerTest extends TestCase
         $object = $container->get(SingletonClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
 
         self::assertInstanceOf(SingletonClass::class, $object);
-    }
-
-    public function testNewInstanceOrNullInvalidReferenceModeWithCaughtThrowable(): void
-    {
-        $container = new Container();
-
-        // Will fail because this requires the container as the first argument, but no arguments passed
-        $object = $container->get(ServiceClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
-
-        self::assertNull($object);
     }
 
     public function testNewInstanceOrThrowInvalidReferenceModeWithCaughtThrowable(): void
@@ -353,15 +325,6 @@ final class ContainerTest extends TestCase
         $container = new Container();
 
         $container->get(ServiceClass::class, mode: InvalidReferenceMode::THROW_EXCEPTION);
-    }
-
-    public function testNewInstanceNullInvalidReferenceMode(): void
-    {
-        $container = new Container();
-
-        $object = $container->get(Throwable::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_NULL);
-
-        self::assertNull($object);
     }
 
     public function testNewInstanceThrowInvalidReferenceMode(): void

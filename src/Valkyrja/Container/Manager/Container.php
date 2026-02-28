@@ -259,7 +259,7 @@ class Container implements ContainerContract
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
-    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object|null
+    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object
     {
         $this->publishUnpublishedProvided($id);
 
@@ -419,24 +419,20 @@ class Container implements ContainerContract
      * Fallback to the mode when a service is not found.
      *
      * @template T of object
-     * @template Mode of InvalidReferenceMode
      *
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     * @param Mode                    $mode      [optional] The invalid reference mode
      *
-     * @return (Mode is InvalidReferenceMode::NEW_INSTANCE_OR_NULL|InvalidReferenceMode::NULL ? T|null : T)
+     * @return T
      */
     protected function getFallback(
         string $id,
         array $arguments = [],
         InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION
-    ): object|null {
+    ): object {
         return match ($mode) {
-            InvalidReferenceMode::NULL                            => null,
             InvalidReferenceMode::THROW_EXCEPTION                 => throw new InvalidReferenceException($id),
-            InvalidReferenceMode::NEW_INSTANCE_OR_NULL,
-            InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION => $this->newInstanceOrModeFallback($id, $arguments, $mode),
+            InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION => $this->newInstanceOrModeFallback($id, $arguments),
         };
     }
 
@@ -444,19 +440,14 @@ class Container implements ContainerContract
      * Fallback to create a new instance or return null/throw exception depending on mode.
      *
      * @template T of object
-     * @template Mode of InvalidReferenceMode
      *
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     * @param Mode                    $mode      [optional] The invalid reference mode
      *
-     * @return (Mode is InvalidReferenceMode::NEW_INSTANCE_OR_NULL|InvalidReferenceMode::NULL ? T|null : T)
+     * @return T
      */
-    protected function newInstanceOrModeFallback(
-        string $id,
-        array $arguments = [],
-        InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION
-    ): object|null {
+    protected function newInstanceOrModeFallback(string $id, array $arguments = []): object
+    {
         try {
             if (class_exists($id)) {
                 /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments */
@@ -466,12 +457,8 @@ class Container implements ContainerContract
         } catch (Throwable) {
         }
 
-        if ($mode === InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION) {
-            /** @var class-string $id */
-            throw new InvalidReferenceException($id);
-        }
-
-        return null;
+        /** @var class-string $id */
+        throw new InvalidReferenceException($id);
     }
 
     /**
