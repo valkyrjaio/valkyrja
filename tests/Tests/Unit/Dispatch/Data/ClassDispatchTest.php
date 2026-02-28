@@ -66,12 +66,12 @@ final class ClassDispatchTest extends TestCase
 
         $dispatch = new ClassDispatch(class: $class);
 
-        self::assertNull($dispatch->getArguments());
+        self::assertEmpty($dispatch->getArguments());
 
         $newDispatch = $dispatch->withArguments($arguments);
 
         self::assertNotSame($dispatch, $newDispatch);
-        self::assertNull($dispatch->getArguments());
+        self::assertEmpty($dispatch->getArguments());
         self::assertSame($arguments, $newDispatch->getArguments());
     }
 
@@ -82,12 +82,12 @@ final class ClassDispatchTest extends TestCase
 
         $dispatch = new ClassDispatch(class: $class);
 
-        self::assertNull($dispatch->getDependencies());
+        self::assertEmpty($dispatch->getDependencies());
 
         $newDispatch = $dispatch->withDependencies($dependencies);
 
         self::assertNotSame($dispatch, $newDispatch);
-        self::assertNull($dispatch->getDependencies());
+        self::assertEmpty($dispatch->getDependencies());
         self::assertSame($dependencies, $newDispatch->getDependencies());
     }
 }

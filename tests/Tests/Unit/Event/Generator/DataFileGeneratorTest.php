@@ -111,8 +111,12 @@ final class DataFileGeneratorTest extends TestCase
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
-                 'arguments' => NULL,
-                 'dependencies' => NULL,
+                 'arguments' => 
+                array (
+                ),
+                 'dependencies' => 
+                array (
+                ),
                  'method' => 'method',
                  'isStatic' => false,
               )),
@@ -155,8 +159,12 @@ final class DataFileGeneratorTest extends TestCase
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
-                 'arguments' => NULL,
-                 'dependencies' => NULL,
+                 'arguments' => 
+                array (
+                ),
+                 'dependencies' => 
+                array (
+                ),
                  'method' => 'method',
                  'isStatic' => false,
               )),

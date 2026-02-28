@@ -40,7 +40,7 @@ class Dispatcher implements DispatcherContract
      * @inheritDoc
      */
     #[Override]
-    public function dispatch(DispatchContract $dispatch, array|null $arguments = null): mixed
+    public function dispatch(DispatchContract $dispatch, array $arguments = []): mixed
     {
         return match (true) {
             $dispatch instanceof MethodDispatch         => $this->dispatchClassMethod($dispatch, $arguments),
@@ -56,13 +56,13 @@ class Dispatcher implements DispatcherContract
     /**
      * Dispatch a class method.
      *
-     * @param array<non-empty-string, mixed>|null $arguments The arguments
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    protected function dispatchClassMethod(MethodDispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClassMethod(MethodDispatch $dispatch, array $arguments): mixed
     {
         $method = $dispatch->getMethod();
         // Get the arguments with dependencies
-        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
+        $arguments = $this->getArguments($dispatch, $arguments);
         // Get the class name
         $className = $dispatch->getClass();
         // Get the class
@@ -110,8 +110,8 @@ class Dispatcher implements DispatcherContract
     protected function dispatchConstant(ConstantDispatch $dispatch): mixed
     {
         $constant = $dispatch->getConstant();
-        $constant = ($class = $dispatch->getClass())
-            ? $class . '::' . $constant
+        $constant = $dispatch->hasClass()
+            ? $dispatch->getClass() . '::' . $constant
             : $constant;
 
         return constant($constant);
@@ -120,14 +120,14 @@ class Dispatcher implements DispatcherContract
     /**
      * Dispatch a class.
      *
-     * @param ClassDispatch                       $dispatch  The dispatch
-     * @param array<non-empty-string, mixed>|null $arguments The arguments
+     * @param ClassDispatch                  $dispatch  The dispatch
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    protected function dispatchClass(ClassDispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClass(ClassDispatch $dispatch, array $arguments): mixed
     {
         $className = $dispatch->getClass();
         // Get the arguments with dependencies
-        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
+        $arguments = $this->getArguments($dispatch, $arguments);
 
         // Get the class through the container
         return $this->container->get($className, $arguments);
@@ -136,14 +136,14 @@ class Dispatcher implements DispatcherContract
     /**
      * Dispatch a function.
      *
-     * @param CallableDispatch                    $dispatch  The dispatch
-     * @param array<non-empty-string, mixed>|null $arguments The arguments
+     * @param CallableDispatch               $dispatch  The dispatch
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    protected function dispatchCallable(CallableDispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchCallable(CallableDispatch $dispatch, array $arguments): mixed
     {
         $callable = $dispatch->getCallable();
         // Get the arguments with dependencies
-        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
+        $arguments = $this->getArguments($dispatch, $arguments);
 
         return $callable(...$arguments);
     }
@@ -166,20 +166,22 @@ class Dispatcher implements DispatcherContract
      * Get a dispatch's arguments.
      *
      * @param CallableDispatch|ClassDispatch|MethodDispatch $dispatch  The dispatch
-     * @param array<non-empty-string, mixed>|null           $arguments [optional] The arguments
+     * @param array<non-empty-string, mixed>                $arguments [optional] The arguments
      *
-     * @return array<non-empty-string, mixed>|null
+     * @return array<non-empty-string, mixed>
      */
-    protected function getArguments(CallableDispatch|ClassDispatch|MethodDispatch $dispatch, array|null $arguments = null): array|null
+    protected function getArguments(CallableDispatch|ClassDispatch|MethodDispatch $dispatch, array $arguments): array
     {
         // Get either the arguments passed or from the dispatch model
-        $arguments ??= $dispatch->getArguments();
+        $arguments = $arguments !== []
+            ? $arguments
+            : $dispatch->getArguments();
 
         // Set the listener arguments to a new blank array
         $dependencies = $this->getDependencies($dispatch);
 
         // If there are no arguments
-        if ($arguments === null) {
+        if ($arguments === []) {
             // Return the dependencies only
             return $dependencies;
         }
@@ -203,8 +205,10 @@ class Dispatcher implements DispatcherContract
      */
     protected function getDependencies(CallableDispatch|ClassDispatch|MethodDispatch $dispatch): array
     {
+        $dependencies = $dispatch->getDependencies();
+
         // If there are dependencies
-        if (($dependencies = $dispatch->getDependencies()) === null) {
+        if ($dependencies === []) {
             return [];
         }
 

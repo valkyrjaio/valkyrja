@@ -19,17 +19,17 @@ use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract;
 class PropertyDispatch extends ClassDispatch implements PropertyDispatchContract
 {
     /**
-     * @param class-string                               $class        The class name
-     * @param non-empty-string                           $property     The property name
-     * @param array<non-empty-string, mixed>|null        $arguments    The arguments
-     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
+     * @param class-string                          $class        The class name
+     * @param non-empty-string                      $property     The property name
+     * @param array<non-empty-string, mixed>        $arguments    The arguments
+     * @param array<non-empty-string, class-string> $dependencies The dependencies
      */
     public function __construct(
         string $class,
         protected string $property,
         protected bool $isStatic = false,
-        array|null $arguments = null,
-        array|null $dependencies = null
+        array $arguments = [],
+        array $dependencies = []
     ) {
         parent::__construct(
             class: $class,

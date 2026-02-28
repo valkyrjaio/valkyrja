@@ -30,16 +30,26 @@ interface ConstantDispatchContract extends DispatchContract
     public function withConstant(string $constant): static;
 
     /**
+     * Determine if there is a class name.
+     */
+    public function hasClass(): bool;
+
+    /**
      * Get the class name.
      *
-     * @return class-string|null
+     * @return class-string
      */
-    public function getClass(): string|null;
+    public function getClass(): string;
 
     /**
      * Create a new dispatch with the specified class name.
      *
-     * @param class-string|null $class [optional] The class name
+     * @param class-string $class [optional] The class name
      */
-    public function withClass(string|null $class = null): static;
+    public function withClass(string $class): static;
+
+    /**
+     * Create a new dispatch without a class name.
+     */
+    public function withoutClass(): static;
 }

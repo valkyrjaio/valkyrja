@@ -20,14 +20,14 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 class ClassDispatch extends Dispatch implements ClassDispatchContract
 {
     /**
-     * @param class-string                               $class        The class name
-     * @param array<non-empty-string, mixed>|null        $arguments    The arguments
-     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
+     * @param class-string                          $class        The class name
+     * @param array<non-empty-string, mixed>        $arguments    The arguments
+     * @param array<non-empty-string, class-string> $dependencies The dependencies
      */
     public function __construct(
         protected string $class,
-        protected array|null $arguments = null,
-        protected array|null $dependencies = null,
+        protected array $arguments = [],
+        protected array $dependencies = [],
     ) {
     }
 
@@ -57,7 +57,7 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
      * @inheritDoc
      */
     #[Override]
-    public function getArguments(): array|null
+    public function getArguments(): array
     {
         return $this->arguments;
     }
@@ -66,7 +66,7 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
      * @inheritDoc
      */
     #[Override]
-    public function withArguments(array|null $arguments = null): static
+    public function withArguments(array $arguments): static
     {
         $new = clone $this;
 
@@ -79,7 +79,7 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
      * @inheritDoc
      */
     #[Override]
-    public function getDependencies(): array|null
+    public function getDependencies(): array
     {
         return $this->dependencies;
     }
@@ -88,7 +88,7 @@ class ClassDispatch extends Dispatch implements ClassDispatchContract
      * @inheritDoc
      */
     #[Override]
-    public function withDependencies(array|null $dependencies = null): static
+    public function withDependencies(array $dependencies): static
     {
         $new = clone $this;
 

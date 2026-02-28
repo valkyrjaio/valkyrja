@@ -20,8 +20,8 @@ interface DispatcherContract
     /**
      * Dispatch a callable.
      *
-     * @param DispatchContract                    $dispatch  The dispatch
-     * @param array<non-empty-string, mixed>|null $arguments The arguments
+     * @param DispatchContract               $dispatch  The dispatch
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    public function dispatch(DispatchContract $dispatch, array|null $arguments = null): mixed;
+    public function dispatch(DispatchContract $dispatch, array $arguments = []): mixed;
 }
