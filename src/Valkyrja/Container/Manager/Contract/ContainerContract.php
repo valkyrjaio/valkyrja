@@ -119,18 +119,16 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * Get a service from the container.
      *
      * @template T of object
-     * @template Mode of InvalidReferenceMode
      *
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
-     * @param Mode                    $mode      [optional] The invalid reference mode
      *
-     * @return (Mode is InvalidReferenceMode::NEW_INSTANCE_OR_NULL|InvalidReferenceMode::NULL ? T|null : T)
+     * @return T
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
-    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object|null;
+    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object;
 
     /**
      * Get an aliased service from the container.

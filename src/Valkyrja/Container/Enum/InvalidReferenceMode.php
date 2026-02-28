@@ -16,19 +16,9 @@ namespace Valkyrja\Container\Enum;
 enum InvalidReferenceMode
 {
     /**
-     * Attempt to create a new instance of the object or return null if not able to.
-     */
-    case NEW_INSTANCE_OR_NULL;
-
-    /**
      * Attempt to create a new instance of the object or throw an exception of not found if not able to.
      */
     case NEW_INSTANCE_OR_THROW_EXCEPTION;
-
-    /**
-     * Return null.
-     */
-    case NULL;
 
     /**
      * Throw an exception.
