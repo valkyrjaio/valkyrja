@@ -114,8 +114,8 @@ final class DispatcherTest extends TestCase
         $eventAfterDispatchById = $dispatcher->dispatchByIdIfHasListeners($eventId);
 
         self::assertFalse(self::$dispatched);
-        self::assertNull($eventAfterDispatch);
-        self::assertNull($eventAfterDispatchById);
+        self::assertSame($event, $eventAfterDispatch);
+        self::assertInstanceOf($eventId, $eventAfterDispatchById);
 
         $collection->addListener($listener);
 
