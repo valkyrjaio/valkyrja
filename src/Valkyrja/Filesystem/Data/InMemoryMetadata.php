@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Data;
 
+use Valkyrja\Filesystem\Enum\Visibility;
+
 /**
- * @psalm-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
+ * @psalm-type InMemoryMetadataAsArray array{mimetype: string, size: int, visibility: string}
  *
- * @phpstan-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
+ * @phpstan-type InMemoryMetadataAsArray array{mimetype: string, size: int, visibility: string}
  */
 class InMemoryMetadata
 {
     public function __construct(
-        public string|null $mimetype = null,
-        public int|null $size = 0,
-        public string|null $visibility = null,
+        public string $mimetype = '',
+        public int $size = 0,
+        public Visibility $visibility = Visibility::PUBLIC,
     ) {
     }
 
@@ -35,7 +37,7 @@ class InMemoryMetadata
         return [
             'mimetype'   => $this->mimetype,
             'size'       => $this->size,
-            'visibility' => $this->visibility,
+            'visibility' => $this->visibility->value,
         ];
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Filesystem\Data;
 
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
+use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class InMemoryMetadataTest extends TestCase
@@ -22,28 +23,28 @@ final class InMemoryMetadataTest extends TestCase
     {
         $metadata = new InMemoryMetadata();
 
-        self::assertNull($metadata->mimetype);
+        self::assertSame('', $metadata->mimetype);
         self::assertSame(0, $metadata->size);
-        self::assertNull($metadata->visibility);
+        self::assertSame(Visibility::PUBLIC, $metadata->visibility);
     }
 
     public function testConstructorWithAllValues(): void
     {
-        $metadata = new InMemoryMetadata('text/plain', 1024, 'public');
+        $metadata = new InMemoryMetadata('text/plain', 1024, Visibility::PUBLIC);
 
         self::assertSame('text/plain', $metadata->mimetype);
         self::assertSame(1024, $metadata->size);
-        self::assertSame('public', $metadata->visibility);
+        self::assertSame(Visibility::PUBLIC, $metadata->visibility);
     }
 
     public function testToArrayReturnsCorrectStructure(): void
     {
-        $metadata = new InMemoryMetadata('application/json', 512, 'private');
+        $metadata = new InMemoryMetadata('application/json', 512, Visibility::PRIVATE);
 
         $expected = [
             'mimetype'   => 'application/json',
             'size'       => 512,
-            'visibility' => 'private',
+            'visibility' => Visibility::PRIVATE->value,
         ];
 
         self::assertSame($expected, $metadata->toArray());
@@ -54,9 +55,9 @@ final class InMemoryMetadataTest extends TestCase
         $metadata = new InMemoryMetadata();
 
         $expected = [
-            'mimetype'   => null,
+            'mimetype'   => '',
             'size'       => 0,
-            'visibility' => null,
+            'visibility' => Visibility::PUBLIC->value,
         ];
 
         self::assertSame($expected, $metadata->toArray());
@@ -68,10 +69,10 @@ final class InMemoryMetadataTest extends TestCase
 
         $metadata->mimetype   = 'image/png';
         $metadata->size       = 2048;
-        $metadata->visibility = 'public';
+        $metadata->visibility = Visibility::PUBLIC;
 
         self::assertSame('image/png', $metadata->mimetype);
         self::assertSame(2048, $metadata->size);
-        self::assertSame('public', $metadata->visibility);
+        self::assertSame(Visibility::PUBLIC, $metadata->visibility);
     }
 }

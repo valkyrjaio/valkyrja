@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Filesystem\Data;
 
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
+use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class InMemoryFileTest extends TestCase
@@ -31,7 +32,7 @@ final class InMemoryFileTest extends TestCase
 
     public function testConstructorWithAllValues(): void
     {
-        $metadata = new InMemoryMetadata('text/plain', 100, 'public');
+        $metadata = new InMemoryMetadata('text/plain', 100, Visibility::PUBLIC);
         $file     = new InMemoryFile('test.txt', 'file contents', $metadata, 1234567890);
 
         self::assertSame('test.txt', $file->name);

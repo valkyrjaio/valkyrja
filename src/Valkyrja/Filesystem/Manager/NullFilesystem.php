@@ -122,45 +122,45 @@ class NullFilesystem implements FilesystemContract
      * @inheritDoc
      */
     #[Override]
-    public function metadata(string $path): array|null
+    public function metadata(string $path): array
     {
-        return null;
+        return [];
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function mimetype(string $path): string|null
+    public function mimetype(string $path): string
     {
-        return null;
+        return '';
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function size(string $path): int|null
+    public function size(string $path): int
     {
-        return null;
+        return 0;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function timestamp(string $path): int|null
+    public function timestamp(string $path): int
     {
-        return null;
+        return 0;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function visibility(string $path): string|null
+    public function visibility(string $path): Visibility
     {
-        return null;
+        return Visibility::PUBLIC;
     }
 
     /**

@@ -172,45 +172,46 @@ class InMemoryFilesystem implements FilesystemContract
      * @inheritDoc
      */
     #[Override]
-    public function metadata(string $path): array|null
+    public function metadata(string $path): array
     {
-        return $this->getMetadataInternal($path)?->toArray();
+        return $this->getMetadataInternal($path)->toArray();
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function mimetype(string $path): string|null
+    public function mimetype(string $path): string
     {
-        return $this->getMetadataInternal($path)->mimetype ?? null;
+        return $this->getMetadataInternal($path)->mimetype;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function size(string $path): int|null
+    public function size(string $path): int
     {
-        return $this->getMetadataInternal($path)->size ?? null;
+        return $this->getMetadataInternal($path)->size;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function timestamp(string $path): int|null
+    public function timestamp(string $path): int
     {
-        return $this->files[$path]->timestamp ?? null;
+        return $this->files[$path]->timestamp
+            ?? 0;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function visibility(string $path): string|null
+    public function visibility(string $path): Visibility
     {
-        return $this->getMetadataInternal($path)->visibility ?? null;
+        return $this->getMetadataInternal($path)->visibility;
     }
 
     /**
@@ -223,7 +224,7 @@ class InMemoryFilesystem implements FilesystemContract
             return false;
         }
 
-        $this->files[$path]->metadata->visibility = $visibility->value;
+        $this->files[$path]->metadata->visibility = $visibility;
 
         return true;
     }
@@ -305,8 +306,9 @@ class InMemoryFilesystem implements FilesystemContract
         return fread($resource, $length);
     }
 
-    protected function getMetadataInternal(string $path): InMemoryMetadata|null
+    protected function getMetadataInternal(string $path): InMemoryMetadata
     {
-        return $this->files[$path]->metadata ?? null;
+        return $this->files[$path]->metadata
+            ?? new InMemoryMetadata();
     }
 }

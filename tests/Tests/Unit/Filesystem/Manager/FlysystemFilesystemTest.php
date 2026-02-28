@@ -243,7 +243,7 @@ final class FlysystemFilesystemTest extends TestCase
     {
         $this->flysystem->expects($this->never())->method('has');
 
-        self::assertNull($this->filesystem->metadata('test.txt'));
+        self::assertSame([], $this->filesystem->metadata('test.txt'));
     }
 
     /**
@@ -299,7 +299,7 @@ final class FlysystemFilesystemTest extends TestCase
             ->with('test.txt')
             ->willReturn('public');
 
-        self::assertSame('public', $this->filesystem->visibility('test.txt'));
+        self::assertSame(Visibility::PUBLIC, $this->filesystem->visibility('test.txt'));
     }
 
     /**
