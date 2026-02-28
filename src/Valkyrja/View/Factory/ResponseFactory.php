@@ -37,11 +37,11 @@ class ResponseFactory implements ResponseFactoryContract
     #[Override]
     public function createResponseFromView(
         string $template,
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
+        array $data = [],
+        StatusCode $statusCode = StatusCode::OK,
         HeaderCollectionContract|null $headers = null
     ): ResponseContract {
-        $content = $this->renderer->createTemplate($template, $data ?? [])->render();
+        $content = $this->renderer->createTemplate($template, $data)->render();
 
         return $this->responseFactory->createResponse($content, $statusCode, $headers);
     }

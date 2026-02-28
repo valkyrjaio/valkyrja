@@ -180,12 +180,12 @@ class PhpRenderer implements RendererContract
     /**
      * Get the template directory.
      *
-     * @param string|null $path [optional] The path to append
+     * @param string $path [optional] The path to append
      */
-    protected function getDir(string|null $path = null): string
+    protected function getDir(string $path): string
     {
         return $this->dir
-            . ($path !== null && $path !== ''
+            . ($path !== ''
                 ? DIRECTORY_SEPARATOR . $path
                 : '');
     }

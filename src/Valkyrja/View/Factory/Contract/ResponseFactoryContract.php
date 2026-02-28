@@ -22,13 +22,13 @@ interface ResponseFactoryContract
     /**
      * View response builder.
      *
-     * @param non-empty-string                    $template The view template to use
-     * @param array<non-empty-string, mixed>|null $data     [optional] The view data
+     * @param non-empty-string               $template The view template to use
+     * @param array<non-empty-string, mixed> $data     [optional] The view data
      */
     public function createResponseFromView(
         string $template,
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
+        array $data = [],
+        StatusCode $statusCode = StatusCode::OK,
         HeaderCollectionContract|null $headers = null
     ): ResponseContract;
 }

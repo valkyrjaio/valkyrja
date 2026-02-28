@@ -70,9 +70,9 @@ interface TemplateContract extends Stringable
     /**
      * Set the layout for the view template.
      *
-     * @param non-empty-string|null $layout [optional] The layout
+     * @param non-empty-string $layout [optional] The layout
      */
-    public function setLayout(string|null $layout = null): static;
+    public function setLayout(string $layout): static;
 
     /**
      * Set no layout for this view.

@@ -220,7 +220,7 @@ final class TemplateTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testSetLayoutWithNull(): void
+    public function testSetLayoutWithEmptyString(): void
     {
         $templateContent = '<p>Content</p>';
 
@@ -232,7 +232,7 @@ final class TemplateTest extends TestCase
         $template = new Template($renderer, 'test');
         $template->setLayout('layouts/main');
 
-        $result = $template->setLayout();
+        $result = $template->setLayout('');
 
         self::assertSame($template, $result);
         self::assertSame($templateContent, $template->render());
