@@ -49,13 +49,13 @@ class Dispatcher implements DispatcherContract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchIfHasListeners(object $event): object|null
+    public function dispatchIfHasListeners(object $event): object
     {
         if ($this->collection->hasListenersForEvent($event)) {
             return $this->dispatch($event);
         }
 
-        return null;
+        return $event;
     }
 
     /**
@@ -73,13 +73,13 @@ class Dispatcher implements DispatcherContract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object|null
+    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object
     {
         if ($this->collection->hasListenersForEventById($eventId)) {
             return $this->dispatchById($eventId, $arguments);
         }
 
-        return null;
+        return $this->getEventClassFromId($eventId);
     }
 
     /**
