@@ -276,7 +276,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory
             ->expects($this->once())
             ->method('createResponseFromView')
-            ->with('errors/404', null, StatusCode::NOT_FOUND, null)
+            ->with('errors/404', [], StatusCode::NOT_FOUND, null)
             ->willReturn($response);
 
         $handler
@@ -336,7 +336,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory
             ->expects($this->once())
             ->method('createResponseFromView')
-            ->with('errors/400', null, StatusCode::BAD_REQUEST, null)
+            ->with('errors/400', [], StatusCode::BAD_REQUEST, null)
             ->willReturn($response);
 
         $handler

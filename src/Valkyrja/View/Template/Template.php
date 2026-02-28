@@ -28,10 +28,8 @@ class Template implements TemplateContract
 {
     /**
      * The layout template.
-     *
-     * @var non-empty-string|null
      */
-    protected string|null $layout = null;
+    protected string $layout = '';
 
     /**
      * The block status.
@@ -152,14 +150,8 @@ class Template implements TemplateContract
      * @inheritDoc
      */
     #[Override]
-    public function setLayout(string|null $layout = null): static
+    public function setLayout(string $layout): static
     {
-        // If no layout has been set
-        if ($layout === null) {
-            // Set to null
-            return $this->withoutLayout();
-        }
-
         // If we should be tracking layout changes
         if ($this->trackLayoutChanges) {
             // Set the flag
@@ -177,7 +169,7 @@ class Template implements TemplateContract
     #[Override]
     public function withoutLayout(): static
     {
-        $this->layout = null;
+        $this->layout = '';
 
         return $this;
     }
@@ -280,7 +272,7 @@ class Template implements TemplateContract
         $template = $this->renderTemplate($name, $variables);
 
         // Check if a layout has been set
-        if ($this->layout === null || ! $renderLayout) {
+        if ($this->layout === '' || ! $renderLayout) {
             return $template;
         }
 
@@ -302,7 +294,7 @@ class Template implements TemplateContract
         $renderedLayout = $this->renderTemplate($layout, $variables);
 
         // Check if the layout has changed
-        if ($this->trackLayoutChanges && $this->hasLayoutChanged && $this->layout !== null) {
+        if ($this->trackLayoutChanges && $this->hasLayoutChanged && $this->layout !== '') {
             // Reset the flag
             $this->hasLayoutChanged = false;
             // Render the new layout

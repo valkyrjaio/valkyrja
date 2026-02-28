@@ -64,7 +64,7 @@ final class ResponseFactoryTest extends TestCase
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
-            ->with($templateContent, null, null)
+            ->with($templateContent, StatusCode::OK, null)
             ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
@@ -98,7 +98,7 @@ final class ResponseFactoryTest extends TestCase
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
-            ->with($templateContent, null, null)
+            ->with($templateContent, StatusCode::OK, null)
             ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
@@ -136,7 +136,7 @@ final class ResponseFactoryTest extends TestCase
             ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
-        $result  = $factory->createResponseFromView($templateName, null, $statusCode);
+        $result  = $factory->createResponseFromView($templateName, statusCode: $statusCode);
 
         self::assertSame($response, $result);
     }
@@ -166,11 +166,11 @@ final class ResponseFactoryTest extends TestCase
         $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
-            ->with($templateContent, null, $headers)
+            ->with($templateContent, StatusCode::OK, $headers)
             ->willReturn($response);
 
         $factory = new ResponseFactory($httpResponseFactory, $renderer);
-        $result  = $factory->createResponseFromView($templateName, null, null, $headers);
+        $result  = $factory->createResponseFromView($templateName, headers: $headers);
 
         self::assertSame($response, $result);
     }
