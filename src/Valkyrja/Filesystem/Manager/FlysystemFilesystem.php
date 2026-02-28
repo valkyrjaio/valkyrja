@@ -164,9 +164,9 @@ class FlysystemFilesystem implements FilesystemContract
      * @inheritDoc
      */
     #[Override]
-    public function metadata(string $path): array|null
+    public function metadata(string $path): array
     {
-        return null;
+        return [];
     }
 
     /**
@@ -175,7 +175,7 @@ class FlysystemFilesystem implements FilesystemContract
      * @throws FilesystemException
      */
     #[Override]
-    public function mimetype(string $path): string|null
+    public function mimetype(string $path): string
     {
         return $this->flysystem->mimeType($path);
     }
@@ -186,7 +186,7 @@ class FlysystemFilesystem implements FilesystemContract
      * @throws FilesystemException
      */
     #[Override]
-    public function size(string $path): int|null
+    public function size(string $path): int
     {
         return $this->flysystem->fileSize($path);
     }
@@ -197,7 +197,7 @@ class FlysystemFilesystem implements FilesystemContract
      * @throws FilesystemException
      */
     #[Override]
-    public function timestamp(string $path): int|null
+    public function timestamp(string $path): int
     {
         return $this->flysystem->lastModified($path);
     }
@@ -208,9 +208,9 @@ class FlysystemFilesystem implements FilesystemContract
      * @throws FilesystemException
      */
     #[Override]
-    public function visibility(string $path): string|null
+    public function visibility(string $path): Visibility
     {
-        return $this->flysystem->visibility($path);
+        return Visibility::from($this->flysystem->visibility($path));
     }
 
     /**
@@ -234,7 +234,7 @@ class FlysystemFilesystem implements FilesystemContract
     #[Override]
     public function setVisibilityPublic(string $path): bool
     {
-        $this->flysystem->setVisibility($path, Visibility::PUBLIC->value);
+        $this->setVisibility($path, Visibility::PUBLIC);
 
         return true;
     }
@@ -247,7 +247,7 @@ class FlysystemFilesystem implements FilesystemContract
     #[Override]
     public function setVisibilityPrivate(string $path): bool
     {
-        $this->flysystem->setVisibility($path, Visibility::PRIVATE->value);
+        $this->setVisibility($path, Visibility::PRIVATE);
 
         return true;
     }
@@ -286,14 +286,14 @@ class FlysystemFilesystem implements FilesystemContract
      * @psalm-suppress MixedReturnTypeCoercion
      */
     #[Override]
-    public function listContents(string|null $directory = null, bool $recursive = false): array
+    public function listContents(string $directory = '', bool $recursive = false): array
     {
         return array_map(
             /**
              * @return array<string, string|int>
              */
             static fn (StorageAttributes $attributes): array => (array) $attributes->jsonSerialize(),
-            $this->flysystem->listContents($directory ?? '', $recursive)->toArray()
+            $this->flysystem->listContents($directory, $recursive)->toArray()
         );
     }
 

@@ -104,27 +104,27 @@ final class NullFilesystemTest extends TestCase
 
     public function testMetadataReturnsNull(): void
     {
-        self::assertNull($this->filesystem->metadata('path'));
+        self::assertSame([], $this->filesystem->metadata('path'));
     }
 
     public function testMimetypeReturnsNull(): void
     {
-        self::assertNull($this->filesystem->mimetype('path'));
+        self::assertSame('', $this->filesystem->mimetype('path'));
     }
 
     public function testSizeReturnsNull(): void
     {
-        self::assertNull($this->filesystem->size('path'));
+        self::assertSame(0, $this->filesystem->size('path'));
     }
 
     public function testTimestampReturnsNull(): void
     {
-        self::assertNull($this->filesystem->timestamp('path'));
+        self::assertSame(0, $this->filesystem->timestamp('path'));
     }
 
     public function testVisibilityReturnsNull(): void
     {
-        self::assertNull($this->filesystem->visibility('path'));
+        self::assertSame(Visibility::PUBLIC, $this->filesystem->visibility('path'));
     }
 
     public function testSetVisibilityReturnsTrue(): void

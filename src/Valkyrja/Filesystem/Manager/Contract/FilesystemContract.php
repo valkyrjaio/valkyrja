@@ -109,46 +109,45 @@ interface FilesystemContract
      *
      * @param string $path The path
      *
-     * @return array<string, string|int|null>|null An array of meta data or null on failure
+     * @return array<string, string|int|null> An array of meta data
      */
-    public function metadata(string $path): array|null;
+    public function metadata(string $path): array;
 
     /**
      * Get a file's mime type.
      *
      * @param string $path The path
      *
-     * @return string|null The mime type or null on failure
+     * @return string The mime type
      */
-    public function mimetype(string $path): string|null;
+    public function mimetype(string $path): string;
 
     /**
      * Get a file's size.
      *
      * @param string $path The path
      *
-     * @return int|null The size in bytes or null on failure
+     * @return int The size in bytes
      */
-    public function size(string $path): int|null;
+    public function size(string $path): int;
 
     /**
      * Get a file's timestamp.
      *
      * @param string $path The path
      *
-     * @return int|null The timestamp or null on failure
+     * @return int The timestamp
      */
-    public function timestamp(string $path): int|null;
+    public function timestamp(string $path): int;
 
     /**
      * Get a file's visibility.
      *
      * @param string $path The path
      *
-     * @return string|null The visibility ('public' or 'private') or null on
-     *                     failure
+     * @return Visibility The visibility ('public' or 'private')
      */
-    public function visibility(string $path): string|null;
+    public function visibility(string $path): Visibility;
 
     /**
      * Set a file's visibility.
@@ -189,10 +188,10 @@ interface FilesystemContract
     /**
      * List the contents of a directory.
      *
-     * @param string|null $directory [optional] The directory
-     * @param bool        $recursive [optional] Whether to recurse through the directory
+     * @param string $directory [optional] The directory
+     * @param bool   $recursive [optional] Whether to recurse through the directory
      *
      * @return array<string, string|int>[]
      */
-    public function listContents(string|null $directory = null, bool $recursive = false): array;
+    public function listContents(string $directory = '', bool $recursive = false): array;
 }

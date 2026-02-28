@@ -243,7 +243,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testMetadataReturnsFileMetadata(): void
     {
-        $metadata = new InMemoryMetadata('text/plain', 100, 'public');
+        $metadata = new InMemoryMetadata('text/plain', 100, Visibility::PUBLIC);
         $file     = new InMemoryFile('test.txt', 'contents', $metadata);
 
         $filesystem = new InMemoryFilesystem($file);
@@ -256,7 +256,10 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testMetadataReturnsNullForNonExistentFile(): void
     {
-        self::assertNull($this->filesystem->metadata('non-existent.txt'));
+        self::assertSame(
+            ['mimetype' => '', 'size' => 0, 'visibility' => 'public'],
+            $this->filesystem->metadata('non-existent.txt')
+        );
     }
 
     public function testMimetypeReturnsFileMimetype(): void
@@ -271,7 +274,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testMimetypeReturnsNullForNonExistentFile(): void
     {
-        self::assertNull($this->filesystem->mimetype('non-existent.txt'));
+        self::assertSame('', $this->filesystem->mimetype('non-existent.txt'));
     }
 
     public function testSizeReturnsFileSize(): void
@@ -286,7 +289,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testSizeReturnsNullForNonExistentFile(): void
     {
-        self::assertNull($this->filesystem->size('non-existent.txt'));
+        self::assertSame(0, $this->filesystem->size('non-existent.txt'));
     }
 
     public function testTimestampReturnsFileTimestamp(): void
@@ -300,22 +303,22 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testTimestampReturnsNullForNonExistentFile(): void
     {
-        self::assertNull($this->filesystem->timestamp('non-existent.txt'));
+        self::assertSame(0, $this->filesystem->timestamp('non-existent.txt'));
     }
 
     public function testVisibilityReturnsFileVisibility(): void
     {
-        $metadata = new InMemoryMetadata(visibility: 'public');
+        $metadata = new InMemoryMetadata(visibility: Visibility::PUBLIC);
         $file     = new InMemoryFile('test.txt', 'contents', $metadata);
 
         $filesystem = new InMemoryFilesystem($file);
 
-        self::assertSame('public', $filesystem->visibility('test.txt'));
+        self::assertSame(Visibility::PUBLIC, $filesystem->visibility('test.txt'));
     }
 
     public function testVisibilityReturnsNullForNonExistentFile(): void
     {
-        self::assertNull($this->filesystem->visibility('non-existent.txt'));
+        self::assertSame(Visibility::PUBLIC, $this->filesystem->visibility('non-existent.txt'));
     }
 
     public function testSetVisibilityChangesVisibility(): void
@@ -325,7 +328,7 @@ final class InMemoryFilesystemTest extends TestCase
         $result = $this->filesystem->setVisibility('test.txt', Visibility::PUBLIC);
 
         self::assertTrue($result);
-        self::assertSame('public', $this->filesystem->visibility('test.txt'));
+        self::assertSame(Visibility::PUBLIC, $this->filesystem->visibility('test.txt'));
     }
 
     public function testSetVisibilityReturnsFalseForNonExistentFile(): void
@@ -342,7 +345,7 @@ final class InMemoryFilesystemTest extends TestCase
         $result = $this->filesystem->setVisibilityPublic('test.txt');
 
         self::assertTrue($result);
-        self::assertSame('public', $this->filesystem->visibility('test.txt'));
+        self::assertSame(Visibility::PUBLIC, $this->filesystem->visibility('test.txt'));
     }
 
     public function testSetVisibilityPrivateSetsPrivateVisibility(): void
@@ -352,7 +355,7 @@ final class InMemoryFilesystemTest extends TestCase
         $result = $this->filesystem->setVisibilityPrivate('test.txt');
 
         self::assertTrue($result);
-        self::assertSame('private', $this->filesystem->visibility('test.txt'));
+        self::assertSame(Visibility::PRIVATE, $this->filesystem->visibility('test.txt'));
     }
 
     public function testCreateDirCreatesDirectory(): void
