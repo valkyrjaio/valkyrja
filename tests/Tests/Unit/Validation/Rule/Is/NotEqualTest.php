@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\NotEqual;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,28 +23,28 @@ final class NotEqualTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new NotEqual('a', 'b');
+        $rule = new NotEqual('a', 'b', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new NotEqual('test', 'other');
+        $rule = new NotEqual('test', 'other', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithDifferentStrings(): void
     {
-        $rule = new NotEqual('hello', 'world');
+        $rule = new NotEqual('hello', 'world', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithDifferentIntegers(): void
     {
-        $rule = new NotEqual(1, 2);
+        $rule = new NotEqual(1, 2, errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertTrue($rule->isValid());
     }
@@ -51,49 +52,49 @@ final class NotEqualTest extends TestCase
     public function testIsValidWithDifferentTypes(): void
     {
         // Strict comparison: '42' !== 42
-        $rule = new NotEqual('42', 42);
+        $rule = new NotEqual('42', 42, errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNullVsEmptyString(): void
     {
-        $rule = new NotEqual(null, '');
+        $rule = new NotEqual(null, '', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithEqualStrings(): void
     {
-        $rule = new NotEqual('hello', 'hello');
+        $rule = new NotEqual('hello', 'hello', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEqualIntegers(): void
     {
-        $rule = new NotEqual(42, 42);
+        $rule = new NotEqual(42, 42, errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEqualNull(): void
     {
-        $rule = new NotEqual(null, null);
+        $rule = new NotEqual(null, null, errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEqualArrays(): void
     {
-        $rule = new NotEqual(['a', 'b'], ['a', 'b']);
+        $rule = new NotEqual(['a', 'b'], ['a', 'b'], errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithUnequalValues(): void
     {
-        $rule = new NotEqual('foo', 'bar');
+        $rule = new NotEqual('foo', 'bar', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         // Should not throw
         $rule->validate();
@@ -103,10 +104,10 @@ final class NotEqualTest extends TestCase
 
     public function testValidateThrowsWithEqualValues(): void
     {
-        $rule = new NotEqual('same', 'same');
+        $rule = new NotEqual('same', 'same', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must not equal');
+        $this->expectExceptionMessage(ErrorMessage::IS_NOT_EQUAL);
 
         $rule->validate();
     }

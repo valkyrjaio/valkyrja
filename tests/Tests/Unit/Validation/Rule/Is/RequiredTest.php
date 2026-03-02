@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Required;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,84 +23,84 @@ final class RequiredTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Required('value');
+        $rule = new Required('value', errorMessage: ErrorMessage::REQUIRED);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Required('test');
+        $rule = new Required('test', errorMessage: ErrorMessage::REQUIRED);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithTruthyString(): void
     {
-        $rule = new Required('hello');
+        $rule = new Required('hello', errorMessage: ErrorMessage::REQUIRED);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithTruthyNumber(): void
     {
-        $rule = new Required(42);
+        $rule = new Required(42, errorMessage: ErrorMessage::REQUIRED);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithTrue(): void
     {
-        $rule = new Required(true);
+        $rule = new Required(true, errorMessage: ErrorMessage::REQUIRED);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNonEmptyArray(): void
     {
-        $rule = new Required(['item']);
+        $rule = new Required(['item'], errorMessage: ErrorMessage::REQUIRED);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyString(): void
     {
-        $rule = new Required('');
+        $rule = new Required('', errorMessage: ErrorMessage::REQUIRED);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new Required(null);
+        $rule = new Required(null, errorMessage: ErrorMessage::REQUIRED);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithFalse(): void
     {
-        $rule = new Required(false);
+        $rule = new Required(false, errorMessage: ErrorMessage::REQUIRED);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithZero(): void
     {
-        $rule = new Required(0);
+        $rule = new Required(0, errorMessage: ErrorMessage::REQUIRED);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyArray(): void
     {
-        $rule = new Required([]);
+        $rule = new Required([], errorMessage: ErrorMessage::REQUIRED);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithTruthyValue(): void
     {
-        $rule = new Required('value');
+        $rule = new Required('value', errorMessage: ErrorMessage::REQUIRED);
 
         // Should not throw
         $rule->validate();
@@ -109,10 +110,10 @@ final class RequiredTest extends TestCase
 
     public function testValidateThrowsWithFalsyValue(): void
     {
-        $rule = new Required('');
+        $rule = new Required('', errorMessage: ErrorMessage::REQUIRED);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be provided');
+        $this->expectExceptionMessage(ErrorMessage::REQUIRED);
 
         $rule->validate();
     }

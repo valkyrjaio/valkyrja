@@ -22,16 +22,19 @@ use function is_string;
 class Max extends Rule
 {
     /**
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected int $max,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
@@ -40,14 +43,5 @@ class Max extends Rule
         }
 
         return StringFactory::max($this->subject, $this->max);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return "Must not be longer than $this->max";
     }
 }

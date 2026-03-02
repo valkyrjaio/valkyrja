@@ -18,18 +18,12 @@ use Valkyrja\Validation\Rule\Orm\Abstract\EntityRule;
 
 class EntityNotExists extends EntityRule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return $this->checkForEntity() === null;
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    protected function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'The entity does exist';
+        return $this->checkForEntity() === null;
     }
 }

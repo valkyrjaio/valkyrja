@@ -21,18 +21,12 @@ use function is_string;
 
 class Uppercase extends Rule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return is_string($this->subject) && StringFactory::isUppercase($this->subject);
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'Must be uppercase';
+        return is_string($this->subject) && StringFactory::isUppercase($this->subject);
     }
 }

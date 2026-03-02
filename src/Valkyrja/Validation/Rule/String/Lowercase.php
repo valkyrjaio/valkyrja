@@ -21,6 +21,9 @@ use function is_string;
 
 class Lowercase extends Rule
 {
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
@@ -29,14 +32,5 @@ class Lowercase extends Rule
         }
 
         return StringFactory::isLowercase($this->subject);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return 'Must be lowercase';
     }
 }

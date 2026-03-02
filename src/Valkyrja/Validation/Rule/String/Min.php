@@ -22,16 +22,19 @@ use function is_string;
 class Min extends Rule
 {
     /**
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected int $min,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
@@ -40,14 +43,5 @@ class Min extends Rule
         }
 
         return StringFactory::min($this->subject, $this->min);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return "Must be longer than $this->min";
     }
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Validation\Validator;
 
 use Override;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
+use Valkyrja\Validation\Throwable\Exception\NoFirstErrorMessageException;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
@@ -39,9 +40,9 @@ class Validator implements ValidatorContract
      * @inheritDoc
      */
     #[Override]
-    public function rules(array|null $rules = null): bool
+    public function validateRules(): bool
     {
-        $rules ??= $this->rules;
+        $rules = $this->rules;
 
         foreach ($rules as $subject => $subjectRules) {
             foreach ($subjectRules as $rule) {
@@ -74,13 +75,24 @@ class Validator implements ValidatorContract
      * @inheritDoc
      */
     #[Override]
-    public function getFirstErrorMessage(): string|null
+    public function hasFirstErrorMessage(): bool
     {
-        if (! empty($errorMessages = $this->errorMessages)) {
+        return $this->errorMessages !== [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getFirstErrorMessage(): string
+    {
+        $errorMessages = $this->errorMessages;
+
+        if ($errorMessages !== []) {
             return $errorMessages[array_key_first($errorMessages)];
         }
 
-        return null;
+        throw new NoFirstErrorMessageException('No error messages');
     }
 
     /**

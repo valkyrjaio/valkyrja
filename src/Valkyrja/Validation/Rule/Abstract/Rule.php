@@ -20,38 +20,39 @@ use Valkyrja\Validation\Throwable\Exception\ValidationException;
 abstract class Rule implements RuleContract
 {
     /**
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         protected mixed $subject,
-        protected string|null $errorMessage = null
+        protected string $errorMessage
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function getSubject(): mixed
     {
         return $this->subject;
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function validate(): void
     {
         if (! $this->isValid()) {
-            $this->getException($this->errorMessage ?? $this->getDefaultErrorMessage());
+            $this->getException();
         }
     }
 
     /**
-     * @param non-empty-string $message The error message
+     * Get the exception.
      */
-    protected function getException(string $message): void
+    protected function getException(): void
     {
-        throw new ValidationException($message);
+        throw new ValidationException($this->errorMessage);
     }
-
-    /**
-     * @return non-empty-string
-     */
-    abstract protected function getDefaultErrorMessage(): string;
 }

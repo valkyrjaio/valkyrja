@@ -18,18 +18,12 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 class Required extends Rule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return (bool) $this->subject;
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'Must be provided';
+        return (bool) $this->subject;
     }
 }

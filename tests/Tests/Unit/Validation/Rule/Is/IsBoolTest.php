@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsBool;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,70 +23,70 @@ final class IsBoolTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new IsBool(true);
+        $rule = new IsBool(true, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new IsBool(true);
+        $rule = new IsBool(true, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertTrue($rule->getSubject());
     }
 
     public function testIsValidWithTrue(): void
     {
-        $rule = new IsBool(true);
+        $rule = new IsBool(true, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithFalse(): void
     {
-        $rule = new IsBool(false);
+        $rule = new IsBool(false, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithInteger(): void
     {
-        $rule = new IsBool(1);
+        $rule = new IsBool(1, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithZero(): void
     {
-        $rule = new IsBool(0);
+        $rule = new IsBool(0, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithString(): void
     {
-        $rule = new IsBool('true');
+        $rule = new IsBool('true', errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new IsBool(null);
+        $rule = new IsBool(null, errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new IsBool([]);
+        $rule = new IsBool([], errorMessage: ErrorMessage::IS_BOOL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithBoolean(): void
     {
-        $rule = new IsBool(true);
+        $rule = new IsBool(true, errorMessage: ErrorMessage::IS_BOOL);
 
         // Should not throw
         $rule->validate();
@@ -95,10 +96,10 @@ final class IsBoolTest extends TestCase
 
     public function testValidateThrowsWithNonBoolean(): void
     {
-        $rule = new IsBool('true');
+        $rule = new IsBool('true', errorMessage: ErrorMessage::IS_BOOL);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be a boolean');
+        $this->expectExceptionMessage(ErrorMessage::IS_BOOL);
 
         $rule->validate();
     }

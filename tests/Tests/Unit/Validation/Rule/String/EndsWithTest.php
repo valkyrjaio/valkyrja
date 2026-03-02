@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\EndsWith;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,84 +23,84 @@ final class EndsWithTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new EndsWith('hello world', 'world');
+        $rule = new EndsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new EndsWith('test string', 'string');
+        $rule = new EndsWith('test string', 'string', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertSame('test string', $rule->getSubject());
     }
 
     public function testIsValidWithCorrectSuffix(): void
     {
-        $rule = new EndsWith('hello world', 'world');
+        $rule = new EndsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithExactMatch(): void
     {
-        $rule = new EndsWith('hello', 'hello');
+        $rule = new EndsWith('hello', 'hello', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithSingleCharSuffix(): void
     {
-        $rule = new EndsWith('hello', 'o');
+        $rule = new EndsWith('hello', 'o', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithWrongSuffix(): void
     {
-        $rule = new EndsWith('hello world', 'hello');
+        $rule = new EndsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithCaseMismatch(): void
     {
-        $rule = new EndsWith('hello world', 'WORLD');
+        $rule = new EndsWith('hello world', 'WORLD', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithSubstringInMiddle(): void
     {
-        $rule = new EndsWith('hello world', 'lo wo');
+        $rule = new EndsWith('hello world', 'lo wo', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new EndsWith(123, 'test');
+        $rule = new EndsWith(123, 'test', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new EndsWith(null, 'test');
+        $rule = new EndsWith(null, 'test', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new EndsWith([], 'test');
+        $rule = new EndsWith([], 'test', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithCorrectSuffix(): void
     {
-        $rule = new EndsWith('hello world', 'world');
+        $rule = new EndsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         // Should not throw
         $rule->validate();
@@ -109,10 +110,10 @@ final class EndsWithTest extends TestCase
 
     public function testValidateThrowsWithWrongSuffix(): void
     {
-        $rule = new EndsWith('hello world', 'hello');
+        $rule = new EndsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must end with hello');
+        $this->expectExceptionMessage(ErrorMessage::STRING_ENDS_WITH);
 
         $rule->validate();
     }

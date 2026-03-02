@@ -19,25 +19,22 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 class Equal extends Rule
 {
     /**
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected mixed $value,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
         return $this->subject === $this->value;
-    }
-
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return 'Must equal';
     }
 }

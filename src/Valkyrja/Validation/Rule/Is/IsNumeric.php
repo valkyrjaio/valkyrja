@@ -20,18 +20,12 @@ use function is_numeric;
 
 class IsNumeric extends Rule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return is_numeric($this->subject);
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'Must be numeric';
+        return is_numeric($this->subject);
     }
 }
