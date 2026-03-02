@@ -85,8 +85,9 @@ class PdoStatement implements StatementContract
 
         if ($columnMeta === false) {
             throw new RuntimeException(
-                $this->getErrorMessage()
-                ?? "Error occurred when getting column meta for column number $columnNumber"
+                $this->hasError()
+                    ? $this->getErrorMessage()
+                    : "Error occurred when getting column meta for column number $columnNumber"
             );
         }
 
@@ -103,7 +104,11 @@ class PdoStatement implements StatementContract
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         if (! is_array($fetch)) {
-            throw new RuntimeException($this->getErrorMessage() ?? 'Error occurred when fetching');
+            throw new RuntimeException(
+                $this->hasError()
+                    ? $this->getErrorMessage()
+                    : 'Error occurred when fetching'
+            );
         }
 
         return $fetch;
