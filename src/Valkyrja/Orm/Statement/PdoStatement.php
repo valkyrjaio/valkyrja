@@ -85,8 +85,9 @@ class PdoStatement implements StatementContract
 
         if ($columnMeta === false) {
             throw new RuntimeException(
-                $this->errorMessage()
-                ?? "Error occurred when getting column meta for column number $columnNumber"
+                $this->hasError()
+                    ? $this->getErrorMessage()
+                    : "Error occurred when getting column meta for column number $columnNumber"
             );
         }
 
@@ -95,31 +96,40 @@ class PdoStatement implements StatementContract
 
     /**
      * @inheritDoc
-     *
-     * @template T of EntityContract
-     *
-     * @param class-string<T>|null $entity The entity class name
-     *
-     * @return ($entity is class-string<T> ? T : array<string, mixed>)
      */
     #[Override]
-    public function fetch(string|null $entity = null): EntityContract|array
+    public function fetch(): array
     {
         /** @var array<string, mixed>|false $fetch */
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         if (! is_array($fetch)) {
-            throw new RuntimeException($this->errorMessage() ?? 'Error occurred when fetching');
-        }
-
-        if ($entity !== null) {
-            /** @var T $entityClass */
-            $entityClass = $entity::fromArray($fetch);
-
-            return $entityClass;
+            throw new RuntimeException(
+                $this->hasError()
+                    ? $this->getErrorMessage()
+                    : 'Error occurred when fetching'
+            );
         }
 
         return $fetch;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @template T of EntityContract
+     *
+     * @param class-string<T> $entity The entity class name
+     *
+     * @return T
+     */
+    #[Override]
+    public function fetchEntity(string $entity): EntityContract
+    {
+        /** @var T $entityClass */
+        $entityClass = $entity::fromArray($this->fetch());
+
+        return $entityClass;
     }
 
     /**
@@ -133,27 +143,32 @@ class PdoStatement implements StatementContract
 
     /**
      * @inheritDoc
-     *
-     * @template T of EntityContract
-     *
-     * @param class-string<T>|null $entity The entity class name
-     *
-     * @return ($entity is class-string<T> ? T[] : array<string, mixed>[])
      */
     #[Override]
-    public function fetchAll(string|null $entity = null): array
+    public function fetchAll(): array
     {
         /** @var array<string, mixed>[] $fetch */
         $fetch = $this->statement->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($entity !== null) {
-            /** @var T[] $entities */
-            $entities = $this->mapResultsToEntity($entity, $fetch);
-
-            return $entities;
-        }
-
         return $fetch;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @template T of EntityContract
+     *
+     * @param class-string<T> $entity The entity class name
+     *
+     * @return T[]
+     */
+    #[Override]
+    public function fetchAllEntities(string $entity): array
+    {
+        /** @var T[] $entities */
+        $entities = $this->mapResultsToEntity($entity, $this->fetchAll());
+
+        return $entities;
     }
 
     /**
@@ -191,7 +206,7 @@ class PdoStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function rowCount(): int
+    public function getRowCount(): int
     {
         return $this->statement->rowCount();
     }
@@ -200,7 +215,7 @@ class PdoStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function columnCount(): int
+    public function getColumnCount(): int
     {
         return $this->statement->columnCount();
     }
@@ -209,7 +224,16 @@ class PdoStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function errorCode(): string
+    public function hasError(): bool
+    {
+        return $this->getErrorCode() !== '00000';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getErrorCode(): string
     {
         return $this->statement->errorInfo()[0] ?? '00000';
     }
@@ -218,9 +242,9 @@ class PdoStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function errorMessage(): string|null
+    public function getErrorMessage(): string
     {
-        return $this->statement->errorInfo()[2] ?? null;
+        return $this->statement->errorInfo()[2] ?? '';
     }
 
     /**

@@ -181,7 +181,12 @@ final class SqlFileMigrationTest extends TestCase
 
         $statement
             ->expects($this->once())
-            ->method('errorMessage')
+            ->method('hasError')
+            ->willReturn(true);
+
+        $statement
+            ->expects($this->once())
+            ->method('getErrorMessage')
             ->willReturn('Syntax error');
 
         $this->orm
@@ -220,8 +225,8 @@ final class SqlFileMigrationTest extends TestCase
 
         $statement
             ->expects($this->once())
-            ->method('errorMessage')
-            ->willReturn(null);
+            ->method('hasError')
+            ->willReturn(false);
 
         $this->orm
             ->expects($this->once())
@@ -324,7 +329,12 @@ final class SqlFileMigrationTest extends TestCase
 
         $statement
             ->expects($this->once())
-            ->method('errorMessage')
+            ->method('hasError')
+            ->willReturn(true);
+
+        $statement
+            ->expects($this->once())
+            ->method('getErrorMessage')
             ->willReturn('SQL syntax error');
 
         $this->orm

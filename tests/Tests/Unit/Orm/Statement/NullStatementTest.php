@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
+use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullStatementTest extends TestCase
@@ -56,7 +57,7 @@ final class NullStatementTest extends TestCase
 
     public function testFetchWithEntityReturnsEmptyArray(): void
     {
-        self::assertSame([], $this->statement->fetch('SomeEntity'));
+        self::assertInstanceOf(EntityClass::class, $this->statement->fetchEntity(EntityClass::class));
     }
 
     public function testFetchColumnReturnsNull(): void
@@ -76,7 +77,7 @@ final class NullStatementTest extends TestCase
 
     public function testFetchAllWithEntityReturnsEmptyArray(): void
     {
-        self::assertSame([], $this->statement->fetchAll('SomeEntity'));
+        self::assertSame([], $this->statement->fetchAllEntities('SomeEntity'));
     }
 
     public function testGetCountReturnsZero(): void
@@ -86,21 +87,26 @@ final class NullStatementTest extends TestCase
 
     public function testRowCountReturnsZero(): void
     {
-        self::assertSame(0, $this->statement->rowCount());
+        self::assertSame(0, $this->statement->getRowCount());
     }
 
     public function testColumnCountReturnsZero(): void
     {
-        self::assertSame(0, $this->statement->columnCount());
+        self::assertSame(0, $this->statement->getColumnCount());
+    }
+
+    public function testHasErrorReturnsFalse(): void
+    {
+        self::assertFalse($this->statement->hasError());
     }
 
     public function testErrorCodeReturnsSuccessCode(): void
     {
-        self::assertSame('00000', $this->statement->errorCode());
+        self::assertSame('00000', $this->statement->getErrorCode());
     }
 
     public function testErrorMessageReturnsNull(): void
     {
-        self::assertNull($this->statement->errorMessage());
+        self::assertSame('', $this->statement->getErrorMessage());
     }
 }
