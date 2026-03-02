@@ -51,9 +51,18 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function fetch(string|null $entity = null): EntityContract|array
+    public function fetch(): array
     {
         return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function fetchEntity(string $entity): EntityContract
+    {
+        return new $entity();
     }
 
     /**
@@ -69,7 +78,16 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function fetchAll(string|null $entity = null): array
+    public function fetchAll(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function fetchAllEntities(string $entity): array
     {
         return [];
     }
@@ -87,7 +105,7 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function rowCount(): int
+    public function getRowCount(): int
     {
         return 0;
     }
@@ -96,7 +114,7 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function columnCount(): int
+    public function getColumnCount(): int
     {
         return 0;
     }
@@ -105,7 +123,16 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function errorCode(): string
+    public function hasError(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getErrorCode(): string
     {
         return '00000';
     }
@@ -114,8 +141,8 @@ class NullStatement implements StatementContract
      * @inheritDoc
      */
     #[Override]
-    public function errorMessage(): string|null
+    public function getErrorMessage(): string
     {
-        return null;
+        return '';
     }
 }

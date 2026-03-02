@@ -70,7 +70,7 @@ class Repository implements RepositoryContract
 
         $statement = $this->manager->prepare((string) $select);
 
-        $fetch = $statement->fetchAll($this->entity);
+        $fetch = $statement->fetchAllEntities($this->entity);
 
         return $fetch[0] ?? null;
     }
@@ -100,7 +100,7 @@ class Repository implements RepositoryContract
 
         $statement = $this->manager->prepare((string) $select);
 
-        return $statement->fetchAll($this->entity);
+        return $statement->fetchAllEntities($this->entity);
     }
 
     /**

@@ -220,7 +220,7 @@ final class PdoStatementTest extends TestCase
             ->with(PDO::FETCH_ASSOC)
             ->willReturn($data);
 
-        $result = $this->statement->fetch(EntityIntIdClass::class);
+        $result = $this->statement->fetchEntity(EntityIntIdClass::class);
 
         self::assertInstanceOf(EntityContract::class, $result);
         self::assertInstanceOf(EntityIntIdClass::class, $result);
@@ -272,7 +272,7 @@ final class PdoStatementTest extends TestCase
             ->with(PDO::FETCH_ASSOC)
             ->willReturn($data);
 
-        $result = $this->statement->fetchAll(EntityIntIdClass::class);
+        $result = $this->statement->fetchAllEntities(EntityIntIdClass::class);
 
         self::assertCount(2, $result);
         self::assertContainsOnlyInstancesOf(EntityIntIdClass::class, $result);
@@ -338,7 +338,7 @@ final class PdoStatementTest extends TestCase
             ->method('rowCount')
             ->willReturn(5);
 
-        $result = $this->statement->rowCount();
+        $result = $this->statement->getRowCount();
 
         self::assertSame(5, $result);
     }
@@ -350,7 +350,7 @@ final class PdoStatementTest extends TestCase
             ->method('columnCount')
             ->willReturn(3);
 
-        $result = $this->statement->columnCount();
+        $result = $this->statement->getColumnCount();
 
         self::assertSame(3, $result);
     }
@@ -358,48 +358,52 @@ final class PdoStatementTest extends TestCase
     public function testErrorCode(): void
     {
         $this->pdoStatement
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('errorInfo')
             ->willReturn(['42000', null, 'Syntax error']);
 
-        $result = $this->statement->errorCode();
+        $result = $this->statement->getErrorCode();
 
         self::assertSame('42000', $result);
+        self::assertTrue($this->statement->hasError());
     }
 
     public function testErrorCodeReturnsDefaultOnMissingCode(): void
     {
         $this->pdoStatement
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('errorInfo')
             ->willReturn([]);
 
-        $result = $this->statement->errorCode();
+        $result = $this->statement->getErrorCode();
 
         self::assertSame('00000', $result);
+        self::assertFalse($this->statement->hasError());
     }
 
     public function testErrorMessage(): void
     {
         $this->pdoStatement
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('errorInfo')
             ->willReturn(['42000', null, 'Syntax error']);
 
-        $result = $this->statement->errorMessage();
+        $result = $this->statement->getErrorMessage();
 
         self::assertSame('Syntax error', $result);
+        self::assertTrue($this->statement->hasError());
     }
 
     public function testErrorMessageReturnsNullOnMissingMessage(): void
     {
         $this->pdoStatement
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('errorInfo')
             ->willReturn(['00000', null]);
 
-        $result = $this->statement->errorMessage();
+        $result = $this->statement->getErrorMessage();
 
-        self::assertNull($result);
+        self::assertSame('', $result);
+        self::assertFalse($this->statement->hasError());
     }
 }

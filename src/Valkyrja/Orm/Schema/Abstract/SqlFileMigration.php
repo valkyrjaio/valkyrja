@@ -62,7 +62,7 @@ abstract class SqlFileMigration extends TransactionalMigration
             $statement = $this->orm->prepare($queryString);
 
             if (! $statement->execute()) {
-                throw new RuntimeException($statement->errorMessage() ?? 'Error occurred');
+                throw new RuntimeException($statement->hasError() ? $statement->getErrorMessage() : 'Error occurred');
             }
         }
     }

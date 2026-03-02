@@ -93,7 +93,7 @@ final class RepositoryTest extends TestCase
 
         $this->statement
             ->expects($this->once())
-            ->method('fetchAll')
+            ->method('fetchAllEntities')
             ->with($this->entityClass)
             ->willReturn([$entity]);
 
@@ -129,7 +129,7 @@ final class RepositoryTest extends TestCase
 
         $this->statement
             ->expects($this->once())
-            ->method('fetchAll')
+            ->method('fetchAllEntities')
             ->willReturn([]);
 
         $result = $this->repository->find(999);
@@ -167,7 +167,7 @@ final class RepositoryTest extends TestCase
 
         $this->statement
             ->expects($this->once())
-            ->method('fetchAll')
+            ->method('fetchAllEntities')
             ->willReturn([$entity]);
 
         $where  = new Where(new Value('name', 'Test Entity'));
@@ -207,7 +207,7 @@ final class RepositoryTest extends TestCase
 
         $this->statement
             ->expects($this->once())
-            ->method('fetchAll')
+            ->method('fetchAllEntities')
             ->willReturn($entities);
 
         $result = $this->repository->all();
@@ -246,7 +246,7 @@ final class RepositoryTest extends TestCase
 
         $this->statement
             ->expects($this->once())
-            ->method('fetchAll')
+            ->method('fetchAllEntities')
             ->willReturn($entities);
 
         $where  = new Where(new Value('name', 'Test'));

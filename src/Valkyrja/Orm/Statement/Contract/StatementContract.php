@@ -42,13 +42,20 @@ interface StatementContract
     /**
      * Fetch the results.
      *
+     * @return array<string, mixed>
+     */
+    public function fetch(): array;
+
+    /**
+     * Fetch the results as a given entity.
+     *
      * @template T of EntityContract
      *
-     * @param class-string<T>|null $entity The entity class name
+     * @param class-string<T> $entity The entity class name
      *
-     * @return ($entity is class-string<T> ? T : array<string, mixed>)
+     * @return T
      */
-    public function fetch(string|null $entity = null): EntityContract|array;
+    public function fetchEntity(string $entity): EntityContract;
 
     /**
      * Fetch a single column.
@@ -58,13 +65,20 @@ interface StatementContract
     /**
      * Fetch all the results.
      *
+     * @return array<string, mixed>[]
+     */
+    public function fetchAll(): array;
+
+    /**
+     * Fetch all the results as an array of a given entity.
+     *
      * @template T of EntityContract
      *
-     * @param class-string<T>|null $entity The entity class name
+     * @param class-string<T> $entity The entity class name
      *
-     * @return ($entity is class-string<T> ? T[] : array<string, mixed>[])
+     * @return T[]
      */
-    public function fetchAll(string|null $entity = null): array;
+    public function fetchAllEntities(string $entity): array;
 
     /**
      * Get the count.
@@ -74,20 +88,25 @@ interface StatementContract
     /**
      * The number of rows returned.
      */
-    public function rowCount(): int;
+    public function getRowCount(): int;
 
     /**
      * Count of columns returned.
      */
-    public function columnCount(): int;
+    public function getColumnCount(): int;
+
+    /**
+     * Determine if there is an error.
+     */
+    public function hasError(): bool;
 
     /**
      * The error code.
      */
-    public function errorCode(): string;
+    public function getErrorCode(): string;
 
     /**
      * The error message.
      */
-    public function errorMessage(): string|null;
+    public function getErrorMessage(): string;
 }
