@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Constant;
 
-class ErrorMessage
+final class ErrorMessage
 {
     /** @var non-empty-string */
     public const string REQUIRED = 'This field is required.';
