@@ -20,9 +20,9 @@ class Microtime
     /**
      * Freeze the microtime.
      */
-    public static function freeze(float|null $microtime = null): void
+    public static function freeze(float $microtime): void
     {
-        static::$frozenTime = $microtime ?? static::microtime();
+        static::$frozenTime = $microtime;
     }
 
     /**

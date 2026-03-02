@@ -102,9 +102,9 @@ final class AppTest extends TestCase
     #[RunInSeparateProcess]
     public function testAppStart(): void
     {
-        Microtime::freeze();
-
         $time = Microtime::get();
+
+        Microtime::freeze($time);
 
         App::appStart();
 
