@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Min;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,70 +23,70 @@ final class MinTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Min('hello', 3);
+        $rule = new Min('hello', 3, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Min('test', 2);
+        $rule = new Min('test', 2, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithExactMinLength(): void
     {
-        $rule = new Min('hello', 5);
+        $rule = new Min('hello', 5, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithLongerThanMinLength(): void
     {
-        $rule = new Min('hello world', 5);
+        $rule = new Min('hello world', 5, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithShorterThanMinLength(): void
     {
-        $rule = new Min('hi', 5);
+        $rule = new Min('hi', 5, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyString(): void
     {
-        $rule = new Min('', 1);
+        $rule = new Min('', 1, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new Min(12345, 3);
+        $rule = new Min(12345, 3, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new Min(null, 1);
+        $rule = new Min(null, 1, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new Min(['a', 'b', 'c'], 2);
+        $rule = new Min(['a', 'b', 'c'], 2, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithValidLength(): void
     {
-        $rule = new Min('hello', 3);
+        $rule = new Min('hello', 3, errorMessage: ErrorMessage::STRING_MIN);
 
         // Should not throw
         $rule->validate();
@@ -95,10 +96,10 @@ final class MinTest extends TestCase
 
     public function testValidateThrowsWithInvalidLength(): void
     {
-        $rule = new Min('hi', 5);
+        $rule = new Min('hi', 5, errorMessage: ErrorMessage::STRING_MIN);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be longer than 5');
+        $this->expectExceptionMessage(ErrorMessage::STRING_MIN);
 
         $rule->validate();
     }
@@ -115,7 +116,7 @@ final class MinTest extends TestCase
 
     public function testMinZero(): void
     {
-        $rule = new Min('', 0);
+        $rule = new Min('', 0, errorMessage: ErrorMessage::STRING_MIN);
 
         self::assertTrue($rule->isValid());
     }

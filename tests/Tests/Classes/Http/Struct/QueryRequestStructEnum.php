@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
@@ -47,14 +48,14 @@ enum QueryRequestStructEnum implements RequestStructContract
 
         return [
             self::first->name  => [
-                new Required($first),
-                new NotEmpty($first),
+                new Required($first, errorMessage: ErrorMessage::REQUIRED),
+                new NotEmpty($first, errorMessage: ErrorMessage::IS_NOT_EMPTY),
             ],
             self::second->name => [
-                new IsNumeric((int) $second),
+                new IsNumeric((int) $second, errorMessage: ErrorMessage::IS_NUMERIC),
             ],
             self::third->name  => [
-                new IsString($third),
+                new IsString($third, errorMessage: ErrorMessage::IS_STRING),
             ],
         ];
     }

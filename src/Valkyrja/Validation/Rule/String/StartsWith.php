@@ -22,13 +22,13 @@ use function is_string;
 class StartsWith extends Rule
 {
     /**
-     * @param non-empty-string      $needle       The needle
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $needle       The needle
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected string $needle,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
     }
@@ -37,14 +37,5 @@ class StartsWith extends Rule
     public function isValid(): bool
     {
         return is_string($this->subject) && StringFactory::startsWith($this->subject, $this->needle);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return "Must start with $this->needle";
     }
 }

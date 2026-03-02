@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,70 +23,70 @@ final class IsStringTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new IsString('value');
+        $rule = new IsString('value', errorMessage: ErrorMessage::IS_STRING);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new IsString('test');
+        $rule = new IsString('test', errorMessage: ErrorMessage::IS_STRING);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithString(): void
     {
-        $rule = new IsString('hello');
+        $rule = new IsString('hello', errorMessage: ErrorMessage::IS_STRING);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEmptyString(): void
     {
-        $rule = new IsString('');
+        $rule = new IsString('', errorMessage: ErrorMessage::IS_STRING);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithInteger(): void
     {
-        $rule = new IsString(42);
+        $rule = new IsString(42, errorMessage: ErrorMessage::IS_STRING);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithFloat(): void
     {
-        $rule = new IsString(3.14);
+        $rule = new IsString(3.14, errorMessage: ErrorMessage::IS_STRING);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithBoolean(): void
     {
-        $rule = new IsString(true);
+        $rule = new IsString(true, errorMessage: ErrorMessage::IS_STRING);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new IsString([]);
+        $rule = new IsString([], errorMessage: ErrorMessage::IS_STRING);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new IsString(null);
+        $rule = new IsString(null, errorMessage: ErrorMessage::IS_STRING);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithString(): void
     {
-        $rule = new IsString('value');
+        $rule = new IsString('value', errorMessage: ErrorMessage::IS_STRING);
 
         // Should not throw
         $rule->validate();
@@ -95,10 +96,10 @@ final class IsStringTest extends TestCase
 
     public function testValidateThrowsWithNonString(): void
     {
-        $rule = new IsString(123);
+        $rule = new IsString(123, errorMessage: ErrorMessage::IS_STRING);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be a string');
+        $this->expectExceptionMessage(ErrorMessage::IS_STRING);
 
         $rule->validate();
     }

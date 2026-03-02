@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Max;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,63 +23,63 @@ final class MaxTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Max('hello', 10);
+        $rule = new Max('hello', 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Max('test', 10);
+        $rule = new Max('test', 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithExactMaxLength(): void
     {
-        $rule = new Max('hello', 5);
+        $rule = new Max('hello', 5, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithShorterThanMaxLength(): void
     {
-        $rule = new Max('hi', 10);
+        $rule = new Max('hi', 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEmptyString(): void
     {
-        $rule = new Max('', 5);
+        $rule = new Max('', 5, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new Max(12345, 10);
+        $rule = new Max(12345, 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new Max(null, 10);
+        $rule = new Max(null, 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new Max(['a', 'b', 'c'], 10);
+        $rule = new Max(['a', 'b', 'c'], 10, errorMessage: ErrorMessage::STRING_MAX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithValidLength(): void
     {
-        $rule = new Max('hello', 10);
+        $rule = new Max('hello', 10, errorMessage: ErrorMessage::STRING_MAX);
 
         // Should not throw
         $rule->validate();
@@ -88,7 +89,7 @@ final class MaxTest extends TestCase
 
     public function testValidateThrowsWithInvalidLength(): void
     {
-        $rule = new Max('', 5);
+        $rule = new Max('', 5, errorMessage: ErrorMessage::STRING_MAX);
 
         $rule->validate();
 
@@ -107,10 +108,10 @@ final class MaxTest extends TestCase
 
     public function testErrorMessage(): void
     {
-        $rule = new Max(123, 10);
+        $rule = new Max(123, 10, errorMessage: ErrorMessage::STRING_MAX);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must not be longer than 10');
+        $this->expectExceptionMessage(ErrorMessage::STRING_MAX);
 
         $rule->validate();
     }

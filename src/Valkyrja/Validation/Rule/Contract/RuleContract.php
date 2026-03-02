@@ -15,9 +15,18 @@ namespace Valkyrja\Validation\Rule\Contract;
 
 interface RuleContract
 {
+    /**
+     * Get the subject.
+     */
     public function getSubject(): mixed;
 
+    /**
+     * Determine if the rule is valid with the given subject.
+     */
     public function isValid(): bool;
 
+    /**
+     * Validate the subject.
+     */
     public function validate(): void;
 }

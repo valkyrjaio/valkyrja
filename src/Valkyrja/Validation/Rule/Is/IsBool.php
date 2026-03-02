@@ -20,18 +20,12 @@ use function is_bool;
 
 class IsBool extends Rule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return is_bool($this->subject);
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'Must be a boolean';
+        return is_bool($this->subject);
     }
 }

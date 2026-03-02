@@ -21,19 +21,13 @@ use function is_string;
 
 class Alpha extends Rule
 {
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
         return is_string($this->subject)
             && StringFactory::isAlphabetic($this->subject);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return 'Must be alphabetic';
     }
 }

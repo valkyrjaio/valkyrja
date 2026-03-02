@@ -22,16 +22,16 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 abstract class EntityRule extends Rule
 {
     /**
+     * @param non-empty-string             $errorMessage The error message
      * @param class-string<EntityContract> $entity       The entity to match
      * @param non-empty-string|null        $field        The field to match
-     * @param non-empty-string|null        $errorMessage The error message
      */
     public function __construct(
         protected ManagerContract $orm,
         string|int|float|bool $subject,
+        string $errorMessage,
         protected string $entity,
         protected string|null $field = null,
-        string|null $errorMessage = null
     ) {
         parent::__construct($subject, $errorMessage);
     }

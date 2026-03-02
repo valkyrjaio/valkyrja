@@ -21,29 +21,23 @@ use function is_int;
 class LessThan extends Rule
 {
     /**
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected int $max,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
-    }
-
-    #[Override]
-    public function isValid(): bool
-    {
-        return is_int($this->subject)
-            && $this->subject < $this->max;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return "Must be less than $this->max";
+        return is_int($this->subject)
+            && $this->subject < $this->max;
     }
 }

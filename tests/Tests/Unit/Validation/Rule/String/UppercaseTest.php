@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Uppercase;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,77 +23,77 @@ final class UppercaseTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Uppercase('ABC');
+        $rule = new Uppercase('ABC', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Uppercase('TEST');
+        $rule = new Uppercase('TEST', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertSame('TEST', $rule->getSubject());
     }
 
     public function testIsValidWithUppercase(): void
     {
-        $rule = new Uppercase('HELLO');
+        $rule = new Uppercase('HELLO', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithUppercaseAndNumbers(): void
     {
-        $rule = new Uppercase('ABC123');
+        $rule = new Uppercase('ABC123', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithUppercaseAndSpaces(): void
     {
-        $rule = new Uppercase('HELLO WORLD');
+        $rule = new Uppercase('HELLO WORLD', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithLowercase(): void
     {
-        $rule = new Uppercase('hello');
+        $rule = new Uppercase('hello', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithMixedCase(): void
     {
-        $rule = new Uppercase('Hello');
+        $rule = new Uppercase('Hello', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new Uppercase(123);
+        $rule = new Uppercase(123, errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new Uppercase(null);
+        $rule = new Uppercase(null, errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new Uppercase([]);
+        $rule = new Uppercase([], errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithUppercase(): void
     {
-        $rule = new Uppercase('HELLO WORLD');
+        $rule = new Uppercase('HELLO WORLD', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         // Should not throw
         $rule->validate();
@@ -102,10 +103,10 @@ final class UppercaseTest extends TestCase
 
     public function testValidateThrowsWithNonUppercase(): void
     {
-        $rule = new Uppercase('Hello');
+        $rule = new Uppercase('Hello', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be uppercase');
+        $this->expectExceptionMessage(ErrorMessage::STRING_UPPERCASE);
 
         $rule->validate();
     }

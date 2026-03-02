@@ -18,19 +18,13 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 class NotEmpty extends Rule
 {
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
         return $this->subject !== ''
             && ! empty($this->subject);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return 'Must not be empty';
     }
 }

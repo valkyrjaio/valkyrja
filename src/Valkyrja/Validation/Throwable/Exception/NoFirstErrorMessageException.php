@@ -11,19 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Rule\Is;
+namespace Valkyrja\Validation\Throwable\Exception;
 
-use Override;
-use Valkyrja\Validation\Rule\Abstract\Rule;
-
-class IsEmpty extends Rule
+class NoFirstErrorMessageException extends RuntimeException
 {
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function isValid(): bool
-    {
-        return empty($this->subject);
-    }
 }

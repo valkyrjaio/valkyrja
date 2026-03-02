@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Int;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Int\GreaterThan;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,91 +23,91 @@ final class GreaterThanTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new GreaterThan(10, 5);
+        $rule = new GreaterThan(10, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new GreaterThan(42, 10);
+        $rule = new GreaterThan(42, 10, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertSame(42, $rule->getSubject());
     }
 
     public function testIsValidWithGreaterValue(): void
     {
-        $rule = new GreaterThan(10, 5);
+        $rule = new GreaterThan(10, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithMuchGreaterValue(): void
     {
-        $rule = new GreaterThan(1000, 5);
+        $rule = new GreaterThan(1000, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithEqualValue(): void
     {
-        $rule = new GreaterThan(5, 5);
+        $rule = new GreaterThan(5, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithLesserValue(): void
     {
-        $rule = new GreaterThan(3, 5);
+        $rule = new GreaterThan(3, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNegativeComparison(): void
     {
-        $rule = new GreaterThan(-10, -5);
+        $rule = new GreaterThan(-10, -5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsValidWithNegativeGreaterValue(): void
     {
-        $rule = new GreaterThan(-5, -10);
+        $rule = new GreaterThan(-5, -10, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithString(): void
     {
-        $rule = new GreaterThan('10', 5);
+        $rule = new GreaterThan('10', 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithFloat(): void
     {
-        $rule = new GreaterThan(10.5, 5);
+        $rule = new GreaterThan(10.5, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new GreaterThan(null, 5);
+        $rule = new GreaterThan(null, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new GreaterThan([], 5);
+        $rule = new GreaterThan([], 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithGreaterValue(): void
     {
-        $rule = new GreaterThan(10, 5);
+        $rule = new GreaterThan(10, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         // Should not throw
         $rule->validate();
@@ -116,10 +117,10 @@ final class GreaterThanTest extends TestCase
 
     public function testValidateThrowsWithLesserValue(): void
     {
-        $rule = new GreaterThan(3, 5);
+        $rule = new GreaterThan(3, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be greater than 5');
+        $this->expectExceptionMessage(ErrorMessage::INT_GREATER_THAN);
 
         $rule->validate();
     }
@@ -136,8 +137,8 @@ final class GreaterThanTest extends TestCase
 
     public function testWithZero(): void
     {
-        $rulePositive = new GreaterThan(1, 0);
-        $ruleNegative = new GreaterThan(-1, 0);
+        $rulePositive = new GreaterThan(1, 0, errorMessage: ErrorMessage::INT_GREATER_THAN);
+        $ruleNegative = new GreaterThan(-1, 0, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
         self::assertTrue($rulePositive->isValid());
         self::assertFalse($ruleNegative->isValid());

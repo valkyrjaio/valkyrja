@@ -19,10 +19,8 @@ interface ValidatorContract
 {
     /**
      * Validate a set of rules.
-     *
-     * @param array<non-empty-string, RuleContract[]>|null $rules The rules
      */
-    public function rules(array|null $rules = null): bool;
+    public function validateRules(): bool;
 
     /**
      * Set the rules to validate.
@@ -53,9 +51,14 @@ interface ValidatorContract
     public function getErrorMessages(): array;
 
     /**
+     * Determine if there is a first error message thrown.
+     */
+    public function hasFirstErrorMessage(): bool;
+
+    /**
      * Get the first error message thrown.
      *
-     * @return non-empty-string|null
+     * @return non-empty-string
      */
-    public function getFirstErrorMessage(): string|null;
+    public function getFirstErrorMessage(): string;
 }

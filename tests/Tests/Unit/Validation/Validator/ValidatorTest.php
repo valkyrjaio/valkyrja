@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Validation\Validator;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
 use Valkyrja\Validation\Rule\Is\Required;
+use Valkyrja\Validation\Throwable\Exception\NoFirstErrorMessageException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
@@ -31,20 +32,20 @@ final class ValidatorTest extends TestCase
     public function testRulesWithValidData(): void
     {
         $validator = new Validator([
-            'name' => [new Required('John')],
+            'name' => [new Required('John', errorMessage: 'Name is required')],
         ]);
 
-        self::assertTrue($validator->rules());
+        self::assertTrue($validator->validateRules());
         self::assertEmpty($validator->getErrorMessages());
     }
 
     public function testRulesWithInvalidData(): void
     {
         $validator = new Validator([
-            'name' => [new Required('')],
+            'name' => [new Required('', errorMessage: 'Name is required')],
         ]);
 
-        self::assertFalse($validator->rules());
+        self::assertFalse($validator->validateRules());
         self::assertNotEmpty($validator->getErrorMessages());
     }
 
@@ -53,10 +54,12 @@ final class ValidatorTest extends TestCase
         $validator = new Validator();
 
         $rules = [
-            'email' => [new Required('test@test.com')],
+            'email' => [new Required('test@test.com', errorMessage: 'Email is required')],
         ];
 
-        self::assertTrue($validator->rules($rules));
+        $validator->setRules($rules);
+
+        self::assertTrue($validator->validateRules());
         self::assertEmpty($validator->getErrorMessages());
     }
 
@@ -65,10 +68,12 @@ final class ValidatorTest extends TestCase
         $validator = new Validator();
 
         $rules = [
-            'email' => [new Required(null)],
+            'email' => [new Required(null, errorMessage: 'Email is required')],
         ];
 
-        self::assertFalse($validator->rules($rules));
+        $validator->setRules($rules);
+
+        self::assertFalse($validator->validateRules());
         self::assertNotEmpty($validator->getErrorMessages());
     }
 
@@ -77,22 +82,22 @@ final class ValidatorTest extends TestCase
         $validator = new Validator();
 
         $rules = [
-            'title' => [new Required('Hello')],
+            'title' => [new Required('Hello', errorMessage: 'Title is required')],
         ];
 
         $validator->setRules($rules);
 
-        self::assertTrue($validator->rules());
+        self::assertTrue($validator->validateRules());
     }
 
     public function testGetErrorMessages(): void
     {
         $validator = new Validator([
-            'name'  => [new Required('')],
-            'email' => [new Required(null)],
+            'name'  => [new Required('', errorMessage: 'Name is required')],
+            'email' => [new Required(null, errorMessage: 'Email is required')],
         ]);
 
-        $validator->rules();
+        $validator->validateRules();
 
         $errors = $validator->getErrorMessages();
 
@@ -104,11 +109,11 @@ final class ValidatorTest extends TestCase
     public function testGetFirstErrorMessage(): void
     {
         $validator = new Validator([
-            'name'  => [new Required('')],
-            'email' => [new Required(null)],
+            'name'  => [new Required('', errorMessage: 'Name is required')],
+            'email' => [new Required(null, errorMessage: 'Email is required')],
         ]);
 
-        $validator->rules();
+        $validator->validateRules();
 
         $firstError = $validator->getFirstErrorMessage();
 
@@ -116,14 +121,18 @@ final class ValidatorTest extends TestCase
         self::assertStringContainsString('name:', $firstError);
     }
 
-    public function testGetFirstErrorMessageReturnsNullWhenNoErrors(): void
+    public function testGetFirstErrorMessageReturnsThrowsWhenNoErrors(): void
     {
+        $this->expectException(NoFirstErrorMessageException::class);
+        $this->expectExceptionMessage('No error messages');
+
         $validator = new Validator([
-            'name' => [new Required('John')],
+            'name' => [new Required('John', errorMessage: 'Name is required')],
         ]);
 
-        $validator->rules();
+        $validator->validateRules();
 
+        self::assertFalse($validator->hasFirstErrorMessage());
         self::assertNull($validator->getFirstErrorMessage());
     }
 
@@ -131,24 +140,24 @@ final class ValidatorTest extends TestCase
     {
         $validator = new Validator([
             'title' => [
-                new Required('Hello'),
-                new NotEmpty('Hello'),
+                new Required('Hello', errorMessage: 'Title is required'),
+                new NotEmpty('Hello', errorMessage: 'Title cannot be empty'),
             ],
         ]);
 
-        self::assertTrue($validator->rules());
+        self::assertTrue($validator->validateRules());
     }
 
     public function testMultipleRulesPerSubjectWithFailure(): void
     {
         $validator = new Validator([
             'title' => [
-                new Required(''),
-                new NotEmpty(''),
+                new Required('', errorMessage: 'Title is required'),
+                new NotEmpty('', errorMessage: 'Title cannot be empty'),
             ],
         ]);
 
-        self::assertFalse($validator->rules());
+        self::assertFalse($validator->validateRules());
 
         // Only one error per subject (first failure)
         $errors = $validator->getErrorMessages();
@@ -158,10 +167,10 @@ final class ValidatorTest extends TestCase
     public function testErrorMessageFormat(): void
     {
         $validator = new Validator([
-            'username' => [new Required('')],
+            'username' => [new Required('', errorMessage: 'Username is required')],
         ]);
 
-        $validator->rules();
+        $validator->validateRules();
 
         $errors = $validator->getErrorMessages();
 
@@ -172,7 +181,7 @@ final class ValidatorTest extends TestCase
     {
         $validator = new Validator([]);
 
-        self::assertTrue($validator->rules());
+        self::assertTrue($validator->validateRules());
         self::assertEmpty($validator->getErrorMessages());
     }
 }

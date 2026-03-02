@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Int;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Int\LessThan;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,91 +23,91 @@ final class LessThanTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new LessThan(5, 10);
+        $rule = new LessThan(5, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new LessThan(5, 10);
+        $rule = new LessThan(5, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertSame(5, $rule->getSubject());
     }
 
     public function testIsValidWithLesserValue(): void
     {
-        $rule = new LessThan(5, 10);
+        $rule = new LessThan(5, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithMuchLesserValue(): void
     {
-        $rule = new LessThan(1, 1000);
+        $rule = new LessThan(1, 1000, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithEqualValue(): void
     {
-        $rule = new LessThan(5, 5);
+        $rule = new LessThan(5, 5, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithGreaterValue(): void
     {
-        $rule = new LessThan(10, 5);
+        $rule = new LessThan(10, 5, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsValidWithNegativeComparison(): void
     {
-        $rule = new LessThan(-10, -5);
+        $rule = new LessThan(-10, -5, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithNegativeLesserValue(): void
     {
-        $rule = new LessThan(-5, -10);
+        $rule = new LessThan(-5, -10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithString(): void
     {
-        $rule = new LessThan('5', 10);
+        $rule = new LessThan('5', 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithFloat(): void
     {
-        $rule = new LessThan(5.5, 10);
+        $rule = new LessThan(5.5, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new LessThan(null, 10);
+        $rule = new LessThan(null, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new LessThan([], 10);
+        $rule = new LessThan([], 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithLesserValue(): void
     {
-        $rule = new LessThan(5, 10);
+        $rule = new LessThan(5, 10, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         // Should not throw
         $rule->validate();
@@ -116,10 +117,10 @@ final class LessThanTest extends TestCase
 
     public function testValidateThrowsWithGreaterValue(): void
     {
-        $rule = new LessThan(10, 5);
+        $rule = new LessThan(10, 5, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be less than 5');
+        $this->expectExceptionMessage(ErrorMessage::INT_LESS_THAN);
 
         $rule->validate();
     }
@@ -136,8 +137,8 @@ final class LessThanTest extends TestCase
 
     public function testWithZero(): void
     {
-        $ruleNegative = new LessThan(-1, 0);
-        $rulePositive = new LessThan(1, 0);
+        $ruleNegative = new LessThan(-1, 0, errorMessage: ErrorMessage::INT_LESS_THAN);
+        $rulePositive = new LessThan(1, 0, errorMessage: ErrorMessage::INT_LESS_THAN);
 
         self::assertTrue($ruleNegative->isValid());
         self::assertFalse($rulePositive->isValid());

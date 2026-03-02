@@ -147,17 +147,17 @@ final class RequestStructTest extends TestCase
         $validateBody  = ParsedBodyRequestStructEnum::validate($request);
         $validateJson  = JsonRequestStructEnum::validate($request);
 
-        self::assertTrue($validateQuery->rules());
-        self::assertTrue($validateBody->rules());
-        self::assertTrue($validateJson->rules());
+        self::assertTrue($validateQuery->validateRules());
+        self::assertTrue($validateBody->validateRules());
+        self::assertTrue($validateJson->validateRules());
 
         $validateQuery2 = QueryRequestStructEnum::validate($request2);
         $validateBody2  = ParsedBodyRequestStructEnum::validate($request2);
         $validateJson2  = JsonRequestStructEnum::validate($request2);
 
-        self::assertFalse($validateQuery2->rules());
-        self::assertFalse($validateBody2->rules());
-        self::assertFalse($validateJson2->rules());
+        self::assertFalse($validateQuery2->validateRules());
+        self::assertFalse($validateBody2->validateRules());
+        self::assertFalse($validateJson2->validateRules());
     }
 
     /**
@@ -253,17 +253,17 @@ final class RequestStructTest extends TestCase
         $validateBody  = IndexedParsedBodyRequestStructEnum::validate($request);
         $validateJson  = IndexedJsonRequestStructEnum::validate($request);
 
-        self::assertTrue($validateQuery->rules());
-        self::assertTrue($validateBody->rules());
-        self::assertTrue($validateJson->rules());
+        self::assertTrue($validateQuery->validateRules());
+        self::assertTrue($validateBody->validateRules());
+        self::assertTrue($validateJson->validateRules());
 
         $validateQuery2 = IndexedQueryRequestStructEnum::validate($request2);
         $validateBody2  = IndexedParsedBodyRequestStructEnum::validate($request2);
         $validateJson2  = IndexedJsonRequestStructEnum::validate($request2);
 
-        self::assertFalse($validateQuery2->rules());
-        self::assertFalse($validateBody2->rules());
-        self::assertFalse($validateJson2->rules());
+        self::assertFalse($validateQuery2->validateRules());
+        self::assertFalse($validateBody2->validateRules());
+        self::assertFalse($validateJson2->validateRules());
     }
 
     public function testJsonRequestStructException(): void

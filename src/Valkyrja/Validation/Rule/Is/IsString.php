@@ -20,18 +20,12 @@ use function is_string;
 
 class IsString extends Rule
 {
-    #[Override]
-    public function isValid(): bool
-    {
-        return is_string($this->subject);
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getDefaultErrorMessage(): string
+    public function isValid(): bool
     {
-        return 'Must be a string';
+        return is_string($this->subject);
     }
 }

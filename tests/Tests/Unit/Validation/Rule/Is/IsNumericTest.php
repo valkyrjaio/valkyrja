@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,91 +23,91 @@ final class IsNumericTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new IsNumeric(42);
+        $rule = new IsNumeric(42, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new IsNumeric(42);
+        $rule = new IsNumeric(42, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertSame(42, $rule->getSubject());
     }
 
     public function testIsValidWithInteger(): void
     {
-        $rule = new IsNumeric(42);
+        $rule = new IsNumeric(42, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithFloat(): void
     {
-        $rule = new IsNumeric(3.14);
+        $rule = new IsNumeric(3.14, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNumericString(): void
     {
-        $rule = new IsNumeric('42');
+        $rule = new IsNumeric('42', errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNegativeNumber(): void
     {
-        $rule = new IsNumeric(-10);
+        $rule = new IsNumeric(-10, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithZero(): void
     {
-        $rule = new IsNumeric(0);
+        $rule = new IsNumeric(0, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithScientificNotation(): void
     {
-        $rule = new IsNumeric('1e10');
+        $rule = new IsNumeric('1e10', errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithNonNumericString(): void
     {
-        $rule = new IsNumeric('hello');
+        $rule = new IsNumeric('hello', errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithBoolean(): void
     {
-        $rule = new IsNumeric(true);
+        $rule = new IsNumeric(true, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new IsNumeric(null);
+        $rule = new IsNumeric(null, errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new IsNumeric([]);
+        $rule = new IsNumeric([], errorMessage: ErrorMessage::IS_NUMERIC);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithNumeric(): void
     {
-        $rule = new IsNumeric(42);
+        $rule = new IsNumeric(42, errorMessage: ErrorMessage::IS_NUMERIC);
 
         // Should not throw
         $rule->validate();
@@ -116,10 +117,10 @@ final class IsNumericTest extends TestCase
 
     public function testValidateThrowsWithNonNumeric(): void
     {
-        $rule = new IsNumeric('hello');
+        $rule = new IsNumeric('hello', errorMessage: ErrorMessage::IS_NUMERIC);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must be numeric');
+        $this->expectExceptionMessage(ErrorMessage::IS_NUMERIC);
 
         $rule->validate();
     }

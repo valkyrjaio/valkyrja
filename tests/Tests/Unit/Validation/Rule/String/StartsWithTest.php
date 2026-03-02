@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\StartsWith;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,84 +23,84 @@ final class StartsWithTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new StartsWith('hello world', 'hello');
+        $rule = new StartsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new StartsWith('test string', 'test');
+        $rule = new StartsWith('test string', 'test', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertSame('test string', $rule->getSubject());
     }
 
     public function testIsValidWithCorrectPrefix(): void
     {
-        $rule = new StartsWith('hello world', 'hello');
+        $rule = new StartsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithExactMatch(): void
     {
-        $rule = new StartsWith('hello', 'hello');
+        $rule = new StartsWith('hello', 'hello', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithSingleCharPrefix(): void
     {
-        $rule = new StartsWith('hello', 'h');
+        $rule = new StartsWith('hello', 'h', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithWrongPrefix(): void
     {
-        $rule = new StartsWith('hello world', 'world');
+        $rule = new StartsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithCaseMismatch(): void
     {
-        $rule = new StartsWith('hello world', 'HELLO');
+        $rule = new StartsWith('hello world', 'HELLO', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithSubstringInMiddle(): void
     {
-        $rule = new StartsWith('hello world', 'lo wo');
+        $rule = new StartsWith('hello world', 'lo wo', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new StartsWith(123, 'test');
+        $rule = new StartsWith(123, 'test', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new StartsWith(null, 'test');
+        $rule = new StartsWith(null, 'test', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new StartsWith([], 'test');
+        $rule = new StartsWith([], 'test', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithCorrectPrefix(): void
     {
-        $rule = new StartsWith('hello world', 'hello');
+        $rule = new StartsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         // Should not throw
         $rule->validate();
@@ -109,10 +110,10 @@ final class StartsWithTest extends TestCase
 
     public function testValidateThrowsWithWrongPrefix(): void
     {
-        $rule = new StartsWith('hello world', 'world');
+        $rule = new StartsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must start with world');
+        $this->expectExceptionMessage(ErrorMessage::STRING_STARTS_WITH);
 
         $rule->validate();
     }

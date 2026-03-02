@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Regex;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,84 +23,84 @@ final class RegexTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Regex('test', '/test/');
+        $rule = new Regex('test', '/test/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Regex('test123', '/\d+/');
+        $rule = new Regex('test123', '/\d+/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertSame('test123', $rule->getSubject());
     }
 
     public function testIsValidWithMatchingPattern(): void
     {
-        $rule = new Regex('test123', '/^[a-z]+\d+$/');
+        $rule = new Regex('test123', '/^[a-z]+\d+$/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithSimpleMatch(): void
     {
-        $rule = new Regex('hello', '/hello/');
+        $rule = new Regex('hello', '/hello/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithPartialMatch(): void
     {
-        $rule = new Regex('hello world', '/world/');
+        $rule = new Regex('hello world', '/world/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEmailPattern(): void
     {
-        $rule = new Regex('test@example.com', '/^[^@]+@[^@]+\.[^@]+$/');
+        $rule = new Regex('test@example.com', '/^[^@]+@[^@]+\.[^@]+$/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithNonMatchingPattern(): void
     {
-        $rule = new Regex('abc', '/\d+/');
+        $rule = new Regex('abc', '/\d+/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyString(): void
     {
-        $rule = new Regex('', '/\d+/');
+        $rule = new Regex('', '/\d+/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNonString(): void
     {
-        $rule = new Regex(123, '/\d+/');
+        $rule = new Regex(123, '/\d+/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new Regex(null, '/test/');
+        $rule = new Regex(null, '/test/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithArray(): void
     {
-        $rule = new Regex([], '/test/');
+        $rule = new Regex([], '/test/', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithMatchingPattern(): void
     {
-        $rule = new Regex('test123', '/^[a-z]+\d+$/');
+        $rule = new Regex('test123', '/^[a-z]+\d+$/', errorMessage: ErrorMessage::STRING_REGEX);
 
         // Should not throw
         $rule->validate();
@@ -110,10 +111,10 @@ final class RegexTest extends TestCase
     public function testValidateThrowsWithNonMatchingPattern(): void
     {
         $regex = '/^[0-9]+$/';
-        $rule  = new Regex('abc', $regex);
+        $rule  = new Regex('abc', $regex, errorMessage: ErrorMessage::STRING_REGEX);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage("Must match the given regex $regex");
+        $this->expectExceptionMessage(ErrorMessage::STRING_REGEX);
 
         $rule->validate();
     }
@@ -130,7 +131,7 @@ final class RegexTest extends TestCase
 
     public function testCaseInsensitiveMatch(): void
     {
-        $rule = new Regex('HELLO', '/hello/i');
+        $rule = new Regex('HELLO', '/hello/i', errorMessage: ErrorMessage::STRING_REGEX);
 
         self::assertTrue($rule->isValid());
     }

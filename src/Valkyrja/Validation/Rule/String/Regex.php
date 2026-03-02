@@ -22,17 +22,20 @@ use function preg_match;
 class Regex extends Rule
 {
     /**
-     * @param non-empty-string      $regex        The regex
-     * @param non-empty-string|null $errorMessage The error message
+     * @param non-empty-string $regex        The regex
+     * @param non-empty-string $errorMessage The error message
      */
     public function __construct(
         mixed $subject,
         protected string $regex,
-        string|null $errorMessage = null
+        string $errorMessage
     ) {
         parent::__construct($subject, $errorMessage);
     }
 
+    /**
+     * @inheritDoc
+     */
     #[Override]
     public function isValid(): bool
     {
@@ -41,14 +44,5 @@ class Regex extends Rule
         return is_string($this->subject)
             && $this->subject !== ''
             && preg_match($regex, $this->subject);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDefaultErrorMessage(): string
-    {
-        return "Must match the given regex $this->regex";
     }
 }

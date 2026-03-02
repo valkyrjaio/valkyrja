@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Equal;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,49 +23,49 @@ final class EqualTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new Equal('value', 'value');
+        $rule = new Equal('value', 'value', errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new Equal('test', 'test');
+        $rule = new Equal('test', 'test', errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithEqualStrings(): void
     {
-        $rule = new Equal('hello', 'hello');
+        $rule = new Equal('hello', 'hello', errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEqualIntegers(): void
     {
-        $rule = new Equal(42, 42);
+        $rule = new Equal(42, 42, errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEqualNull(): void
     {
-        $rule = new Equal(null, null);
+        $rule = new Equal(null, null, errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithEqualArrays(): void
     {
-        $rule = new Equal(['a', 'b'], ['a', 'b']);
+        $rule = new Equal(['a', 'b'], ['a', 'b'], errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithDifferentStrings(): void
     {
-        $rule = new Equal('hello', 'world');
+        $rule = new Equal('hello', 'world', errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertFalse($rule->isValid());
     }
@@ -72,28 +73,28 @@ final class EqualTest extends TestCase
     public function testIsInvalidWithDifferentTypes(): void
     {
         // Strict comparison: '42' !== 42
-        $rule = new Equal('42', 42);
+        $rule = new Equal('42', 42, errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithDifferentIntegers(): void
     {
-        $rule = new Equal(1, 2);
+        $rule = new Equal(1, 2, errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithNullVsEmptyString(): void
     {
-        $rule = new Equal(null, '');
+        $rule = new Equal(null, '', errorMessage: ErrorMessage::IS_EMAIL);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithEqualValues(): void
     {
-        $rule = new Equal('value', 'value');
+        $rule = new Equal('value', 'value', errorMessage: ErrorMessage::IS_EMAIL);
 
         // Should not throw
         $rule->validate();
@@ -103,10 +104,10 @@ final class EqualTest extends TestCase
 
     public function testValidateThrowsWithUnequalValues(): void
     {
-        $rule = new Equal('foo', 'bar');
+        $rule = new Equal('foo', 'bar', errorMessage: ErrorMessage::IS_EMAIL);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must equal');
+        $this->expectExceptionMessage(ErrorMessage::IS_EMAIL);
 
         $rule->validate();
     }

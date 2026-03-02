@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Rule\Is;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
@@ -22,84 +23,84 @@ final class NotEmptyTest extends TestCase
 {
     public function testInstanceOfContract(): void
     {
-        $rule = new NotEmpty('value');
+        $rule = new NotEmpty('value', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
 
     public function testGetSubject(): void
     {
-        $rule = new NotEmpty('test');
+        $rule = new NotEmpty('test', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertSame('test', $rule->getSubject());
     }
 
     public function testIsValidWithNonEmptyString(): void
     {
-        $rule = new NotEmpty('hello');
+        $rule = new NotEmpty('hello', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNonEmptyArray(): void
     {
-        $rule = new NotEmpty(['item']);
+        $rule = new NotEmpty(['item'], errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithNonZeroNumber(): void
     {
-        $rule = new NotEmpty(42);
+        $rule = new NotEmpty(42, errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsValidWithTrue(): void
     {
-        $rule = new NotEmpty(true);
+        $rule = new NotEmpty(true, errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertTrue($rule->isValid());
     }
 
     public function testIsInvalidWithNull(): void
     {
-        $rule = new NotEmpty(null);
+        $rule = new NotEmpty(null, errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyString(): void
     {
-        $rule = new NotEmpty('');
+        $rule = new NotEmpty('', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithEmptyArray(): void
     {
-        $rule = new NotEmpty([]);
+        $rule = new NotEmpty([], errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithZero(): void
     {
-        $rule = new NotEmpty(0);
+        $rule = new NotEmpty(0, errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testIsInvalidWithFalse(): void
     {
-        $rule = new NotEmpty(false);
+        $rule = new NotEmpty(false, errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         self::assertFalse($rule->isValid());
     }
 
     public function testValidatePassesWithNonEmptyValue(): void
     {
-        $rule = new NotEmpty('value');
+        $rule = new NotEmpty('value', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         // Should not throw
         $rule->validate();
@@ -109,10 +110,10 @@ final class NotEmptyTest extends TestCase
 
     public function testValidateThrowsWithEmptyValue(): void
     {
-        $rule = new NotEmpty('');
+        $rule = new NotEmpty('', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Must not be empty');
+        $this->expectExceptionMessage(ErrorMessage::IS_NOT_EMPTY);
 
         $rule->validate();
     }

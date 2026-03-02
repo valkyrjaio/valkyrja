@@ -117,7 +117,7 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     {
         $validate = $struct::validate($request);
 
-        if (! $validate->rules()) {
+        if (! $validate->validateRules()) {
             return $this->getValidationErrorsResponse($request, $matchedRoute, $validate, $struct);
         }
 
