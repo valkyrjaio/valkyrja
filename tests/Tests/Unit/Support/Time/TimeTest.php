@@ -23,8 +23,9 @@ final class TimeTest extends TestCase
 {
     public function testFreezeWithCurrentTime(): void
     {
-        Time::freeze();
         $time = Time::get();
+
+        Time::freeze($time);
 
         sleep(1);
 

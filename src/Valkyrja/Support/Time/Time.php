@@ -20,9 +20,9 @@ class Time
     /**
      * Freeze the time.
      */
-    public static function freeze(int|null $time = null): void
+    public static function freeze(int $time): void
     {
-        static::$frozenTime = $time ?? static::time();
+        static::$frozenTime = $time;
     }
 
     /**

@@ -23,8 +23,9 @@ final class MicrotimeTest extends TestCase
 {
     public function testFreezeWithCurrentTime(): void
     {
-        Microtime::freeze();
         $time = Microtime::get();
+
+        Microtime::freeze($time);
 
         usleep(100);
 
