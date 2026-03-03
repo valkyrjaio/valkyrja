@@ -108,7 +108,7 @@ class NullManager implements ManagerContract
      * @inheritDoc
      */
     #[Override]
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    public function lastInsertId(string $table, string $idField): string
     {
         return 'id';
     }

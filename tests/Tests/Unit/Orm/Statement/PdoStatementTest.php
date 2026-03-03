@@ -173,6 +173,26 @@ final class PdoStatementTest extends TestCase
             ->willReturn(['00000', null, null]);
 
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Error occurred when getting column meta for column number 0');
+
+        $this->statement->getColumnMeta(0);
+    }
+
+    public function testGetColumnMetaThrowsWithSqlErrorExceptionOnFailure(): void
+    {
+        $this->pdoStatement
+            ->expects($this->once())
+            ->method('getColumnMeta')
+            ->with(0)
+            ->willReturn(false);
+
+        $this->pdoStatement
+            ->expects($this->exactly(2))
+            ->method('errorInfo')
+            ->willReturn(['00001', null, 'sql error']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('sql error');
 
         $this->statement->getColumnMeta(0);
     }
@@ -206,6 +226,26 @@ final class PdoStatementTest extends TestCase
             ->willReturn(['00000', null, null]);
 
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Error occurred when fetching');
+
+        $this->statement->fetch();
+    }
+
+    public function testFetchThrowsExceptionWithSqlErrorOnFailure(): void
+    {
+        $this->pdoStatement
+            ->expects($this->once())
+            ->method('fetch')
+            ->with(PDO::FETCH_ASSOC)
+            ->willReturn(false);
+
+        $this->pdoStatement
+            ->expects($this->exactly(2))
+            ->method('errorInfo')
+            ->willReturn(['00001', null, 'some error from sql']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('some error from sql');
 
         $this->statement->fetch();
     }

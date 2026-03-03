@@ -41,9 +41,9 @@ interface EntityContract extends CastableModelContract, ExposableModelContract
     /**
      * Get the repository to use for this entity.
      *
-     * @return class-string<RepositoryContract>|null
+     * @return class-string<RepositoryContract>
      */
-    public static function getRepository(): string|null;
+    public static function getRepository(): string;
 
     /**
      * Entity relationship properties.
