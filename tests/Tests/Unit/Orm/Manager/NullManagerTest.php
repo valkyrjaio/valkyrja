@@ -99,12 +99,12 @@ final class NullManagerTest extends TestCase
 
     public function testLastInsertIdReturnsIdString(): void
     {
-        self::assertSame('id', $this->manager->lastInsertId());
+        self::assertSame('id', $this->manager->lastInsertId('table', 'id'));
     }
 
     public function testLastInsertIdWithTableReturnsIdString(): void
     {
-        self::assertSame('id', $this->manager->lastInsertId('users'));
+        self::assertSame('id', $this->manager->lastInsertId('users', 'id'));
     }
 
     public function testLastInsertIdWithTableAndFieldReturnsIdString(): void

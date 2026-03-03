@@ -21,7 +21,6 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
@@ -49,11 +48,11 @@ abstract class PdoManager implements ManagerContract
     #[Override]
     public function createRepository(string $entity): RepositoryContract
     {
-        $repositoryClass = $entity::getRepository()
-            ?? Repository::class;
-
         /** @var RepositoryContract<T> $repository */
-        $repository = $this->container->get($repositoryClass, [$this, $entity]);
+        $repository = $this->container->get(
+            $entity::getRepository(),
+            [$this, $entity]
+        );
 
         return $repository;
     }
@@ -148,7 +147,7 @@ abstract class PdoManager implements ManagerContract
      * @inheritDoc
      */
     #[Override]
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    public function lastInsertId(string $table, string $idField): string
     {
         /** @var non-empty-string|false $lastInsertId */
         $lastInsertId = $this->pdo->lastInsertId();

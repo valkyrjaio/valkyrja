@@ -78,10 +78,10 @@ interface ManagerContract
     /**
      * Get the last inserted id.
      *
-     * @param non-empty-string|null $table   [optional] The table last inserted into
-     * @param non-empty-string|null $idField [optional] The id field of the table last inserted into
+     * @param non-empty-string $table   The table last inserted into
+     * @param non-empty-string $idField The id field of the table last inserted into
      *
      * @return non-empty-string
      */
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string;
+    public function lastInsertId(string $table, string $idField): string;
 }

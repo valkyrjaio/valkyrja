@@ -16,6 +16,7 @@ namespace Valkyrja\Orm\Entity\Abstract;
 use JsonException;
 use Override;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
@@ -63,9 +64,9 @@ abstract class Entity extends Model implements EntityContract
      * @inheritDoc
      */
     #[Override]
-    public static function getRepository(): string|null
+    public static function getRepository(): string
     {
-        return null;
+        return Repository::class;
     }
 
     /**

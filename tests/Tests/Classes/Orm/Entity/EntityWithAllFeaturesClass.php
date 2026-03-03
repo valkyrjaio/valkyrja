@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Orm\Entity;
 
 use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
-use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\Tests\Classes\Orm\Repository\RepositoryClass;
 
 /**
  * Entity class with all configurable features for testing.
@@ -50,9 +50,9 @@ final class EntityWithAllFeaturesClass extends Entity
      * @inheritDoc
      */
     #[Override]
-    public static function getRepository(): string|null
+    public static function getRepository(): string
     {
-        return Repository::class;
+        return RepositoryClass::class;
     }
 
     /**

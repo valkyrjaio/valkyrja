@@ -67,7 +67,7 @@ final class MysqlManagerTest extends TestCase
             ->method('lastInsertId')
             ->willReturn('42');
 
-        $result = $this->manager->lastInsertId();
+        $result = $this->manager->lastInsertId('table', 'id');
 
         self::assertSame('42', $result);
     }
@@ -98,7 +98,7 @@ final class MysqlManagerTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No last insert id found');
 
-        $this->manager->lastInsertId();
+        $this->manager->lastInsertId('table', 'id');
     }
 
     public function testCreateRepository(): void

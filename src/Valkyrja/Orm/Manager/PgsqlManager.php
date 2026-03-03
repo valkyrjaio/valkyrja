@@ -25,13 +25,9 @@ class PgsqlManager extends PdoManager
      * @inheritDoc
      */
     #[Override]
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    public function lastInsertId(string $table, string $idField): string
     {
-        $name = null;
-
-        if ($table !== null && $idField !== null) {
-            $name = "{$table}_{$idField}_seq";
-        }
+        $name = "{$table}_{$idField}_seq";
 
         /** @var non-empty-string|false $lastInsertId */
         $lastInsertId = $this->pdo->lastInsertId($name);

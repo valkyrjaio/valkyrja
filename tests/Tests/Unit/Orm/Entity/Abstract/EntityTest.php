@@ -20,6 +20,7 @@ use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityStringIdClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityWithAllFeaturesClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityWithCastingsClass;
+use Valkyrja\Tests\Classes\Orm\Repository\RepositoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Throwable\Exception\RuntimeException;
@@ -55,14 +56,14 @@ final class EntityTest extends TestCase
         self::assertSame('entity_id', EntityWithAllFeaturesClass::getIdField());
     }
 
-    public function testGetRepositoryReturnsNullByDefault(): void
+    public function testGetRepositoryReturnsRepositoryByDefault(): void
     {
-        self::assertNull(EntityIntIdClass::getRepository());
+        self::assertSame(Repository::class, EntityIntIdClass::getRepository());
     }
 
     public function testGetRepositoryReturnsCustomRepository(): void
     {
-        self::assertSame(Repository::class, EntityWithAllFeaturesClass::getRepository());
+        self::assertSame(RepositoryClass::class, EntityWithAllFeaturesClass::getRepository());
     }
 
     public function testGetRelationshipPropertiesReturnsEmptyArrayByDefault(): void

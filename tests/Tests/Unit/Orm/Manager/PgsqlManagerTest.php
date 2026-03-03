@@ -95,10 +95,10 @@ final class PgsqlManagerTest extends TestCase
         $this->pdo
             ->expects($this->once())
             ->method('lastInsertId')
-            ->with(null)
+            ->with('table_id_seq')
             ->willReturn('99');
 
-        $result = $this->manager->lastInsertId();
+        $result = $this->manager->lastInsertId('table', 'id');
 
         self::assertSame('99', $result);
     }
@@ -110,10 +110,10 @@ final class PgsqlManagerTest extends TestCase
         $this->pdo
             ->expects($this->once())
             ->method('lastInsertId')
-            ->with(null)
+            ->with('users_id_seq')
             ->willReturn('50');
 
-        $result = $this->manager->lastInsertId('users');
+        $result = $this->manager->lastInsertId('users', 'id');
 
         self::assertSame('50', $result);
     }
