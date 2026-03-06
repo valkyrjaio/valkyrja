@@ -90,11 +90,11 @@ class Request implements RequestInterface
             return [];
         }
 
-        $header = $this->request->getHeaders()->get($name);
-
-        if ($header === null) {
+        if (! $this->request->getHeaders()->has($name)) {
             return [];
         }
+
+        $header = $this->request->getHeaders()->get($name);
 
         return PsrHeaderFactory::toPsrValues($header);
     }

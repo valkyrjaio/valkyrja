@@ -43,9 +43,14 @@ interface UploadedFileContract
     public function moveTo(string $targetPath): void;
 
     /**
+     * Determine if there is a file size.
+     */
+    public function hasSize(): bool;
+
+    /**
      * Get the file size.
      */
-    public function getSize(): int|null;
+    public function getSize(): int;
 
     /**
      * Get the upload error.
@@ -55,12 +60,22 @@ interface UploadedFileContract
     public function getError(): UploadError;
 
     /**
+     * Determine if a client filename was provided.
+     */
+    public function hasClientFilename(): bool;
+
+    /**
      * Get the client filename.
      */
-    public function getClientFilename(): string|null;
+    public function getClientFilename(): string;
+
+    /**
+     * Determine if a client media type was provided.
+     */
+    public function hasClientMediaType(): bool;
 
     /**
      * Get the client media type.
      */
-    public function getClientMediaType(): string|null;
+    public function getClientMediaType(): string;
 }

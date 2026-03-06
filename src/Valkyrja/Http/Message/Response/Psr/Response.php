@@ -88,11 +88,11 @@ class Response implements ResponseInterface
             return [];
         }
 
-        $header = $this->response->getHeaders()->get($name);
-
-        if ($header === null) {
+        if (! $this->response->getHeaders()->has($name)) {
             return [];
         }
+
+        $header = $this->response->getHeaders()->get($name);
 
         return PsrHeaderFactory::toPsrValues($header);
     }

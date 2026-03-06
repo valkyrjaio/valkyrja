@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidHeaderNameException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function strtolower;
@@ -96,9 +97,16 @@ final class HeaderCollectionTest extends TestCase
         self::assertSame($header2, $header3);
     }
 
-    public function testGetHeaderReturnsNullForMissing(): void
+    public function testGetHeaderReturnsThrowsForMissing(): void
     {
-        self::assertNull($this->headerData->get('X-Custom'));
+        $name = 'X-Custom';
+
+        $this->expectException(InvalidHeaderNameException::class);
+        $this->expectExceptionMessage("Header $name does not exist");
+
+        self::assertFalse($this->headerData->has($name));
+
+        $this->headerData->get($name);
     }
 
     public function testGetHeaders(): void
@@ -169,7 +177,7 @@ final class HeaderCollectionTest extends TestCase
         $header = $new->get(HeaderName::HOST);
 
         self::assertNotNull($header);
-        self::assertSame('new-host.com', $header->getValuesAsString());
+        self::assertSame('new-host.com', $header->getHeaderLine());
     }
 
     public function testWithHeadersReturnsNewInstance(): void
@@ -216,7 +224,7 @@ final class HeaderCollectionTest extends TestCase
         $header = $new->get(HeaderName::HOST);
 
         self::assertNotNull($header);
-        self::assertSame('example.com, another.com', $header->getValuesAsString());
+        self::assertSame('example.com, another.com', $header->getHeaderLine());
     }
 
     public function testWithAddedHeadersDoesNotModifyOriginal(): void
@@ -285,6 +293,6 @@ final class HeaderCollectionTest extends TestCase
         $header = $headerData->get('Host');
 
         self::assertNotNull($header);
-        self::assertSame('second.com', $header->getValuesAsString());
+        self::assertSame('second.com', $header->getHeaderLine());
     }
 }

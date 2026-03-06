@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\File\Throwable\Exception\InvalidKeyException;
 
 use function in_array;
 use function is_array;
@@ -101,10 +102,10 @@ class UploadedFileCollection implements UploadedFileCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function get(int|string $key): UploadedFileContract|UploadedFileCollectionContract|null
+    public function get(int|string $key): UploadedFileContract|UploadedFileCollectionContract
     {
         return $this->files[$key]
-            ?? null;
+            ?? throw new InvalidKeyException("The provided key '$key' does not exist in the collection");
     }
 
     /**

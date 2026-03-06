@@ -27,7 +27,7 @@ class Component implements ComponentContract
 {
     public function __construct(
         protected string $token,
-        protected string|null $text = null
+        protected string $text = ''
     ) {
         $this->token = $this->filterPart($token);
         $this->text  = $this->filterText($text);
@@ -40,7 +40,7 @@ class Component implements ComponentContract
     public static function fromValue(string $value): static
     {
         $token = $value;
-        $text  = null;
+        $text  = '';
 
         $deliminator = '=';
 
@@ -48,9 +48,10 @@ class Component implements ComponentContract
             [$token, $text] = explode($deliminator, $value);
         }
 
-        $text = $text !== null ? trim($text) : null;
-
-        return new static(token: trim($token), text: $text);
+        return new static(
+            token: trim($token),
+            text: trim($text)
+        );
     }
 
     /**
@@ -79,16 +80,16 @@ class Component implements ComponentContract
      * @inheritDoc
      */
     #[Override]
-    public function getText(): string|null
+    public function getText(): string
     {
-        return $this->text ?? null;
+        return $this->text;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withText(string|null $text = null): static
+    public function withText(string $text): static
     {
         $new = clone $this;
 
@@ -111,7 +112,7 @@ class Component implements ComponentContract
      */
     public function __toString(): string
     {
-        return $this->token !== '' && $this->text !== null && $this->text !== ''
+        return $this->token !== '' && $this->text !== ''
             ? "$this->token=$this->text"
             : $this->token;
     }
@@ -119,10 +120,10 @@ class Component implements ComponentContract
     /**
      * Filter text.
      */
-    protected function filterText(string|null $text = null): string|null
+    protected function filterText(string $text): string
     {
-        if ($text === null) {
-            return null;
+        if ($text === '') {
+            return '';
         }
 
         return $this->filterPart($text);

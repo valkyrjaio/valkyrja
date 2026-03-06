@@ -56,7 +56,7 @@ final class RefererTest extends TestCase
         $referer = new Referer($url);
 
         self::assertCount(1, $referer->getValues());
-        self::assertSame($url, $referer->getValuesAsString());
+        self::assertSame($url, $referer->getHeaderLine());
         self::assertSame(HeaderName::REFERER . ': ' . $url, $referer->__toString());
     }
 
@@ -67,7 +67,7 @@ final class RefererTest extends TestCase
         $referer = new Referer($url1, $url2);
 
         self::assertCount(2, $referer->getValues());
-        self::assertSame("$url1, $url2", $referer->getValuesAsString());
+        self::assertSame("$url1, $url2", $referer->getHeaderLine());
     }
 
     public function testWithValueContract(): void
@@ -76,7 +76,7 @@ final class RefererTest extends TestCase
         $referer = new Referer($value);
 
         self::assertCount(1, $referer->getValues());
-        self::assertSame('https://example.com', $referer->getValuesAsString());
+        self::assertSame('https://example.com', $referer->getHeaderLine());
     }
 
     public function testWithMixedValues(): void
@@ -85,7 +85,7 @@ final class RefererTest extends TestCase
         $referer = new Referer($value, 'https://example.com/second');
 
         self::assertCount(2, $referer->getValues());
-        self::assertSame('https://example.com/first, https://example.com/second', $referer->getValuesAsString());
+        self::assertSame('https://example.com/first, https://example.com/second', $referer->getHeaderLine());
     }
 
     public function testToString(): void
@@ -102,8 +102,8 @@ final class RefererTest extends TestCase
         $newReferer = $referer->withValues('https://new.com');
 
         self::assertNotSame($referer, $newReferer);
-        self::assertSame('https://original.com', $referer->getValuesAsString());
-        self::assertSame('https://new.com', $newReferer->getValuesAsString());
+        self::assertSame('https://original.com', $referer->getHeaderLine());
+        self::assertSame('https://new.com', $newReferer->getHeaderLine());
         self::assertSame(HeaderName::REFERER, $newReferer->getName());
     }
 
@@ -115,7 +115,7 @@ final class RefererTest extends TestCase
         self::assertNotSame($referer, $newReferer);
         self::assertCount(1, $referer->getValues());
         self::assertCount(2, $newReferer->getValues());
-        self::assertSame('https://original.com, https://added.com', $newReferer->getValuesAsString());
+        self::assertSame('https://original.com, https://added.com', $newReferer->getHeaderLine());
     }
 
     public function testJsonSerialize(): void
@@ -131,7 +131,7 @@ final class RefererTest extends TestCase
         $referer = new Referer();
 
         self::assertCount(0, $referer->getValues());
-        self::assertSame('', $referer->getValuesAsString());
+        self::assertSame('', $referer->getHeaderLine());
         self::assertSame('', $referer->__toString());
     }
 }

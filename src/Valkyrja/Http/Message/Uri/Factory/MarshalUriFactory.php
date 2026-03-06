@@ -71,7 +71,7 @@ abstract class MarshalUriFactory
 
         $header = $headers[$headerName] ?? null;
 
-        return $header?->getValuesAsString() ?? $default ?? '';
+        return $header?->getHeaderLine() ?? $default ?? '';
     }
 
     /**

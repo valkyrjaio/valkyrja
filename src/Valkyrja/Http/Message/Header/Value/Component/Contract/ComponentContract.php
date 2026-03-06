@@ -40,12 +40,12 @@ interface ComponentContract extends JsonSerializable, Stringable
     /**
      * Get the text.
      */
-    public function getText(): string|null;
+    public function getText(): string;
 
     /**
      * Create a new component with the specified text.
      */
-    public function withText(string|null $text = null): static;
+    public function withText(string $text): static;
 
     /**
      * @inheritDoc

@@ -17,6 +17,7 @@ use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContrac
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\File\Throwable\Exception\InvalidKeyException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UploadedFileCollectionTest extends TestCase
@@ -76,9 +77,14 @@ final class UploadedFileCollectionTest extends TestCase
         self::assertSame($this->file, $this->fileData->get('avatar'));
     }
 
-    public function testGetFileReturnsNullForMissing(): void
+    public function testGetFileReturnsThrowsForMissing(): void
     {
-        self::assertNull($this->fileData->get('nonexistent'));
+        $key = 'nonexistent';
+
+        $this->expectException(InvalidKeyException::class);
+        $this->expectExceptionMessage("The provided key '$key' does not exist in the collection");
+
+        $this->fileData->get($key);
     }
 
     public function testGetFiles(): void
@@ -150,8 +156,9 @@ final class UploadedFileCollectionTest extends TestCase
         $new     = $this->fileData->with(['new' => $newFile]);
 
         self::assertNotSame($this->fileData, $new);
+        self::assertTrue($new->has('new'));
         self::assertSame($newFile, $new->get('new'));
-        self::assertNull($new->get('avatar'));
+        self::assertFalse($new->has('avatar'));
     }
 
     public function testWithFilesDoesNotModifyOriginal(): void
@@ -237,9 +244,11 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $fileData = new UploadedFileCollection([1 => $this->file, 2 => $this->file2]);
 
-        self::assertNull($fileData->get(0));
+        self::assertFalse($fileData->has(0));
+        self::assertTrue($fileData->has(1));
+        self::assertTrue($fileData->has(2));
         self::assertSame($this->file, $fileData->get(1));
         self::assertSame($this->file2, $fileData->get(2));
-        self::assertNull($fileData->get(3));
+        self::assertFalse($fileData->has(3));
     }
 }

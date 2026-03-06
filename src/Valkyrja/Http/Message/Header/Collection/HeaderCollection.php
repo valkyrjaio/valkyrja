@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidHeaderNameException;
 
 use function in_array;
 
@@ -91,15 +92,10 @@ class HeaderCollection implements HeaderCollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $name): HeaderContract|null
+    public function get(string $name): HeaderContract
     {
-        if (! $this->has($name)) {
-            return null;
-        }
-
-        $name = strtolower($name);
-
-        return $this->headers[$name];
+        return $this->headers[strtolower($name)]
+            ?? throw new InvalidHeaderNameException("Header $name does not exist");
     }
 
     /**
@@ -108,13 +104,11 @@ class HeaderCollection implements HeaderCollectionContract
     #[Override]
     public function getHeaderLine(string $name): string
     {
-        $header = $this->get($name);
-
-        if ($header === null) {
+        if (! $this->has($name)) {
             return '';
         }
 
-        return $header->getValuesAsString();
+        return $this->get($name)->getHeaderLine();
     }
 
     /**
@@ -257,14 +251,15 @@ class HeaderCollection implements HeaderCollectionContract
      */
     protected function addHeader(HeaderContract $header): void
     {
-        $name           = $header->getNormalizedName();
-        $existingHeader = $this->get($name);
+        $name = $header->getNormalizedName();
 
-        if ($existingHeader === null) {
+        if (! $this->has($name)) {
             $this->headers[$name] = $header;
 
             return;
         }
+
+        $existingHeader = $this->get($name);
 
         $this->headers[$name] = $existingHeader->withAddedValues(...$header->getValues());
     }

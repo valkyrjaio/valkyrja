@@ -29,30 +29,21 @@ use function urlencode;
 class Cookie extends Value implements CookieContract
 {
     /**
-     * @param string        $name     The cookie's name
-     * @param string|null   $value    [optional] The cookie's value
-     * @param int           $expire   [optional] The time the cookie should expire
-     * @param string        $path     [optional] The path the cookie is available to
-     * @param string|null   $domain   [optional] The domain the cookie is available to
-     * @param bool          $secure   [optional] Whether the cookie should only be
-     *                                transmitted over a secure HTTPS connection
-     * @param bool          $httpOnly [optional] Whether the cookie will be made
-     *                                accessible only through the HTTP protocol
-     * @param bool          $raw      [optional] Whether the cookie value should be
-     *                                sent with no url encoding
-     * @param SameSite|null $sameSite [optional] Whether the cookie will be available
-     *                                for cross-site requests
+     * @param string $name   The cookie's name
+     * @param string $value  [optional] The cookie's value
+     * @param string $path   [optional] The path the cookie is available to
+     * @param string $domain [optional] The domain the cookie is available to
      */
     public function __construct(
         protected string $name,
-        protected string|null $value = null,
+        protected string $value = '',
         protected int $expire = 0,
         protected string $path = '/',
-        protected string|null $domain = null,
+        protected string $domain = '',
         protected bool $secure = false,
         protected bool $httpOnly = true,
         protected bool $raw = false,
-        protected SameSite|null $sameSite = null,
+        protected SameSite $sameSite = SameSite::LAX,
         protected bool $delete = false
     ) {
         parent::__construct();
@@ -68,15 +59,12 @@ class Cookie extends Value implements CookieContract
         $expire = $this->expire;
         $maxAge = $this->getMaxAge();
 
-        $shouldDelete = $this->shouldDelete();
-
-        if ($shouldDelete) {
+        if ($this->delete) {
             $expire = Time::get() - 31536001;
             $maxAge = -31536001;
             $value  = 'delete';
         }
 
-        /** @var string $value */
         $arr = [
             new Component(urlencode($this->name), urlencode($value)),
         ];
@@ -90,7 +78,7 @@ class Cookie extends Value implements CookieContract
         $arr[] = $this->getDomainComponent();
         $arr[] = $this->getSecureComponent();
         $arr[] = $this->getHttpOnlyComponent();
-        $arr[] = $this->getSameSiteComponent();
+        $arr[] = new Component('samesite', $this->sameSite->value);
 
         $arrToString = array_map(static fn (mixed $val): string => (string) $val, $arr);
 
@@ -149,7 +137,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function getValue(): string|null
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -158,7 +146,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function withValue(string|null $value = null): static
+    public function withValue(string $value): static
     {
         $new = clone $this;
 
@@ -215,7 +203,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function getDomain(): string|null
+    public function getDomain(): string
     {
         return $this->domain;
     }
@@ -224,7 +212,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function withDomain(string|null $domain = null): static
+    public function withDomain(string $domain): static
     {
         $new = clone $this;
 
@@ -303,7 +291,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function getSameSite(): SameSite|null
+    public function getSameSite(): SameSite
     {
         return $this->sameSite;
     }
@@ -312,7 +300,7 @@ class Cookie extends Value implements CookieContract
      * @inheritDoc
      */
     #[Override]
-    public function withSameSite(SameSite|null $sameSite = null): static
+    public function withSameSite(SameSite $sameSite): static
     {
         $new = clone $this;
 
@@ -322,23 +310,11 @@ class Cookie extends Value implements CookieContract
     }
 
     /**
-     * Determine if the cookie should be deleted.
-     *
-     * @psalm-assert string $this->value
-     *
-     * @phpstan-assert string $this->value
-     */
-    protected function shouldDelete(): bool
-    {
-        return $this->delete || $this->value === null;
-    }
-
-    /**
      * Get the domain component.
      */
     protected function getDomainComponent(): ComponentContract|string
     {
-        return $this->domain !== null
+        return $this->domain !== ''
             ? new Component('domain', $this->domain)
             : '';
     }
@@ -360,16 +336,6 @@ class Cookie extends Value implements CookieContract
     {
         return $this->httpOnly
             ? new Component('httponly')
-            : '';
-    }
-
-    /**
-     * Get the samesite component.
-     */
-    protected function getSameSiteComponent(): ComponentContract|string
-    {
-        return $this->sameSite
-            ? new Component('samesite', $this->sameSite->value)
             : '';
     }
 }

@@ -42,11 +42,11 @@ final class HeaderFactoryTest extends TestCase
             'content-type'   => 'CONTENT_TYPE',
         ];
 
-        self::assertSame($expectedHeaders['test'], $headers['test']->getValuesAsString());
-        self::assertSame($expectedHeaders['no-override'], $headers['no-override']->getValuesAsString());
-        self::assertSame($expectedHeaders['something'], $headers['something']->getValuesAsString());
-        self::assertSame($expectedHeaders['something-else'], $headers['something-else']->getValuesAsString());
-        self::assertSame($expectedHeaders['content-type'], $headers['content-type']->getValuesAsString());
+        self::assertSame($expectedHeaders['test'], $headers['test']->getHeaderLine());
+        self::assertSame($expectedHeaders['no-override'], $headers['no-override']->getHeaderLine());
+        self::assertSame($expectedHeaders['something'], $headers['something']->getHeaderLine());
+        self::assertSame($expectedHeaders['something-else'], $headers['something-else']->getHeaderLine());
+        self::assertSame($expectedHeaders['content-type'], $headers['content-type']->getHeaderLine());
     }
 
     public function testFilter(): void
@@ -121,7 +121,7 @@ final class HeaderFactoryTest extends TestCase
         // Empty value is a valid header value
         self::assertArrayHasKey('empty', $headers);
         self::assertArrayHasKey('not-empty', $headers);
-        self::assertSame('value', $headers['not-empty']->getValuesAsString());
+        self::assertSame('value', $headers['not-empty']->getHeaderLine());
     }
 
     public function testMarshalHeadersDoesNotSkipEmptyContentValues(): void
@@ -136,7 +136,7 @@ final class HeaderFactoryTest extends TestCase
         // Empty value is a valid header value
         self::assertArrayHasKey('content-type', $headers);
         self::assertArrayHasKey('content-length', $headers);
-        self::assertSame('100', $headers['content-length']->getValuesAsString());
+        self::assertSame('100', $headers['content-length']->getHeaderLine());
     }
 
     public function testFilterValueRemovesDelCharacter(): void
@@ -202,7 +202,7 @@ final class HeaderFactoryTest extends TestCase
         $headers = HeaderFactory::marshalHeaders($server);
 
         self::assertArrayHasKey('host', $headers);
-        self::assertSame('original.example.com', $headers['host']->getValuesAsString());
+        self::assertSame('original.example.com', $headers['host']->getHeaderLine());
     }
 
     public function testFilterValueWithCrlfContinuation(): void

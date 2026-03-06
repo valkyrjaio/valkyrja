@@ -73,7 +73,7 @@ interface HeaderContract extends ArrayAccess, Countable, Iterator, JsonSerializa
     /**
      * Get the values as a string.
      */
-    public function getValuesAsString(): string;
+    public function getHeaderLine(): string;
 
     /**
      * @inheritDoc

@@ -151,7 +151,7 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
         foreach ($headers as $header) {
             $headerClassName = Header::class;
             $headerName      = $header->getName();
-            $headerContents  = $header->getValuesAsString();
+            $headerContents  = $header->getHeaderLine();
 
             $headersContents[] = <<<PHP
                 new $headerClassName(

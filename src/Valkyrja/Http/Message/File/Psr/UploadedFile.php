@@ -52,7 +52,9 @@ class UploadedFile implements UploadedFileInterface
     #[Override]
     public function getSize(): int|null
     {
-        return $this->file->getSize();
+        return $this->file->hasSize()
+            ? $this->file->getSize()
+            : null;
     }
 
     /**
@@ -70,7 +72,9 @@ class UploadedFile implements UploadedFileInterface
     #[Override]
     public function getClientFilename(): string|null
     {
-        return $this->file->getClientFilename();
+        return $this->file->hasClientFilename()
+            ? $this->file->getClientFilename()
+            : null;
     }
 
     /**
@@ -79,6 +83,8 @@ class UploadedFile implements UploadedFileInterface
     #[Override]
     public function getClientMediaType(): string|null
     {
-        return $this->file->getClientMediaType();
+        return $this->file->hasClientMediaType()
+            ? $this->file->getClientMediaType()
+            : null;
     }
 }

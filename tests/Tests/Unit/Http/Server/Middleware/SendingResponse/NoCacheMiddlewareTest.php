@@ -64,15 +64,15 @@ final class NoCacheMiddlewareTest extends TestCase
         self::assertTrue($headers->has(HeaderName::PRAGMA));
         self::assertSame(
             'Sun, 01 Jan 2014 00:00:00 GMT',
-            $headers->get(HeaderName::EXPIRES)->getValuesAsString(),
+            $headers->get(HeaderName::EXPIRES)->getHeaderLine(),
         );
         self::assertSame(
             'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
-            $headers->get(HeaderName::CACHE_CONTROL)->getValuesAsString(),
+            $headers->get(HeaderName::CACHE_CONTROL)->getHeaderLine(),
         );
         self::assertSame(
             'no-cache',
-            $headers->get(HeaderName::PRAGMA)->getValuesAsString(),
+            $headers->get(HeaderName::PRAGMA)->getHeaderLine(),
         );
     }
 }

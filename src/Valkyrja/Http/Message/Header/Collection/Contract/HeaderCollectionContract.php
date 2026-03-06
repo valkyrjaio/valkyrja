@@ -29,7 +29,7 @@ interface HeaderCollectionContract
      *
      * @param non-empty-string $name The header name
      */
-    public function get(string $name): HeaderContract|null;
+    public function get(string $name): HeaderContract;
 
     /**
      * Get a header's values as a string by name.

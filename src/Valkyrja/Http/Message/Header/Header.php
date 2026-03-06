@@ -163,7 +163,7 @@ class Header implements HeaderContract
      * @inheritDoc
      */
     #[Override]
-    public function getValuesAsString(): string
+    public function getHeaderLine(): string
     {
         return $this->valuesToString();
     }

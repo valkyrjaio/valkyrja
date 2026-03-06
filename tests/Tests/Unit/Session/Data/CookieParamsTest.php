@@ -28,7 +28,7 @@ final class CookieParamsTest extends TestCase
         self::assertSame(0, $cookieParams->lifetime);
         self::assertFalse($cookieParams->secure);
         self::assertFalse($cookieParams->httpOnly);
-        self::assertSame(SameSite::NONE, $cookieParams->sameSite);
+        self::assertSame(SameSite::STRICT, $cookieParams->sameSite);
     }
 
     public function testCustomValues(): void
@@ -62,7 +62,7 @@ final class CookieParamsTest extends TestCase
         self::assertSame(0, $cookieParams->lifetime);
         self::assertTrue($cookieParams->secure);
         self::assertFalse($cookieParams->httpOnly);
-        self::assertSame(SameSite::NONE, $cookieParams->sameSite);
+        self::assertSame(SameSite::STRICT, $cookieParams->sameSite);
     }
 
     public function testSameSiteLax(): void
