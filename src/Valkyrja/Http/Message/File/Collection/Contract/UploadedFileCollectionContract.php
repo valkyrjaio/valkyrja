@@ -32,9 +32,9 @@ interface UploadedFileCollectionContract
      *
      * @param non-empty-string|int $key The key
      *
-     * @return T|null
+     * @return T
      */
-    public function get(string|int $key): UploadedFileContract|self|null;
+    public function get(string|int $key): UploadedFileContract|self;
 
     /**
      * Get all the files.

@@ -39,19 +39,19 @@ final class HeaderTest extends TestCase
         self::assertSame(HeaderName::HOST, $header->getName());
         self::assertSame(strtolower(HeaderName::HOST), $header->getNormalizedName());
         self::assertEmpty($header->getValues());
-        self::assertEmpty($header->getValuesAsString());
+        self::assertEmpty($header->getHeaderLine());
         self::assertSame('', $header->__toString());
 
         self::assertSame(HeaderName::HOST, $header2->getName());
         self::assertSame(strtolower(HeaderName::HOST), $header2->getNormalizedName());
         self::assertCount(1, $header2->getValues());
-        self::assertSame('test', $header2->getValuesAsString());
+        self::assertSame('test', $header2->getHeaderLine());
         self::assertSame(HeaderName::HOST . ': test', $header2->__toString());
 
         self::assertSame(HeaderName::HOST, $header3->getName());
         self::assertSame(strtolower(HeaderName::HOST), $header3->getNormalizedName());
         self::assertCount(3, $header3->getValues());
-        self::assertSame('test, foo, bar', $header3->getValuesAsString());
+        self::assertSame('test, foo, bar', $header3->getHeaderLine());
         self::assertSame(HeaderName::HOST . ': test, foo, bar', $header3->__toString());
     }
 
@@ -117,7 +117,7 @@ final class HeaderTest extends TestCase
         self::assertCount(1, $singleValue->getValues());
         self::assertCount(1, $singleValue);
         self::assertSame(1, $singleValue->count());
-        self::assertSame($valueString, $singleValue->getValuesAsString());
+        self::assertSame($valueString, $singleValue->getHeaderLine());
         self::assertSame($singleValueToString, $singleValue->__toString());
         self::assertSame($singleValueToString, $singleValue->jsonSerialize());
         self::assertSame("\"$singleValueToString\"", json_encode($singleValue, JSON_THROW_ON_ERROR));
@@ -125,7 +125,7 @@ final class HeaderTest extends TestCase
         self::assertCount(2, $multiValue->getValues());
         self::assertCount(2, $multiValue);
         self::assertSame(2, $multiValue->count());
-        self::assertSame($value2String, $multiValue->getValuesAsString());
+        self::assertSame($value2String, $multiValue->getHeaderLine());
         self::assertSame($multiValueToString, $multiValue->__toString());
         self::assertSame($multiValueToString, $multiValue->jsonSerialize());
         self::assertSame("\"$multiValueToString\"", json_encode($multiValue, JSON_THROW_ON_ERROR));
@@ -133,7 +133,7 @@ final class HeaderTest extends TestCase
         self::assertCount(1, $withSingleValue->getValues());
         self::assertCount(1, $withSingleValue);
         self::assertSame(1, $withSingleValue->count());
-        self::assertSame($value3String, $withSingleValue->getValuesAsString());
+        self::assertSame($value3String, $withSingleValue->getHeaderLine());
         self::assertSame($withSingleValueToString, $withSingleValue->__toString());
         self::assertSame($withSingleValueToString, $withSingleValue->jsonSerialize());
         self::assertSame("\"$withSingleValueToString\"", json_encode($withSingleValue, JSON_THROW_ON_ERROR));
@@ -141,7 +141,7 @@ final class HeaderTest extends TestCase
         self::assertCount(2, $withMultiValue->getValues());
         self::assertCount(2, $withMultiValue);
         self::assertSame(2, $withMultiValue->count());
-        self::assertSame($value4String, $withMultiValue->getValuesAsString());
+        self::assertSame($value4String, $withMultiValue->getHeaderLine());
         self::assertSame($withMultiValueToString, $withMultiValue->__toString());
         self::assertSame($withMultiValueToString, $withMultiValue->jsonSerialize());
         self::assertSame("\"$withMultiValueToString\"", json_encode($withMultiValue, JSON_THROW_ON_ERROR));
@@ -149,7 +149,7 @@ final class HeaderTest extends TestCase
         self::assertCount(2, $addedSingleValue->getValues());
         self::assertCount(2, $addedSingleValue);
         self::assertSame(2, $addedSingleValue->count());
-        self::assertSame("$valueString, $addedValueString", $addedSingleValue->getValuesAsString());
+        self::assertSame("$valueString, $addedValueString", $addedSingleValue->getHeaderLine());
         self::assertSame($addedSingleValueToString, $addedSingleValue->__toString());
         self::assertSame($addedSingleValueToString, $addedSingleValue->jsonSerialize());
         self::assertSame("\"$addedSingleValueToString\"", json_encode($addedSingleValue, JSON_THROW_ON_ERROR));
@@ -157,7 +157,7 @@ final class HeaderTest extends TestCase
         self::assertCount(3, $addedMultiValue->getValues());
         self::assertCount(3, $addedMultiValue);
         self::assertSame(3, $addedMultiValue->count());
-        self::assertSame("$valueString, $addedValue2String", $addedMultiValue->getValuesAsString());
+        self::assertSame("$valueString, $addedValue2String", $addedMultiValue->getHeaderLine());
         self::assertSame($addedMultiValueToString, $addedMultiValue->__toString());
         self::assertSame($addedMultiValueToString, $addedMultiValue->jsonSerialize());
         self::assertSame("\"$addedMultiValueToString\"", json_encode($addedMultiValue, JSON_THROW_ON_ERROR));
@@ -194,7 +194,7 @@ final class HeaderTest extends TestCase
         // This value will be filtered to an empty string
         $header = new Header('valid', "\x0a");
 
-        self::assertSame('', $header->getValuesAsString());
+        self::assertSame('', $header->getHeaderLine());
         self::assertSame('', $header->getValues()[0]);
     }
 
@@ -248,7 +248,7 @@ final class HeaderTest extends TestCase
         $header = new Header(HeaderName::HOST, 'test', '', 'foo');
 
         // Empty values should be filtered out in getValuesAsString()
-        self::assertSame('test, foo', $header->getValuesAsString());
+        self::assertSame('test, foo', $header->getHeaderLine());
     }
 
     public function testJsonSerializeFiltersEmptyValues(): void
@@ -327,7 +327,7 @@ final class HeaderTest extends TestCase
         $header = new Header(HeaderName::HOST, $nonEmptyValue, $emptyValue, 'foo');
 
         // Empty ValueContract should be filtered out in getValuesAsString()
-        self::assertSame('test, foo', $header->getValuesAsString());
+        self::assertSame('test, foo', $header->getHeaderLine());
     }
 
     public function testWithValuesAcceptsValueContracts(): void

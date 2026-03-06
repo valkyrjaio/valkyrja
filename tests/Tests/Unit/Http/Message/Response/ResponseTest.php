@@ -96,7 +96,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $response2 = $response->withCookie($cookie);
 
             self::assertNotSame($response, $response2);
-            self::assertSame('foo=bar; path=/; httponly', $response2->getHeaders()->getHeaderLine(HeaderName::SET_COOKIE));
+            self::assertSame('foo=bar; path=/; httponly; samesite=lax', $response2->getHeaders()->getHeaderLine(HeaderName::SET_COOKIE));
         }
 
         public function testWithoutCookie(): void

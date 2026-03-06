@@ -23,7 +23,7 @@ class CookieParams
         public int $lifetime = 0,
         public bool $secure = false,
         public bool $httpOnly = false,
-        public SameSite $sameSite = SameSite::NONE,
+        public SameSite $sameSite = SameSite::STRICT,
     ) {
     }
 }

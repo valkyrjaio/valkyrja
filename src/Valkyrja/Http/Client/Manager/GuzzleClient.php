@@ -87,7 +87,7 @@ class GuzzleClient implements ClientContract
             $options['headers'] = [];
 
             foreach ($headers as $value) {
-                $options['headers'][$value->getName()] = $value->getValuesAsString();
+                $options['headers'][$value->getName()] = $value->getHeaderLine();
             }
         }
     }

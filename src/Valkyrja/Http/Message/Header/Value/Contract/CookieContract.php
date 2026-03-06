@@ -42,14 +42,14 @@ interface CookieContract extends ValueContract
     /**
      * Get the cookie's value.
      */
-    public function getValue(): string|null;
+    public function getValue(): string;
 
     /**
      * Set the cookie's value.
      *
-     * @param string|null $value The value
+     * @param string $value The value
      */
-    public function withValue(string|null $value = null): static;
+    public function withValue(string $value): static;
 
     /**
      * Get expire time for the cookie.
@@ -78,14 +78,14 @@ interface CookieContract extends ValueContract
     /**
      * Get the domain the cookie is available to.
      */
-    public function getDomain(): string|null;
+    public function getDomain(): string;
 
     /**
      * Set the domain the cookie is available to.
      *
-     * @param string|null $domain The domain
+     * @param string $domain The domain
      */
-    public function withDomain(string|null $domain = null): static;
+    public function withDomain(string $domain): static;
 
     /**
      * Whether the cookie should only be transmitted over a secure HTTPS
@@ -125,10 +125,10 @@ interface CookieContract extends ValueContract
     /**
      * Get whether the cookie will be available for cross-site requests.
      */
-    public function getSameSite(): SameSite|null;
+    public function getSameSite(): SameSite;
 
     /**
      * Set whether the cookie will be available for cross-site requests.
      */
-    public function withSameSite(SameSite|null $sameSite = null): static;
+    public function withSameSite(SameSite $sameSite): static;
 }

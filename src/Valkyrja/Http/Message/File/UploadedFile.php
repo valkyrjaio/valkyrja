@@ -21,6 +21,9 @@ use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\NoClientFilenameException;
+use Valkyrja\Http\Message\File\Throwable\Exception\NoClientMediaTypeException;
+use Valkyrja\Http\Message\File\Throwable\Exception\NoSizeException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
@@ -124,9 +127,19 @@ class UploadedFile implements UploadedFileContract
      * @inheritDoc
      */
     #[Override]
-    public function getSize(): int|null
+    public function hasSize(): bool
     {
-        return $this->size;
+        return $this->size !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getSize(): int
+    {
+        return $this->size
+            ?? throw new NoSizeException('No size available for uploaded file');
     }
 
     /**
@@ -142,18 +155,38 @@ class UploadedFile implements UploadedFileContract
      * @inheritDoc
      */
     #[Override]
-    public function getClientFilename(): string|null
+    public function hasClientFilename(): bool
     {
-        return $this->fileName;
+        return $this->fileName !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getClientMediaType(): string|null
+    public function getClientFilename(): string
     {
-        return $this->mediaType;
+        return $this->fileName
+            ?? throw new NoClientFilenameException('No client filename was provided');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function hasClientMediaType(): bool
+    {
+        return $this->mediaType !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getClientMediaType(): string
+    {
+        return $this->mediaType
+        ?? throw new NoClientMediaTypeException('No client media type was provided');
     }
 
     protected function validateNoUploadError(): void

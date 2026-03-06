@@ -36,15 +36,15 @@ final class PsrHeaderFactoryTest extends TestCase
         self::assertContainsOnlyInstancesOf(HeaderContract::class, $headers);
 
         self::assertSame('Content-Type', $headers[0]->getName());
-        self::assertSame('application/json', $headers[0]->getValuesAsString());
+        self::assertSame('application/json', $headers[0]->getHeaderLine());
 
         self::assertSame('Accept', $headers[1]->getName());
         self::assertCount(2, $headers[1]->getValues());
-        self::assertSame('text/html, application/json', $headers[1]->getValuesAsString());
+        self::assertSame('text/html, application/json', $headers[1]->getHeaderLine());
 
         self::assertSame('Cache-Control', $headers[2]->getName());
         self::assertCount(3, $headers[2]->getValues());
-        self::assertSame('no-cache, no-store, must-revalidate', $headers[2]->getValuesAsString());
+        self::assertSame('no-cache, no-store, must-revalidate', $headers[2]->getHeaderLine());
     }
 
     public function testFromPsrWithEmptyArray(): void
@@ -68,11 +68,11 @@ final class PsrHeaderFactoryTest extends TestCase
 
         self::assertSame('Host', $headers[0]->getName());
         self::assertCount(1, $headers[0]->getValues());
-        self::assertSame('example.com', $headers[0]->getValuesAsString());
+        self::assertSame('example.com', $headers[0]->getHeaderLine());
 
         self::assertSame('Content-Type', $headers[1]->getName());
         self::assertCount(1, $headers[1]->getValues());
-        self::assertSame('text/plain', $headers[1]->getValuesAsString());
+        self::assertSame('text/plain', $headers[1]->getHeaderLine());
     }
 
     public function testToPsr(): void

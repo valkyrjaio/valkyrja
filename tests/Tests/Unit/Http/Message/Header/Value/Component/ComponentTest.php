@@ -33,12 +33,12 @@ final class ComponentTest extends TestCase
         $component3 = Component::fromValue('token=text');
 
         self::assertSame('', $component->getToken());
-        self::assertNull($component->getText());
+        self::assertSame('', $component->getText());
         self::assertSame('', $component->__toString());
         self::assertSame('', $component->jsonSerialize());
 
         self::assertSame('token', $component2->getToken());
-        self::assertNull($component2->getText());
+        self::assertSame('', $component2->getText());
         self::assertSame('token', $component2->__toString());
         self::assertSame('token', $component2->jsonSerialize());
         self::assertSame('"token"', json_encode($component2, JSON_THROW_ON_ERROR));

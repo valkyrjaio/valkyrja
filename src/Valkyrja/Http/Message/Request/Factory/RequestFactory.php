@@ -68,7 +68,7 @@ abstract class RequestFactory
         $normalizedFiles = UploadedFileFactory::normalizeFiles($files);
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
-            $cookies = CookieFactory::parseCookieHeader($headers['cookie']->getValuesAsString());
+            $cookies = CookieFactory::parseCookieHeader($headers['cookie']->getHeaderLine());
         }
 
         $cookies ??= $_COOKIE;

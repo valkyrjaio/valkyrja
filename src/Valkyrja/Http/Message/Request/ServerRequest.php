@@ -254,6 +254,6 @@ class ServerRequest extends Request implements ServerRequestContract
     #[Override]
     public function isXmlHttpRequest(): bool
     {
-        return $this->headers->get(HeaderName::X_REQUESTED_WITH)?->getValuesAsString() === 'XMLHttpRequest';
+        return $this->headers->getHeaderLine(HeaderName::X_REQUESTED_WITH) === 'XMLHttpRequest';
     }
 }
