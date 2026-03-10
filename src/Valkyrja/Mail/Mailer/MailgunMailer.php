@@ -53,7 +53,7 @@ class MailgunMailer implements MailerContract
 
         if ($message->isHtml()) {
             $mailgunMessage->setHtmlBody($message->getBody());
-            $mailgunMessage->setTextBody($message->getPlainBody() ?? '');
+            $mailgunMessage->setTextBody($message->getPlainBody());
         }
 
         $this->setRecipients([$mailgunMessage, 'setFromAddress'], [$message->getFrom()]);
@@ -81,7 +81,7 @@ class MailgunMailer implements MailerContract
         foreach ($recipients as $recipient) {
             $nameArray = [];
 
-            if ($recipient->getName() !== null) {
+            if ($recipient->hasName()) {
                 $nameArray = ['full_name' => $recipient->getName()];
             }
 
@@ -98,7 +98,7 @@ class MailgunMailer implements MailerContract
     protected function addAttachments(BatchMessage $mailgunMessage, array $attachments): void
     {
         foreach ($attachments as $attachment) {
-            $mailgunMessage->addAttachment($attachment->getPath(), $attachment->getName() ?? '');
+            $mailgunMessage->addAttachment($attachment->getPath(), $attachment->getName());
         }
     }
 }

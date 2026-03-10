@@ -54,7 +54,7 @@ final class MessageTest extends TestCase
         self::assertEmpty($message->getBlindCopyRecipients());
         self::assertEmpty($message->getAttachments());
         self::assertFalse($message->isHtml());
-        self::assertNull($message->getPlainBody());
+        self::assertSame('', $message->getPlainBody());
     }
 
     public function testFrom(): void
@@ -97,7 +97,8 @@ final class MessageTest extends TestCase
         $message2 = $message->withFrom(new Recipient('new@example.com'));
 
         self::assertSame('new@example.com', $message2->getFrom()->getEmail());
-        self::assertNull($message2->getFrom()->getName());
+        self::assertFalse($message2->getFrom()->hasName());
+        self::assertSame('', $message2->getFrom()->getName());
     }
 
     public function testSubject(): void
@@ -179,14 +180,14 @@ final class MessageTest extends TestCase
             body: self::BODY
         );
         $message2 = $message->withPlainBody($plainBody);
-        $message3 = $message2->withPlainBody(null);
+        $message3 = $message2->withPlainBody('');
 
         self::assertNotSame($message, $message2);
         self::assertNotSame($message2, $message3);
 
-        self::assertNull($message->getPlainBody());
+        self::assertSame('', $message->getPlainBody());
         self::assertSame($plainBody, $message2->getPlainBody());
-        self::assertNull($message3->getPlainBody());
+        self::assertSame('', $message3->getPlainBody());
     }
 
     public function testRecipients(): void
@@ -231,7 +232,7 @@ final class MessageTest extends TestCase
         $message2 = $message->withAddedRecipient(new Recipient('test@example.com'));
 
         self::assertSame('test@example.com', $message2->getRecipients()[0]->getEmail());
-        self::assertNull($message2->getRecipients()[0]->getName());
+        self::assertSame('', $message2->getRecipients()[0]->getName());
     }
 
     public function testReplyToRecipients(): void
@@ -325,7 +326,8 @@ final class MessageTest extends TestCase
         $message2 = $message->withAddedAttachment(new Attachment('/path/to/file.pdf'));
 
         self::assertSame('/path/to/file.pdf', $message2->getAttachments()[0]->getPath());
-        self::assertNull($message2->getAttachments()[0]->getName());
+        self::assertFalse($message2->getAttachments()[0]->hasName());
+        self::assertSame('', $message2->getAttachments()[0]->getName());
     }
 
     public function testChainedWith(): void
@@ -356,7 +358,7 @@ final class MessageTest extends TestCase
         self::assertSame(self::SUBJECT, $message->getSubject());
         self::assertSame(self::BODY, $message->getBody());
         self::assertFalse($message->isHtml());
-        self::assertNull($message->getPlainBody());
+        self::assertSame('', $message->getPlainBody());
         self::assertEmpty($message->getRecipients());
         self::assertEmpty($message->getReplyToRecipients());
         self::assertEmpty($message->getCopyRecipients());

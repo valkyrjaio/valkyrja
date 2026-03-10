@@ -16,22 +16,31 @@ namespace Valkyrja\Mail\Data\Contract;
 interface AttachmentContract
 {
     /**
+     * Get the path.
+     *
      * @return non-empty-string
      */
     public function getPath(): string;
 
     /**
+     * Create a new instance with the given path.
+     *
      * @param non-empty-string $path The path
      */
     public function withPath(string $path): static;
 
     /**
-     * @return non-empty-string|null
+     * Determine if there is a name.
      */
-    public function getName(): string|null;
+    public function hasName(): bool;
 
     /**
-     * @param non-empty-string|null $name The name
+     * Get the name.
      */
-    public function withName(string|null $name = null): static;
+    public function getName(): string;
+
+    /**
+     * Create a new instance with the given name.
+     */
+    public function withName(string $name): static;
 }

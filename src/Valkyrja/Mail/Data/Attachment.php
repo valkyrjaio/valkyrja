@@ -19,12 +19,11 @@ use Valkyrja\Mail\Data\Contract\AttachmentContract;
 class Attachment implements AttachmentContract
 {
     /**
-     * @param non-empty-string      $path The path
-     * @param non-empty-string|null $name The name
+     * @param non-empty-string $path The path
      */
     public function __construct(
         protected string $path,
-        protected string|null $name = null
+        protected string $name = ''
     ) {
     }
 
@@ -54,7 +53,16 @@ class Attachment implements AttachmentContract
      * @inheritDoc
      */
     #[Override]
-    public function getName(): string|null
+    public function hasName(): bool
+    {
+        return $this->name !== '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getName(): string
     {
         return $this->name;
     }
@@ -63,7 +71,7 @@ class Attachment implements AttachmentContract
      * @inheritDoc
      */
     #[Override]
-    public function withName(string|null $name = null): static
+    public function withName(string $name): static
     {
         $new = clone $this;
 

@@ -37,7 +37,7 @@ class LogMailer implements MailerContract
     {
         $this->logger->info(static::class . ' Send');
         $this->logger->info('From Name:');
-        $this->logger->info($message->getFrom()->getName() ?? '');
+        $this->logger->info($message->getFrom()->hasName() ? $message->getFrom()->getName() : '');
         $this->logger->info('From Email:');
         $this->logger->info($message->getFrom()->getEmail());
         $this->logger->info('Recipients:');
@@ -55,7 +55,7 @@ class LogMailer implements MailerContract
         $this->logger->info('Body:');
         $this->logger->info($message->getBody());
         $this->logger->info('Plain Body:');
-        $this->logger->info($message->getPlainBody() ?? '');
+        $this->logger->info($message->hasPlainBody() ? $message->getPlainBody() : '');
         $this->logger->info('Is HTML:');
         $this->logger->info((string) $message->isHtml());
     }
