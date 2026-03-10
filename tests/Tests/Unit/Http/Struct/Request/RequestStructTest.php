@@ -98,12 +98,12 @@ final class RequestStructTest extends TestCase
             parsedJson: ParsedJsonParamCollection::fromArray($json2),
         );
 
-        self::assertNull(WithNoRulesQueryRequestStructEnum::getValidationRules($request));
+        self::assertSame([], WithNoRulesQueryRequestStructEnum::getValidationRules($request));
         self::assertNotEmpty(QueryRequestStructEnum::getValidationRules($request));
         self::assertNotEmpty(ParsedBodyRequestStructEnum::getValidationRules($request));
         self::assertNotEmpty(JsonRequestStructEnum::getValidationRules($request));
 
-        self::assertNull(WithNoRulesQueryRequestStructEnum::getValidationRules($request2));
+        self::assertSame([], WithNoRulesQueryRequestStructEnum::getValidationRules($request2));
         self::assertNotEmpty(QueryRequestStructEnum::getValidationRules($request2));
         self::assertNotEmpty(ParsedBodyRequestStructEnum::getValidationRules($request2));
         self::assertNotEmpty(JsonRequestStructEnum::getValidationRules($request2));

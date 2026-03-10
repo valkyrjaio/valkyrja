@@ -98,7 +98,7 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(ServerParamCollection::class, $request2->getServerParams()->get('bar'));
         self::assertSame(1, $request2->getServerParams()->get('int'));
         self::assertSame(1.0, $request2->getServerParams()->get('float'));
-        self::assertNull($request2->getServerParams()->get('null'));
+        self::assertFalse($request2->getServerParams()->has('null'));
 
         self::assertSame('test', $request3->getServerParams()->get('test4'));
         self::assertSame('value', $request3->getServerParams()->get('test5'));
@@ -177,8 +177,8 @@ final class ServerRequestTest extends TestCase
         self::assertSame('value', $request2->getCookieParams()->get('cookie'));
         self::assertSame('foo', $request2->getCookieParams()->get('cookie2'));
         self::assertSame('null', $request2->getCookieParams()->get('cookie3'));
-        self::assertNull($request2->getCookieParams()->get('nonexistent'));
-        self::assertNull($request2->getCookieParams()->get('nonexistentWithDefault'));
+        self::assertFalse($request2->getCookieParams()->has('nonexistent'));
+        self::assertFalse($request2->getCookieParams()->has('nonexistentWithDefault'));
 
         self::assertSame('test', $request3->getCookieParams()->get('cookie4'));
         self::assertSame('value', $request3->getCookieParams()->get('cookie5'));
@@ -299,9 +299,9 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(QueryParamCollection::class, $request2->getQueryParams()->get('bar'));
         self::assertSame('1', $request2->getQueryParams()->get('int'));
         self::assertSame('1.0', $request2->getQueryParams()->get('float'));
-        self::assertNull($request2->getQueryParams()->get('null'));
+        self::assertFalse($request2->getQueryParams()->has('null'));
         self::assertSame('number', $request2->getQueryParams()->get(2));
-        self::assertNull($request2->getQueryParams()->get('nonexistentWithDefault'));
+        self::assertFalse($request2->getQueryParams()->has('nonexistentWithDefault'));
 
         self::assertSame('test', $request3->getQueryParams()->get('param'));
         self::assertSame('value', $request3->getQueryParams()->get('param2'));
@@ -311,7 +311,7 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(QueryParamCollection::class, $request4->getQueryParams()->get('bar'));
         self::assertSame('1', $request4->getQueryParams()->get('int'));
         self::assertSame('1.0', $request4->getQueryParams()->get('float'));
-        self::assertNull($request4->getQueryParams()->get('null'));
+        self::assertFalse($request4->getQueryParams()->has('null'));
         self::assertSame('number', $request4->getQueryParams()->get(2));
         self::assertSame('null', $request4->getQueryParams()->get('param3'));
 
@@ -320,7 +320,7 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(QueryParamCollection::class, $request5->getQueryParams()->get('bar'));
         self::assertSame('1', $request5->getQueryParams()->get('int'));
         self::assertSame('1.0', $request5->getQueryParams()->get('float'));
-        self::assertNull($request5->getQueryParams()->get('null'));
+        self::assertFalse($request5->getQueryParams()->has('null'));
         self::assertSame('number', $request5->getQueryParams()->get(2));
         self::assertSame('value5', $request5->getQueryParams()->get('param3'));
     }
@@ -456,9 +456,9 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(ParsedBodyParamCollection::class, $request2->getParsedBody()->get('bar'));
         self::assertSame('1', $request2->getParsedBody()->get('int'));
         self::assertSame('1.0', $request2->getParsedBody()->get('float'));
-        self::assertNull($request2->getParsedBody()->get('null'));
+        self::assertFalse($request2->getParsedBody()->has('null'));
         self::assertSame('number', $request2->getParsedBody()->get(2));
-        self::assertNull($request2->getParsedBody()->get('nonexistentWithDefault'));
+        self::assertFalse($request2->getParsedBody()->has('nonexistentWithDefault'));
 
         self::assertSame('test', $request3->getParsedBody()->get('param'));
         self::assertSame('value', $request3->getParsedBody()->get('param2'));
@@ -468,7 +468,7 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(ParsedBodyParamCollection::class, $request4->getParsedBody()->get('bar'));
         self::assertSame('1', $request4->getParsedBody()->get('int'));
         self::assertSame('1.0', $request4->getParsedBody()->get('float'));
-        self::assertNull($request4->getParsedBody()->get('null'));
+        self::assertFalse($request4->getParsedBody()->has('null'));
         self::assertSame('number', $request4->getParsedBody()->get(2));
         self::assertSame('null', $request4->getParsedBody()->get('param3'));
 
@@ -477,7 +477,7 @@ final class ServerRequestTest extends TestCase
         self::assertInstanceOf(ParsedBodyParamCollection::class, $request5->getParsedBody()->get('bar'));
         self::assertSame('1', $request5->getParsedBody()->get('int'));
         self::assertSame('1.0', $request5->getParsedBody()->get('float'));
-        self::assertNull($request5->getParsedBody()->get('null'));
+        self::assertFalse($request5->getParsedBody()->has('null'));
         self::assertSame('number', $request5->getParsedBody()->get(2));
         self::assertSame('value5', $request5->getParsedBody()->get('param3'));
     }

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
+use Valkyrja\Http\Routing\Throwable\Exception\NoCastException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -33,7 +34,7 @@ final class ParameterTest extends TestCase
 
         self::assertSame($name, $parameter->getName());
         self::assertSame($regex, $parameter->getRegex());
-        self::assertNull($parameter->getCast());
+        self::assertFalse($parameter->hasCast());
         self::assertFalse($parameter->isOptional());
         self::assertTrue($parameter->shouldCapture());
         self::assertNull($parameter->getDefault());
@@ -109,6 +110,19 @@ final class ParameterTest extends TestCase
         self::assertNotSame($parameter, $parameter2);
         self::assertSame($cast, $parameter->getCast());
         self::assertSame($cast2, $parameter2->getCast());
+    }
+
+    public function testCastThrowsWhenNotSet(): void
+    {
+        $this->expectException(NoCastException::class);
+        $this->expectExceptionMessage('No cast exists');
+
+        $name  = 'name';
+        $regex = Regex::ALPHA;
+
+        $parameter  = new Parameter(name: $name, regex: $regex);
+
+        $parameter->getCast();
     }
 
     public function testOptional(): void

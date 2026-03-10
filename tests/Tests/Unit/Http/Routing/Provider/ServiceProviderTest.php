@@ -18,6 +18,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -182,8 +183,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->isSingleton(CollectionContract::class));
         self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
 
-        self::assertNotNull($collection->get('/'));
-        self::assertNotNull($collection->get('/from-provider'));
+        self::assertNotNull($collection->get('/', RequestMethod::ANY));
+        self::assertNotNull($collection->get('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishDataFileGenerator(): void

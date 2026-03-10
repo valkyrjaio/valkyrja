@@ -46,16 +46,19 @@ interface ParameterContract
     public function withRegex(string $regex): static;
 
     /**
+     * Determine if there is a cast.
+     */
+    public function hasCast(): bool;
+
+    /**
      * Get the cast.
      */
-    public function getCast(): Cast|null;
+    public function getCast(): Cast;
 
     /**
      * Create a new parameter with the specified cast.
-     *
-     * @param Cast|null $cast The cast
      */
-    public function withCast(Cast|null $cast = null): static;
+    public function withCast(Cast $cast): static;
 
     /**
      * Get whether this parameter is optional.

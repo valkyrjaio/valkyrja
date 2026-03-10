@@ -20,7 +20,6 @@ use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
-use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Type\Data\Cast;
@@ -42,9 +41,9 @@ class Matcher implements MatcherContract
      * @throws InvalidRouteParameterException
      */
     #[Override]
-    public function match(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
+    public function match(string $path, RequestMethod $requestMethod): RouteContract|null
     {
-        $path  = Helpers::trimPath($path);
+        $path  = '/' . trim($path, '/');
         $route = $this->matchStatic($path, $requestMethod);
 
         return $route
@@ -55,12 +54,10 @@ class Matcher implements MatcherContract
      * @inheritDoc
      */
     #[Override]
-    public function matchStatic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
+    public function matchStatic(string $path, RequestMethod $requestMethod): RouteContract|null
     {
-        $route = $this->collection->getStatic($path, $requestMethod);
-
-        if ($route !== null) {
-            return clone $route;
+        if ($this->collection->hasStatic($path, $requestMethod)) {
+            return clone $this->collection->getStatic($path, $requestMethod);
         }
 
         return null;
@@ -73,7 +70,7 @@ class Matcher implements MatcherContract
      * @throws InvalidRouteParameterException
      */
     #[Override]
-    public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
+    public function matchDynamic(string $path, RequestMethod $requestMethod): RouteContract|null
     {
         $routes = $this->collection->allDynamic($requestMethod);
 
@@ -118,7 +115,7 @@ class Matcher implements MatcherContract
      */
     protected function matchDynamicFromRoute(RouteContract $route, string $path): RouteContract|null
     {
-        $regex = $route->getRegex() ?? '';
+        $regex = $route->getRegex();
 
         // If the preg match is successful, we've found our route!
         if ($regex !== '' && preg_match($regex, $path, $matches)) {
@@ -189,11 +186,9 @@ class Matcher implements MatcherContract
         ParameterContract $parameter,
         array|string|int|bool|float|object $match
     ): array|string|int|bool|float|object|null {
-        $cast = $parameter->getCast();
-
-        if ($cast !== null) {
+        if ($parameter->hasCast()) {
             return $this->castMatchValue(
-                cast: $cast,
+                cast: $parameter->getCast(),
                 match: $match
             );
         }

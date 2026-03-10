@@ -89,7 +89,7 @@ final class RouteTest extends TestCase
 
     public function testRequestStruct(): void
     {
-        $value = QueryRequestStructEnum::class;
+        $value = QueryRequestStructEnum::first;
         $route = new Route(path: '/', name: 'test', requestStruct: $value);
 
         self::assertSame($value, $route->getRequestStruct());
@@ -97,7 +97,7 @@ final class RouteTest extends TestCase
 
     public function testResponseStruct(): void
     {
-        $value = ResponseStructEnum::class;
+        $value = ResponseStructEnum::first;
         $route = new Route(path: '/', name: 'test', responseStruct: $value);
 
         self::assertSame($value, $route->getResponseStruct());

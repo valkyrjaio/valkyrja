@@ -33,24 +33,17 @@ class Url implements UrlContract
      * @throws InvalidRouteNameException
      */
     #[Override]
-    public function getUrl(string $name, array|null $data = null): string
+    public function getUrl(string $name, array $data): string
     {
         // Get the matching route
         $route = $this->collection->getByName($name);
 
-        if ($route === null) {
-            throw new InvalidRouteNameException("$name is not a valid named route");
-        }
-
         // Get the path from the generator
         $path = $route->getPath();
 
-        // If any data was passed
-        if ($data !== null) {
-            // Iterate through the data and replace it in the path
-            foreach ($data as $datumName => $datum) {
-                $path = str_replace('{' . $datumName . '}', (string) $datum, $path);
-            }
+        // Iterate through the data and replace it in the path
+        foreach ($data as $datumName => $datum) {
+            $path = str_replace('{' . $datumName . '}', (string) $datum, $path);
         }
 
         return $path;

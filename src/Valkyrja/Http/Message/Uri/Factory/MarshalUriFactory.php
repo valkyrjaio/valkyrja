@@ -64,14 +64,14 @@ abstract class MarshalUriFactory
      *
      * @param array<lowercase-string, HeaderContract> $headers
      */
-    public static function getHeader(string $headerName, array $headers, string|null $default = null): string
+    public static function getHeader(string $headerName, array $headers): string
     {
         $headerName  = strtolower($headerName);
         $headers     = array_change_key_case($headers);
 
         $header = $headers[$headerName] ?? null;
 
-        return $header?->getHeaderLine() ?? $default ?? '';
+        return $header?->getHeaderLine() ?? '';
     }
 
     /**
@@ -310,15 +310,13 @@ abstract class MarshalUriFactory
 
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
 
-        /** @var string $host */
         $host = $accumulator->host;
-        /** @var int|null $port */
         $port = $accumulator->port;
 
         if (! empty($host)) {
             $uri = $uri->withHost($host);
 
-            if ($port !== null) {
+            if ($port !== 0) {
                 $uri = $uri->withPort($port);
             }
         }
@@ -347,7 +345,7 @@ abstract class MarshalUriFactory
     protected static function marshalHostAndPortFromHeader(HostPortAccumulator $accumulator, string $host): void
     {
         $accumulator->host = $host;
-        $accumulator->port = null;
+        $accumulator->port = 0;
 
         // Works for regname, IPv4 & IPv6
         if (preg_match('|\:(\d+)$|', $accumulator->host, $matches)) {
@@ -364,14 +362,14 @@ abstract class MarshalUriFactory
     protected static function marshalIpv6HostAndPort(HostPortAccumulator $accumulator, array $server): void
     {
         $accumulator->host = '[' . $server['SERVER_ADDR'] . ']';
-        $accumulator->port ??= 80;
+        $accumulator->port = $accumulator->port > 0 ? $accumulator->port : 80;
 
         $portOffset = strrpos($accumulator->host, ':');
 
         if ($portOffset !== false && (((string) $accumulator->port) . ']') === substr($accumulator->host, $portOffset + 1)) {
             // The last digit of the IPv6-Address has been taken as port
             // Unset the port so the default port can be used
-            $accumulator->port = null;
+            $accumulator->port = 0;
         }
     }
 }

@@ -24,10 +24,10 @@ final class ResponseStructTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = ResponseStructEnum::class;
+        $value = ResponseStructEnum::first;
 
         $attribute = new ResponseStruct($value);
 
-        self::assertSame($value, $attribute->name);
+        self::assertSame($value, $attribute->struct);
     }
 }

@@ -48,22 +48,16 @@ interface CollectionContract
     /**
      * Get a route.
      *
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no route is
-     *                            found for the path combination specified
+     * @param string $path The path
      */
-    public function get(string $path, RequestMethod|null $method = null): RouteContract|null;
+    public function get(string $path, RequestMethod $method): RouteContract;
 
     /**
      * Determine if a route exists.
      *
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
+     * @param string $path The path
      */
-    public function has(string $path, RequestMethod|null $method = null): bool;
+    public function has(string $path, RequestMethod $method): bool;
 
     /**
      * Get all routes.
@@ -82,67 +76,51 @@ interface CollectionContract
     /**
      * Get a static route.
      *
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no static route is
-     *                            found for the path and method combination specified
+     * @param string $path The path
      */
-    public function getStatic(string $path, RequestMethod|null $method = null): RouteContract|null;
+    public function getStatic(string $path, RequestMethod $method): RouteContract;
 
     /**
      * Determine if a static route exists.
      *
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
+     * @param string $path The path
      */
-    public function hasStatic(string $path, RequestMethod|null $method = null): bool;
+    public function hasStatic(string $path, RequestMethod $method): bool;
 
     /**
      * Get static routes of a certain request method.
      *
-     * @return ($method is null ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
+     * @return ($method is RequestMethod::ANY ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
      */
-    public function allStatic(RequestMethod|null $method = null): array;
+    public function allStatic(RequestMethod $method): array;
 
     /**
      * Get a dynamic route.
      *
-     * @param string             $regex  The regex
-     * @param RequestMethod|null $method [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no dynamic route is
-     *                            found for the path and method combination specified
+     * @param string $path The path
      */
-    public function getDynamic(string $regex, RequestMethod|null $method = null): RouteContract|null;
+    public function getDynamic(string $path, RequestMethod $method): RouteContract;
 
     /**
      * Determine if a dynamic route exists.
      *
-     * @param string             $regex  The regex
-     * @param RequestMethod|null $method [optional] The request method
+     * @param string $path The path
      */
-    public function hasDynamic(string $regex, RequestMethod|null $method = null): bool;
+    public function hasDynamic(string $path, RequestMethod $method): bool;
 
     /**
      * Get the dynamic routes in this collection.
      *
-     * @return ($method is null ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
+     * @return ($method is RequestMethod::ANY ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
      */
-    public function allDynamic(RequestMethod|null $method = null): array;
+    public function allDynamic(RequestMethod $method): array;
 
     /**
      * Get a route by name.
      *
      * @param string $name The name
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no named route is
-     *                            found for the path and method combination specified
      */
-    public function getByName(string $name): RouteContract|null;
+    public function getByName(string $name): RouteContract;
 
     /**
      * Determine if a named route exists.

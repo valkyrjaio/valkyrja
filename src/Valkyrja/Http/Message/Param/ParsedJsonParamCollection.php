@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Param;
 
+use Override;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
 
@@ -21,4 +22,13 @@ use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
  */
 class ParsedJsonParamCollection extends ParamCollection implements ParsedJsonParamCollectionContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function get(string|int $key): ParsedJsonParamCollectionContract|float|bool|int|string|null
+    {
+        return $this->params[$key]
+            ?? null;
+    }
 }

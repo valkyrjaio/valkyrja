@@ -60,7 +60,7 @@ final class MarshalUriFactoryTest extends TestCase
         MarshalUriFactory::marshalHostAndPortFromHeaders($blankAccumulator, [], []);
 
         self::assertEmpty($blankAccumulator->host);
-        self::assertNull($blankAccumulator->port ?? null);
+        self::assertSame(0, $blankAccumulator->port);
     }
 
     public function testMarshalHostAndPortFromHeaders(): void
@@ -131,7 +131,7 @@ final class MarshalUriFactoryTest extends TestCase
         );
 
         self::assertSame('[FE80::0202:B3FF:FE1E:8329:90]', $ip6FallbackAccumulatorNullPort->host);
-        self::assertNull($ip6FallbackAccumulatorNullPort->port);
+        self::assertSame(0, $ip6FallbackAccumulatorNullPort->port);
     }
 
     public function testMarshalRequestUri(): void
@@ -198,12 +198,11 @@ final class MarshalUriFactoryTest extends TestCase
         self::assertSame('test1, test2', MarshalUriFactory::getHeader('Array', $headers));
     }
 
-    public function testGetHeaderWithDefault(): void
+    public function testGetHeaderNonExistent(): void
     {
         $headers = [];
 
         self::assertSame('', MarshalUriFactory::getHeader('NonExistent', $headers));
-        self::assertSame('default', MarshalUriFactory::getHeader('NonExistent', $headers, 'default'));
     }
 
     public function testMarshalUriFromServerWithXForwardedProto(): void
@@ -271,7 +270,7 @@ final class MarshalUriFactoryTest extends TestCase
 
         // With no host information, host should be empty
         self::assertSame('', $uri->getHost());
-        self::assertNull($uri->getPort());
+        self::assertSame(0, $uri->getPort());
         self::assertSame('/path', $uri->getPath());
     }
 
@@ -286,7 +285,7 @@ final class MarshalUriFactoryTest extends TestCase
         );
 
         self::assertSame('example.com', $accumulator->host);
-        self::assertNull($accumulator->port);
+        self::assertSame(0, $accumulator->port);
     }
 
     public function testMarshalHostAndPortFromHeadersWithServerNameNoPort(): void
@@ -300,7 +299,7 @@ final class MarshalUriFactoryTest extends TestCase
         );
 
         self::assertSame('example.com', $accumulator->host);
-        self::assertNull($accumulator->port);
+        self::assertSame(0, $accumulator->port);
     }
 
     public function testMarshalUriFromServerWithNoQueryString(): void

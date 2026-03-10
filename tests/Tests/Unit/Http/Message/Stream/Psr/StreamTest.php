@@ -36,6 +36,7 @@ final class StreamTest extends TestCase
         self::assertSame($stream->isWritable(), $psrStream->isWritable());
         self::assertSame($stream->isReadable(), $psrStream->isReadable());
         self::assertSame($stream->getMetadata(), $psrStream->getMetadata());
+        self::assertSame($stream->getMetadataItem('mode'), $psrStream->getMetadata('mode'));
         self::assertSame($stream->read(2), $psrStream->read(2));
 
         $psrStream->rewind();
@@ -62,6 +63,7 @@ final class StreamTest extends TestCase
         self::assertSame($stream->isWritable(), $psrStream->isWritable());
         self::assertSame($stream->isReadable(), $psrStream->isReadable());
         self::assertSame($stream->getMetadata(), $psrStream->getMetadata());
+        self::assertSame($stream->getMetadataItem('mode'), $psrStream->getMetadata('mode'));
         self::assertSame($stream->read(2), $psrStream->read(2));
 
         $psrStream->close();

@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidParsedBodyParamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ParsedBodyParamCollectionTest extends TestCase
@@ -66,7 +67,12 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
     public function testGetParamReturnsNullForMissing(): void
     {
-        self::assertNull($this->paramData->get('nonexistent'));
+        $key = 'nonexistent';
+
+        $this->expectException(InvalidParsedBodyParamException::class);
+        $this->expectExceptionMessage("No parsed body param with the key '$key' was found");
+
+        $this->paramData->get($key);
     }
 
     public function testHasParam(): void
@@ -109,7 +115,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('johnd', $new->get('username'));
-        self::assertNull($new->get('name'));
+        self::assertFalse($new->has('name'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void

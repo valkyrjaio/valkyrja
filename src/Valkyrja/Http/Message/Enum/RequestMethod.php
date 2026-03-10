@@ -65,6 +65,11 @@ enum RequestMethod: string
     case PATCH = 'PATCH';
 
     /**
+     * Any request method.
+     */
+    case ANY = 'ANY';
+
+    /**
      * Get all the request methods.
      *
      * @return RequestMethod[]

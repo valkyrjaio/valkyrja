@@ -38,7 +38,7 @@ enum IndexedParsedBodyRequestStructEnum: int implements RequestStructContract
      * @inheritDoc
      */
     #[Override]
-    public static function getValidationRules(ServerRequestContract $request): array|null
+    public static function getValidationRules(ServerRequestContract $request): array
     {
         $parsedBody = $request->getParsedBody();
 

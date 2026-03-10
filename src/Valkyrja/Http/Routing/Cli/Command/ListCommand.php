@@ -88,7 +88,7 @@ class ListCommand
 
             $regex = $route->getRegex();
 
-            if ($regex !== null) {
+            if ($regex !== '') {
                 $output = $output->withAddedMessages(
                     new Message('    - '),
                     new Message('Regex: '),

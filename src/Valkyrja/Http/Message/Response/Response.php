@@ -86,12 +86,12 @@ class Response implements ResponseContract
      * @inheritDoc
      */
     #[Override]
-    public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static
+    public function withStatusCode(StatusCode $code): static
     {
         $new = clone $this;
 
         $new->statusCode   = $code;
-        $new->statusPhrase = $reasonPhrase ?? $code->asPhrase();
+        $new->statusPhrase = $code->asPhrase();
 
         return $new;
     }
@@ -102,7 +102,20 @@ class Response implements ResponseContract
     #[Override]
     public function getReasonPhrase(): string
     {
-        return $this->statusPhrase ?: $this->statusCode->asPhrase();
+        return $this->statusPhrase;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withReasonPhrase(string $reasonPhrase): static
+    {
+        $new = clone $this;
+
+        $new->statusPhrase = $reasonPhrase ?: $this->statusCode->asPhrase();
+
+        return $new;
     }
 
     /**

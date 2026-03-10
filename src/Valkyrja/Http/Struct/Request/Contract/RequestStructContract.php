@@ -26,15 +26,15 @@ interface RequestStructContract extends StructContract
      * <code>
      *      return [
      *          self::title->name => [
-     *              new Required($title = $request->getParsedBodyParam(self::title->name)),
+     *              new Required($title = $request->getParsedBody()->get(self::title->name)),
      *              new NotEmpty($title),
      *          ],
      *      ]
      * </code>
      *
-     * @return array<string, RuleContract[]>|null
+     * @return array<string, RuleContract[]>
      */
-    public static function getValidationRules(ServerRequestContract $request): array|null;
+    public static function getValidationRules(ServerRequestContract $request): array;
 
     /**
      * Validate the Struct.

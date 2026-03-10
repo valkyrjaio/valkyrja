@@ -22,12 +22,12 @@ interface ResponseFactoryContract
     /**
      * Redirect to a named route response builder.
      *
-     * @param non-empty-string               $name The name of the route
-     * @param array<string, string|int>|null $data [optional] The data for dynamic routes
+     * @param non-empty-string          $name The name of the route
+     * @param array<string, string|int> $data [optional] The data for dynamic routes
      */
     public function createRouteRedirectResponse(
         string $name,
-        array|null $data = null,
+        array $data = [],
         StatusCode|null $statusCode = null,
         HeaderCollectionContract|null $headers = null
     ): RedirectResponseContract;

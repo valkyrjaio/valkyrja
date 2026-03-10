@@ -62,7 +62,7 @@ final class UrlTest extends TestCase
 
     public function testGetUrl(): void
     {
-        $url = $this->url->getUrl(name: self::ROUTE_NAME);
+        $url = $this->url->getUrl(name: self::ROUTE_NAME, data: []);
 
         self::assertSame('/', $url);
     }
@@ -81,6 +81,6 @@ final class UrlTest extends TestCase
     {
         $this->expectException(InvalidRouteNameException::class);
 
-        $response = $this->url->getUrl('non-existent-route');
+        $response = $this->url->getUrl('non-existent-route', []);
     }
 }

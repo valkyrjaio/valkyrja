@@ -68,7 +68,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         public function testWithStatus(): void
         {
             $response  = Response::create();
-            $response2 = $response->withStatus(StatusCode::CREATED);
+            $response2 = $response->withStatusCode(StatusCode::CREATED);
 
             self::assertNotSame($response, $response2);
             self::assertSame(StatusCode::OK, $response->getStatusCode());
@@ -78,8 +78,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
         public function testGetReasonPhrase(): void
         {
             $response  = Response::create();
-            $response2 = $response->withStatus(StatusCode::CREATED);
-            $response3 = $response->withStatus(StatusCode::CREATED, 'pie');
+            $response2 = $response->withStatusCode(StatusCode::CREATED);
+            $response3 = $response2->withReasonPhrase('pie');
 
             self::assertNotSame($response, $response2);
             self::assertNotSame($response2, $response3);
@@ -120,7 +120,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
             $this->resetHeadersAndResponseCode();
 
             $response = new Response(new Stream(), StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
-            $response = $response->withStatus(StatusCode::CREATED, 'Created Phrase');
+            $response = $response->withStatusCode(StatusCode::CREATED)->withReasonPhrase('Created Phrase');
 
             $response->sendHttpLine();
 

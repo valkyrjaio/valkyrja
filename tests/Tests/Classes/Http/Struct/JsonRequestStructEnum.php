@@ -39,7 +39,7 @@ enum JsonRequestStructEnum implements RequestStructContract
      * @inheritDoc
      */
     #[Override]
-    public static function getValidationRules(JsonServerRequestContract|ServerRequestContract $request): array|null
+    public static function getValidationRules(JsonServerRequestContract|ServerRequestContract $request): array
     {
         self::ensureJsonRequest($request);
 

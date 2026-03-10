@@ -46,15 +46,19 @@ class CookieSession extends Session
     {
         $id = $this->getId();
 
-        // If the session failed to start
         if ($id === '') {
             return;
         }
 
-        $dataString = $this->request->getCookieParams()->get($id);
+        $cookieParams = $this->request->getCookieParams();
 
-        // If the session failed to start
-        if ($dataString === null || $dataString === '') {
+        if (! $cookieParams->has($id)) {
+            return;
+        }
+
+        $dataString = $cookieParams->get($id);
+
+        if ($dataString === '') {
             return;
         }
 

@@ -43,7 +43,7 @@ interface StreamContract extends Stringable
     /**
      * Get the size of the stream if known.
      */
-    public function getSize(): int|null;
+    public function getSize(): int;
 
     /**
      * Get the current position of the file read/write pointer.
@@ -116,6 +116,13 @@ interface StreamContract extends Stringable
      * Get the stream metadata.
      *
      * @see http://php.net/manual/en/function.stream-get-meta-data.php
+     *
+     * @return array<string, mixed>
      */
-    public function getMetadata(string|null $key = null): mixed;
+    public function getMetadata(): array;
+
+    /**
+     * Get a stream metadata item by key.
+     */
+    public function getMetadataItem(string $key): mixed;
 }

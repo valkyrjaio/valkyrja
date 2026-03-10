@@ -24,7 +24,8 @@ final class RequestMethodTest extends TestCase
     {
         $all = RequestMethod::all();
 
-        self::assertCount(count(RequestMethod::cases()), $all);
+        self::assertCount(9, $all);
+        self::assertCount(count(RequestMethod::cases()) - 1, $all);
         self::assertSame([
             RequestMethod::GET,
             RequestMethod::HEAD,

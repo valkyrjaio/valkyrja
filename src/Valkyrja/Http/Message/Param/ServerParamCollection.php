@@ -13,12 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Param;
 
+use Override;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
+use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidServerParamException;
 
 /**
  * @extends ParamCollection<non-empty-string|int, scalar|ServerParamCollectionContract>
  */
 class ServerParamCollection extends ParamCollection implements ServerParamCollectionContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function get(string|int $key): ServerParamCollectionContract|float|bool|int|string
+    {
+        return $this->params[$key]
+            ?? throw new InvalidServerParamException("No server param with the key '$key' was found");
+    }
 }

@@ -41,9 +41,9 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequestContract $request): array|null
+    public static function getValidationRules(ServerRequestContract $request): array
     {
-        return null;
+        return [];
     }
 
     /**
@@ -51,7 +51,7 @@ trait RequestStruct
      */
     public static function validate(ServerRequestContract $request): ValidatorContract
     {
-        return new Validator(static::getValidationRules($request) ?? []);
+        return new Validator(static::getValidationRules($request));
     }
 
     /**

@@ -32,6 +32,8 @@ use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Type\Contract\TypeContract;
+use Valkyrja\Type\Data\Cast;
 
 /**
  * Controller class to test routes.
@@ -64,11 +66,11 @@ final class ControllerClass
     #[Middleware(SendingResponseMiddlewareClass::class)]
     #[Middleware(TerminatedMiddlewareClass::class)]
     #[Middleware(ThrowableCaughtMiddlewareClass::class)]
-    #[RequestStruct(IndexedJsonRequestStructEnum::class)]
-    #[ResponseStruct(ResponseStructEnum::class)]
+    #[RequestStruct(IndexedJsonRequestStructEnum::first)]
+    #[ResponseStruct(ResponseStructEnum::first)]
     public function parameters(
         ResponseFactoryContract $responseFactory,
-        #[Parameter(name: self::PARAMETERS_PARAMETER_NAME, regex: Regex::ALPHA)]
+        #[Parameter(name: self::PARAMETERS_PARAMETER_NAME, regex: Regex::ALPHA, cast: new Cast(TypeContract::class))]
         string $name,
     ): ResponseContract {
         return $responseFactory->createResponse(

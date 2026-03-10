@@ -64,9 +64,14 @@ interface UriContract extends Stringable
     public function getHost(): string;
 
     /**
+     * Determine if there is a port.
+     */
+    public function hasPort(): bool;
+
+    /**
      * Get the port.
      */
-    public function getPort(): int|null;
+    public function getPort(): int;
 
     /**
      * Get the host and port in "[host][:port]" format.
@@ -122,7 +127,7 @@ interface UriContract extends Stringable
     /**
      * Create a new instance with the specified user information.
      */
-    public function withUserInfo(string $user, string|null $password = null): static;
+    public function withUserInfo(string $user, string $password = ''): static;
 
     /**
      * Create a new instance with the specified host.
@@ -136,7 +141,7 @@ interface UriContract extends Stringable
      *
      * @throws InvalidArgumentException for invalid ports
      */
-    public function withPort(int|null $port = null): static;
+    public function withPort(int $port): static;
 
     /**
      * Create a new instance with the specified path.

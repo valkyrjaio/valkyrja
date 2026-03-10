@@ -65,7 +65,7 @@ final class RequestStructMiddlewareTest extends TestCase
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
-            requestStruct: IndexedJsonRequestStructEnum::class
+            requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
 
@@ -94,7 +94,7 @@ final class RequestStructMiddlewareTest extends TestCase
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
-            requestStruct: IndexedJsonRequestStructEnum::class
+            requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
 
@@ -123,7 +123,7 @@ final class RequestStructMiddlewareTest extends TestCase
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
-            requestStruct: IndexedJsonRequestStructEnum::class
+            requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
 

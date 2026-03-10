@@ -84,7 +84,9 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
                 $name = $parameter->getName();
                 /** @var scalar|object|array<array-key, mixed>|resource|null $value */
                 $value = $arguments[$name];
-                $type  = $parameter->getCast()->type ?? null;
+                $type  = $parameter->hasCast()
+                    ? $parameter->getCast()->type
+                    : null;
 
                 $isParameterEntityType = $this->isParameterEntityType($type);
 

@@ -70,7 +70,8 @@ class ResponseFileGenerator extends FileGenerator implements ResponseFileGenerat
                     $headersContentsAsString
                 )
             )
-                ->withStatus($statusCodeContents, '$statusPhrase')
+                ->withStatusCode($statusCodeContents)
+                ->withReasonPhrase('$statusPhrase')
                 ->withBody(\$stream)
                 $additionalResponseWithMethods;
 

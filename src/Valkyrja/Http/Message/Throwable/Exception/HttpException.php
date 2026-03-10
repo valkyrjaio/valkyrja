@@ -47,7 +47,7 @@ class HttpException extends RuntimeException
             ?? $response?->getStatusCode()
             ?? StatusCode::INTERNAL_SERVER_ERROR;
         $this->headers    = $headers ?? new HeaderCollection();
-        $this->response   = $response?->withStatus($this->statusCode);
+        $this->response   = $response?->withStatusCode($this->statusCode);
 
         parent::__construct($message ?? '');
     }

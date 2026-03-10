@@ -57,19 +57,6 @@ final class PortTest extends TestCase
         self::assertSame($portNum, $port2->asValue());
     }
 
-    public function testNullIsValidPorts(): void
-    {
-        $port = new Port(null);
-
-        self::assertNull($port->asFlatValue());
-        self::assertNull($port->asValue());
-
-        $port2 = Port::fromValue(null);
-
-        self::assertNull($port2->asFlatValue());
-        self::assertNull($port2->asValue());
-    }
-
     /**
      * @param int $portNum The port to test
      */

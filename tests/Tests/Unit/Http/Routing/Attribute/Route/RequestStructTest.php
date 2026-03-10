@@ -24,10 +24,10 @@ final class RequestStructTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = QueryRequestStructEnum::class;
+        $value = QueryRequestStructEnum::first;
 
         $attribute = new RequestStruct($value);
 
-        self::assertSame($value, $attribute->name);
+        self::assertSame($value, $attribute->struct);
     }
 }

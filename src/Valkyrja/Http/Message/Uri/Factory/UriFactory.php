@@ -57,7 +57,7 @@ abstract class UriFactory
             username: $parts['user'] ?? '',
             password: $parts['pass'] ?? '',
             host: $parts['host'] ?? '',
-            port: $parts['port'] ?? null,
+            port: $parts['port'] ?? 0,
             path: $parts['path'] ?? '',
             query: $parts['query'] ?? '',
             fragment: $parts['fragment'] ?? ''
@@ -92,11 +92,11 @@ abstract class UriFactory
     /**
      * Validate a port.
      *
-     * @param int|null $port The port
+     * @param int $port The port
      *
      * @throws InvalidPortException
      */
-    public static function validatePort(int|null $port = null): void
+    public static function validatePort(int $port): void
     {
         if (! Port::isValid($port)) {
             throw new InvalidPortException("Invalid port `%$port` specified; must be a valid TCP/UDP port");
@@ -209,13 +209,13 @@ abstract class UriFactory
     /**
      * Determine whether this uri is on a standard port for the scheme.
      */
-    public static function isStandardPort(Scheme $scheme, string $host, int|null $port = null): bool
+    public static function isStandardPort(Scheme $scheme, string $host, int $port): bool
     {
         if ($scheme === Scheme::EMPTY) {
-            return $host && $port === null;
+            return $host !== '' && $port <= 0;
         }
 
-        if (! $host || $port === null) {
+        if ($host === '' || $port <= 0) {
             return true;
         }
 
@@ -225,7 +225,7 @@ abstract class UriFactory
     /**
      * Is standard HTTP port.
      */
-    public static function isStandardUnsecurePort(Scheme $scheme, int|null $port = null): bool
+    public static function isStandardUnsecurePort(Scheme $scheme, int $port): bool
     {
         return $scheme === Scheme::HTTP && $port === Port::HTTP;
     }
@@ -233,7 +233,7 @@ abstract class UriFactory
     /**
      * Is standard HTTPS port.
      */
-    public static function isStandardSecurePort(Scheme $scheme, int|null $port = null): bool
+    public static function isStandardSecurePort(Scheme $scheme, int $port): bool
     {
         return $scheme === Scheme::HTTPS && $port === Port::HTTPS;
     }

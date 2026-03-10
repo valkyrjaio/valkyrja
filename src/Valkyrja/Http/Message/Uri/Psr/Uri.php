@@ -67,7 +67,11 @@ class Uri implements UriInterface
     #[Override]
     public function getPort(): int|null
     {
-        return $this->uri->getPort();
+        $port = $this->uri->getPort();
+
+        return $port !== 0
+            ? $port
+            : null;
     }
 
     /**
@@ -118,7 +122,7 @@ class Uri implements UriInterface
     {
         $new = clone $this;
 
-        $new->uri = $this->uri->withUserInfo($user, $password);
+        $new->uri = $this->uri->withUserInfo($user, $password ?? '');
 
         return $new;
     }
@@ -144,7 +148,9 @@ class Uri implements UriInterface
     {
         $new = clone $this;
 
-        $new->uri = $this->uri->withPort($port);
+        if ($port !== null) {
+            $new->uri = $this->uri->withPort($port);
+        }
 
         return $new;
     }

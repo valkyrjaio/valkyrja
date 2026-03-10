@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Matcher;
 
 use Override;
 use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
@@ -195,12 +196,12 @@ final class MatcherTest extends TestCase
 
         $matcher = new Matcher();
 
-        self::assertNull($matcher->match($path));
-        self::assertNull($matcher->match($dynamicPath));
-        self::assertNull($matcher->matchStatic($path));
-        self::assertNull($matcher->matchStatic($dynamicPath));
-        self::assertNull($matcher->matchDynamic($path));
-        self::assertNull($matcher->matchDynamic($dynamicPath));
+        self::assertNull($matcher->match($path, RequestMethod::ANY));
+        self::assertNull($matcher->match($dynamicPath, RequestMethod::ANY));
+        self::assertNull($matcher->matchStatic($path, RequestMethod::ANY));
+        self::assertNull($matcher->matchStatic($dynamicPath, RequestMethod::ANY));
+        self::assertNull($matcher->matchDynamic($path, RequestMethod::ANY));
+        self::assertNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
     }
 
     public function testStaticMatch(): void
@@ -210,11 +211,11 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $route = $matcher->match($path);
+        $route = $matcher->match($path, RequestMethod::ANY);
 
         self::assertNotNull($route);
-        self::assertNotNull($matcher->matchStatic($path));
-        self::assertNull($matcher->matchStatic($dynamicPath));
+        self::assertNotNull($matcher->matchStatic($path, RequestMethod::ANY));
+        self::assertNull($matcher->matchStatic($dynamicPath, RequestMethod::ANY));
 
         $arguments = $route->getDispatch()->getArguments();
 
@@ -228,11 +229,11 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $route = $matcher->match($dynamicPath);
+        $route = $matcher->match($dynamicPath, RequestMethod::ANY);
 
         self::assertNotNull($route);
-        self::assertNull($matcher->matchDynamic($path));
-        self::assertNotNull($matcher->matchDynamic($dynamicPath));
+        self::assertNull($matcher->matchDynamic($path, RequestMethod::ANY));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
         $arguments = $route->getDispatch()->getArguments();
 
@@ -247,10 +248,10 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $route = $matcher->match($dynamicPath);
+        $route = $matcher->match($dynamicPath, RequestMethod::ANY);
 
         self::assertNotNull($route);
-        self::assertNotNull($matcher->matchDynamic($dynamicPath));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
         $arguments = $route->getDispatch()->getArguments();
 
@@ -258,10 +259,10 @@ final class MatcherTest extends TestCase
         self::assertIsString($arguments['dynamic']);
         self::assertSame('default', $arguments['dynamic']);
 
-        $route2 = $matcher->match($dynamicPath . '/optionalvalue');
+        $route2 = $matcher->match($dynamicPath . '/optionalvalue', RequestMethod::ANY);
 
         self::assertNotNull($route2);
-        self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue'));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue', RequestMethod::ANY));
 
         $arguments2 = $route2->getDispatch()->getArguments();
 
@@ -276,20 +277,20 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $route = $matcher->match($dynamicPath);
+        $route = $matcher->match($dynamicPath, RequestMethod::ANY);
 
         self::assertNotNull($route);
-        self::assertNotNull($matcher->matchDynamic($dynamicPath));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
         $arguments = $route->getDispatch()->getArguments();
 
         self::assertEmpty($arguments);
         self::assertNull($arguments['dynamic'] ?? null);
 
-        $route2 = $matcher->match($dynamicPath . '/optionalvalue');
+        $route2 = $matcher->match($dynamicPath . '/optionalvalue', RequestMethod::ANY);
 
         self::assertNotNull($route2);
-        self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue'));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue', RequestMethod::ANY));
 
         $arguments2 = $route2->getDispatch()->getArguments();
 
@@ -304,10 +305,10 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $route = $matcher->match($dynamicPath);
+        $route = $matcher->match($dynamicPath, RequestMethod::ANY);
 
         self::assertNotNull($route);
-        self::assertNotNull($matcher->matchDynamic($dynamicPath));
+        self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
         $arguments = $route->getDispatch()->getArguments();
 
@@ -325,6 +326,6 @@ final class MatcherTest extends TestCase
 
         $matcher = $this->matcher;
 
-        $matcher->match($dynamicPath);
+        $matcher->match($dynamicPath, RequestMethod::ANY);
     }
 }

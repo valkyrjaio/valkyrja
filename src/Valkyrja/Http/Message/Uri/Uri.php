@@ -25,9 +25,7 @@ use function strtolower;
 
 class Uri implements UriContract
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected string $userInfo;
 
     /**
@@ -38,14 +36,14 @@ class Uri implements UriContract
     private string|null $uriString = null;
 
     /**
-     * @param Scheme   $scheme   [optional] The scheme
-     * @param string   $username [optional] The username
-     * @param string   $password [optional] The user password
-     * @param string   $host     [optional] The host
-     * @param int|null $port     [optional] The port
-     * @param string   $path     [optional] The path
-     * @param string   $query    [optional] The query
-     * @param string   $fragment [optional] The fragment
+     * @param Scheme $scheme   [optional] The scheme
+     * @param string $username [optional] The username
+     * @param string $password [optional] The user password
+     * @param string $host     [optional] The host
+     * @param int    $port     [optional] The port
+     * @param string $path     [optional] The path
+     * @param string $query    [optional] The query
+     * @param string $fragment [optional] The fragment
      *
      * @throws InvalidPathException
      * @throws InvalidPortException
@@ -56,7 +54,7 @@ class Uri implements UriContract
         protected string $username = '',
         protected string $password = '',
         protected string $host = '',
-        protected int|null $port = null,
+        protected int $port = 0,
         protected string $path = '',
         protected string $query = '',
         protected string $fragment = ''
@@ -67,8 +65,13 @@ class Uri implements UriContract
             $userInfo .= ':' . $password;
         }
 
-        UriFactory::validatePort($port);
+        if ($port === 0) {
+            $port = $this->getPortFromScheme($scheme);
+        } else {
+            UriFactory::validatePort($port);
+        }
 
+        $this->port     = $port;
         $this->userInfo = UriFactory::filterUserInfo($userInfo);
         $this->host     = strtolower($host);
         $this->path     = UriFactory::filterPath($path);
@@ -157,10 +160,19 @@ class Uri implements UriContract
      * @inheritDoc
      */
     #[Override]
-    public function getPort(): int|null
+    public function hasPort(): bool
+    {
+        return $this->port !== 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getPort(): int
     {
         return UriFactory::isStandardPort($this->scheme, $this->host, $this->port)
-            ? null
+            ? 0
             : $this->port;
     }
 
@@ -171,8 +183,9 @@ class Uri implements UriContract
     public function getHostPort(): string
     {
         $host = $this->host;
+        $port = $this->getPort();
 
-        if ($host !== '' && ($port = $this->port) !== null) {
+        if ($host !== '' && $port !== 0) {
             $host .= ':' . ((string) $port);
         }
 
@@ -188,7 +201,9 @@ class Uri implements UriContract
         $hostPort = $this->getHostPort();
         $scheme   = $this->scheme;
 
-        return $hostPort && $scheme !== Scheme::EMPTY ? $scheme->value . '://' . $hostPort : $hostPort;
+        return $hostPort && $scheme !== Scheme::EMPTY
+            ? $scheme->value . '://' . $hostPort
+            : $hostPort;
     }
 
     /**
@@ -228,6 +243,10 @@ class Uri implements UriContract
 
         $new->scheme = $scheme;
 
+        if ($this->port === 0) {
+            $new->port = $this->getPortFromScheme($scheme);
+        }
+
         return $new;
     }
 
@@ -253,15 +272,15 @@ class Uri implements UriContract
      * @inheritDoc
      */
     #[Override]
-    public function withUserInfo(string $user, string|null $password = null): static
+    public function withUserInfo(string $user, string $password = ''): static
     {
         $info = $user;
 
         if (empty($user)) {
-            $password = null;
+            $password = '';
         }
 
-        if ($password !== null) {
+        if ($password !== '') {
             $info .= ':' . $password;
         }
 
@@ -269,7 +288,7 @@ class Uri implements UriContract
 
         $new->userInfo = $info;
         $new->username = $user;
-        $new->password = $password ?? '';
+        $new->password = $password;
 
         return $new;
     }
@@ -291,7 +310,7 @@ class Uri implements UriContract
      * @inheritDoc
      */
     #[Override]
-    public function withPort(int|null $port = null): static
+    public function withPort(int $port): static
     {
         UriFactory::validatePort($port);
 
@@ -356,8 +375,23 @@ class Uri implements UriContract
             ??= UriFactory::toString($this);
     }
 
+    /**
+     * Clone the object.
+     */
     public function __clone()
     {
         $this->uriString = null;
+    }
+
+    /**
+     * Get the port from the scheme.
+     */
+    protected function getPortFromScheme(Scheme $scheme): int
+    {
+        return match ($scheme) {
+            Scheme::HTTPS => 443,
+            Scheme::HTTP  => 80,
+            default       => 0,
+        };
     }
 }
