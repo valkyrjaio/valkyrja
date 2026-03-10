@@ -54,11 +54,11 @@ final class PsrStreamFactoryTest extends TestCase
         $streamFromWindows       = PsrStreamFactory::fromPsr($psrStreamWindows);
 
         // Doesn't matter what the original mode was because we're taking the content and writing it to a new temp stream
-        self::assertSame('w+b', $streamFromPsr->getMetadata('mode'));
-        self::assertSame('w+b', $streamFromNullMode->getMetadata('mode'));
-        self::assertSame('w+b', $streamFromBinarySafe->getMetadata('mode'));
-        self::assertSame('w+b', $streamFromNoTranslation->getMetadata('mode'));
-        self::assertSame('w+b', $streamFromWindows->getMetadata('mode'));
+        self::assertSame('w+b', $streamFromPsr->getMetadataItem('mode'));
+        self::assertSame('w+b', $streamFromNullMode->getMetadataItem('mode'));
+        self::assertSame('w+b', $streamFromBinarySafe->getMetadataItem('mode'));
+        self::assertSame('w+b', $streamFromNoTranslation->getMetadataItem('mode'));
+        self::assertSame('w+b', $streamFromWindows->getMetadataItem('mode'));
 
         self::assertSame('test', $streamFromPsr->getContents());
         self::assertSame('', $streamFromNullMode->getContents());

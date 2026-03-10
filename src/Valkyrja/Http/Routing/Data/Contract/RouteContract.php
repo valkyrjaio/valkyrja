@@ -109,17 +109,13 @@ interface RouteContract
 
     /**
      * Get the regex.
-     *
-     * @return non-empty-string|null
      */
-    public function getRegex(): string|null;
+    public function getRegex(): string;
 
     /**
      * Set the regex.
-     *
-     * @param non-empty-string|null $regex The regex
      */
-    public function withRegex(string|null $regex = null): static;
+    public function withRegex(string $regex): static;
 
     /**
      * Get the parameters.
@@ -248,30 +244,32 @@ interface RouteContract
     public function withAddedTerminatedMiddleware(string ...$middleware): static;
 
     /**
-     * Get the request struct.
-     *
-     * @return class-string<RequestStructContract>|null
+     * Determine if there is a request struct.
      */
-    public function getRequestStruct(): string|null;
+    public function hasRequestStruct(): bool;
+
+    /**
+     * Get the request struct.
+     */
+    public function getRequestStruct(): RequestStructContract;
 
     /**
      * Create a new route with a specified RequestStruct.
-     *
-     * @param class-string<RequestStructContract>|null $requestStruct The request struct
      */
-    public function withRequestStruct(string|null $requestStruct = null): static;
+    public function withRequestStruct(RequestStructContract $requestStruct): static;
+
+    /**
+     * Determine if there is a response struct.
+     */
+    public function hasResponseStruct(): bool;
 
     /**
      * Get the response struct.
-     *
-     * @return class-string<ResponseStructContract>|null
      */
-    public function getResponseStruct(): string|null;
+    public function getResponseStruct(): ResponseStructContract;
 
     /**
      * Create a new route with a specified ResponseStruct.
-     *
-     * @param class-string<ResponseStructContract>|null $responseStruct The response struct
      */
-    public function withResponseStruct(string|null $responseStruct = null): static;
+    public function withResponseStruct(ResponseStructContract $responseStruct): static;
 }

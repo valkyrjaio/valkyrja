@@ -158,6 +158,10 @@ class Stream implements StreamInterface
     #[Override]
     public function getMetadata(string|null $key = null): mixed
     {
-        return $this->stream->getMetadata($key);
+        if ($key === null) {
+            return $this->stream->getMetadata();
+        }
+
+        return $this->stream->getMetadataItem($key);
     }
 }

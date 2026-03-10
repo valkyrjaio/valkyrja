@@ -57,9 +57,10 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame([SendingResponseMiddlewareClass::class], $parametersRoute->getSendingResponseMiddleware());
         self::assertSame([TerminatedMiddlewareClass::class], $parametersRoute->getTerminatedMiddleware());
         self::assertSame([ThrowableCaughtMiddlewareClass::class], $parametersRoute->getThrowableCaughtMiddleware());
-        self::assertSame(IndexedJsonRequestStructEnum::class, $parametersRoute->getRequestStruct());
-        self::assertSame(ResponseStructEnum::class, $parametersRoute->getResponseStruct());
+        self::assertSame(IndexedJsonRequestStructEnum::first, $parametersRoute->getRequestStruct());
+        self::assertSame(ResponseStructEnum::first, $parametersRoute->getResponseStruct());
         self::assertCount(1, $parametersRoute->getParameters());
+        self::assertTrue($parametersRoute->getParameters()[0]->hasCast());
     }
 
     /**
@@ -95,5 +96,7 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame([AllMiddlewareClass::class], $route->getSendingResponseMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getTerminatedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getThrowableCaughtMiddleware());
+        self::assertSame(IndexedJsonRequestStructEnum::first, $route->getRequestStruct());
+        self::assertSame(ResponseStructEnum::first, $route->getResponseStruct());
     }
 }

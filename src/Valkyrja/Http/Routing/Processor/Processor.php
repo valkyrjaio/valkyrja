@@ -18,7 +18,6 @@ use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
-use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
 class Processor implements ProcessorContract
@@ -33,8 +32,9 @@ class Processor implements ProcessorContract
     #[Override]
     public function route(RouteContract $route): RouteContract
     {
+        $path = '/' . trim($route->getPath(), '/');
         // Set the path to the validated cleaned path (/some/path)
-        $route = $route->withPath(Helpers::trimPath($route->getPath()));
+        $route = $route->withPath($path);
 
         // If this is a dynamic route
         if (str_contains($route->getPath(), '{')) {
@@ -54,7 +54,7 @@ class Processor implements ProcessorContract
     protected function modifyRegex(RouteContract $route): RouteContract
     {
         // If the regex has already been set then don't do anything
-        if ($route->getRegex() !== null) {
+        if ($route->getRegex() !== '') {
             return $route;
         }
 

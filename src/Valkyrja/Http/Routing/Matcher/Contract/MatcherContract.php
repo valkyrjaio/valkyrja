@@ -21,36 +21,21 @@ interface MatcherContract
     /**
      * Match a route by path.
      *
-     * @param non-empty-string   $path          The path
-     * @param RequestMethod|null $requestMethod [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no route is
-     *                            found for the path and method combination specified
+     * @param non-empty-string $path The path
      */
-    public function match(string $path, RequestMethod|null $requestMethod = null): RouteContract|null;
+    public function match(string $path, RequestMethod $requestMethod): RouteContract|null;
 
     /**
      * Match a static route by path.
      *
-     * @param non-empty-string   $path          The path
-     * @param RequestMethod|null $requestMethod [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no static route is
-     *                            found for the path and method combination specified
+     * @param non-empty-string $path The path
      */
-    public function matchStatic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null;
+    public function matchStatic(string $path, RequestMethod $requestMethod): RouteContract|null;
 
     /**
      * Match a dynamic route by path.
      *
-     * @param non-empty-string   $path          The path
-     * @param RequestMethod|null $requestMethod [optional] The request method
-     *
-     * @return RouteContract|null
-     *                            The route if found or null when no dynamic route is
-     *                            found for the path and method combination specified
+     * @param non-empty-string $path The path
      */
-    public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null;
+    public function matchDynamic(string $path, RequestMethod $requestMethod): RouteContract|null;
 }

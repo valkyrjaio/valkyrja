@@ -18,6 +18,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -152,7 +153,7 @@ class Router implements RouterContract
         }
 
         // If the route matches for any method
-        if ($this->matcher->match($requestPath) !== null) {
+        if ($this->matcher->match($requestPath, RequestMethod::ANY) !== null) {
             // Then the route exists but not for the requested method, and so it is not allowed
             return $this->responseFactory->createResponse(
                 statusCode: StatusCode::METHOD_NOT_ALLOWED,

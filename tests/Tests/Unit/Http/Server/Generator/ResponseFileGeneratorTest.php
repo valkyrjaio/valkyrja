@@ -74,7 +74,8 @@ final class ResponseFileGeneratorTest extends TestCase
         self::assertStringContainsString('$response =', $contents);
         self::assertStringContainsString('return $response;', $contents);
         self::assertStringContainsString('Hello World', $contents);
-        self::assertStringContainsString("StatusCode::OK, 'OK'", $contents);
+        self::assertStringContainsString('StatusCode::OK', $contents);
+        self::assertStringContainsString("'OK'", $contents);
         self::assertStringContainsString(Response::class, $contents);
     }
 
@@ -103,7 +104,8 @@ final class ResponseFileGeneratorTest extends TestCase
         self::assertStringContainsString("'TestValue'", $contents);
         self::assertStringContainsString("'Test2',", $contents);
         self::assertStringContainsString("'TestValue2'", $contents);
-        self::assertStringContainsString("StatusCode::OK, 'OK'", $contents);
+        self::assertStringContainsString('StatusCode::OK', $contents);
+        self::assertStringContainsString("'OK'", $contents);
         self::assertStringContainsString(Response::class, $contents);
     }
 

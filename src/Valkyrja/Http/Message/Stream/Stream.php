@@ -60,7 +60,7 @@ class Stream implements StreamContract
     #[Override]
     public function isSeekable(): bool
     {
-        return (bool) $this->getMetadata('seekable');
+        return (bool) $this->getMetadataItem('seekable');
     }
 
     /**
@@ -98,7 +98,7 @@ class Stream implements StreamContract
     {
         // Get the stream's mode
         /** @var string|null $mode */
-        $mode = $this->getMetadata('mode');
+        $mode = $this->getMetadataItem('mode');
 
         return StreamFactory::isModeReadable((string) $mode);
     }
@@ -136,7 +136,7 @@ class Stream implements StreamContract
     {
         // Get the stream's mode
         /** @var string|null $mode */
-        $mode = $this->getMetadata('mode');
+        $mode = $this->getMetadataItem('mode');
 
         return StreamFactory::isModeWriteable((string) $mode);
     }
@@ -206,12 +206,12 @@ class Stream implements StreamContract
      * @inheritDoc
      */
     #[Override]
-    public function getSize(): int|null
+    public function getSize(): int
     {
         // If the stream isn't set
         if ($this->isInvalidStream()) {
             // Return without attempting to get the fstat
-            return null;
+            return 0;
         }
 
         /** @var resource $stream */
@@ -221,7 +221,7 @@ class Stream implements StreamContract
         $fstat = $this->getStreamStats($stream);
 
         if ($fstat === false) {
-            return null;
+            return 0;
         }
 
         return $fstat['size'];
@@ -290,26 +290,31 @@ class Stream implements StreamContract
      * @inheritDoc
      */
     #[Override]
-    public function getMetadata(string|null $key = null): mixed
+    public function getMetadata(): array
     {
         // Ensure the stream is valid
         if ($this->isInvalidStream()) {
-            return null;
+            return [];
         }
 
         /** @var resource $stream */
         $stream = $this->resource;
 
-        // If no key was specified
-        if ($key === null) {
-            // Return all the meta data
-            return $this->getStreamMetadata($stream);
-        }
+        // Return all the meta data
+        return $this->getStreamMetadata($stream);
+    }
 
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getMetadataItem(string $key): mixed
+    {
         // Get the meta data
-        $metadata = $this->getStreamMetadata($stream);
+        $metadata = $this->getMetadata();
 
-        return $metadata[$key] ?? null;
+        return $metadata[$key]
+            ?? null;
     }
 
     /**

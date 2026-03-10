@@ -22,13 +22,13 @@ use function is_int;
 use function sprintf;
 
 /**
- * @extends Type<int|null>
+ * @extends Type<int>
  */
 class Port extends Type
 {
-    public function __construct(int|null $subject)
+    public function __construct(int $subject)
     {
-        if ($subject === null || ($subject >= 1 && $subject <= 65535)) {
+        if ($subject >= 1 && $subject <= 65535) {
             $this->subject = $subject;
 
             return;
@@ -43,8 +43,8 @@ class Port extends Type
     #[Override]
     public static function fromValue(mixed $value): static
     {
-        if ($value !== null && ! is_int($value)) {
-            throw new InvalidArgumentException(sprintf('Int or null expected value of type `%s` provided', gettype($value)));
+        if (! is_int($value)) {
+            throw new InvalidArgumentException(sprintf('Int expected value of type `%s` provided', gettype($value)));
         }
 
         return new static($value);
@@ -54,7 +54,7 @@ class Port extends Type
      * @inheritDoc
      */
     #[Override]
-    public function asFlatValue(): int|null
+    public function asFlatValue(): int
     {
         return $this->subject;
     }

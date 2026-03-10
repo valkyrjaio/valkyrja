@@ -24,6 +24,9 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Tests\Classes\Http\Routing\Collection\CollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -129,7 +132,7 @@ final class CollectionTest extends TestCase
         $collection = new Collection();
         $collection->setFromData($data);
 
-        $collection->get('test');
+        $collection->get('test', RequestMethod::ANY);
     }
 
     public function testHas(): void
@@ -139,8 +142,8 @@ final class CollectionTest extends TestCase
 
         $collection = $this->collection;
 
-        self::assertTrue($collection->has($routePath));
-        self::assertTrue($collection->has($dynamicRoutePath));
+        self::assertTrue($collection->has($routePath, RequestMethod::ANY));
+        self::assertTrue($collection->has($dynamicRoutePath, RequestMethod::ANY));
         self::assertTrue($collection->has($routePath, RequestMethod::GET));
         self::assertTrue($collection->has($dynamicRoutePath, RequestMethod::GET));
         self::assertTrue($collection->has($routePath, RequestMethod::HEAD));
@@ -170,26 +173,36 @@ final class CollectionTest extends TestCase
         $dynamicRoute = $this->dynamicRoute;
         $collection   = $this->collection;
 
-        self::assertSame($route, $collection->get($routePath));
-        self::assertSame($dynamicRoute, $collection->get($dynamicRoutePath));
+        self::assertSame($route, $collection->get($routePath, RequestMethod::ANY));
+        self::assertSame($dynamicRoute, $collection->get($dynamicRoutePath, RequestMethod::ANY));
         self::assertSame($route, $collection->get($routePath, RequestMethod::GET));
         self::assertSame($dynamicRoute, $collection->get($dynamicRoutePath, RequestMethod::GET));
         self::assertSame($route, $collection->get($routePath, RequestMethod::HEAD));
         self::assertSame($dynamicRoute, $collection->get($dynamicRoutePath, RequestMethod::HEAD));
-        self::assertNull($collection->get($routePath, RequestMethod::POST));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::POST));
-        self::assertNull($collection->get($routePath, RequestMethod::PUT));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::PUT));
-        self::assertNull($collection->get($routePath, RequestMethod::PATCH));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::PATCH));
-        self::assertNull($collection->get($routePath, RequestMethod::DELETE));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::DELETE));
-        self::assertNull($collection->get($routePath, RequestMethod::CONNECT));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::CONNECT));
-        self::assertNull($collection->get($routePath, RequestMethod::TRACE));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::TRACE));
-        self::assertNull($collection->get($routePath, RequestMethod::OPTIONS));
-        self::assertNull($collection->get($dynamicRoutePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->has($routePath, RequestMethod::POST));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::POST));
+        self::assertFalse($collection->has($routePath, RequestMethod::PUT));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::PUT));
+        self::assertFalse($collection->has($routePath, RequestMethod::PATCH));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::PATCH));
+        self::assertFalse($collection->has($routePath, RequestMethod::DELETE));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::DELETE));
+        self::assertFalse($collection->has($routePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->has($routePath, RequestMethod::TRACE));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::TRACE));
+        self::assertFalse($collection->has($routePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->has($dynamicRoutePath, RequestMethod::OPTIONS));
+    }
+
+    public function testGetThrowsForNonExistent(): void
+    {
+        $path = 'non-existent';
+
+        $this->expectException(InvalidRoutePathException::class);
+        $this->expectExceptionMessage("The path '$path' is not a valid route for the given method 'ANY'");
+
+        $this->collection->get($path, RequestMethod::ANY);
     }
 
     public function testHasStatic(): void
@@ -199,8 +212,8 @@ final class CollectionTest extends TestCase
 
         $collection = $this->collection;
 
-        self::assertTrue($collection->hasStatic($routePath));
-        self::assertFalse($collection->hasStatic($dynamicRoutePath));
+        self::assertTrue($collection->hasStatic($routePath, RequestMethod::ANY));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::ANY));
         self::assertTrue($collection->hasStatic($routePath, RequestMethod::GET));
         self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::GET));
         self::assertTrue($collection->hasStatic($routePath, RequestMethod::HEAD));
@@ -229,26 +242,36 @@ final class CollectionTest extends TestCase
         $route      = $this->route;
         $collection = $this->collection;
 
-        self::assertSame($route, $collection->getStatic($routePath));
-        self::assertNull($collection->getStatic($dynamicRoutePath));
+        self::assertSame($route, $collection->getStatic($routePath, RequestMethod::ANY));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::ANY));
         self::assertSame($route, $collection->getStatic($routePath, RequestMethod::GET));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::GET));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::GET));
         self::assertSame($route, $collection->getStatic($routePath, RequestMethod::HEAD));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::HEAD));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::POST));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::POST));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::PUT));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::PUT));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::PATCH));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::PATCH));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::DELETE));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::DELETE));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::CONNECT));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::CONNECT));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::TRACE));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::TRACE));
-        self::assertNull($collection->getStatic($routePath, RequestMethod::OPTIONS));
-        self::assertNull($collection->getStatic($dynamicRoutePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::HEAD));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::POST));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::POST));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::PUT));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::PUT));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::PATCH));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::PATCH));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::DELETE));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::DELETE));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::TRACE));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::TRACE));
+        self::assertFalse($collection->hasStatic($routePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->hasStatic($dynamicRoutePath, RequestMethod::OPTIONS));
+    }
+
+    public function testGetStaticThrowsForNonExistent(): void
+    {
+        $path = 'non-existent';
+
+        $this->expectException(InvalidRoutePathException::class);
+        $this->expectExceptionMessage("The static path '$path' is not a valid route for the given method 'ANY'");
+
+        $this->collection->getStatic($path, RequestMethod::ANY);
     }
 
     public function testHasDynamic(): void
@@ -258,8 +281,8 @@ final class CollectionTest extends TestCase
 
         $collection = $this->collection;
 
-        self::assertFalse($collection->hasDynamic($routePath));
-        self::assertTrue($collection->hasDynamic($dynamicRoutePath));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::ANY));
+        self::assertTrue($collection->hasDynamic($dynamicRoutePath, RequestMethod::ANY));
         self::assertFalse($collection->hasDynamic($routePath, RequestMethod::GET));
         self::assertTrue($collection->hasDynamic($dynamicRoutePath, RequestMethod::GET));
         self::assertFalse($collection->hasDynamic($routePath, RequestMethod::HEAD));
@@ -288,26 +311,36 @@ final class CollectionTest extends TestCase
         $dynamicRoute = $this->dynamicRoute;
         $collection   = $this->collection;
 
-        self::assertNull($collection->getDynamic($routePath));
-        self::assertSame($dynamicRoute, $collection->getDynamic($dynamicRoutePath));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::GET));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::ANY));
+        self::assertSame($dynamicRoute, $collection->getDynamic($dynamicRoutePath, RequestMethod::ANY));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::GET));
         self::assertSame($dynamicRoute, $collection->getDynamic($dynamicRoutePath, RequestMethod::GET));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::HEAD));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::HEAD));
         self::assertSame($dynamicRoute, $collection->getDynamic($dynamicRoutePath, RequestMethod::HEAD));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::POST));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::POST));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::PUT));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::PUT));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::PATCH));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::PATCH));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::DELETE));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::DELETE));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::CONNECT));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::CONNECT));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::TRACE));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::TRACE));
-        self::assertNull($collection->getDynamic($routePath, RequestMethod::OPTIONS));
-        self::assertNull($collection->getDynamic($dynamicRoutePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::POST));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::POST));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::PUT));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::PUT));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::PATCH));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::PATCH));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::DELETE));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::DELETE));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::CONNECT));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::TRACE));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::TRACE));
+        self::assertFalse($collection->hasDynamic($routePath, RequestMethod::OPTIONS));
+        self::assertFalse($collection->hasDynamic($dynamicRoutePath, RequestMethod::OPTIONS));
+    }
+
+    public function testGetDynamicThrowsForNonExistent(): void
+    {
+        $path = 'non-existent';
+
+        $this->expectException(InvalidRoutePathException::class);
+        $this->expectExceptionMessage("The dynamic path '$path' is not a valid route for the given method 'ANY'");
+
+        $this->collection->getDynamic($path, RequestMethod::ANY);
     }
 
     public function testHasNamed(): void
@@ -332,7 +365,17 @@ final class CollectionTest extends TestCase
 
         self::assertSame($route, $collection->getByName($routeName));
         self::assertSame($dynamicRoute, $collection->getByName($dynamicRouteName));
-        self::assertNull($collection->getByName('non-existent'));
+        self::assertFalse($collection->hasNamed('non-existent'));
+    }
+
+    public function testGetNamedThrowsForNonExistent(): void
+    {
+        $name = 'non-existent';
+
+        $this->expectException(InvalidRouteNameException::class);
+        $this->expectExceptionMessage("A route with the name '$name' does not exist");
+
+        $this->collection->getByName($name);
     }
 
     public function testAll(): void
@@ -375,7 +418,7 @@ final class CollectionTest extends TestCase
                     $routePath => $route,
                 ],
             ],
-            $collection->allStatic()
+            $collection->allStatic(RequestMethod::ANY)
         );
 
         self::assertSame(
@@ -417,7 +460,7 @@ final class CollectionTest extends TestCase
                     $dynamicRoutePath => $dynamicRoute,
                 ],
             ],
-            $collection->allDynamic()
+            $collection->allDynamic(RequestMethod::ANY)
         );
 
         self::assertSame(
@@ -452,5 +495,142 @@ final class CollectionTest extends TestCase
             ],
             $this->collection->allFlattened()
         );
+    }
+
+    public function testAddRouteWithAnyRequestMethod(): void
+    {
+        $route = new Route(
+            path: self::ROUTE_PATH,
+            name: self::ROUTE_NAME,
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            requestMethods: [RequestMethod::ANY],
+        );
+
+        $dynamicRoute = new Route(
+            path: self::DYNAMIC_ROUTE_PATH,
+            name: self::DYNAMIC_ROUTE_NAME,
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            requestMethods: [RequestMethod::ANY],
+            regex: self::DYNAMIC_ROUTE_REGEX,
+            parameters: [
+                new Parameter(name: 'value', regex: Regex::ALPHA),
+            ]
+        );
+
+        $collection = new Collection();
+        $collection->add($route);
+        $collection->add($dynamicRoute);
+
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::ANY));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::HEAD));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::GET));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::POST));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::PUT));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::DELETE));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::PATCH));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::TRACE));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::OPTIONS));
+
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::ANY));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::HEAD));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::GET));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::POST));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PUT));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::DELETE));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PATCH));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::TRACE));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::OPTIONS));
+    }
+
+    public function testAddRouteWithAnyRequestMethodDirectlyViaHelperMethod(): void
+    {
+        $route = new Route(
+            path: self::ROUTE_PATH,
+            name: self::ROUTE_NAME,
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            requestMethods: [RequestMethod::ANY],
+        );
+
+        $dynamicRoute = new Route(
+            path: self::DYNAMIC_ROUTE_PATH,
+            name: self::DYNAMIC_ROUTE_NAME,
+            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            requestMethods: [RequestMethod::ANY],
+            regex: self::DYNAMIC_ROUTE_REGEX,
+            parameters: [
+                new Parameter(name: 'value', regex: Regex::ALPHA),
+            ]
+        );
+
+        // Should not be added to the collection
+        $collection = new CollectionClass();
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::ANY);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::ANY);
+
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::ANY));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::HEAD));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::GET));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::POST));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::PUT));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::DELETE));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::PATCH));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::TRACE));
+        self::assertFalse($collection->has(self::ROUTE_PATH, RequestMethod::OPTIONS));
+
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::ANY));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::HEAD));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::GET));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::POST));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PUT));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::DELETE));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PATCH));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::TRACE));
+        self::assertFalse($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::OPTIONS));
+
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::HEAD);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::GET);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::POST);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::PUT);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::DELETE);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::CONNECT);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::PATCH);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::TRACE);
+        $collection->setRouteToRequestMethodWrapper($route, RequestMethod::OPTIONS);
+
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::ANY));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::HEAD));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::GET));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::POST));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::PUT));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::DELETE));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::PATCH));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::TRACE));
+        self::assertTrue($collection->has(self::ROUTE_PATH, RequestMethod::OPTIONS));
+
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::HEAD);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::GET);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::POST);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::PUT);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::DELETE);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::CONNECT);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::PATCH);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::TRACE);
+        $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::OPTIONS);
+
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::ANY));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::HEAD));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::GET));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::POST));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PUT));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::DELETE));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::CONNECT));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::PATCH));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::TRACE));
+        self::assertTrue($collection->has(self::DYNAMIC_ROUTE_PATH, RequestMethod::OPTIONS));
     }
 }

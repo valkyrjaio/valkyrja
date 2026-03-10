@@ -207,7 +207,7 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withStatus(StatusCode::from($code), $reasonPhrase);
+        $new->response = $this->response->withStatusCode(StatusCode::from($code))->withReasonPhrase($reasonPhrase);
 
         return $new;
     }

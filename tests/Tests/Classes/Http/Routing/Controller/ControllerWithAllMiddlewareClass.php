@@ -18,6 +18,8 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Tests\Classes\Http\Middleware\AllMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 
 /**
  * Controller class to test routes.
@@ -29,7 +31,12 @@ final class ControllerWithAllMiddlewareClass
     /** @var non-empty-string */
     public const string WELCOME_NAME = 'welcome';
 
-    #[Route(path: self::WELCOME_PATH, name: self::WELCOME_NAME)]
+    #[Route(
+        path: self::WELCOME_PATH,
+        name: self::WELCOME_NAME,
+        requestStruct: IndexedJsonRequestStructEnum::first,
+        responseStruct: ResponseStructEnum::first,
+    )]
     #[Middleware(AllMiddlewareClass::class)]
     public function welcome(): ResponseContract
     {

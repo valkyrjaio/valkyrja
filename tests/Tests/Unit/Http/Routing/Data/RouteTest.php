@@ -55,15 +55,15 @@ final class RouteTest extends TestCase
         self::assertSame(self::class, $route->getDispatch()->getClass());
         self::assertSame('dispatch', $route->getDispatch()->getMethod());
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET], $route->getRequestMethods());
-        self::assertNull($route->getRegex());
+        self::assertSame('', $route->getRegex());
         self::assertEmpty($route->getParameters());
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
         self::assertEmpty($route->getSendingResponseMiddleware());
         self::assertEmpty($route->getTerminatedMiddleware());
-        self::assertNull($route->getRequestStruct());
-        self::assertNull($route->getResponseStruct());
+        self::assertFalse($route->hasRequestStruct());
+        self::assertFalse($route->hasResponseStruct());
     }
 
     public function testConstructor(): void
@@ -79,8 +79,8 @@ final class RouteTest extends TestCase
         $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
         $sendingResponseMiddleware = [SendingResponseMiddlewareClass::class];
         $terminatedMiddleware      = [TerminatedMiddlewareClass::class];
-        $requestStruct             = IndexedJsonRequestStructEnum::class;
-        $responseStruct            = ResponseStructEnum::class;
+        $requestStruct             = IndexedJsonRequestStructEnum::first;
+        $responseStruct            = ResponseStructEnum::first;
 
         $route = new Route(...[
             'path'                      => $path,
@@ -398,8 +398,8 @@ final class RouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $requestStruct  = IndexedJsonRequestStructEnum::class;
-        $requestStruct2 = IndexedParsedBodyRequestStructEnum::class;
+        $requestStruct  = IndexedJsonRequestStructEnum::first;
+        $requestStruct2 = IndexedParsedBodyRequestStructEnum::first;
 
         $route  = new Route(
             path: $path,
@@ -419,8 +419,8 @@ final class RouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $responseStruct  = ResponseStructEnum::class;
-        $responseStruct2 = IndexedResponseStructEnum::class;
+        $responseStruct  = ResponseStructEnum::first;
+        $responseStruct2 = IndexedResponseStructEnum::first;
 
         $route  = new Route(
             path: $path,

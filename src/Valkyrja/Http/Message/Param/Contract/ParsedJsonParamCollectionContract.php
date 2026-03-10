@@ -13,9 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Param\Contract;
 
+use Override;
+
 /**
  * @extends ParamCollectionContract<non-empty-string|int, scalar|ParsedJsonParamCollectionContract|null>
  */
 interface ParsedJsonParamCollectionContract extends ParamCollectionContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function get(string|int $key): self|float|bool|int|string|null;
 }

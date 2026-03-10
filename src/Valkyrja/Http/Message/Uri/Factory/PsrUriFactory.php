@@ -30,7 +30,7 @@ abstract class PsrUriFactory
     public static function fromPsr(UriInterface $psrUri): UriContract
     {
         $userInfo = $psrUri->getUserInfo();
-        $password = null;
+        $password = '';
 
         if ($userInfo !== '' && str_contains($userInfo, ':')) {
             [$user, $password] = explode(':', $userInfo);
@@ -40,13 +40,20 @@ abstract class PsrUriFactory
 
         $uri = new Uri();
 
-        return $uri
+        $uri = $uri
             ->withScheme(Scheme::from($psrUri->getScheme()))
             ->withUserInfo($user, $password)
             ->withHost($psrUri->getHost())
-            ->withPort($psrUri->getPort())
             ->withPath($psrUri->getPath())
             ->withQuery($psrUri->getQuery())
             ->withFragment($psrUri->getFragment());
+
+        $port = $psrUri->getPort();
+
+        if ($port !== null) {
+            $uri = $uri->withPort($port);
+        }
+
+        return $uri;
     }
 }

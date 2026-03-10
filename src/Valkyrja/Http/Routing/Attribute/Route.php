@@ -37,7 +37,6 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
     /**
      * @param non-empty-string                                  $path                      The path
      * @param non-empty-string                                  $name                      The name
-     * @param non-empty-string|null                             $regex                     The regex
      * @param RequestMethod[]                                   $requestMethods            The request methods
      * @param ParameterContract[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
@@ -45,23 +44,21 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
      * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
-     * @param class-string<RequestStructContract>|null          $requestStruct             The request struct
-     * @param class-string<ResponseStructContract>|null         $responseStruct            The response struct
      */
     public function __construct(
         protected string $path,
         protected string $name,
         protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, 'getPath'),
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
-        protected string|null $regex = null,
+        protected string $regex = '',
         protected array $parameters = [],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $sendingResponseMiddleware = [],
         protected array $terminatedMiddleware = [],
-        protected string|null $requestStruct = null,
-        protected string|null $responseStruct = null,
+        protected RequestStructContract|null $requestStruct = null,
+        protected ResponseStructContract|null $responseStruct = null,
     ) {
         parent::__construct(
             path: $path,

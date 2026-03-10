@@ -19,11 +19,8 @@ use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestStruct
 {
-    /**
-     * @param class-string<RequestStructContract> $name
-     */
     public function __construct(
-        public string $name
+        public RequestStructContract $struct
     ) {
     }
 }

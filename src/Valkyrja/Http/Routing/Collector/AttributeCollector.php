@@ -276,8 +276,8 @@ class AttributeCollector implements CollectorContract
     {
         $requestStruct = $this->attributes->forMethod($class, $method, RequestStruct::class);
 
-        /** @var class-string<RequestStructContract>[] $requestStructName */
-        $requestStructName = array_column($requestStruct, 'name');
+        /** @var RequestStructContract[] $requestStructName */
+        $requestStructName = array_column($requestStruct, 'struct');
 
         if ($requestStructName !== []) {
             $route = $route->withRequestStruct($requestStructName[0]);
@@ -296,8 +296,8 @@ class AttributeCollector implements CollectorContract
     {
         $responseStruct = $this->attributes->forMethod($class, $method, ResponseStruct::class);
 
-        /** @var class-string<ResponseStructContract>[] $responseStructName */
-        $responseStructName = array_column($responseStruct, 'name');
+        /** @var ResponseStructContract[] $responseStructName */
+        $responseStructName = array_column($responseStruct, 'struct');
 
         if ($responseStructName !== []) {
             $route = $route->withResponseStruct($responseStructName[0]);
@@ -364,8 +364,12 @@ class AttributeCollector implements CollectorContract
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
             terminatedMiddleware: $route->getTerminatedMiddleware(),
-            requestStruct: $route->getRequestStruct(),
-            responseStruct: $route->getResponseStruct()
+            requestStruct: $route->hasRequestStruct()
+                ? $route->getRequestStruct()
+                : null,
+            responseStruct: $route->hasResponseStruct()
+                ? $route->getResponseStruct()
+                : null
         );
     }
 
@@ -374,7 +378,9 @@ class AttributeCollector implements CollectorContract
         return new DataParameter(
             name: $parameter->getName(),
             regex: $parameter->getRegex(),
-            cast: $parameter->getCast(),
+            cast: $parameter->hasCast()
+                ? $parameter->getCast()
+                : null,
             isOptional: $parameter->isOptional(),
             shouldCapture: $parameter->shouldCapture(),
             default: $parameter->getDefault()

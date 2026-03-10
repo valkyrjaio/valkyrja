@@ -265,11 +265,11 @@ final class StreamTest extends TestCase
 
         $stream->detach();
 
-        self::assertNull($stream->getSize());
+        self::assertSame(0, $stream->getSize());
 
         $stream2 = new FalseFstatStreamClass();
 
-        self::assertNull($stream2->getSize());
+        self::assertSame(0, $stream2->getSize());
     }
 
     public function testTell(): void
@@ -369,13 +369,13 @@ final class StreamTest extends TestCase
         $stream = new Stream();
 
         self::assertIsArray($stream->getMetadata());
-        self::assertTrue($stream->getMetadata('seekable'));
-        self::assertNull($stream->getMetadata('nonexistent'));
+        self::assertTrue($stream->getMetadataItem('seekable'));
+        self::assertNull($stream->getMetadataItem('nonexistent'));
 
         $stream->detach();
 
-        self::assertNull($stream->getMetadata());
-        self::assertNull($stream->getMetadata('seekable'));
+        self::assertEmpty($stream->getMetadata());
+        self::assertNull($stream->getMetadataItem('seekable'));
     }
 
     public function testInvalidStream(): void

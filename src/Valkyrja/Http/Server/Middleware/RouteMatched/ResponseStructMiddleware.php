@@ -34,10 +34,9 @@ class ResponseStructMiddleware implements RouteDispatchedMiddlewareContract
         RouteContract $route,
         RouteDispatchedHandlerContract $handler
     ): ResponseContract {
-        $responseStruct = $route->getResponseStruct();
-
-        if ($responseStruct !== null && $response instanceof JsonResponseContract) {
-            $response = $this->updateJsonWithResponseStruct($response, $responseStruct);
+        if ($response instanceof JsonResponseContract && $route->hasResponseStruct()) {
+            $responseStruct = $route->getResponseStruct();
+            $response       = $this->updateJsonWithResponseStruct($response, $responseStruct);
         }
 
         return $handler->routeDispatched($request, $response, $route);
@@ -45,11 +44,8 @@ class ResponseStructMiddleware implements RouteDispatchedMiddlewareContract
 
     /**
      * Update the Json in a response with a given response struct.
-     *
-     * @param JsonResponseContract                 $response       The json response
-     * @param class-string<ResponseStructContract> $responseStruct The response struct
      */
-    protected function updateJsonWithResponseStruct(JsonResponseContract $response, string $responseStruct): JsonResponseContract
+    protected function updateJsonWithResponseStruct(JsonResponseContract $response, ResponseStructContract $responseStruct): JsonResponseContract
     {
         $data = $response->getBodyAsJson();
 

@@ -64,7 +64,7 @@ final class UploadedFileTest extends TestCase
         // Ensure the stream was closed
         self::assertFalse($psrStream->isReadable());
         self::assertFalse($psrStream->isWritable());
-        self::assertNull($psrStream->getMetadata());
+        self::assertSame([], $psrStream->getMetadata());
         // Ensure new file was created
         self::assertFileExists($file);
 

@@ -35,7 +35,7 @@ class ResponseFactory implements ResponseFactoryContract
     #[Override]
     public function createRouteRedirectResponse(
         string $name,
-        array|null $data = null,
+        array $data = [],
         StatusCode|null $statusCode = null,
         HeaderCollectionContract|null $headers = null
     ): RedirectResponseContract {

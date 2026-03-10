@@ -180,7 +180,7 @@ class Request implements RequestContract
     {
         $host = $this->uri->getHost();
         $port = $this->uri->getPort();
-        $host .= $port !== null
+        $host .= $port !== 0
             ? ':' . ((string) $port)
             : '';
 

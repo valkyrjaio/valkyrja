@@ -19,9 +19,12 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\RuntimeException;
 
 use function array_map;
+use function in_array;
 use function is_callable;
 use function is_string;
 
@@ -100,17 +103,24 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $path, RequestMethod|null $method = null): RouteContract|null
+    public function get(string $path, RequestMethod $method): RouteContract
     {
-        return $this->getStatic($path, $method)
-            ?? $this->getDynamic($path, $method);
+        if ($this->hasStatic($path, $method)) {
+            return $this->getStatic($path, $method);
+        }
+
+        if ($this->hasDynamic($path, $method)) {
+            return $this->getDynamic($path, $method);
+        }
+
+        throw new InvalidRoutePathException("The path '$path' is not a valid route for the given method '$method->value'");
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function has(string $path, RequestMethod|null $method = null): bool
+    public function has(string $path, RequestMethod $method): bool
     {
         return $this->hasStatic($path, $method)
             || $this->hasDynamic($path, $method);
@@ -138,16 +148,17 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getStatic(string $path, RequestMethod|null $method = null): RouteContract|null
+    public function getStatic(string $path, RequestMethod $method): RouteContract
     {
-        return $this->getOfType($this->static, $path, $method);
+        return $this->getOfType($this->static, $path, $method)
+            ?? throw new InvalidRoutePathException("The static path '$path' is not a valid route for the given method '$method->value'");
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function hasStatic(string $path, RequestMethod|null $method = null): bool
+    public function hasStatic(string $path, RequestMethod $method): bool
     {
         return $this->hasOfType($this->static, $path, $method);
     }
@@ -156,7 +167,7 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function allStatic(RequestMethod|null $method = null): array
+    public function allStatic(RequestMethod $method): array
     {
         return $this->allOfType($this->static, $method);
     }
@@ -165,25 +176,26 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getDynamic(string $regex, RequestMethod|null $method = null): RouteContract|null
+    public function getDynamic(string $path, RequestMethod $method): RouteContract
     {
-        return $this->getOfType($this->dynamic, $regex, $method);
+        return $this->getOfType($this->dynamic, $path, $method)
+            ?? throw new InvalidRoutePathException("The dynamic path '$path' is not a valid route for the given method '$method->value'");
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function hasDynamic(string $regex, RequestMethod|null $method = null): bool
+    public function hasDynamic(string $path, RequestMethod $method): bool
     {
-        return $this->hasOfType($this->dynamic, $regex, $method);
+        return $this->hasOfType($this->dynamic, $path, $method);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function allDynamic(RequestMethod|null $method = null): array
+    public function allDynamic(RequestMethod $method): array
     {
         return $this->allOfType($this->dynamic, $method);
     }
@@ -192,15 +204,15 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getByName(string $name): RouteContract|null
+    public function getByName(string $name): RouteContract
     {
         $named = $this->routes[$name] ?? null;
 
-        if ($named === null) {
-            return null;
+        if ($named !== null) {
+            return $this->ensureRoute($named);
         }
 
-        return $this->ensureRoute($named);
+        throw new InvalidRouteNameException("A route with the name '$name' does not exist");
     }
 
     /**
@@ -219,7 +231,13 @@ class Collection implements CollectionContract
      */
     protected function setRouteToRequestMethods(RouteContract $route): void
     {
-        foreach ($route->getRequestMethods() as $requestMethod) {
+        $requestMethods = $route->getRequestMethods();
+
+        if (in_array(RequestMethod::ANY, $requestMethods, true)) {
+            $requestMethods = RequestMethod::all();
+        }
+
+        foreach ($requestMethods as $requestMethod) {
             $this->setRouteToRequestMethod($route, $requestMethod);
         }
     }
@@ -232,12 +250,16 @@ class Collection implements CollectionContract
      */
     protected function setRouteToRequestMethod(RouteContract $route, RequestMethod $requestMethod): void
     {
+        if ($requestMethod === RequestMethod::ANY) {
+            return;
+        }
+
         $name  = $route->getName();
         $path  = $route->getPath();
         $regex = $route->getRegex();
 
         // If this is a dynamic route
-        if ($regex !== null) {
+        if ($regex !== '') {
             // Set the route in the dynamic routes list
             $this->dynamic[$requestMethod->value][$path] = $name;
 
@@ -252,13 +274,13 @@ class Collection implements CollectionContract
     /**
      * Get a route of type (static|dynamic).
      *
-     * @param RequestMethodList  $type   The type [static|dynamic]
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
+     * @param RequestMethodList $type   The type [static|dynamic]
+     * @param string            $path   The path
+     * @param RequestMethod     $method [optional] The request method
      */
-    protected function getOfType(array $type, string $path, RequestMethod|null $method = null): RouteContract|null
+    protected function getOfType(array $type, string $path, RequestMethod $method): RouteContract|null
     {
-        if ($method === null) {
+        if ($method === RequestMethod::ANY) {
             return $this->getAnyOfType($type, $path);
         }
 
@@ -290,13 +312,13 @@ class Collection implements CollectionContract
     /**
      * Has a path of type (static|dynamic).
      *
-     * @param RequestMethodList  $type   The type [static|dynamic]
-     * @param string             $path   The path
-     * @param RequestMethod|null $method [optional] The request method
+     * @param RequestMethodList $type   The type [static|dynamic]
+     * @param string            $path   The path
+     * @param RequestMethod     $method [optional] The request method
      */
-    protected function hasOfType(array $type, string $path, RequestMethod|null $method = null): bool
+    protected function hasOfType(array $type, string $path, RequestMethod $method): bool
     {
-        if ($method === null) {
+        if ($method === RequestMethod::ANY) {
             return $this->hasAnyOfType($type, $path);
         }
 
@@ -323,14 +345,14 @@ class Collection implements CollectionContract
     /**
      * Get all of type with optional by request method.
      *
-     * @param RequestMethodList  $type   The type [static|dynamic]
-     * @param RequestMethod|null $method [optional] The request method
+     * @param RequestMethodList $type   The type [static|dynamic]
+     * @param RequestMethod     $method [optional] The request method
      *
      * @return RequestMethodRouteList|array<string, RouteContract>
      */
-    protected function allOfType(array $type, RequestMethod|null $method = null): array
+    protected function allOfType(array $type, RequestMethod $method): array
     {
-        if ($method === null) {
+        if ($method === RequestMethod::ANY) {
             return $this->ensureMethodRoutes($type);
         }
 

@@ -60,7 +60,7 @@ final class ResponseStructMiddlewareTest extends TestCase
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
-            responseStruct: IndexedResponseStructEnum::class
+            responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();
 
@@ -87,7 +87,7 @@ final class ResponseStructMiddlewareTest extends TestCase
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),
-            responseStruct: IndexedResponseStructEnum::class
+            responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();
 

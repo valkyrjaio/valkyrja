@@ -23,6 +23,8 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Throwable\Exception\NoRequestStructException;
+use Valkyrja\Http\Routing\Throwable\Exception\NoResponseStructException;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
@@ -33,7 +35,6 @@ class Route implements RouteContract
     /**
      * @param non-empty-string                                  $path                      The path
      * @param non-empty-string                                  $name                      The name
-     * @param non-empty-string|null                             $regex                     The regex
      * @param RequestMethod[]                                   $requestMethods            The request methods
      * @param ParameterContract[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
@@ -41,23 +42,21 @@ class Route implements RouteContract
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
      * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
-     * @param class-string<RequestStructContract>|null          $requestStruct             The request struct
-     * @param class-string<ResponseStructContract>|null         $responseStruct            The response struct
      */
     public function __construct(
         protected string $path,
         protected string $name,
         protected MethodDispatchContract $dispatch,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
-        protected string|null $regex = null,
+        protected string $regex = '',
         protected array $parameters = [],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $sendingResponseMiddleware = [],
         protected array $terminatedMiddleware = [],
-        protected string|null $requestStruct = null,
-        protected string|null $responseStruct = null,
+        protected RequestStructContract|null $requestStruct = null,
+        protected ResponseStructContract|null $responseStruct = null,
     ) {
     }
 
@@ -210,7 +209,7 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getRegex(): string|null
+    public function getRegex(): string
     {
         return $this->regex;
     }
@@ -219,7 +218,7 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withRegex(string|null $regex = null): static
+    public function withRegex(string $regex): static
     {
         $new = clone $this;
 
@@ -474,16 +473,26 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getRequestStruct(): string|null
+    public function hasRequestStruct(): bool
     {
-        return $this->requestStruct;
+        return $this->requestStruct !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withRequestStruct(string|null $requestStruct = null): static
+    public function getRequestStruct(): RequestStructContract
+    {
+        return $this->requestStruct
+            ?? throw new NoRequestStructException('No request struct was set for this route');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withRequestStruct(RequestStructContract $requestStruct): static
     {
         $new = clone $this;
 
@@ -496,16 +505,26 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getResponseStruct(): string|null
+    public function hasResponseStruct(): bool
     {
-        return $this->responseStruct;
+        return $this->responseStruct !== null;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withResponseStruct(string|null $responseStruct = null): static
+    public function getResponseStruct(): ResponseStructContract
+    {
+        return $this->responseStruct
+            ?? throw new NoResponseStructException('No response struct was set for this route');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withResponseStruct(ResponseStructContract $responseStruct): static
     {
         $new = clone $this;
 

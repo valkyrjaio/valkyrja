@@ -172,7 +172,7 @@ class RequestHandler implements RequestHandlerContract
         // If no response has been set and there is a template with the error code
         if ($throwable instanceof HttpException) {
             return $throwable->getResponse()
-                ?? $this->getDefaultErrorResponse($throwable);
+                ?? $this->getDefaultErrorResponseForHttpException($throwable);
         }
 
         return $this->getDefaultErrorResponse();
@@ -180,10 +180,8 @@ class RequestHandler implements RequestHandlerContract
 
     /**
      * Get the default exception response.
-     *
-     * @param HttpException|null $httpException [optional] The Http exception
      */
-    protected function getDefaultErrorResponse(HttpException|null $httpException = null): ResponseContract
+    protected function getDefaultErrorResponse(): ResponseContract
     {
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 
@@ -191,11 +189,22 @@ class RequestHandler implements RequestHandlerContract
         $body->write('Unknown Server Error Occurred');
         $body->rewind();
 
-        if ($httpException !== null) {
-            $statusCode = $httpException->getStatusCode();
-            $body->write('Unknown Server Error Occurred - ' . $httpException->getTraceCode());
-            $body->rewind();
-        }
+        return new Response(
+            body: $body,
+            statusCode: $statusCode
+        );
+    }
+
+    /**
+     * Get the default exception response for an http exception.
+     */
+    protected function getDefaultErrorResponseForHttpException(HttpException $httpException): ResponseContract
+    {
+        $statusCode = $httpException->getStatusCode();
+
+        $body = new Stream();
+        $body->write('Unknown Server Error Occurred - ' . $httpException->getTraceCode());
+        $body->rewind();
 
         return new Response(
             body: $body,

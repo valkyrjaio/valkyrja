@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
 use Valkyrja\Http\Message\Param\ServerParamCollection;
+use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidServerParamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ServerParamCollectionTest extends TestCase
@@ -70,9 +71,14 @@ final class ServerParamCollectionTest extends TestCase
         self::assertSame($nested, $paramData->get('nested'));
     }
 
-    public function testGetParamReturnsNullForMissing(): void
+    public function testGetParamReturnsThrowsForMissing(): void
     {
-        self::assertNull($this->paramData->get('nonexistent'));
+        $key = 'nonexistent';
+
+        $this->expectException(InvalidServerParamException::class);
+        $this->expectExceptionMessage("No server param with the key '$key' was found");
+
+        $this->paramData->get($key);
     }
 
     public function testHasParam(): void
@@ -119,7 +125,7 @@ final class ServerParamCollectionTest extends TestCase
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('localhost', $new->get('host'));
-        self::assertNull($new->get('method'));
+        self::assertFalse($new->has('method'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void

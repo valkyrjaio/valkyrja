@@ -94,16 +94,22 @@ final class UriFactoryTest extends TestCase
         UriFactory::validatePort(80);
         UriFactory::validatePort(443);
         UriFactory::validatePort(8080);
-        UriFactory::validatePort(null);
 
         self::assertTrue(true); // If we reach here, no exception was thrown
     }
 
-    public function testValidatePortInvalid(): void
+    public function testValidatePortInvalidForNegative(): void
     {
         $this->expectException(InvalidPortException::class);
 
         UriFactory::validatePort(-1);
+    }
+
+    public function testValidatePortInvalidFor0(): void
+    {
+        $this->expectException(InvalidPortException::class);
+
+        UriFactory::validatePort(0);
     }
 
     public function testFilterUserInfo(): void
@@ -159,16 +165,22 @@ final class UriFactoryTest extends TestCase
     public function testIsStandardPort(): void
     {
         // Empty scheme with host but no port
-        self::assertTrue(UriFactory::isStandardPort(Scheme::EMPTY, 'example.com', null));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::EMPTY, 'example.com', 0));
+        // Empty scheme with host but no port
+        self::assertTrue(UriFactory::isStandardPort(Scheme::EMPTY, 'example.com', -1));
         // Empty scheme with no host
-        self::assertFalse(UriFactory::isStandardPort(Scheme::EMPTY, '', null));
+        self::assertFalse(UriFactory::isStandardPort(Scheme::EMPTY, '', 0));
+        // Empty scheme with no host
+        self::assertFalse(UriFactory::isStandardPort(Scheme::EMPTY, '', -1));
 
         // HTTP scheme with standard port 80
         self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, 'example.com', 80));
         // HTTP scheme with non-standard port
         self::assertFalse(UriFactory::isStandardPort(Scheme::HTTP, 'example.com', 8080));
         // HTTP scheme with no port
-        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, 'example.com', null));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, 'example.com', 0));
+        // HTTP scheme with no port
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, 'example.com', -1));
 
         // HTTPS scheme with standard port 443
         self::assertTrue(UriFactory::isStandardPort(Scheme::HTTPS, 'example.com', 443));
@@ -181,7 +193,8 @@ final class UriFactoryTest extends TestCase
         self::assertTrue(UriFactory::isStandardUnsecurePort(Scheme::HTTP, 80));
         self::assertFalse(UriFactory::isStandardUnsecurePort(Scheme::HTTP, 8080));
         self::assertFalse(UriFactory::isStandardUnsecurePort(Scheme::HTTPS, 80));
-        self::assertFalse(UriFactory::isStandardUnsecurePort(Scheme::HTTP, null));
+        self::assertFalse(UriFactory::isStandardUnsecurePort(Scheme::HTTP, 0));
+        self::assertFalse(UriFactory::isStandardUnsecurePort(Scheme::HTTP, -1));
     }
 
     public function testIsStandardSecurePort(): void
@@ -189,7 +202,8 @@ final class UriFactoryTest extends TestCase
         self::assertTrue(UriFactory::isStandardSecurePort(Scheme::HTTPS, 443));
         self::assertFalse(UriFactory::isStandardSecurePort(Scheme::HTTPS, 8443));
         self::assertFalse(UriFactory::isStandardSecurePort(Scheme::HTTP, 443));
-        self::assertFalse(UriFactory::isStandardSecurePort(Scheme::HTTPS, null));
+        self::assertFalse(UriFactory::isStandardSecurePort(Scheme::HTTPS, 0));
+        self::assertFalse(UriFactory::isStandardSecurePort(Scheme::HTTPS, -1));
     }
 
     public function testGetSchemeStringPart(): void
@@ -330,7 +344,9 @@ final class UriFactoryTest extends TestCase
     public function testIsStandardPortWithNoHost(): void
     {
         // When host is empty but port is provided with HTTP scheme
-        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, '', null));
-        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTPS, '', null));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, '', 0));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTPS, '', 0));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTP, '', -1));
+        self::assertTrue(UriFactory::isStandardPort(Scheme::HTTPS, '', -1));
     }
 }

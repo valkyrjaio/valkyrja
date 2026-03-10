@@ -24,9 +24,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
-use function assert;
-use function is_a;
-
 class RequestStructMiddleware implements RouteMatchedMiddlewareContract
 {
     /**
@@ -36,10 +33,9 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
         $response = null;
-        $message  = $route->getRequestStruct();
 
-        if ($message !== null) {
-            $this->ensureIsStruct($message);
+        if ($route->hasRequestStruct()) {
+            $message = $route->getRequestStruct();
 
             $response = $this->ensureRequestConformsToMessage($request, $route, $message);
         }
@@ -49,31 +45,9 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     }
 
     /**
-     * Ensure a message is a message.
-     *
-     * @param string $message The message
+     * Ensure the request conforms to the request struct.
      */
-    protected function ensureIsStruct(string $message): void
-    {
-        assert($this->determineIsStruct($message));
-    }
-
-    /**
-     * Determine if a dependency is a message.
-     *
-     * @param string $struct The message
-     */
-    protected function determineIsStruct(string $struct): bool
-    {
-        return is_a($struct, RequestStructContract::class, true);
-    }
-
-    /**
-     * @param ServerRequestContract               $request      The request
-     * @param RouteContract                       $matchedRoute The matched route
-     * @param class-string<RequestStructContract> $struct       The message class name
-     */
-    protected function ensureRequestConformsToMessage(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
+    protected function ensureRequestConformsToMessage(ServerRequestContract $request, RouteContract $matchedRoute, RequestStructContract $struct): ResponseContract|null
     {
         return $this->ensureRequestHasNoExtraData($request, $matchedRoute, $struct)
             ?? $this->ensureRequestIsValid($request, $matchedRoute, $struct)
@@ -81,11 +55,9 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     }
 
     /**
-     * @param ServerRequestContract               $request      The request
-     * @param RouteContract                       $matchedRoute The matched route
-     * @param class-string<RequestStructContract> $struct       The message class name
+     * Ensure the request has no extra data.
      */
-    protected function ensureRequestHasNoExtraData(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
+    protected function ensureRequestHasNoExtraData(ServerRequestContract $request, RouteContract $matchedRoute, RequestStructContract $struct): ResponseContract|null
     {
         // If there is extra data
         if ($struct::determineIfRequestContainsExtraData($request)) {
@@ -97,11 +69,9 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     }
 
     /**
-     * @param ServerRequestContract               $request      The request
-     * @param RouteContract                       $matchedRoute The matched route
-     * @param class-string<RequestStructContract> $struct       The message class name
+     * Get the error response for extra data present in the request.
      */
-    protected function getExtraDataErrorResponse(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract
+    protected function getExtraDataErrorResponse(ServerRequestContract $request, RouteContract $matchedRoute, RequestStructContract $struct): ResponseContract
     {
         return new Response(
             statusCode: StatusCode::PAYLOAD_TOO_LARGE,
@@ -109,11 +79,9 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     }
 
     /**
-     * @param ServerRequestContract               $request      The request
-     * @param RouteContract                       $matchedRoute The matched route
-     * @param class-string<RequestStructContract> $struct       The message class name
+     * Ensure the request is valid.
      */
-    protected function ensureRequestIsValid(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
+    protected function ensureRequestIsValid(ServerRequestContract $request, RouteContract $matchedRoute, RequestStructContract $struct): ResponseContract|null
     {
         $validate = $struct::validate($request);
 
@@ -125,16 +93,13 @@ class RequestStructMiddleware implements RouteMatchedMiddlewareContract
     }
 
     /**
-     * @param ServerRequestContract               $request      The request
-     * @param RouteContract                       $matchedRoute The matched route
-     * @param ValidatorContract                   $validate     The validation object
-     * @param class-string<RequestStructContract> $struct       The message class name
+     * Get the error response for validations errors present in the request.
      */
     protected function getValidationErrorsResponse(
         ServerRequestContract $request,
         RouteContract $matchedRoute,
         ValidatorContract $validate,
-        string $struct
+        RequestStructContract $struct
     ): ResponseContract {
         return new Response(
             statusCode: StatusCode::BAD_REQUEST,

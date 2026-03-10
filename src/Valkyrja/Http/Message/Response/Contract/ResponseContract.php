@@ -38,22 +38,24 @@ interface ResponseContract extends MessageContract
     public function getStatusCode(): StatusCode;
 
     /**
-     * Create a new instance with the specified status code and, optionally, reason phrase.
+     * Create a new instance with the specified status code.
      *
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @throws InvalidArgumentException For invalid status code arguments
      */
-    public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static;
+    public function withStatusCode(StatusCode $code): static;
 
     /**
      * Get the reason phrase.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      */
     public function getReasonPhrase(): string;
+
+    /**
+     * Create a new instance with the specified reason phrase.
+     */
+    public function withReasonPhrase(string $reasonPhrase): static;
 
     /**
      * Create a new instance with the specified cookie.

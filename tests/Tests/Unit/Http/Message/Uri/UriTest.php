@@ -36,6 +36,10 @@ final class UriTest extends TestCase
         $uriNotSecure     = UriFactory::fromString(self::URI_HTTP);
         $uriUnknownSecure = UriFactory::fromString(self::URI_EMPTY);
 
+        self::assertFalse($uri->hasPort());
+        self::assertTrue($uriSecure->hasPort());
+        self::assertTrue($uriNotSecure->hasPort());
+        self::assertFalse($uriUnknownSecure->hasPort());
         self::assertFalse($uri->isSecure());
         self::assertTrue($uriSecure->isSecure());
         self::assertFalse($uriNotSecure->isSecure());
@@ -49,6 +53,10 @@ final class UriTest extends TestCase
         $uriHttp  = UriFactory::fromString(self::URI_HTTP);
         $uriEmpty = UriFactory::fromString(self::URI_EMPTY);
 
+        self::assertFalse($uri->hasPort());
+        self::assertTrue($uriHttps->hasPort());
+        self::assertTrue($uriHttp->hasPort());
+        self::assertFalse($uriEmpty->hasPort());
         self::assertSame(Scheme::EMPTY, $uri->getScheme());
         self::assertSame(Scheme::HTTPS, $uriHttps->getScheme());
         self::assertSame(Scheme::HTTP, $uriHttp->getScheme());
@@ -59,14 +67,25 @@ final class UriTest extends TestCase
     {
         $uri = UriFactory::fromString(self::URI);
 
-        $uriNowWithHttps = $uri->withScheme(Scheme::HTTPS);
-        $uriNowWithHttp  = $uri->withScheme(Scheme::HTTP);
-        $uriNowWithEmpty = $uri->withScheme(Scheme::EMPTY);
+        $uriWithPortNowWithHttps = $uri->withPort(8000)->withScheme(Scheme::HTTPS);
+        $uriNowWithHttps         = $uri->withScheme(Scheme::HTTPS);
+        $uriNowWithHttp          = $uri->withScheme(Scheme::HTTP);
+        $uriNowWithEmpty         = $uri->withScheme(Scheme::EMPTY);
 
         self::assertNotSame($uri, $uriNowWithHttps);
         self::assertNotSame($uri, $uriNowWithHttp);
         self::assertNotSame($uri, $uriNowWithEmpty);
 
+        self::assertFalse($uri->hasPort());
+        self::assertTrue($uriNowWithHttp->hasPort());
+        self::assertTrue($uriNowWithHttps->hasPort());
+        self::assertTrue($uriWithPortNowWithHttps->hasPort());
+        self::assertFalse($uriNowWithEmpty->hasPort());
+        self::assertSame(0, $uri->getPort());
+        self::assertSame(0, $uriNowWithHttp->getPort());
+        self::assertSame(0, $uriNowWithHttps->getPort());
+        self::assertSame(0, $uriNowWithEmpty->getPort());
+        self::assertSame(8000, $uriWithPortNowWithHttps->getPort());
         self::assertSame(Scheme::EMPTY, $uri->getScheme());
         self::assertSame(Scheme::HTTPS, $uriNowWithHttps->getScheme());
         self::assertSame(Scheme::HTTP, $uriNowWithHttp->getScheme());
@@ -165,10 +184,10 @@ final class UriTest extends TestCase
         $uriEmpty    = UriFactory::fromString(self::URI_EMPTY);
         $uriAllParts = UriFactory::fromString(self::URI_ALL_PARTS);
 
-        self::assertNull($uri->getPort());
-        self::assertNull($uriHttps->getPort());
-        self::assertNull($uriHttp->getPort());
-        self::assertNull($uriEmpty->getPort());
+        self::assertSame(0, $uri->getPort());
+        self::assertSame(0, $uriHttps->getPort());
+        self::assertSame(0, $uriHttp->getPort());
+        self::assertSame(0, $uriEmpty->getPort());
         self::assertSame(9090, $uriAllParts->getPort());
     }
 
@@ -375,14 +394,14 @@ final class UriTest extends TestCase
         self::assertNotSame($uri, $uri5);
 
         // No port passed
-        self::assertNull($uri->getPort());
+        self::assertSame(0, $uri->getPort());
         // Empty Scheme with a standard port should still come through
         self::assertSame(80, $uri2->getPort());
         self::assertSame(90, $uri3->getPort());
         // Https scheme with standard https port should be null
-        self::assertNull($uri4->getPort());
+        self::assertSame(0, $uri4->getPort());
         // Http scheme with standard http port should be null
-        self::assertNull($uri5->getPort());
+        self::assertSame(0, $uri5->getPort());
     }
 
     public function testInvalidPort(): void
@@ -396,7 +415,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidPortException::class);
 
-        new Uri(port: 0);
+        new Uri(port: -1);
     }
 
     public function testWithPath(): void

@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
 use Valkyrja\Http\Message\Param\QueryParamCollection;
+use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidQueryParamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class QueryParamCollectionTest extends TestCase
@@ -66,7 +67,12 @@ final class QueryParamCollectionTest extends TestCase
 
     public function testGetParamReturnsNullForMissing(): void
     {
-        self::assertNull($this->paramData->get('nonexistent'));
+        $key = 'nonexistent';
+
+        $this->expectException(InvalidQueryParamException::class);
+        $this->expectExceptionMessage("No query param with the key '$key' was found");
+
+        $this->paramData->get($key);
     }
 
     public function testHasParam(): void
@@ -109,7 +115,7 @@ final class QueryParamCollectionTest extends TestCase
 
         self::assertNotSame($this->paramData, $new);
         self::assertSame('test', $new->get('search'));
-        self::assertNull($new->get('page'));
+        self::assertFalse($new->has('page'));
     }
 
     public function testWithParamsDoesNotModifyOriginal(): void

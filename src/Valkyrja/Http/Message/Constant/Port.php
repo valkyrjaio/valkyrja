@@ -23,11 +23,9 @@ final class Port
 
     /**
      * Check if a port is valid.
-     *
-     * @param int|null $port [optional] The port
      */
-    public static function isValid(int|null $port = null): bool
+    public static function isValid(int $port): bool
     {
-        return $port === null || ($port >= self::MIN && $port <= self::MAX);
+        return $port >= self::MIN && $port <= self::MAX;
     }
 }

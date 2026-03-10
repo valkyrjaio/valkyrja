@@ -123,7 +123,7 @@ final class DataFileGeneratorTest extends TestCase
                 1 => 
                 \Valkyrja\Http\Message\Enum\RequestMethod::GET,
               ),
-               'regex' => NULL,
+               'regex' => '',
                'parameters' => 
               array (
               ),
@@ -197,7 +197,7 @@ final class DataFileGeneratorTest extends TestCase
                 1 => 
                 \Valkyrja\Http\Message\Enum\RequestMethod::GET,
               ),
-               'regex' => NULL,
+               'regex' => '',
                'parameters' => 
               array (
               ),
