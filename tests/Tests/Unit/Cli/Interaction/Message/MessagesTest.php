@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -24,22 +23,18 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class MessagesTest extends TestCase
 {
-    public function testEmptyTextException(): void
+    public function testEmptyTextReturnsEmptyString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-
         $message = new Messages();
 
-        $message->getText();
+        self::assertSame('', $message->getText());
     }
 
-    public function testEmptyFormattedTextException(): void
+    public function testEmptyFormattedTextReturnsEmptyString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-
         $message = new Messages();
 
-        $message->getFormattedText();
+        self::assertSame('', $message->getFormattedText());
     }
 
     public function testText(): void

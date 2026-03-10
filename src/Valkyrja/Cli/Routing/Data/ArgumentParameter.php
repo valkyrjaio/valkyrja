@@ -20,7 +20,6 @@ use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -177,7 +176,7 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
         $firstItem = $this->arguments[0] ?? null;
 
         if ($firstItem === null) {
-            throw new NoFirstValueException('No first value exists');
+            return '';
         }
 
         return $firstItem->getValue();
@@ -209,7 +208,7 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {
-            throw new InvalidArgumentException("$this->name is required");
+            throw new InvalidArgumentException("$this->name is invalid");
         }
 
         return $this;

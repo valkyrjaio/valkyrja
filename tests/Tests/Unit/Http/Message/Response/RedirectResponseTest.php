@@ -23,7 +23,6 @@ use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Header\Referer;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\RedirectResponse;
-use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -173,15 +172,6 @@ final class RedirectResponseTest extends TestCase
 
         self::assertSame($url, (string) $response5->getUri());
         self::assertSame($url, $response5->getHeaders()->getHeaderLine(HeaderName::LOCATION));
-    }
-
-    public function testThrow(): void
-    {
-        $this->expectException(HttpRedirectException::class);
-
-        $response = new RedirectResponse();
-
-        $response->throw();
     }
 
     #[DataProvider('invalidStatusCodesProvider')]

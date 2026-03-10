@@ -17,7 +17,6 @@ use JsonException;
 use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 class Tagger implements TaggerContract
@@ -85,7 +84,7 @@ class Tagger implements TaggerContract
             }
         }
 
-        throw new InvalidCacheKeyException("Cache miss for key: $key");
+        return '';
     }
 
     /**

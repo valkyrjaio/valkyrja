@@ -15,7 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 class Messages extends Message
 {
@@ -25,15 +24,13 @@ class Messages extends Message
     public function __construct(
         MessageContract ...$messages
     ) {
-        parent::__construct(' ');
+        parent::__construct('');
 
         $this->messages = $messages;
     }
 
     /**
      * @inheritDoc
-     *
-     * @return non-empty-string
      */
     #[Override]
     public function getText(): string
@@ -46,17 +43,11 @@ class Messages extends Message
             )
         );
 
-        if ($text === '') {
-            throw new InvalidArgumentException('No text found');
-        }
-
         return $text;
     }
 
     /**
      * @inheritDoc
-     *
-     * @return non-empty-string
      */
     #[Override]
     public function getFormattedText(): string
@@ -68,10 +59,6 @@ class Messages extends Message
                 $this->messages
             )
         );
-
-        if ($text === '') {
-            throw new InvalidArgumentException('No text found');
-        }
 
         return $text;
     }

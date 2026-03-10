@@ -19,22 +19,16 @@ interface MessageContract
 {
     /**
      * Get the text.
-     *
-     * @return non-empty-string
      */
     public function getText(): string;
 
     /**
      * Get the formatted text.
-     *
-     * @return non-empty-string
      */
     public function getFormattedText(): string;
 
     /**
      * Create a new Message with the specified text.
-     *
-     * @param non-empty-string $text The text
      */
     public function withText(string $text): static;
 

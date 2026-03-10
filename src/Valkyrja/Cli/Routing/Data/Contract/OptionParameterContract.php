@@ -71,22 +71,13 @@ interface OptionParameterContract extends ParameterContract
 
     /**
      * Get the value display name.
-     *
-     * @return non-empty-string
      */
     public function getValueDisplayName(): string;
 
     /**
      * Create a new Option parameter with the specified value display name.
-     *
-     * @param non-empty-string $valueName The value name
      */
     public function withValueDisplayName(string $valueName): static;
-
-    /**
-     * Create a new Option parameter without a value display name.
-     */
-    public function withoutValueDisplayName(): static;
 
     /**
      * Get the valid values.
@@ -116,22 +107,13 @@ interface OptionParameterContract extends ParameterContract
 
     /**
      * Get the default value.
-     *
-     * @return non-empty-string
      */
     public function getDefaultValue(): string;
 
     /**
      * Create a new Option parameter with the specified default value.
-     *
-     * @param non-empty-string $defaultValue The default value
      */
     public function withDefaultValue(string $defaultValue): static;
-
-    /**
-     * Create a new Option parameter without a default value.
-     */
-    public function withoutDefaultValue(): static;
 
     /**
      * Get the options.

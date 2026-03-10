@@ -81,7 +81,7 @@ final class UserTest extends TestCase
         $user->username = self::USERNAME;
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Username field value should be a string');
+        $this->expectExceptionMessage('Password field value should be a string');
 
         $user->getPasswordValue();
     }

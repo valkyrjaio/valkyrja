@@ -300,15 +300,11 @@ class AttributeCollector implements CollectorContract
         return new OptionParameter(
             name: $parameter->getName(),
             description: $parameter->getDescription(),
-            valueDisplayName: $parameter->hasValueDisplayName()
-                ? $parameter->getValueDisplayName()
-                : null,
+            valueDisplayName: $parameter->getValueDisplayName(),
             cast: $parameter->hasCast()
                 ? $parameter->getCast()
                 : null,
-            defaultValue: $parameter->hasDefaultValue()
-                ? $parameter->getDefaultValue()
-                : null,
+            defaultValue: $parameter->getDefaultValue(),
             shortNames: $parameter->getShortNames(),
             validValues: $parameter->getValidValues(),
             options: $parameter->getOptions(),

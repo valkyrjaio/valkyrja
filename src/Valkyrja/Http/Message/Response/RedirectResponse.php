@@ -22,7 +22,6 @@ use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
@@ -122,15 +121,6 @@ class RedirectResponse extends Response implements RedirectResponseContract
             : new Uri(path: '/');
 
         return $this->withUri($refererUri);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function throw(): void
-    {
-        throw new HttpRedirectException($this->uri, $this->statusCode, $this->headers, $this);
     }
 
     /**

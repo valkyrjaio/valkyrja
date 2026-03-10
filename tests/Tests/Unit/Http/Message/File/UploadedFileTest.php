@@ -21,9 +21,6 @@ use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoClientFilenameException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoClientMediaTypeException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoSizeException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\File\UploadedFile;
@@ -238,14 +235,11 @@ final class UploadedFileTest extends TestCase
         self::assertSame($size, $uploadedFile2->getSize());
     }
 
-    public function testGetSizeThrowsWhenNonExistent(): void
+    public function testGetSizeReturnsEmptyStringWhenNonExistent(): void
     {
-        $this->expectException(NoSizeException::class);
-        $this->expectExceptionMessage('No size available for uploaded file');
+        $uploadedFile = new UploadedFile(file: 'test');
 
-        $uploadedFile  = new UploadedFile(file: 'test');
-
-        $uploadedFile->getSize();
+        self::assertSame(0, $uploadedFile->getSize());
     }
 
     public function testGetError(): void
@@ -267,14 +261,11 @@ final class UploadedFileTest extends TestCase
         self::assertSame($fileName, $uploadedFile2->getClientFilename());
     }
 
-    public function testGetClientFilenameThrowsWhenNonExistent(): void
+    public function testGetClientFilenameReturnsEmptyStringWhenNonExistent(): void
     {
-        $this->expectException(NoClientFilenameException::class);
-        $this->expectExceptionMessage('No client filename was provided');
+        $uploadedFile = new UploadedFile(file: 'test');
 
-        $uploadedFile  = new UploadedFile(file: 'test');
-
-        $uploadedFile->getClientFilename();
+        self::assertSame('', $uploadedFile->getClientFilename());
     }
 
     public function testGetClientMediaType(): void
@@ -287,13 +278,10 @@ final class UploadedFileTest extends TestCase
         self::assertSame($mediaType, $uploadedFile2->getClientMediaType());
     }
 
-    public function testGetClientMediaTypeThrowsWhenNonExistent(): void
+    public function testGetClientMediaTypeReturnsEmptyStringWhenNonExistent(): void
     {
-        $this->expectException(NoClientMediaTypeException::class);
-        $this->expectExceptionMessage('No client media type was provided');
+        $uploadedFile = new UploadedFile(file: 'test');
 
-        $uploadedFile  = new UploadedFile(file: 'test');
-
-        $uploadedFile->getClientMediaType();
+        self::assertSame('', $uploadedFile->getClientMediaType());
     }
 }

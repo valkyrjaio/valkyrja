@@ -16,11 +16,9 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
 
 use function in_array;
-use function is_callable;
 use function sprintf;
 
 class Answer extends Message implements AnswerContract
@@ -32,6 +30,11 @@ class Answer extends Message implements AnswerContract
     protected array $allowedResponses = [];
 
     /**
+     * @var callable(non-empty-string):bool|null
+     */
+    protected $validationCallable;
+
+    /**
      * @param non-empty-string                     $defaultResponse    The default response
      * @param callable(non-empty-string):bool|null $validationCallable The validation callable
      * @param non-empty-string                     $text               The text
@@ -39,19 +42,17 @@ class Answer extends Message implements AnswerContract
      */
     public function __construct(
         protected string $defaultResponse,
-        protected $validationCallable = null,
+        callable|null $validationCallable = null,
         protected bool $hasBeenAnswered = false,
         string $text = 'You answered: `%s`',
         FormatterContract|null $formatter = null,
         array $allowedResponses = []
     ) {
-        if ($this->validationCallable !== null && ! is_callable($this->validationCallable)) {
-            throw new InvalidArgumentException('$validationCallable must be a valid callable');
-        }
-
         if (! in_array($defaultResponse, $allowedResponses, true)) {
             $allowedResponses[] = $defaultResponse;
         }
+
+        $this->validationCallable = $validationCallable;
 
         $this->userResponse     = $defaultResponse;
         $this->allowedResponses = $allowedResponses;

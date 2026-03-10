@@ -53,13 +53,13 @@ class OptionTokenSession extends Session
             return;
         }
 
-        $token  = $option->getValue();
+        $token = $option->getValue();
 
         $this->setDataFromTokenValue($token);
     }
 
     /**
-     * @param non-empty-string $value The token value
+     * Set the data from a token value.
      *
      * @throws JsonException
      */

@@ -160,19 +160,6 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function withoutHelpText(): static
-    {
-        $new = clone $this;
-
-        $new->helpText = null;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public function hasArguments(): bool
     {
         return $this->arguments !== [];

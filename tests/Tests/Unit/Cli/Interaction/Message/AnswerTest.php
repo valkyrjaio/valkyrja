@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -26,16 +25,6 @@ use function str_contains;
  */
 final class AnswerTest extends TestCase
 {
-    public function testInvalidCallable(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new Answer(
-            defaultResponse: 'text',
-            validationCallable: [$this, 'invalid']
-        );
-    }
-
     public function testText(): void
     {
         $defaultResponse = 'text';

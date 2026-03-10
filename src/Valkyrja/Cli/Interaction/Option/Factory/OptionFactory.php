@@ -34,11 +34,7 @@ abstract class OptionFactory
 
         $parts = explode('=', $arg);
         $name  = trim($parts[0], '- ');
-        $value = $parts[1] ?? null;
-
-        if ($value === '') {
-            $value = null;
-        }
+        $value = $parts[1] ?? '';
 
         self::validateNonEmptyName($name);
 
@@ -100,11 +96,11 @@ abstract class OptionFactory
     /**
      * Validate that a value is not provided when multiple options are provided.
      *
-     * @param string|null $value The value
+     * @param string $value The value
      */
-    protected static function validateValueIsEmpty(string|null $value = null): void
+    protected static function validateValueIsEmpty(string $value): void
     {
-        if ($value !== null) {
+        if ($value !== '') {
             throw new InvalidArgumentException('Cannot combine multiple options and include a value');
         }
     }

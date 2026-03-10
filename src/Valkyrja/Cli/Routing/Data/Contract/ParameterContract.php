@@ -81,8 +81,6 @@ interface ParameterContract
 
     /**
      * Get the first item's value.
-     *
-     * @return non-empty-string
      */
     public function getFirstValue(): string;
 

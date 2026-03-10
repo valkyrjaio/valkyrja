@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Message\Param;
 use Override;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
-use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidCookieParamException;
 
 /**
  * @extends ParamCollection<non-empty-string, string>
@@ -30,6 +29,6 @@ class CookieParamCollection extends ParamCollection implements CookieParamCollec
     public function get(string|int $key): string
     {
         return $this->params[$key]
-            ?? throw new InvalidCookieParamException("No cookie param with the key '$key' was found");
+            ?? '';
     }
 }

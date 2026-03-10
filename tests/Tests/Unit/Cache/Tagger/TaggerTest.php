@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
-use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class TaggerTest extends TestCase
@@ -93,9 +92,6 @@ final class TaggerTest extends TestCase
     {
         $key = 'my-key';
 
-        $this->expectException(InvalidCacheKeyException::class);
-        $this->expectExceptionMessage("Cache miss for key: $key");
-
         $this->cache
             ->expects($this->once())
             ->method('get')
@@ -104,7 +100,7 @@ final class TaggerTest extends TestCase
 
         $tagger = new Tagger($this->cache, 'tag1');
 
-        $tagger->get($key);
+        self::assertSame('', $tagger->get($key));
     }
 
     /**

@@ -16,17 +16,15 @@ namespace Valkyrja\Cli\Interaction\Option;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\NoValueException;
 
 class Option implements OptionContract
 {
     /**
-     * @param non-empty-string      $name  The name
-     * @param non-empty-string|null $value [optional] The value
+     * @param non-empty-string $name The name
      */
     public function __construct(
         protected string $name,
-        protected string|null $value = null,
+        protected string $value = '',
         protected OptionType $type = OptionType::LONG,
     ) {
     }
@@ -59,7 +57,7 @@ class Option implements OptionContract
     #[Override]
     public function hasValue(): bool
     {
-        return $this->value !== null;
+        return $this->value !== '';
     }
 
     /**
@@ -68,8 +66,7 @@ class Option implements OptionContract
     #[Override]
     public function getValue(): string
     {
-        return $this->value
-            ?? throw new NoValueException('No value exists');
+        return $this->value;
     }
 
     /**
@@ -93,7 +90,7 @@ class Option implements OptionContract
     {
         $new = clone $this;
 
-        $new->value = null;
+        $new->value = '';
 
         return $new;
     }
