@@ -36,8 +36,6 @@ interface RecipientContract
 
     /**
      * Get the name.
-     *
-     * @return string
      */
     public function getName(): string;
 
