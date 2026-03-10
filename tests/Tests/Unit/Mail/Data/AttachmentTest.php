@@ -34,11 +34,11 @@ final class AttachmentTest extends TestCase
         self::assertSame($path, $attachment->getPath());
     }
 
-    public function testGetNameReturnsNullByDefault(): void
+    public function testGetNameReturnsEmptyStringByDefault(): void
     {
         $attachment = new Attachment('/path/to/file.pdf');
 
-        self::assertNull($attachment->getName());
+        self::assertSame('', $attachment->getName());
     }
 
     public function testGetNameReturnsSetName(): void
@@ -86,20 +86,13 @@ final class AttachmentTest extends TestCase
         self::assertSame($path, $newAttachment->getPath());
     }
 
-    public function testWithNameCanSetToNull(): void
+    public function testWithNameCanSetToEmptyString(): void
     {
         $attachment    = new Attachment('/path/to/file.pdf', 'document.pdf');
-        $newAttachment = $attachment->withName(null);
+        $newAttachment = $attachment->withName('');
 
-        self::assertNull($newAttachment->getName());
-    }
-
-    public function testWithNameCanSetToNullWithoutArgument(): void
-    {
-        $attachment    = new Attachment('/path/to/file.pdf', 'document.pdf');
-        $newAttachment = $attachment->withName();
-
-        self::assertNull($newAttachment->getName());
+        self::assertFalse($newAttachment->hasName());
+        self::assertSame('', $newAttachment->getName());
     }
 
     public function testImmutability(): void
@@ -111,10 +104,13 @@ final class AttachmentTest extends TestCase
 
         // Original should remain unchanged
         self::assertSame('/path/to/file.pdf', $attachment->getPath());
+        self::assertTrue($attachment->hasName());
         self::assertSame('original.pdf', $attachment->getName());
 
         // New instances should have changes
+        self::assertTrue($withPath->hasName());
         self::assertSame('/new/path.pdf', $withPath->getPath());
+        self::assertTrue($withName->hasName());
         self::assertSame('new.pdf', $withName->getName());
     }
 }

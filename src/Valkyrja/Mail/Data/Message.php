@@ -64,10 +64,8 @@ class Message implements MessageContract
 
     /**
      * The plain body.
-     *
-     * @var non-empty-string|null
      */
-    protected string|null $plainBody = null;
+    protected string $plainBody = '';
 
     /**
      * @param non-empty-string $subject
@@ -282,7 +280,16 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function getPlainBody(): string|null
+    public function hasPlainBody(): bool
+    {
+        return $this->plainBody !== '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getPlainBody(): string
     {
         return $this->plainBody;
     }
@@ -291,7 +298,7 @@ class Message implements MessageContract
      * @inheritDoc
      */
     #[Override]
-    public function withPlainBody(string|null $plainBody = null): static
+    public function withPlainBody(string $plainBody): static
     {
         $new = clone $this;
 

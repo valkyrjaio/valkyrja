@@ -16,22 +16,35 @@ namespace Valkyrja\Mail\Data\Contract;
 interface RecipientContract
 {
     /**
+     * Get the email.
+     *
      * @return non-empty-string
      */
     public function getEmail(): string;
 
     /**
+     * Create a new instance with the given email.
+     *
      * @param non-empty-string $email The email
      */
     public function withEmail(string $email): static;
 
     /**
-     * @return non-empty-string|null
+     * Determine if there is a name.
      */
-    public function getName(): string|null;
+    public function hasName(): bool;
 
     /**
-     * @param non-empty-string|null $name The name
+     * Get the name.
+     *
+     * @return string
      */
-    public function withName(string|null $name = null): static;
+    public function getName(): string;
+
+    /**
+     * Create a new instance with the given name.
+     *
+     * @param string $name The name
+     */
+    public function withName(string $name): static;
 }

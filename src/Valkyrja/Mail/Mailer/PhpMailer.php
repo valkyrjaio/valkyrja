@@ -36,14 +36,19 @@ class PhpMailer implements MailerContract
     #[Override]
     public function send(MessageContract $message): void
     {
-        $this->phpMailer->setFrom($message->getFrom()->getEmail(), $message->getFrom()->getName() ?? '');
+        $from = $message->getFrom();
+
+        $this->phpMailer->setFrom($from->getEmail(), $from->getName());
 
         $this->addRecipients([$this->phpMailer, 'addAddress'], $message->getRecipients());
         $this->addRecipients([$this->phpMailer, 'addReplyTo'], $message->getReplyToRecipients());
         $this->addRecipients([$this->phpMailer, 'addCC'], $message->getCopyRecipients());
         $this->addRecipients([$this->phpMailer, 'addBCC'], $message->getBlindCopyRecipients());
         $this->addAttachments($message->getAttachments());
-        $this->addPlainBody($message->getPlainBody());
+
+        if ($message->hasPlainBody()) {
+            $this->phpMailer->AltBody = $message->getPlainBody();
+        }
 
         $this->phpMailer->Subject = $message->getSubject();
         $this->phpMailer->Body    = $message->getBody();
@@ -61,7 +66,7 @@ class PhpMailer implements MailerContract
     protected function addRecipients(callable $callable, array $recipients): void
     {
         foreach ($recipients as $recipient) {
-            $callable($recipient->getEmail(), $recipient->getName() ?? '');
+            $callable($recipient->getEmail(), $recipient->getName());
         }
     }
 
@@ -75,17 +80,7 @@ class PhpMailer implements MailerContract
     protected function addAttachments(array $attachments): void
     {
         foreach ($attachments as $attachment) {
-            $this->phpMailer->addAttachment($attachment->getPath(), $attachment->getName() ?? '');
-        }
-    }
-
-    /**
-     * Add plain body to PHP Mailer.
-     */
-    protected function addPlainBody(string|null $plainBody = null): void
-    {
-        if ($plainBody !== null) {
-            $this->phpMailer->AltBody = $plainBody;
+            $this->phpMailer->addAttachment($attachment->getPath(), $attachment->getName());
         }
     }
 }

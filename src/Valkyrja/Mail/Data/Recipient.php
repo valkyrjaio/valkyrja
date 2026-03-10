@@ -19,12 +19,11 @@ use Valkyrja\Mail\Data\Contract\RecipientContract;
 class Recipient implements RecipientContract
 {
     /**
-     * @param non-empty-string      $email The email
-     * @param non-empty-string|null $name  The name
+     * @param non-empty-string $email The email
      */
     public function __construct(
         protected string $email,
-        protected string|null $name = null
+        protected string $name = ''
     ) {
     }
 
@@ -54,7 +53,16 @@ class Recipient implements RecipientContract
      * @inheritDoc
      */
     #[Override]
-    public function getName(): string|null
+    public function hasName(): bool
+    {
+        return $this->name !== '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getName(): string
     {
         return $this->name;
     }
@@ -63,7 +71,7 @@ class Recipient implements RecipientContract
      * @inheritDoc
      */
     #[Override]
-    public function withName(string|null $name = null): static
+    public function withName(string $name): static
     {
         $new = clone $this;
 

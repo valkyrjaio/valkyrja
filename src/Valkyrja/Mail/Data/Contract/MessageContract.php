@@ -126,16 +126,17 @@ interface MessageContract
     public function withIsHtml(bool $isHtml = true): static;
 
     /**
-     * Get the plain body.
-     *
-     * @return non-empty-string|null
+     * Determine if there is a plain body.
      */
-    public function getPlainBody(): string|null;
+    public function hasPlainBody(): bool;
+
+    /**
+     * Get the plain body.
+     */
+    public function getPlainBody(): string;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.
-     *
-     * @param non-empty-string|null $plainBody The plain body
      */
-    public function withPlainBody(string|null $plainBody = null): static;
+    public function withPlainBody(string $plainBody): static;
 }

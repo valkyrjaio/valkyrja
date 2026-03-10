@@ -34,11 +34,11 @@ final class RecipientTest extends TestCase
         self::assertSame($email, $recipient->getEmail());
     }
 
-    public function testGetNameReturnsNullByDefault(): void
+    public function testGetNameReturnsEmptyStringByDefault(): void
     {
         $recipient = new Recipient('test@example.com');
 
-        self::assertNull($recipient->getName());
+        self::assertSame('', $recipient->getName());
     }
 
     public function testGetNameReturnsSetName(): void
@@ -86,20 +86,13 @@ final class RecipientTest extends TestCase
         self::assertSame($email, $newRecipient->getEmail());
     }
 
-    public function testWithNameCanSetToNull(): void
+    public function testWithNameCanSetToEmptyString(): void
     {
         $recipient    = new Recipient('test@example.com', 'John Doe');
-        $newRecipient = $recipient->withName(null);
+        $newRecipient = $recipient->withName('');
 
-        self::assertNull($newRecipient->getName());
-    }
-
-    public function testWithNameCanSetToNullWithoutArgument(): void
-    {
-        $recipient    = new Recipient('test@example.com', 'John Doe');
-        $newRecipient = $recipient->withName();
-
-        self::assertNull($newRecipient->getName());
+        self::assertFalse($newRecipient->hasName());
+        self::assertSame('', $newRecipient->getName());
     }
 
     public function testImmutability(): void
@@ -110,11 +103,14 @@ final class RecipientTest extends TestCase
         $withName  = $recipient->withName('New Name');
 
         // Original should remain unchanged
+        self::assertTrue($recipient->hasName());
         self::assertSame('original@example.com', $recipient->getEmail());
         self::assertSame('Original Name', $recipient->getName());
 
         // New instances should have changes
+        self::assertTrue($withEmail->hasName());
         self::assertSame('new@example.com', $withEmail->getEmail());
+        self::assertTrue($withName->hasName());
         self::assertSame('New Name', $withName->getName());
     }
 }
