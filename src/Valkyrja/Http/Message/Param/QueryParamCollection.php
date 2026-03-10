@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Message\Param;
 use Override;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
-use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidQueryParamException;
 
 /**
  * @extends ParamCollection<non-empty-string|int, string|QueryParamCollectionContract>
@@ -30,6 +29,6 @@ class QueryParamCollection extends ParamCollection implements QueryParamCollecti
     public function get(string|int $key): QueryParamCollectionContract|string
     {
         return $this->params[$key]
-            ?? throw new InvalidQueryParamException("No query param with the key '$key' was found");
+            ?? '';
     }
 }

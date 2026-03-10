@@ -83,6 +83,6 @@ trait UserMethods
             return $value;
         }
 
-        throw new RuntimeException('Username field value should be a string');
+        throw new RuntimeException('Password field value should be a string');
     }
 }

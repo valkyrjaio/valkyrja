@@ -18,7 +18,6 @@ use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Cache\Throwable\Exception\InvalidCacheKeyException;
 use Valkyrja\Tests\Classes\Vendor\Predis\ClientClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -79,12 +78,9 @@ final class RedisCacheTest extends TestCase
         self::assertSame('cached-value', $this->cache->get('my-key'));
     }
 
-    public function testGetThrowsWhenKeyNotFound(): void
+    public function testGetIsEmptyStringWhenKeyNotFound(): void
     {
         $key = 'my-key';
-
-        $this->expectException(InvalidCacheKeyException::class);
-        $this->expectExceptionMessage("Cache miss for key: $key");
 
         $this->client
             ->expects($this->once())
@@ -92,7 +88,7 @@ final class RedisCacheTest extends TestCase
             ->with($this->prefix . $key)
             ->willReturn(null);
 
-        self::assertNull($this->cache->get($key));
+        self::assertSame('', $this->cache->get($key));
     }
 
     public function testManyReturnsValuesFromRedis(): void

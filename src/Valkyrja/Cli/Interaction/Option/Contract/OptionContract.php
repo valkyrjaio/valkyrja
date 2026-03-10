@@ -38,15 +38,11 @@ interface OptionContract
 
     /**
      * Get the value.
-     *
-     * @return non-empty-string
      */
     public function getValue(): string;
 
     /**
      * Create a new Option with the specified value.
-     *
-     * @param non-empty-string $value The value
      */
     public function withValue(string $value): static;
 

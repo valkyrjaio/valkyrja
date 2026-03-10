@@ -17,7 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionEmptyFgetsClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFgetsClass;
@@ -29,19 +28,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class QuestionTest extends TestCase
 {
-    public function testInvalidCallable(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $callable = [$this, 'invalid'];
-
-        new Question(
-            text: 'text',
-            callable: $callable,
-            answer: new Answer('defaultResponse')
-        );
-    }
-
     public function testText(): void
     {
         $text      = 'text';

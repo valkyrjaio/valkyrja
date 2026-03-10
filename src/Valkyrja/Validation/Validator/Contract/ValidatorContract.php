@@ -57,8 +57,6 @@ interface ValidatorContract
 
     /**
      * Get the first error message thrown.
-     *
-     * @return non-empty-string
      */
     public function getFirstErrorMessage(): string;
 }

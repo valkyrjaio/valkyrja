@@ -19,27 +19,28 @@ use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function fgets;
 use function fopen;
-use function is_callable;
 
 class Question extends Message implements QuestionContract
 {
+    /**
+     * @var callable(OutputContract, AnswerContract):OutputContract
+     */
+    protected $callable;
+
     /**
      * @param non-empty-string                                        $text     The text
      * @param callable(OutputContract, AnswerContract):OutputContract $callable The callable
      */
     public function __construct(
         string $text,
-        protected $callable,
+        callable $callable,
         protected AnswerContract $answer,
         FormatterContract|null $formatter = new QuestionFormatter()
     ) {
-        if (! is_callable($this->callable)) {
-            throw new InvalidArgumentException('$callable must be a valid callable');
-        }
+        $this->callable = $callable;
 
         parent::__construct($text, $formatter);
     }

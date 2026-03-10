@@ -19,7 +19,6 @@ use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -315,11 +314,8 @@ final class ArgumentParameterTest extends TestCase
         self::assertFalse($parameter4->areValuesValid());
     }
 
-    public function testGetFirstValueThrowsWhenNoArguments(): void
+    public function testGetFirstValueIsEmptyStringWhenNoArguments(): void
     {
-        $this->expectException(NoFirstValueException::class);
-        $this->expectExceptionMessage('No first value exists');
-
         $name        = self::NAME;
         $description = self::DESCRIPTION;
 
@@ -328,7 +324,7 @@ final class ArgumentParameterTest extends TestCase
             description: $description,
         );
 
-        $parameter->getFirstValue();
+        self::assertSame('', $parameter->getFirstValue());
     }
 
     public function testGetCastValue(): void

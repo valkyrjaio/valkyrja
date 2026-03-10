@@ -57,7 +57,7 @@ class OptionJwtSession extends Session
     }
 
     /**
-     * @param non-empty-string $value The token value
+     * Set the data from a token value.
      */
     protected function setDataFromTokenValue(string $value): void
     {

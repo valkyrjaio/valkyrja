@@ -20,9 +20,6 @@ use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoDefaultValueException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoValueDisplayNameException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -31,20 +28,18 @@ use function in_array;
 class OptionParameter extends Parameter implements OptionParameterContract
 {
     /**
-     * @param non-empty-string      $name             The names
-     * @param non-empty-string      $description      The description
-     * @param non-empty-string|null $valueDisplayName The value display name
-     * @param non-empty-string|null $defaultValue     The default value
-     * @param non-empty-string[]    $shortNames       The short names
-     * @param non-empty-string[]    $validValues      The valid values
-     * @param OptionContract[]      $options          The options
+     * @param non-empty-string   $name        The names
+     * @param non-empty-string   $description The description
+     * @param non-empty-string[] $shortNames  The short names
+     * @param non-empty-string[] $validValues The valid values
+     * @param OptionContract[]   $options     The options
      */
     public function __construct(
         string $name,
         string $description,
-        protected string|null $valueDisplayName = null,
+        protected string $valueDisplayName = '',
         Cast|null $cast = null,
-        protected string|null $defaultValue = null,
+        protected string $defaultValue = '',
         protected array $shortNames = [],
         protected array $validValues = [],
         protected array $options = [],
@@ -147,7 +142,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function hasValueDisplayName(): bool
     {
-        return $this->valueDisplayName !== null;
+        return $this->valueDisplayName !== '';
     }
 
     /**
@@ -156,8 +151,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function getValueDisplayName(): string
     {
-        return $this->valueDisplayName
-            ?? throw new NoValueDisplayNameException('No value display name exists');
+        return $this->valueDisplayName;
     }
 
     /**
@@ -169,19 +163,6 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $new = clone $this;
 
         $new->valueDisplayName = $valueName;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withoutValueDisplayName(): static
-    {
-        $new = clone $this;
-
-        $new->valueDisplayName = null;
 
         return $new;
     }
@@ -231,7 +212,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function hasDefaultValue(): bool
     {
-        return $this->defaultValue !== null;
+        return $this->defaultValue !== '';
     }
 
     /**
@@ -240,8 +221,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function getDefaultValue(): string
     {
-        return $this->defaultValue
-            ?? throw new NoDefaultValueException('No default value exists');
+        return $this->defaultValue;
     }
 
     /**
@@ -253,19 +233,6 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $new = clone $this;
 
         $new->defaultValue = $defaultValue;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withoutDefaultValue(): static
-    {
-        $new = clone $this;
-
-        $new->defaultValue = null;
 
         return $new;
     }
@@ -330,9 +297,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
         $castType = $cast->type ?? null;
 
         foreach ($this->options as $option) {
-            $optionValue = $option->hasValue()
-                ? $option->getValue()
-                : null;
+            $optionValue = $option->getValue();
 
             if ($cast === null || $castType === null) {
                 $values[] = $optionValue;
@@ -371,8 +336,8 @@ class OptionParameter extends Parameter implements OptionParameterContract
     {
         $firstItem = $this->options[0] ?? null;
 
-        if ($firstItem === null || ! $firstItem->hasValue()) {
-            throw new NoFirstValueException('No first value exists');
+        if ($firstItem === null) {
+            return '';
         }
 
         return $firstItem->getValue();
@@ -404,7 +369,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {
-            throw new InvalidArgumentException("$this->name is required");
+            throw new InvalidArgumentException("$this->name is invalid");
         }
 
         return $this;

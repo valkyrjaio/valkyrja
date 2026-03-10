@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Message\Param;
 use Override;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
-use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidParsedBodyParamException;
 
 /**
  * @extends ParamCollection<non-empty-string|int, string|ParsedBodyParamCollectionContract>
@@ -30,6 +29,6 @@ class ParsedBodyParamCollection extends ParamCollection implements ParsedBodyPar
     public function get(string|int $key): ParsedBodyParamCollectionContract|string
     {
         return $this->params[$key]
-            ?? throw new InvalidParsedBodyParamException("No parsed body param with the key '$key' was found");
+            ?? '';
     }
 }

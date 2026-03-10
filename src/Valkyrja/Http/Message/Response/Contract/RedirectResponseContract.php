@@ -55,9 +55,4 @@ interface RedirectResponseContract extends ResponseContract
      * @param ServerRequestContract $request The request
      */
     public function back(ServerRequestContract $request): static;
-
-    /**
-     * Throw this redirect.
-     */
-    public function throw(): void;
 }

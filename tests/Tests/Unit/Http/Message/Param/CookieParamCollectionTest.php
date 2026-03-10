@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 use Valkyrja\Http\Message\Param\CookieParamCollection;
-use Valkyrja\Http\Message\Param\Throwable\Exception\InvalidCookieParamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CookieParamCollectionTest extends TestCase
@@ -55,14 +54,11 @@ final class CookieParamCollectionTest extends TestCase
         self::assertSame('abc123', $result);
     }
 
-    public function testGetParamReturnsNullForMissing(): void
+    public function testGetParamReturnsEmptyStringForMissing(): void
     {
         $key = 'nonexistent';
 
-        $this->expectException(InvalidCookieParamException::class);
-        $this->expectExceptionMessage("No cookie param with the key '$key' was found");
-
-        $this->paramData->get($key);
+        self::assertSame('', $this->paramData->get($key));
     }
 
     public function testHasParam(): void

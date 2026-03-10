@@ -15,7 +15,6 @@ namespace Valkyrja\Validation\Validator;
 
 use Override;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
-use Valkyrja\Validation\Throwable\Exception\NoFirstErrorMessageException;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
@@ -92,7 +91,7 @@ class Validator implements ValidatorContract
             return $errorMessages[array_key_first($errorMessages)];
         }
 
-        throw new NoFirstErrorMessageException('No error messages');
+        return '';
     }
 
     /**

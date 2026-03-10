@@ -20,9 +20,6 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
 
 class Message implements MessageContract
 {
-    /**
-     * @param non-empty-string $text The text
-     */
     public function __construct(
         protected string $text,
         protected FormatterContract|null $formatter = null
@@ -31,8 +28,6 @@ class Message implements MessageContract
 
     /**
      * @inheritDoc
-     *
-     * @return non-empty-string
      */
     #[Override]
     public function getText(): string
@@ -42,8 +37,6 @@ class Message implements MessageContract
 
     /**
      * @inheritDoc
-     *
-     * @return non-empty-string
      */
     #[Override]
     public function getFormattedText(): string

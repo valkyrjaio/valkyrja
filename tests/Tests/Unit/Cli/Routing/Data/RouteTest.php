@@ -219,7 +219,6 @@ final class RouteTest extends TestCase
             helpText: $helpText
         );
         $route2 = $route->withHelpText($helpText2);
-        $route3 = $route->withoutHelpText();
 
         self::assertNotSame($route, $route2);
 
@@ -250,19 +249,6 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
         self::assertEmpty($route2->getExitedMiddleware());
-
-        self::assertSame($name, $route3->getName());
-        self::assertSame($description, $route3->getDescription());
-        self::assertFalse($route3->hasHelpText());
-        self::assertSame($dispatch, $route3->getDispatch());
-        self::assertFalse($route3->hasArguments());
-        self::assertEmpty($route3->getArguments());
-        self::assertFalse($route3->hasOptions());
-        self::assertEmpty($route3->getOptions());
-        self::assertEmpty($route3->getRouteMatchedMiddleware());
-        self::assertEmpty($route3->getRouteDispatchedMiddleware());
-        self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
     }
 
     public function testHelpTextThrowsWhenNotExists(): void

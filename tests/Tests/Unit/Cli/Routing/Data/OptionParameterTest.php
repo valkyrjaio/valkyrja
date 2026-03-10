@@ -19,7 +19,6 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoFirstValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -417,7 +416,7 @@ final class OptionParameterTest extends TestCase
             description: $description
         );
         $parameter2 = $parameter->withValueDisplayName($valueDisplayName);
-        $parameter3 = $parameter2->withoutValueDisplayName();
+        $parameter3 = $parameter2->withValueDisplayName('');
 
         self::assertNotSame($parameter, $parameter2);
         self::assertNotSame($parameter2, $parameter3);
@@ -476,7 +475,7 @@ final class OptionParameterTest extends TestCase
             description: $description
         );
         $parameter2 = $parameter->withDefaultValue($defaultValue);
-        $parameter3 = $parameter2->withoutDefaultValue();
+        $parameter3 = $parameter2->withDefaultValue('');
 
         self::assertNotSame($parameter, $parameter2);
         self::assertNotSame($parameter2, $parameter3);
@@ -706,11 +705,8 @@ final class OptionParameterTest extends TestCase
         self::assertTrue($parameter5->areValuesValid());
     }
 
-    public function testGetFirstValueThrowsWhenNoArguments(): void
+    public function testGetFirstValueIsEmptyStringWhenNoArguments(): void
     {
-        $this->expectException(NoFirstValueException::class);
-        $this->expectExceptionMessage('No first value exists');
-
         $name        = self::NAME;
         $description = self::DESCRIPTION;
 
@@ -719,7 +715,7 @@ final class OptionParameterTest extends TestCase
             description: $description,
         );
 
-        $parameter->getFirstValue();
+        self::assertSame('', $parameter->getFirstValue());
     }
 
     public function testInvalidOptionsWithValues(): void
@@ -819,7 +815,7 @@ final class OptionParameterTest extends TestCase
 
         self::assertNotEmpty($parameter2->getCastValues());
         self::assertSame([1, 2], $parameter2->getCastValues());
-        self::assertSame([null], $parameter4->getCastValues());
+        self::assertSame([''], $parameter4->getCastValues());
 
         self::assertNotEmpty($parameter3->getCastValues());
         self::assertInstanceOf(IntT::class, $value1 = $parameter3->getCastValues()[0]);

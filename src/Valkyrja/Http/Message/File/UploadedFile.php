@@ -21,9 +21,6 @@ use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoClientFilenameException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoClientMediaTypeException;
-use Valkyrja\Http\Message\File\Throwable\Exception\NoSizeException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
@@ -54,9 +51,6 @@ class UploadedFile implements UploadedFileContract
      * @param string|null         $file        [optional] The file if not passed stream is required
      * @param StreamContract|null $stream      [optional] The stream if not passed file is required
      * @param UploadError         $uploadError [optional] The upload error
-     * @param int|null            $size        [optional] The file size
-     * @param string|null         $fileName    [optional] The file name
-     * @param string|null         $mediaType   [optional] The file media type
      *
      * @throws InvalidArgumentException
      */
@@ -64,9 +58,9 @@ class UploadedFile implements UploadedFileContract
         protected string|null $file = null,
         protected StreamContract|null $stream = null,
         protected UploadError $uploadError = UploadError::OK,
-        protected int|null $size = null,
-        protected string|null $fileName = null,
-        protected string|null $mediaType = null
+        protected int $size = 0,
+        protected string $fileName = '',
+        protected string $mediaType = ''
     ) {
         // If the file is not set and the stream is not set
         if ($uploadError === UploadError::OK && $file === null && $stream === null) {
@@ -129,7 +123,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function hasSize(): bool
     {
-        return $this->size !== null;
+        return $this->size !== 0;
     }
 
     /**
@@ -138,8 +132,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function getSize(): int
     {
-        return $this->size
-            ?? throw new NoSizeException('No size available for uploaded file');
+        return $this->size;
     }
 
     /**
@@ -157,7 +150,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function hasClientFilename(): bool
     {
-        return $this->fileName !== null;
+        return $this->fileName !== '';
     }
 
     /**
@@ -166,8 +159,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function getClientFilename(): string
     {
-        return $this->fileName
-            ?? throw new NoClientFilenameException('No client filename was provided');
+        return $this->fileName;
     }
 
     /**
@@ -176,7 +168,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function hasClientMediaType(): bool
     {
-        return $this->mediaType !== null;
+        return $this->mediaType !== '';
     }
 
     /**
@@ -185,8 +177,7 @@ class UploadedFile implements UploadedFileContract
     #[Override]
     public function getClientMediaType(): string
     {
-        return $this->mediaType
-        ?? throw new NoClientMediaTypeException('No client media type was provided');
+        return $this->mediaType;
     }
 
     protected function validateNoUploadError(): void

@@ -46,6 +46,7 @@ class EncryptedOptionTokenSession extends OptionTokenSession
     #[Override]
     protected function setDataFromTokenValue(string $value): void
     {
+        /** @var non-empty-string $value */
         parent::setDataFromTokenValue(
             $this->crypt->decrypt($value)
         );

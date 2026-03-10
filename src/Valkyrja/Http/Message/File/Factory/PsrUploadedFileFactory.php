@@ -34,9 +34,9 @@ abstract class PsrUploadedFileFactory
         return new UploadedFile(
             stream: PsrStreamFactory::fromPsr($file->getStream()),
             uploadError: UploadError::from($file->getError()),
-            size: (int) $file->getSize(),
-            fileName: $file->getClientFilename(),
-            mediaType: $file->getClientMediaType(),
+            size: $file->getSize() ?? 0,
+            fileName: $file->getClientFilename() ?? '',
+            mediaType: $file->getClientMediaType() ?? '',
         );
     }
 

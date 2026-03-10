@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Validation\Validator;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
 use Valkyrja\Validation\Rule\Is\Required;
-use Valkyrja\Validation\Throwable\Exception\NoFirstErrorMessageException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
@@ -121,11 +120,8 @@ final class ValidatorTest extends TestCase
         self::assertStringContainsString('name:', $firstError);
     }
 
-    public function testGetFirstErrorMessageReturnsThrowsWhenNoErrors(): void
+    public function testGetFirstErrorMessageReturnsEmptyStringWhenNoErrors(): void
     {
-        $this->expectException(NoFirstErrorMessageException::class);
-        $this->expectExceptionMessage('No error messages');
-
         $validator = new Validator([
             'name' => [new Required('John', errorMessage: 'Name is required')],
         ]);
@@ -133,7 +129,7 @@ final class ValidatorTest extends TestCase
         $validator->validateRules();
 
         self::assertFalse($validator->hasFirstErrorMessage());
-        self::assertNull($validator->getFirstErrorMessage());
+        self::assertSame('', $validator->getFirstErrorMessage());
     }
 
     public function testMultipleRulesPerSubject(): void

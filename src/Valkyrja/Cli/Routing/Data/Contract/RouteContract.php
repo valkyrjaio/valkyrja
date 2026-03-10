@@ -75,11 +75,6 @@ interface RouteContract
     public function withHelpText(callable $helpText): static;
 
     /**
-     * Create a new route without help text.
-     */
-    public function withoutHelpText(): static;
-
-    /**
      * Determine if the route has arguments.
      */
     public function hasArguments(): bool;

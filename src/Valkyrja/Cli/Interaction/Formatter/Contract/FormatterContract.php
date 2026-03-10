@@ -33,10 +33,6 @@ interface FormatterContract
 
     /**
      * Format text.
-     *
-     * @param non-empty-string $text The text to format
-     *
-     * @return non-empty-string
      */
     public function formatText(string $text): string;
 }
