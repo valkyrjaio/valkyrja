@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Constant\Regex;
-use Valkyrja\Http\Routing\Data\DynamicRoute as Route;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
@@ -35,7 +35,7 @@ use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
- * Test the Route service.
+ * Test the DynamicRoute service.
  */
 final class DynamicRouteTest extends TestCase
 {
@@ -44,7 +44,7 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -84,7 +84,7 @@ final class DynamicRouteTest extends TestCase
         $requestStruct             = IndexedJsonRequestStructEnum::first;
         $responseStruct            = ResponseStructEnum::first;
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: $path,
             name: $name,
             regex: $regex,
@@ -122,7 +122,7 @@ final class DynamicRouteTest extends TestCase
         $path2 = '/another';
         $name  = 'route';
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -152,7 +152,7 @@ final class DynamicRouteTest extends TestCase
         $name  = 'route';
         $name2 = 'route2';
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -183,7 +183,7 @@ final class DynamicRouteTest extends TestCase
         $regex  = 'regex';
         $regex2 = 'regex2';
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: $regex,
@@ -214,7 +214,7 @@ final class DynamicRouteTest extends TestCase
         $dispatch2 = new MethodDispatch(class: self::class, method: 'test2');
         $dispatch3 = new MethodDispatch(class: self::class, method: 'test3');
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -240,7 +240,7 @@ final class DynamicRouteTest extends TestCase
         $methods        = [RequestMethod::GET, RequestMethod::POST];
         $methods2       = [RequestMethod::PUT, RequestMethod::POST];
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -294,7 +294,7 @@ final class DynamicRouteTest extends TestCase
         $parameter3 = new Parameter(name: 'test3', regex: Regex::ALPHA);
         $parameter4 = new Parameter(name: 'test4', regex: Regex::ALPHA);
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -325,7 +325,7 @@ final class DynamicRouteTest extends TestCase
         $middleware  = RouteMatchedMiddlewareClass::class;
         $middleware2 = RouteMatchedMiddlewareChangedClass::class;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -351,7 +351,7 @@ final class DynamicRouteTest extends TestCase
         $middleware  = RouteDispatchedMiddlewareClass::class;
         $middleware2 = RouteDispatchedMiddlewareChangedClass::class;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -377,7 +377,7 @@ final class DynamicRouteTest extends TestCase
         $middleware  = ThrowableCaughtMiddlewareClass::class;
         $middleware2 = ThrowableCaughtMiddlewareChangedClass::class;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -403,7 +403,7 @@ final class DynamicRouteTest extends TestCase
         $middleware  = SendingResponseMiddlewareClass::class;
         $middleware2 = SendingResponseMiddlewareChangedClass::class;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -429,7 +429,7 @@ final class DynamicRouteTest extends TestCase
         $middleware  = TerminatedMiddlewareClass::class;
         $middleware2 = TerminatedMiddlewareChangedClass::class;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -455,7 +455,7 @@ final class DynamicRouteTest extends TestCase
         $requestStruct  = IndexedJsonRequestStructEnum::first;
         $requestStruct2 = IndexedParsedBodyRequestStructEnum::first;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
@@ -478,7 +478,7 @@ final class DynamicRouteTest extends TestCase
         $responseStruct  = ResponseStructEnum::first;
         $responseStruct2 = IndexedResponseStructEnum::first;
 
-        $route  = new Route(
+        $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
