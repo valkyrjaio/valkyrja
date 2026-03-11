@@ -121,7 +121,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -180,7 +180,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -241,7 +241,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -316,7 +316,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -393,7 +393,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -459,7 +459,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
@@ -546,7 +546,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn($cast);
 
         $route
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
 
