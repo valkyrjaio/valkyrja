@@ -18,6 +18,8 @@ What types of changes does your code introduce?
 Put an `x` in all the boxes that apply:
 -->
 
+- [ ] Improvement _(non-breaking change which improves code)_
+    <!-- Target the lowest major affected branch -->
 - [ ] Bug fix _(non-breaking change which fixes an issue)_
     <!-- Target the lowest major affected branch -->
 - [ ] New feature _(non-breaking change which adds functionality)_
