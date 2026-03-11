@@ -67,7 +67,7 @@ trait ProvidersAware
      *
      * @param class-string<ProviderContract> $provider The provider
      */
-    public function register(string $provider, bool $force = false): void
+    public function register(string $provider): void
     {
         // No need to re-register providers
         if ($this->isRegistered($provider)) {
@@ -81,21 +81,7 @@ trait ProvidersAware
 
         // If the service provider is deferred
         // and its defined what services it provides
-        if (! $force && $providerClass::deferred() && $provides = $providerClass::provides()) {
-            $this->registerDeferred($provider, ...$provides);
-
-            return;
-        }
-
-        // Publish the service provider
-        $providerClass::{$this->defaultPublishMethod}($this);
-
-        // The provider is now registered
-        $this->registered[$provider] = true;
-
-        foreach ($providerClass::provides() as $provided) {
-            $this->published[$provided] = true;
-        }
+        $this->registerDeferred($provider, ...$providerClass::provides());
     }
 
     /**
@@ -134,7 +120,7 @@ trait ProvidersAware
      *
      * @param class-string $id The service id
      */
-    public function publishProvided(string $id): void
+    public function publish(string $id): void
     {
         // The provider for this provided item
         $provider = $this->deferred[$id] ?? null;
@@ -164,7 +150,7 @@ trait ProvidersAware
         // Check if the id is provided by a provider and isn't already published
         if ($this->isDeferred($id) && ! $this->isPublished($id)) {
             // Publish the provider
-            $this->publishProvided($id);
+            $this->publish($id);
         }
     }
 

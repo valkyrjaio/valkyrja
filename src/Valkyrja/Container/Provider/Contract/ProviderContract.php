@@ -18,11 +18,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 interface ProviderContract
 {
     /**
-     * Whether this provider is deferred.
-     */
-    public static function deferred(): bool;
-
-    /**
      * Any custom publishers for services provided by this provider.
      * Any service provided by the `publish` method does not need to be defined here.
      *

@@ -23,15 +23,6 @@ abstract class Provider implements ProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function deferred(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public static function publishers(): array
     {
         return [];

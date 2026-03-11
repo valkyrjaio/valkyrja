@@ -23,11 +23,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class ProvidesTest extends TestCase
 {
-    public function testDeferred(): void
-    {
-        self::assertTrue(ProvidesClass::deferred());
-    }
-
     public function testPublishers(): void
     {
         self::assertEmpty(ProvidesClass::publishers());

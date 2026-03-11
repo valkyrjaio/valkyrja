@@ -20,10 +20,8 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
-use Valkyrja\Container\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
 
-use function array_filter;
 use function array_merge;
 use function assert;
 use function is_a;
@@ -77,8 +75,6 @@ class Container implements ContainerContract
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
         $this->registered       = [];
-
-        $this->registerProviders($data->providers);
     }
 
     /**
@@ -93,7 +89,7 @@ class Container implements ContainerContract
             deferredCallback: $this->deferredCallback,
             services: [],
             singletons: [],
-            providers: array_filter($this->providers, static fn (string $provider): bool => ! $provider::deferred()),
+            providers: $this->providers,
         );
     }
 
@@ -108,8 +104,6 @@ class Container implements ContainerContract
         $this->deferredCallback = array_merge($this->deferredCallback, $data->deferredCallback);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
-
-        $this->registerProviders($data->providers);
     }
 
     /**
@@ -455,21 +449,10 @@ class Container implements ContainerContract
                 return new $id(...$arguments);
             }
         } catch (Throwable) {
+            // Fall through to the exception being thrown by default
         }
 
         /** @var class-string $id */
         throw new InvalidReferenceException($id);
-    }
-
-    /**
-     * Register a list of providers.
-     *
-     * @param class-string<ProviderContract>[] $providers The providers
-     */
-    protected function registerProviders(array $providers): void
-    {
-        foreach ($providers as $provider) {
-            $this->register($provider);
-        }
     }
 }
