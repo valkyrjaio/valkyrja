@@ -373,12 +373,8 @@ class AttributeCollector implements CollectorContract
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
             terminatedMiddleware: $route->getTerminatedMiddleware(),
-            requestStruct: $route->hasRequestStruct()
-                ? $route->getRequestStruct()
-                : null,
-            responseStruct: $route->hasResponseStruct()
-                ? $route->getResponseStruct()
-                : null
+            requestStruct: $this->getRequestStructFromRoute($route),
+            responseStruct: $this->getResponseStructFromRoute($route),
         );
     }
 
@@ -402,13 +398,23 @@ class AttributeCollector implements CollectorContract
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
             terminatedMiddleware: $route->getTerminatedMiddleware(),
-            requestStruct: $route->hasRequestStruct()
-                ? $route->getRequestStruct()
-                : null,
-            responseStruct: $route->hasResponseStruct()
-                ? $route->getResponseStruct()
-                : null
+            requestStruct: $this->getRequestStructFromRoute($route),
+            responseStruct: $this->getResponseStructFromRoute($route),
         );
+    }
+
+    protected function getRequestStructFromRoute(RouteContract $route): RequestStructContract|null
+    {
+        return $route->hasRequestStruct()
+            ? $route->getRequestStruct()
+            : null;
+    }
+
+    protected function getResponseStructFromRoute(RouteContract $route): ResponseStructContract|null
+    {
+        return $route->hasResponseStruct()
+            ? $route->getResponseStruct()
+            : null;
     }
 
     protected function convertParameterAttributesToDataClass(ParameterContract $parameter): DataParameter
