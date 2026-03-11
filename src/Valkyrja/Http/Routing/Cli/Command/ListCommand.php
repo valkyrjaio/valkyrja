@@ -88,20 +88,30 @@ class ListCommand
                 new NewLine(),
             );
 
-            if ($route instanceof DynamicRouteContract) {
-                $regex = $route->getRegex();
-
-                if ($regex !== '') {
-                    $output = $output->withAddedMessages(
-                        new Message('    - '),
-                        new Message('Regex: '),
-                        new Message($regex, new HighlightedTextFormatter()),
-                        new NewLine(),
-                    );
-                }
-            }
+            $output = $this->getOutputForDynamicRoute($output, $route);
         }
 
         return $output->withAddedMessages(new NewLine());
+    }
+
+    /**
+     * Update an output with dynamic route information.
+     */
+    protected function getOutputForDynamicRoute(OutputContract $output, RouteContract $route): OutputContract
+    {
+        if ($route instanceof DynamicRouteContract) {
+            $regex = $route->getRegex();
+
+            if ($regex !== '') {
+                $output = $output->withAddedMessages(
+                    new Message('    - '),
+                    new Message('Regex: '),
+                    new Message($regex, new HighlightedTextFormatter()),
+                    new NewLine(),
+                );
+            }
+        }
+
+        return $output;
     }
 }
