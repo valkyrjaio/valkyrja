@@ -26,12 +26,6 @@ final class ProviderClass implements ProviderContract
     public static bool $publishSecondaryCalled = false;
 
     #[Override]
-    public static function deferred(): bool
-    {
-        return false;
-    }
-
-    #[Override]
     public static function publishers(): array
     {
         return [

@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use AssertionError;
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
@@ -237,24 +236,30 @@ final class ContainerTest extends TestCase
         );
 
         self::assertEmpty($data->aliases);
-        self::assertEmpty($data->providers);
+        self::assertSame([ServiceProvider::class], $data->providers);
         self::assertEmpty($data->services);
         self::assertEmpty($data->singletons);
     }
 
     public function testSetFromData(): void
     {
-        $data = new Data(providers: [ServiceProvider::class]);
+        $container = $this->container;
 
-        $container = new Container();
-
-        self::assertFalse($container->has(DispatcherContract::class));
-
-        $container->setFromData($data);
+        $container->register(ServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
 
-        $newData = $container->getData();
+        $data = $this->container->getData();
+
+        $container2 = new Container();
+
+        self::assertFalse($container2->has(DispatcherContract::class));
+
+        $container2->setFromData($data);
+
+        self::assertTrue($container2->has(DispatcherContract::class));
+
+        $newData = $container2->getData();
 
         self::assertSame(
             [
@@ -273,13 +278,19 @@ final class ContainerTest extends TestCase
 
     public function testConstructWithData(): void
     {
-        $data = new Data(providers: [ServiceProvider::class]);
+        $container = $this->container;
 
-        $container = new Container($data);
+        $container->register(ServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
 
-        $newData = $container->getData();
+        $data = $this->container->getData();
+
+        $container2 = new Container($data);
+
+        self::assertTrue($container2->has(DispatcherContract::class));
+
+        $newData = $container2->getData();
 
         self::assertSame(
             [
