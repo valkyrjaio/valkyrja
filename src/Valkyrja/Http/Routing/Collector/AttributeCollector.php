@@ -360,37 +360,32 @@ class AttributeCollector implements CollectorContract
     protected function convertRouteAttributesToDataClass(RouteContract $route): Route
     {
         if (str_contains($route->getPath(), '{')) {
-            return $this->convertRouteAttributesToDynamicDataClass($route);
+            $parameters = [];
+
+            if ($route instanceof DynamicRouteContract) {
+                $parameters = $route->getParameters();
+            }
+
+            return new DynamicRoute(
+                path: $route->getPath(),
+                name: $route->getName(),
+                regex: '',
+                parameters: $parameters,
+                dispatch: $route->getDispatch(),
+                requestMethods: $route->getRequestMethods(),
+                routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
+                routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
+                throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
+                sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
+                terminatedMiddleware: $route->getTerminatedMiddleware(),
+                requestStruct: $this->getRequestStructFromRoute($route),
+                responseStruct: $this->getResponseStructFromRoute($route),
+            );
         }
 
         return new Route(
             path: $route->getPath(),
             name: $route->getName(),
-            dispatch: $route->getDispatch(),
-            requestMethods: $route->getRequestMethods(),
-            routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
-            routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
-            throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
-            sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
-            terminatedMiddleware: $route->getTerminatedMiddleware(),
-            requestStruct: $this->getRequestStructFromRoute($route),
-            responseStruct: $this->getResponseStructFromRoute($route),
-        );
-    }
-
-    protected function convertRouteAttributesToDynamicDataClass(RouteContract $route): DynamicRoute
-    {
-        $parameters = [];
-
-        if ($route instanceof DynamicRouteContract) {
-            $parameters = $route->getParameters();
-        }
-
-        return new DynamicRoute(
-            path: $route->getPath(),
-            name: $route->getName(),
-            regex: '',
-            parameters: $parameters,
             dispatch: $route->getDispatch(),
             requestMethods: $route->getRequestMethods(),
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
