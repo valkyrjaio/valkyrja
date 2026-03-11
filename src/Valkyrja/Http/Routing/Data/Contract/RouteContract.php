@@ -108,37 +108,6 @@ interface RouteContract
     public function withAddedRequestMethods(RequestMethod ...$requestMethods): static;
 
     /**
-     * Get the regex.
-     */
-    public function getRegex(): string;
-
-    /**
-     * Set the regex.
-     */
-    public function withRegex(string $regex): static;
-
-    /**
-     * Get the parameters.
-     *
-     * @return array<array-key, ParameterContract>
-     */
-    public function getParameters(): array;
-
-    /**
-     * Create a new route with given parameters.
-     *
-     * @param ParameterContract ...$parameters The parameter
-     */
-    public function withParameters(ParameterContract ...$parameters): static;
-
-    /**
-     * Create a new route with added parameters.
-     *
-     * @param ParameterContract ...$parameters The parameter
-     */
-    public function withAddedParameters(ParameterContract ...$parameters): static;
-
-    /**
      * Get the matched middleware.
      *
      * @return class-string<RouteMatchedMiddlewareContract>[]

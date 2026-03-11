@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
@@ -41,16 +42,17 @@ final class UrlTest extends TestCase
             name: self::ROUTE_NAME,
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
-        $route2     = new Route(
+        $route2     = new DynamicRoute(
             path: '/{value}',
             name: self::ROUTE2_NAME,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            regex: '/{value}',
             parameters: [
                 new Parameter(
                     name: 'value',
                     regex: Regex::ALPHA,
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collection = new Collection();
         $this->url  = new Url(

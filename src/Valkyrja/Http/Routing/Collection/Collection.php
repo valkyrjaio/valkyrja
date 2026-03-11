@@ -17,46 +17,53 @@ use Closure;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
 use Valkyrja\Http\Routing\Throwable\Exception\RuntimeException;
 
 use function array_map;
 use function in_array;
 use function is_callable;
-use function is_string;
 
 /**
  * @phpstan-import-type RequestMethodList from CollectionContract
- * @phpstan-import-type RequestMethodRouteList from CollectionContract
  *
  * @psalm-import-type RequestMethodList from CollectionContract
- * @psalm-import-type RequestMethodRouteList from CollectionContract
  */
 class Collection implements CollectionContract
 {
     /**
      * The routes.
+     * Keyed by route name.
      *
-     * @var array<string, RouteContract|Closure():RouteContract>
+     * @var array<string, RouteContract|DynamicRouteContract|(Closure():RouteContract|DynamicRouteContract)>
      */
     protected array $routes = [];
 
     /**
-     * The static routes.
+     * A map of paths to route names.
      *
      * @var RequestMethodList
      */
-    protected array $static = [];
+    protected array $paths = [];
 
     /**
-     * The dynamic routes.
+     * A map of paths to route names.
      *
      * @var RequestMethodList
      */
-    protected array $dynamic = [];
+    protected array $dynamicPaths = [];
+
+    /**
+     * A map of regexes to route names.
+     *
+     * @var RequestMethodList
+     */
+    protected array $regexes = [];
 
     /**
      * @inheritDoc
@@ -71,8 +78,9 @@ class Collection implements CollectionContract
                     : $route,
                 $this->routes
             ),
-            static: $this->static,
-            dynamic: $this->dynamic,
+            paths: $this->paths,
+            dynamicPaths: $this->dynamicPaths,
+            regexes: $this->regexes,
         );
     }
 
@@ -82,9 +90,10 @@ class Collection implements CollectionContract
     #[Override]
     public function setFromData(Data $data): void
     {
-        $this->routes  = $data->routes;
-        $this->static  = $data->static;
-        $this->dynamic = $data->dynamic;
+        $this->routes       = $data->routes;
+        $this->paths        = $data->paths;
+        $this->dynamicPaths = $data->dynamicPaths;
+        $this->regexes      = $data->regexes;
     }
 
     /**
@@ -103,101 +112,125 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function get(string $path, RequestMethod $method): RouteContract
+    public function hasPath(string $path, RequestMethod $method): bool
     {
-        if ($this->hasStatic($path, $method)) {
-            return $this->getStatic($path, $method);
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            return isset($this->paths[$type][$path])
+                || isset($this->dynamicPaths[$type][$path]);
         }
 
-        if ($this->hasDynamic($path, $method)) {
-            return $this->getDynamic($path, $method);
+        return array_any(
+            $method->all(),
+            fn (RequestMethod $methodToCheck): bool => $this->hasPath($path, $methodToCheck)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getByPath(string $path, RequestMethod $method): RouteContract
+    {
+        return $this->internalGetByPath($path, $method)
+            ?? throw new InvalidRoutePathException("The path '$path' is not a valid route for the given method '$method->value'");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function hasRegex(string $regex, RequestMethod $method): bool
+    {
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            return isset($this->regexes[$type][$regex]);
         }
 
-        throw new InvalidRoutePathException("The path '$path' is not a valid route for the given method '$method->value'");
+        return array_any(
+            $method->all(),
+            fn (RequestMethod $methodToCheck): bool => $this->hasRegex($regex, $methodToCheck)
+        );
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function has(string $path, RequestMethod $method): bool
+    public function getByRegex(string $regex, RequestMethod $method): DynamicRouteContract
     {
-        return $this->hasStatic($path, $method)
-            || $this->hasDynamic($path, $method);
+        return $this->internalGetByRegex($regex, $method)
+            ?? throw new InvalidRouteRegexException("The regex '$regex' is not a valid route for the given method '$method->value'");
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function all(): array
+    public function getPaths(RequestMethod $method): array
     {
-        return $this->ensureMethodRoutes(array_merge_recursive($this->static, $this->dynamic));
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            return $this->paths[$type] ?? [];
+        }
+
+        return array_merge(
+            $this->paths[RequestMethod::HEAD->value] ?? [],
+            $this->paths[RequestMethod::GET->value] ?? [],
+            $this->paths[RequestMethod::POST->value] ?? [],
+            $this->paths[RequestMethod::PATCH->value] ?? [],
+            $this->paths[RequestMethod::PUT->value] ?? [],
+            $this->paths[RequestMethod::DELETE->value] ?? [],
+            $this->paths[RequestMethod::OPTIONS->value] ?? [],
+            $this->paths[RequestMethod::TRACE->value] ?? [],
+            $this->paths[RequestMethod::CONNECT->value] ?? [],
+            $this->dynamicPaths[RequestMethod::HEAD->value] ?? [],
+            $this->dynamicPaths[RequestMethod::GET->value] ?? [],
+            $this->dynamicPaths[RequestMethod::POST->value] ?? [],
+            $this->dynamicPaths[RequestMethod::PATCH->value] ?? [],
+            $this->dynamicPaths[RequestMethod::PUT->value] ?? [],
+            $this->dynamicPaths[RequestMethod::DELETE->value] ?? [],
+            $this->dynamicPaths[RequestMethod::OPTIONS->value] ?? [],
+            $this->dynamicPaths[RequestMethod::TRACE->value] ?? [],
+            $this->dynamicPaths[RequestMethod::CONNECT->value] ?? [],
+        );
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function allFlattened(): array
+    public function getRegexes(RequestMethod $method): array
     {
-        return $this->ensureRoutes($this->routes);
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            return $this->regexes[$type] ?? [];
+        }
+
+        return array_merge(
+            $this->regexes[RequestMethod::HEAD->value] ?? [],
+            $this->regexes[RequestMethod::GET->value] ?? [],
+            $this->regexes[RequestMethod::POST->value] ?? [],
+            $this->regexes[RequestMethod::PATCH->value] ?? [],
+            $this->regexes[RequestMethod::PUT->value] ?? [],
+            $this->regexes[RequestMethod::DELETE->value] ?? [],
+            $this->regexes[RequestMethod::OPTIONS->value] ?? [],
+            $this->regexes[RequestMethod::TRACE->value] ?? [],
+            $this->regexes[RequestMethod::CONNECT->value] ?? [],
+        );
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function getStatic(string $path, RequestMethod $method): RouteContract
+    public function hasName(string $name): bool
     {
-        return $this->getOfType($this->static, $path, $method)
-            ?? throw new InvalidRoutePathException("The static path '$path' is not a valid route for the given method '$method->value'");
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasStatic(string $path, RequestMethod $method): bool
-    {
-        return $this->hasOfType($this->static, $path, $method);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function allStatic(RequestMethod $method): array
-    {
-        return $this->allOfType($this->static, $method);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getDynamic(string $path, RequestMethod $method): RouteContract
-    {
-        return $this->getOfType($this->dynamic, $path, $method)
-            ?? throw new InvalidRoutePathException("The dynamic path '$path' is not a valid route for the given method '$method->value'");
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function hasDynamic(string $path, RequestMethod $method): bool
-    {
-        return $this->hasOfType($this->dynamic, $path, $method);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function allDynamic(RequestMethod $method): array
-    {
-        return $this->allOfType($this->dynamic, $method);
+        return isset($this->routes[$name]);
     }
 
     /**
@@ -206,10 +239,11 @@ class Collection implements CollectionContract
     #[Override]
     public function getByName(string $name): RouteContract
     {
-        $named = $this->routes[$name] ?? null;
+        $route = $this->routes[$name]
+            ?? null;
 
-        if ($named !== null) {
-            return $this->ensureRoute($named);
+        if ($route !== null) {
+            return $this->ensureRoute($route);
         }
 
         throw new InvalidRouteNameException("A route with the name '$name' does not exist");
@@ -219,15 +253,74 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function hasNamed(string $name): bool
+    public function getAll(RequestMethod $method): array
     {
-        return isset($this->routes[$name]);
+        $paths = $this->getPaths($method);
+
+        return $this->getRoutesFromNames($paths);
+    }
+
+    /**
+     * Get a route by path.
+     */
+    protected function internalGetByPath(string $path, RequestMethod $method): RouteContract|null
+    {
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            $route = $this->paths[$type][$path]
+                ?? $this->dynamicPaths[$type][$path]
+                ?? null;
+
+            if ($route !== null) {
+                return $this->getRouteFromName($route);
+            }
+
+            return null;
+        }
+
+        return $this->internalGetByPath($path, RequestMethod::GET)
+            ?? $this->internalGetByPath($path, RequestMethod::HEAD)
+            ?? $this->internalGetByPath($path, RequestMethod::POST)
+            ?? $this->internalGetByPath($path, RequestMethod::PATCH)
+            ?? $this->internalGetByPath($path, RequestMethod::PUT)
+            ?? $this->internalGetByPath($path, RequestMethod::DELETE)
+            ?? $this->internalGetByPath($path, RequestMethod::OPTIONS)
+            ?? $this->internalGetByPath($path, RequestMethod::TRACE)
+            ?? $this->internalGetByPath($path, RequestMethod::CONNECT);
+    }
+
+    /**
+     * Get a route by path.
+     */
+    protected function internalGetByRegex(string $regex, RequestMethod $method): DynamicRouteContract|null
+    {
+        if ($method !== RequestMethod::ANY) {
+            $type = $method->value;
+
+            $route = $this->regexes[$type][$regex]
+                ?? null;
+
+            if ($route !== null) {
+                return $this->getDynamicRouteFromName($route);
+            }
+
+            return null;
+        }
+
+        return $this->internalGetByRegex($regex, RequestMethod::GET)
+            ?? $this->internalGetByRegex($regex, RequestMethod::HEAD)
+            ?? $this->internalGetByRegex($regex, RequestMethod::POST)
+            ?? $this->internalGetByRegex($regex, RequestMethod::PATCH)
+            ?? $this->internalGetByRegex($regex, RequestMethod::PUT)
+            ?? $this->internalGetByRegex($regex, RequestMethod::DELETE)
+            ?? $this->internalGetByRegex($regex, RequestMethod::OPTIONS)
+            ?? $this->internalGetByRegex($regex, RequestMethod::TRACE)
+            ?? $this->internalGetByRegex($regex, RequestMethod::CONNECT);
     }
 
     /**
      * Set a route to its request methods.
-     *
-     * @param RouteContract $route The route
      */
     protected function setRouteToRequestMethods(RouteContract $route): void
     {
@@ -244,9 +337,6 @@ class Collection implements CollectionContract
 
     /**
      * Set the route to the request method.
-     *
-     * @param RouteContract $route         The route
-     * @param RequestMethod $requestMethod The request method
      */
     protected function setRouteToRequestMethod(RouteContract $route, RequestMethod $requestMethod): void
     {
@@ -254,156 +344,76 @@ class Collection implements CollectionContract
             return;
         }
 
-        $name  = $route->getName();
-        $path  = $route->getPath();
-        $regex = $route->getRegex();
+        $name = $route->getName();
+        $path = $route->getPath();
 
         // If this is a dynamic route
-        if ($regex !== '') {
+        if ($route instanceof DynamicRouteContract) {
+            $regex = $route->getRegex();
+
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod->value][$path] = $name;
+            $this->dynamicPaths[$requestMethod->value][$path] = $name;
+            $this->regexes[$requestMethod->value][$regex]     = $name;
 
             return;
         }
 
         // Otherwise set it in the static routes array
         // Set the route in the static routes list
-        $this->static[$requestMethod->value][$path] = $name;
+        $this->paths[$requestMethod->value][$path] = $name;
     }
 
     /**
-     * Get a route of type (static|dynamic).
+     * Get a list of routes for the given names.
      *
-     * @param RequestMethodList $type   The type [static|dynamic]
-     * @param string            $path   The path
-     * @param RequestMethod     $method [optional] The request method
-     */
-    protected function getOfType(array $type, string $path, RequestMethod $method): RouteContract|null
-    {
-        if ($method === RequestMethod::ANY) {
-            return $this->getAnyOfType($type, $path);
-        }
-
-        $route = $type[$method->value][$path] ?? null;
-
-        if ($route === null) {
-            return null;
-        }
-
-        return $this->ensureRoute($route);
-    }
-
-    /**
-     * Get a route of any type (static|dynamic).
-     *
-     * @param RequestMethodList $type The type [static|dynamic]
-     * @param string            $path The path
-     */
-    protected function getAnyOfType(array $type, string $path): RouteContract|null
-    {
-        return $this->getOfType($type, $path, RequestMethod::GET)
-            ?? $this->getOfType($type, $path, RequestMethod::HEAD)
-            ?? $this->getOfType($type, $path, RequestMethod::POST)
-            ?? $this->getOfType($type, $path, RequestMethod::PUT)
-            ?? $this->getOfType($type, $path, RequestMethod::PATCH)
-            ?? $this->getOfType($type, $path, RequestMethod::DELETE);
-    }
-
-    /**
-     * Has a path of type (static|dynamic).
-     *
-     * @param RequestMethodList $type   The type [static|dynamic]
-     * @param string            $path   The path
-     * @param RequestMethod     $method [optional] The request method
-     */
-    protected function hasOfType(array $type, string $path, RequestMethod $method): bool
-    {
-        if ($method === RequestMethod::ANY) {
-            return $this->hasAnyOfType($type, $path);
-        }
-
-        return isset($type[$method->value][$path]);
-    }
-
-    /**
-     * Has a path of any type.
-     *
-     * @param RequestMethodList $type The type [static|dynamic]
-     * @param string            $path The path
-     */
-    protected function hasAnyOfType(array $type, string $path): bool
-    {
-        foreach ($type as $requestMethod) {
-            if (isset($requestMethod[$path])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get all of type with optional by request method.
-     *
-     * @param RequestMethodList $type   The type [static|dynamic]
-     * @param RequestMethod     $method [optional] The request method
-     *
-     * @return RequestMethodRouteList|array<string, RouteContract>
-     */
-    protected function allOfType(array $type, RequestMethod $method): array
-    {
-        if ($method === RequestMethod::ANY) {
-            return $this->ensureMethodRoutes($type);
-        }
-
-        return $this->ensureRoutes($type[$method->value] ?? []);
-    }
-
-    /**
-     * Ensure request methods are arrays of routes.
-     *
-     * @param RequestMethodList $methodsArray
-     *
-     * @return RequestMethodRouteList
-     */
-    protected function ensureMethodRoutes(array $methodsArray): array
-    {
-        return array_map(
-            fn (array $routes): array => $this->ensureRoutes($routes),
-            $methodsArray
-        );
-    }
-
-    /**
-     * Ensure an array is an array of routes.
-     *
-     * @param array<string, RouteContract|string|Closure():RouteContract> $routesArray The routes array
+     * @param array<string, string> $names The route names
      *
      * @return array<string, RouteContract>
      */
-    protected function ensureRoutes(array $routesArray): array
+    protected function getRoutesFromNames(array $names): array
     {
         return array_map(
-            fn (RouteContract|Closure|string $route): RouteContract => $this->ensureRoute($route),
-            $routesArray
+            fn (string $name): RouteContract => $this->getRouteFromName($name),
+            $names
         );
     }
 
     /**
-     * Ensure a route, or null, is returned.
+     * Ensure a route is returned.
      *
-     * @param RouteContract|string|Closure():RouteContract $route The route
+     * @param RouteContract|Closure():RouteContract $route The route
      */
-    protected function ensureRoute(RouteContract|string|Closure $route): RouteContract
+    protected function ensureRoute(RouteContract|Closure $route): RouteContract
     {
-        if (is_string($route)) {
-            $route = $this->routes[$route] ?? throw new RuntimeException('Invalid route `$route` defined');
-        }
-
         if (is_callable($route)) {
             return $route();
         }
 
         return $route;
+    }
+
+    /**
+     * Get a route from a given name.
+     */
+    protected function getRouteFromName(string $name): RouteContract
+    {
+        $route = $this->routes[$name]
+            ?? throw new InvalidRouteNameException("Invalid name `$name` provided");
+
+        return $this->ensureRoute($route);
+    }
+
+    /**
+     * Get a dynamic route from a given name.
+     */
+    protected function getDynamicRouteFromName(string $name): DynamicRouteContract
+    {
+        $route = $this->getRouteFromName($name);
+
+        if ($route instanceof DynamicRouteContract) {
+            return $route;
+        }
+
+        throw new RuntimeException('Invalid dynamic route');
     }
 }

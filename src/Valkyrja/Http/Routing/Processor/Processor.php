@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Processor;
 
 use Override;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -24,8 +25,6 @@ class Processor implements ProcessorContract
 {
     /**
      * Process a route.
-     *
-     * @param RouteContract $route The route
      *
      * @throws InvalidRoutePathException
      */
@@ -37,7 +36,7 @@ class Processor implements ProcessorContract
         $route = $route->withPath($path);
 
         // If this is a dynamic route
-        if (str_contains($route->getPath(), '{')) {
+        if ($route instanceof DynamicRouteContract && str_contains($route->getPath(), '{')) {
             $route = $this->modifyRegex($route);
         }
 
@@ -47,11 +46,9 @@ class Processor implements ProcessorContract
     /**
      * Create the regex for a route.
      *
-     * @param RouteContract $route The route
-     *
      * @throws InvalidRoutePathException
      */
-    protected function modifyRegex(RouteContract $route): RouteContract
+    protected function modifyRegex(DynamicRouteContract $route): RouteContract
     {
         // If the regex has already been set then don't do anything
         if ($route->getRegex() !== '') {

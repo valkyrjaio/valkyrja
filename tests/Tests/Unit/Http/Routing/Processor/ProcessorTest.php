@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Processor;
 
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Processor;
@@ -62,16 +63,17 @@ final class ProcessorTest extends TestCase
     {
         $processor = new Processor();
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/{value}',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            regex: '',
             parameters: [
                 new Parameter(
                     name: 'value',
                     regex: Regex::ALPHA
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -87,16 +89,17 @@ final class ProcessorTest extends TestCase
 
         $processor = new Processor();
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/{val}',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            regex: '',
             parameters: [
                 new Parameter(
                     name: 'value',
                     regex: Regex::ALPHA
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
 
         $processor->route($route);
@@ -106,17 +109,17 @@ final class ProcessorTest extends TestCase
     {
         $processor = new Processor();
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/{value}',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
             regex: Regex::ALPHA,
             parameters: [
                 new Parameter(
                     name: 'value',
                     regex: Regex::ALPHA
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -131,17 +134,18 @@ final class ProcessorTest extends TestCase
     {
         $processor = new Processor();
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/{optional?}',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            regex: '',
             parameters: [
                 new Parameter(
                     name: 'optional',
                     regex: Regex::ALPHA,
                     isOptional: true
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch')
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -155,17 +159,18 @@ final class ProcessorTest extends TestCase
     {
         $processor = new Processor();
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/{noncapture}',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            regex: '',
             parameters: [
                 new Parameter(
                     name: 'noncapture',
                     regex: Regex::ALPHA,
                     shouldCapture: false
                 ),
-            ]
+            ],
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
 
         $routeAfterProcessing = $processor->route($route);

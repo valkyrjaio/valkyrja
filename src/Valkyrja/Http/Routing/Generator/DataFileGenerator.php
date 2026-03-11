@@ -61,15 +61,17 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
         $data          = $this->data;
         $dataNamespace = Data::class;
 
-        $static  = var_export($data->static, true);
-        $dynamic = var_export($data->dynamic, true);
-        $routes  = $this->getRoutesAsContent();
+        $paths         = var_export($data->paths, true);
+        $dynamicPaths  = var_export($data->dynamicPaths, true);
+        $regexes       = var_export($data->regexes, true);
+        $routes        = $this->getRoutesAsContent();
 
         return <<<PHP
             new $dataNamespace(
                 routes: $routes,
-                static: $static,
-                dynamic: $dynamic
+                paths: $paths,
+                dynamicPaths: $dynamicPaths,
+                regexes: $regexes
             )
             PHP;
     }

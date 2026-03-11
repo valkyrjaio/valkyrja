@@ -183,8 +183,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->isSingleton(CollectionContract::class));
         self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
 
-        self::assertNotNull($collection->get('/', RequestMethod::ANY));
-        self::assertNotNull($collection->get('/from-provider', RequestMethod::ANY));
+        self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
+        self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishDataFileGenerator(): void

@@ -26,7 +26,7 @@ final class DataTest extends TestCase
         $data = new Data();
 
         self::assertEmpty($data->routes);
-        self::assertEmpty($data->static);
-        self::assertEmpty($data->dynamic);
+        self::assertEmpty($data->paths);
+        self::assertEmpty($data->regexes);
     }
 }

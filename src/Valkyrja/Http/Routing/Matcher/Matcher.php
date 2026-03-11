@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
@@ -24,7 +25,6 @@ use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Type\Data\Cast;
 
-use function is_array;
 use function preg_match;
 
 class Matcher implements MatcherContract
@@ -56,8 +56,8 @@ class Matcher implements MatcherContract
     #[Override]
     public function matchStatic(string $path, RequestMethod $requestMethod): RouteContract|null
     {
-        if ($this->collection->hasStatic($path, $requestMethod)) {
-            return clone $this->collection->getStatic($path, $requestMethod);
+        if ($this->collection->hasPath($path, $requestMethod)) {
+            return clone $this->collection->getByPath($path, $requestMethod);
         }
 
         return null;
@@ -72,55 +72,18 @@ class Matcher implements MatcherContract
     #[Override]
     public function matchDynamic(string $path, RequestMethod $requestMethod): RouteContract|null
     {
-        $routes = $this->collection->allDynamic($requestMethod);
+        $regexes = $this->collection->getRegexes($requestMethod);
 
-        return $this->matchDynamicFromArray($routes, $path);
-    }
-
-    /**
-     * Match a dynamic route by path from a given array.
-     *
-     * @param array<string, RouteContract>|array<string, array<string, RouteContract>> $routes The routes
-     * @param string                                                                   $path   The path
-     *
-     * @throws InvalidRoutePathException
-     * @throws InvalidRouteParameterException
-     */
-    protected function matchDynamicFromArray(array $routes, string $path): RouteContract|null
-    {
         // Attempt to find a match using dynamic routes that are set
-        foreach ($routes as $route) {
-            if (is_array($route)) {
-                $match = $this->matchDynamicFromArray($route, $path);
-            } else {
-                $match = $this->matchDynamicFromRoute($route, $path);
+        foreach ($regexes as $regex => $name) {
+            // If the preg match is successful, we've found our route!
+            if ($regex !== '' && preg_match($regex, $path, $matches)) {
+                /** @var array<int|non-empty-string, string> $matches */
+                return $this->processArguments(
+                    $this->collection->getByRegex($regex, $requestMethod),
+                    $matches
+                );
             }
-
-            if ($match !== null) {
-                return $match;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Match a dynamic route by path from a given route.
-     *
-     * @param RouteContract $route The route
-     * @param string        $path  The path
-     *
-     * @throws InvalidRoutePathException
-     * @throws InvalidRouteParameterException
-     */
-    protected function matchDynamicFromRoute(RouteContract $route, string $path): RouteContract|null
-    {
-        $regex = $route->getRegex();
-
-        // If the preg match is successful, we've found our route!
-        if ($regex !== '' && preg_match($regex, $path, $matches)) {
-            /** @var array<int|non-empty-string, string> $matches */
-            return $this->processArguments($route, $matches);
         }
 
         return null;
@@ -129,12 +92,11 @@ class Matcher implements MatcherContract
     /**
      * Process matches for a dynamic route.
      *
-     * @param RouteContract                       $route   The route
      * @param array<int|non-empty-string, string> $matches The regex matches
      *
      * @throws InvalidRoutePathException
      */
-    protected function processArguments(RouteContract $route, array $matches): RouteContract
+    protected function processArguments(DynamicRouteContract $route, array $matches): DynamicRouteContract
     {
         $dispatch = $route->getDispatch();
 

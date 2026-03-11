@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute;
 use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
@@ -50,6 +51,14 @@ final class ControllerClass
     public const string PARAMETERS_NAME = 'parameters';
     /** @var non-empty-string */
     public const string PARAMETERS_PARAMETER_NAME = 'name';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PATH = '/dynamic/{foo}/{bar}';
+    /** @var non-empty-string */
+    public const string DYNAMIC_NAME = 'dynamic';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PARAMETER_NAME = 'foo';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PARAMETER_NAME2 = 'bar';
 
     #[Route(path: self::WELCOME_PATH, name: self::WELCOME_NAME)]
     public function welcome(): ResponseContract
@@ -75,6 +84,31 @@ final class ControllerClass
     ): ResponseContract {
         return $responseFactory->createResponse(
             content: "parameters$name"
+        );
+    }
+
+    #[DynamicRoute(
+        path: self::DYNAMIC_PATH,
+        name: self::DYNAMIC_NAME,
+        parameters: [
+            new Parameter(name: self::DYNAMIC_PARAMETER_NAME, regex: Regex::ALPHA, cast: new Cast(TypeContract::class)),
+        ]
+    )]
+    #[Middleware(RouteDispatchedMiddlewareClass::class)]
+    #[Middleware(RouteMatchedMiddlewareClass::class)]
+    #[Middleware(SendingResponseMiddlewareClass::class)]
+    #[Middleware(TerminatedMiddlewareClass::class)]
+    #[Middleware(ThrowableCaughtMiddlewareClass::class)]
+    #[RequestStruct(IndexedJsonRequestStructEnum::first)]
+    #[ResponseStruct(ResponseStructEnum::first)]
+    public function dynamic(
+        ResponseFactoryContract $responseFactory,
+        string $foo,
+        #[Parameter(name: self::DYNAMIC_PARAMETER_NAME2, regex: Regex::ALPHA, cast: new Cast(TypeContract::class))]
+        string $bar,
+    ): ResponseContract {
+        return $responseFactory->createResponse(
+            content: "dynamic$foo$bar"
         );
     }
 }

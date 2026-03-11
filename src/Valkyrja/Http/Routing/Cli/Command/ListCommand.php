@@ -27,8 +27,10 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Cli\Command\Constant\CommandName;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 class ListCommand
@@ -51,7 +53,7 @@ class ListCommand
         $output = $outputFactory
             ->createOutput();
 
-        $routes = $collection->allFlattened();
+        $routes = $collection->getAll(RequestMethod::ANY);
 
         if ($routes === []) {
             return $output
@@ -86,6 +88,18 @@ class ListCommand
                 new NewLine(),
             );
 
+            $output = $this->getOutputForDynamicRoute($output, $route);
+        }
+
+        return $output->withAddedMessages(new NewLine());
+    }
+
+    /**
+     * Update an output with dynamic route information.
+     */
+    protected function getOutputForDynamicRoute(OutputContract $output, RouteContract $route): OutputContract
+    {
+        if ($route instanceof DynamicRouteContract) {
             $regex = $route->getRegex();
 
             if ($regex !== '') {
@@ -98,6 +112,6 @@ class ListCommand
             }
         }
 
-        return $output->withAddedMessages(new NewLine());
+        return $output;
     }
 }

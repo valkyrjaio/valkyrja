@@ -18,7 +18,7 @@ use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
-use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -32,11 +32,12 @@ final class ListCommandTest extends TestCase
         $name  = 'route';
         $regex = 'regex';
 
-        $route = new Route(
+        $route = new DynamicRoute(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
             regex: $regex,
+            parameters: [],
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
 
         $outputFactory = new OutputFactory();

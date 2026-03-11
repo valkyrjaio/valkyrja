@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute;
+use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
@@ -27,13 +29,14 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the route attribute.
  */
-final class RouteTest extends TestCase
+final class DynamicRouteTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $route = new Route(
+        $route = new DynamicRoute(
             path: '/',
-            name: 'test'
+            name: 'test',
+            parameters: [],
         );
 
         self::assertSame('/', $route->getPath());
@@ -52,7 +55,7 @@ final class RouteTest extends TestCase
     public function testPath(): void
     {
         $value = '/test';
-        $route = new Route(path: $value, name: 'test');
+        $route = new DynamicRoute(path: $value, name: 'test', parameters: []);
 
         self::assertSame($value, $route->getPath());
     }
@@ -60,7 +63,7 @@ final class RouteTest extends TestCase
     public function testName(): void
     {
         $value = 'test';
-        $route = new Route(path: '/', name: $value);
+        $route = new DynamicRoute(path: '/', name: $value, parameters: []);
 
         self::assertSame($value, $route->getName());
     }
@@ -70,15 +73,25 @@ final class RouteTest extends TestCase
         $value = [
             RequestMethod::POST,
         ];
-        $route = new Route(path: '/', name: 'test', requestMethods: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', requestMethods: $value, parameters: []);
 
         self::assertSame($value, $route->getRequestMethods());
+    }
+
+    public function testParameters(): void
+    {
+        $value = [
+            new Parameter(name: 'test', regex: Regex::ALPHA),
+        ];
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: $value);
+
+        self::assertSame($value, $route->getParameters());
     }
 
     public function testRequestStruct(): void
     {
         $value = QueryRequestStructEnum::first;
-        $route = new Route(path: '/', name: 'test', requestStruct: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], requestStruct: $value);
 
         self::assertSame($value, $route->getRequestStruct());
     }
@@ -86,7 +99,7 @@ final class RouteTest extends TestCase
     public function testResponseStruct(): void
     {
         $value = ResponseStructEnum::first;
-        $route = new Route(path: '/', name: 'test', responseStruct: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], responseStruct: $value);
 
         self::assertSame($value, $route->getResponseStruct());
     }
@@ -94,7 +107,7 @@ final class RouteTest extends TestCase
     public function testMatchedMiddleware(): void
     {
         $value = [RouteMatchedMiddlewareClass::class];
-        $route = new Route(path: '/', name: 'test', routeMatchedMiddleware: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], routeMatchedMiddleware: $value);
 
         self::assertSame($value, $route->getRouteMatchedMiddleware());
     }
@@ -102,7 +115,7 @@ final class RouteTest extends TestCase
     public function testDispatchedMiddleware(): void
     {
         $value = [RouteDispatchedMiddlewareClass::class];
-        $route = new Route(path: '/', name: 'test', routeDispatchedMiddleware: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], routeDispatchedMiddleware: $value);
 
         self::assertSame($value, $route->getRouteDispatchedMiddleware());
     }
@@ -110,7 +123,7 @@ final class RouteTest extends TestCase
     public function testExceptionMiddleware(): void
     {
         $value = [ThrowableCaughtMiddlewareClass::class];
-        $route = new Route(path: '/', name: 'test', throwableCaughtMiddleware: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], throwableCaughtMiddleware: $value);
 
         self::assertSame($value, $route->getThrowableCaughtMiddleware());
     }
@@ -118,7 +131,7 @@ final class RouteTest extends TestCase
     public function testSendingMiddleware(): void
     {
         $value = [SendingResponseMiddlewareClass::class];
-        $route = new Route(path: '/', name: 'test', sendingResponseMiddleware: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], sendingResponseMiddleware: $value);
 
         self::assertSame($value, $route->getSendingResponseMiddleware());
     }
@@ -126,7 +139,7 @@ final class RouteTest extends TestCase
     public function testTerminatedMiddleware(): void
     {
         $value = [TerminatedMiddlewareClass::class];
-        $route = new Route(path: '/', name: 'test', terminatedMiddleware: $value);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], terminatedMiddleware: $value);
 
         self::assertSame($value, $route->getTerminatedMiddleware());
     }

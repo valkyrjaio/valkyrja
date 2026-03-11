@@ -23,4 +23,14 @@ final class CollectionClass extends Collection
     {
         $this->setRouteToRequestMethod($route, $requestMethod);
     }
+
+    public function getRouteFromNameWrapper(string $name): RouteContract
+    {
+        return $this->getRouteFromName($name);
+    }
+
+    public function getDynamicRouteFromNameWrapper(string $name): RouteContract
+    {
+        return $this->getDynamicRouteFromName($name);
+    }
 }
