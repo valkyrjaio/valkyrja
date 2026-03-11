@@ -23,12 +23,13 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Http\Routing\Data\Route as ParentRoute;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\DynamicRoute as ParentRoute;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Route extends ParentRoute implements ReflectionAwareAttributeContract
+class DynamicRoute extends ParentRoute implements ReflectionAwareAttributeContract
 {
     use ReflectionAwareAttribute;
 
@@ -36,6 +37,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
      * @param non-empty-string                                  $path                      The path
      * @param non-empty-string                                  $name                      The name
      * @param RequestMethod[]                                   $requestMethods            The request methods
+     * @param ParameterContract[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
@@ -45,6 +47,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
     public function __construct(
         protected string $path,
         protected string $name,
+        protected array $parameters,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -57,6 +60,8 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
         parent::__construct(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: $parameters,
             dispatch: new MethodDispatch(self::class, 'getPath'),
             requestMethods: $requestMethods,
             routeMatchedMiddleware: $routeMatchedMiddleware,

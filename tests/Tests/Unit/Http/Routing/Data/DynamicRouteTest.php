@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\DynamicRoute as Route;
 use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
@@ -37,7 +37,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Route service.
  */
-final class RouteTest extends TestCase
+final class DynamicRouteTest extends TestCase
 {
     public function testDefaultValues(): void
     {
@@ -47,6 +47,8 @@ final class RouteTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
 
@@ -55,6 +57,8 @@ final class RouteTest extends TestCase
         self::assertSame(self::class, $route->getDispatch()->getClass());
         self::assertSame('dispatch', $route->getDispatch()->getMethod());
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET], $route->getRequestMethods());
+        self::assertSame('', $route->getRegex());
+        self::assertEmpty($route->getParameters());
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
@@ -83,6 +87,8 @@ final class RouteTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
+            regex: $regex,
+            parameters: $parameters,
             dispatch: $dispatch,
             requestMethods: $methods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
@@ -99,6 +105,8 @@ final class RouteTest extends TestCase
         self::assertSame(self::class, $route->getDispatch()->getClass());
         self::assertSame('dispatch', $route->getDispatch()->getMethod());
         self::assertSame($methods, $route->getRequestMethods());
+        self::assertSame($regex, $route->getRegex());
+        self::assertSame($parameters, $route->getParameters());
         self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
         self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
         self::assertSame($throwableCaughtMiddleware, $route->getThrowableCaughtMiddleware());
@@ -117,6 +125,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
         $route2 = $route->withPath($path2);
@@ -145,6 +155,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
         $route2 = $route->withName($name2);
@@ -164,6 +176,35 @@ final class RouteTest extends TestCase
         self::assertSame($name2, $route5->getName());
     }
 
+    public function testRegex(): void
+    {
+        $path   = '/';
+        $name   = 'route';
+        $regex  = 'regex';
+        $regex2 = 'regex2';
+
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            regex: $regex,
+            parameters: [],
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
+        $route2 = $route->withRegex($regex2);
+        $route3 = $route->withRegex($regex2);
+        $route4 = $route2->withRegex($regex);
+
+        self::assertNotSame($route, $route2);
+        self::assertNotSame($route, $route3);
+        self::assertNotSame($route2, $route3);
+        self::assertNotSame($route2, $route4);
+        self::assertNotSame($route, $route4);
+        self::assertSame($regex, $route->getRegex());
+        self::assertSame($regex2, $route2->getRegex());
+        self::assertSame($regex2, $route3->getRegex());
+        self::assertSame($regex, $route4->getRegex());
+    }
+
     public function testDispatch(): void
     {
         $path = '/';
@@ -173,7 +214,13 @@ final class RouteTest extends TestCase
         $dispatch2 = new MethodDispatch(class: self::class, method: 'test2');
         $dispatch3 = new MethodDispatch(class: self::class, method: 'test3');
 
-        $route  = new Route(path: $path, name: $name, dispatch: $dispatch);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            regex: '',
+            parameters: [],
+            dispatch: $dispatch
+        );
         $route2 = $route->withDispatch($dispatch2);
         $route3 = $route2->withDispatch($dispatch3);
 
@@ -196,6 +243,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
         $route2 = $route->withRequestMethods(...$methods);
@@ -235,6 +284,39 @@ final class RouteTest extends TestCase
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET, RequestMethod::POST], $route6->getRequestMethods());
     }
 
+    public function testParameters(): void
+    {
+        $path = '/';
+        $name = 'route';
+
+        $parameter  = new Parameter(name: 'test1', regex: Regex::ALPHA);
+        $parameter2 = new Parameter(name: 'test2', regex: Regex::ALPHA);
+        $parameter3 = new Parameter(name: 'test3', regex: Regex::ALPHA);
+        $parameter4 = new Parameter(name: 'test4', regex: Regex::ALPHA);
+
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            regex: '',
+            parameters: [$parameter],
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
+        $route2 = $route->withParameters($parameter2);
+        $route3 = $route->withParameters($parameter3);
+        $route4 = $route->withAddedParameters($parameter2);
+        $route5 = $route->withAddedParameters($parameter3, $parameter4);
+
+        self::assertNotSame($route, $route2);
+        self::assertNotSame($route, $route3);
+        self::assertNotSame($route, $route4);
+        self::assertNotSame($route, $route5);
+        self::assertSame([$parameter], $route->getParameters());
+        self::assertSame([$parameter2], $route2->getParameters());
+        self::assertSame([$parameter3], $route3->getParameters());
+        self::assertSame([$parameter, $parameter2], $route4->getParameters());
+        self::assertSame([$parameter, $parameter3, $parameter4], $route5->getParameters());
+    }
+
     public function testRouteMatchedMiddleware(): void
     {
         $path = '/';
@@ -246,6 +328,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             routeMatchedMiddleware: [$middleware]
         );
@@ -270,6 +354,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             routeDispatchedMiddleware: [$middleware]
         );
@@ -294,6 +380,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             throwableCaughtMiddleware: [$middleware]
         );
@@ -318,6 +406,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             sendingResponseMiddleware: [$middleware]
         );
@@ -342,6 +432,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             terminatedMiddleware: [$middleware]
         );
@@ -366,6 +458,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             requestStruct: $requestStruct
         );
@@ -387,6 +481,8 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
+            regex: '',
+            parameters: [],
             dispatch: new MethodDispatch(self::class, 'dispatch'),
             responseStruct: $responseStruct
         );

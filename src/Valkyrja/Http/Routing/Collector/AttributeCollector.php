@@ -23,6 +23,7 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute as DynamicAttribute;
 use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route as Attribute;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
@@ -32,8 +33,10 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter as DataParameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -66,8 +69,11 @@ class AttributeCollector implements CollectorContract
         $routes = [];
 
         foreach ($classes as $class) {
-            /** @var Attribute[] $attributes */
-            $attributes = $this->attributes->forClassMembers($class, Attribute::class);
+            /** @var array<Attribute|DynamicAttribute> $attributes */
+            $attributes = array_merge(
+                $this->attributes->forClassMembers($class, Attribute::class),
+                $this->attributes->forClassMembers($class, DynamicAttribute::class),
+            );
 
             // Iterate through all the members' attributes
             foreach ($attributes as $attribute) {
@@ -83,7 +89,10 @@ class AttributeCollector implements CollectorContract
                 $route = $this->updateRequestStruct($route, $class, $method);
                 $route = $this->updateResponseStruct($route, $class, $method);
                 $route = $this->updateRequestMethods($route, $class, $method);
-                $route = $this->updateParameters($route, $class, $method);
+
+                if ($route instanceof DynamicRoute) {
+                    $route = $this->updateParameters($route, $class, $method);
+                }
 
                 // And set a new route with the controller defined annotation additions
                 $routes[] = $this->setRouteProperties($route);
@@ -330,14 +339,12 @@ class AttributeCollector implements CollectorContract
      *
      * @throws ReflectionException
      */
-    protected function updateParameters(Route $route, string $class, string $method): Route
+    protected function updateParameters(DynamicRoute $route, string $class, string $method): DynamicRoute
     {
-        $methodParameters = $this->attributes->forMethod($class, $method, Parameter::class);
-
         $route = $route->withParameters(
+            ...$route->getParameters(),
+            ...$this->attributes->forMethod($class, $method, Parameter::class),
             ...$this->attributes->forMethodParameters($class, $method, Parameter::class),
-            ...$methodParameters,
-            ...$route->getParameters()
         );
 
         $parameterAttributes = $route->getParameters();
@@ -352,13 +359,39 @@ class AttributeCollector implements CollectorContract
 
     protected function convertRouteAttributesToDataClass(RouteContract $route): Route
     {
+        if (str_contains($route->getPath(), '{')) {
+            $parameters = [];
+
+            if ($route instanceof DynamicRouteContract) {
+                $parameters = $route->getParameters();
+            }
+
+            return new DynamicRoute(
+                path: $route->getPath(),
+                name: $route->getName(),
+                regex: '',
+                parameters: $parameters,
+                dispatch: $route->getDispatch(),
+                requestMethods: $route->getRequestMethods(),
+                routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
+                routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
+                throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
+                sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
+                terminatedMiddleware: $route->getTerminatedMiddleware(),
+                requestStruct: $route->hasRequestStruct()
+                    ? $route->getRequestStruct()
+                    : null,
+                responseStruct: $route->hasResponseStruct()
+                    ? $route->getResponseStruct()
+                    : null
+            );
+        }
+
         return new Route(
             path: $route->getPath(),
             name: $route->getName(),
             dispatch: $route->getDispatch(),
             requestMethods: $route->getRequestMethods(),
-            regex: $route->getRegex(),
-            parameters: $route->getParameters(),
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),

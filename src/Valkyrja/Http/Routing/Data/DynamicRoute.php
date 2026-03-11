@@ -11,31 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Attribute;
+namespace Valkyrja\Http\Routing\Data;
 
-use Attribute;
-use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
-use Valkyrja\Attribute\Trait\ReflectionAwareAttribute;
-use Valkyrja\Dispatch\Data\MethodDispatch;
+use Override;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Http\Routing\Data\Route as ParentRoute;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
-#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Route extends ParentRoute implements ReflectionAwareAttributeContract
+class DynamicRoute extends Route implements DynamicRouteContract
 {
-    use ReflectionAwareAttribute;
-
     /**
      * @param non-empty-string                                  $path                      The path
      * @param non-empty-string                                  $name                      The name
      * @param RequestMethod[]                                   $requestMethods            The request methods
+     * @param ParameterContract[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
@@ -45,6 +42,9 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
     public function __construct(
         protected string $path,
         protected string $name,
+        protected string $regex,
+        protected array $parameters,
+        protected MethodDispatchContract $dispatch,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -57,7 +57,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
         parent::__construct(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'getPath'),
+            dispatch: $dispatch,
             requestMethods: $requestMethods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
@@ -67,5 +67,64 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
             requestStruct: $requestStruct,
             responseStruct: $responseStruct,
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getRegex(): string
+    {
+        return $this->regex;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withRegex(string $regex): static
+    {
+        $new = clone $this;
+
+        $new->regex = $regex;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return array<array-key, ParameterContract>
+     */
+    #[Override]
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withParameters(ParameterContract ...$parameters): static
+    {
+        $new = clone $this;
+
+        $new->parameters = $parameters;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withAddedParameters(ParameterContract ...$parameters): static
+    {
+        $new = clone $this;
+
+        $new->parameters = array_merge($this->parameters, $parameters);
+
+        return $new;
     }
 }

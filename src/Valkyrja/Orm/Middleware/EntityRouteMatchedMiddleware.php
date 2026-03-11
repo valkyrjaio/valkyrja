@@ -20,6 +20,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Orm\Data\EntityCast;
@@ -56,7 +57,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     #[Override]
     public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
-        if ($route->getParameters() === []) {
+        if (! $route instanceof DynamicRouteContract || $route->getParameters() === []) {
             return $handler->routeMatched($request, $route);
         }
 
@@ -71,10 +72,8 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
 
     /**
      * Check route for entities.
-     *
-     * @param RouteContract $route The route
      */
-    protected function checkRouteForEntities(RouteContract $route): ResponseContract|RouteContract
+    protected function checkRouteForEntities(DynamicRouteContract $route): ResponseContract|DynamicRouteContract
     {
         $dispatch     = $route->getDispatch();
         $arguments    = $dispatch->getArguments();

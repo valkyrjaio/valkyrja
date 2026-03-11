@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Matcher\Matcher;
@@ -74,35 +75,28 @@ final class MatcherTest extends TestCase
             ),
         );
 
-        $dynamicRoute = new Route(
-            path: self::DYNAMIC_PATH,
+        $dynamicRoute = new DynamicRoute(
+            path: '/{dynamic}',
             name: self::DYNAMIC_ROUTE_NAME,
-            dispatch: new MethodDispatch(
-                class: ControllerClass::class,
-                method: 'parameters',
-                dependencies: [
-                    ResponseFactory::class,
-                ]
-            ),
             regex: self::DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
                     name: self::DYNAMIC_ROUTE_NAME,
                     regex: Regex::ALPHA
                 ),
-            ]
-        );
-
-        $optionalDynamicRoute = new Route(
-            path: self::OPTIONAL_DYNAMIC_PATH,
-            name: self::OPTIONAL_DYNAMIC_ROUTE_NAME,
+            ],
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
                 dependencies: [
                     ResponseFactory::class,
                 ]
-            ),
+            )
+        );
+
+        $optionalDynamicRoute = new DynamicRoute(
+            path: '/{optional-dynamic?}',
+            name: self::OPTIONAL_DYNAMIC_ROUTE_NAME,
             regex: self::OPTIONAL_DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
@@ -111,19 +105,19 @@ final class MatcherTest extends TestCase
                     isOptional: true,
                     default: 'default'
                 ),
-            ]
-        );
-
-        $optionalDynamicRouteNullDefault = new Route(
-            path: self::OPTIONAL_NULL_DYNAMIC_PATH,
-            name: self::OPTIONAL_NULL_DYNAMIC_ROUTE_NAME,
+            ],
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
                 dependencies: [
                     ResponseFactory::class,
                 ]
-            ),
+            )
+        );
+
+        $optionalDynamicRouteNullDefault = new DynamicRoute(
+            path: '/{optional-null-dynamic?}',
+            name: self::OPTIONAL_NULL_DYNAMIC_ROUTE_NAME,
             regex: self::OPTIONAL_NULL_DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
@@ -131,19 +125,19 @@ final class MatcherTest extends TestCase
                     regex: Regex::ALPHA,
                     isOptional: true
                 ),
-            ]
-        );
-
-        $castDynamicRoute = new Route(
-            path: self::CAST_DYNAMIC_PATH,
-            name: self::CAST_DYNAMIC_ROUTE_NAME,
+            ],
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
                 dependencies: [
                     ResponseFactory::class,
                 ]
-            ),
+            )
+        );
+
+        $castDynamicRoute = new DynamicRoute(
+            path: '/{dynamic1}/{dynamic2}',
+            name: self::CAST_DYNAMIC_ROUTE_NAME,
             regex: self::CAST_DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
@@ -162,20 +156,28 @@ final class MatcherTest extends TestCase
                         convert: false,
                     ),
                 ),
-            ]
-        );
-
-        $invalidDynamicRoute = new Route(
-            path: self::INVALID_DYNAMIC_PATH,
-            name: self::INVALID_DYNAMIC_ROUTE_NAME,
+            ],
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
                 dependencies: [
                     ResponseFactory::class,
                 ]
-            ),
+            )
+        );
+
+        $invalidDynamicRoute = new DynamicRoute(
+            path: '/invalid/{invalid}',
+            name: self::INVALID_DYNAMIC_ROUTE_NAME,
             regex: self::INVALID_DYNAMIC_REGEX,
+            parameters: [],
+            dispatch: new MethodDispatch(
+                class: ControllerClass::class,
+                method: 'parameters',
+                dependencies: [
+                    ResponseFactory::class,
+                ]
+            )
         );
 
         $collection = new Collection();

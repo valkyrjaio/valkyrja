@@ -24,14 +24,16 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 readonly class Data
 {
     /**
-     * @param array<string, RouteContract|Closure():RouteContract> $routes  The routes
-     * @param RequestArray                                         $static  The static routes list
-     * @param RequestArray                                         $dynamic The dynamic routes list
+     * @param array<string, RouteContract|Closure():RouteContract> $routes       The routes
+     * @param RequestArray                                         $paths        The static paths list
+     * @param RequestArray                                         $regexes      The regex list
+     * @param RequestArray                                         $dynamicPaths The dynamic paths list
      */
     public function __construct(
         public array $routes = [],
-        public array $static = [],
-        public array $dynamic = [],
+        public array $paths = [],
+        public array $dynamicPaths = [],
+        public array $regexes = [],
     ) {
     }
 }

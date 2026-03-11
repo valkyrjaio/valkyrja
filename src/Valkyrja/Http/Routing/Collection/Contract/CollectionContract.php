@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection\Contract;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
 
@@ -21,10 +22,6 @@ use Valkyrja\Http\Routing\Data\Data;
  * @psalm-type RequestMethodList array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
  *
  * @phpstan-type RequestMethodList array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
- *
- * @psalm-type RequestMethodRouteList array{CONNECT?: array<string, RouteContract>, DELETE?: array<string, RouteContract>, GET?: array<string, RouteContract>, HEAD?: array<string, RouteContract>, OPTIONS?: array<string, RouteContract>, PATCH?: array<string, RouteContract>, POST?: array<string, RouteContract>, PUT?: array<string, RouteContract>, TRACE?: array<string, RouteContract>}
- *
- * @phpstan-type RequestMethodRouteList array{CONNECT?: array<string, RouteContract>, DELETE?: array<string, RouteContract>, GET?: array<string, RouteContract>, HEAD?: array<string, RouteContract>, OPTIONS?: array<string, RouteContract>, PATCH?: array<string, RouteContract>, POST?: array<string, RouteContract>, PUT?: array<string, RouteContract>, TRACE?: array<string, RouteContract>}
  */
 interface CollectionContract
 {
@@ -40,92 +37,60 @@ interface CollectionContract
 
     /**
      * Add a route.
-     *
-     * @param RouteContract $route The route
      */
     public function add(RouteContract $route): void;
 
     /**
-     * Get a route.
-     *
-     * @param string $path The path
+     * Determine if a route path exists.
      */
-    public function get(string $path, RequestMethod $method): RouteContract;
+    public function hasPath(string $path, RequestMethod $method): bool;
 
     /**
-     * Determine if a route exists.
-     *
-     * @param string $path The path
+     * Get a route by path.
      */
-    public function has(string $path, RequestMethod $method): bool;
+    public function getByPath(string $path, RequestMethod $method): RouteContract;
 
     /**
-     * Get all routes.
-     *
-     * @return RouteContract[][]
+     * Determine if a route regex exists.
      */
-    public function all(): array;
+    public function hasRegex(string $regex, RequestMethod $method): bool;
 
     /**
-     * Get a flat array of routes.
-     *
-     * @return array<string, RouteContract>
+     * Get a route by regex.
      */
-    public function allFlattened(): array;
+    public function getByRegex(string $regex, RequestMethod $method): DynamicRouteContract;
 
     /**
-     * Get a static route.
+     * Get all the route paths.
+     * The returned array is keyed by the route path with the value being the route name.
      *
-     * @param string $path The path
+     * @return array<string, string>
      */
-    public function getStatic(string $path, RequestMethod $method): RouteContract;
+    public function getPaths(RequestMethod $method): array;
 
     /**
-     * Determine if a static route exists.
+     * Get all the route regexes.
+     * The returned array is keyed by the route regex with the value being the route name.
      *
-     * @param string $path The path
+     * @return array<string, string>
      */
-    public function hasStatic(string $path, RequestMethod $method): bool;
+    public function getRegexes(RequestMethod $method): array;
 
     /**
-     * Get static routes of a certain request method.
-     *
-     * @return ($method is RequestMethod::ANY ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
+     * Determine if a route name exists.
      */
-    public function allStatic(RequestMethod $method): array;
-
-    /**
-     * Get a dynamic route.
-     *
-     * @param string $path The path
-     */
-    public function getDynamic(string $path, RequestMethod $method): RouteContract;
-
-    /**
-     * Determine if a dynamic route exists.
-     *
-     * @param string $path The path
-     */
-    public function hasDynamic(string $path, RequestMethod $method): bool;
-
-    /**
-     * Get the dynamic routes in this collection.
-     *
-     * @return ($method is RequestMethod::ANY ? array<string, array<string, RouteContract>> : array<string, RouteContract>)
-     */
-    public function allDynamic(RequestMethod $method): array;
+    public function hasName(string $name): bool;
 
     /**
      * Get a route by name.
-     *
-     * @param string $name The name
      */
     public function getByName(string $name): RouteContract;
 
     /**
-     * Determine if a named route exists.
+     * Get all routes by request method.
+     * The returned array is keyed by the route name.
      *
-     * @param string $name The name
+     * @return array<string, RouteContract>
      */
-    public function hasNamed(string $name): bool;
+    public function getAll(RequestMethod $method): array;
 }

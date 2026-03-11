@@ -21,7 +21,6 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Throwable\Exception\NoRequestStructException;
 use Valkyrja\Http\Routing\Throwable\Exception\NoResponseStructException;
@@ -36,7 +35,6 @@ class Route implements RouteContract
      * @param non-empty-string                                  $path                      The path
      * @param non-empty-string                                  $name                      The name
      * @param RequestMethod[]                                   $requestMethods            The request methods
-     * @param ParameterContract[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
@@ -48,8 +46,6 @@ class Route implements RouteContract
         protected string $name,
         protected MethodDispatchContract $dispatch,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
-        protected string $regex = '',
-        protected array $parameters = [],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
@@ -201,65 +197,6 @@ class Route implements RouteContract
                 $new->requestMethods[] = $requestMethod;
             }
         }
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getRegex(): string
-    {
-        return $this->regex;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withRegex(string $regex): static
-    {
-        $new = clone $this;
-
-        $new->regex = $regex;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return array<array-key, ParameterContract>
-     */
-    #[Override]
-    public function getParameters(): array
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withParameters(ParameterContract ...$parameters): static
-    {
-        $new = clone $this;
-
-        $new->parameters = $parameters;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAddedParameters(ParameterContract ...$parameters): static
-    {
-        $new = clone $this;
-
-        $new->parameters = array_merge($this->parameters, $parameters);
 
         return $new;
     }

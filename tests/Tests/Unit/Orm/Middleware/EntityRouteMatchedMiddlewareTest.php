@@ -21,6 +21,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Orm\Data\EntityCast;
@@ -66,6 +67,27 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         self::assertInstanceOf(RouteMatchedMiddlewareContract::class, $this->middleware);
     }
 
+    public function testRouteMatchedWithNonDynamicRoute(): void
+    {
+        $this->container->expects($this->never())->method('get');
+        $this->orm->expects($this->never())->method('createRepository');
+        $this->responseFactory->expects($this->never())->method('createResponseFromView');
+
+        $request = self::createStub(ServerRequestContract::class);
+        $route   = self::createStub(RouteContract::class);
+        $handler = $this->createMock(RouteMatchedHandlerContract::class);
+
+        $handler
+            ->expects($this->once())
+            ->method('routeMatched')
+            ->with($request, $route)
+            ->willReturn($route);
+
+        $result = $this->middleware->routeMatched($request, $route, $handler);
+
+        self::assertSame($route, $result);
+    }
+
     public function testRouteMatchedWithNoParameters(): void
     {
         $this->container->expects($this->never())->method('get');
@@ -73,7 +95,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request = self::createStub(ServerRequestContract::class);
-        $route   = $this->createMock(RouteContract::class);
+        $route   = $this->createMock(DynamicRouteContract::class);
         $handler = $this->createMock(RouteMatchedHandlerContract::class);
 
         $route
@@ -99,7 +121,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request   = self::createStub(ServerRequestContract::class);
-        $route     = $this->createMock(RouteContract::class);
+        $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
@@ -147,7 +169,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
-        self::assertInstanceOf(RouteContract::class, $result);
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
         self::assertSame('123', $result->getDispatch()->getArguments()['id']);
     }
 
@@ -158,7 +180,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request   = self::createStub(ServerRequestContract::class);
-        $route     = $this->createMock(RouteContract::class);
+        $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
@@ -206,7 +228,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
-        self::assertInstanceOf(RouteContract::class, $result);
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
     }
 
     public function testRouteMatchedWithEntityParameterAlreadyResolved(): void
@@ -216,7 +238,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request   = self::createStub(ServerRequestContract::class);
-        $route     = $this->createMock(RouteContract::class);
+        $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
@@ -282,7 +304,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
-        self::assertInstanceOf(RouteContract::class, $result);
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
     }
 
     public function testRouteMatchedReturnsNotFoundResponseWhenEntityNotFound(): void
@@ -290,7 +312,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->container->expects($this->never())->method('get');
 
         $request    = self::createStub(ServerRequestContract::class);
-        $route      = $this->createMock(RouteContract::class);
+        $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
@@ -368,7 +390,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->orm->expects($this->never())->method('createRepository');
 
         $request   = self::createStub(ServerRequestContract::class);
-        $route     = $this->createMock(RouteContract::class);
+        $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
@@ -433,7 +455,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request    = self::createStub(ServerRequestContract::class);
-        $route      = $this->createMock(RouteContract::class);
+        $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
@@ -511,7 +533,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
-        self::assertInstanceOf(RouteContract::class, $result);
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
     }
 
     public function testRouteMatchedWithEntityFoundById(): void
@@ -520,7 +542,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $this->responseFactory->expects($this->never())->method('createResponseFromView');
 
         $request    = self::createStub(ServerRequestContract::class);
-        $route      = $this->createMock(RouteContract::class);
+        $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
         $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
@@ -599,6 +621,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
-        self::assertInstanceOf(RouteContract::class, $result);
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
     }
 }

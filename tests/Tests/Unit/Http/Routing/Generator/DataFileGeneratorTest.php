@@ -74,9 +74,11 @@ final class DataFileGeneratorTest extends TestCase
                 routes: [
                 
             ],
-                static: array (
+                paths: array (
             ),
-                dynamic: array (
+                dynamicPaths: array (
+            ),
+                regexes: array (
             )
             )
             PHP;
@@ -123,10 +125,6 @@ final class DataFileGeneratorTest extends TestCase
                 1 => 
                 \Valkyrja\Http\Message\Enum\RequestMethod::GET,
               ),
-               'regex' => '',
-               'parameters' => 
-              array (
-              ),
                'routeMatchedMiddleware' => 
               array (
               ),
@@ -147,9 +145,11 @@ final class DataFileGeneratorTest extends TestCase
             )),
             
             ],
-                static: array (
+                paths: array (
             ),
-                dynamic: array (
+                dynamicPaths: array (
+            ),
+                regexes: array (
             )
             )
             PHP;
@@ -197,10 +197,6 @@ final class DataFileGeneratorTest extends TestCase
                 1 => 
                 \Valkyrja\Http\Message\Enum\RequestMethod::GET,
               ),
-               'regex' => '',
-               'parameters' => 
-              array (
-              ),
                'routeMatchedMiddleware' => 
               array (
               ),
@@ -221,9 +217,11 @@ final class DataFileGeneratorTest extends TestCase
             )),
             
             ],
-                static: array (
+                paths: array (
             ),
-                dynamic: array (
+                dynamicPaths: array (
+            ),
+                regexes: array (
             )
             )
             PHP;
