@@ -74,7 +74,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setCallable(
             PDO::class,
-            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
         $callback = ServiceProvider::publishers()[MysqlManager::class];
@@ -87,7 +87,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setCallable(
             PDO::class,
-            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
         $callback = ServiceProvider::publishers()[PgsqlManager::class];
@@ -100,7 +100,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setCallable(
             PDO::class,
-            static fn (ContainerContract $container, string $dsn, array $options): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
         $callback = ServiceProvider::publishers()[SqliteManager::class];

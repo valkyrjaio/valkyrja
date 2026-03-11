@@ -263,11 +263,17 @@ final class ServiceProvider extends Provider
     /**
      * Create a PDO.
      *
-     * @param non-empty-string     $dsn     The dsn
-     * @param array<int, int|bool> $options The options
+     * @param array<array-key, mixed> $arguments
      */
-    public static function createPdo(ContainerContract $container, string $dsn, array $options): PDO
+    public static function createPdo(ContainerContract $container, array $arguments): PDO
     {
+        [$dsn, $options] = $arguments;
+
+        /**
+         * @var non-empty-string     $dsn
+         * @var array<int, int|bool> $options
+         */
+
         return new PDO(
             dsn: $dsn,
             options: $options
@@ -299,10 +305,17 @@ final class ServiceProvider extends Provider
     /**
      * Create a repository service.
      *
-     * @param class-string<EntityContract> $entity The entity
+     * @param array<array-key, mixed> $arguments
      */
-    public static function createRepository(ContainerContract $container, ManagerContract $manager, string $entity): Repository
+    public static function createRepository(ContainerContract $container, array $arguments): Repository
     {
+        [$manager, $entity] = $arguments;
+
+        /**
+         * @var ManagerContract              $manager
+         * @var class-string<EntityContract> $entity
+         */
+
         return new Repository(
             manager: $manager,
             entity: $entity

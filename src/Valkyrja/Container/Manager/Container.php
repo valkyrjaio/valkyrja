@@ -57,7 +57,7 @@ class Container implements ContainerContract
     /**
      * The service callables.
      *
-     * @var array<class-string, callable(Container, mixed...):object>
+     * @var array<class-string, callable(ContainerContract, array<array-key, mixed>):object>
      */
     protected array $callables = [];
 
@@ -370,7 +370,7 @@ class Container implements ContainerContract
             return null;
         }
 
-        return $closure($this, ...$arguments);
+        return $closure($this, $arguments);
     }
 
     /**
