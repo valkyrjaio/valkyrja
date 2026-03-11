@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Object\Support;
 
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
 use Valkyrja\Type\String\Factory\StringFactory;
 
-use function array_unshift;
 use function explode;
 use function is_a;
 
@@ -96,38 +94,5 @@ class Cls
         $parts = explode('\\', $name);
 
         return end($parts);
-    }
-
-    /**
-     * Get a service that can be defaulted whereby the default class exists in the container and has the same
-     *  constructor parameters as the service to return.
-     *
-     * Note: Must be used on a closure service.
-     *
-     * @template T of object
-     * @template D of object
-     *
-     * @param ContainerContract       $container    The container
-     * @param class-string<T>         $class        The class to get
-     * @param class-string<D>         $defaultClass The default class to fallback to
-     * @param array<array-key, mixed> $arguments    [optional] The arguments
-     *
-     * @return T|D
-     */
-    public static function getDefaultableService(ContainerContract $container, string $class, string $defaultClass, array $arguments = []): object
-    {
-        if ($container->has($class)) {
-            return $container->get(
-                $class,
-                $arguments
-            );
-        }
-
-        array_unshift($arguments, $class);
-
-        return $container->get(
-            $defaultClass,
-            $arguments
-        );
     }
 }

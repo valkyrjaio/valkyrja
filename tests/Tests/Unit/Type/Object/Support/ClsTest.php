@@ -14,10 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Object\Support;
 
 use stdClass;
-use Valkyrja\Container\Manager\Container;
-use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Model\Contract\ModelContract;
 use Valkyrja\Type\Object\Support\Cls;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
@@ -60,55 +57,5 @@ final class ClsTest extends TestCase
     public function testName(): void
     {
         self::assertSame('ClsTest', Cls::getName(self::class));
-    }
-
-    public function testGetDefaultableServiceWithClassNotInContainer(): void
-    {
-        $publicValue = 'test';
-        $container   = new Container();
-        $container->setCallable(
-            ModelContract::class,
-            /** @param class-string<ModelContract> $name */
-            static fn (Container $container, string $name, mixed ...$args): ModelContract => $name::fromArray($args)
-        );
-
-        $object = Cls::getDefaultableService(
-            $container,
-            ModelClass::class,
-            ModelContract::class,
-            ['public' => $publicValue]
-        );
-
-        self::assertInstanceOf(ModelClass::class, $object);
-        self::assertSame($publicValue, $object->public);
-    }
-
-    public function testGetDefaultableServiceWithClassInContainer(): void
-    {
-        $publicValue    = 'test';
-        $protectedValue = 'fromModelClosure';
-        $container      = new Container();
-        $container->setCallable(
-            ModelContract::class,
-            /** @param class-string<ModelContract> $name */
-            static fn (Container $container, string $name, mixed ...$args): ModelContract => $name::fromArray($args)
-        );
-        $container->setCallable(
-            ModelClass::class,
-            // Setting protected here and not in the ModelContract closure to ensure we're getting this closure back
-            // and not the defaultClass specified service
-            static fn (Container $container, mixed ...$args): ModelClass => ModelClass::fromArray([...['protected' => $protectedValue], ...$args])
-        );
-
-        $object = Cls::getDefaultableService(
-            $container,
-            ModelClass::class,
-            ModelContract::class,
-            ['public' => $publicValue]
-        );
-
-        self::assertInstanceOf(ModelClass::class, $object);
-        self::assertSame($publicValue, $object->public);
-        self::assertSame($protectedValue, $object->protected);
     }
 }

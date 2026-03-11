@@ -70,8 +70,8 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @template T of object
      *
-     * @param class-string<T> $id       The service id
-     * @param callable        $callable The callable
+     * @param class-string<T>                           $id       The service id
+     * @param callable(self, array<array-key, mixed>):T $callable The callable
      *
      * @see https://psalm.dev/r/4431cf022b callable(Container, mixed...):T
      */
