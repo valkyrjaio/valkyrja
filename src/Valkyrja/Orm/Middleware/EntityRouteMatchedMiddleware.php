@@ -56,6 +56,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     #[Override]
     public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
+        if ($route->getParameters() === []) {
+            return $handler->routeMatched($request, $route);
+        }
+
         $routeOrResponse = $this->checkRouteForEntities($route);
 
         if ($routeOrResponse instanceof ResponseContract) {
@@ -72,54 +76,58 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      */
     protected function checkRouteForEntities(RouteContract $route): ResponseContract|RouteContract
     {
-        $parameters = $route->getParameters();
-        $dispatch   = $route->getDispatch();
+        $dispatch     = $route->getDispatch();
+        $arguments    = $dispatch->getArguments();
+        $dependencies = $dispatch->getDependencies();
 
-        if ($parameters !== []) {
-            $arguments    = $dispatch->getArguments();
-            $dependencies = $dispatch->getDependencies();
+        // Iterate through the params
+        foreach ($route->getParameters() as $parameter) {
+            $name = $parameter->getName();
+            /** @var scalar|object|array<array-key, mixed>|resource|null $value */
+            $value = $arguments[$name];
+            $type  = $this->getParameterCastType($parameter);
 
-            // Iterate through the params
-            foreach ($parameters as $parameter) {
-                $name = $parameter->getName();
-                /** @var scalar|object|array<array-key, mixed>|resource|null $value */
-                $value = $arguments[$name];
-                $type  = $parameter->hasCast()
-                    ? $parameter->getCast()->type
-                    : null;
+            $isParameterEntityType = $this->isParameterEntityType($type);
 
-                $isParameterEntityType = $this->isParameterEntityType($type);
-
-                if (! $isParameterEntityType) {
-                    continue;
-                }
-
-                /** @var class-string<EntityContract> $type */
-
-                // Check if the parameter is an entity
-                $response = $this->checkParameterForEntity(
-                    parameter: $parameter,
-                    type: $type,
-                    value: $value
-                );
-
-                if ($response instanceof ResponseContract) {
-                    return $response;
-                }
-
-                unset($dependencies[$name]);
-
-                $arguments[$name] = $response;
+            if (! $isParameterEntityType) {
+                continue;
             }
 
-            $route = $route->withDispatch(
-                $dispatch
-                    ->withDependencies($dependencies)
-                    ->withArguments($arguments)
+            /** @var class-string<EntityContract> $type */
+
+            // Check if the parameter is an entity
+            $response = $this->checkParameterForEntity(
+                parameter: $parameter,
+                type: $type,
+                value: $value
             );
+
+            if ($response instanceof ResponseContract) {
+                return $response;
+            }
+
+            unset($dependencies[$name]);
+
+            $arguments[$name] = $response;
         }
 
-        return $route;
+        return $route->withDispatch(
+            $dispatch
+                ->withDependencies($dependencies)
+                ->withArguments($arguments)
+        );
+    }
+
+    /**
+     * Get a parameter's cast type.
+     *
+     * @return class-string<TypeContract>|null
+     */
+    protected function getParameterCastType(ParameterContract $parameter): string|null
+    {
+        return $parameter->hasCast()
+            ? $parameter->getCast()->type
+            : null;
     }
 
     /**
