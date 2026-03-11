@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data\Abstract;
 
 use Override;
+use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
+use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
 use Valkyrja\Type\Data\Cast;
@@ -125,4 +127,40 @@ abstract class Parameter implements ParameterContract
      */
     #[Override]
     abstract public function getCastValues(): array;
+
+    /**
+     * Get all the values cast with the cast (if one is present).
+     *
+     * @param array<ArgumentContract|OptionContract> $parameters The parameters
+     *
+     * @return array<array-key, mixed>
+     */
+    protected function getCastValuesForParameters(array $parameters): array
+    {
+        $values   = [];
+        $cast     = $this->cast;
+        $castType = $cast->type ?? null;
+
+        foreach ($parameters as $argument) {
+            $parameterValue = $argument->getValue();
+
+            if ($cast === null || $castType === null) {
+                $values[] = $parameterValue;
+
+                continue;
+            }
+
+            $value = $castType::fromValue($parameterValue);
+
+            if ($cast->convert) {
+                $values[] = $value->asValue();
+
+                continue;
+            }
+
+            $values[] = $value;
+        }
+
+        return $values;
+    }
 }

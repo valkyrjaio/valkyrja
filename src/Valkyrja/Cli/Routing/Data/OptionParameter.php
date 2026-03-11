@@ -292,31 +292,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     #[Override]
     public function getCastValues(): array
     {
-        $values   = [];
-        $cast     = $this->cast;
-        $castType = $cast->type ?? null;
-
-        foreach ($this->options as $option) {
-            $optionValue = $option->getValue();
-
-            if ($cast === null || $castType === null) {
-                $values[] = $optionValue;
-
-                continue;
-            }
-
-            $value = $castType::fromValue($optionValue);
-
-            if ($cast->convert) {
-                $values[] = $value->asValue();
-
-                continue;
-            }
-
-            $values[] = $value;
-        }
-
-        return $values;
+        return $this->getCastValuesForParameters($this->options);
     }
 
     /**

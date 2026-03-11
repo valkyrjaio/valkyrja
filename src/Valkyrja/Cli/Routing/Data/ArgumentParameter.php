@@ -133,29 +133,7 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
     #[Override]
     public function getCastValues(): array
     {
-        $values   = [];
-        $cast     = $this->cast;
-        $castType = $cast->type ?? null;
-
-        foreach ($this->arguments as $argument) {
-            if ($cast === null || $castType === null) {
-                $values[] = $argument->getValue();
-
-                continue;
-            }
-
-            $value = $castType::fromValue($argument->getValue());
-
-            if ($cast->convert) {
-                $values[] = $value->asValue();
-
-                continue;
-            }
-
-            $values[] = $value;
-        }
-
-        return $values;
+        return $this->getCastValuesForParameters($this->arguments);
     }
 
     /**
