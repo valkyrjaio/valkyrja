@@ -106,11 +106,11 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
     protected function getDataBypassLogic(): string
     {
         // phpcs:disable
-        return <<<PHP
-            \$app = \$container->getSingleton(ApplicationContract::class);
+        return <<<'PHP'
+            $app = $container->getSingleton(ApplicationContract::class);
 
-            if (\$app->getDebugMode()) {
-                ServiceProvider::publishData(\$container);
+            if ($app->getDebugMode()) {
+                ServiceProvider::publishData($container);
 
                 return;
             }
