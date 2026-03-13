@@ -72,6 +72,8 @@ final class DataFileGeneratorTest extends TestCase
             use Valkyrja\Container\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
+            use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+            use Valkyrja\Container\Provider\ServiceProvider;
 
             final class ContainerDataTestDataProvider extends Provider
             {
@@ -102,10 +104,10 @@ final class DataFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$app = \$container->getSingleton(\Valkyrja\Application\Kernel\Contract\ApplicationContract::class);
+                    \$app = \$container->getSingleton(ApplicationContract::class);
             
             if (\$app->getDebugMode()) {
-                \Valkyrja\Container\Provider\ServiceProvider::publishData(\$container);
+                ServiceProvider::publishData(\$container);
             
                 return;
             }
