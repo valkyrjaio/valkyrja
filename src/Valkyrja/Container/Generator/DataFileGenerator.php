@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Generator;
 
 use Override;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Container\Provider\ServiceProvider;
 
 class DataFileGenerator extends ProviderFileGenerator implements DataFileGeneratorContract
 {
@@ -79,13 +77,7 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
     #[Override]
     protected function getImports(): string
     {
-        $applicationContract = ApplicationContract::class;
-        $serviceProvider     = ServiceProvider::class;
-
-        return <<<PHP
-            use $applicationContract;
-            use $serviceProvider;
-            PHP;
+        return '';
     }
 
     /**
@@ -95,32 +87,11 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
     protected function getPublishContents(): string
     {
         $dataContents = $this->generateClassContents();
-        $bypassLogic  = $this->getDataBypassLogic();
 
         return <<<PHP
-            $bypassLogic
-
             \$data = $dataContents;
 
             \$container->setSingleton(Data::class, \$data);
             PHP;
-    }
-
-    /**
-     * Bypass logic for the data.
-     */
-    protected function getDataBypassLogic(): string
-    {
-        // phpcs:disable
-        return <<<'PHP'
-            $app = $container->getSingleton(ApplicationContract::class);
-
-            if ($app->getDebugMode()) {
-                ServiceProvider::publishData($container);
-
-                return;
-            }
-            PHP;
-        // phpcs:enable
     }
 }

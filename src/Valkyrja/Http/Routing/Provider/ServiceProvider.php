@@ -131,6 +131,14 @@ final class ServiceProvider extends Provider
             $collection = new Collection()
         );
 
+        $app = $container->getSingleton(ApplicationContract::class);
+
+        if ($app->getDebugMode()) {
+            self::publishData($container);
+
+            return;
+        }
+
         $data = $container->getSingleton(Data::class);
 
         $collection->setFromData($data);

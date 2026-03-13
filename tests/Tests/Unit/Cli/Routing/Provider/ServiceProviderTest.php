@@ -102,7 +102,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollectionWithCustomDataProvided(): void
     {
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(Data::class, new Data());
+        $application->method('getDebugMode')->willReturn(false);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
@@ -121,9 +123,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             ]
         );
 
-        $container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $container->setSingleton(Data::class, $data);
+        $application->method('getDebugMode')->willReturn(false);
 
         self::assertFalse($container->has(CollectionContract::class));
 
@@ -146,6 +149,37 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $application->method('getDebugMode')->willReturn(false);
+
+        $command = new Route(
+            name: 'test',
+            description: 'test',
+            dispatch: new MethodDispatch(self::class, 'dispatch')
+        );
+        $collector->method('getRoutes')->willReturn([$command]);
+        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+
+        $application->method('getCliProviders')->willReturn([RouteProviderClass::class]);
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
+        self::assertNotNull($collection->get('test'));
+        self::assertNotNull($collection->get('test-provider'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishCollectionWithoutDataDebugModeTrue(): void
+    {
+        $this->container->register(ServiceProvider::class);
+
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $application->method('getDebugMode')->willReturn(true);
 
         $command = new Route(
             name: 'test',
