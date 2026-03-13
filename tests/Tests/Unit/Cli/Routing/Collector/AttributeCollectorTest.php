@@ -71,6 +71,9 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame(CommandClass::NAME, $command->getName());
         self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
         self::assertSame(CommandClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
+        self::assertSame(CommandClass::class, $command->getDispatch()->getClass());
+        self::assertSame('run', $command->getDispatch()->getMethod());
+        self::assertTrue($command->getDispatch()->isStatic());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertFalse($option->hasCast());
@@ -97,6 +100,9 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame('className.test2.actionName', $command->getName());
         self::assertSame(CommandWithAllAttributesClass::DESCRIPTION, $command->getDescription());
         self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
+        self::assertSame(CommandWithAllAttributesClass::class, $command->getDispatch()->getClass());
+        self::assertSame('run', $command->getDispatch()->getMethod());
+        self::assertFalse($command->getDispatch()->isStatic());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertNotEmpty($command->getArguments());
