@@ -98,7 +98,7 @@ final class DataFileGeneratorTest extends TestCase
                 }
 
                 /**
-                 * Publish the data.
+                 * Publish the service.
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
@@ -110,9 +110,9 @@ final class DataFileGeneratorTest extends TestCase
                 return;
             }
 
-                    \$data = $dataContents;
+            \$data = $dataContents;
 
-                    \$container->setSingleton(Data::class, \$data);
+            \$container->setSingleton(Data::class, \$data);
                 }
             }
 
