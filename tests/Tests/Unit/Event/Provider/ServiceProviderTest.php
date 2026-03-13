@@ -91,7 +91,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollectionWithCustomDataProvided(): void
     {
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(Data::class, new Data());
+        $application->method('getDebugMode')->willReturn(false);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
@@ -108,9 +110,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             listeners: [$listenerName => new Listener(eventId: $eventId, name: $listenerName)]
         );
 
-        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $this->container->setSingleton(Data::class, $data);
+        $application->method('getDebugMode')->willReturn(false);
 
         self::assertFalse($this->container->has(CollectionContract::class));
 
@@ -133,6 +136,44 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $application->method('getDebugMode')->willReturn(false);
+
+        $eventId      = self::class;
+        $listenerName = 'listener-name';
+        $listener     = new Listener(eventId: $eventId, name: $listenerName);
+
+        $collector->method('getListeners')->willReturn([$listener]);
+        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+
+        $application->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
+
+        self::assertTrue($this->container->has(Data::class));
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
+        self::assertTrue($this->container->has(Data::class));
+        self::assertContains($eventId, $collection->getEvents());
+        self::assertTrue($collection->hasListenerById($listenerName));
+        self::assertTrue($collection->hasListener($listener));
+        self::assertTrue($collection->hasListenersForEventById($eventId));
+        self::assertContains(ListenerProviderClass::class, $collection->getEvents());
+        self::assertTrue($collection->hasListenerById('listener-from-provider-name'));
+        self::assertTrue($collection->hasListenersForEventById(ListenerProviderClass::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishCollectionWithoutDataDebugModeFalse(): void
+    {
+        $this->container->register(ServiceProvider::class);
+
+        $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $application->method('getDebugMode')->willReturn(true);
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
