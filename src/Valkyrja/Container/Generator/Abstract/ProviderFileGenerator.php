@@ -109,10 +109,7 @@ abstract class ProviderFileGenerator extends FileGenerator
     /**
      * Get any custom imports.
      */
-    protected function getImports(): string
-    {
-        return '';
-    }
+    abstract protected function getImports(): string;
 
     /**
      * Get the publish method contents.
