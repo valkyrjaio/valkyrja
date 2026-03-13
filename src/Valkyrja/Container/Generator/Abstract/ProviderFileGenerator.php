@@ -45,6 +45,7 @@ abstract class ProviderFileGenerator extends FileGenerator
     #[Override]
     public function generateFileContents(): string
     {
+        $imports              = $this->getImports();
         $contents             = $this->getPublishContents();
         $namespace            = $this->namespace;
         $className            = $this->className;
@@ -67,6 +68,7 @@ abstract class ProviderFileGenerator extends FileGenerator
             use $serviceFullNamespace;
             use $providerContract;
             use $containerContract;
+            $imports
 
             final class $className extends Provider
             {
@@ -102,6 +104,14 @@ abstract class ProviderFileGenerator extends FileGenerator
             }
 
             PHP;
+    }
+
+    /**
+     * Get any custom imports.
+     */
+    protected function getImports(): string
+    {
+        return '';
     }
 
     /**

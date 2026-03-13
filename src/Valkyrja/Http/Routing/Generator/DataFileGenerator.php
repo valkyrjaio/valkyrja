@@ -76,6 +76,21 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
      * @inheritDoc
      */
     #[Override]
+    protected function getImports(): string
+    {
+        $applicationContract = ApplicationContract::class;
+        $serviceProvider     = ServiceProvider::class;
+
+        return <<<PHP
+            use $applicationContract;
+            use $serviceProvider;
+            PHP;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     protected function getPublishContents(): string
     {
         $dataContents = $this->generateClassContents();
@@ -95,15 +110,12 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
      */
     protected function getDataBypassLogic(): string
     {
-        $applicationContract = ApplicationContract::class;
-        $serviceProvider     = ServiceProvider::class;
-
         // phpcs:disable
-        return <<<PHP
-            \$app = \$container->getSingleton(\\$applicationContract::class);
+        return <<<'PHP'
+            $app = $container->getSingleton(ApplicationContract::class);
 
-            if (\$app->getDebugMode()) {
-                \\$serviceProvider::publishData(\$container);
+            if ($app->getDebugMode()) {
+                ServiceProvider::publishData($container);
 
                 return;
             }
