@@ -28,7 +28,7 @@ final class ResponseFileGeneratorTest extends TestCase
     {
         Directory::$basePath = EnvClass::APP_DIR;
 
-        $filePath  = Directory::dataPath('testGenerateFile-response.php');
+        $filePath  = Directory::storagePath('testGenerateFile-response.php');
         $response  = Response::create('Hello World');
         $generator = new ResponseFileGenerator($response, $filePath);
         $results   = $generator->generateFile();
@@ -43,7 +43,7 @@ final class ResponseFileGeneratorTest extends TestCase
     {
         Directory::$basePath = EnvClass::APP_DIR;
 
-        $filePath  = Directory::dataPath('testGenerateFileWithHeaders-response.php');
+        $filePath  = Directory::storagePath('testGenerateFileWithHeaders-response.php');
         $response  = Response::create(
             'Hello World',
             headers: new HeaderCollection(

@@ -55,46 +55,34 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
 
-        /** @var non-empty-string $dataFilePath */
-        $dataFilePath         = $env::CONTAINER_DATA_FILE_PATH
-            ?? '/container.php';
-        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
+        /** @var non-empty-string $dataPath */
+        $dataPath = $env::APP_DATA_PATH;
+        /** @var non-empty-string $namespace */
+        $namespace = $env::APP_DATA_NAMESPACE;
+        /** @var non-empty-string $className */
+        $className = $env::CONTAINER_DATA_PROVIDER_CLASS_NAME
+            ?? 'ContainerDataProvider';
+
+        $directory = Directory::srcPath($dataPath);
 
         $data = $container->getData();
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
             new DataFileGenerator(
-                filePath: $absoluteDataFilePath,
+                directory: $directory,
                 data: $data,
+                namespace: $namespace,
+                className: $className,
             )
         );
     }
 
+    /**
+     * Publish the data service.
+     */
     public static function publishData(ContainerContract $container): void
     {
-        $data = null;
-        $env  = $container->getSingleton(Env::class);
-
-        /** @var bool $useData */
-        $useData = $env::CONTAINER_USE_DATA
-            ?? false;
-        /** @var non-empty-string $dataFilePath */
-        $dataFilePath = $env::CONTAINER_DATA_FILE_PATH
-            ?? '/container.php';
-        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
-
-        if ($useData && is_file(filename: $absoluteDataFilePath)) {
-            /** @var scalar|object|array<array-key, mixed>|null $data The data */
-            $data = require $absoluteDataFilePath;
-        }
-
-        if ($data instanceof Data) {
-            $container->setSingleton(Data::class, $data);
-
-            return;
-        }
-
         $app = $container->getSingleton(ApplicationContract::class);
 
         foreach ($app->getContainerProviders() as $provider) {

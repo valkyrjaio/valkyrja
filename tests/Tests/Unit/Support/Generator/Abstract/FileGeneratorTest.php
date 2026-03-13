@@ -27,7 +27,7 @@ final class FileGeneratorTest extends TestCase
     {
         Directory::$basePath = EnvClass::APP_DIR;
 
-        $filePath  = Directory::dataPath('FileGeneratorTest.testGenerateFile.php');
+        $filePath  = Directory::storagePath('FileGeneratorTest.testGenerateFile.php');
         $generator = new class($filePath) extends FileGenerator {
             #[Override]
             public function generateFileContents(): string

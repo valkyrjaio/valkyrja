@@ -63,7 +63,7 @@ final class CommandClass
             ),
         ]
     )]
-    public function run(OutputFactoryContract $outputFactory): OutputContract
+    public static function run(OutputFactoryContract $outputFactory): OutputContract
     {
         return $outputFactory->createOutput()->withMessages(new Message(self::NAME));
     }

@@ -195,6 +195,26 @@ final class DirectoryTest extends TestCase
     }
 
     /**
+     * Test the srcPath directory helper method.
+     */
+    public function testSrcPath(): void
+    {
+        $expected = $this->basePath . '/' . Directory::$srcPath;
+
+        self::assertSame($expected, Directory::srcPath());
+    }
+
+    /**
+     * Test the srcPath directory helper method with a sub path.
+     */
+    public function testSrcPathSubPath(): void
+    {
+        $expected = $this->basePath . '/' . Directory::$srcPath . $this->subPath;
+
+        self::assertSame($expected, Directory::srcPath($this->subPath));
+    }
+
+    /**
      * Test the storagePath directory helper method.
      */
     public function testStoragePath(): void

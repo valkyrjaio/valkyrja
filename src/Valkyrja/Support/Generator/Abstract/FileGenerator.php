@@ -21,10 +21,10 @@ use Valkyrja\Support\Generator\Enum\GenerateStatus;
 abstract class FileGenerator implements FileGeneratorContract
 {
     /**
-     * @param non-empty-string $filePath The file path
+     * @param non-empty-string $directory The file path
      */
     public function __construct(
-        protected string $filePath
+        protected string $directory
     ) {
     }
 
@@ -58,7 +58,7 @@ abstract class FileGenerator implements FileGeneratorContract
      */
     protected function filePutContents(): int|false
     {
-        return file_put_contents(filename: $this->filePath, data: $this->generateFileContents());
+        return file_put_contents(filename: $this->directory, data: $this->generateFileContents());
     }
 
     /**

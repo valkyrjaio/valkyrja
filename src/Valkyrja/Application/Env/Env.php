@@ -66,6 +66,10 @@ class Env
     public const string APP_ENVIRONMENT = 'local';
     /** @var non-empty-string */
     public const string APP_NAMESPACE = 'App';
+    /** @var non-empty-string */
+    public const string APP_DATA_PATH = 'App/Provider/Data';
+    /** @var non-empty-string */
+    public const string APP_DATA_NAMESPACE = 'App\\Provider\\Data';
     /** @var bool */
     public const bool APP_DEBUG_MODE = true;
     /** @var non-empty-string */
@@ -236,9 +240,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null CLI_ROUTING_COLLECTION_DATA_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null CLI_ROUTING_COLLECTION_USE_DATA = null;
+    public const string|null CLI_ROUTING_DATA_PROVIDER_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -246,10 +248,8 @@ class Env
      *
      ************************************************************/
 
-    /** @var bool|null */
-    public const bool|null CONTAINER_USE_DATA = null;
     /** @var non-empty-string|null */
-    public const string|null CONTAINER_DATA_FILE_PATH = null;
+    public const string|null CONTAINER_DATA_PROVIDER_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -267,9 +267,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null EVENT_COLLECTION_DATA_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null EVENT_COLLECTION_USE_DATA = null;
+    public const string|null EVENT_DATA_PROVIDER_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -335,9 +333,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null HTTP_ROUTING_COLLECTION_DATA_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null HTTP_ROUTING_COLLECTION_USE_DATA = null;
+    public const string|null HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = null;
 
     /************************************************************
      *
