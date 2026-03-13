@@ -137,6 +137,7 @@ final class DataFileGeneratorTest extends TestCase
 
         $dataNamespace = Data::class;
 
+        // phpcs:disable
         $expected = <<<PHP
             new \\$dataNamespace(
                 aliases: array (
@@ -153,6 +154,7 @@ final class DataFileGeneratorTest extends TestCase
             )
             )
             PHP;
+        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);
