@@ -53,13 +53,15 @@ class AttributeCollector implements CollectorContract
             foreach ($attributes as $attribute) {
                 $reflection = $attribute->getReflection();
                 $method     = null;
+                $isStatic   = false;
 
                 if ($reflection instanceof ReflectionMethod) {
-                    $method     = $reflection->getName();
+                    $method   = $reflection->getName();
+                    $isStatic = $reflection->isStatic();
                 }
 
                 $listener = $this->getListenerFromAttribute($attribute);
-                $listener = $this->updateDispatch($listener, $class, $method);
+                $listener = $this->updateDispatch($listener, $class, $method, $isStatic);
 
                 $listeners[] = $this->setListenerProperties($listener);
             }
@@ -72,12 +74,12 @@ class AttributeCollector implements CollectorContract
      * @param class-string          $class  The class name
      * @param non-empty-string|null $method The method name
      */
-    protected function updateDispatch(ListenerContract $listener, string $class, string|null $method = null): ListenerContract
+    protected function updateDispatch(ListenerContract $listener, string $class, string|null $method = null, bool $isStatic = false): ListenerContract
     {
         if ($method === null) {
             $dispatch = new ClassDispatch($class);
         } else {
-            $dispatch = new MethodDispatch($class, $method);
+            $dispatch = new MethodDispatch($class, $method, isStatic: $isStatic);
         }
 
         return $listener->withDispatch($dispatch);
