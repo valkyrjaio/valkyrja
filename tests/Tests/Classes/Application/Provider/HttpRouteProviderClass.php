@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Http\Routing\Provider\Provider;
 use Valkyrja\Tests\Functional\Application\Entry\HttpTest;
 
-final class HttpRouteProvider extends Provider
+final class HttpRouteProviderClass extends Provider
 {
     public static bool $called = false;
 

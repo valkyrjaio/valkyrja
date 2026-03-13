@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 
-final class HttpComponentProvider extends Provider
+final class HttpComponentProviderClass extends Provider
 {
     /**
      * @inheritDoc
@@ -38,7 +38,7 @@ final class HttpComponentProvider extends Provider
     public static function getHttpProviders(ApplicationContract $app): array
     {
         return [
-            HttpRouteProvider::class,
+            HttpRouteProviderClass::class,
         ];
     }
 }

@@ -25,8 +25,8 @@ use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Tests\Classes\Application\Provider\CliComponentProvider;
-use Valkyrja\Tests\Classes\Application\Provider\CliRouteProvider;
+use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
+use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
@@ -125,7 +125,7 @@ final class CliTest extends TestCase
             public const string CLI_ROUTING_DATA_PROVIDER_CLASS_NAME = 'CliTestCliRoutingDataProvider';
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                CliComponentProvider::class,
+                CliComponentProviderClass::class,
             ];
         };
 
@@ -137,8 +137,8 @@ final class CliTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
-        self::assertFalse(CliRouteProvider::$called);
-        CliRouteProvider::$called = false;
+        self::assertFalse(CliRouteProviderClass::$called);
+        CliRouteProviderClass::$called = false;
 
         $env = new class extends EnvClass {
             /** @var bool */
@@ -149,7 +149,7 @@ final class CliTest extends TestCase
             public const string CLI_ROUTING_DATA_PROVIDER_CLASS_NAME = 'CliTestCliRoutingDataProvider';
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                CliComponentProvider::class,
+                CliComponentProviderClass::class,
             ];
         };
 
@@ -164,8 +164,8 @@ final class CliTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(CliRouteProvider::$called);
-        CliRouteProvider::$called = false;
+        self::assertTrue(CliRouteProviderClass::$called);
+        CliRouteProviderClass::$called = false;
 
         Exiter::unfreeze();
 

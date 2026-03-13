@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Routing\Provider\Provider;
 use Valkyrja\Tests\Functional\Application\Entry\CliTest;
 
-final class CliRouteProvider extends Provider
+final class CliRouteProviderClass extends Provider
 {
     public static bool $called = false;
 

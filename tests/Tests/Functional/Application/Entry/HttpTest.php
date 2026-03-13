@@ -24,8 +24,8 @@ use Valkyrja\Http\Routing\Attribute\Route as Attribute;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
-use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProvider;
-use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProvider;
+use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
+use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
@@ -116,7 +116,7 @@ final class HttpTest extends TestCase
             public const string HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = 'HttpTestHttpRoutingDataProvider';
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                HttpComponentProvider::class,
+                HttpComponentProviderClass::class,
             ];
         };
 
@@ -128,8 +128,8 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
-        self::assertFalse(HttpRouteProvider::$called);
-        HttpRouteProvider::$called = false;
+        self::assertFalse(HttpRouteProviderClass::$called);
+        HttpRouteProviderClass::$called = false;
 
         $env = new class extends EnvClass {
             /** @var bool */
@@ -140,7 +140,7 @@ final class HttpTest extends TestCase
             public const string HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = 'HttpTestHttpRoutingDataProvider';
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                HttpComponentProvider::class,
+                HttpComponentProviderClass::class,
             ];
         };
 
@@ -152,8 +152,8 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(HttpRouteProvider::$called);
-        HttpRouteProvider::$called = false;
+        self::assertTrue(HttpRouteProviderClass::$called);
+        HttpRouteProviderClass::$called = false;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);

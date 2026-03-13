@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 
-final class CliComponentProvider extends Provider
+final class CliComponentProviderClass extends Provider
 {
     /**
      * @inheritDoc
@@ -38,7 +38,7 @@ final class CliComponentProvider extends Provider
     public static function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CliRouteProvider::class,
+            CliRouteProviderClass::class,
         ];
     }
 }
