@@ -36,7 +36,7 @@ abstract class ProviderFileGenerator extends FileGenerator
         protected string $serviceFullNamespace,
         protected string $publishMethod,
     ) {
-        parent::__construct(directory: rtrim($directory, '/') . "/$className.php");
+        parent::__construct(filePath: rtrim($directory, '/') . "/$className.php");
     }
 
     /**
