@@ -31,11 +31,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
     {
         self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
+        self::assertContains(Data::class, ServiceProvider::provides());
     }
 
     /**

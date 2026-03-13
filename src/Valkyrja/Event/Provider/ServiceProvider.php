@@ -46,6 +46,7 @@ final class ServiceProvider extends Provider
             DispatcherContract::class        => [self::class, 'publishDispatcher'],
             CollectionContract::class        => [self::class, 'publishCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            Data::class                      => [self::class, 'publishData'],
         ];
     }
 
@@ -60,6 +61,7 @@ final class ServiceProvider extends Provider
             DispatcherContract::class,
             CollectionContract::class,
             DataFileGeneratorContract::class,
+            Data::class,
         ];
     }
 
@@ -101,37 +103,9 @@ final class ServiceProvider extends Provider
             $collection = new Collection()
         );
 
-        $env  = $container->getSingleton(Env::class);
-        $data = null;
+        $data = $container->getSingleton(Data::class);
 
-        /** @var bool $useData */
-        $useData = $env::EVENT_COLLECTION_USE_DATA
-            ?? false;
-        /** @var non-empty-string $dataFilePath */
-        $dataFilePath = $env::EVENT_COLLECTION_DATA_FILE_PATH
-            ?? '/events.php';
-        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
-
-        if ($useData && is_file(filename: $absoluteDataFilePath)) {
-            /** @var scalar|object|array<array-key, mixed>|null $data The data */
-            $data = require $absoluteDataFilePath;
-        }
-
-        if ($data instanceof Data) {
-            $collection->setFromData($data);
-
-            return;
-        }
-
-        if ($container->has(Data::class)) {
-            $data = $container->getSingleton(Data::class);
-
-            $collection->setFromData($data);
-
-            return;
-        }
-
-        self::addListenersToCollection($container, $collection);
+        $collection->setFromData($data);
     }
 
     /**
@@ -141,27 +115,35 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
 
-        /** @var non-empty-string $dataFilePath */
-        $dataFilePath = $env::EVENT_COLLECTION_DATA_FILE_PATH
-            ?? '/events.php';
-        $absoluteDataFilePath = Directory::dataPath($dataFilePath);
+        /** @var non-empty-string $dataPath */
+        $dataPath = $env::APP_DATA_PATH;
+        /** @var non-empty-string $namespace */
+        $namespace = $env::APP_DATA_NAMESPACE;
+        /** @var non-empty-string $className */
+        $className = $env::EVENT_DATA_PROVIDER_CLASS_NAME
+            ?? 'EventRoutingDataProvider';
+
+        $directory = Directory::srcPath($dataPath);
 
         $collection = $container->getSingleton(CollectionContract::class);
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
             new DataFileGenerator(
-                filePath: $absoluteDataFilePath,
+                directory: $directory,
                 data: $collection->getData(),
+                namespace: $namespace,
+                className: $className,
             )
         );
     }
 
     /**
-     * Add listeners to the collection.
+     * Publish the data service.
      */
-    protected static function addListenersToCollection(ContainerContract $container, CollectionContract $collection): void
+    public static function publishData(ContainerContract $container): void
     {
+        $collection  = $container->getSingleton(CollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
         /** @var CollectorContract $listenerAttributes */

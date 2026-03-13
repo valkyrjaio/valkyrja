@@ -16,12 +16,16 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Routing\Attribute\Route as Attribute;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
+use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProvider;
+use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProvider;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
@@ -33,6 +37,7 @@ final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;
 
+    #[Attribute('/version', 'version')]
     public static function routeCallback(): Response
     {
         self::$runCalled = true;
@@ -51,25 +56,21 @@ final class HttpTest extends TestCase
         $env = new class extends EnvClass {
             /** @var bool */
             public const bool APP_DEBUG_MODE = true;
-            /** @var bool|null */
-            public const bool|null CONTAINER_USE_DATA = true;
-            /** @var non-empty-string|null */
-            public const string|null CONTAINER_DATA_FILE_PATH = 'AppTestHttp-container.php';
-            /** @var bool|null */
-            public const bool|null HTTP_ROUTING_COLLECTION_USE_DATA = true;
-            /** @var non-empty-string|null */
-            public const string|null HTTP_ROUTING_COLLECTION_DATA_FILE_PATH = 'AppTestHttp-routes.php';
+            /** @var non-empty-string */
+            public const string CONTAINER_DATA_PROVIDER_CLASS_NAME = 'HttpTestContainerDataProvider';
+            /** @var non-empty-string */
+            public const string HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = 'HttpTestHttpRoutingDataProvider';
         };
         /** @var non-empty-string $dir */
-        $dir = $env::APP_DIR;
-        /** @var non-empty-string $containerDataFilePath */
-        $containerDataFilePath = $env::CONTAINER_DATA_FILE_PATH
-            ?? '/container.php';
-        $absoluteContainerDataFilePath = Directory::dataPath($containerDataFilePath);
-        /** @var non-empty-string $containerDataFilePath */
-        $routesDataFilePath = $env::HTTP_ROUTING_COLLECTION_DATA_FILE_PATH
-            ?? '/routes.php';
-        $absoluteRoutesDataFilePath = Directory::dataPath($routesDataFilePath);
+        $dir                           = $env::APP_DIR;
+        $containerDataClassName        = 'HttpTestContainerDataProvider';
+        $containerDataFilePath         = "/$containerDataClassName.php";
+        $containerDirectory            = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $absoluteContainerDataFilePath = $containerDirectory . $containerDataFilePath;
+        $routesDataClassName           = 'HttpTestHttpRoutingDataProvider';
+        $routesDataFilePath            = "/$routesDataClassName.php";
+        $routesDirectory               = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $absoluteRoutesDataFilePath    = $routesDirectory . $routesDataFilePath;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);
@@ -87,19 +88,74 @@ final class HttpTest extends TestCase
             )
         );
 
-        $dataFileGenerator = new DataFileGenerator($absoluteContainerDataFilePath, $container->getData());
+        $dataFileGenerator = new DataFileGenerator(
+            directory: $containerDirectory,
+            data: $container->getData(),
+            namespace: EnvClass::APP_DATA_NAMESPACE,
+            className: $containerDataClassName
+        );
         $dataFileGenerator->generateFile();
-        $httpDataFileGenerator = new HttpDataFileGenerator($absoluteRoutesDataFilePath, $http->getData());
+        $httpDataFileGenerator = new HttpDataFileGenerator(
+            directory: $routesDirectory,
+            data: $http->getData(),
+            namespace: EnvClass::APP_DATA_NAMESPACE,
+            className: $routesDataClassName
+        );
         $httpDataFileGenerator->generateFile();
+
+        require_once $absoluteContainerDataFilePath;
+
+        require_once $absoluteRoutesDataFilePath;
+
+        $env = new class extends EnvClass {
+            /** @var bool */
+            public const bool APP_DEBUG_MODE = false;
+            /** @var non-empty-string */
+            public const string CONTAINER_DATA_PROVIDER_CLASS_NAME = 'HttpTestContainerDataProvider';
+            /** @var non-empty-string */
+            public const string HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = 'HttpTestHttpRoutingDataProvider';
+            /** @var class-string<Provider>[] */
+            public const array APP_CUSTOM_COMPONENTS = [
+                HttpComponentProvider::class,
+            ];
+        };
 
         ob_start();
         Http::run($dir, $env);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
+        self::$runCalled = false;
+
+        // With debug mode off we expect the data service providers to provide the data and routes
+        self::assertFalse(HttpRouteProvider::$called);
+        HttpRouteProvider::$called = false;
+
+        $env = new class extends EnvClass {
+            /** @var bool */
+            public const bool APP_DEBUG_MODE = true;
+            /** @var non-empty-string */
+            public const string CONTAINER_DATA_PROVIDER_CLASS_NAME = 'HttpTestContainerDataProvider';
+            /** @var non-empty-string */
+            public const string HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = 'HttpTestHttpRoutingDataProvider';
+            /** @var class-string<Provider>[] */
+            public const array APP_CUSTOM_COMPONENTS = [
+                HttpComponentProvider::class,
+            ];
+        };
+
+        ob_start();
+        Http::run($dir, $env);
+        ob_get_clean();
+
+        self::assertTrue(self::$runCalled);
+        self::$runCalled = false;
+
+        // With debug mode on we expect the data service providers to NOT provide the data and routes
+        self::assertTrue(HttpRouteProvider::$called);
+        HttpRouteProvider::$called = false;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);
-        self::$runCalled = false;
     }
 }

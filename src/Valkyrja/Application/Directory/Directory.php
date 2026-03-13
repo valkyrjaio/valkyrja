@@ -28,6 +28,8 @@ class Directory
     /** @var non-empty-string */
     public static string $resourcesPath = 'resources';
     /** @var non-empty-string */
+    public static string $srcPath = 'src';
+    /** @var non-empty-string */
     public static string $storagePath = 'storage';
     /** @var non-empty-string */
     public static string $frameworkStoragePath = 'framework';
@@ -122,6 +124,18 @@ class Directory
     public static function resourcesPath(string|null $path = null): string
     {
         return static::basePath(static::$resourcesPath . static::path($path));
+    }
+
+    /**
+     * Get the src directory for the application.
+     *
+     * @param non-empty-string|null $path [optional] The path to append
+     *
+     * @return non-empty-string
+     */
+    public static function srcPath(string|null $path = null): string
+    {
+        return static::basePath(static::$srcPath . static::path($path));
     }
 
     /**

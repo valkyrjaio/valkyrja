@@ -82,7 +82,7 @@ class AttributeCollector implements CollectorContract
                 $method     = $reflection->getName();
                 $route      = $this->convertRouteAttributesToDataClass($attribute);
 
-                $route = $this->updateDispatch($route, $class, $method);
+                $route = $this->updateDispatch($route, $class, $method, $reflection->isStatic());
                 $route = $this->updatePath($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
                 $route = $this->updateMiddleware($route, $class, $method);
@@ -106,12 +106,13 @@ class AttributeCollector implements CollectorContract
      * @param class-string     $class  The class name
      * @param non-empty-string $method The method name
      */
-    protected function updateDispatch(Route $route, string $class, string $method): Route
+    protected function updateDispatch(Route $route, string $class, string $method, bool $isStatic): Route
     {
         return $route->withDispatch(
             $route->getDispatch()
                 ->withClass($class)
                 ->withMethod($method)
+                ->withIsStatic($isStatic)
         );
     }
 

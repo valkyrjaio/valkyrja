@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -39,7 +38,6 @@ use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Classes\Cli\Routing\Provider\RouteProviderClass;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -56,6 +54,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -64,6 +63,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(RouterContract::class, ServiceProvider::provides());
         self::assertContains(CollectionContract::class, ServiceProvider::provides());
         self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
+        self::assertContains(Data::class, ServiceProvider::provides());
     }
 
     /**
@@ -114,16 +114,16 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
+        $name = 'version';
+        $data = new Data(
+            routes: [
+                $name => new Route($name, 'description', new MethodDispatch('class', 'method')),
+            ]
+        );
+
         $container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
-        $container->setSingleton(Env::class, new class extends Env {
-            public const bool CLI_ROUTING_COLLECTION_USE_DATA         = true;
-            public const string CLI_ROUTING_COLLECTION_DATA_FILE_PATH = 'cli-testPublishCollectionWithData-routes.php';
-        });
-
-        $filePath  = EnvClass::APP_DIR . '/data/cli-testPublishCollectionWithData-routes.php';
-        $generator = new DataFileGenerator($filePath, new Data());
-        $generator->generateFile();
+        $container->setSingleton(Data::class, $data);
 
         self::assertFalse($container->has(CollectionContract::class));
 
@@ -132,9 +132,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertTrue($container->has(CollectionContract::class));
         self::assertTrue($container->isSingleton(CollectionContract::class));
-        self::assertInstanceOf(Collection::class, $container->getSingleton(CollectionContract::class));
-
-        @unlink($filePath);
+        self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
+        self::assertTrue($collection->has($name));
     }
 
     /**
@@ -142,6 +141,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCollectionWithoutData(): void
     {
+        $this->container->register(ServiceProvider::class);
+
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));

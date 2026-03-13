@@ -92,8 +92,10 @@ final class AppTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        @unlink(EnvClass::APP_DIR . '/data/container.php');
-        @unlink(EnvClass::APP_DIR . '/data/routes.php');
+        $directory = Directory::srcPath(EnvClass::APP_DATA_PATH);
+
+        @unlink("$directory/ContainerDataProvider.php");
+        @unlink("$directory/HttpRoutingDataProvider.php");
     }
 
     /**
@@ -159,9 +161,9 @@ final class AppTest extends TestCase
         $container = $application->getContainer();
 
         self::assertTrue($container->has(ContainerData::class));
-        self::assertFalse($container->has(EventData::class));
-        self::assertFalse($container->has(Data::class));
-        self::assertFalse($container->has(HttpData::class));
+        self::assertTrue($container->has(EventData::class));
+        self::assertTrue($container->has(Data::class));
+        self::assertTrue($container->has(HttpData::class));
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($env::APP_TIMEZONE, date_default_timezone_get());
     }
