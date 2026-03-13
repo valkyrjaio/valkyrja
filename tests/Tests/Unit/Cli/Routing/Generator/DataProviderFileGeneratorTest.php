@@ -16,13 +16,13 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
+use Valkyrja\Cli\Routing\Generator\DataProviderFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class DataFileGeneratorTest extends TestCase
+final class DataProviderFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
@@ -32,7 +32,7 @@ final class DataFileGeneratorTest extends TestCase
         $className  = 'CliDataTestRoutingDataProvider';
         $filePath   = "$directory/$className.php";
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -51,7 +51,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -122,7 +122,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -159,7 +159,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -231,7 +231,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,

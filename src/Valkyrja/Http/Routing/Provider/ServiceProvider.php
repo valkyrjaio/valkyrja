@@ -37,8 +37,8 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Http\Routing\Generator\DataFileGenerator;
+use Valkyrja\Http\Routing\Generator\Contract\DataProviderFileGeneratorContract;
+use Valkyrja\Http\Routing\Generator\DataProviderFileGenerator;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -57,15 +57,15 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            RouterContract::class            => [self::class, 'publishRouter'],
-            CollectionContract::class        => [self::class, 'publishCollection'],
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            MatcherContract::class           => [self::class, 'publishMatcher'],
-            UrlContract::class               => [self::class, 'publishUrl'],
-            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
-            ProcessorContract::class         => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
-            Data::class                      => [self::class, 'publishData'],
+            RouterContract::class                    => [self::class, 'publishRouter'],
+            CollectionContract::class                => [self::class, 'publishCollection'],
+            DataProviderFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            MatcherContract::class                   => [self::class, 'publishMatcher'],
+            UrlContract::class                       => [self::class, 'publishUrl'],
+            CollectorContract::class                 => [self::class, 'publishAttributesCollector'],
+            ProcessorContract::class                 => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class           => [self::class, 'publishResponseFactory'],
+            Data::class                              => [self::class, 'publishData'],
         ];
     }
 
@@ -78,7 +78,7 @@ final class ServiceProvider extends Provider
         return [
             RouterContract::class,
             CollectionContract::class,
-            DataFileGeneratorContract::class,
+            DataProviderFileGeneratorContract::class,
             MatcherContract::class,
             UrlContract::class,
             CollectorContract::class,
@@ -164,8 +164,8 @@ final class ServiceProvider extends Provider
         $collection = $container->getSingleton(CollectionContract::class);
 
         $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
+            DataProviderFileGeneratorContract::class,
+            new DataProviderFileGenerator(
                 directory: $directory,
                 data: $collection->getData(),
                 namespace: $namespace,
@@ -293,7 +293,7 @@ final class ServiceProvider extends Provider
             );
         }
 
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator = $container->getSingleton(DataProviderFileGeneratorContract::class);
         $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $collection->getData());

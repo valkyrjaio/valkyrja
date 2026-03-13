@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Event\Generator;
+namespace Valkyrja\Tests\Unit\Http\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Generator\DataFileGenerator;
+use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Generator\DataProviderFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class DataFileGeneratorTest extends TestCase
+final class DataProviderFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
         Directory::$basePath = EnvClass::APP_DIR;
 
         $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
+        $className  = 'HttpDataTestRoutingDataProvider';
         $filePath   = "$directory/$className.php";
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
             className: $className
         );
-        $results   = $generator->generateFile();
+        $results    = $generator->generateFile();
 
         self::assertSame(GenerateStatus::SUCCESS, $results);
         self::assertSame($generator->generateFileContents(), @file_get_contents($filePath));
@@ -49,9 +49,9 @@ final class DataFileGeneratorTest extends TestCase
     public function testGenerateFileContents(): void
     {
         $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
+        $className  = 'HttpDataTestRoutingDataProvider';
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -71,12 +71,12 @@ final class DataFileGeneratorTest extends TestCase
             namespace App\Provider\Data;
 
             use Override;
-            use Valkyrja\Event\Data\Data;
+            use Valkyrja\Http\Routing\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 
-            final class EventDataTestDataProvider extends Provider
+            final class HttpDataTestRoutingDataProvider extends Provider
             {
                 /**
                  * @inheritDoc
@@ -120,9 +120,9 @@ final class DataFileGeneratorTest extends TestCase
     public function testGenerateClassContents(): void
     {
         $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
+        $className  = 'HttpDataTestRoutingDataProvider';
         $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -135,11 +135,15 @@ final class DataFileGeneratorTest extends TestCase
         // phpcs:disable
         $expected = <<<PHP
             new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
+                routes: [
                 
             ],
+                paths: array (
+            ),
+                dynamicPaths: array (
+            ),
+                regexes: array (
+            )
             )
             PHP;
         // phpcs:enable
@@ -151,17 +155,13 @@ final class DataFileGeneratorTest extends TestCase
     public function testGenerateClassContentsWithRoute(): void
     {
         $data      = new Data(
-            listeners: [
-                'name' => new Listener(
-                    eventId: 'eventId',
-                    name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
-                ),
+            routes: [
+                'route' => new Route('/', 'route', new MethodDispatch('class', 'method')),
             ]
         );
         $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
-        $generator  = new DataFileGenerator(
+        $className  = 'HttpDataTestRoutingDataProvider';
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -174,12 +174,10 @@ final class DataFileGeneratorTest extends TestCase
         // phpcs:disable
         $expected = <<<PHP
             new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
-                'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
-               'eventId' => 'eventId',
-               'name' => 'name',
+                routes: [
+                'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
+               'path' => '/',
+               'name' => 'route',
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
@@ -192,9 +190,39 @@ final class DataFileGeneratorTest extends TestCase
                  'method' => 'method',
                  'isStatic' => false,
               )),
+               'requestMethods' => 
+              array (
+                0 => 
+                \Valkyrja\Http\Message\Enum\RequestMethod::HEAD,
+                1 => 
+                \Valkyrja\Http\Message\Enum\RequestMethod::GET,
+              ),
+               'routeMatchedMiddleware' => 
+              array (
+              ),
+               'routeDispatchedMiddleware' => 
+              array (
+              ),
+               'throwableCaughtMiddleware' => 
+              array (
+              ),
+               'sendingResponseMiddleware' => 
+              array (
+              ),
+               'terminatedMiddleware' => 
+              array (
+              ),
+               'requestStruct' => NULL,
+               'responseStruct' => NULL,
             )),
             
             ],
+                paths: array (
+            ),
+                dynamicPaths: array (
+            ),
+                regexes: array (
+            )
             )
             PHP;
         // phpcs:enable
@@ -206,17 +234,13 @@ final class DataFileGeneratorTest extends TestCase
     public function testGenerateClassContentsWithRouteClosure(): void
     {
         $data      = new Data(
-            listeners: [
-                'name' => static fn (): Listener => new Listener(
-                    eventId: 'eventId',
-                    name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
-                ),
+            routes: [
+                'route' => static fn (): Route => new Route('/', 'route', new MethodDispatch('class', 'method')),
             ]
         );
         $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
-        $generator  = new DataFileGenerator(
+        $className  = 'HttpDataTestRoutingDataProvider';
+        $generator  = new DataProviderFileGenerator(
             directory: $directory,
             data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
@@ -229,12 +253,10 @@ final class DataFileGeneratorTest extends TestCase
         // phpcs:disable
         $expected = <<<PHP
             new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
-                'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
-               'eventId' => 'eventId',
-               'name' => 'name',
+                routes: [
+                'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
+               'path' => '/',
+               'name' => 'route',
                'dispatch' => 
               new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
                  'class' => 'class',
@@ -247,9 +269,39 @@ final class DataFileGeneratorTest extends TestCase
                  'method' => 'method',
                  'isStatic' => false,
               )),
+               'requestMethods' => 
+              array (
+                0 => 
+                \Valkyrja\Http\Message\Enum\RequestMethod::HEAD,
+                1 => 
+                \Valkyrja\Http\Message\Enum\RequestMethod::GET,
+              ),
+               'routeMatchedMiddleware' => 
+              array (
+              ),
+               'routeDispatchedMiddleware' => 
+              array (
+              ),
+               'throwableCaughtMiddleware' => 
+              array (
+              ),
+               'sendingResponseMiddleware' => 
+              array (
+              ),
+               'terminatedMiddleware' => 
+              array (
+              ),
+               'requestStruct' => NULL,
+               'responseStruct' => NULL,
             )),
             
             ],
+                paths: array (
+            ),
+                dynamicPaths: array (
+            ),
+                regexes: array (
+            )
             )
             PHP;
         // phpcs:enable

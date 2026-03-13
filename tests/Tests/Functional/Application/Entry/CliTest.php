@@ -21,9 +21,9 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
+use Valkyrja\Cli\Routing\Generator\DataProviderFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
-use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
@@ -97,7 +97,7 @@ final class CliTest extends TestCase
             )
         );
 
-        $dataFileGenerator = new DataFileGenerator(
+        $dataFileGenerator = new DataProviderFileGenerator(
             directory: $containerDirectory,
             data: $container->getData(),
             namespace: EnvClass::APP_DATA_NAMESPACE,

@@ -28,8 +28,8 @@ use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
-use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Event\Generator\DataFileGenerator;
+use Valkyrja\Event\Generator\Contract\DataProviderFileGeneratorContract;
+use Valkyrja\Event\Generator\DataProviderFileGenerator;
 use Valkyrja\Event\Provider\Contract\ProviderContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
@@ -42,11 +42,11 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
-            DispatcherContract::class        => [self::class, 'publishDispatcher'],
-            CollectionContract::class        => [self::class, 'publishCollection'],
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                      => [self::class, 'publishData'],
+            CollectorContract::class                 => [self::class, 'publishAttributesCollector'],
+            DispatcherContract::class                => [self::class, 'publishDispatcher'],
+            CollectionContract::class                => [self::class, 'publishCollection'],
+            DataProviderFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            Data::class                              => [self::class, 'publishData'],
         ];
     }
 
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
             CollectorContract::class,
             DispatcherContract::class,
             CollectionContract::class,
-            DataFileGeneratorContract::class,
+            DataProviderFileGeneratorContract::class,
             Data::class,
         ];
     }
@@ -136,8 +136,8 @@ final class ServiceProvider extends Provider
         $collection = $container->getSingleton(CollectionContract::class);
 
         $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
+            DataProviderFileGeneratorContract::class,
+            new DataProviderFileGenerator(
                 directory: $directory,
                 data: $collection->getData(),
                 namespace: $namespace,
@@ -186,7 +186,7 @@ final class ServiceProvider extends Provider
             $collection->addListener($listener);
         }
 
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator = $container->getSingleton(DataProviderFileGeneratorContract::class);
         $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $collection->getData());

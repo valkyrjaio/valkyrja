@@ -18,8 +18,8 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Container\Generator\Contract\DataProviderFileGeneratorContract;
+use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 final class ServiceProvider extends Provider
@@ -31,8 +31,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                      => [self::class, 'publishData'],
+            DataProviderFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            Data::class                              => [self::class, 'publishData'],
         ];
     }
 
@@ -43,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            DataFileGeneratorContract::class,
+            DataProviderFileGeneratorContract::class,
             Data::class,
         ];
     }
@@ -68,8 +68,8 @@ final class ServiceProvider extends Provider
         $data = $container->getData();
 
         $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
+            DataProviderFileGeneratorContract::class,
+            new DataProviderFileGenerator(
                 directory: $directory,
                 data: $data,
                 namespace: $namespace,
@@ -89,7 +89,7 @@ final class ServiceProvider extends Provider
             $container->register($provider);
         }
 
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataGenerator = $container->getSingleton(DataProviderFileGeneratorContract::class);
         $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $container->getData());

@@ -17,13 +17,13 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route as Attribute;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
+use Valkyrja\Http\Routing\Generator\DataProviderFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\EnvClass;
@@ -88,7 +88,7 @@ final class HttpTest extends TestCase
             )
         );
 
-        $dataFileGenerator = new DataFileGenerator(
+        $dataFileGenerator = new DataProviderFileGenerator(
             directory: $containerDirectory,
             data: $container->getData(),
             namespace: EnvClass::APP_DATA_NAMESPACE,

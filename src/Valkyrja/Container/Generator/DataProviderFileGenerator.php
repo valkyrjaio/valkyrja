@@ -11,17 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Generator;
+namespace Valkyrja\Container\Generator;
 
 use Override;
-use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Data;
-use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
+use Valkyrja\Container\Generator\Contract\DataProviderFileGeneratorContract;
 
-use function is_callable;
-
-class DataFileGenerator extends ProviderFileGenerator implements DataFileGeneratorContract
+class DataProviderFileGenerator extends ProviderFileGenerator implements DataProviderFileGeneratorContract
 {
     /**
      * @param non-empty-string $directory The directory
@@ -50,14 +47,25 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
     #[Override]
     public function generateClassContents(): string
     {
+        $data          = $this->data;
         $dataNamespace = Data::class;
 
-        $routes  = $this->getRoutesAsContent();
+        $aliases          = var_export($data->aliases, true);
+        $deferred         = var_export($data->deferred, true);
+        $deferredCallback = var_export($data->deferredCallback, true);
+        $services         = var_export($data->services, true);
+        $singletons       = var_export($data->singletons, true);
+        $providers        = var_export($data->providers, true);
 
         // phpcs:disable
         return <<<PHP
             new \\$dataNamespace(
-                routes: $routes,
+                aliases: $aliases,
+                deferred: $deferred,
+                deferredCallback: $deferredCallback,
+                services: $services,
+                singletons: $singletons,
+                providers: $providers
             )
             PHP;
         // phpcs:enable
@@ -85,53 +93,5 @@ class DataFileGenerator extends ProviderFileGenerator implements DataFileGenerat
 
             \$container->setSingleton(Data::class, \$data);
             PHP;
-    }
-
-    /**
-     * Get all routes as a string.
-     *
-     * @return non-empty-string
-     */
-    protected function getRoutesAsContent(): string
-    {
-        $routes = $this->data->routes;
-
-        $routesContent = '';
-
-        foreach ($routes as $key => $route) {
-            if (is_callable($route)) {
-                $route = $route();
-            }
-
-            $routeContent = $this->getRouteAsContent($route);
-
-            $routesContent .= <<<PHP
-                '$key' => $routeContent,
-
-                PHP;
-        }
-
-        return <<<PHP
-            [
-                $routesContent
-            ]
-            PHP;
-    }
-
-    /**
-     * Get the route as a string.
-     *
-     * @return non-empty-string
-     */
-    protected function getRouteAsContent(RouteContract $route): string
-    {
-        $contract = RouteContract::class;
-        $content  = $this->generateObjectsContents($route);
-
-        // phpcs:disable
-        return <<<PHP
-            static fn (): \\$contract => $content
-            PHP;
-        // phpcs:enable
     }
 }
