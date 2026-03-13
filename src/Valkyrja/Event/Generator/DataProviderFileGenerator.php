@@ -17,11 +17,11 @@ use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Event\Generator\Contract\DataProviderFileGeneratorContract;
 
 use function is_callable;
 
-class DataFileGenerator extends ProviderFileGenerator implements DataFileGeneratorContract
+class DataProviderFileGenerator extends ProviderFileGenerator implements DataProviderFileGeneratorContract
 {
     /**
      * @param non-empty-string $directory The directory

@@ -11,28 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container\Generator;
+namespace Valkyrja\Tests\Unit\Event\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Event\Generator\DefaultDataProviderFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class DataFileGeneratorTest extends TestCase
+final class DefaultDataProviderFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
         Directory::$basePath = EnvClass::APP_DIR;
 
         $directory  = Directory::storagePath();
-        $className  = 'ContainerDataTestDataProvider';
+        $className  = 'EventDefaultDataTestDataProvider';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $generator  = new DefaultDataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
             className: $className
         );
@@ -47,17 +44,13 @@ final class DataFileGeneratorTest extends TestCase
     public function testGenerateFileContents(): void
     {
         $directory  = Directory::storagePath();
-        $className  = 'ContainerDataTestDataProvider';
-        $data       = new Data();
-        $generator  = new DataFileGenerator(
+        $className  = 'EventDefaultDataTestDataProvider';
+        $generator  = new DefaultDataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
             className: $className
         );
         $contents  = $generator->generateFileContents();
-
-        $dataContents = $generator->generateClassContents();
 
         $expected = <<<PHP
             <?php
@@ -69,12 +62,12 @@ final class DataFileGeneratorTest extends TestCase
             namespace App\Provider\Data;
 
             use Override;
-            use Valkyrja\Container\Data\Data;
+            use Valkyrja\Event\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
+            use Valkyrja\Event\Provider\ServiceProvider;
 
-
-            final class ContainerDataTestDataProvider extends Provider
+            final class EventDefaultDataTestDataProvider extends Provider
             {
                 /**
                  * @inheritDoc
@@ -103,51 +96,11 @@ final class DataFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+                    ServiceProvider::publishData(\$container);
                 }
             }
 
             PHP;
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContents(): void
-    {
-        $directory  = Directory::storagePath();
-        $className  = 'ContainerDataTestDataProvider';
-        $data       = new Data();
-        $generator  = new DataFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                aliases: array (
-            ),
-                deferred: array (
-            ),
-                deferredCallback: array (
-            ),
-                services: array (
-            ),
-                singletons: array (
-            ),
-                providers: array (
-            )
-            )
-            PHP;
-        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);

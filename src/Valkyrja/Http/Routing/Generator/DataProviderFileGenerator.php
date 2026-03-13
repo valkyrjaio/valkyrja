@@ -17,11 +17,11 @@ use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Http\Routing\Generator\Contract\DataProviderFileGeneratorContract;
 
 use function is_callable;
 
-class DataFileGenerator extends ProviderFileGenerator implements DataFileGeneratorContract
+class DataProviderFileGenerator extends ProviderFileGenerator implements DataProviderFileGeneratorContract
 {
     /**
      * @param non-empty-string $directory The directory

@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Container\Generator\Contract\DataProviderFileGeneratorContract;
+use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Container\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -30,13 +30,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(DataProviderFileGeneratorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
     {
-        self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
+        self::assertContains(DataProviderFileGeneratorContract::class, ServiceProvider::provides());
         self::assertContains(Data::class, ServiceProvider::provides());
     }
 
@@ -47,9 +47,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Data::class, new Data());
 
-        $callback = ServiceProvider::publishers()[DataFileGeneratorContract::class];
+        $callback = ServiceProvider::publishers()[DataProviderFileGeneratorContract::class];
         $callback($this->container);
 
-        self::assertInstanceOf(DataFileGenerator::class, $this->container->getSingleton(DataFileGeneratorContract::class));
+        self::assertInstanceOf(DataProviderFileGenerator::class, $this->container->getSingleton(DataProviderFileGeneratorContract::class));
     }
 }
