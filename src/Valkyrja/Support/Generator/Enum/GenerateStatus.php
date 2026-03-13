@@ -17,4 +17,5 @@ enum GenerateStatus
 {
     case SUCCESS;
     case FAILURE;
+    case SKIPPED;
 }

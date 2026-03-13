@@ -40,6 +40,10 @@ final class FileGeneratorTest extends TestCase
         self::assertSame(GenerateStatus::SUCCESS, $results);
         self::assertSame($generator->generateFileContents(), @file_get_contents($filePath));
 
+        $results = $generator->generateFile();
+
+        self::assertSame(GenerateStatus::SKIPPED, $results);
+
         @unlink($filePath);
     }
 
@@ -47,7 +51,7 @@ final class FileGeneratorTest extends TestCase
     {
         $generator = new class('filepath.php') extends FileGenerator {
             #[Override]
-            protected function filePutContents(): int|false
+            protected function filePutContents(string $data): int|false
             {
                 return false;
             }
@@ -67,7 +71,7 @@ final class FileGeneratorTest extends TestCase
     {
         $generator = new class('filepath.php') extends FileGenerator {
             #[Override]
-            protected function filePutContents(): int|false
+            protected function filePutContents(string $data): int|false
             {
                 throw new RuntimeException('Exception to test with');
             }

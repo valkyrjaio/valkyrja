@@ -21,10 +21,10 @@ use Valkyrja\Support\Generator\Enum\GenerateStatus;
 abstract class FileGenerator implements FileGeneratorContract
 {
     /**
-     * @param non-empty-string $directory The file path
+     * @param non-empty-string $filePath The file path
      */
     public function __construct(
-        protected string $directory
+        protected string $filePath
     ) {
     }
 
@@ -35,16 +35,23 @@ abstract class FileGenerator implements FileGeneratorContract
     public function generateFile(): GenerateStatus
     {
         try {
-            $results = $this->filePutContents();
+            $data     = $this->generateFileContents();
+            $existing = $this->fileGetContents();
 
-            if ($results === false) {
-                return GenerateStatus::FAILURE;
+            if ($existing === $data) {
+                return GenerateStatus::SKIPPED;
+            }
+
+            $results = $this->filePutContents(data: $data);
+
+            if ($results !== false) {
+                return GenerateStatus::SUCCESS;
             }
         } catch (Throwable) {
-            return GenerateStatus::FAILURE;
+            // Fallthrough
         }
 
-        return GenerateStatus::SUCCESS;
+        return GenerateStatus::FAILURE;
     }
 
     /**
@@ -54,11 +61,23 @@ abstract class FileGenerator implements FileGeneratorContract
     abstract public function generateFileContents(): string;
 
     /**
+     * Wrapper for the file_get_contents function.
+     */
+    protected function fileGetContents(): string|false
+    {
+        if (! is_file(filename: $this->filePath)) {
+            return false;
+        }
+
+        return file_get_contents(filename: $this->filePath);
+    }
+
+    /**
      * Wrapper for the file_put_contents function.
      */
-    protected function filePutContents(): int|false
+    protected function filePutContents(string $data): int|false
     {
-        return file_put_contents(filename: $this->directory, data: $this->generateFileContents());
+        return file_put_contents(filename: $this->filePath, data: $data);
     }
 
     /**
