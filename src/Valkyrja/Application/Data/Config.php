@@ -20,11 +20,11 @@ use Valkyrja\Application\Provider\Contract\ProviderContract;
 readonly class Config
 {
     /**
-     * @param non-empty-string                       $version
-     * @param non-empty-string                       $environment
-     * @param non-empty-string                       $timezone
-     * @param class-string<ProviderContract>[]       $providers
-     * @param (callable(ApplicationContract):void)[] $callbacks
+     * @param non-empty-string                          $version
+     * @param non-empty-string                          $environment
+     * @param non-empty-string                          $timezone
+     * @param class-string<ProviderContract>[]          $providers
+     * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
         public string $version = ApplicationInfo::VERSION,

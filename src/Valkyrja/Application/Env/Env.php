@@ -117,7 +117,7 @@ class Env
     ];
     /** @var class-string<ProviderContract>[] */
     public const array APP_CUSTOM_COMPONENTS = [];
-    /** @var (callable(ApplicationContract):void)[] */
+    /** @var array<callable(ApplicationContract):void> */
     public const array APP_PUBLISHABLE_CALLBACKS = [];
     /** @var non-empty-string|null */
     public const string|null APP_CLI_DEFAULT_APPLICATION_NAME = null;

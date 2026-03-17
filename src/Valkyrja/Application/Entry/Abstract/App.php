@@ -162,7 +162,7 @@ abstract class App
         $debugMode = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $environment */
         $environment = $env::APP_ENVIRONMENT;
-        /** @var (callable(ApplicationContract):void)[] $publishableProviders */
+        /** @var array<callable(ApplicationContract):void> $publishableProviders */
         $publishableProviders = $env::APP_PUBLISHABLE_CALLBACKS;
 
         return new Config(
