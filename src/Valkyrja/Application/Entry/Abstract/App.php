@@ -131,12 +131,20 @@ abstract class App
     protected static function loadContainerData(ContainerContract $container): void
     {
         if (! $container->isSingleton(Data::class)) {
-            ServiceProvider::publishData(container: $container);
+            self::publishContainerData(container: $container);
         }
 
         $containerData = $container->getSingleton(Data::class);
 
         $container->setFromData($containerData);
+    }
+
+    /**
+     * Publish the container data.
+     */
+    protected static function publishContainerData(ContainerContract $container): void
+    {
+        ServiceProvider::publishData(container: $container);
     }
 
     /**
