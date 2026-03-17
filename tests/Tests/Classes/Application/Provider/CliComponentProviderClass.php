@@ -15,10 +15,13 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\PublishableProviderContract;
 use Valkyrja\Application\Provider\Provider;
 
-final class CliComponentProviderClass extends Provider
+final class CliComponentProviderClass extends Provider implements PublishableProviderContract
 {
+    public static bool $publishedContainerData = false;
+
     /**
      * @inheritDoc
      */
@@ -40,5 +43,18 @@ final class CliComponentProviderClass extends Provider
         return [
             CliRouteProviderClass::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function publish(ApplicationContract $app): void
+    {
+        if ($app->getDebugMode()) {
+            return;
+        }
+
+        self::$publishedContainerData = true;
     }
 }

@@ -15,7 +15,8 @@ namespace Valkyrja\Application\Env;
 
 use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ProviderContract;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -78,14 +79,14 @@ class Env
     public const string|null APP_VERSION = null;
     /** @var non-empty-string */
     public const string APP_KEY = 'some_secret_app_key';
-    /** @var class-string<Provider>[] */
+    /** @var class-string<ProviderContract>[] */
     public const array APP_REQUIRED_COMPONENTS = [
         ComponentClass::ATTRIBUTE,
         ComponentClass::CONTAINER,
         ComponentClass::DISPATCHER,
         ComponentClass::REFLECTION,
     ];
-    /** @var class-string<Provider>[] */
+    /** @var class-string<ProviderContract>[] */
     public const array APP_CORE_COMPONENTS = [
         ComponentClass::CLI_INTERACTION,
         ComponentClass::CLI_MIDDLEWARE,
@@ -97,7 +98,7 @@ class Env
         ComponentClass::HTTP_ROUTING,
         ComponentClass::HTTP_SERVER,
     ];
-    /** @var class-string<Provider>[] */
+    /** @var class-string<ProviderContract>[] */
     public const array APP_COMPONENTS = [
         ComponentClass::API,
         ComponentClass::AUTH,
@@ -114,8 +115,10 @@ class Env
         ComponentClass::SMS,
         ComponentClass::VIEW,
     ];
-    /** @var class-string<Provider>[] */
+    /** @var class-string<ProviderContract>[] */
     public const array APP_CUSTOM_COMPONENTS = [];
+    /** @var array<callable(ApplicationContract):void> */
+    public const array APP_PUBLISHABLE_CALLBACKS = [];
     /** @var non-empty-string|null */
     public const string|null APP_CLI_DEFAULT_APPLICATION_NAME = null;
     /** @var non-empty-string|null */

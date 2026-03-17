@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
@@ -54,6 +55,8 @@ final class CliTest extends TestCase
         Cli::directory(EnvClass::APP_DIR);
 
         self::$runCalled = false;
+
+        CliComponentProviderClass::$publishedContainerData = false;
 
         Exiter::freeze();
 
@@ -127,6 +130,10 @@ final class CliTest extends TestCase
             public const array APP_CUSTOM_COMPONENTS = [
                 CliComponentProviderClass::class,
             ];
+            /** @var (callable(ApplicationContract):void)[] */
+            public const array APP_PUBLISHABLE_CALLBACKS = [
+                [CliComponentProviderClass::class, 'publish'],
+            ];
         };
 
         ob_start();
@@ -139,6 +146,9 @@ final class CliTest extends TestCase
         // With debug mode off we expect the data service providers to provide the data and routes
         self::assertFalse(CliRouteProviderClass::$called);
         CliRouteProviderClass::$called = false;
+        // With debug mode off we expect the component publish method to NOT bypass
+        self::assertTrue(CliComponentProviderClass::$publishedContainerData);
+        CliComponentProviderClass::$publishedContainerData = false;
 
         $env = new class extends EnvClass {
             /** @var bool */
@@ -150,6 +160,10 @@ final class CliTest extends TestCase
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
                 CliComponentProviderClass::class,
+            ];
+            /** @var (callable(ApplicationContract):void)[] */
+            public const array APP_PUBLISHABLE_CALLBACKS = [
+                [CliComponentProviderClass::class, 'publish'],
             ];
         };
 
@@ -166,6 +180,9 @@ final class CliTest extends TestCase
         // With debug mode on we expect the data service providers to NOT provide the data and routes
         self::assertTrue(CliRouteProviderClass::$called);
         CliRouteProviderClass::$called = false;
+        // With debug mode on we expect the component publish method to bypass
+        self::assertFalse(CliComponentProviderClass::$publishedContainerData);
+        CliComponentProviderClass::$publishedContainerData = false;
 
         Exiter::unfreeze();
 
