@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ProviderContract;
 
 readonly class Config
 {
     /**
-     * @param non-empty-string         $version
-     * @param non-empty-string         $environment
-     * @param non-empty-string         $timezone
-     * @param class-string<Provider>[] $providers
+     * @param non-empty-string                       $version
+     * @param non-empty-string                       $environment
+     * @param non-empty-string                       $timezone
+     * @param class-string<ProviderContract>[]       $providers
+     * @param (callable(ApplicationContract):void)[] $callbacks
      */
     public function __construct(
         public string $version = ApplicationInfo::VERSION,
@@ -30,6 +32,7 @@ readonly class Config
         public bool $debugMode = false,
         public string $timezone = 'UTC',
         public array $providers = [],
+        public array $callbacks = [],
     ) {
     }
 }

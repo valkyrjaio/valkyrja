@@ -19,7 +19,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -130,19 +130,13 @@ abstract class App
      */
     protected static function loadContainerData(ContainerContract $container): void
     {
-        static::publishContainerData(container: $container);
+        if (! $container->isSingleton(Data::class)) {
+            ServiceProvider::publishData(container: $container);
+        }
 
         $containerData = $container->getSingleton(Data::class);
 
         $container->setFromData($containerData);
-    }
-
-    /**
-     * Publish the container data.
-     */
-    protected static function publishContainerData(ContainerContract $container): void
-    {
-        ServiceProvider::publishData(container: $container);
     }
 
     /**
@@ -160,6 +154,8 @@ abstract class App
         $debugMode = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $environment */
         $environment = $env::APP_ENVIRONMENT;
+        /** @var (callable(ApplicationContract):void)[] $publishableProviders */
+        $publishableProviders = $env::APP_PUBLISHABLE_CALLBACKS;
 
         return new Config(
             version: $version,
@@ -167,23 +163,24 @@ abstract class App
             debugMode: $debugMode,
             timezone: $timezone,
             providers: $providers,
+            callbacks: $publishableProviders,
         );
     }
 
     /**
      * Get the providers to register.
      *
-     * @return class-string<Provider>[]
+     * @return class-string<ProviderContract>[]
      */
     protected static function getProviders(Env $env): array
     {
-        /** @var class-string<Provider>[] $requiredComponents */
+        /** @var class-string<ProviderContract>[] $requiredComponents */
         $requiredComponents = $env::APP_REQUIRED_COMPONENTS;
-        /** @var class-string<Provider>[] $coreComponents */
+        /** @var class-string<ProviderContract>[] $coreComponents */
         $coreComponents = $env::APP_CORE_COMPONENTS;
-        /** @var class-string<Provider>[] $components */
+        /** @var class-string<ProviderContract>[] $components */
         $components = $env::APP_COMPONENTS;
-        /** @var class-string<Provider>[] $customComponents */
+        /** @var class-string<ProviderContract>[] $customComponents */
         $customComponents = $env::APP_CUSTOM_COMPONENTS;
 
         return array_merge($requiredComponents, $coreComponents, $components, $customComponents);

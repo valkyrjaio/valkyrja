@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -50,6 +51,8 @@ final class HttpTest extends TestCase
         Http::directory(EnvClass::APP_DIR);
 
         self::$runCalled = false;
+
+        HttpComponentProviderClass::$publishedContainerData = false;
 
         $_SERVER['REQUEST_URI'] = '/version';
 
@@ -118,6 +121,10 @@ final class HttpTest extends TestCase
             public const array APP_CUSTOM_COMPONENTS = [
                 HttpComponentProviderClass::class,
             ];
+            /** @var (callable(ApplicationContract):void)[] */
+            public const array APP_PUBLISHABLE_CALLBACKS = [
+                [HttpComponentProviderClass::class, 'publish'],
+            ];
         };
 
         ob_start();
@@ -130,6 +137,9 @@ final class HttpTest extends TestCase
         // With debug mode off we expect the data service providers to provide the data and routes
         self::assertFalse(HttpRouteProviderClass::$called);
         HttpRouteProviderClass::$called = false;
+        // With debug mode off we expect the component publish method to NOT bypass
+        self::assertTrue(HttpComponentProviderClass::$publishedContainerData);
+        HttpComponentProviderClass::$publishedContainerData = false;
 
         $env = new class extends EnvClass {
             /** @var bool */
@@ -141,6 +151,10 @@ final class HttpTest extends TestCase
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
                 HttpComponentProviderClass::class,
+            ];
+            /** @var (callable(ApplicationContract):void)[] */
+            public const array APP_PUBLISHABLE_CALLBACKS = [
+                [HttpComponentProviderClass::class, 'publish'],
             ];
         };
 
@@ -154,6 +168,9 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the data service providers to NOT provide the data and routes
         self::assertTrue(HttpRouteProviderClass::$called);
         HttpRouteProviderClass::$called = false;
+        // With debug mode on we expect the component publish method to bypass
+        self::assertFalse(HttpComponentProviderClass::$publishedContainerData);
+        HttpComponentProviderClass::$publishedContainerData = false;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);
