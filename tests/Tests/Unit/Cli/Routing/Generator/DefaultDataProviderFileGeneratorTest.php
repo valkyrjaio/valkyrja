@@ -61,7 +61,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
 
             use Override;
             use Valkyrja\Cli\Routing\Data\Data;
-            use Valkyrja\Container\Provider\Provider;
+            use Valkyrja\Container\Provider\Abstract\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
             use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 

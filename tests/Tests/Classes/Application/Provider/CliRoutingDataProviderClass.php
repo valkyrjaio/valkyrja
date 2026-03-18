@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 use Override;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 
 final class CliRoutingDataProviderClass extends Provider
 {

@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatch\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 

@@ -18,7 +18,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;

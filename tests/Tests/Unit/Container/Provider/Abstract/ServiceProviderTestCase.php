@@ -19,7 +19,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_map;

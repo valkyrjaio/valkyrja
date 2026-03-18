@@ -21,7 +21,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;

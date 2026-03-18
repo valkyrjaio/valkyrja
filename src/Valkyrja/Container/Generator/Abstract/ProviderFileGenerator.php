@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Generator\Abstract;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
 abstract class ProviderFileGenerator extends FileGenerator

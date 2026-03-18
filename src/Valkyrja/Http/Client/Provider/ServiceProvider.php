@@ -17,7 +17,7 @@ use GuzzleHttp\Client;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;

@@ -21,7 +21,7 @@ use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 final class ServiceProvider extends Provider

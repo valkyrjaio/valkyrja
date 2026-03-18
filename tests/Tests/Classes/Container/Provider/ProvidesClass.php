@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 
 /**
  * Testable Provider/Provides Trait class.

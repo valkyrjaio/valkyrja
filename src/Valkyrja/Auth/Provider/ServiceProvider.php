@@ -29,7 +29,7 @@ use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
