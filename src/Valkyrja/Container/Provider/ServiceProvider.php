@@ -22,6 +22,7 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Abstract\Provider;
 
 final class ServiceProvider extends Provider
 {

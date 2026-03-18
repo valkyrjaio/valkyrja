@@ -40,7 +40,7 @@ use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 
 final class ServiceProvider extends Provider
 {

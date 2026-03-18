@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 final class ServiceProvider extends Provider

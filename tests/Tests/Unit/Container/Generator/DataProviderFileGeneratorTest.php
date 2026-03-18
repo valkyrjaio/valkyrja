@@ -63,11 +63,7 @@ final class DataProviderFileGeneratorTest extends TestCase
 
             namespace $namespace;
 
-            use Override;
-            use Valkyrja\Container\Data\Data;
-            use Valkyrja\Container\Provider\Provider;
-            use Valkyrja\Container\Manager\Contract\ContainerContract;
-            use App\Provider\Data\ContainerData;
+            use App\Provider\Data\ContainerData;use Valkyrja\Container\Data\Data;use Valkyrja\Container\Manager\Contract\ContainerContract;use Valkyrja\Container\Provider\Abstract\Provider;
 
             final class ContainerDataTestDataProvider extends Provider
             {

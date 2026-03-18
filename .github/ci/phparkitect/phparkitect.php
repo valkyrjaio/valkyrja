@@ -31,7 +31,7 @@ use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
 use Valkyrja\Application\Provider\Provider as ComponentProvider;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
-use Valkyrja\Container\Provider\Provider;
+use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Model\Abstract\Model;
