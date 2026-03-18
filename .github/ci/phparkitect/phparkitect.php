@@ -31,7 +31,10 @@ use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
 use Valkyrja\Application\Provider\Abstract\Provider as ComponentProvider;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
+use Valkyrja\Cli\Routing\Provider\Abstract\Provider as CliProvider;
 use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Event\Provider\Abstract\Provider as EventProvider;
+use Valkyrja\Http\Routing\Provider\Abstract\Provider as HttpProvider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Model\Abstract\Model;
@@ -104,6 +107,42 @@ return static function (Config $config): void {
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
         ->because('All component providers should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(CliProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*RouteProvider'))
+        ->because('All cli route providers should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(CliProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->because('All cli route providers should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(EventProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*ListenerProvider'))
+        ->because('All event listener providers should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(EventProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->because('All event listener providers should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(HttpProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new HaveNameMatching('*RouteProvider'))
+        ->because('All http route providers should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new Extend(HttpProvider::class))
+        ->andThat(new NotHaveNameMatching('*Contract'))
+        ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+        ->because('All http route providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
         ->that(new ResideInOneOfTheseNamespaces('*Provider\\'))
@@ -215,7 +254,6 @@ return static function (Config $config): void {
     $srcRules[] = Rule::allClasses()
         ->that(new IsAbstract())
         ->andThat(new NotResideInTheseNamespaces('*Factory'))
-        ->andThat(new NotResideInTheseNamespaces('*Provider'))
         ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\Routing\\Controller'))
         ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Http\\Routing\\Controller'))
         ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
