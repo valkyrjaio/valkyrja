@@ -18,6 +18,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -37,6 +38,7 @@ use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 final class ServiceProvider extends Provider
@@ -76,6 +78,14 @@ final class ServiceProvider extends Provider
      */
     public static function publishAttributeCollector(ContainerContract $container): void
     {
+        if (! $container->isSingleton(ReflectorContract::class)) {
+            ReflectionServiceCollector::publishReflection($container);
+        }
+
+        if (! $container->isSingleton(AttributeCollectorContract::class)) {
+            AttributeServiceCollector::publishAttributes($container);
+        }
+
         $container->setSingleton(
             CollectorContract::class,
             new AttributeCollector(
@@ -173,13 +183,10 @@ final class ServiceProvider extends Provider
         $collection  = $container->getSingleton(CollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
-        /** @var CollectorContract $collector */
-        $collector   = $container->getSingleton(CollectorContract::class);
-
         $providers = $application->getCliProviders();
 
-        $controllers     = [];
-        $routes          = [];
+        $controllers = [];
+        $routes      = [];
 
         /** @var ProviderContract $provider */
         foreach ($providers as $provider) {
@@ -194,10 +201,16 @@ final class ServiceProvider extends Provider
             ];
         }
 
-        // Get all the attributes routes from the list of controllers
-        $collection->add(
-            ...$collector->getRoutes(...$controllers)
-        );
+        if ($controllers !== []) {
+            /** @var CollectorContract $collector */
+            $collector = $container->getSingleton(CollectorContract::class);
+
+            // Get all the attributes routes from the list of controllers
+            $collection->add(
+                ...$collector->getRoutes(...$controllers)
+            );
+        }
+
         $collection->add(...$routes);
 
         $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);

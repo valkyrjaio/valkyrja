@@ -195,7 +195,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
-    public function testPublishCollectionWithoutDataDebugModeFalse(): void
+    public function testPublishCollectionWithoutDataDebugModeTrue(): void
     {
         $this->container->register(ServiceProvider::class);
 
@@ -229,6 +229,42 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
         self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
+    }
+
+    public function testPublishCollectionWithoutRoutes(): void
+    {
+        $this->container->register(ServiceProvider::class);
+
+        $container = $this->container;
+
+        $container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
+        $container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
+        $container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
+        $container->setSingleton(ProcessorContract::class, $processor = $this->createMock(ProcessorContract::class));
+        $application->method('getDebugMode')->willReturn(true);
+
+        self::assertTrue($container->has(CollectionContract::class));
+
+        $route = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
+        $collector->expects($this->never())->method('getRoutes')->willReturn([$route]);
+        $generator->expects($this->once())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+
+        $application->expects($this->once())->method('getHttpProviders')->willReturn([]);
+        $processor->expects($this->never())->method('route')->willReturnArgument(0);
+
+        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(CollectionContract::class));
+        self::assertTrue($container->isSingleton(CollectionContract::class));
+        self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
+
+        self::assertFalse($collection->hasPath('/', RequestMethod::ANY));
+        self::assertFalse($collection->hasPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishDataFileGenerator(): void
@@ -287,6 +323,22 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(AttributesContract::class, self::createStub(AttributesContract::class));
         $container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
+        $container->setSingleton(ProcessorContract::class, self::createStub(ProcessorContract::class));
+
+        self::assertFalse($container->has(CollectorContract::class));
+
+        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(CollectorContract::class));
+        self::assertTrue($container->isSingleton(CollectorContract::class));
+        self::assertInstanceOf(AttributeCollector::class, $container->getSingleton(CollectorContract::class));
+    }
+
+    public function testPublishAttributesCollectorWithoutAttributesOrReflector(): void
+    {
+        $container = $this->container;
+
         $container->setSingleton(ProcessorContract::class, self::createStub(ProcessorContract::class));
 
         self::assertFalse($container->has(CollectorContract::class));

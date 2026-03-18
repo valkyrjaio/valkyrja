@@ -20,6 +20,12 @@ use Valkyrja\Event\Provider\Provider;
 final class ListenerProviderClass extends Provider
 {
     #[Override]
+    public static function getListenerClasses(): array
+    {
+        return ['AListenerClass'];
+    }
+
+    #[Override]
     public static function getListeners(): array
     {
         return [

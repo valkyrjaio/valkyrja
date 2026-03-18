@@ -182,9 +182,10 @@ final class AppTest extends TestCase
         $container = $application->getContainer();
 
         self::assertSame($container, $application->getContainer());
+        self::assertFalse($container->has(ReflectorContract::class));
+        self::assertFalse($container->has(AttributeCollectorContract::class));
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ApplicationContract::class));
-        self::assertTrue($container->has(AttributeCollectorContract::class));
         self::assertTrue($container->has(Config::class));
         self::assertTrue($container->has(OutputFactoryContract::class));
         self::assertTrue($container->has(InputReceivedHandlerContract::class));
@@ -224,7 +225,6 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(RequestHandlerContract::class));
         self::assertTrue($container->has(LogThrowableCaughtMiddleware::class));
         self::assertTrue($container->has(ViewThrowableCaughtMiddleware::class));
-        self::assertTrue($container->has(ReflectorContract::class));
 
         $cliProviders = $application->getCliProviders();
 

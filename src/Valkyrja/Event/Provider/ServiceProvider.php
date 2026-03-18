@@ -18,6 +18,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
@@ -31,6 +32,7 @@ use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\Contract\ProviderContract;
+use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 final class ServiceProvider extends Provider
@@ -70,6 +72,14 @@ final class ServiceProvider extends Provider
      */
     public static function publishAttributesCollector(ContainerContract $container): void
     {
+        if (! $container->isSingleton(ReflectorContract::class)) {
+            ReflectionServiceCollector::publishReflection($container);
+        }
+
+        if (! $container->isSingleton(AttributeCollectorContract::class)) {
+            AttributeServiceCollector::publishAttributes($container);
+        }
+
         $container->setSingleton(
             CollectorContract::class,
             new AttributeCollector(
@@ -154,9 +164,6 @@ final class ServiceProvider extends Provider
         $collection  = $container->getSingleton(CollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
-        /** @var CollectorContract $listenerAttributes */
-        $listenerAttributes = $container->getSingleton(CollectorContract::class);
-
         $providers = $application->getEventProviders();
 
         $listenerClasses = [];
@@ -175,11 +182,16 @@ final class ServiceProvider extends Provider
             ];
         }
 
-        // Get all the annotated listeners from the list of classes
-        // Iterate through the listeners
-        foreach ($listenerAttributes->getListeners(...$listenerClasses) as $listener) {
-            // Set the listener
-            $collection->addListener($listener);
+        if ($listenerClasses !== []) {
+            /** @var CollectorContract $listenerAttributes */
+            $listenerAttributes = $container->getSingleton(CollectorContract::class);
+
+            // Get all the annotated listeners from the list of classes
+            // Iterate through the listeners
+            foreach ($listenerAttributes->getListeners(...$listenerClasses) as $listener) {
+                // Set the listener
+                $collection->addListener($listener);
+            }
         }
 
         foreach ($listeners as $listener) {

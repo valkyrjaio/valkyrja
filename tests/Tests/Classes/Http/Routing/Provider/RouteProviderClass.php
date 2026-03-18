@@ -21,6 +21,12 @@ use Valkyrja\Http\Routing\Provider\Provider;
 final class RouteProviderClass extends Provider
 {
     #[Override]
+    public static function getControllerClasses(): array
+    {
+        return ['AControllerClass'];
+    }
+
+    #[Override]
     public static function getRoutes(): array
     {
         return [
