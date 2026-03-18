@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ProviderContract;
 
 abstract class Provider implements ProviderContract
@@ -23,18 +22,7 @@ abstract class Provider implements ProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publish(ContainerContract $container): void
-    {
-    }
+    abstract public static function publishers(): array;
 
     /**
      * @inheritDoc

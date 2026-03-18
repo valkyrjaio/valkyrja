@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
+use Override;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
 /**
@@ -20,8 +22,19 @@ use Valkyrja\Container\Provider\Provider;
  */
 final class ProvidesClass extends Provider
 {
+    #[Override]
+    public static function publishers(): array
+    {
+        return [];
+    }
+
+    #[Override]
     public static function provides(): array
     {
         return [];
+    }
+
+    public static function publish(ContainerContract $container): void
+    {
     }
 }

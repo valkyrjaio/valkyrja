@@ -16,24 +16,19 @@ namespace Valkyrja\Tests\Classes\Container\Provider;
 use Override;
 use Valkyrja\Container\Provider\Contract\ProviderContract;
 
-/**
- * Class InvalidDeferredProviderClass.
- */
-final class InvalidDeferredProviderClass implements ProviderContract
+final class InvalidProviderClass implements ProviderContract
 {
     #[Override]
     public static function publishers(): array
     {
-        return [
-            ProvidedSecondaryClass::class => [self::class, 'publishMethodNonExistent'],
-        ];
+        return [];
     }
 
     #[Override]
     public static function provides(): array
     {
         return [
-            ProvidedSecondaryClass::class,
+            ProvidedClass::class,
         ];
     }
 }
