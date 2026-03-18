@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Cli\Routing\Provider\Provider;
+use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 class CliRouteProvider extends Provider
