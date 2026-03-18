@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Event\Provider;
 
-use Valkyrja\Event\Provider\Provider;
+use Valkyrja\Event\Provider\Abstract\Provider;
 
 final class ProviderClass extends Provider
 {

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Event\Provider;
 
 use Override;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Provider\Provider;
+use Valkyrja\Event\Provider\Abstract\Provider;
 
 final class ListenerProviderClass extends Provider
 {
