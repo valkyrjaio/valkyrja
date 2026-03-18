@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Provider\Abstract\Provider;
 
 class ComponentProvider extends Provider
 {

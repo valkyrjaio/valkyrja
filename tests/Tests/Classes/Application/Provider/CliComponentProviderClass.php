@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Abstract\Provider;
 use Valkyrja\Application\Provider\Contract\PublishableProviderContract;
-use Valkyrja\Application\Provider\Provider;
 
 final class CliComponentProviderClass extends Provider implements PublishableProviderContract
 {

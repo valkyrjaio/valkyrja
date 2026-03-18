@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Provider;
+namespace Valkyrja\Application\Provider\Abstract;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;

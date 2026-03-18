@@ -29,7 +29,7 @@ use Arkitect\Expression\ForClasses\NotHaveNameMatching;
 use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
-use Valkyrja\Application\Provider\Provider as ComponentProvider;
+use Valkyrja\Application\Provider\Abstract\Provider as ComponentProvider;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
 use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
