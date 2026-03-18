@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataProviderFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
@@ -31,12 +28,12 @@ final class DataProviderFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'HttpDataTestRoutingDataProvider';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\HttpRoutingData',
+            dataClassName: 'HttpRoutingData'
         );
         $results    = $generator->generateFile();
 
@@ -50,16 +47,14 @@ final class DataProviderFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'HttpDataTestRoutingDataProvider';
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\HttpRoutingData',
+            dataClassName: 'HttpRoutingData'
         );
         $contents  = $generator->generateFileContents();
-
-        $dataContents = $generator->generateClassContents();
 
         $expected = <<<PHP
             <?php
@@ -74,7 +69,7 @@ final class DataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Http\Routing\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-
+            use App\Provider\Data\HttpRoutingData;
 
             final class HttpDataTestRoutingDataProvider extends Provider
             {
@@ -105,206 +100,11 @@ final class DataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+                    \$container->setSingleton(Data::class, new HttpRoutingData());
                 }
             }
 
             PHP;
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContents(): void
-    {
-        $directory  = Directory::storagePath();
-        $className  = 'HttpDataTestRoutingDataProvider';
-        $data       = new Data();
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                
-            ],
-                paths: array (
-            ),
-                dynamicPaths: array (
-            ),
-                regexes: array (
-            )
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRoute(): void
-    {
-        $data      = new Data(
-            routes: [
-                'route' => new Route('/', 'route', new MethodDispatch('class', 'method')),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'HttpDataTestRoutingDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
-               'path' => '/',
-               'name' => 'route',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-               'requestMethods' => 
-              array (
-                0 => 
-                \Valkyrja\Http\Message\Enum\RequestMethod::HEAD,
-                1 => 
-                \Valkyrja\Http\Message\Enum\RequestMethod::GET,
-              ),
-               'routeMatchedMiddleware' => 
-              array (
-              ),
-               'routeDispatchedMiddleware' => 
-              array (
-              ),
-               'throwableCaughtMiddleware' => 
-              array (
-              ),
-               'sendingResponseMiddleware' => 
-              array (
-              ),
-               'terminatedMiddleware' => 
-              array (
-              ),
-               'requestStruct' => NULL,
-               'responseStruct' => NULL,
-            )),
-            
-            ],
-                paths: array (
-            ),
-                dynamicPaths: array (
-            ),
-                regexes: array (
-            )
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRouteClosure(): void
-    {
-        $data      = new Data(
-            routes: [
-                'route' => static fn (): Route => new Route('/', 'route', new MethodDispatch('class', 'method')),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'HttpDataTestRoutingDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
-               'path' => '/',
-               'name' => 'route',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-               'requestMethods' => 
-              array (
-                0 => 
-                \Valkyrja\Http\Message\Enum\RequestMethod::HEAD,
-                1 => 
-                \Valkyrja\Http\Message\Enum\RequestMethod::GET,
-              ),
-               'routeMatchedMiddleware' => 
-              array (
-              ),
-               'routeDispatchedMiddleware' => 
-              array (
-              ),
-               'throwableCaughtMiddleware' => 
-              array (
-              ),
-               'sendingResponseMiddleware' => 
-              array (
-              ),
-               'terminatedMiddleware' => 
-              array (
-              ),
-               'requestStruct' => NULL,
-               'responseStruct' => NULL,
-            )),
-            
-            ],
-                paths: array (
-            ),
-                dynamicPaths: array (
-            ),
-                regexes: array (
-            )
-            )
-            PHP;
-        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);

@@ -243,7 +243,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null CLI_ROUTING_DATA_PROVIDER_CLASS_NAME = null;
+    public const string|null CLI_ROUTING_DATA_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -252,7 +252,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null CONTAINER_DATA_PROVIDER_CLASS_NAME = null;
+    public const string|null CONTAINER_DATA_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -270,7 +270,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null EVENT_DATA_PROVIDER_CLASS_NAME = null;
+    public const string|null EVENT_DATA_CLASS_NAME = null;
 
     /************************************************************
      *
@@ -336,7 +336,7 @@ class Env
      ************************************************************/
 
     /** @var non-empty-string|null */
-    public const string|null HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME = null;
+    public const string|null HTTP_ROUTING_DATA_CLASS_NAME = null;
 
     /************************************************************
      *

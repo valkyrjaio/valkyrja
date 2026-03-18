@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Generator\Contract;
+namespace Valkyrja\Container\Generator\Contract;
 
 use Valkyrja\Support\Generator\Contract\FileGeneratorContract;
 
-interface DataProviderFileGeneratorContract extends FileGeneratorContract
+interface DataFileGeneratorContract extends FileGeneratorContract
 {
     /**
      * Generate the data class contents.

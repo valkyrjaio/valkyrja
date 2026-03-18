@@ -15,13 +15,9 @@ namespace Valkyrja\Http\Routing\Generator;
 
 use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
-use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Generator\Contract\DataProviderFileGeneratorContract;
 
-use function is_callable;
-
-class DataProviderFileGenerator extends ProviderFileGenerator implements DataProviderFileGeneratorContract
+class DataProviderFileGenerator extends ProviderFileGenerator
 {
     /**
      * @param non-empty-string $directory The directory
@@ -30,9 +26,10 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
         protected string $namespace,
         protected string $className,
+        protected string $dataClassNamespace,
+        protected string $dataClassName,
     ) {
         parent::__construct(
             directory: $directory,
@@ -48,35 +45,13 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
      * @inheritDoc
      */
     #[Override]
-    public function generateClassContents(): string
-    {
-        $data          = $this->data;
-        $dataNamespace = Data::class;
-
-        $paths         = var_export($data->paths, true);
-        $dynamicPaths  = var_export($data->dynamicPaths, true);
-        $regexes       = var_export($data->regexes, true);
-        $routes        = $this->getRoutesAsContent();
-
-        // phpcs:disable
-        return <<<PHP
-            new \\$dataNamespace(
-                routes: $routes,
-                paths: $paths,
-                dynamicPaths: $dynamicPaths,
-                regexes: $regexes
-            )
-            PHP;
-        // phpcs:enable
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     protected function getImports(): string
     {
-        return '';
+        $serviceProvider = $this->dataClassNamespace;
+
+        return <<<PHP
+            use $serviceProvider;
+            PHP;
     }
 
     /**
@@ -85,60 +60,10 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
     #[Override]
     protected function getPublishContents(): string
     {
-        $dataContents = $this->generateClassContents();
+        $dataClassName = $this->dataClassName;
 
         return <<<PHP
-            \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+            \$container->setSingleton(Data::class, new $dataClassName());
             PHP;
-    }
-
-    /**
-     * Get all routes as a string.
-     *
-     * @return non-empty-string
-     */
-    protected function getRoutesAsContent(): string
-    {
-        $routes = $this->data->routes;
-
-        $routesContent = '';
-
-        foreach ($routes as $key => $route) {
-            if (is_callable($route)) {
-                $route = $route();
-            }
-
-            $routeContent = $this->getRouteAsContent($route);
-
-            $routesContent .= <<<PHP
-                '$key' => $routeContent,
-
-                PHP;
-        }
-
-        return <<<PHP
-            [
-                $routesContent
-            ]
-            PHP;
-    }
-
-    /**
-     * Get the route as a string.
-     *
-     * @return non-empty-string
-     */
-    protected function getRouteAsContent(RouteContract $route): string
-    {
-        $contract = RouteContract::class;
-        $content  = $this->generateObjectsContents($route);
-
-        // phpcs:disable
-        return <<<PHP
-            static fn (): \\$contract => $content
-            PHP;
-        // phpcs:enable
     }
 }

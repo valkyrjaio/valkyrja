@@ -16,9 +16,8 @@ namespace Valkyrja\Container\Generator;
 use Override;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
-use Valkyrja\Container\Generator\Contract\DataProviderFileGeneratorContract;
 
-class DataProviderFileGenerator extends ProviderFileGenerator implements DataProviderFileGeneratorContract
+class DataProviderFileGenerator extends ProviderFileGenerator
 {
     /**
      * @param non-empty-string $directory The directory
@@ -27,9 +26,10 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
         protected string $namespace,
         protected string $className,
+        protected string $dataClassNamespace,
+        protected string $dataClassName,
     ) {
         parent::__construct(
             directory: $directory,
@@ -45,39 +45,13 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
      * @inheritDoc
      */
     #[Override]
-    public function generateClassContents(): string
-    {
-        $data          = $this->data;
-        $dataNamespace = Data::class;
-
-        $aliases          = var_export($data->aliases, true);
-        $deferred         = var_export($data->deferred, true);
-        $deferredCallback = var_export($data->deferredCallback, true);
-        $services         = var_export($data->services, true);
-        $singletons       = var_export($data->singletons, true);
-        $providers        = var_export($data->providers, true);
-
-        // phpcs:disable
-        return <<<PHP
-            new \\$dataNamespace(
-                aliases: $aliases,
-                deferred: $deferred,
-                deferredCallback: $deferredCallback,
-                services: $services,
-                singletons: $singletons,
-                providers: $providers
-            )
-            PHP;
-        // phpcs:enable
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     protected function getImports(): string
     {
-        return '';
+        $serviceProvider = $this->dataClassNamespace;
+
+        return <<<PHP
+            use $serviceProvider;
+            PHP;
     }
 
     /**
@@ -86,12 +60,10 @@ class DataProviderFileGenerator extends ProviderFileGenerator implements DataPro
     #[Override]
     protected function getPublishContents(): string
     {
-        $dataContents = $this->generateClassContents();
+        $dataClassName = $this->dataClassName;
 
         return <<<PHP
-            \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+            \$container->setSingleton(Data::class, new $dataClassName());
             PHP;
     }
 }

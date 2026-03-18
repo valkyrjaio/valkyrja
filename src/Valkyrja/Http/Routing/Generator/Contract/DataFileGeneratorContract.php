@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Generator\Contract;
 
 use Valkyrja\Support\Generator\Contract\FileGeneratorContract;
 
-interface DataProviderFileGeneratorContract extends FileGeneratorContract
+interface DataFileGeneratorContract extends FileGeneratorContract
 {
     /**
      * Generate the data class contents.

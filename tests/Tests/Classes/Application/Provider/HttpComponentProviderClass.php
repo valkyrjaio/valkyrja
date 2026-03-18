@@ -29,8 +29,8 @@ final class HttpComponentProviderClass extends Provider implements PublishablePr
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            'App\\Provider\\Data\\HttpTestContainerDataProvider',
-            'App\\Provider\\Data\\HttpTestHttpRoutingDataProvider',
+            HttpContainerDataProviderClass::class,
+            HttpRoutingDataProviderClass::class,
         ];
     }
 

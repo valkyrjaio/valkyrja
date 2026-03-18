@@ -14,10 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Cli\Routing\Data\Data;
-use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataProviderFileGenerator;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -31,12 +28,12 @@ final class DataProviderFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\CliRoutingData',
+            dataClassName: 'CliRoutingData'
         );
         $results   = $generator->generateFile();
 
@@ -50,16 +47,14 @@ final class DataProviderFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingDataProvider';
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\CliRoutingData',
+            dataClassName: 'CliRoutingData'
         );
         $contents  = $generator->generateFileContents();
-
-        $dataContents = $generator->generateClassContents();
 
         $expected = <<<PHP
             <?php
@@ -74,7 +69,7 @@ final class DataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Cli\Routing\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-
+            use App\Provider\Data\CliRoutingData;
 
             final class CliDataTestRoutingDataProvider extends Provider
             {
@@ -105,186 +100,11 @@ final class DataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+                    \$container->setSingleton(Data::class, new CliRoutingData());
                 }
             }
 
             PHP;
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContents(): void
-    {
-        $directory  = Directory::storagePath();
-        $className  = 'CliDataTestRoutingDataProvider';
-        $data       = new Data();
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                
-            ],
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRoute(): void
-    {
-        $data      = new Data(
-            routes: [
-                'route' => new Route(
-                    name: 'test',
-                    description: 'description',
-                    dispatch: new MethodDispatch(class: 'class', method: 'method')
-                ),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'CliDataTestRoutingDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                'route' => static fn (): \Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
-               'helpText' => NULL,
-               'name' => 'test',
-               'description' => 'description',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-               'routeMatchedMiddleware' => 
-              array (
-              ),
-               'routeDispatchedMiddleware' => 
-              array (
-              ),
-               'throwableCaughtMiddleware' => 
-              array (
-              ),
-               'exitedMiddleware' => 
-              array (
-              ),
-               'arguments' => 
-              array (
-              ),
-               'options' => 
-              array (
-              ),
-            )),
-            
-            ],
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRouteClosure(): void
-    {
-        $data      = new Data(
-            routes: [
-                'route' => static fn (): Route => new Route(
-                    name: 'test',
-                    description: 'description',
-                    dispatch: new MethodDispatch(class: 'class', method: 'method')
-                ),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'CliDataTestRoutingDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                routes: [
-                'route' => static fn (): \Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
-               'helpText' => NULL,
-               'name' => 'test',
-               'description' => 'description',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-               'routeMatchedMiddleware' => 
-              array (
-              ),
-               'routeDispatchedMiddleware' => 
-              array (
-              ),
-               'throwableCaughtMiddleware' => 
-              array (
-              ),
-               'exitedMiddleware' => 
-              array (
-              ),
-               'arguments' => 
-              array (
-              ),
-               'options' => 
-              array (
-              ),
-            )),
-            
-            ],
-            )
-            PHP;
-        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);
