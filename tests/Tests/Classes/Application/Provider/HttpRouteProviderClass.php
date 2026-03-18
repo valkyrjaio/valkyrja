@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Http\Routing\Provider\Provider;
+use Valkyrja\Http\Routing\Provider\Abstract\Provider;
 use Valkyrja\Tests\Functional\Application\Entry\HttpTest;
 
 final class HttpRouteProviderClass extends Provider
