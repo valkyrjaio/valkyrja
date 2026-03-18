@@ -1,6 +1,16 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.33.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.0...master)
+
+## [v25.34.0](https://github.com/valkyrjaio/valkyrja/compare/v25.33.0...v25.34.0) - 2026-03-17
+
+* [Container] Deprecate container providers publish method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/674
+* [Container] Move Provider class to abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/675
+* [Application] Move Provider class to abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/676
+* [Cli] Move Provider class to abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/677
+* [Http] Move Provider class to abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/678
+* [Event] Move Provider class to abstract namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/679
+* [CI] Update the phparkitect rules around providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/680
 
 ## [v25.33.0](https://github.com/valkyrjaio/valkyrja/compare/v25.32.0...v25.33.0) - 2026-03-17
 
