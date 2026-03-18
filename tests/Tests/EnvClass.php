@@ -28,8 +28,6 @@ class EnvClass extends Env
      *
      ************************************************************/
 
-    /** @var bool */
-    public const bool APP_DEBUG_MODE = false;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/../';
 

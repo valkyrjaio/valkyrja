@@ -19,15 +19,12 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Server\Generator\ResponseFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ResponseFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
-        Directory::$basePath = EnvClass::APP_DIR;
-
         $filePath  = Directory::storagePath('testGenerateFile-response.php');
         $response  = Response::create('Hello World');
         $generator = new ResponseFileGenerator($response, $filePath);
@@ -41,8 +38,6 @@ final class ResponseFileGeneratorTest extends TestCase
 
     public function testGenerateFileWithHeaders(): void
     {
-        Directory::$basePath = EnvClass::APP_DIR;
-
         $filePath  = Directory::storagePath('testGenerateFileWithHeaders-response.php');
         $response  = Response::create(
             'Hello World',

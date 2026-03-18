@@ -16,6 +16,7 @@ namespace Valkyrja\Jwt\Provider;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -73,7 +74,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishFirebaseJwt(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
+        $config = $container->getSingleton(Config::class);
+        $env    = $container->getSingleton(Env::class);
         /** @var Algorithm $algorithm */
         $algorithm = $env::JWT_ALGORITHM
             ?? Algorithm::HS256;
@@ -83,7 +85,7 @@ final class ServiceProvider extends Provider
             Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
             Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PRIVATE_KEY ?? 'private-key',
             Algorithm::EdDSA => $env::JWT_EDDSA_PRIVATE_KEY ?? 'private-key',
-            default          => $env::APP_KEY,
+            default          => $config->key,
         };
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey */
@@ -91,7 +93,7 @@ final class ServiceProvider extends Provider
             Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
             Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PUBLIC_KEY ?? 'public-key',
             Algorithm::EdDSA => $env::JWT_EDDSA_PUBLIC_KEY ?? 'public-key',
-            default          => $env::APP_KEY,
+            default          => $config->key,
         };
 
         $container->setSingleton(

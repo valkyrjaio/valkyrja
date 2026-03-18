@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
 use Override;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Message\Question;
-use Valkyrja\Tests\EnvClass;
 
 /**
  * Testable Question class.
@@ -31,6 +31,6 @@ final class QuestionEmptyFgetsClass extends Question
     #[Override]
     protected function fopen(string $filename, string $mode)
     {
-        return parent::fopen(filename: EnvClass::APP_DIR . '/storage/.gitignore', mode: 'rb');
+        return parent::fopen(filename: Directory::storagePath('.gitignore'), mode: 'rb');
     }
 }

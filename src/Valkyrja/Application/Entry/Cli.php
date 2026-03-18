@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Entry;
 
 use Override;
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
-use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 
 class Cli extends App
@@ -27,11 +29,15 @@ class Cli extends App
      * @inheritDoc
      */
     #[Override]
-    public static function run(string $dir, Env $env): void
+    public static function run(Env $env, Config|CliConfig $config): void
     {
+        if (! $config instanceof CliConfig) {
+            throw new InvalidArgumentException('Config must be an instance of CliConfig');
+        }
+
         $app = static::start(
-            dir: $dir,
             env: $env,
+            config: $config,
         );
 
         $container = $app->getContainer();
@@ -39,29 +45,22 @@ class Cli extends App
         self::bootstrapThrowableHandler($app, $container);
 
         $handler = $container->getSingleton(InputHandlerContract::class);
-        $input   = static::getInput(env: $env);
+        $input   = static::getInput(config: $config);
         $handler->run($input);
     }
 
     /**
      * Get the input.
      */
-    protected static function getInput(Env $env): InputContract
+    protected static function getInput(CliConfig $config): InputContract
     {
-        /** @var non-empty-string $applicationName */
-        $applicationName = $env::APP_CLI_DEFAULT_APPLICATION_NAME
-            ?? 'valkyrja';
-        /** @var non-empty-string $commandName */
-        $commandName = $env::APP_CLI_DEFAULT_COMMAND_NAME
-            ?? CommandName::LIST;
-
         /** @var non-empty-string[] $args */
         $args = $_SERVER['argv'] ?? [];
 
         $input = InputFactory::fromGlobals(
             args: $args,
-            applicationName: $applicationName,
-            commandName: $commandName
+            applicationName: $config->applicationName,
+            commandName: $config->defaultCommandName,
         );
 
         return $input;

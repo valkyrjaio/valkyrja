@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Provider;
 
 use Override;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
@@ -70,14 +71,12 @@ final class ServiceProvider extends Provider
      */
     public static function publishSodiumCrypt(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $key */
-        $key = $env::APP_KEY;
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             SodiumCrypt::class,
             new SodiumCrypt(
-                key: $key
+                key: $config->key
             )
         );
     }

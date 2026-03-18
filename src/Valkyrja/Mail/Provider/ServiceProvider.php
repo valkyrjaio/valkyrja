@@ -19,6 +19,7 @@ use Mailgun\Mailgun;
 use Override;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -152,9 +153,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishPhpMailerClient(ContainerContract $container): void
     {
+        $app = $container->getSingleton(ApplicationContract::class);
         $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
         /** @var string $host */
         $host = $env::MAIL_PHP_MAILER_HOST
             ?? 'host';
@@ -175,7 +175,7 @@ final class ServiceProvider extends Provider
         $mailer = new PHPMailerClient(true);
 
         // Enable verbose debug output
-        $mailer->SMTPDebug = $debugMode ? 2 : 0;
+        $mailer->SMTPDebug = $app->getDebugMode() ? 2 : 0;
         // Set mailer to use SMTP
         $mailer->isSMTP();
         // Specify main and backup SMTP servers

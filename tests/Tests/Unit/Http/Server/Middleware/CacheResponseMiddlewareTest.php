@@ -36,7 +36,6 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Support\Time\Time;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function md5;
@@ -51,8 +50,7 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     protected function setUp(): void
     {
-        Directory::$basePath = EnvClass::APP_DIR;
-        $this->filePath      = Directory::storagePath('app');
+        $this->filePath = Directory::storagePath('app');
     }
 
     public function testThroughHandler(): void

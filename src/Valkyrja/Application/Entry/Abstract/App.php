@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry\Abstract;
 
-use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
-use Valkyrja\Application\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -35,16 +33,14 @@ abstract class App
 {
     /**
      * Start the application.
-     *
-     * @param non-empty-string $dir The directory
      */
-    public static function start(string $dir, Env $env): ApplicationContract
+    public static function start(Env $env, Config $config): ApplicationContract
     {
         static::defaultExceptionHandler();
         static::appStart();
-        static::directory(dir: $dir);
+        static::directory(dir: $config->dir);
 
-        return static::app(env: $env);
+        return static::app(env: $env, config: $config);
     }
 
     /**
@@ -79,15 +75,16 @@ abstract class App
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
      */
-    public static function app(Env $env): ApplicationContract
+    public static function app(Env $env, Config $config): ApplicationContract
     {
         $container = static::getContainer();
-        $app       = static::getApplication(container: $container, env: $env);
+        $app       = static::getApplication(container: $container, config: $config);
 
         static::bootstrapServices(
             app: $app,
             container: $container,
             env: $env,
+            config: $config
         );
 
         return $app;
@@ -95,18 +92,14 @@ abstract class App
 
     /**
      * Run the app.
-     *
-     * @param non-empty-string $dir The directory
      */
-    abstract public static function run(string $dir, Env $env): void;
+    abstract public static function run(Env $env, Config $config): void;
 
     /**
      * Get the application.
      */
-    protected static function getApplication(ContainerContract $container, Env $env): ApplicationContract
+    protected static function getApplication(ContainerContract $container, Config $config): ApplicationContract
     {
-        $config = static::getConfig(env: $env);
-
         return new Valkyrja(
             container: $container,
             config: $config,
@@ -116,9 +109,10 @@ abstract class App
     /**
      * Bootstrap container services.
      */
-    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env): void
+    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Config $config): void
     {
         $container->setSingleton(Env::class, $env);
+        $container->setSingleton(Config::class, $config);
         $container->setSingleton(ContainerContract::class, $container);
         $container->setSingleton(ApplicationContract::class, $app);
 
@@ -147,53 +141,6 @@ abstract class App
     protected static function publishContainerData(ContainerContract $container): void
     {
         ServiceProvider::publishData(container: $container);
-    }
-
-    /**
-     * Get the application config.
-     */
-    protected static function getConfig(Env $env): Config
-    {
-        $providers = static::getProviders(env: $env);
-        /** @var non-empty-string $timezone */
-        $timezone = $env::APP_TIMEZONE;
-        /** @var non-empty-string $version */
-        $version = $env::APP_VERSION
-            ?? ApplicationInfo::VERSION;
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
-        /** @var non-empty-string $environment */
-        $environment = $env::APP_ENVIRONMENT;
-        /** @var array<callable(ApplicationContract):void> $publishableProviders */
-        $publishableProviders = $env::APP_PUBLISHABLE_CALLBACKS;
-
-        return new Config(
-            version: $version,
-            environment: $environment,
-            debugMode: $debugMode,
-            timezone: $timezone,
-            providers: $providers,
-            callbacks: $publishableProviders,
-        );
-    }
-
-    /**
-     * Get the providers to register.
-     *
-     * @return class-string<ProviderContract>[]
-     */
-    protected static function getProviders(Env $env): array
-    {
-        /** @var class-string<ProviderContract>[] $requiredComponents */
-        $requiredComponents = $env::APP_REQUIRED_COMPONENTS;
-        /** @var class-string<ProviderContract>[] $coreComponents */
-        $coreComponents = $env::APP_CORE_COMPONENTS;
-        /** @var class-string<ProviderContract>[] $components */
-        $components = $env::APP_COMPONENTS;
-        /** @var class-string<ProviderContract>[] $customComponents */
-        $customComponents = $env::APP_CUSTOM_COMPONENTS;
-
-        return array_merge($requiredComponents, $coreComponents, $components, $customComponents);
     }
 
     /**

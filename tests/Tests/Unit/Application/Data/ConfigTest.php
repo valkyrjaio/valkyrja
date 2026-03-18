@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
+use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -29,7 +30,25 @@ final class ConfigTest extends TestCase
         self::assertSame('production', $data->environment);
         self::assertSame(ApplicationInfo::VERSION, $data->version);
         self::assertFalse($data->debugMode);
-        self::assertEmpty($data->providers);
+        self::assertNotEmpty($data->providers);
+        self::assertSame(
+            [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::CLI_INTERACTION,
+                ComponentClass::CLI_MIDDLEWARE,
+                ComponentClass::CLI_ROUTING,
+                ComponentClass::CLI_SERVER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                ComponentClass::LOG,
+                ComponentClass::VIEW,
+            ],
+            $data->providers
+        );
         self::assertSame('UTC', $data->timezone);
     }
 }

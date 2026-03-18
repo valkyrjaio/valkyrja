@@ -24,7 +24,6 @@ use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Filesystem\Provider\ServiceProvider;
-use Valkyrja\Tests\Classes\Filesystem\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -64,7 +63,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(FlysystemFilesystem::class, self::createStub(FlysystemFilesystem::class));
 
         $callback = ServiceProvider::publishers()[FilesystemContract::class];
@@ -78,7 +77,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishFlysystemFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(LocalFlysystemFilesystem::class, self::createStub(LocalFlysystemFilesystem::class));
 
         $callback = ServiceProvider::publishers()[FlysystemFilesystem::class];
@@ -92,7 +91,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLocalFlysystemFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(LocalFilesystemAdapter::class, self::createStub(LocalFilesystemAdapter::class));
 
         $callback = ServiceProvider::publishers()[LocalFlysystemFilesystem::class];
@@ -103,7 +102,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFlysystemLocalAdapter(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
 
         $callback = ServiceProvider::publishers()[LocalFilesystemAdapter::class];
         $callback($this->container);
@@ -116,7 +115,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishS3FlysystemFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(AwsS3V3Adapter::class, self::createStub(AwsS3V3Adapter::class));
 
         $callback = ServiceProvider::publishers()[S3FlysystemFilesystem::class];
@@ -127,7 +126,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFlysystemAwsS3Adapter(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
 
         $callback = ServiceProvider::publishers()[AwsS3V3Adapter::class];
         $callback($this->container);
@@ -137,7 +136,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishInMemoryFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
 
         $callback = ServiceProvider::publishers()[InMemoryFilesystem::class];
         $callback($this->container);
@@ -147,7 +146,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullFilesystem(): void
     {
-        $this->container->setSingleton(Env::class, new EnvClass());
+        $this->container->setSingleton(Env::class, new Env());
 
         $callback = ServiceProvider::publishers()[NullFilesystem::class];
         $callback($this->container);

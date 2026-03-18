@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional\Abstract;
 
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -28,30 +29,30 @@ abstract class TestCase extends AbstractTestCase
 {
     /**
      * The application.
-     *
-     * @var ApplicationContract
      */
     protected ApplicationContract $app;
 
     /**
      * The env.
-     *
-     * @var EnvClass
      */
     protected EnvClass $env;
+
+    /**
+     * The config.
+     */
+    protected Config $config;
 
     /**
      * Setup functional tests.
      */
     protected function setUp(): void
     {
-        App::directory(dir: EnvClass::APP_DIR);
+        App::directory(dir: Directory::$basePath);
 
         $this->app = $app = App::app(
-            $this->env = new EnvClass()
+            $this->env    = new EnvClass(),
+            $this->config = new Config(),
         );
-
-        Directory::$basePath = EnvClass::APP_DIR;
 
         $container = $app->getContainer();
 

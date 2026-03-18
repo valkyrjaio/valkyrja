@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Application\Entry;
 
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 
 final class CliClass extends Cli
@@ -22,8 +22,8 @@ final class CliClass extends Cli
     /**
      * Wrapper to test the getInput method directly.
      */
-    public static function getInputExposed(Env $env): InputContract
+    public static function getInputExposed(CliConfig $config): InputContract
     {
-        return self::getInput($env);
+        return self::getInput($config);
     }
 }

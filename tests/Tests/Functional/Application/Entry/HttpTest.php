@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
@@ -46,7 +46,7 @@ final class HttpTest extends TestCase
 
     public function testHttp(): void
     {
-        Http::directory(EnvClass::APP_DIR);
+        Http::directory(Directory::$basePath);
 
         self::$runCalled = false;
 
@@ -55,32 +55,41 @@ final class HttpTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/version';
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = true;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
             /** @var non-empty-string */
             public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                HttpComponentProviderClass::class,
-            ];
         };
-        /** @var non-empty-string $dir */
-        $dir                           = $env::APP_DIR;
+        $dir = Directory::$basePath;
+
+        $config = new HttpConfig(
+            dir: $dir,
+            debugMode: true,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                HttpComponentProviderClass::class,
+            ],
+        );
+
         $containerDataClassName        = 'HttpTestContainerData';
         $containerDataFilePath         = "/$containerDataClassName.php";
-        $containerDirectory            = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $containerDirectory            = Directory::srcPath($config->dataPath);
         $absoluteContainerDataFilePath = $containerDirectory . $containerDataFilePath;
         $routesDataClassName           = 'HttpTestHttpRoutingData';
         $routesDataFilePath            = "/$routesDataClassName.php";
-        $routesDirectory               = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $routesDirectory               = Directory::srcPath($config->dataPath);
         $absoluteRoutesDataFilePath    = $routesDirectory . $routesDataFilePath;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);
 
-        $application = Http::app($env);
+        $application = Http::app($env, $config);
         $container   = $application->getContainer();
 
         $http = $container->getSingleton(CollectionContract::class);
@@ -88,14 +97,14 @@ final class HttpTest extends TestCase
         $dataFileGenerator = new DataFileGenerator(
             directory: $containerDirectory,
             data: $container->getData(),
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: $config->dataNamespace,
             className: $containerDataClassName
         );
         $dataFileGenerator->generateFile();
         $httpDataFileGenerator = new HttpDataFileGenerator(
             directory: $routesDirectory,
             data: $http->getData(),
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: $config->dataNamespace,
             className: $routesDataClassName
         );
         $httpDataFileGenerator->generateFile();
@@ -112,24 +121,32 @@ final class HttpTest extends TestCase
         require_once $absoluteRoutesDataFilePath;
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = false;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
             /** @var non-empty-string */
             public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                HttpComponentProviderClass::class,
-            ];
-            /** @var (callable(ApplicationContract):void)[] */
-            public const array APP_PUBLISHABLE_CALLBACKS = [
-                [HttpComponentProviderClass::class, 'publish'],
-            ];
         };
 
+        $config = new HttpConfig(
+            dir: $dir,
+            debugMode: false,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                HttpComponentProviderClass::class,
+            ],
+            callbacks: [
+                [HttpComponentProviderClass::class, 'publish'],
+            ],
+        );
+
         ob_start();
-        Http::run($dir, $env);
+        Http::run($env, $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
@@ -143,24 +160,32 @@ final class HttpTest extends TestCase
         HttpComponentProviderClass::$publishedContainerData = false;
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = true;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
             /** @var non-empty-string */
             public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                HttpComponentProviderClass::class,
-            ];
-            /** @var (callable(ApplicationContract):void)[] */
-            public const array APP_PUBLISHABLE_CALLBACKS = [
-                [HttpComponentProviderClass::class, 'publish'],
-            ];
         };
 
+        $config = new HttpConfig(
+            dir: $dir,
+            debugMode: true,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                HttpComponentProviderClass::class,
+            ],
+            callbacks: [
+                [HttpComponentProviderClass::class, 'publish'],
+            ],
+        );
+
         ob_start();
-        Http::run($dir, $env);
+        Http::run($env, $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);

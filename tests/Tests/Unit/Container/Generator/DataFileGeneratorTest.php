@@ -17,15 +17,12 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class DataFileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
-        Directory::$basePath = EnvClass::APP_DIR;
-
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestData';
         $filePath   = "$directory/$className.php";
@@ -33,7 +30,7 @@ final class DataFileGeneratorTest extends TestCase
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: 'App',
             className: $className
         );
         $results   = $generator->generateFile();
@@ -48,7 +45,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestData';
-        $namespace  = EnvClass::APP_DATA_NAMESPACE;
+        $namespace  = 'App';
         $data       = new Data();
         $generator  = new DataFileGenerator(
             directory: $directory,
@@ -104,7 +101,7 @@ final class DataFileGeneratorTest extends TestCase
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: 'App',
             className: $className
         );
         $contents  = $generator->generateClassContents();

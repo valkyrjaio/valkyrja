@@ -18,15 +18,12 @@ use RuntimeException;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class FileGeneratorTest extends TestCase
 {
     public function testGenerateFile(): void
     {
-        Directory::$basePath = EnvClass::APP_DIR;
-
         $filePath  = Directory::storagePath('FileGeneratorTest.testGenerateFile.php');
         $generator = new class($filePath) extends FileGenerator {
             #[Override]

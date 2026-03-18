@@ -20,6 +20,7 @@ use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
@@ -112,9 +113,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishOrkaRenderer(ContainerContract $container): void
     {
+        $app = $container->getSingleton(ApplicationContract::class);
         $env = $container->getSingleton(Env::class);
-        /** @var bool $debug */
-        $debug = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $dir */
         $dir = $env::VIEW_ORKA_PATH
             ?? '/resources/views';
@@ -134,7 +134,7 @@ final class ServiceProvider extends Provider
                 $fileExtension,
                 $paths,
                 Directory::storagePath('views/'),
-                $debug,
+                $app->getDebugMode(),
                 ...$replacementClasses,
             ),
         );
@@ -160,9 +160,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishTwigEnvironment(ContainerContract $container): void
     {
+        $app = $container->getSingleton(ApplicationContract::class);
         $env = $container->getSingleton(Env::class);
-        /** @var bool $debug */
-        $debug = $env::APP_DEBUG_MODE;
         /** @var array<string, string> $paths */
         $paths = $env::VIEW_TWIG_PATHS
             ?? [];
@@ -186,7 +185,7 @@ final class ServiceProvider extends Provider
             $loader,
             [
                 'cache'   => Directory::basePath(path: $compiledDir),
-                'debug'   => $debug,
+                'debug'   => $app->getDebugMode(),
                 'charset' => 'utf-8',
             ]
         );

@@ -17,8 +17,9 @@ use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ProviderContract;
+use Valkyrja\Cli\Server\Constant\CommandName;
 
-readonly class Config
+readonly class CliConfig extends Config
 {
     /**
      * @param non-empty-string                          $namespace
@@ -29,20 +30,24 @@ readonly class Config
      * @param non-empty-string                          $key
      * @param non-empty-string                          $dataPath
      * @param non-empty-string                          $dataNamespace
+     * @param non-empty-string                          $applicationName
+     * @param non-empty-string                          $defaultCommandName
      * @param class-string<ProviderContract>[]          $providers
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
-        public string $namespace = 'App',
-        public string $dir = __DIR__,
-        public string $version = ApplicationInfo::VERSION,
-        public string $environment = 'production',
-        public bool $debugMode = false,
-        public string $timezone = 'UTC',
-        public string $key = 'some_secret_app_key',
-        public string $dataPath = 'App/Provider/Data',
-        public string $dataNamespace = 'App\\Provider\\Data',
-        public array $providers = [
+        string $namespace = 'App',
+        string $dir = __DIR__,
+        string $version = ApplicationInfo::VERSION,
+        string $environment = 'production',
+        bool $debugMode = false,
+        string $timezone = 'UTC',
+        string $key = 'some_secret_app_key',
+        string $dataPath = 'App/Provider/Data',
+        string $dataNamespace = 'App\\Provider\\Data',
+        public string $applicationName = 'valkyrja',
+        public string $defaultCommandName = CommandName::LIST,
+        array $providers = [
             ComponentClass::CONTAINER,
             ComponentClass::DISPATCHER,
             ComponentClass::CLI_INTERACTION,
@@ -55,9 +60,22 @@ readonly class Config
             ComponentClass::HTTP_ROUTING,
             ComponentClass::HTTP_SERVER,
             ComponentClass::LOG,
-            ComponentClass::VIEW,
         ],
-        public array $callbacks = [],
+        array $callbacks = [],
+        public HttpConfig $http = new HttpConfig(),
     ) {
+        parent::__construct(
+            namespace: $namespace,
+            dir: $dir,
+            version: $version,
+            environment: $environment,
+            debugMode: $debugMode,
+            timezone: $timezone,
+            key: $key,
+            dataPath: $dataPath,
+            dataNamespace: $dataNamespace,
+            providers: $providers,
+            callbacks: $callbacks,
+        );
     }
 }

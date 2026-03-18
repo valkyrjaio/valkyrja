@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Server\Provider;
 use Override;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
@@ -76,9 +77,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishRequestHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
+        $app = $container->getSingleton(ApplicationContract::class);
 
         $requestReceived = $container->getSingleton(RequestReceivedHandlerContract::class);
         $exception       = $container->getSingleton(ThrowableCaughtHandlerContract::class);
@@ -96,7 +95,7 @@ final class ServiceProvider extends Provider
                 throwableCaughtHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
-                debug: $debugMode
+                debug: $app->getDebugMode()
             )
         );
     }
@@ -175,9 +174,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishCacheResponseMiddleware(ContainerContract $container): void
     {
+        $app = $container->getSingleton(ApplicationContract::class);
         $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $filePath */
         $filePath = $env::HTTP_SERVER_RESPONSE_CACHE_FILE_PATH
             ?? Directory::frameworkStorageCachePath('response/');
@@ -186,7 +184,7 @@ final class ServiceProvider extends Provider
             CacheResponseMiddleware::class,
             new CacheResponseMiddleware(
                 filePath: $filePath,
-                debug: $debugMode,
+                debug: $app->getDebugMode(),
             )
         );
     }
