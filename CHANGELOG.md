@@ -1,6 +1,57 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.32.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.33.0...master)
+
+## [v25.33.0](https://github.com/valkyrjaio/valkyrja/compare/v25.32.0...v25.33.0) - 2026-03-17
+
+* [Http] Add route processing to routes collected through provider. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/626
+* [Http] Update collection to get dynamic routes by path by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/627
+* [Attribute] Remove unnecessary null return type from ReflectionAwareAttribute by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/628
+* [Auth] Remove null return types where sensible by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/629
+* [Broadcast] Remove null types where sensible by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/630
+* [Cache] Remove null types where sensible by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/631
+* [Cli] Remove null types in InputFactory where sensible by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/632
+* [Cli] Remove null types in Interaction messages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/633
+* [CI] Prevent coveralls external failure from failing builds by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/634
+* [Cli] Remove null types in Interaction option by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/635
+* [Cli] Remove null types in Interaction route collection by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/636
+* [Cli] Remove null types in Interaction route data objects by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/637
+* [CI] Update rector to v2.3.8 from v2.3.7 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/638
+* [Container] Remove null types in container manager by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/639
+* [Dispatch] Remove null types in data objects and dispatcher by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/640
+* [Event] Remove null types in dispatcher by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/641
+* [View] Remove null types in template, renderer, and factory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/642
+* [Filesystem] Remove null types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/643
+* [Validation] Remove null types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/644
+* [Support] Remove null types in time classes. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/645
+* [Orm] Remove null types in statement by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/646
+* [Orm] Remove null types. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/647
+* [Http] Remove null types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/648
+* [Http] Remove null types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/649
+* [Mail] Remove null types by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/650
+* [All] Remove unnecessary exceptions by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/651
+* [Cli] Refactor routing data parameters by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/652
+* [GitHub] Add improvement option to pull request template by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/653
+* [Http] Refactor EntityRouteMatchedMiddleware by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/654
+* [Container] Update callable signature by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/655
+* [Container] Deprecate non-deferred service providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/656
+* [Http] Update routing collection and refactor route by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/657
+* [Data] Data Provider classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/658
+* [Data] Update imports for DataFileGenerator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/659
+* [Container] Change getImports method to abstract by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/660
+* [Support] Update file generator to only write when content changed by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/661
+* [Data] Update the bypass logic for data providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/662
+* [Data] Add default data provider file generator by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/663
+* [Documentation] Change logo image in README.md by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/664
+* [CI] Update psalm to version v6.16.0 from v6.15.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/666
+* [Application] Add publishable callbacks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/665
+* [Data] Update data classes' generation by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/667
+* [Data] Update attribute collection to not require attributes/reflector providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/668
+* [Application] Expand usage of Config over Env by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/669
+* [CI] Update phpcodesniffer to v8.28.0 from v8.27.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/670
+* [CI] Update phpstan to v2.1.41 from v2.1.39 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/671
+* [CI] Update rector to v2.3.9 from v2.3.8 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/672
+* [CI] Update composer packages to latest versions by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/673
 
 ## [v25.32.0](https://github.com/valkyrjaio/valkyrja/compare/v25.31.1...v25.32.0) - 2026-02-21
 
