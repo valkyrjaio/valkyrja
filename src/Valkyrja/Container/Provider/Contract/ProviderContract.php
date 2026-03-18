@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider\Contract;
 
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-
 interface ProviderContract
 {
     /**
@@ -43,9 +41,4 @@ interface ProviderContract
      * @return class-string[]
      */
     public static function provides(): array;
-
-    /**
-     * Publish the provider.
-     */
-    public static function publish(ContainerContract $container): void;
 }

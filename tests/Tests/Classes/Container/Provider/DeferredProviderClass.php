@@ -29,6 +29,7 @@ final class DeferredProviderClass implements ProviderContract
     public static function publishers(): array
     {
         return [
+            ProvidedClass::class          => [self::class, 'publish'],
             ProvidedSecondaryClass::class => [self::class, 'publishSecondary'],
         ];
     }
@@ -42,7 +43,6 @@ final class DeferredProviderClass implements ProviderContract
         ];
     }
 
-    #[Override]
     public static function publish(object $providerAware): void
     {
         self::$publishCalled = true;

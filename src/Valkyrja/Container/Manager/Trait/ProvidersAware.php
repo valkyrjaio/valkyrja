@@ -56,13 +56,6 @@ trait ProvidersAware
     protected array $providers = [];
 
     /**
-     * The default publish method.
-     *
-     * @var string
-     */
-    protected string $defaultPublishMethod = 'publish';
-
-    /**
      * @inheritDoc
      *
      * @param class-string<ProviderContract> $provider The provider
@@ -170,7 +163,7 @@ trait ProvidersAware
         foreach ($provides as $provided) {
             $this->deferred[$provided] = $provider;
             $callable                  = $publishCallback[$provided]
-                ?? [$provider, $this->defaultPublishMethod];
+                ?? null;
 
             if (! is_callable($callable)) {
                 throw new InvalidArgumentException("$provided should have a valid callable");
