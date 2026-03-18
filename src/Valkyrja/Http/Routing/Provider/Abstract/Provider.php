@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Provider;
+namespace Valkyrja\Http\Routing\Provider\Abstract;
 
 use Override;
 use Valkyrja\Http\Routing\Provider\Contract\ProviderContract;

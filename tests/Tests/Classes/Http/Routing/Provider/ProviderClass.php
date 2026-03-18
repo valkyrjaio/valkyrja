@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Routing\Provider;
 
-use Valkyrja\Http\Routing\Provider\Provider;
+use Valkyrja\Http\Routing\Provider\Abstract\Provider;
 
 final class ProviderClass extends Provider
 {
