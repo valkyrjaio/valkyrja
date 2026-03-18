@@ -92,6 +92,16 @@ abstract class UploadedFileFactory
             throw new InvalidArgumentException('Temp file name expected to be a string');
         }
 
+        /**
+         * @var array{
+         *     tmp_name: string,
+         *     size: int|string,
+         *     error: int|string,
+         *     name: string|int,
+         *     type: string|int,
+         * } $value
+         */
+
         return new UploadedFile(
             $tmpName,
             null,
