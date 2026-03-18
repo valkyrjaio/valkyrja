@@ -15,6 +15,7 @@ namespace Valkyrja\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Abstract\Provider;
 
 class ComponentProvider extends Provider
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Bin\Provider;
 
-use Valkyrja\Application\Provider\Provider;
+use Valkyrja\Application\Provider\Abstract\Provider;
 
 class ComponentProvider extends Provider
 {
