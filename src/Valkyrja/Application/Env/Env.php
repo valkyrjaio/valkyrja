@@ -81,10 +81,8 @@ class Env
     public const string APP_KEY = 'some_secret_app_key';
     /** @var class-string<ProviderContract>[] */
     public const array APP_REQUIRED_COMPONENTS = [
-        ComponentClass::ATTRIBUTE,
         ComponentClass::CONTAINER,
         ComponentClass::DISPATCHER,
-        ComponentClass::REFLECTION,
     ];
     /** @var class-string<ProviderContract>[] */
     public const array APP_CORE_COMPONENTS = [
