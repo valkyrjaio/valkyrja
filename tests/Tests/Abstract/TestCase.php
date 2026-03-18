@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Abstract;
 use Countable;
 use Override;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Tests\EnvClass;
+use Valkyrja\Application\Directory\Directory;
 
 use function class_exists;
 use function count;
@@ -91,7 +91,7 @@ abstract class TestCase extends PHPUnitTestCase
     #[Override]
     protected function tearDown(): void
     {
-        $dir = EnvClass::APP_DIR . '/storage';
+        $dir = Directory::storagePath();
 
         /** @var string[] $files */
         $files = scandir($dir);

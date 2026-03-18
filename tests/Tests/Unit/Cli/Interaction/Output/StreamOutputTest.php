@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -28,7 +28,7 @@ final class StreamOutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = new StreamOutput(fopen(filename: EnvClass::APP_DIR . '/storage/stream-output-test.txt', mode: 'wrb'))
+        $output = new StreamOutput(fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb'))
             ->withAddedMessage($message);
 
         ob_start();
@@ -45,8 +45,8 @@ final class StreamOutputTest extends TestCase
 
     public function testFilePath(): void
     {
-        $stream  = fopen(filename: EnvClass::APP_DIR . '/storage/stream-output-test.txt', mode: 'wrb');
-        $stream2 = fopen(filename: EnvClass::APP_DIR . '/storage/stream-output-test2.txt', mode: 'wrb');
+        $stream  = fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb');
+        $stream2 = fopen(filename: Directory::storagePath('stream-output-test2.txt'), mode: 'wrb');
 
         $output  = (new StreamOutput($stream));
         $output2 = $output->withStream($stream2);

@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Env;
 
 use Twig\Extension\ExtensionInterface;
-use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Contract\ProviderContract;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -57,73 +54,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
  */
 class Env
 {
-    /************************************************************
-     *
-     * Application component env variables.
-     *
-     ************************************************************/
-
-    /** @var non-empty-string */
-    public const string APP_ENVIRONMENT = 'local';
-    /** @var non-empty-string */
-    public const string APP_NAMESPACE = 'App';
-    /** @var non-empty-string */
-    public const string APP_DATA_PATH = 'App/Provider/Data';
-    /** @var non-empty-string */
-    public const string APP_DATA_NAMESPACE = 'App\\Provider\\Data';
-    /** @var bool */
-    public const bool APP_DEBUG_MODE = true;
-    /** @var non-empty-string */
-    public const string APP_TIMEZONE = 'UTC';
-    /** @var non-empty-string|null */
-    public const string|null APP_VERSION = null;
-    /** @var non-empty-string */
-    public const string APP_KEY = 'some_secret_app_key';
-    /** @var class-string<ProviderContract>[] */
-    public const array APP_REQUIRED_COMPONENTS = [
-        ComponentClass::CONTAINER,
-        ComponentClass::DISPATCHER,
-    ];
-    /** @var class-string<ProviderContract>[] */
-    public const array APP_CORE_COMPONENTS = [
-        ComponentClass::CLI_INTERACTION,
-        ComponentClass::CLI_MIDDLEWARE,
-        ComponentClass::CLI_ROUTING,
-        ComponentClass::CLI_SERVER,
-        ComponentClass::EVENT,
-        ComponentClass::HTTP_MESSAGE,
-        ComponentClass::HTTP_MIDDLEWARE,
-        ComponentClass::HTTP_ROUTING,
-        ComponentClass::HTTP_SERVER,
-    ];
-    /** @var class-string<ProviderContract>[] */
-    public const array APP_COMPONENTS = [
-        ComponentClass::API,
-        ComponentClass::AUTH,
-        ComponentClass::BROADCAST,
-        ComponentClass::CACHE,
-        ComponentClass::CRYPT,
-        ComponentClass::FILESYSTEM,
-        ComponentClass::HTTP_CLIENT,
-        ComponentClass::JWT,
-        ComponentClass::LOG,
-        ComponentClass::MAIL,
-        ComponentClass::ORM,
-        ComponentClass::SESSION,
-        ComponentClass::SMS,
-        ComponentClass::VIEW,
-    ];
-    /** @var class-string<ProviderContract>[] */
-    public const array APP_CUSTOM_COMPONENTS = [];
-    /** @var array<callable(ApplicationContract):void> */
-    public const array APP_PUBLISHABLE_CALLBACKS = [];
-    /** @var non-empty-string|null */
-    public const string|null APP_CLI_DEFAULT_APPLICATION_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null APP_CLI_DEFAULT_COMMAND_NAME = null;
-    /** @var non-empty-string */
-    public const string APP_DIR = __DIR__ . '/..';
-
     /************************************************************
      *
      * Auth component env variables.

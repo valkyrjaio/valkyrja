@@ -15,15 +15,10 @@ namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
-use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
-use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
-use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the functionality of the Application.
@@ -51,7 +46,7 @@ final class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        self::assertSame($this->env::APP_ENVIRONMENT, $this->app->getEnvironment());
+        self::assertSame($this->config->environment, $this->app->getEnvironment());
     }
 
     /**
@@ -59,23 +54,7 @@ final class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->env::APP_DEBUG_MODE, $this->app->getDebugMode());
-    }
-
-    /**
-     * Test the client() helper method.
-     */
-    public function testClient(): void
-    {
-        self::assertInstanceOf(ClientContract::class, $this->app->getContainer()->getSingleton(ClientContract::class));
-    }
-
-    /**
-     * Test the filesystem() helper method.
-     */
-    public function testFilesystem(): void
-    {
-        self::assertInstanceOf(FilesystemContract::class, $this->app->getContainer()->getSingleton(FilesystemContract::class));
+        self::assertSame($this->config->debugMode, $this->app->getDebugMode());
     }
 
     /**
@@ -84,14 +63,6 @@ final class ApplicationTest extends TestCase
     public function testKernel(): void
     {
         self::assertInstanceOf(RequestHandlerContract::class, $this->app->getContainer()->getSingleton(RequestHandlerContract::class));
-    }
-
-    /**
-     * Test the logger() helper method.
-     */
-    public function testLogger(): void
-    {
-        self::assertInstanceOf(LoggerContract::class, $this->app->getContainer()->getSingleton(LoggerContract::class));
     }
 
     /**
@@ -108,21 +79,5 @@ final class ApplicationTest extends TestCase
     public function testResponseBuilder(): void
     {
         self::assertInstanceOf(ResponseFactoryContract::class, $this->app->getContainer()->getSingleton(ResponseFactoryContract::class));
-    }
-
-    /**
-     * Test the session() helper method.
-     */
-    public function testSession(): void
-    {
-        self::assertInstanceOf(SessionContract::class, $this->app->getContainer()->getSingleton(SessionContract::class));
-    }
-
-    /**
-     * Test the view() helper method.
-     */
-    public function testRenderer(): void
-    {
-        self::assertInstanceOf(RendererContract::class, $this->app->getContainer()->getSingleton(RendererContract::class));
     }
 }

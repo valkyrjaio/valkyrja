@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
@@ -50,7 +50,7 @@ final class CliTest extends TestCase
 
     public function testRun(): void
     {
-        Cli::directory(EnvClass::APP_DIR);
+        Cli::directory(Directory::$basePath);
 
         self::$runCalled = false;
 
@@ -64,32 +64,45 @@ final class CliTest extends TestCase
         ];
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = true;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
             /** @var non-empty-string */
             public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                CliComponentProviderClass::class,
-            ];
         };
-        /** @var non-empty-string $dir */
-        $dir                           = $env::APP_DIR;
+        $dir = Directory::$basePath;
+
+        $config = new CliConfig(
+            dir: $dir,
+            debugMode: true,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::CLI_INTERACTION,
+                ComponentClass::CLI_MIDDLEWARE,
+                ComponentClass::CLI_ROUTING,
+                ComponentClass::CLI_SERVER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                CliComponentProviderClass::class,
+            ],
+        );
+
         $containerDataClassName        = 'CliTestContainerData';
         $containerDataFilePath         = "/$containerDataClassName.php";
-        $containerDirectory            = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $containerDirectory            = Directory::srcPath($config->dataPath);
         $absoluteContainerDataFilePath = $containerDirectory . $containerDataFilePath;
         $routesDataClassName           = 'CliTestCliRoutingData';
         $routesDataFilePath            = "/$routesDataClassName.php";
-        $routesDirectory               = Directory::srcPath(EnvClass::APP_DATA_PATH);
+        $routesDirectory               = Directory::srcPath($config->dataPath);
         $absoluteRoutesDataFilePath    = $routesDirectory . $routesDataFilePath;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);
 
-        $application = Cli::app($env);
+        $application = Cli::app($env, $config);
         $container   = $application->getContainer();
 
         $cli = $container->getSingleton(CollectionContract::class);
@@ -97,14 +110,14 @@ final class CliTest extends TestCase
         $dataFileGenerator = new DataFileGenerator(
             directory: $containerDirectory,
             data: $container->getData(),
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: $config->dataNamespace,
             className: $containerDataClassName
         );
         $dataFileGenerator->generateFile();
         $cliDataFileGenerator = new CliDataFileGenerator(
             directory: $routesDirectory,
             data: $cli->getData(),
-            namespace: EnvClass::APP_DATA_NAMESPACE,
+            namespace: $config->dataNamespace,
             className: $routesDataClassName
         );
         $cliDataFileGenerator->generateFile();
@@ -121,24 +134,36 @@ final class CliTest extends TestCase
         require_once $absoluteRoutesDataFilePath;
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = false;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
             /** @var non-empty-string */
             public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                CliComponentProviderClass::class,
-            ];
-            /** @var (callable(ApplicationContract):void)[] */
-            public const array APP_PUBLISHABLE_CALLBACKS = [
-                [CliComponentProviderClass::class, 'publish'],
-            ];
         };
 
+        $config = new CliConfig(
+            dir: $dir,
+            debugMode: false,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::CLI_INTERACTION,
+                ComponentClass::CLI_MIDDLEWARE,
+                ComponentClass::CLI_ROUTING,
+                ComponentClass::CLI_SERVER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                CliComponentProviderClass::class,
+            ],
+            callbacks: [
+                [CliComponentProviderClass::class, 'publish'],
+            ],
+        );
+
         ob_start();
-        Cli::run($dir, $env);
+        Cli::run($env, $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
@@ -152,24 +177,36 @@ final class CliTest extends TestCase
         CliComponentProviderClass::$publishedContainerData = false;
 
         $env = new class extends EnvClass {
-            /** @var bool */
-            public const bool APP_DEBUG_MODE = true;
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
             /** @var non-empty-string */
             public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
-            /** @var class-string<Provider>[] */
-            public const array APP_CUSTOM_COMPONENTS = [
-                CliComponentProviderClass::class,
-            ];
-            /** @var (callable(ApplicationContract):void)[] */
-            public const array APP_PUBLISHABLE_CALLBACKS = [
-                [CliComponentProviderClass::class, 'publish'],
-            ];
         };
 
+        $config = new CliConfig(
+            dir: $dir,
+            debugMode: true,
+            providers: [
+                ComponentClass::CONTAINER,
+                ComponentClass::DISPATCHER,
+                ComponentClass::CLI_INTERACTION,
+                ComponentClass::CLI_MIDDLEWARE,
+                ComponentClass::CLI_ROUTING,
+                ComponentClass::CLI_SERVER,
+                ComponentClass::EVENT,
+                ComponentClass::HTTP_MESSAGE,
+                ComponentClass::HTTP_MIDDLEWARE,
+                ComponentClass::HTTP_ROUTING,
+                ComponentClass::HTTP_SERVER,
+                CliComponentProviderClass::class,
+            ],
+            callbacks: [
+                [CliComponentProviderClass::class, 'publish'],
+            ],
+        );
+
         ob_start();
-        Cli::run($dir, $env);
+        Cli::run($env, $config);
         ob_get_clean();
 
         restore_error_handler();

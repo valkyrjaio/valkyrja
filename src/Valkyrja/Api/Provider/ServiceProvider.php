@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Provider;
 use Override;
 use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
@@ -52,15 +52,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishApi(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var bool $debugMode */
-        $debugMode = $env::APP_DEBUG_MODE;
+        $app = $container->getSingleton(ApplicationContract::class);
 
         $container->setSingleton(
             ApiContract::class,
             new Api(
                 responseFactory: $container->getSingleton(ResponseFactoryContract::class),
-                debug: $debugMode
+                debug: $app->getDebugMode()
             )
         );
     }

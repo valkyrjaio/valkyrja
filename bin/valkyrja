@@ -12,8 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Bin\Env\Env;
+use Valkyrja\Application\Env\Env;
+use Valkyrja\Bin\Provider\ComponentProvider;
 
 $composerAutoloadFilePossibilities = [
     __DIR__ . '/../../../autoload.php',
@@ -57,9 +60,23 @@ require $composerAutoloadFile;
 
 define('BIN_APP_DIR', $dir);
 
-$env = new class extends Env {
-    /** @var non-empty-string */
-    public const string APP_DIR = BIN_APP_DIR;
-};
+$env    = new Env();
+$config = new CliConfig(
+    dir: $dir,
+    providers: [
+        ComponentClass::CONTAINER,
+        ComponentClass::DISPATCHER,
+        ComponentClass::CLI_INTERACTION,
+        ComponentClass::CLI_MIDDLEWARE,
+        ComponentClass::CLI_ROUTING,
+        ComponentClass::CLI_SERVER,
+        ComponentClass::EVENT,
+        ComponentClass::HTTP_MESSAGE,
+        ComponentClass::HTTP_MIDDLEWARE,
+        ComponentClass::HTTP_ROUTING,
+        ComponentClass::HTTP_SERVER,
+        ComponentProvider::class,
+    ],
+);
 
-Cli::run($dir, $env);
+Cli::run($env, $config);

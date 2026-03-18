@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Directory;
 
+use Override;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -23,24 +24,36 @@ final class DirectoryTest extends TestCase
 {
     /**
      * The base path.
-     *
-     * @var string
      */
     protected string $basePath = '/base/path';
 
     /**
      * The sub path.
-     *
-     * @var string
      */
     protected string $subPath = '/sub/path';
 
     /**
-     * Setup the test.
+     * The original base path.
      */
+    protected string $originalBasePath = '';
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     protected function setUp(): void
     {
-        Directory::$basePath = $this->basePath;
+        $this->originalBasePath = Directory::$basePath;
+        Directory::$basePath    = $this->basePath;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Directory::$basePath = $this->originalBasePath;
     }
 
     /**

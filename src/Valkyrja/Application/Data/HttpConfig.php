@@ -18,7 +18,7 @@ use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ProviderContract;
 
-readonly class Config
+readonly class HttpConfig extends Config
 {
     /**
      * @param non-empty-string                          $namespace
@@ -33,22 +33,18 @@ readonly class Config
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
-        public string $namespace = 'App',
-        public string $dir = __DIR__,
-        public string $version = ApplicationInfo::VERSION,
-        public string $environment = 'production',
-        public bool $debugMode = false,
-        public string $timezone = 'UTC',
-        public string $key = 'some_secret_app_key',
-        public string $dataPath = 'App/Provider/Data',
-        public string $dataNamespace = 'App\\Provider\\Data',
-        public array $providers = [
+        string $namespace = 'App',
+        string $dir = __DIR__,
+        string $version = ApplicationInfo::VERSION,
+        string $environment = 'production',
+        bool $debugMode = false,
+        string $timezone = 'UTC',
+        string $key = 'some_secret_app_key',
+        string $dataPath = 'App/Provider/Data',
+        string $dataNamespace = 'App\\Provider\\Data',
+        array $providers = [
             ComponentClass::CONTAINER,
             ComponentClass::DISPATCHER,
-            ComponentClass::CLI_INTERACTION,
-            ComponentClass::CLI_MIDDLEWARE,
-            ComponentClass::CLI_ROUTING,
-            ComponentClass::CLI_SERVER,
             ComponentClass::EVENT,
             ComponentClass::HTTP_MESSAGE,
             ComponentClass::HTTP_MIDDLEWARE,
@@ -57,7 +53,20 @@ readonly class Config
             ComponentClass::LOG,
             ComponentClass::VIEW,
         ],
-        public array $callbacks = [],
+        array $callbacks = [],
     ) {
+        parent::__construct(
+            namespace: $namespace,
+            dir: $dir,
+            version: $version,
+            environment: $environment,
+            debugMode: $debugMode,
+            timezone: $timezone,
+            key: $key,
+            dataPath: $dataPath,
+            dataNamespace: $dataNamespace,
+            providers: $providers,
+            callbacks: $callbacks,
+        );
     }
 }

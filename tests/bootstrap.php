@@ -11,4 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Valkyrja\Application\Directory\Directory;
+
 require __DIR__ . '/../vendor/autoload.php';
+
+Directory::$basePath = __DIR__;

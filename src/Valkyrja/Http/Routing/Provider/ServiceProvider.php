@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -151,12 +152,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishDataFileGenerator(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
+        $env    = $container->getSingleton(Env::class);
+        $config = $container->getSingleton(Config::class);
 
-        /** @var non-empty-string $dataPath */
-        $dataPath = $env::APP_DATA_PATH;
-        /** @var non-empty-string $namespace */
-        $namespace = $env::APP_DATA_NAMESPACE;
+        $dataPath  = $config->dataPath;
+        $namespace = $config->dataNamespace;
         /** @var non-empty-string $className */
         $className = $env::HTTP_ROUTING_DATA_CLASS_NAME
             ?? 'HttpRoutingData';

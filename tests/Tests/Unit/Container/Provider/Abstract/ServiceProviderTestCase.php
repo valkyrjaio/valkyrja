@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Container\Provider\Abstract;
 
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_map;
@@ -72,8 +72,8 @@ abstract class ServiceProviderTestCase extends TestCase
         $this->container = new Container();
 
         $this->container->setSingleton(Env::class, new Env());
-
-        Directory::$basePath = EnvClass::APP_DIR;
+        $this->container->setSingleton(ApplicationContract::class, self::createStub(ApplicationContract::class));
+        $this->container->setSingleton(Config::class, new Config());
     }
 
     /**

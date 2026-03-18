@@ -38,15 +38,6 @@ final class OrkaRendererTest extends TestCase
 {
     protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/orka';
 
-    protected string $originalBasePath;
-
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->originalBasePath = Directory::$basePath;
-        Directory::$basePath    = EnvClass::APP_DIR;
-    }
-
     #[Override]
     protected function tearDown(): void
     {
@@ -68,8 +59,6 @@ final class OrkaRendererTest extends TestCase
                 }
             }
         }
-
-        Directory::$basePath = $this->originalBasePath;
 
         parent::tearDown();
     }
