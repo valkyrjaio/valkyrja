@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Provider\Provider;
+use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 
 final class RouteProviderClass extends Provider

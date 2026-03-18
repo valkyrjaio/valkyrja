@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Provider;
 use Override;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Cli\Routing\Provider\Provider;
+use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
 
 class CliRouteProvider extends Provider
 {

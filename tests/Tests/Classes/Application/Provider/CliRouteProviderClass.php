@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Cli\Routing\Provider\Provider;
+use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
 use Valkyrja\Tests\Functional\Application\Entry\CliTest;
 
 final class CliRouteProviderClass extends Provider
