@@ -19,7 +19,7 @@ use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
@@ -40,7 +40,7 @@ final class CliTest extends TestCase
 {
     protected static bool $runCalled = false;
 
-    #[Attribute('version', 'test')]
+    #[Route('version', 'test')]
     public static function routeCallback(): Output
     {
         self::$runCalled = true;

@@ -20,7 +20,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Routing\Attribute\Route as Attribute;
+use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
@@ -36,7 +36,7 @@ final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;
 
-    #[Attribute('/version', 'version')]
+    #[Route('/version', 'version')]
     public static function routeCallback(): Response
     {
         self::$runCalled = true;
