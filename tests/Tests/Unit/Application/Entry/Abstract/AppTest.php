@@ -94,8 +94,8 @@ final class AppTest extends TestCase
     {
         $directory = Directory::srcPath(EnvClass::APP_DATA_PATH);
 
-        @unlink("$directory/ContainerDataProvider.php");
-        @unlink("$directory/HttpRoutingDataProvider.php");
+        @unlink("$directory/ContainerData.php");
+        @unlink("$directory/HttpRoutingData.php");
     }
 
     /**

@@ -29,8 +29,8 @@ final class CliComponentProviderClass extends Provider implements PublishablePro
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            'App\\Provider\\Data\\CliTestContainerDataProvider',
-            'App\\Provider\\Data\\CliTestCliRoutingDataProvider',
+            CliContainerDataProviderClass::class,
+            CliRoutingDataProviderClass::class,
         ];
     }
 

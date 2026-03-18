@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Generator\DataProviderFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
@@ -31,12 +28,12 @@ final class DataProviderFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'EventDataTestDataProvider';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\EventData',
+            dataClassName: 'EventData'
         );
         $results   = $generator->generateFile();
 
@@ -50,16 +47,14 @@ final class DataProviderFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'EventDataTestDataProvider';
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\EventData',
+            dataClassName: 'EventData'
         );
         $contents  = $generator->generateFileContents();
-
-        $dataContents = $generator->generateClassContents();
 
         $expected = <<<PHP
             <?php
@@ -74,7 +69,7 @@ final class DataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Event\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-
+            use App\Provider\Data\EventData;
 
             final class EventDataTestDataProvider extends Provider
             {
@@ -105,154 +100,11 @@ final class DataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+                    \$container->setSingleton(Data::class, new EventData());
                 }
             }
 
             PHP;
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContents(): void
-    {
-        $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
-        $data       = new Data();
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
-                
-            ],
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRoute(): void
-    {
-        $data      = new Data(
-            listeners: [
-                'name' => new Listener(
-                    eventId: 'eventId',
-                    name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
-                ),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
-                'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
-               'eventId' => 'eventId',
-               'name' => 'name',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-            )),
-            
-            ],
-            )
-            PHP;
-        // phpcs:enable
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContentsWithRouteClosure(): void
-    {
-        $data      = new Data(
-            listeners: [
-                'name' => static fn (): Listener => new Listener(
-                    eventId: 'eventId',
-                    name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
-                ),
-            ]
-        );
-        $directory  = Directory::storagePath();
-        $className  = 'EventDataTestDataProvider';
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                events: array (
-            ),
-                listeners: [
-                'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
-               'eventId' => 'eventId',
-               'name' => 'name',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
-            )),
-            
-            ],
-            )
-            PHP;
-        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);

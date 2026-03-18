@@ -28,6 +28,11 @@ interface ApplicationContract
     public function getContainer(): ContainerContract;
 
     /**
+     * Publish the component provider callbacks.
+     */
+    public function publishProviderCallbacks(): void;
+
+    /**
      * Get the registered component providers.
      *
      * @return class-string<ProviderContract>[]

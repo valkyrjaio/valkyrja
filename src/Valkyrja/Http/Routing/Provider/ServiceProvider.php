@@ -37,8 +37,8 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Generator\Contract\DataProviderFileGeneratorContract;
-use Valkyrja\Http\Routing\Generator\DataProviderFileGenerator;
+use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -57,15 +57,15 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            RouterContract::class                    => [self::class, 'publishRouter'],
-            CollectionContract::class                => [self::class, 'publishCollection'],
-            DataProviderFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            MatcherContract::class                   => [self::class, 'publishMatcher'],
-            UrlContract::class                       => [self::class, 'publishUrl'],
-            CollectorContract::class                 => [self::class, 'publishAttributesCollector'],
-            ProcessorContract::class                 => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class           => [self::class, 'publishResponseFactory'],
-            Data::class                              => [self::class, 'publishData'],
+            RouterContract::class            => [self::class, 'publishRouter'],
+            CollectionContract::class        => [self::class, 'publishCollection'],
+            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            MatcherContract::class           => [self::class, 'publishMatcher'],
+            UrlContract::class               => [self::class, 'publishUrl'],
+            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
+            ProcessorContract::class         => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
+            Data::class                      => [self::class, 'publishData'],
         ];
     }
 
@@ -78,7 +78,7 @@ final class ServiceProvider extends Provider
         return [
             RouterContract::class,
             CollectionContract::class,
-            DataProviderFileGeneratorContract::class,
+            DataFileGeneratorContract::class,
             MatcherContract::class,
             UrlContract::class,
             CollectorContract::class,
@@ -156,16 +156,16 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string $namespace */
         $namespace = $env::APP_DATA_NAMESPACE;
         /** @var non-empty-string $className */
-        $className = $env::HTTP_ROUTING_DATA_PROVIDER_CLASS_NAME
-            ?? 'HttpRoutingDataProvider';
+        $className = $env::HTTP_ROUTING_DATA_CLASS_NAME
+            ?? 'HttpRoutingData';
 
         $directory = Directory::srcPath($dataPath);
 
         $collection = $container->getSingleton(CollectionContract::class);
 
         $container->setSingleton(
-            DataProviderFileGeneratorContract::class,
-            new DataProviderFileGenerator(
+            DataFileGeneratorContract::class,
+            new DataFileGenerator(
                 directory: $directory,
                 data: $collection->getData(),
                 namespace: $namespace,
@@ -293,7 +293,7 @@ final class ServiceProvider extends Provider
             );
         }
 
-        $dataGenerator = $container->getSingleton(DataProviderFileGeneratorContract::class);
+        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
         $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $collection->getData());

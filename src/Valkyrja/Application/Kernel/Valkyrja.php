@@ -25,7 +25,6 @@ class Valkyrja implements ApplicationContract
         protected Config $config = new Config(),
     ) {
         $this->bootstrapTimezone();
-        $this->publishProviders();
     }
 
     /**
@@ -35,6 +34,17 @@ class Valkyrja implements ApplicationContract
     public function getContainer(): ContainerContract
     {
         return $this->container;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishProviderCallbacks(): void
+    {
+        foreach ($this->config->callbacks as $callback) {
+            $callback($this);
+        }
     }
 
     /**
@@ -139,15 +149,5 @@ class Valkyrja implements ApplicationContract
     protected function bootstrapTimezone(): void
     {
         date_default_timezone_set($this->config->timezone);
-    }
-
-    /**
-     * Publish the callbacks.
-     */
-    protected function publishProviders(): void
-    {
-        foreach ($this->config->callbacks as $callback) {
-            $callback($this);
-        }
     }
 }

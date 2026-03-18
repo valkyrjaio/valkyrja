@@ -122,6 +122,8 @@ abstract class App
         $container->setSingleton(ContainerContract::class, $container);
         $container->setSingleton(ApplicationContract::class, $app);
 
+        $app->publishProviderCallbacks();
+
         static::loadContainerData(container: $container);
     }
 

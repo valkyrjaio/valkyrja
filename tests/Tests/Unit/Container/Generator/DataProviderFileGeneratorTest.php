@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Generator\DataProviderFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\EnvClass;
@@ -29,12 +28,12 @@ final class DataProviderFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestDataProvider';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\ContainerData',
+            dataClassName: 'ContainerData'
         );
         $results   = $generator->generateFile();
 
@@ -48,16 +47,14 @@ final class DataProviderFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestDataProvider';
-        $data       = new Data();
         $generator  = new DataProviderFileGenerator(
             directory: $directory,
-            data: $data,
             namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
+            className: $className,
+            dataClassNamespace: 'App\\Provider\\Data\\ContainerData',
+            dataClassName: 'ContainerData'
         );
         $contents  = $generator->generateFileContents();
-
-        $dataContents = $generator->generateClassContents();
 
         $expected = <<<PHP
             <?php
@@ -72,7 +69,7 @@ final class DataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Container\Data\Data;
             use Valkyrja\Container\Provider\Provider;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-
+            use App\Provider\Data\ContainerData;
 
             final class ContainerDataTestDataProvider extends Provider
             {
@@ -103,51 +100,11 @@ final class DataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    \$data = $dataContents;
-
-            \$container->setSingleton(Data::class, \$data);
+                    \$container->setSingleton(Data::class, new ContainerData());
                 }
             }
 
             PHP;
-
-        self::assertNotEmpty($contents);
-        self::assertSame($expected, $contents);
-    }
-
-    public function testGenerateClassContents(): void
-    {
-        $directory  = Directory::storagePath();
-        $className  = 'ContainerDataTestDataProvider';
-        $data       = new Data();
-        $generator  = new DataProviderFileGenerator(
-            directory: $directory,
-            data: $data,
-            namespace: EnvClass::APP_DATA_NAMESPACE,
-            className: $className
-        );
-        $contents  = $generator->generateClassContents();
-
-        $dataNamespace = Data::class;
-
-        // phpcs:disable
-        $expected = <<<PHP
-            new \\$dataNamespace(
-                aliases: array (
-            ),
-                deferred: array (
-            ),
-                deferredCallback: array (
-            ),
-                services: array (
-            ),
-                singletons: array (
-            ),
-                providers: array (
-            )
-            )
-            PHP;
-        // phpcs:enable
 
         self::assertNotEmpty($contents);
         self::assertSame($expected, $contents);

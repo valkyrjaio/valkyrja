@@ -18,8 +18,8 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\Data;
-use Valkyrja\Container\Generator\Contract\DataProviderFileGeneratorContract;
-use Valkyrja\Container\Generator\DataProviderFileGenerator;
+use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
+use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 final class ServiceProvider extends Provider
@@ -31,8 +31,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            DataProviderFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                              => [self::class, 'publishData'],
+            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
+            Data::class                      => [self::class, 'publishData'],
         ];
     }
 
@@ -43,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            DataProviderFileGeneratorContract::class,
+            DataFileGeneratorContract::class,
             Data::class,
         ];
     }
@@ -60,16 +60,16 @@ final class ServiceProvider extends Provider
         /** @var non-empty-string $namespace */
         $namespace = $env::APP_DATA_NAMESPACE;
         /** @var non-empty-string $className */
-        $className = $env::CONTAINER_DATA_PROVIDER_CLASS_NAME
-            ?? 'ContainerDataProvider';
+        $className = $env::CONTAINER_DATA_CLASS_NAME
+            ?? 'ContainerData';
 
         $directory = Directory::srcPath($dataPath);
 
         $data = $container->getData();
 
         $container->setSingleton(
-            DataProviderFileGeneratorContract::class,
-            new DataProviderFileGenerator(
+            DataFileGeneratorContract::class,
+            new DataFileGenerator(
                 directory: $directory,
                 data: $data,
                 namespace: $namespace,
@@ -89,7 +89,7 @@ final class ServiceProvider extends Provider
             $container->register($provider);
         }
 
-        $dataGenerator = $container->getSingleton(DataProviderFileGeneratorContract::class);
+        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
         $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $container->getData());
