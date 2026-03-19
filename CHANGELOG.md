@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.1...master)
+
+## [v25.34.1](https://github.com/valkyrjaio/valkyrja/compare/v25.34.0...v25.34.1) - 2026-03-18
+
+* [Data] Add data generation commands for Cli and Http by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/681
 
 ## [v25.34.0](https://github.com/valkyrjaio/valkyrja/compare/v25.33.0...v25.34.0) - 2026-03-17
 
