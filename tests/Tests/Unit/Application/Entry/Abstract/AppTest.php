@@ -70,6 +70,7 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Time\Microtime;
+use Valkyrja\Tests\Classes\Application\Entry\AppExceptionHandlerClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Provider\ComponentProvider;
@@ -109,6 +110,27 @@ final class AppTest extends TestCase
         self::assertSame(APP_START, $time);
 
         Microtime::unfreeze();
+    }
+
+    /**
+     * Test the appStart method with all debug modes.
+     */
+    #[RunInSeparateProcess]
+    public function testStartExceptionHandlerDebugModes(): void
+    {
+        AppExceptionHandlerClass::$called = false;
+
+        AppExceptionHandlerClass::start(new Env(), new Config(debugMode: true));
+
+        self::assertTrue(AppExceptionHandlerClass::$called);
+
+        AppExceptionHandlerClass::$called = false;
+
+        AppExceptionHandlerClass::start(new Env(), new Config(debugMode: false));
+
+        self::assertFalse(AppExceptionHandlerClass::$called);
+
+        AppExceptionHandlerClass::$called = false;
     }
 
     /**
