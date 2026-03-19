@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Message\Request\Psr;
 use Override;
 use Psr\Http\Message\ServerRequestInterface;
 use Valkyrja\Http\Message\File\Factory\PsrUploadedFileFactory;
+use Valkyrja\Http\Message\Param\AttributeParamCollection;
 use Valkyrja\Http\Message\Param\CookieParamCollection;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Http\Message\Param\QueryParamCollection;
@@ -163,7 +164,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getAttributes(): array
     {
-        return $this->request->getAttributes();
+        return $this->request->getAttributes()->getAll();
     }
 
     /**
@@ -172,7 +173,11 @@ class ServerRequest extends Request implements ServerRequestInterface
     #[Override]
     public function getAttribute(string $name, $default = null)
     {
-        return $this->request->getAttribute($name, $default);
+        if ($name === '' || ! $this->request->getAttributes()->has($name)) {
+            return $default;
+        }
+
+        return $this->request->getAttributes()->get($name);
     }
 
     /**
@@ -183,7 +188,15 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withAttribute($name, $value);
+        /**
+         * @var non-empty-string $name
+         * @var scalar|null      $value
+         */
+        $attributes = $this->request->getAttributes()->withAdded([$name => $value])->getAll();
+
+        $new->request = $this->request->withAttributes(
+            AttributeParamCollection::fromArray($attributes)
+        );
 
         return $new;
     }
@@ -196,7 +209,14 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withoutAttribute($name);
+        /**
+         * @var non-empty-string $name
+         */
+        $attributes = $this->request->getAttributes()->getAllExcept($name);
+
+        $new->request = $this->request->withAttributes(
+            AttributeParamCollection::fromArray($attributes)
+        );
 
         return $new;
     }

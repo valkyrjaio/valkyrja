@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Param\AttributeParamCollection;
 use Valkyrja\Http\Message\Param\CookieParamCollection;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Http\Message\Param\QueryParamCollection;
@@ -109,7 +110,7 @@ final class ServerRequestTest extends TestCase
     public function testAttributes(): void
     {
         $attributes = ['test' => 'value'];
-        $request    = new ServerRequest()->withAttribute('test', 'value');
+        $request    = new ServerRequest()->withAttributes(AttributeParamCollection::fromArray($attributes));
         $psrRequest = new PsrServerRequest($request);
 
         $attributes2 = ['test2' => 'value2'];
@@ -119,7 +120,7 @@ final class ServerRequestTest extends TestCase
 
         self::assertNotSame($psrRequest, $psrRequest2);
         self::assertNotSame($psrRequest2, $psrRequest3);
-        self::assertSame($request->getAttributes(), $psrRequest->getAttributes());
+        self::assertSame($request->getAttributes()->getAll(), $psrRequest->getAttributes());
         self::assertSame($attributes, $psrRequest->getAttributes());
         self::assertSame($attributes + $attributes2, $psrRequest2->getAttributes());
         self::assertSame($attributes2, $psrRequest3->getAttributes());
