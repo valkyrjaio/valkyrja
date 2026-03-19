@@ -15,10 +15,14 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
+use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Generator\DataFileGenerator;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
@@ -93,6 +97,12 @@ final class HttpTest extends TestCase
         $container   = $application->getContainer();
 
         $http = $container->getSingleton(CollectionContract::class);
+
+        self::assertFalse($container->has(CliConfig::class));
+        self::assertTrue($container->has(HttpConfig::class));
+        self::assertTrue($container->has(Env::class));
+        self::assertTrue($container->has(ContainerContract::class));
+        self::assertTrue($container->has(ApplicationContract::class));
 
         $dataFileGenerator = new DataFileGenerator(
             directory: $containerDirectory,

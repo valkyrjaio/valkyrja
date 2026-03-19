@@ -146,7 +146,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(false);
 
         $eventId      = self::class;
@@ -154,7 +154,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $listener     = new Listener(eventId: $eventId, name: $listenerName);
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
@@ -183,7 +183,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $eventId      = self::class;
@@ -191,7 +191,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $listener     = new Listener(eventId: $eventId, name: $listenerName);
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
@@ -220,7 +220,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $eventId      = self::class;
@@ -228,7 +228,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $listener     = new Listener(eventId: $eventId, name: $listenerName);
 
         $collector->expects($this->never())->method('getListeners')->willReturn([$listener]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([]);
 
