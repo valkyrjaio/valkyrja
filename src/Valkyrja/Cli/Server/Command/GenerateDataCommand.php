@@ -31,7 +31,11 @@ class GenerateDataCommand extends GenerateData
         protected CliConfig $config,
         OutputFactoryContract $outputFactory,
     ) {
-        parent::__construct($env, $outputFactory);
+        parent::__construct(
+            env: $env,
+            outputFactory: $outputFactory,
+            title: 'Generating Cli Component Data',
+        );
     }
 
     /**

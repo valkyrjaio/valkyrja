@@ -24,8 +24,8 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract as ContainerDataFileGeneratorContract;
+use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract as CliDataFileGeneratorContract;
+use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract as EventDataFileGeneratorContract;
 use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract as HttpDataFileGeneratorContract;
@@ -36,6 +36,7 @@ abstract class GenerateData
     public function __construct(
         protected Env $env,
         protected OutputFactoryContract $outputFactory,
+        protected string $title = 'Generating Data',
     ) {
     }
 
@@ -64,7 +65,7 @@ abstract class GenerateData
             ->createOutput()
             ->withAddedMessages(
                 new NewLine(),
-                new Message('Generating Data:', new HighlightedTextFormatter()),
+                new Message("$this->title:", new HighlightedTextFormatter()),
                 new NewLine(),
                 new NewLine(),
             )
@@ -91,7 +92,7 @@ abstract class GenerateData
             new Message('Generating Container Data......................'),
         )->writeMessages();
 
-        $dataFileGenerator = $container->getSingleton(ContainerDataFileGeneratorContract::class);
+        $dataFileGenerator = $container->getSingleton(DataFileGeneratorContract::class);
         $status            = $dataFileGenerator->generateFile();
 
         return $this->addMessagesForGenerateStatus($output, $status)
@@ -106,6 +107,10 @@ abstract class GenerateData
      */
     protected function generateEventData(ContainerContract $container, OutputContract $output): OutputContract
     {
+        if (! $container->has(EventDataFileGeneratorContract::class)) {
+            return $output;
+        }
+
         $output = $output->withAddedMessages(
             new Message('Generating Event Data..........................'),
         )->writeMessages();
@@ -125,11 +130,15 @@ abstract class GenerateData
      */
     protected function generateCliData(ContainerContract $container, OutputContract $output): OutputContract
     {
+        if (! $container->has(CliDataFileGeneratorContract::class)) {
+            return $output;
+        }
+
         $output = $output->withAddedMessages(
             new Message('Generating Cli Routes Data.....................'),
         )->writeMessages();
 
-        $dataFileGenerator = $container->getSingleton(DataFileGeneratorContract::class);
+        $dataFileGenerator = $container->getSingleton(CliDataFileGeneratorContract::class);
         $status            = $dataFileGenerator->generateFile();
 
         return $this->addMessagesForGenerateStatus($output, $status)
@@ -144,6 +153,10 @@ abstract class GenerateData
      */
     protected function generateHttpData(ContainerContract $container, OutputContract $output): OutputContract
     {
+        if (! $container->has(HttpDataFileGeneratorContract::class)) {
+            return $output;
+        }
+
         $output = $output->withAddedMessages(
             new Message('Generating Http Routes Data....................'),
         )->writeMessages();
