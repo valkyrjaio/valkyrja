@@ -22,7 +22,6 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Routing\Cli\Command\Constant\CommandName;
 
 class GenerateDataCommand extends GenerateData
@@ -32,7 +31,11 @@ class GenerateDataCommand extends GenerateData
         protected HttpConfig $config,
         protected OutputFactoryContract $outputFactory,
     ) {
-        parent::__construct($env, $outputFactory);
+        parent::__construct(
+            env: $env,
+            outputFactory: $outputFactory,
+            title: 'Generating Http Component Data',
+        );
     }
 
     /**
@@ -74,16 +77,5 @@ class GenerateDataCommand extends GenerateData
             providers: $config->providers,
             callbacks: $config->callbacks,
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    protected function generateCliData(ContainerContract $container, OutputContract $output): OutputContract
-    {
-        // No cli data to generate
-
-        return $output;
     }
 }
