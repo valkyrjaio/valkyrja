@@ -38,7 +38,10 @@ abstract class App
      */
     public static function start(Env $env, Config $config): ApplicationContract
     {
-        static::defaultExceptionHandler();
+        if ($config->debugMode) {
+            static::defaultExceptionHandler();
+        }
+
         static::appStart();
         static::directory(dir: $config->dir);
 
@@ -170,13 +173,13 @@ abstract class App
      */
     protected static function bootstrapThrowableHandler(ApplicationContract $app, ContainerContract $container): void
     {
-        $errorHandler = static::getThrowableHandler();
-
-        // Set error handler in the service container
-        $container->setSingleton(ThrowableHandlerContract::class, $errorHandler);
-
         // If debug is on, enable debug handling
         if ($app->getDebugMode()) {
+            $errorHandler = static::getThrowableHandler();
+
+            // Set error handler in the service container
+            $container->setSingleton(ThrowableHandlerContract::class, $errorHandler);
+
             // Enable error handling
             $errorHandler::enable(
                 displayErrors: true
