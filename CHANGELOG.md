@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.2...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.3...master)
+
+## [v25.34.3](https://github.com/valkyrjaio/valkyrja/compare/v25.34.2...v25.34.3) - 2026-03-18
+
+* [Application] Only call defaultExceptionHandler on debug mode by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/683
 
 ## [v25.34.2](https://github.com/valkyrjaio/valkyrja/compare/v25.34.1...v25.34.2) - 2026-03-18
 
