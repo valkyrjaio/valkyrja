@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.2...master)
+
+## [v25.34.2](https://github.com/valkyrjaio/valkyrja/compare/v25.34.1...v25.34.2) - 2026-03-18
+
+* [Data] Fix bug in data generation commands for non-existent components by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/682
 
 ## [v25.34.1](https://github.com/valkyrjaio/valkyrja/compare/v25.34.0...v25.34.1) - 2026-03-18
 
