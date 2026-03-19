@@ -213,9 +213,6 @@ final class ServiceProvider extends Provider
 
         $collection->add(...$routes);
 
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
-        $dataGenerator->generateFile();
-
         $container->setSingleton(Data::class, $collection->getData());
     }
 }

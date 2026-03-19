@@ -90,9 +90,6 @@ final class ServiceProvider extends Provider
             $container->register($provider);
         }
 
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
-        $dataGenerator->generateFile();
-
         $container->setSingleton(Data::class, $container->getData());
     }
 }

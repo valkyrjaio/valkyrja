@@ -159,7 +159,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(false);
 
         $command = new Route(
@@ -168,7 +168,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getCliProviders')->willReturn([RouteProviderClass::class]);
 
@@ -189,7 +189,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $command = new Route(
@@ -198,7 +198,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getCliProviders')->willReturn([RouteProviderClass::class]);
 
@@ -219,7 +219,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = self::createStub(DataFileGeneratorContract::class));
+        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $command = new Route(
@@ -228,7 +228,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             dispatch: new MethodDispatch(self::class, 'dispatch')
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$command]);
-        $generator->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
+        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getCliProviders')->willReturn([]);
 

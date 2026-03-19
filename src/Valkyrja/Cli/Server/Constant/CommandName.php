@@ -23,4 +23,6 @@ final class CommandName
     public const string LIST_BASH = 'list:bash';
     /** @var non-empty-string */
     public const string VERSION = 'version';
+    /** @var non-empty-string */
+    public const string DATA_GENERATE = 'data:generate';
 }

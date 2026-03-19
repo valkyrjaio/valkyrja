@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -23,6 +24,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -54,6 +56,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ListBashCommand::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ListCommand::class, ServiceProvider::publishers());
         self::assertArrayHasKey(VersionCommand::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(GenerateDataCommand::class, ServiceProvider::publishers());
         self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, ServiceProvider::publishers());
         self::assertArrayHasKey(OutputThrowableCaughtMiddleware::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, ServiceProvider::publishers());
@@ -69,6 +72,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(ListBashCommand::class, ServiceProvider::provides());
         self::assertContains(ListCommand::class, ServiceProvider::provides());
         self::assertContains(VersionCommand::class, ServiceProvider::provides());
+        self::assertContains(GenerateDataCommand::class, ServiceProvider::provides());
         self::assertContains(LogThrowableCaughtMiddleware::class, ServiceProvider::provides());
         self::assertContains(OutputThrowableCaughtMiddleware::class, ServiceProvider::provides());
         self::assertContains(CheckForHelpOptionsMiddleware::class, ServiceProvider::provides());
@@ -218,5 +222,23 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(CheckCommandForTypoMiddleware::class, $this->container->getSingleton(CheckCommandForTypoMiddleware::class));
+    }
+
+    public function testGenerateDataCommand(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(Env::class, self::createStub(Env::class));
+        $container->setSingleton(CliConfig::class, self::createStub(CliConfig::class));
+        $container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
+
+        self::assertFalse($container->has(GenerateDataCommand::class));
+
+        $callback = ServiceProvider::publishers()[GenerateDataCommand::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(GenerateDataCommand::class));
+        self::assertTrue($container->isSingleton(GenerateDataCommand::class));
+        self::assertInstanceOf(GenerateDataCommand::class, $container->getSingleton(GenerateDataCommand::class));
     }
 }

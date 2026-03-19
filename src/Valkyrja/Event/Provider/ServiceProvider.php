@@ -139,7 +139,7 @@ final class ServiceProvider extends Provider
         $namespace = $config->dataNamespace;
         /** @var non-empty-string $className */
         $className = $env::EVENT_DATA_CLASS_NAME
-            ?? 'EventRoutingData';
+            ?? 'EventData';
 
         $directory = Directory::srcPath($dataPath);
 
@@ -197,9 +197,6 @@ final class ServiceProvider extends Provider
         foreach ($listeners as $listener) {
             $collection->addListener($listener);
         }
-
-        $dataGenerator = $container->getSingleton(DataFileGeneratorContract::class);
-        $dataGenerator->generateFile();
 
         $container->setSingleton(Data::class, $collection->getData());
     }

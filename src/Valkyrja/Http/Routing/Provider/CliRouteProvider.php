@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 class CliRouteProvider extends Provider
@@ -27,6 +28,7 @@ class CliRouteProvider extends Provider
     {
         return [
             ListCommand::class,
+            GenerateDataCommand::class,
         ];
     }
 }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry\Abstract;
 
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -113,8 +115,18 @@ abstract class App
     {
         $container->setSingleton(Env::class, $env);
         $container->setSingleton(Config::class, $config);
+        $container->setSingleton($config::class, $config);
         $container->setSingleton(ContainerContract::class, $container);
         $container->setSingleton(ApplicationContract::class, $app);
+
+        if ($config instanceof CliConfig) {
+            $container->setSingleton(CliConfig::class, $config);
+            $container->setSingleton(HttpConfig::class, $config->http);
+        }
+
+        if ($config instanceof HttpConfig) {
+            $container->setSingleton(HttpConfig::class, $config);
+        }
 
         $app->publishProviderCallbacks();
 

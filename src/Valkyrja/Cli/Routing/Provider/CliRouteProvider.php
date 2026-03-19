@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -33,6 +34,7 @@ class CliRouteProvider extends Provider
             ListBashCommand::class,
             ListCommand::class,
             VersionCommand::class,
+            GenerateDataCommand::class,
         ];
     }
 }
