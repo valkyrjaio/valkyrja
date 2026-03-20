@@ -15,13 +15,11 @@ namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
-use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Abstract\Provider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -32,7 +30,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
@@ -72,7 +69,6 @@ final class ServiceProvider extends Provider
             ProcessorContract::class         => [self::class, 'publishProcessor'],
             ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
             Data::class                      => [self::class, 'publishData'],
-            GenerateDataCommand::class       => [self::class, 'publishGenerateDataCommand'],
         ];
     }
 
@@ -92,7 +88,6 @@ final class ServiceProvider extends Provider
             ProcessorContract::class,
             ResponseFactoryContract::class,
             Data::class,
-            GenerateDataCommand::class,
         ];
     }
 
@@ -312,20 +307,5 @@ final class ServiceProvider extends Provider
         }
 
         $container->setSingleton(Data::class, $collection->getData());
-    }
-
-    /**
-     * Publish the generate data command service.
-     */
-    public static function publishGenerateDataCommand(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            GenerateDataCommand::class,
-            new GenerateDataCommand(
-                $container->getSingleton(Env::class),
-                $container->getSingleton(HttpConfig::class),
-                $container->getSingleton(OutputFactoryContract::class),
-            )
-        );
     }
 }
