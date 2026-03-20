@@ -31,7 +31,7 @@ use Valkyrja\Filesystem\Provider\ComponentProvider as FilesystemComponentProvide
 use Valkyrja\Http\Client\Provider\ComponentProvider as HttpClientComponentProvider;
 use Valkyrja\Http\Message\Provider\ComponentProvider as HttpMessageComponentProvider;
 use Valkyrja\Http\Middleware\Provider\ComponentProvider as HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\CliComponentProvider as HttpRoutingCliComponentProvider;
+use Valkyrja\Http\Routing\Provider\CliComponentProvider;
 use Valkyrja\Http\Routing\Provider\ComponentProvider as HttpRoutingComponentProvider;
 use Valkyrja\Http\Server\Provider\ComponentProvider as HttpServerComponentProvider;
 use Valkyrja\Jwt\Provider\ComponentProvider as JwtComponentProvider;
@@ -64,7 +64,7 @@ final class ComponentClass
     public const string HTTP_MESSAGE     = HttpMessageComponentProvider::class;
     public const string HTTP_MIDDLEWARE  = HttpMiddlewareComponentProvider::class;
     public const string HTTP_ROUTING     = HttpRoutingComponentProvider::class;
-    public const string HTTP_ROUTING_CLI = HttpRoutingCliComponentProvider::class;
+    public const string HTTP_ROUTING_CLI = CliComponentProvider::class;
     public const string HTTP_SERVER      = HttpServerComponentProvider::class;
     public const string JWT              = JwtComponentProvider::class;
     public const string LOG              = LogComponentProvider::class;
