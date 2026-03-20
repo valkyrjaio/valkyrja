@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Param\AttributeParamCollection;
 use Valkyrja\Http\Message\Param\CookieParamCollection;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Http\Message\Param\QueryParamCollection;
@@ -484,45 +485,72 @@ final class ServerRequestTest extends TestCase
 
     public function testAttributes(): void
     {
+        $attributes        = [
+            'test' => 'foo',
+            'foo'  => 2,
+            'bar'  => [],
+            'null' => null,
+        ];
+        $attributes2       = [
+            'test2' => 'bar',
+            'foo2'  => 1,
+        ];
         $request  = new ServerRequest();
-        $request2 = $request->withAttribute('test', 2);
-        $request3 = $request2->withAttribute('test2', null);
-        $request4 = $request3->withAttribute('test4', 'test');
-        $request5 = $request3->withoutAttribute('test4');
-
-        self::assertNotSame($request, $request2);
-        self::assertNotSame($request2, $request3);
-        self::assertNotSame($request2, $request4);
-        self::assertNotSame($request2, $request5);
-
-        self::assertEmpty($request->getAttributes());
-        self::assertNotEmpty($request2->getAttributes());
-        self::assertNotEmpty($request3->getAttributes());
-        self::assertNotEmpty($request4->getAttributes());
-        self::assertNotEmpty($request5->getAttributes());
-
-        self::assertSame(
-            ['test2' => null],
-            $request4->onlyAttributes('test2')
+        $request2 = new ServerRequest(
+            attributes: AttributeParamCollection::fromArray($attributes)
         );
-        self::assertSame(
-            ['test' => 2, 'test4' => 'test'],
-            $request4->exceptAttributes('test2')
+        $request3 = $request->withAttributes(
+            AttributeParamCollection::fromArray($attributes2)
+        );
+        $request4 = $request->withAttributes(
+            $request2->getAttributes()->withAdded(['test3' => 'fire'])
         );
 
-        self::assertSame(2, $request2->getAttribute('test'));
-        self::assertNull($request2->getAttribute('nonexistent'));
-        self::assertSame('default', $request2->getAttribute('nonexistentWithDefault', 'default'));
+        self::assertNotSame($request, $request3);
+        self::assertNotSame($request, $request4);
 
-        self::assertSame(2, $request3->getAttribute('test'));
-        self::assertNull($request3->getAttribute('test2'));
+        self::assertEmpty($request->getAttributes()->getAll());
+        self::assertNotEmpty($request2->getAttributes()->getAll());
+        self::assertNotEmpty($request3->getAttributes()->getAll());
+        self::assertNotEmpty($request4->getAttributes()->getAll());
 
-        self::assertSame(2, $request4->getAttribute('test'));
-        self::assertNull($request4->getAttribute('test2'));
-        self::assertSame('test', $request4->getAttribute('test4'));
+        self::assertSame(
+            array_filter(
+                $attributes,
+                static fn (string|int $name): bool => $name === 'test' || $name === 'null',
+                ARRAY_FILTER_USE_KEY
+            ),
+            $request2->getAttributes()->getOnly('test', 'null')
+        );
+        self::assertSameCount(
+            array_filter(
+                $attributes,
+                static fn (string|int $name): bool => $name !== 'test' && $name !== 'null',
+                ARRAY_FILTER_USE_KEY
+            ),
+            $request2->getAttributes()->getAllExcept('test', 'null')
+        );
 
-        self::assertSame(2, $request5->getAttribute('test'));
-        self::assertNull($request5->getAttribute('test2'));
+        self::assertNotEmpty($request3->getAttributes()->getAll());
+        self::assertNotEmpty($request4->getAttributes()->getAll());
+
+        self::assertFalse($request3->getAttributes()->has('test'));
+        self::assertFalse($request3->getAttributes()->has('foo'));
+        self::assertFalse($request3->getAttributes()->has('bar'));
+        self::assertFalse($request3->getAttributes()->has('null'));
+        self::assertTrue($request3->getAttributes()->has('test2'));
+        self::assertTrue($request3->getAttributes()->has('foo2'));
+
+        self::assertTrue($request4->getAttributes()->has('test'));
+        self::assertTrue($request4->getAttributes()->has('foo'));
+        self::assertTrue($request4->getAttributes()->has('bar'));
+        self::assertFalse($request4->getAttributes()->has('null'));
+        self::assertTrue($request4->getAttributes()->has('test3'));
+
+        self::assertSame('bar', $request3->getAttributes()->get('test2'));
+        self::assertSame(1, $request3->getAttributes()->get('foo2'));
+
+        self::assertSame('fire', $request4->getAttributes()->get('test3'));
     }
 
     public function testIsXmlHttpRequest(): void

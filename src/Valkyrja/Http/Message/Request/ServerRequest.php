@@ -21,6 +21,8 @@ use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContrac
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Param\AttributeParamCollection;
+use Valkyrja\Http\Message\Param\Contract\AttributeParamCollectionContract;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
 use Valkyrja\Http\Message\Param\Contract\QueryParamCollectionContract;
@@ -36,20 +38,8 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
 
-use function array_filter;
-use function in_array;
-
-use const ARRAY_FILTER_USE_KEY;
-
 class ServerRequest extends Request implements ServerRequestContract
 {
-    /**
-     * The attributes.
-     *
-     * @var array<string, mixed>
-     */
-    protected array $attributes = [];
-
     public function __construct(
         UriContract $uri = new Uri(),
         RequestMethod $method = RequestMethod::GET,
@@ -60,7 +50,8 @@ class ServerRequest extends Request implements ServerRequestContract
         protected CookieParamCollectionContract $cookies = new CookieParamCollection(),
         protected QueryParamCollectionContract $query = new QueryParamCollection(),
         protected ParsedBodyParamCollectionContract $parsedBody = new ParsedBodyParamCollection(),
-        protected UploadedFileCollectionContract $files = new UploadedFileCollection()
+        protected UploadedFileCollectionContract $files = new UploadedFileCollection(),
+        protected AttributeParamCollectionContract $attributes = new AttributeParamCollection(),
     ) {
         $this->protocolVersion = $protocol;
 
@@ -181,7 +172,7 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function getAttributes(): array
+    public function getAttributes(): AttributeParamCollectionContract
     {
         return $this->attributes;
     }
@@ -190,60 +181,11 @@ class ServerRequest extends Request implements ServerRequestContract
      * @inheritDoc
      */
     #[Override]
-    public function onlyAttributes(string ...$names): array
-    {
-        return array_filter(
-            $this->attributes,
-            static fn (string|int $name): bool => in_array($name, $names, true),
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function exceptAttributes(string ...$names): array
-    {
-        return array_filter(
-            $this->attributes,
-            static fn (string|int $name): bool => ! in_array($name, $names, true),
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getAttribute(string $name, mixed $default = null): mixed
-    {
-        return $this->attributes[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withAttribute(string $name, mixed $value): static
+    public function withAttributes(AttributeParamCollectionContract $attributes): static
     {
         $new = clone $this;
 
-        /** @var scalar|object|array<array-key, mixed>|null $value */
-        $new->attributes[$name] = $value;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withoutAttribute(string $name): static
-    {
-        $new = clone $this;
-
-        unset($new->attributes[$name]);
+        $new->attributes = $attributes;
 
         return $new;
     }
