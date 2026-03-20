@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Application\Data\HttpConfig;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
-use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -35,7 +32,6 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
@@ -79,7 +75,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(GenerateDataCommand::class, ServiceProvider::publishers());
     }
 
     public function testExpectedProvides(): void
@@ -93,7 +88,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
         self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
         self::assertContains(Data::class, ServiceProvider::provides());
-        self::assertContains(GenerateDataCommand::class, ServiceProvider::provides());
     }
 
     public function testPublishRouter(): void
@@ -386,23 +380,5 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(ResponseFactoryContract::class));
         self::assertTrue($container->isSingleton(ResponseFactoryContract::class));
         self::assertInstanceOf(ResponseFactory::class, $container->getSingleton(ResponseFactoryContract::class));
-    }
-
-    public function testGenerateDataCommand(): void
-    {
-        $container = $this->container;
-
-        $container->setSingleton(Env::class, self::createStub(Env::class));
-        $container->setSingleton(HttpConfig::class, self::createStub(HttpConfig::class));
-        $container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
-
-        self::assertFalse($container->has(GenerateDataCommand::class));
-
-        $callback = ServiceProvider::publishers()[GenerateDataCommand::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(GenerateDataCommand::class));
-        self::assertTrue($container->isSingleton(GenerateDataCommand::class));
-        self::assertInstanceOf(GenerateDataCommand::class, $container->getSingleton(GenerateDataCommand::class));
     }
 }

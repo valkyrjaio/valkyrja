@@ -14,26 +14,27 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Http\Routing\Provider\ComponentProvider;
-use Valkyrja\Http\Routing\Provider\ServiceProvider;
+use Valkyrja\Http\Routing\Provider\CliComponentProvider;
+use Valkyrja\Http\Routing\Provider\CliRouteProvider;
+use Valkyrja\Http\Routing\Provider\CliServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
  * Test the Component service.
  */
-final class ComponentProviderTest extends TestCase
+final class CliComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
+        self::assertContains(CliServiceProvider::class, CliComponentProvider::getContainerProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ComponentProvider::getCliProviders($app));
+        self::assertContains(CliRouteProvider::class, CliComponentProvider::getCliProviders($app));
     }
 }
