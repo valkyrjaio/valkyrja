@@ -29,15 +29,4 @@ class ComponentProvider extends Provider
             ServiceProvider::class,
         ];
     }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
-    {
-        return [
-            CliRouteProvider::class,
-        ];
-    }
 }

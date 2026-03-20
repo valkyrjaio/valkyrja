@@ -53,6 +53,7 @@ readonly class Config
             ComponentClass::HTTP_MESSAGE,
             ComponentClass::HTTP_MIDDLEWARE,
             ComponentClass::HTTP_ROUTING,
+            ComponentClass::HTTP_ROUTING_CLI,
             ComponentClass::HTTP_SERVER,
             ComponentClass::LOG,
             ComponentClass::VIEW,
