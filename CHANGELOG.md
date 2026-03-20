@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.3...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.34.4...master)
+
+## [v25.34.4](https://github.com/valkyrjaio/valkyrja/compare/v25.34.3...v25.34.4) - 2026-03-20
+
+* [Http] Add AttributeParamCollection and use in ServerRequest by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/684
+* [Http] Add providers for cli specific services and routes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/685
+* [CI] Update psalm to version v6.16.1 from v6.16.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/686
 
 ## [v25.34.3](https://github.com/valkyrjaio/valkyrja/compare/v25.34.2...v25.34.3) - 2026-03-18
 
