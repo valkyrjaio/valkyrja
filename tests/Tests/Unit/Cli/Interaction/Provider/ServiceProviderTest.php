@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Data\Config as ApplicationConfig;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
@@ -55,7 +55,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishConfigWithApplicationConfig(): void
     {
-        $this->container->setSingleton(ApplicationConfig::class, new ConfigClass(
+        $this->container->setSingleton(Config::class, new ConfigClass(
             isQuiet: true,
             isInteractive: false,
             isSilent: true,
