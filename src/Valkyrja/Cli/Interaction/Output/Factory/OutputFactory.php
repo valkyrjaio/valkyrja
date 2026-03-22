@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Interaction\Output\Factory;
 
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract;
@@ -32,7 +33,7 @@ use Valkyrja\Cli\Interaction\Output\StreamOutput;
 class OutputFactory implements OutputFactoryContract
 {
     public function __construct(
-        protected Config $config = new Config()
+        protected ConfigContract $config = new Config()
     ) {
     }
 

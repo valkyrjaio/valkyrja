@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Provider;
 
 use Override;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Config as ApplicationConfig;
 use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -30,7 +31,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Config::class                => [self::class, 'publishConfig'],
+            ConfigContract::class        => [self::class, 'publishConfig'],
             OutputFactoryContract::class => [self::class, 'publishOutputFactory'],
         ];
     }
@@ -42,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Config::class,
+            ConfigContract::class,
             OutputFactoryContract::class,
         ];
     }
@@ -52,24 +53,17 @@ final class ServiceProvider extends Provider
      */
     public static function publishConfig(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var bool $isQuiet */
-        $isQuiet = $env::CLI_INTERACTION_IS_QUIET
-            ?? false;
-        /** @var bool $isInteractive */
-        $isInteractive = $env::CLI_INTERACTION_IS_INTERACTIVE
-            ?? true;
-        /** @var bool $isSilent */
-        $isSilent = $env::CLI_INTERACTION_IS_SILENT
-            ?? false;
+        $config = $container->getSingleton(ApplicationConfig::class);
+
+        if ($config instanceof ConfigContract) {
+            $container->setSingleton(ConfigContract::class, $config);
+
+            return;
+        }
 
         $container->setSingleton(
-            Config::class,
-            new Config(
-                isQuiet: $isQuiet,
-                isInteractive: $isInteractive,
-                isSilent: $isSilent,
-            )
+            ConfigContract::class,
+            new Config()
         );
     }
 
@@ -78,7 +72,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishOutputFactory(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $container->setSingleton(
             OutputFactoryContract::class,

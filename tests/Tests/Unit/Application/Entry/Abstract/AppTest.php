@@ -23,7 +23,7 @@ use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Cli\Interaction\Data\Config as CliConfig;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -211,7 +211,7 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ApplicationContract::class));
         self::assertTrue($container->has(Config::class));
-        self::assertTrue($container->has(CliConfig::class));
+        self::assertTrue($container->has(ConfigContract::class));
         self::assertTrue($container->has(OutputFactoryContract::class));
         self::assertTrue($container->has(InputReceivedHandlerContract::class));
         self::assertTrue($container->has(ThrowableCaughtHandlerContract::class));

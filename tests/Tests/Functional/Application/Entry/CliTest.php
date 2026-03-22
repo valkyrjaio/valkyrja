@@ -24,6 +24,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Generator\DataFileGenerator;
@@ -70,29 +71,35 @@ final class CliTest extends TestCase
         $env = new class extends EnvClass {
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-            /** @var non-empty-string */
-            public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
         };
         $dir = Directory::$basePath;
 
-        $config = new CliConfig(
-            dir: $dir,
-            debugMode: true,
-            providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
-                CliComponentProviderClass::class,
-            ],
-        );
+        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+            public string $dataClassName = 'CliTestCliRoutingData';
+
+            public function __construct(
+                string $dir,
+            ) {
+                parent::__construct(
+                    dir: $dir,
+                    debugMode: true,
+                    providers: [
+                        ComponentClass::CONTAINER,
+                        ComponentClass::DISPATCHER,
+                        ComponentClass::CLI_INTERACTION,
+                        ComponentClass::CLI_MIDDLEWARE,
+                        ComponentClass::CLI_ROUTING,
+                        ComponentClass::CLI_SERVER,
+                        ComponentClass::EVENT,
+                        ComponentClass::HTTP_MESSAGE,
+                        ComponentClass::HTTP_MIDDLEWARE,
+                        ComponentClass::HTTP_ROUTING,
+                        ComponentClass::HTTP_SERVER,
+                        CliComponentProviderClass::class,
+                    ],
+                );
+            }
+        };
 
         $containerDataClassName        = 'CliTestContainerData';
         $containerDataFilePath         = "/$containerDataClassName.php";
@@ -146,31 +153,37 @@ final class CliTest extends TestCase
         $env = new class extends EnvClass {
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-            /** @var non-empty-string */
-            public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
         };
 
-        $config = new CliConfig(
-            dir: $dir,
-            debugMode: false,
-            providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
-                CliComponentProviderClass::class,
-            ],
-            callbacks: [
-                [CliComponentProviderClass::class, 'publish'],
-            ],
-        );
+        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+            public string $dataClassName = 'CliTestCliRoutingData';
+
+            public function __construct(
+                string $dir,
+            ) {
+                parent::__construct(
+                    dir: $dir,
+                    debugMode: false,
+                    providers: [
+                        ComponentClass::CONTAINER,
+                        ComponentClass::DISPATCHER,
+                        ComponentClass::CLI_INTERACTION,
+                        ComponentClass::CLI_MIDDLEWARE,
+                        ComponentClass::CLI_ROUTING,
+                        ComponentClass::CLI_SERVER,
+                        ComponentClass::EVENT,
+                        ComponentClass::HTTP_MESSAGE,
+                        ComponentClass::HTTP_MIDDLEWARE,
+                        ComponentClass::HTTP_ROUTING,
+                        ComponentClass::HTTP_SERVER,
+                        CliComponentProviderClass::class,
+                    ],
+                    callbacks: [
+                        [CliComponentProviderClass::class, 'publish'],
+                    ],
+                );
+            }
+        };
 
         ob_start();
         Cli::run($env, $config);
@@ -189,31 +202,37 @@ final class CliTest extends TestCase
         $env = new class extends EnvClass {
             /** @var non-empty-string */
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-            /** @var non-empty-string */
-            public const string CLI_ROUTING_DATA_CLASS_NAME = 'CliTestCliRoutingData';
         };
 
-        $config = new CliConfig(
-            dir: $dir,
-            debugMode: true,
-            providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
-                CliComponentProviderClass::class,
-            ],
-            callbacks: [
-                [CliComponentProviderClass::class, 'publish'],
-            ],
-        );
+        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+            public string $dataClassName = 'CliTestCliRoutingData';
+
+            public function __construct(
+                string $dir,
+            ) {
+                parent::__construct(
+                    dir: $dir,
+                    debugMode: true,
+                    providers: [
+                        ComponentClass::CONTAINER,
+                        ComponentClass::DISPATCHER,
+                        ComponentClass::CLI_INTERACTION,
+                        ComponentClass::CLI_MIDDLEWARE,
+                        ComponentClass::CLI_ROUTING,
+                        ComponentClass::CLI_SERVER,
+                        ComponentClass::EVENT,
+                        ComponentClass::HTTP_MESSAGE,
+                        ComponentClass::HTTP_MIDDLEWARE,
+                        ComponentClass::HTTP_ROUTING,
+                        ComponentClass::HTTP_SERVER,
+                        CliComponentProviderClass::class,
+                    ],
+                    callbacks: [
+                        [CliComponentProviderClass::class, 'publish'],
+                    ],
+                );
+            }
+        };
 
         ob_start();
         Cli::run($env, $config);

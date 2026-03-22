@@ -11,14 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Data;
+namespace Valkyrja\Tests\Classes\Cli\Interaction\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ProviderContract;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 
-class Config
+final class ConfigClass extends Config implements ConfigContract
 {
     /**
      * @param non-empty-string                          $namespace
@@ -33,16 +35,16 @@ class Config
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
-        public readonly string $namespace = 'App',
-        public readonly string $dir = __DIR__,
-        public readonly string $version = ApplicationInfo::VERSION,
-        public readonly string $environment = 'production',
-        public readonly bool $debugMode = false,
-        public readonly string $timezone = 'UTC',
-        public readonly string $key = 'some_secret_app_key',
-        public readonly string $dataPath = 'App/Provider/Data',
-        public readonly string $dataNamespace = 'App\\Provider\\Data',
-        public readonly array $providers = [
+        string $namespace = 'App',
+        string $dir = __DIR__,
+        string $version = ApplicationInfo::VERSION,
+        string $environment = 'production',
+        bool $debugMode = false,
+        string $timezone = 'UTC',
+        string $key = 'some_secret_app_key',
+        string $dataPath = 'App/Provider/Data',
+        string $dataNamespace = 'App\\Provider\\Data',
+        array $providers = [
             ComponentClass::CONTAINER,
             ComponentClass::DISPATCHER,
             ComponentClass::CLI_INTERACTION,
@@ -56,9 +58,24 @@ class Config
             ComponentClass::HTTP_ROUTING_CLI,
             ComponentClass::HTTP_SERVER,
             ComponentClass::LOG,
-            ComponentClass::VIEW,
         ],
-        public readonly array $callbacks = [],
+        array $callbacks = [],
+        public bool $isQuiet = false,
+        public bool $isInteractive = true,
+        public bool $isSilent = false,
     ) {
+        parent::__construct(
+            namespace: $namespace,
+            dir: $dir,
+            version: $version,
+            environment: $environment,
+            debugMode: $debugMode,
+            timezone: $timezone,
+            key: $key,
+            dataPath: $dataPath,
+            dataNamespace: $dataNamespace,
+            providers: $providers,
+            callbacks: $callbacks,
+        );
     }
 }

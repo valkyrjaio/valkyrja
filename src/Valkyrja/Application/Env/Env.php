@@ -20,24 +20,18 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract as HttpRouteDispatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract as HttpRouteMatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpRouteNotMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -115,66 +109,6 @@ class Env
 
     /************************************************************
      *
-     * Cli component env variables.
-     *
-     ************************************************************/
-
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_COMMAND_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_OPTION_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_OPTION_SHORT_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_COMMAND_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_OPTION_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_OPTION_SHORT_NAME = null;
-
-    /************************************************************
-     *
-     * Cli Interaction component env variables.
-     *
-     ************************************************************/
-
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_QUIET = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_SILENT = null;
-
-    /************************************************************
-     *
-     * Cli Middleware component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<InputReceivedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_INPUT_RECEIVED = null;
-    /** @var class-string<RouteMatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_MATCHED = null;
-    /** @var class-string<RouteNotMatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = null;
-    /** @var class-string<RouteDispatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_DISPATCHED = null;
-    /** @var class-string<ThrowableCaughtMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<ExitedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_EXITED = null;
-
-    /************************************************************
-     *
-     * Cli Routing component env variables.
-     *
-     ************************************************************/
-
-    /** @var non-empty-string|null */
-    public const string|null CLI_ROUTING_DATA_CLASS_NAME = null;
-
-    /************************************************************
-     *
      * Container component env variables.
      *
      ************************************************************/
@@ -244,13 +178,13 @@ class Env
 
     /** @var class-string<RequestReceivedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
-    /** @var class-string<HttpRouteDispatchedMiddlewareContract>[]|null */
+    /** @var class-string<RouteDispatchedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
-    /** @var class-string<HttpThrowableCaughtMiddlewareContract>[]|null */
+    /** @var class-string<ThrowableCaughtMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<HttpRouteMatchedMiddlewareContract>[]|null */
+    /** @var class-string<RouteMatchedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
-    /** @var class-string<HttpRouteNotMatchedMiddlewareContract>[]|null */
+    /** @var class-string<RouteNotMatchedMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
     /** @var class-string<SendingResponseMiddlewareContract>[]|null */
     public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;

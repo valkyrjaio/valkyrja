@@ -15,8 +15,9 @@ namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
 use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -32,6 +33,11 @@ use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Constant\CommandName;
+use Valkyrja\Cli\Server\Data\Contract\HelpConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\NoInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\QuietInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\SilentInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\VersionConfigContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
@@ -95,7 +101,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishInputHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $container->setSingleton(
             InputHandlerContract::class,
@@ -214,17 +220,17 @@ final class ServiceProvider extends Provider
      */
     public static function publishCheckForHelpOptionsMiddleware(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
+        $config = $container->getSingleton(Config::class);
 
-        /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_HELP_COMMAND_NAME
-            ?? CommandName::HELP;
-        /** @var non-empty-string $name */
-        $name = $env::CLI_HELP_OPTION_NAME
-            ?? OptionName::HELP;
-        /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_HELP_OPTION_SHORT_NAME
-            ?? OptionShortName::HELP;
+        $commandName = CommandName::HELP;
+        $name        = OptionName::HELP;
+        $shortName   = OptionShortName::HELP;
+
+        if ($config instanceof HelpConfigContract) {
+            $commandName = $config->helpCommandName;
+            $name        = $config->helpOptionName;
+            $shortName   = $config->helpOptionShortName;
+        }
 
         $container->setSingleton(
             CheckForHelpOptionsMiddleware::class,
@@ -241,17 +247,17 @@ final class ServiceProvider extends Provider
      */
     public static function publishCheckForVersionOptionsMiddleware(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
+        $config = $container->getSingleton(Config::class);
 
-        /** @var non-empty-string $commandName */
-        $commandName = $env::CLI_VERSION_COMMAND_NAME
-            ?? CommandName::VERSION;
-        /** @var non-empty-string $name */
-        $name = $env::CLI_VERSION_OPTION_NAME
-            ?? OptionName::VERSION;
-        /** @var non-empty-string $shortName */
-        $shortName = $env::CLI_VERSION_OPTION_SHORT_NAME
-            ?? OptionShortName::VERSION;
+        $commandName = CommandName::VERSION;
+        $name        = OptionName::VERSION;
+        $shortName   = OptionShortName::VERSION;
+
+        if ($config instanceof VersionConfigContract) {
+            $commandName = $config->versionCommandName;
+            $name        = $config->versionOptionName;
+            $shortName   = $config->versionOptionShortName;
+        }
 
         $container->setSingleton(
             CheckForVersionOptionsMiddleware::class,
@@ -268,16 +274,42 @@ final class ServiceProvider extends Provider
      */
     public static function publishCheckGlobalInteractionOptionsMiddleware(ContainerContract $container): void
     {
+        $config = $container->getSingleton(Config::class);
+
+        $noInteractionOptionName      = OptionName::NO_INTERACTION;
+        $noInteractionOptionShortName = OptionShortName::NO_INTERACTION;
+
+        $isQuietOptionName      = OptionName::QUIET;
+        $isQuietOptionShortName = OptionShortName::QUIET;
+
+        $isSilentOptionName      = OptionName::SILENT;
+        $isSilentOptionShortName = OptionShortName::SILENT;
+
+        if ($config instanceof NoInteractionConfigContract) {
+            $noInteractionOptionName      = $config->noInteractionOptionName;
+            $noInteractionOptionShortName = $config->noInteractionOptionShortName;
+        }
+
+        if ($config instanceof QuietInteractionConfigContract) {
+            $isQuietOptionName      = $config->quietOptionName;
+            $isQuietOptionShortName = $config->quietOptionShortName;
+        }
+
+        if ($config instanceof SilentInteractionConfigContract) {
+            $isSilentOptionName      = $config->silentOptionName;
+            $isSilentOptionShortName = $config->silentOptionShortName;
+        }
+
         $container->setSingleton(
             CheckGlobalInteractionOptionsMiddleware::class,
             new CheckGlobalInteractionOptionsMiddleware(
-                config: $container->getSingleton(Config::class),
-                noInteractionOptionName: OptionName::NO_INTERACTION,
-                noInteractionOptionShortName: OptionShortName::NO_INTERACTION,
-                quietOptionName: OptionName::QUIET,
-                quietOptionShortName: OptionShortName::QUIET,
-                silentOptionName: OptionName::SILENT,
-                silentOptionShortName: OptionShortName::SILENT
+                config: $container->getSingleton(ConfigContract::class),
+                noInteractionOptionName: $noInteractionOptionName,
+                noInteractionOptionShortName: $noInteractionOptionShortName,
+                quietOptionName: $isQuietOptionName,
+                quietOptionShortName: $isQuietOptionShortName,
+                silentOptionName: $isSilentOptionName,
+                silentOptionShortName: $isSilentOptionShortName
             )
         );
     }
