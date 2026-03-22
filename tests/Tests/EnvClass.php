@@ -33,15 +33,6 @@ class EnvClass extends Env
 
     /************************************************************
      *
-     * Cli Interaction component env variables.
-     *
-     ************************************************************/
-
-    /** @var bool */
-    public const bool CLI_INTERACTION_IS_QUIET = true;
-
-    /************************************************************
-     *
      * Filesystem component env variables.
      *
      ************************************************************/

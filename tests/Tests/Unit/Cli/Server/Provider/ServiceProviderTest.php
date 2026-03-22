@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use ReflectionProperty;
 use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Config as ApplicationConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -39,6 +42,7 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Tests\Classes\Cli\Server\Data\ConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -86,7 +90,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishInputHandler(): void
     {
-        $this->container->setSingleton(Config::class, self::createStub(Config::class));
+        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
         $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
         $this->container->setSingleton(InputReceivedHandlerContract::class, self::createStub(InputReceivedHandlerContract::class));
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
@@ -189,6 +193,37 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(CheckForHelpOptionsMiddleware::class, $this->container->getSingleton(CheckForHelpOptionsMiddleware::class));
     }
 
+    public function testPublishCheckForHelpOptionsMiddlewareWithCustomConfig(): void
+    {
+        $this->container->setSingleton(
+            ApplicationConfig::class,
+            $config = new ConfigClass(
+                helpCommandName: 'helpTest',
+                helpOptionName: 'helpOptionNameTest',
+                helpOptionShortName: 'helpOptionShortNameTest',
+            )
+        );
+        $this->container->setSingleton(Env::class, self::createStub(Env::class));
+
+        $callback = ServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CheckForHelpOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckForHelpOptionsMiddleware::class));
+
+        $reflection  = new ReflectionProperty($middleware, 'commandName');
+        $commandName = $reflection->getValue($middleware);
+
+        $reflection = new ReflectionProperty($middleware, 'optionName');
+        $optionName = $reflection->getValue($middleware);
+
+        $reflection      = new ReflectionProperty($middleware, 'optionShortName');
+        $optionShortName = $reflection->getValue($middleware);
+
+        self::assertSame($config->helpCommandName, $commandName);
+        self::assertSame($config->helpOptionName, $optionName);
+        self::assertSame($config->helpOptionShortName, $optionShortName);
+    }
+
     public function testPublishCheckForVersionOptionsMiddleware(): void
     {
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
@@ -199,15 +234,95 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(CheckForVersionOptionsMiddleware::class, $this->container->getSingleton(CheckForVersionOptionsMiddleware::class));
     }
 
+    public function testPublishCheckForVersionOptionsMiddlewareWithCustomConfig(): void
+    {
+        $this->container->setSingleton(
+            ApplicationConfig::class,
+            $config = new ConfigClass(
+                versionCommandName: 'versionTest',
+                versionOptionName: 'versionOptionNameTest',
+                versionOptionShortName: 'versionOptionShortNameTest',
+            )
+        );
+        $this->container->setSingleton(Env::class, self::createStub(Env::class));
+
+        $callback = ServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CheckForVersionOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckForVersionOptionsMiddleware::class));
+
+        $reflection  = new ReflectionProperty($middleware, 'commandName');
+        $commandName = $reflection->getValue($middleware);
+
+        $reflection = new ReflectionProperty($middleware, 'optionName');
+        $optionName = $reflection->getValue($middleware);
+
+        $reflection      = new ReflectionProperty($middleware, 'optionShortName');
+        $optionShortName = $reflection->getValue($middleware);
+
+        self::assertSame($config->versionCommandName, $commandName);
+        self::assertSame($config->versionOptionName, $optionName);
+        self::assertSame($config->versionOptionShortName, $optionShortName);
+    }
+
     public function testPublishCheckGlobalInteractionOptionsMiddleware(): void
     {
-        $this->container->setSingleton(Config::class, self::createStub(Config::class));
+        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = ServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckGlobalInteractionOptionsMiddleware::class, $this->container->getSingleton(CheckGlobalInteractionOptionsMiddleware::class));
+    }
+
+    public function testPublishCheckGlobalInteractionOptionsMiddlewareWithCustomConfig(): void
+    {
+        $this->container->setSingleton(
+            ApplicationConfig::class,
+            $config = new ConfigClass(
+                noInteractionOptionName: 'noInteractionOptionNameTest',
+                noInteractionOptionShortName: 'noInteractionOptionShortNameTest',
+                quietOptionName: 'quietOptionNameTest',
+                quietOptionShortName: 'quietOptionShortNameTest',
+                silentOptionName: 'silentOptionNameTest',
+                silentOptionShortName: 'silentOptionShortNameTest',
+            )
+        );
+        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
+        $this->container->setSingleton(Env::class, self::createStub(Env::class));
+
+        $callback = ServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CheckGlobalInteractionOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckGlobalInteractionOptionsMiddleware::class));
+
+        $reflection              = new ReflectionProperty($middleware, 'noInteractionOptionName');
+        $noInteractionOptionName = $reflection->getValue($middleware);
+
+        $reflection                   = new ReflectionProperty($middleware, 'noInteractionOptionShortName');
+        $noInteractionOptionShortName = $reflection->getValue($middleware);
+
+        self::assertSame($config->noInteractionOptionName, $noInteractionOptionName);
+        self::assertSame($config->noInteractionOptionShortName, $noInteractionOptionShortName);
+
+        $reflection      = new ReflectionProperty($middleware, 'quietOptionName');
+        $quietOptionName = $reflection->getValue($middleware);
+
+        $reflection           = new ReflectionProperty($middleware, 'quietOptionShortName');
+        $quietOptionShortName = $reflection->getValue($middleware);
+
+        self::assertSame($config->quietOptionName, $quietOptionName);
+        self::assertSame($config->quietOptionShortName, $quietOptionShortName);
+
+        $reflection       = new ReflectionProperty($middleware, 'silentOptionName');
+        $silentOptionName = $reflection->getValue($middleware);
+
+        $reflection            = new ReflectionProperty($middleware, 'silentOptionShortName');
+        $silentOptionShortName = $reflection->getValue($middleware);
+
+        self::assertSame($config->silentOptionName, $silentOptionName);
+        self::assertSame($config->silentOptionShortName, $silentOptionShortName);
     }
 
     /**

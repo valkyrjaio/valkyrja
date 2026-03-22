@@ -19,7 +19,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ProviderContract;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
-readonly class CliConfig extends Config
+class CliConfig extends Config
 {
     /**
      * @param non-empty-string                          $namespace
@@ -45,8 +45,8 @@ readonly class CliConfig extends Config
         string $key = 'some_secret_app_key',
         string $dataPath = 'App/Provider/Data',
         string $dataNamespace = 'App\\Provider\\Data',
-        public string $applicationName = 'valkyrja',
-        public string $defaultCommandName = CommandName::LIST,
+        public readonly string $applicationName = 'valkyrja',
+        public readonly string $defaultCommandName = CommandName::LIST,
         array $providers = [
             ComponentClass::CONTAINER,
             ComponentClass::DISPATCHER,
@@ -63,7 +63,7 @@ readonly class CliConfig extends Config
             ComponentClass::LOG,
         ],
         array $callbacks = [],
-        public HttpConfig $http = new HttpConfig(),
+        public readonly HttpConfig $http = new HttpConfig(),
     ) {
         parent::__construct(
             namespace: $namespace,

@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
-use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Application\Data\Config;
+use Valkyrja\Cli\Middleware\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -83,10 +78,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishInputReceivedHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<InputReceivedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_INPUT_RECEIVED
-            ?? [
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->inputReceivedMiddleware
+            : [
                 CheckForHelpOptionsMiddleware::class,
                 CheckForVersionOptionsMiddleware::class,
                 CheckGlobalInteractionOptionsMiddleware::class,
@@ -107,10 +103,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteDispatchedHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<RouteDispatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_DISPATCHED
-            ?? [];
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->routeDispatchedMiddleware
+            : [];
 
         $container->setSingleton(
             RouteDispatchedHandlerContract::class,
@@ -127,10 +124,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishThrowableCaughtHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<ThrowableCaughtMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_THROWABLE_CAUGHT
-            ?? [
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->throwableCaughtMiddleware
+            : [
                 LogThrowableCaughtMiddleware::class,
                 OutputThrowableCaughtMiddleware::class,
             ];
@@ -150,10 +148,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteMatchedHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<RouteMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_MATCHED
-            ?? [];
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->routeMatchedMiddleware
+            : [];
 
         $container->setSingleton(
             RouteMatchedHandlerContract::class,
@@ -170,10 +169,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteNotMatchedHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<RouteNotMatchedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_COMMAND_NOT_MATCHED
-            ?? [
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->routeNotMatchedMiddleware
+            : [
                 CheckCommandForTypoMiddleware::class,
             ];
 
@@ -192,10 +192,11 @@ final class ServiceProvider extends Provider
      */
     public static function publishExitedHandler(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<ExitedMiddlewareContract>[] $middleware */
-        $middleware = $env::CLI_MIDDLEWARE_EXITED
-            ?? [];
+        $config = $container->getSingleton(Config::class);
+
+        $middleware = $config instanceof ConfigContract
+            ? $config->exitedMiddleware
+            : [];
 
         $container->setSingleton(
             ExitedHandlerContract::class,

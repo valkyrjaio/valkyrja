@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
+use ReflectionProperty;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -26,6 +28,7 @@ use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
+use Valkyrja\Tests\Classes\Cli\Middleware\Data\ConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -67,6 +70,24 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    public function testPublishInputReceivedHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(inputReceivedMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[InputReceivedHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            InputReceivedHandler::class,
+            $handler = $this->container->getSingleton(InputReceivedHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
+    }
+
     public function testPublishRouteDispatchedHandler(): void
     {
         $callback = ServiceProvider::publishers()[RouteDispatchedHandlerContract::class];
@@ -76,6 +97,24 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             RouteDispatchedHandler::class,
             $this->container->getSingleton(RouteDispatchedHandlerContract::class)
         );
+    }
+
+    public function testPublishRouteDispatchedHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(routeDispatchedMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[RouteDispatchedHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            RouteDispatchedHandler::class,
+            $handler = $this->container->getSingleton(RouteDispatchedHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
     }
 
     public function testPublishThrowableCaughtHandler(): void
@@ -89,6 +128,24 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    public function testPublishThrowableCaughtHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(throwableCaughtMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[ThrowableCaughtHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            ThrowableCaughtHandler::class,
+            $handler = $this->container->getSingleton(ThrowableCaughtHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
+    }
+
     public function testPublishRouteMatchedHandler(): void
     {
         $callback = ServiceProvider::publishers()[RouteMatchedHandlerContract::class];
@@ -98,6 +155,24 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             RouteMatchedHandler::class,
             $this->container->getSingleton(RouteMatchedHandlerContract::class)
         );
+    }
+
+    public function testPublishRouteMatchedHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(routeMatchedMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[RouteMatchedHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            RouteMatchedHandler::class,
+            $handler = $this->container->getSingleton(RouteMatchedHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
     }
 
     public function testPublishRouteNotMatchedHandler(): void
@@ -111,6 +186,24 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    public function testPublishRouteNotMatchedHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(routeNotMatchedMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[RouteNotMatchedHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            RouteNotMatchedHandler::class,
+            $handler = $this->container->getSingleton(RouteNotMatchedHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
+    }
+
     public function testPublishExitedHandler(): void
     {
         $callback = ServiceProvider::publishers()[ExitedHandlerContract::class];
@@ -120,5 +213,23 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             ExitedHandler::class,
             $this->container->getSingleton(ExitedHandlerContract::class)
         );
+    }
+
+    public function testPublishExitedHandlerWithCustomConfig(): void
+    {
+        $this->container->setSingleton(Config::class, new ConfigClass(exitedMiddleware: ['test']));
+
+        $callback = ServiceProvider::publishers()[ExitedHandlerContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            ExitedHandler::class,
+            $handler = $this->container->getSingleton(ExitedHandlerContract::class)
+        );
+
+        $reflection = new ReflectionProperty($handler, 'middleware');
+        $middleware = $reflection->getValue($handler);
+
+        self::assertSame(['test'], $middleware);
     }
 }

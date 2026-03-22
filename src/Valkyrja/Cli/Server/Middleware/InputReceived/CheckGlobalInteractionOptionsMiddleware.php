@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server\Middleware\InputReceived;
 
 use Override;
-use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
@@ -31,7 +31,7 @@ class CheckGlobalInteractionOptionsMiddleware implements InputReceivedMiddleware
      * @param non-empty-string $silentOptionShortName        The silent option short name
      */
     public function __construct(
-        protected Config $config,
+        protected ConfigContract $config,
         protected string $noInteractionOptionName,
         protected string $noInteractionOptionShortName,
         protected string $quietOptionName,

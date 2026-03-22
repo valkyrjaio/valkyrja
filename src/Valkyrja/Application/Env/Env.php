@@ -20,12 +20,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
@@ -112,66 +106,6 @@ class Env
     public const string|null CACHE_LOG_LOGGER = null;
     /** @var string|null */
     public const string|null CACHE_NULL_PREFIX = null;
-
-    /************************************************************
-     *
-     * Cli component env variables.
-     *
-     ************************************************************/
-
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_COMMAND_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_OPTION_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_HELP_OPTION_SHORT_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_COMMAND_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_OPTION_NAME = null;
-    /** @var non-empty-string|null */
-    public const string|null CLI_VERSION_OPTION_SHORT_NAME = null;
-
-    /************************************************************
-     *
-     * Cli Interaction component env variables.
-     *
-     ************************************************************/
-
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_QUIET = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_SILENT = null;
-
-    /************************************************************
-     *
-     * Cli Middleware component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<InputReceivedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_INPUT_RECEIVED = null;
-    /** @var class-string<RouteMatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_MATCHED = null;
-    /** @var class-string<RouteNotMatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = null;
-    /** @var class-string<RouteDispatchedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_DISPATCHED = null;
-    /** @var class-string<ThrowableCaughtMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<ExitedMiddlewareContract>[]|null */
-    public const array|null CLI_MIDDLEWARE_EXITED = null;
-
-    /************************************************************
-     *
-     * Cli Routing component env variables.
-     *
-     ************************************************************/
-
-    /** @var non-empty-string|null */
-    public const string|null CLI_ROUTING_DATA_CLASS_NAME = null;
 
     /************************************************************
      *

@@ -18,7 +18,7 @@ use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ProviderContract;
 
-readonly class HttpConfig extends Config
+class HttpConfig extends Config
 {
     /**
      * @param non-empty-string                          $namespace

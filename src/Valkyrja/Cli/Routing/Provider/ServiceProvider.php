@@ -16,7 +16,6 @@ namespace Valkyrja\Cli\Routing\Provider;
 use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
@@ -30,6 +29,7 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -151,14 +151,15 @@ final class ServiceProvider extends Provider
      */
     public static function publishDataFileGenerator(ContainerContract $container): void
     {
-        $env    = $container->getSingleton(Env::class);
         $config = $container->getSingleton(Config::class);
 
         $dataPath  = $config->dataPath;
         $namespace = $config->dataNamespace;
-        /** @var non-empty-string $className */
-        $className = $env::CLI_ROUTING_DATA_CLASS_NAME
-            ?? 'CliRoutingData';
+        $className = 'CliRoutingData';
+
+        if ($config instanceof ConfigContract) {
+            $className = $config->dataClassName;
+        }
 
         $directory = Directory::srcPath($dataPath);
 

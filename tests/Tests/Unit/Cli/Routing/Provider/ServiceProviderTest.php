@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use ReflectionProperty;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -37,6 +39,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\Classes\Cli\Routing\Data\ConfigClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -254,5 +257,27 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(DataFileGeneratorContract::class));
         self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
         self::assertInstanceOf(DataFileGenerator::class, $container->getSingleton(DataFileGeneratorContract::class));
+    }
+
+    public function testPublishDataFileGeneratorWithCustomConfig(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(Config::class, $config = new ConfigClass(dataClassName: 'CustomDataClassName'));
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+
+        self::assertFalse($container->has(CollectorContract::class));
+
+        $callback = ServiceProvider::publishers()[DataFileGeneratorContract::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(DataFileGeneratorContract::class));
+        self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
+        self::assertInstanceOf(DataFileGenerator::class, $generator = $container->getSingleton(DataFileGeneratorContract::class));
+
+        $reflection = new ReflectionProperty($generator, 'className');
+        $className  = $reflection->getValue($generator);
+
+        self::assertSame($config->dataClassName, $className);
     }
 }
