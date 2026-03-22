@@ -15,16 +15,7 @@ namespace Valkyrja\Cli\Interaction\Data\Contract;
 
 interface ConfigContract
 {
-    public bool $isQuiet {
-        get;
-        set;
-    }
-    public bool $isInteractive {
-        get;
-        set;
-    }
-    public bool $isSilent {
-        get;
-        set;
-    }
+    public bool $isQuiet { get; set; }
+    public bool $isInteractive { get; set; }
+    public bool $isSilent { get; set; }
 }
