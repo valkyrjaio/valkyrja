@@ -159,7 +159,7 @@ the [MIT license][MIT license url]. You can view the
 
 [docs url]: ./src/Valkyrja/README.md
 
-[New Project Guide url]: ./src/Valkyrja/NEW_PROJECT_GUIDE.md
+[New Project Guide url]: src/Valkyrja/GETTING_STARTED.md
 
 [Versioning and Release Process url]: ./src/Valkyrja/VERSIONING_AND_RELEASE_PROCESS.md
 
