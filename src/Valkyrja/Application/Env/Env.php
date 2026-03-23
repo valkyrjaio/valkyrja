@@ -25,13 +25,6 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -169,27 +162,6 @@ class Env
 
     /** @var class-string<ClientContract>|null */
     public const string|null HTTP_CLIENT_DEFAULT = null;
-
-    /************************************************************
-     *
-     * Http Middleware component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<RequestReceivedMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
-    /** @var class-string<RouteDispatchedMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
-    /** @var class-string<ThrowableCaughtMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<RouteMatchedMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
-    /** @var class-string<RouteNotMatchedMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
-    /** @var class-string<SendingResponseMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
-    /** @var class-string<TerminatedMiddlewareContract>[]|null */
-    public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
 
     /************************************************************
      *
