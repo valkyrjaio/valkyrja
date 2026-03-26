@@ -29,7 +29,7 @@ class Http extends App
      * @inheritDoc
      */
     #[Override]
-    public static function run(Env $env, Config|HttpConfig $config): void
+    public static function run(Config|HttpConfig $config, Env $env = new Env()): void
     {
         if (! $config instanceof HttpConfig) {
             throw new InvalidArgumentException('Config must be an instance of HttpConfig');

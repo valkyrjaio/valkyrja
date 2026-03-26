@@ -186,7 +186,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run($env, $config);
+        Cli::run(config: $config, env: $env);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
@@ -235,7 +235,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run($env, $config);
+        Cli::run(config: $config, env: $env);
         ob_get_clean();
 
         restore_error_handler();

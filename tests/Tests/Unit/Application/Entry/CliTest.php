@@ -17,7 +17,6 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Application\Entry\CliClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -33,7 +32,7 @@ final class CliTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Config must be an instance of CliConfig');
 
-        Cli::run(new Env(), new Config());
+        Cli::run(config: new Config());
     }
 
     public function testGetInputDefaults(): void

@@ -21,6 +21,9 @@
     <issueHandlers>
         <PropertyNotSetInConstructor errorLevel="suppress" />
 
+        <!-- TODO: Remove this after we fully deprecate the Env class -->
+        <DeprecatedClass errorLevel="suppress" />
+
         <!-- Classes aren't extended because they could potentially be since this is a framework -->
         <ClassMustBeFinal errorLevel="suppress" />
 

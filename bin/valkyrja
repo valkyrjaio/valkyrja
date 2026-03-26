@@ -15,7 +15,6 @@ declare(strict_types=1);
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Bin\Provider\ComponentProvider;
 
 $composerAutoloadFilePossibilities = [
@@ -60,7 +59,6 @@ require $composerAutoloadFile;
 
 define('BIN_APP_DIR', $dir);
 
-$env    = new Env();
 $config = new CliConfig(
     dir: $dir,
     providers: [
@@ -79,4 +77,4 @@ $config = new CliConfig(
     ],
 );
 
-Cli::run($env, $config);
+Cli::run($config);
