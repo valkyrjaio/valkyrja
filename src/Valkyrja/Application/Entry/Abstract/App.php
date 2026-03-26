@@ -98,7 +98,7 @@ abstract class App
     /**
      * Run the app.
      */
-    abstract public static function run(Env $env, Config $config): void;
+    abstract public static function run(Config $config, Env $env = new Env()): void;
 
     /**
      * Get the application.

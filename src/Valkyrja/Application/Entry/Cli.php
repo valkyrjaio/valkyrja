@@ -29,7 +29,7 @@ class Cli extends App
      * @inheritDoc
      */
     #[Override]
-    public static function run(Env $env, Config|CliConfig $config): void
+    public static function run(Config|CliConfig $config, Env $env = new Env()): void
     {
         if (! $config instanceof CliConfig) {
             throw new InvalidArgumentException('Config must be an instance of CliConfig');

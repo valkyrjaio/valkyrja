@@ -38,6 +38,9 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 /**
  * @see https://psalm.dev/r/eb18b4d7ae This one is fine
  * @see https://psalm.dev/r/36fd31ac0e This on breaks, the moment we use an annotation?!!?!?
+ * @deprecated Env is deprecated and will be removed in a future release.
+ *             Configure your application using typed config classes instead.
+ *             See the Valkyrja documentation for migration guidance.
  */
 class Env
 {

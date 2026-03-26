@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Application\Entry;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\Http;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -31,6 +30,6 @@ final class HttpTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Config must be an instance of HttpConfig');
 
-        Http::run(new Env(), new Config());
+        Http::run(config: new Config());
     }
 }
