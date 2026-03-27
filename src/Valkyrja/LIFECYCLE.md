@@ -2,91 +2,155 @@
 
 ## Introduction
 
-When building with any framework, confidence comes from understanding what is actually happening under the hood. Valkyrja is designed to be fast, lean, and explicit — and its lifecycle reflects those values. Nothing is loaded that hasn't been asked for, and nothing is hidden behind layers of magic.
+When building with any framework, understanding what happens under the hood turns debugging from guesswork into diagnosis, and architectural decisions from instinct into intention. Valkyrja is designed to be fast, lean, and transparent — and its lifecycle reflects those values directly. Every step exists for a reason, and nothing is hidden.
 
-This document walks you through the full lifecycle of both an HTTP request and a CLI command in a Valkyrja application, from the first line of code executed to the final response sent. By the time you finish reading, the framework should feel transparent rather than mysterious.
+This document walks through the full lifecycle of both an HTTP request and a CLI command in a Valkyrja application, from the first line of code executed to the final response sent or process exited.
 
 ## Entry Points
 
-A Valkyrja application has two entry points, one for each runtime environment.
+Every Valkyrja application has one of two entry points depending on its runtime.
 
-**HTTP requests** are directed to `app/public/index.php` by your web server of choice (Nginx, Apache, FrankenPHP, or any other). This file is minimal by design — it hands control to the framework immediately.
+**HTTP** — your web server points to `app/public/index.php`. This file is intentionally minimal: it constructs your configuration object and calls `run()`:
 
-**CLI commands** are invoked via `app/bin/cli`, run as `php app/bin/cli <command-name>`. If no command name is provided, the CLI component will display a list of all available commands by default (this behaviour is configurable).
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\Http;
 
-Both entry points follow the same pattern: they call the `run()` method on their respective entry class — `Valkyrja\Application\Entry\Http` or `Valkyrja\Application\Entry\Cli`. These entry classes exist to eliminate the boilerplate that would otherwise be duplicated across every project, and to give the framework a single place to evolve that code without requiring developers to update their own `index.php` or `cli` files.
+Http::run(new HttpConfig(
+    dir: dirname(__DIR__),
+));
+```
 
-## Lifecycle Overview
+**CLI** — commands are invoked via `php app/bin/cli <command-name>`. The `cli` file follows the same pattern:
 
-### First Steps
+```php
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Entry\Cli;
 
-The `run()` method on the entry class calls `start()`, which performs three immediate tasks:
+Cli::run(new CliConfig(
+    dir: dirname(__DIR__),
+    applicationName: 'myapp',
+));
+```
 
-1. Defines a `VALKYRJA_START` constant set to the current microtime. This gives you a precise reference point for benchmarking — at any stage in your application, you can compare `microtime(true)` against this constant to know exactly how long the framework has been running.
-2. Sets the application's working directory (in a standard project, this is `./app`).
-3. Creates the application instance.
+Both entry classes — `Valkyrja\Application\Entry\Http` and `Valkyrja\Application\Entry\Cli` — exist to give the framework one canonical place to evolve the bootstrap sequence. Your entry point files call `run()` and are done.
 
-### The Container and Application
+## The Bootstrap Sequence
 
-Creating the application instance begins with the container. A new container is instantiated first, and then passed — along with the configuration you provided to `run()` — into a new `Application` instance.
+`run()` delegates to `start()`, which performs three steps before anything else happens:
 
-The container is Valkyrja's dependency injection system and the backbone of the entire framework. Every major service, component, and object lives in and is resolved through the container. Configuration in Valkyrja is expressed as typed PHP classes — not environment strings, not flat arrays — which means your IDE understands your configuration, your static analysis tools can validate it, and your configuration is as fast as native PHP objects.
+**1. Start time.** The constant `APP_START` is defined as the current microtime. You can reference this anywhere in your application to measure elapsed time from the first instruction.
 
-### Loading Components
+**2. Working directory.** The application's base path is set to the `dir` value from your configuration. All framework path resolution uses this as its root, so file lookups behave consistently regardless of where the PHP process was invoked from.
 
-With the application instantiated, Valkyrja determines whether to load components fresh or to use a pre-generated data cache class.
+**3. Application instantiation.** A new container is created. The container, along with your configuration object, is passed to a new `Valkyrja\Application\Kernel\Valkyrja` instance. This instance is the application — it holds the container, exposes the configuration, and coordinates component loading.
 
-**Without a cache** (or when running in debug mode), the framework loads all components by iterating through the providers defined in `Valkyrja\Application\Provider\Abstract\Provider`. Each component registers its service providers, which in turn bind their services into the container. This is the standard development flow.
+Several core singletons are immediately registered into the container: `Env`, `Config`, the concrete config class (e.g. `HttpConfig`), `ContainerContract`, and `ApplicationContract` itself. If a `CliConfig` is in use, its embedded `HttpConfig` is also registered.
 
-**With a cache**, the framework loads a pre-generated PHP class that contains the fully resolved container state from a previous run. This eliminates the cost of provider registration and service binding entirely on every request. With this cache active, Valkyrja becomes faster than SlimPHP — a micro-framework — while still providing a full-featured, robust foundation.
+## Loading Components
 
-The cache is generated via CLI commands that ship with the framework:
+With the application instantiated, Valkyrja determines how to populate the container.
 
-- `php app/bin/cli data:generate` — generates the CLI component data cache
-- `php app/bin/cli http:data:generate` — generates the HTTP component data cache
+### Without the Data Cache
 
-These commands are available because the framework ships with pre-baked CLI route providers — `Valkyrja\Cli\Routing\Provider\CliRouteProvider` for CLI data and `Valkyrja\Http\Routing\Provider\CliRouteProvider` for HTTP data — both of which are registered automatically through the default configuration. Developers can also register these commands individually if they prefer a more selective setup.
+When `debugMode` is `true` (or no data cache exists), the application iterates through the component providers listed in your configuration's `providers` array. Each component provider is asked for its container service providers, which are registered into the container's deferred service map. Routes and events are loaded the same way via `getHttpProviders()`, `getCliProviders()`, and `getEventProviders()`.
 
-### HTTP: Handling the Request
+No services are instantiated at this stage — the container only builds a map of what exists and how to create it. Services are resolved lazily, on first access.
 
-Once the container is ready, the HTTP kernel takes over. It receives the incoming request and passes it through the application's **middleware pipeline** before it ever reaches a route or controller.
+### With the Data Cache
 
-Middleware in Valkyrja is organised around the lifecycle of the request itself. There are distinct middleware groups for each stage:
+In production, a pre-generated PHP data class captures the fully resolved container state. When this file exists and `debugMode` is `false`, the framework loads it directly — no provider iteration, no service binding logic, no reflection. The container is populated in a single step.
 
-- **Request Received** — runs immediately when the request enters the application
-- **Route Matched** — runs after a matching route is found
-- **Route Not Matched** — runs when no route matches the incoming request
-- **Route Dispatched** — runs after the matched route's handler has executed
-- **Throwable Caught** — runs if an exception is thrown at any point
-- **Sending Response** — runs just before the response is sent to the client
-- **Terminated** — runs after the response has been sent, for cleanup tasks
+This is what makes Valkyrja faster than a micro-framework in production. Generate the cache after any deployment:
 
-If the request passes through the matched route's middleware, the route handler or controller method executes and returns a response. That response travels back outward through the middleware stack, giving each layer the opportunity to inspect or modify it, before being sent to the client.
+```bash
+php app/bin/cli data:generate        # CLI routing data
+php app/bin/cli http:data:generate   # HTTP routing data
+```
 
-### CLI: Handling the Command
+## HTTP: Handling the Request
 
-The CLI lifecycle mirrors the HTTP lifecycle closely, by design. The CLI kernel receives the input, passes it through its own middleware pipeline, dispatches the matched command, and returns an exit code. The middleware stages are analogous:
+Once the container is ready, `Http::run()` resolves the `RequestHandlerContract` from the container, builds a `ServerRequest` from PHP's superglobals via `RequestFactory::fromGlobals()`, and calls `RequestHandler::run($request)`.
 
-- **Input Received** — runs when the command input enters the application
-- **Command Matched / Not Matched** — runs based on whether a matching command was found
-- **Command Dispatched** — runs after the matched command has executed
-- **Throwable Caught** — handles any exceptions
-- **Exited** — runs after the command has exited
+The request then passes through a **seven-stage middleware pipeline**:
 
-This symmetry between HTTP and CLI is intentional. Once you understand one, you understand both.
+### Stage 1 — Request Received
+
+Before any routing occurs. Global middleware runs here — maintenance mode checks, rate limiting, full-response cache lookups. Middleware at this stage can either return a modified request (to continue) or return a response directly (short-circuiting all remaining stages).
+
+### Stage 2 — Route Matched
+
+After the `Matcher` finds a matching route, before the handler is dispatched. Per-route middleware runs here — authentication, authorization, tenant resolution. Can short-circuit with a response.
+
+### Stage 3 — Route Not Matched
+
+When no route matches the request. A default 404 response is produced; global middleware at this stage can replace it with a custom not-found page or fallback handler.
+
+### Stage 4 — Route Dispatched
+
+After the matched route's controller method has executed and returned a response. Per-route middleware here handles post-dispatch concerns: adding headers, transforming response bodies, logging.
+
+### Stage 5 — Throwable Caught
+
+When any `Throwable` is caught during request handling. Receives the throwable alongside a default error response. Per-route and global middleware here handles error reporting and custom error responses.
+
+### Stage 6 — Sending Response
+
+After the response is finalised, before it is written to the output. Per-route middleware here handles final modifications: CORS headers, response compression, cache-control headers.
+
+### Stage 7 — Terminated
+
+After the response has been sent to the client. Work done here is invisible to the user. The appropriate stage for deferred side effects: writing logs, dispatching queued events, cache writes. The `CacheResponseMiddleware` saves successful responses to disk at this stage, making future identical requests instantaneous.
+
+After `Terminated` middleware completes, the process finishes. Sessions are closed, FastCGI or Litespeed finish-request hooks are called if available.
+
+## CLI: Handling the Command
+
+Once the container is ready, `Cli::run()` resolves the `InputHandlerContract` from the container, builds an `Input` object from `$_SERVER['argv']` via `InputFactory::fromGlobals()`, and calls `InputHandler::run($input)`.
+
+The input passes through a **six-stage middleware pipeline** that mirrors HTTP exactly:
+
+| HTTP Stage          | CLI Equivalent      | Description                                   |
+|---------------------|---------------------|-----------------------------------------------|
+| `RequestReceived`   | `InputReceived`     | Before routing; can short-circuit with output |
+| `RouteMatched`      | `RouteMatched`      | After match; can short-circuit with output    |
+| `RouteNotMatched`   | `RouteNotMatched`   | When no command matches                       |
+| `RouteDispatched`   | `RouteDispatched`   | After dispatch                                |
+| `ThrowableCaught`   | `ThrowableCaught`   | When a throwable is caught                    |
+| `Terminated`        | `Exited`            | After output is written; before process exits |
+
+After `Exited` middleware completes, `InputHandler` writes the output's messages to stdout and calls `Exiter::exit()` with the `ExitCode` integer value from the output object.
 
 ## Focus on Configuration
 
-Valkyrja's configuration philosophy is worth understanding early, because it shapes everything. Rather than reading from environment variables at runtime via a flat class of string constants, Valkyrja uses **typed PHP config classes** — plain objects with typed properties and sensible defaults. You configure the framework by instantiating these classes and setting their properties, which you then pass to the `run()` method.
+Valkyrja's configuration philosophy is worth internalising early because it shapes everything. Rather than reading from environment variables via a flat map of string constants, Valkyrja uses **typed PHP config classes** — plain objects with typed constructor parameters and sensible defaults.
 
-This approach means configuration is validated by PHP itself, understood by your IDE, analysable by tools like PHPStan and Psalm, and has zero runtime overhead beyond a native PHP object. It also makes Valkyrja's configuration portable — the same paradigm translates cleanly to other languages, because it relies on language constructs rather than framework-specific conventions.
+You pass a config object to `run()` and that is your application's entire configuration. It can contain logic. It can read from `$_ENV`, PHP ini values, deployment secrets, or anything else. Its properties are typed, IDE-visible, and statically analysable. There is no indirection, no magic, and no runtime cost beyond a native PHP object.
 
-The base config class is `Valkyrja\Application\Data\Config`, which accepts a `CliConfig` or `HttpConfig` depending on your entry point, each of which holds the configuration for their respective component trees.
+The base class is `Valkyrja\Application\Data\Config`. `HttpConfig` and `CliConfig` extend it, adding runtime-specific properties. See [The Application](Application/README.md) for a full reference.
 
-## The Philosophy Behind the Lifecycle
+## Lifecycle at a Glance
 
-Valkyrja is built on a simple principle: **load only what you need, and make everything fast by default**. The framework ships with a robust and extensive feature set, but activates only a lean core out of the box. Additional functionality — ORM, mail, cache, broadcast, and more — is added when you choose to include it, not bundled in whether you use it or not.
-
-This is the inverse of the approach taken by larger frameworks. Where Laravel and Symfony start with everything and let you remove what you don't need, Valkyrja starts with a fast, minimal core and lets you add what you do. The result is a framework that is nearly three times faster than both Laravel and Symfony without any caching, and faster than SlimPHP with its data cache active — while still providing the structure and tooling of a full-featured framework.
-
-Understanding this philosophy makes the lifecycle make sense. Every step described above exists because it earns its place.
+```
+index.php / bin/cli
+  └── Http::run(HttpConfig) / Cli::run(CliConfig)
+        └── App::start()
+              ├── Define APP_START
+              ├── Set base path (config->dir)
+              ├── Create Container
+              ├── Create Valkyrja(container, config)
+              └── Load components
+                    ├── [production] Load data cache class
+                    └── [development] Iterate providers → build deferred service map
+                          └── HTTP / CLI kernel
+                                ├── Build Request / Input from globals
+                                ├── Stage 1: RequestReceived / InputReceived
+                                ├── Route matching
+                                ├── Stage 2: RouteMatched  (or Stage 3: RouteNotMatched)
+                                ├── Dispatcher → controller method
+                                ├── Stage 4: RouteDispatched
+                                ├── [on throw] Stage 5: ThrowableCaught
+                                ├── Stage 6: SendingResponse  [HTTP only]
+                                ├── Send response / write output
+                                └── Stage 7: Terminated / Exited
+```

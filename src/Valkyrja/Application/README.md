@@ -2,179 +2,235 @@
 
 ## Introduction
 
-The `Application` class is the central object that ties a Valkyrja project
-together. It holds the container, carries the configuration, coordinates
-component loading, and exposes the runtime environment to the rest of the
-framework. Most of the time you will interact with the application indirectly —
-through the container, through providers, through the HTTP or CLI kernels — but
-understanding what it does and how it is constructed clarifies everything that
-comes after.
+The `Application` class — `Valkyrja\Application\Kernel\Valkyrja` — is the
+central object that ties a Valkyrja project together. It holds the container,
+carries the configuration, coordinates component loading, and exposes the
+runtime environment to every part of the framework.
+
+In practice you will rarely interact with the application object directly. Its
+role is structural: it exists to be bootstrapped once at the entry point, then
+live quietly in the container while the rest of the framework does its work.
+Understanding what it does and how it is assembled makes everything else in the
+framework predictable.
 
 ## Entry Classes
 
-You rarely instantiate the `Application` directly. Instead, the entry classes
-handle this for you:
+You do not instantiate `Valkyrja` directly. The entry classes handle this:
 
 - `Valkyrja\Application\Entry\Http` — for web applications
 - `Valkyrja\Application\Entry\Cli` — for console applications
 
-Both entry classes expose a `run()` method that accepts your configuration
-object and handles the full lifecycle from bootstrap to response. They exist to
-eliminate boilerplate — the code that would otherwise be duplicated in every
-project's `index.php` and `bin/cli` files is maintained inside the framework,
-meaning improvements and changes to the boot sequence propagate to all projects
-without requiring manual updates.
+Both expose a single static `run()` method. Call it with your configuration
+object and the framework handles everything from bootstrap to response:
 
-## Bootstrapping
+```php
+// app/public/index.php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\Http;
 
-When `run()` is called, it delegates to `start()`, which performs the following
-steps in order:
+Http::run(new HttpConfig(
+    dir: dirname(__DIR__),
+));
+```
 
-**1. Start time.** The constant `VALKYRJA_START` is defined as the current
-microtime. This gives your application a precise reference point for
-benchmarking at any stage of execution.
+```php
+// app/bin/cli
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Entry\Cli;
 
-**2. Working directory.** The current working directory is set to your
-application's root (by default, `./app`). This ensures that file paths resolved
-relative to the application root behave consistently regardless of where PHP was
-invoked from.
+Cli::run(new CliConfig(
+    dir:             dirname(__DIR__),
+    applicationName: 'myapp',
+));
+```
 
-**3. Container creation.** A new container instance is created.
-
-**4. Application instantiation.** The container and your configuration object
-are passed to a new `Application` instance.
-
-**5. Component loading.** The application determines whether to load components
-fresh or use the data cache (see below).
+These entry classes exist so that improvements to the bootstrap sequence
+propagate to all projects without requiring manual updates to your entry point
+files.
 
 ## Configuration
 
-The application is configured via a typed PHP config object — either
-`Valkyrja\Application\Data\HttpConfig` for HTTP applications or
-`Valkyrja\Application\Data\CliConfig` for CLI applications. Both extend the base
-`Valkyrja\Application\Data\Config` class, which carries settings common to all
-application types:
+The application is configured through typed PHP objects. There is no `.env`
+reader, no flat array configuration, and no magic key-value registry.
+Configuration is PHP — typed, IDE-visible, statically analysable, and fast.
 
-| Property        | Default                 | Description                                              |
-|-----------------|-------------------------|----------------------------------------------------------|
-| `namespace`     | `'App'`                 | Your application's root namespace                        |
-| `dir`           | current directory       | The application's root directory                         |
-| `version`       | framework version       | Your application version string                          |
-| `environment`   | `'production'`          | The current environment name                             |
-| `debugMode`     | `false`                 | Disables the data cache and enables verbose error output |
-| `timezone`      | `'UTC'`                 | PHP's default timezone                                   |
-| `key`           | `'some_secret_app_key'` | Application secret key — **change this**                 |
-| `dataPath`      | `'App/Provider/Data'`   | Path where generated data cache classes are written      |
-| `dataNamespace` | `'App\\Provider\\Data'` | Namespace for generated data cache classes               |
-| `providers`     | framework defaults      | The list of component providers to load                  |
-| `callbacks`     | `[]`                    | Callbacks invoked after the application is bootstrapped  |
+### Base Configuration
 
-The `CliConfig` and `HttpConfig` subclasses add their own properties relevant to
-their respective runtimes.
+`Valkyrja\Application\Data\Config` carries properties common to all application
+types:
 
-Because configuration is plain PHP, any property can be populated from any
-source — environment variables, PHP ini values, constants, or logic. The
-framework imposes no constraints on how values arrive at the config object.
+| Property        | Default                 | Description                                                  |
+|-----------------|-------------------------|--------------------------------------------------------------|
+| `namespace`     | `'App'`                 | Your application's root namespace                            |
+| `dir`           | `__DIR__`               | The application's root directory (set this explicitly)       |
+| `version`       | framework version       | Your application version string                              |
+| `environment`   | `'production'`          | The current environment name                                 |
+| `debugMode`     | `false`                 | Bypass data cache; enable verbose error output               |
+| `timezone`      | `'UTC'`                 | PHP's default timezone, set at boot                          |
+| `key`           | `'some_secret_app_key'` | Application secret key — **always override this**            |
+| `dataPath`      | `'App/Provider/Data'`   | Relative path where generated data cache classes are written |
+| `dataNamespace` | `'App\\Provider\\Data'` | PHP namespace for generated data cache classes               |
+| `providers`     | framework defaults      | The component providers to load, in order                    |
+| `callbacks`     | `[]`                    | Callables invoked on the application after bootstrap         |
+
+Because configuration is plain PHP, any property can be set from any source:
+
+```php
+new Config(
+    environment: $_ENV['APP_ENV'] ?? 'production',
+    debugMode:   ($_ENV['APP_DEBUG'] ?? 'false') === 'true',
+    key:         $_ENV['APP_KEY'] ?? throw new RuntimeException('APP_KEY is not set'),
+);
+```
+
+### HTTP Configuration
+
+`HttpConfig` extends `Config` with no additional properties of its own. Its
+purpose is to act as a typed discriminator — `Http::run()` enforces that it
+receives an `HttpConfig` rather than a base `Config` — and to carry a default
+`providers` list that includes the HTTP-specific component providers.
+
+### CLI Configuration
+
+`CliConfig` extends `Config` with two additional properties:
+
+| Property             | Default            | Description                                         |
+|----------------------|--------------------|-----------------------------------------------------|
+| `applicationName`    | `'valkyrja'`       | The binary name, shown in version and help output   |
+| `defaultCommandName` | `'list'`           | The command run when no command name is given       |
+| `http`               | `new HttpConfig()` | An embedded `HttpConfig` for HTTP services from CLI |
+
+The embedded `http` property means a CLI application can access HTTP routing
+services — useful for commands that generate HTTP route data or interact with
+HTTP-specific configuration.
+
+## The Bootstrap Sequence
+
+When `run()` is called, `App::start()` executes in order:
+
+1. **`APP_START` is defined.** The constant is set to the current microtime,
+   giving you a precise benchmark reference point available anywhere in the
+   application.
+
+2. **The base path is set.** `Directory::$basePath` is set to `config->dir`. All
+   framework path resolution — including generated data file locations — uses
+   this as its root.
+
+3. **The container is created.** A new `Container` instance is instantiated.
+
+4. **The application is instantiated.** `Valkyrja` is created with the container
+   and the config. The timezone is set immediately from `config->timezone`.
+
+5. **Core singletons are registered.** `Env`, `Config`, the concrete config
+   subclass, `ContainerContract`, and `ApplicationContract` are injected
+   directly into the container as singletons. If `CliConfig` is in use, its
+   embedded `HttpConfig` is also registered.
+
+6. **Provider callbacks are published.** The `callbacks` array from your config
+   is iterated and each callable is invoked with the application instance. These
+   run unconditionally, cached or not — use them only for work that genuinely
+   must happen on every boot.
+
+7. **Components are loaded.** The container data is populated, either from the
+   data cache or from providers (see below).
 
 ## Component Loading and the Data Cache
 
-After the application is instantiated, it loads components. This is where
-Valkyrja's performance model becomes tangible.
+After the application is instantiated, Valkyrja populates the container. This is
+where its performance model becomes tangible.
 
 ### Without the Data Cache
 
-When no data cache exists — or when `debugMode` is `true` — the application
-iterates through the component providers listed in `providers`, loads each one,
-and registers all child service providers, route providers, and event providers
-into the container and routing tables. This is the standard development flow.
+When `debugMode` is `true` or no data cache class exists, the application loads
+components fresh. It calls `getContainerProviders()` on the application, which
+collects all container service providers from every registered component
+provider and registers them into the container's deferred service map. Routes
+and listeners are loaded from `getHttpProviders()`, `getCliProviders()`, and
+`getEventProviders()` when those services are first accessed.
+
+Nothing is instantiated during this phase — the container maps service IDs to
+their resolution logic. Cost is paid only when a service is requested.
 
 ### With the Data Cache
 
-When a data cache class exists and `debugMode` is `false`, the application loads
-the pre-generated class directly, bypassing provider registration entirely. The
-container is populated in a single step with no iteration, no provider
-instantiation, and no service binding logic. This is what makes Valkyrja faster
-than a micro-framework in production.
+When a data cache class exists and `debugMode` is `false`, the framework loads
+the pre-generated class directly. The container is populated in a single step
+with no provider iteration, no binding logic, and no reflection. This is what
+makes Valkyrja faster than a micro-framework in production.
 
-The cache is generated against your specific configuration, meaning each
-environment can have its own cache precisely tuned to its own providers and
-settings. Regenerate the cache whenever configuration changes or new code is
-deployed:
+Regenerate the cache after any deployment that changes providers, routes, or
+services:
 
 ```bash
-php app/bin/cli data:generate        # CLI data cache
-php app/bin/cli http:data:generate   # HTTP data cache
+php app/bin/cli data:generate        # CLI routing data
+php app/bin/cli http:data:generate   # HTTP routing data
 ```
 
 ## The Provider Hierarchy
 
-Component loading follows a deliberate hierarchy. Understanding it makes the
-system predictable.
-
-**Component Providers** are registered in your config's `providers` array. They
-are the top-level unit — each one represents a logical component of your
-application (your own app code, a third-party package, a framework component). A
-component provider can optionally implement `PublishableProviderContract` to
-define a `publish()` method that runs on every boot, cached or not.
-
-**Service Providers**, **CLI Route Providers**, **HTTP Route Providers**, and *
-*Event Listener Providers** live inside component providers. They are deferred —
-their publish callbacks are only invoked when the services or routes they
-declare are actually needed.
-
-The key rule: **anything that can be deferred should be deferred.** The
-`publish()` method on a component provider runs unconditionally and should
-contain only what genuinely must happen on every single request. Binding
-services, registering routes, or adding event listeners in `publish()` defeats
-the caching mechanism entirely.
-
-## The Application Lifecycle in Context
-
-For an HTTP request, the full sequence looks like this:
+Understanding the provider hierarchy makes the entire system predictable.
 
 ```
-index.php
-  └── Http::run(HttpConfig $config)
-        └── start()
-              ├── Define VALKYRJA_START
-              ├── Set working directory
-              ├── Create container
-              ├── Create Application(container, config)
-              └── Load components (cache or providers)
-                    └── HTTP kernel receives request
-                          ├── Middleware pipeline
-                          ├── Route matching
-                          ├── Handler dispatch
-                          ├── Middleware pipeline (outbound)
-                          └── Send response
+config->providers[]
+  └── ComponentProvider          implements ProviderContract
+        ├── getContainerProviders()  → ServiceProvider[]
+        ├── getEventProviders()      → Event\Provider[]
+        ├── getCliProviders()        → Cli\RouteProvider[]
+        └── getHttpProviders()       → Http\RouteProvider[]
 ```
 
-For a CLI command, the structure is identical up to component loading — at which
-point the CLI kernel takes over instead of the HTTP kernel.
+**Component providers** are the top-level unit, listed in `config->providers`.
+Each represents a logical component of your application — your own app code, a
+package, or a framework component. A component provider may optionally implement
+`PublishableProviderContract`, which adds a `publish(ApplicationContract $app)`
+method that **always runs, cached or not**. Use this only for registrations that
+truly cannot be deferred.
+
+**Service providers** live inside component providers and are returned by
+`getContainerProviders()`. They declare which services they provide and publish
+them on first access.
+
+**Route providers** (CLI and HTTP) live inside component providers and are
+returned by `getCliProviders()` and `getHttpProviders()`. They declare which
+controller classes and pre-built route objects to register into the route
+collection.
+
+**Event providers** live inside component providers and are returned by
+`getEventProviders()`. They declare which listener classes and pre-built
+listener objects to register into the event collection.
+
+The key rule: **anything that can be deferred should be deferred.** Registering
+services, routes, or listeners in `publish()` defeats the caching mechanism
+entirely.
 
 ## Accessing the Application
 
-Within a service provider's publish callback, the container is available as the
-first argument. The application instance itself is registered in the container
-and can be retrieved when needed:
+The application instance is registered in the container as
+`ApplicationContract`. Resolve it from any service provider:
 
 ```php
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+
 $app = $container->getSingleton(ApplicationContract::class);
+
+$app->getContainer();     // ContainerContract
+$app->getDebugMode();     // bool
+$app->getEnvironment();   // string
+$app->getVersion();       // string
 ```
 
 In practice, most code should depend on specific services rather than on the
-application object directly. The application is a framework-level concern; your
-business logic should interact with the container, the router, the event
-dispatcher, and other specific services — not the application itself.
+application object. The application is a framework-level concern.
 
 ## Debug Mode
 
-Setting `debugMode: true` in your config has two effects:
+Setting `debugMode: true` has two effects:
 
-1. The data cache is bypassed entirely — components are always loaded fresh from
-   providers.
-2. The application surfaces more detailed error information.
+1. The data cache is bypassed entirely — components always load fresh from
+   providers on every request.
+2. Valkyrja installs Whoops as the throwable handler, rendering detailed stack
+   traces in the browser or terminal.
 
 Never run with `debugMode: true` in production. The performance difference is
-significant and the error output may expose internals you do not want visible to
-users.
+significant and Whoops output may expose internal details that should remain
+private.
