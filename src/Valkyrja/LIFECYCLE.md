@@ -203,7 +203,7 @@ the response is actually sent to the client.
 
 ## Focus on Configuration
 
-Valkyrja's configuration philosophy is worth internalising early because it
+Valkyrja's configuration philosophy is worth internalizing early because it
 shapes everything. Rather than reading from environment variables via a flat map
 of string constants, Valkyrja uses **typed PHP config classes** — plain objects
 with typed constructor parameters and sensible defaults.
