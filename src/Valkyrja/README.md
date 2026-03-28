@@ -52,14 +52,23 @@
 - [Throwable](Throwable/README.md) — Exception hierarchy, throwable handler
   contract, and Whoops integration
 
+## Validation
+
+- [Validation](Validation/README.md) — Rule contracts, built-in rules (Is,
+  String, Int, ORM), and the validator
+
 ## Data & Types
 
 - [Type System](Type/README.md) — TypeContract, primitive wrappers, strings,
   identifiers, UUID/VLID/ULID, models, collections, and JSON
 - [Models](Type/Model/README.md) — Property access callables, casting, exposure,
   original properties, and indexed models
-- [Validation](Validation/README.md) — Rule contracts, built-in rules (Is,
-  String, Int, ORM), and the validator
+- [UUID](Type/Uuid/README.md) — RFC 4122 UUID generation and validation, versions
+  V1 through V8, with typed value objects and version-specific factories
+- [ULID](Type/Ulid/README.md) — Lexicographically sortable IDs with millisecond
+  precision, Crockford Base32 encoding, and monotonic generation
+- [VLID](Type/Vlid/README.md) — Valkyrja's microsecond-precision ULID extension
+  with four versions trading randomness for time precision
 
 ## Database
 
