@@ -123,46 +123,46 @@ from the container, builds a `ServerRequest` from PHP's superglobals via
 
 The request then passes through a **seven-stage middleware pipeline**:
 
-### Stage 1 — Request Received
+### Stage 1 — Request Received (always)
 
 Before any routing occurs. Global middleware runs here — maintenance mode
 checks, rate limiting, full-response cache lookups. Middleware at this stage can
 either return a modified request (to continue) or return a response directly (
 short-circuiting all remaining stages).
 
-### Stage 2 — Route Matched
+### Stage 2 — Route Matched (only if a route was found)
 
 After the `Matcher` finds a matching route, before the handler is dispatched.
 Per-route middleware runs here — authentication, authorization, tenant
 resolution, validation, etc. Can short-circuit with a response.
 
-### Stage 3 — Route Not Matched
+### Stage 3 — Route Not Matched (only if a route was not found)
 
 When no route matches the request. A default 404 response is produced; global
 middleware at this stage can replace it with a custom not-found page or fallback
 handler.
 
-### Stage 4 — Route Dispatched
+### Stage 4 — Route Dispatched (only if a route was found)
 
 After the matched route's controller method has executed and returned a
 response. Global and then per-route middleware here handles post-dispatch
 concerns: adding headers, transforming response bodies, logging.
 
-### Stage 5 — Throwable Caught
+### Stage 5 — Throwable Caught (only if a throwable was caught)
 
 When any `Throwable` is caught during request handling. Receives the throwable
 alongside a default error response. Global and then per-route (assuming a route
 was found) middleware here handles error reporting and custom error responses.
 
-### Stage 6 — Sending Response
+### Stage 6 — Sending Response (always)
 
 After the response is finalized, before it is written to the output. Global and
 then per-route (assuming a route was found) middleware here handles final
 modifications: CORS headers, response compression, cache-control headers.
 
-### Stage 7 — Terminated
+### Stage 7 — Terminated (always)
 
-After the response has been sent to the client. Global and then per-route 
+After the response has been sent to the client. Global and then per-route
 (assuming a route was found) middleware here handles work that is invisible to
 the user. The appropriate stage for deferred side effects: writing logs,
 dispatching queued events, cache writes. The `CacheResponseMiddleware` saves
@@ -181,15 +181,15 @@ from the container, builds an `Input` object from `$_SERVER['argv']` via
 The input passes through a **six-stage middleware pipeline** that mirrors HTTP
 exactly:
 
-| HTTP Stage        | CLI Equivalent    | Description                                   |
-|-------------------|-------------------|-----------------------------------------------|
-| `RequestReceived` | `InputReceived`   | Before routing; can short-circuit with output |
-| `RouteMatched`    | `RouteMatched`    | After match; can short-circuit with output    |
-| `RouteNotMatched` | `RouteNotMatched` | When no command matches                       |
-| `RouteDispatched` | `RouteDispatched` | After dispatch                                |
-| `SendingResponse` | NONE              | When a response is about to be sent           |
-| `ThrowableCaught` | `ThrowableCaught` | When a throwable is caught                    |
-| `Terminated`      | `Exited`          | After output is written; before process exits |
+| HTTP Stage        | CLI Equivalent    | Description                                                 |
+|-------------------|-------------------|-------------------------------------------------------------|
+| `RequestReceived` | `InputReceived`   | Before routing; can short-circuit with output               |
+| `RouteMatched`    | `RouteMatched`    | After match; can short-circuit with output                  |
+| `RouteNotMatched` | `RouteNotMatched` | When no command matches                                     |
+| `RouteDispatched` | `RouteDispatched` | After dispatch                                              |
+| `SendingResponse` | NONE              | There is no equivalent as output can be written at any time |
+| `ThrowableCaught` | `ThrowableCaught` | When a throwable is caught                                  |
+| `Terminated`      | `Exited`          | After output is written; before process exits               |
 
 After `Exited` middleware completes, `InputHandler` writes the output's messages
 to stdout and calls `Exiter::exit()` with the `ExitCode` integer value from the
