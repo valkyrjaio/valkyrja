@@ -134,7 +134,7 @@ short-circuiting all remaining stages).
 
 After the `Matcher` finds a matching route, before the handler is dispatched.
 Per-route middleware runs here — authentication, authorization, tenant
-resolution. Can short-circuit with a response.
+resolution, validation, etc. Can short-circuit with a response.
 
 ### Stage 3 — Route Not Matched
 
@@ -145,28 +145,29 @@ handler.
 ### Stage 4 — Route Dispatched
 
 After the matched route's controller method has executed and returned a
-response. Per-route middleware here handles post-dispatch concerns: adding
-headers, transforming response bodies, logging.
+response. Global and then per-route middleware here handles post-dispatch
+concerns: adding headers, transforming response bodies, logging.
 
 ### Stage 5 — Throwable Caught
 
 When any `Throwable` is caught during request handling. Receives the throwable
-alongside a default error response. Per-route and global middleware here handles
-error reporting and custom error responses.
+alongside a default error response. Global and then per-route (assuming a route
+was found) middleware here handles error reporting and custom error responses.
 
 ### Stage 6 — Sending Response
 
-After the response is finalised, before it is written to the output. Per-route
-middleware here handles final modifications: CORS headers, response compression,
-cache-control headers.
+After the response is finalized, before it is written to the output. Global and
+then per-route (assuming a route was found) middleware here handles final
+modifications: CORS headers, response compression, cache-control headers.
 
 ### Stage 7 — Terminated
 
-After the response has been sent to the client. Work done here is invisible to
+After the response has been sent to the client. Global and then per-route 
+(assuming a route was found) middleware here handles work that is invisible to
 the user. The appropriate stage for deferred side effects: writing logs,
 dispatching queued events, cache writes. The `CacheResponseMiddleware` saves
 successful responses to disk at this stage, making future identical requests
-instantaneous.
+instantaneous if you include it.
 
 After `Terminated` middleware completes, the process finishes. Sessions are
 closed, FastCGI or Litespeed finish-request hooks are called if available.
