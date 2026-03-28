@@ -29,7 +29,7 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
 Http::run(new HttpConfig(
-    dir: dirname(__DIR__),
+    dir: __DIR__ . '/..',
 ));
 ```
 
@@ -39,7 +39,7 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
 Cli::run(new CliConfig(
-    dir:             dirname(__DIR__),
+    dir: __DIR__ . '/..',
     applicationName: 'myapp',
 ));
 ```
@@ -52,7 +52,7 @@ files.
 
 The application is configured through typed PHP objects. There is no `.env`
 reader, no flat array configuration, and no magic key-value registry.
-Configuration is PHP — typed, IDE-visible, statically analysable, and fast.
+Configuration is PHP — typed, IDE-visible, statically analyzable, and fast.
 
 ### Base Configuration
 
@@ -92,7 +92,7 @@ receives an `HttpConfig` rather than a base `Config` — and to carry a default
 
 ### CLI Configuration
 
-`CliConfig` extends `Config` with two additional properties:
+`CliConfig` extends `Config` with these additional properties:
 
 | Property             | Default            | Description                                         |
 |----------------------|--------------------|-----------------------------------------------------|
@@ -103,6 +103,9 @@ receives an `HttpConfig` rather than a base `Config` — and to carry a default
 The embedded `http` property means a CLI application can access HTTP routing
 services — useful for commands that generate HTTP route data or interact with
 HTTP-specific configuration.
+
+> Note: In order for your cli application to be able to use HTTP services, you
+> must include the HTTP component in your application's component providers.
 
 ## The Bootstrap Sequence
 
