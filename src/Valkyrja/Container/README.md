@@ -22,15 +22,17 @@ class or file ending in `Contract`, it is an interface.
 
 This convention applies to your own code too. Binding against contracts rather
 than concrete classes is the recommended pattern — it keeps your application
-flexible, testable, and aligned with how the framework itself is structured.
+flexible, testable, and aligned with how the framework itself is structured, but
+it is not a hard and fast rule.
 
 ## Deferred Loading
 
-The most important thing to understand about Valkyrja's container is that *
-*services are deferred by default**. When the application boots, the container
+The most important thing to understand about Valkyrja's container is that
+**services are deferred by default**. When the application boots, the container
 does not instantiate anything. Instead, it builds a lightweight map — a record
 of which service IDs exist and how to resolve them when asked. A service is only
-created the first time it is actually requested.
+created the first time it is actually requested for singletons, and each time it
+is requested in the case of services and callables.
 
 This is what makes Valkyrja fast. The container carries virtually no boot-time
 overhead regardless of how many services are registered. Cost is paid only when
@@ -155,7 +157,7 @@ construct them when they are first requested.
 
 A service provider extends `Valkyrja\Container\Provider\Abstract\Provider` or
 implements `Valkyrja\Container\Provider\Contract\ProviderContract`. It defines
-two things:
+the following things:
 
 **`publishers()`** — A map of service IDs to the static factory methods that
 create them:
@@ -201,57 +203,9 @@ The publish callback can resolve other services from the container freely. Those
 services are themselves deferred — resolving them here triggers their own
 publish callbacks if they haven't been resolved yet.
 
-## Component Providers
-
-Service providers live inside **component providers**, which are the top-level
-organisational unit of a Valkyrja application. A component provider extends
-`Valkyrja\Application\Provider\Abstract\Provider` or implements
-`Valkyrja\Application\Provider\Contract\ProviderContract`. It groups the service
-providers, CLI route providers, HTTP route providers, and event listener
-providers that make up a logical component of your application.
-
-Component providers are registered in your config's `providers` array. When the
-application boots, it calls `getContainerProviders()`, `getEventProviders()`,
-`getCliProviders()`, and `getHttpProviders()` on each component provider to
-collect all child providers.
-
-```php
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Abstract\Provider;
-
-class AppComponentProvider extends Provider
-{
-    public static function getContainerProviders(ApplicationContract $app): array
-    {
-        return [
-            CacheServiceProvider::class,
-            MailServiceProvider::class,
-        ];
-    }
-
-    public static function getHttpProviders(ApplicationContract $app): array
-    {
-        return [
-            AppRouteProvider::class,
-        ];
-    }
-
-    public static function getEventProviders(ApplicationContract $app): array
-    {
-        return [
-            AppEventProvider::class,
-        ];
-    }
-}
-```
-
-A component provider may additionally implement `PublishableProviderContract`,
-which adds a `publish(ApplicationContract $app)` method that **runs on every
-boot, cached or not**. Use this only for registrations that genuinely cannot be
-deferred. Binding services or routes here defeats the caching mechanism
-entirely.
-
 ## A Complete Example
+
+### Using a Service Provider
 
 ```php
 // 1. The contract
@@ -260,7 +214,7 @@ interface NotifierContract
     public function notify(string $message): void;
 }
 
-// 2. The implementation
+// 2 The implementation with a ServiceContract
 class SlackNotifier implements NotifierContract, ServiceContract
 {
     public function __construct(private string $webhookUrl) {}
@@ -278,7 +232,18 @@ class SlackNotifier implements NotifierContract, ServiceContract
     }
 }
 
-// 3. The service provider
+// 2 The implementation with a ServiceContract
+class TeamsNotifier implements NotifierContract
+{
+    public function __construct() {}
+
+    public function notify(string $message): void
+    {
+        // send to Teams
+    }
+}
+
+// 3. Using a service provider
 class NotifierServiceProvider extends Provider
 {
     public static function publishers(): array
@@ -297,7 +262,7 @@ class NotifierServiceProvider extends Provider
     {
         $container->setSingleton(
             NotifierContract::class,
-            SlackNotifier::make($container)
+            TeamsNotifier::make($container)
         );
     }
 }
@@ -312,6 +277,55 @@ class AppComponentProvider extends Provider
 }
 ```
 
+### Binding without a Service Provider
+
+```php
+// 1. The contract
+interface NotifierContract
+{
+    public function notify(string $message): void;
+}
+
+// 2 The implementation with a ServiceContract
+class SlackNotifier implements NotifierContract, ServiceContract
+{
+    public function __construct(private string $webhookUrl) {}
+
+    public static function make(ContainerContract $container, array $arguments = []): static
+    {
+        $config = $container->getSingleton(HttpConfig::class);
+
+        return new static($config->key); // illustrative
+    }
+
+    public function notify(string $message): void
+    {
+        // send to Slack
+    }
+}
+
+// 3. The component provider
+class AppComponentProvider extends Provider
+{
+    public static function getContainerProviders(ApplicationContract $app): array
+    {
+        $app->getContainer()->bindSingleton(
+            NotifierContract::class,
+            SlackNotifier::class
+        );
+
+        return [];
+    }
+}
+```
+
 With this in place, `NotifierContract::class` is known to the container at boot
-time, but `SlackNotifier` is never instantiated until something calls
-`$container->getSingleton(NotifierContract::class)`.
+time, but `SlackNotifier` or `TeamsNotifier` (depending on implementation) is
+never instantiated until something calls
+`$container->getSingleton(NotifierContract::class)`
+or `$container->get(NotifierContract::class)`.
+
+> NOTE: These two methodologies can be used together, you don't need to choose
+> one or the other, and they can be used together. Be sure not to override a
+> contract with two separate implementations, as would be the case if these two
+> examples were combined.

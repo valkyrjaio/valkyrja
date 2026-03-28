@@ -59,7 +59,7 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
 Cli::run(new CliConfig(
-    dir:             dirname(__DIR__),
+    dir:             __DIR__,
     applicationName: 'myapp',
 ));
 ```

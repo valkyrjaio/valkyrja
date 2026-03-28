@@ -48,8 +48,9 @@ Http::run(new HttpConfig(
 ```
 
 The `dataPath` and `dataNamespace` properties tell the framework where to write
-and load generated route data files — the compiled PHP classes that make
-production routing allocation-free.
+and load generated data files (for all components that have a data file) — the
+compiled PHP classes that make production routing allocation-free for this
+specific http application.
 
 ## Entry Point
 
@@ -64,7 +65,7 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
 Http::run(new HttpConfig(
-    dir: dirname(__DIR__),
+    dir: __DIR__,
 ));
 ```
 
@@ -334,14 +335,14 @@ Each wrapper holds a Valkyrja object and delegates every method call to it,
 implementing the corresponding PSR-7 interface so the object is accepted
 wherever a PSR-7 type is required.
 
-| Wrapper class                                       | Implements                          | Wraps                         |
-|:----------------------------------------------------|:------------------------------------|:------------------------------|
-| `Http\Message\Stream\Psr\Stream`                    | `StreamInterface`                   | `StreamContract`              |
-| `Http\Message\Uri\Psr\Uri`                          | `UriInterface`                      | `UriContract`                 |
-| `Http\Message\Request\Psr\Request`                  | `RequestInterface`                  | `RequestContract`             |
-| `Http\Message\Request\Psr\ServerRequest`            | `ServerRequestInterface`            | `ServerRequestContract`       |
-| `Http\Message\Response\Psr\Response`                | `ResponseInterface`                 | `ResponseContract`            |
-| `Http\Message\File\Psr\UploadedFile`                | `UploadedFileInterface`             | `UploadedFileContract`        |
+| Wrapper class                            | Implements               | Wraps                   |
+|:-----------------------------------------|:-------------------------|:------------------------|
+| `Http\Message\Stream\Psr\Stream`         | `StreamInterface`        | `StreamContract`        |
+| `Http\Message\Uri\Psr\Uri`               | `UriInterface`           | `UriContract`           |
+| `Http\Message\Request\Psr\Request`       | `RequestInterface`       | `RequestContract`       |
+| `Http\Message\Request\Psr\ServerRequest` | `ServerRequestInterface` | `ServerRequestContract` |
+| `Http\Message\Response\Psr\Response`     | `ResponseInterface`      | `ResponseContract`      |
+| `Http\Message\File\Psr\UploadedFile`     | `UploadedFileInterface`  | `UploadedFileContract`  |
 
 Construct any wrapper by passing the corresponding Valkyrja object:
 

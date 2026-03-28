@@ -7,9 +7,7 @@ engine that powers event dispatching, CLI command execution, and HTTP route
 handling — any situation where the framework needs to invoke a callable, a
 method on a class, or a class itself in response to something that has occurred.
 
-Understanding the Dispatcher makes the entire framework more legible. Once you
-see how it works in the context of events, you will immediately recognise the
-same pattern operating in the CLI and HTTP layers.
+Understanding the Dispatcher makes the entire framework more legible.
 
 ## What the Dispatcher Does
 
@@ -21,15 +19,16 @@ loading, caching, and the data class generation system possible.
 
 ## The DispatcherContract
 
-`Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract` defines a single method:
+`Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract` defines a single
+method:
 
 ```php
 public function dispatch(DispatchContract $dispatch, array $arguments = []): mixed;
 ```
-All dispatch types implement `DispatchContract`, which extends both `JsonSerializable`
-and `Stringable`. Serialisability is what allows the full set of dispatches —
-every event listener, command, and route handler — to be written to a generated
-PHP class as part of the data cache.
+
+All dispatch types implement `DispatchContract`, which extends both
+`JsonSerializable`
+and `Stringable`.
 
 ## Dispatch Types
 
@@ -38,9 +37,11 @@ callable target:
 
 ### ClassDispatch
 
-Resolves a class from the container and invokes it directly as an invokable
-(i.e., calls `__invoke`). Used when the entire class represents a single unit of
-work.
+Resolves a class from the container directly. The dispatcher will automatically
+combine the dependencies and arguments and pass them to the container get
+method. Dependencies are other services that should exist in the container and
+are automatically retrieved before passing to the get method. Used when the
+entire class represents a single unit of work.
 
 ```php
 $dispatch->getClass(): string;
@@ -54,7 +55,12 @@ $dispatch->withDependencies(array $dependencies): static;
 ### MethodDispatch
 
 Resolves a class from the container and invokes a specific named method on it.
-Supports both instance and static methods.
+Supports both instance and static methods. In this case the arguments and
+dependencies are tied to the method, not the class. The dependencies and
+arguments are passed to the method that is called. This is important to note as
+this means the class MUST exist in the container and cannot be lazily created
+with the dispatch object automatically with its required dependencies and
+arguments.
 
 ```php
 // All ClassDispatch methods, plus:
@@ -70,7 +76,9 @@ MethodDispatch::fromCallableOrArray(callable|array $callable): static;
 ### CallableDispatch
 
 Holds a raw PHP callable (closure, function name, or invokable object reference)
-and invokes it directly.
+and invokes it directly. The dependencies, like in class and method dispatching,
+are auto resolved by the container and are a list of services that should be
+retrieved from the container before passing to the callable.
 
 ```php
 $dispatch->getCallable(): callable;
@@ -84,7 +92,9 @@ $dispatch->withDependencies(array $dependencies): static;
 ### PropertyDispatch
 
 Resolves a class from the container and reads a named property on it. Supports
-both instance and static properties.
+both instance and static properties. In this case dependencies and arguments are
+not used at all, so the same caution regarding a class needing to exist in the
+container applies to property dispatches like it does to method dispatches.
 
 ```php
 // All ClassDispatch methods, plus:
@@ -123,10 +133,10 @@ The same Dispatcher underpins all three runtime contexts:
 
 - **Events** — When an event is fired, the Dispatcher invokes each registered
   listener's dispatch, passing the event object as the argument.
-- **CLI** — When a command is matched, the Dispatcher invokes the command
-  handler's dispatch, passing the parsed input.
-- **HTTP** — When a route is matched, the Dispatcher invokes the route handler's
-  dispatch, passing the request.
+- **CLI** — When a command is matched, the Dispatcher invokes the route's
+  dispatch.
+- **HTTP** — When a route is matched, the Dispatcher invokes the route's
+  dispatch.
 
 The pattern is identical in each context. Only the argument passed and the
 surrounding lifecycle differ.
@@ -136,7 +146,8 @@ surrounding lifecycle differ.
 The Dispatcher returns whatever the invoked dispatch returns. In the context of
 events, return values can be collected by the event if it implements
 `DispatchCollectableContract`. In CLI and HTTP contexts, the return value
-becomes the response or output that the kernel sends back to the caller.
+becomes the response or output that the respective router passes back to the
+handler, and subsequent stepped middleware.
 
 ## Why This Design
 
@@ -147,14 +158,22 @@ is captured in a generated PHP class. On subsequent requests, the framework
 loads that class directly and the Dispatcher can invoke any handler without any
 registration overhead.
 
+> Note: Handlers may be added in the future for direct callables to be used
+> instead, but this feature is currently not supported and so dispatches becomes
+> the way to handle a listener call or route call at this time.
+
 This is a significant part of why Valkyrja is fast. The Dispatcher does very
 little work per request when the cache is warm — it simply receives a dispatch
 description and executes it.
+
+> Note: Handlers in the future would be even faster, but may not allow for data
+> caching if closures are used instead of direct callables in the form of arrays
+> like the service provider `publishers` method for example.
 
 ## Service Registration
 
 The Dispatch service provider registers the following singletons:
 
-| Contract / Class     | Description                    |
-|:---------------------|:-------------------------------|
-| `DispatcherContract` | The dispatcher implementation  |
+| Contract / Class     | Description                   |
+|:---------------------|:------------------------------|
+| `DispatcherContract` | The dispatcher implementation |

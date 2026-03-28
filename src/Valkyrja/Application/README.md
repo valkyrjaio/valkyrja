@@ -251,6 +251,56 @@ $app->getVersion();       // string
 In practice, most code should depend on specific services rather than on the
 application object. The application is a framework-level concern.
 
+## Component Providers
+
+Service providers live inside **component providers**, which are the top-level
+organisational unit of a Valkyrja application. A component provider extends
+`Valkyrja\Application\Provider\Abstract\Provider` or implements
+`Valkyrja\Application\Provider\Contract\ProviderContract`. It groups the service
+providers, CLI route providers, HTTP route providers, and event listener
+providers that make up a logical component of your application.
+
+Component providers are registered in your config's `providers` array. When the
+application boots, it calls `getContainerProviders()`, `getEventProviders()`,
+`getCliProviders()`, and `getHttpProviders()` on each component provider to
+collect all child providers.
+
+```php
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Abstract\Provider;
+
+class AppComponentProvider extends Provider
+{
+    public static function getContainerProviders(ApplicationContract $app): array
+    {
+        return [
+            CacheServiceProvider::class,
+            MailServiceProvider::class,
+        ];
+    }
+
+    public static function getHttpProviders(ApplicationContract $app): array
+    {
+        return [
+            AppRouteProvider::class,
+        ];
+    }
+
+    public static function getEventProviders(ApplicationContract $app): array
+    {
+        return [
+            AppEventProvider::class,
+        ];
+    }
+}
+```
+
+A component provider may additionally implement `PublishableProviderContract`,
+which adds a `publish(ApplicationContract $app)` method that **runs on every
+boot, cached or not**. Use this only for registrations that genuinely cannot be
+deferred. Binding services or routes here defeats the caching mechanism
+entirely.
+
 ## Debug Mode
 
 Setting `debugMode: true` has two effects:
