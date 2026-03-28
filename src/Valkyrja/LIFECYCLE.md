@@ -25,7 +25,7 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
 Http::run(new HttpConfig(
-    dir: __DIR__ . '/../..',
+    dir: __DIR__ . '/..', // This is the application or module root directory (./app in this case)
 ));
 ```
 
@@ -37,7 +37,7 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
 Cli::run(new CliConfig(
-    dir: __DIR__ . '/../..',
+    dir: __DIR__ . '/..', // This is the application or module root directory (./app in this case)
     applicationName: 'myapp',
 ));
 ```
@@ -46,6 +46,12 @@ Both entry classes — `Valkyrja\Application\Entry\Http` and
 `Valkyrja\Application\Entry\Cli` — exist to give the framework one canonical
 place to evolve the bootstrap sequence. Your entry point files call `run()` and
 are done.
+
+In our examples we're using a module approach where the application code lives
+not in the root of the project folder, but in an app folder. This can allow you
+to have multiple modules together with their own entry points, and also have
+shared code outside the modules in the project root. If you only have on
+application you do not need to follow this approach.
 
 ## The Bootstrap Sequence
 
