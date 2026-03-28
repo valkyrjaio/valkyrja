@@ -112,8 +112,8 @@ php app/bin/cli http:data:generate   # HTTP routing data
 
 > Note: That a service provider must exist that provides the data classes
 > respective for each of the components you expect to load data from with debug
-> mode disabled. Otherwise even with debug mode disabled the default data class
-> will be generated via the same logic loop as without the data cache.
+> mode disabled. Otherwise, even with debug mode disabled, the default data
+> class will be generated via the same logic loop as without the data cache.
 
 ## HTTP: Handling the Request
 

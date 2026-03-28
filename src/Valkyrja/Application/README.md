@@ -97,7 +97,7 @@ receives an `HttpConfig` rather than a base `Config` — and to carry a default
 | Property             | Default            | Description                                         |
 |----------------------|--------------------|-----------------------------------------------------|
 | `applicationName`    | `'valkyrja'`       | The binary name, shown in version and help output   |
-| `defaultCommandName` | `'list'`           | The command run when no command name is given       |
+| `defaultCommandName` | `'list'`           | The command run when no command argument is given   |
 | `http`               | `new HttpConfig()` | An embedded `HttpConfig` for HTTP services from CLI |
 
 The embedded `http` property means a CLI application can access HTTP routing
@@ -169,6 +169,11 @@ php app/bin/cli data:generate        # CLI routing data
 php app/bin/cli http:data:generate   # HTTP routing data
 ```
 
+> Note: That a service provider must exist that provides the data classes
+> respective for each of the components you expect to load data from with debug
+> mode disabled. Otherwise, even with debug mode disabled, the default data
+> class will be generated via the same logic loop as without the data cache.
+
 ## The Provider Hierarchy
 
 Understanding the provider hierarchy makes the entire system predictable.
@@ -177,10 +182,24 @@ Understanding the provider hierarchy makes the entire system predictable.
 config->providers[]
   └── ComponentProvider          implements ProviderContract
         ├── getContainerProviders()  → ServiceProvider[]
-        ├── getEventProviders()      → Event\Provider[]
-        ├── getCliProviders()        → Cli\RouteProvider[]
-        └── getHttpProviders()       → Http\RouteProvider[]
+        ├── getEventProviders()      → EventProvider[]
+        ├── getCliProviders()        → CliRouteProvider[]
+        └── getHttpProviders()       → HttpRouteProvider[]
 ```
+
+> Note: These are recommended names for the classes.
+>
+> ServiceProvider implements
+> Valkyrja\Container\Provider\Contract\ProviderContract or extends
+> Valkyrja\Container\Provider\Provider
+> EventProvider implements Valkyrja\Event\Provider\Contract\ProviderContract or
+> extends Valkyrja\Event\Provider\Provider
+> HttpRouteProvider implements
+> Valkyrja\Http\Routing\Provider\Contract\ProviderContract or extends
+> Valkyrja\Http\Routing\Provider\Provider
+> CliRouteProvider implements
+> Valkyrja\Cli\Routing\Provider\Contract\ProviderContract or extends
+> Valkyrja\Cli\Routing\Provider\Provider
 
 **Component providers** are the top-level unit, listed in `config->providers`.
 Each represents a logical component of your application — your own app code, a
@@ -189,9 +208,16 @@ package, or a framework component. A component provider may optionally implement
 method that **always runs, cached or not**. Use this only for registrations that
 truly cannot be deferred.
 
+> Note: The `publish` callback is called before the container is filled with any
+> services. You must be cautious to list your callbacks after any callbacks
+> that would load the container with data. You also do not need to use the
+> contract if you do not wish to, as you will define the callback explicitly in 
+> the config. However, this can allow you to quickly see any component providers
+> that do have callbacks
+
 **Service providers** live inside component providers and are returned by
 `getContainerProviders()`. They declare which services they provide and publish
-them on first access.
+them on first, or any (services and callables), access.
 
 **Route providers** (CLI and HTTP) live inside component providers and are
 returned by `getCliProviders()` and `getHttpProviders()`. They declare which
@@ -235,5 +261,5 @@ Setting `debugMode: true` has two effects:
    traces in the browser or terminal.
 
 Never run with `debugMode: true` in production. The performance difference is
-significant and Whoops output may expose internal details that should remain
-private.
+significant enough, and Whoops output may expose internal details that should
+remain private.

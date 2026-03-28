@@ -2,10 +2,22 @@
 
 ## Introduction
 
-Valkyrja's HTTP layer is built around PSR-7 messages, PSR-15 middleware, and a
-structured pipeline that gives you predictable, observable control over every
-phase of request handling. Whether a route matches, fails to match, throws an
-exception, or completes normally, there is a dedicated middleware stage for it.
+Valkyrja's HTTP layer uses PSR-7-shaped message objects and a structured
+pipeline that gives you predictable, observable control over every phase of
+request handling. Whether a route matches, fails to match, throws an exception,
+or completes normally, there is a dedicated middleware stage for it.
+
+> **PSR-7**: Valkyrja's request and response classes follow the PSR-7 interface
+> shape but are their own implementations — they are not a direct binding to the
+> `psr/http-message` interfaces. Code that depends on `Psr\Http\Message\*` types
+> directly will not receive Valkyrja objects without additional adaptation.
+>
+> **PSR-15**: Valkyrja does **not** use PSR-15 middleware internally. The
+> middleware system is Valkyrja's own, with seven named pipeline stages
+> (described below). PSR-15 `MiddlewareInterface` is not used. A bridge class
+> (`Http\Server\Psr\RequestHandler`) is provided for integration scenarios where
+> third-party code expects a `Psr\Http\Server\RequestHandlerInterface` — see the
+> [PSR Compatibility](#psr-compatibility) section.
 
 The two primary concerns in this component are **routing** — matching an
 incoming request to a handler — and **middleware** — operating on the request
@@ -230,9 +242,11 @@ public function someAction(): ResponseContract
 
 ### ServerRequest
 
-The `ServerRequest` class is a PSR-7 `ServerRequestInterface` implementation. It
-is created from PHP's superglobals at the entry point and is immutable — all
-`with*` methods return a new instance.
+The `ServerRequest` class follows the shape of PSR-7's `ServerRequestInterface`
+but is Valkyrja's own implementation — it does not implement the
+`Psr\Http\Message\ServerRequestInterface` type directly. It is created from
+PHP's superglobals at the entry point and is immutable — all `with*` methods
+return a new instance.
 
 ```php
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -305,6 +319,108 @@ Or inline in the `#[Route]` declaration:
 )]
 public function store(): ResponseContract { ... }
 ```
+
+## PSR Compatibility
+
+Valkyrja ships a complete set of adapter classes so its HTTP message objects can
+be passed to any third-party library that depends on `psr/http-message` or
+`psr/http-server-handler` interfaces. The wrappers live in `Psr/` subdirectories
+alongside their native counterparts and are never used internally — Valkyrja's
+own pipeline works exclusively with its own contracts.
+
+### PSR-7 Wrappers
+
+Each wrapper holds a Valkyrja object and delegates every method call to it,
+implementing the corresponding PSR-7 interface so the object is accepted
+wherever a PSR-7 type is required.
+
+| Wrapper class                                       | Implements                          | Wraps                         |
+|:----------------------------------------------------|:------------------------------------|:------------------------------|
+| `Http\Message\Stream\Psr\Stream`                    | `StreamInterface`                   | `StreamContract`              |
+| `Http\Message\Uri\Psr\Uri`                          | `UriInterface`                      | `UriContract`                 |
+| `Http\Message\Request\Psr\Request`                  | `RequestInterface`                  | `RequestContract`             |
+| `Http\Message\Request\Psr\ServerRequest`            | `ServerRequestInterface`            | `ServerRequestContract`       |
+| `Http\Message\Response\Psr\Response`                | `ResponseInterface`                 | `ResponseContract`            |
+| `Http\Message\File\Psr\UploadedFile`                | `UploadedFileInterface`             | `UploadedFileContract`        |
+
+Construct any wrapper by passing the corresponding Valkyrja object:
+
+```php
+use Valkyrja\Http\Message\Response\Psr\Response as PsrResponse;
+
+$psrResponse = new PsrResponse($valkyrjaResponse);
+// $psrResponse now satisfies Psr\Http\Message\ResponseInterface
+```
+
+### PSR-7 Factories
+
+Static factory classes convert in both directions between Valkyrja objects and
+raw PSR-7 representations. They are abstract and provide only static methods.
+
+#### `PsrStreamFactory`
+
+```php
+// PSR StreamInterface → Valkyrja StreamContract
+PsrStreamFactory::fromPsr(StreamInterface $stream): StreamContract;
+```
+
+#### `PsrUriFactory`
+
+```php
+// PSR UriInterface → Valkyrja UriContract
+PsrUriFactory::fromPsr(UriInterface $psrUri): UriContract;
+```
+
+#### `PsrRequestFactory`
+
+```php
+// PSR ServerRequestInterface → Valkyrja ServerRequest
+PsrRequestFactory::fromPsr(ServerRequestInterface $psrRequest): ServerRequest;
+```
+
+#### `PsrHeaderFactory`
+
+```php
+// PSR headers array → Valkyrja HeaderContract[]
+PsrHeaderFactory::fromPsr(array $headers): array;
+
+// Valkyrja HeaderCollectionContract → PSR headers array
+PsrHeaderFactory::toPsr(HeaderCollectionContract $headers): array;
+
+// Single Valkyrja HeaderContract → PSR string[] values
+PsrHeaderFactory::toPsrValues(HeaderContract $header): array;
+```
+
+#### `PsrUploadedFileFactory`
+
+```php
+// PSR UploadedFileInterface → Valkyrja UploadedFileContract
+PsrUploadedFileFactory::fromPsr(UploadedFileInterface $file): UploadedFileContract;
+
+// Array of PSR files → Valkyrja UploadedFileCollectionContract
+PsrUploadedFileFactory::fromPsrArray(array $files): UploadedFileCollectionContract;
+
+// Valkyrja UploadedFileCollectionContract → PSR array format
+PsrUploadedFileFactory::toPsrArray(UploadedFileCollectionContract $collection): array;
+```
+
+### PSR-15 Request Handler Bridge
+
+Although Valkyrja does not use PSR-15 internally, a bridge class is provided for
+integration scenarios where third-party code expects a
+`Psr\Http\Server\RequestHandlerInterface`:
+
+```php
+use Valkyrja\Http\Server\Psr\RequestHandler as PsrRequestHandler;
+
+$psrHandler = new PsrRequestHandler($valkyrjaRequestHandler);
+// $psrHandler satisfies Psr\Http\Server\RequestHandlerInterface
+```
+
+`handle(ServerRequestInterface $request): ResponseInterface` converts the
+incoming PSR-7 `ServerRequestInterface` to a Valkyrja `ServerRequest`, runs it
+through the Valkyrja request handler, and wraps the resulting response in a
+`Psr\Http\Message\Response` wrapper before returning.
 
 ## The Middleware Pipeline
 

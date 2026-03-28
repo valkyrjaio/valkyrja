@@ -15,21 +15,42 @@
   configuration, component loading, and the data cache
 - [The Container](Container/README.md) — Dependency injection, service types,
   service providers, and component providers
-- [Event Dispatching](Event/README.md) — PSR-14 event dispatcher, listeners, and
-  attribute registration
+- [The Dispatcher](Dispatch/README.md) — Dispatch types, the dispatcher contract,
+  and how events, CLI, and HTTP all share the same invocation engine
 
-## HTTP
+### HTTP
 
 - [HTTP Routing & Middleware](Http/README.md) — Route providers, attribute-based
   registration, the seven-stage middleware pipeline, request and response
   handling, and response caching
 
-## CLI
+### CLI
 
 - [CLI Routing & Commands](Cli/README.md) — Command providers, attribute-based
   registration, arguments and options, the six-stage middleware pipeline, and
   built-in commands
 - [Bin](Bin/README.md) — Console binary entry point
+
+### Events
+
+- [Event Dispatching](Event/README.md) — PSR-14 event dispatcher, listeners, and
+  attribute registration
+
+## Views & Templates
+
+- [View](View/README.md) — PHP, Orka, and Twig renderers; full Orka template
+  syntax reference
+
+## Internals
+
+- [Attribute](Attribute/README.md) — PHP 8 attribute collection across classes,
+  methods, properties, parameters, functions, and closures
+- [Reflection](Reflection/README.md) — Cached reflection wrapper for classes,
+  methods, properties, functions, and dependency extraction
+- [Support](Support/README.md) — Time/Microtime freeze utilities and file
+  generator helpers
+- [Throwable](Throwable/README.md) — Exception hierarchy, throwable handler
+  contract, and Whoops integration
 
 ## Data & Types
 
@@ -69,19 +90,3 @@
   immutable message building
 - [SMS](Sms/README.md) — Text messaging via Vonage, with Log and Null
   implementations
-
-## Views & Templates
-
-- [View](View/README.md) — PHP, Orka, and Twig renderers; full Orka template
-  syntax reference
-
-## Internals
-
-- [Attribute](Attribute/README.md) — PHP 8 attribute collection across classes,
-  methods, properties, parameters, functions, and closures
-- [Reflection](Reflection/README.md) — Cached reflection wrapper for classes,
-  methods, properties, functions, and dependency extraction
-- [Support](Support/README.md) — Time/Microtime freeze utilities and file
-  generator helpers
-- [Throwable](Throwable/README.md) — Exception hierarchy, throwable handler
-  contract, and Whoops integration
