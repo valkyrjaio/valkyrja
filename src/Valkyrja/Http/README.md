@@ -114,7 +114,10 @@ with the `#[Route]` attribute:
 
 ```php
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute;
+use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Patch;
 
 class UserController
 {
@@ -130,8 +133,32 @@ class UserController
         // POST /users
     }
 
+    #[Patch]
+    #[Route(path: '/users', name: 'users.update')]
+    public function store(): ResponseContract
+    {
+        // POST /users
+    }
+
+    // The route collector will automatically know this is a dynamic route via 
+    // the parameter attribute and {id}
     #[Route(path: '/users/{id}', name: 'users.show')]
+    #[Parameter(name: 'id', regex: '\d+')]
     public function show(int $id): ResponseContract
+    {
+        // GET /users/{id}
+    }
+
+    // However using the DynamicRoute directly can allow you to define Parameter 
+    // objects directly on the Route attribute via the parameters argument, just
+    // remember to use the Parameter data class, not the attribute if you do this.
+    #[DynamicRoute(path: '/users/{id}', name: 'users.delete')]
+    public function delete(
+        // The parameter attribute can either go on the method, or the parameter
+        // itself; whatever you feel is best for readability on your project
+        #[Parameter(name: 'id', regex: '\d+')]
+        int $id
+    ): ResponseContract
     {
         // GET /users/{id}
     }
@@ -139,17 +166,25 @@ class UserController
 ```
 
 The `#[Route]` attribute is repeatable — a single method can handle multiple
-paths or methods by stacking attributes. The default `requestMethods` is
+paths or methods by stacking attributes. The default `requestMethods` are
 `[RequestMethod::HEAD, RequestMethod::GET]`.
+
+> Note: Any other attributes placed on the method will be added to ALL routes
+> defined on that method. If a certain route requires specific configuration
+> unique to that route and not others you will need to use that route's
+> arguments
 
 ### Route Modifiers
 
 Several companion attributes refine how individual routes behave:
 
-**`#[Route\Path]`** — Overrides or prefixes the route path at the class or
-method level.
+**`#[Route\Path]`** — Use this on the class itself to prepend a path to all
+routes defined on methods in that class. When used on a method it prepends
+to all routes defined on that method.
 
-**`#[Route\Name]`** — Overrides the route name at the class or method level.
+**`#[Route\Name]`** — Use this on the class itself to prepend a common name to
+all routes defined on methods in that class. When used on a method it prepends
+to all routes defined on that method.
 
 **`#[Route\RequestMethod]`** — Sets allowed HTTP methods on a method, separate
 from the `#[Route]` declaration:
@@ -157,9 +192,11 @@ from the `#[Route]` declaration:
 ```php
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Message\Enum\RequestMethod as Method;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Head;
 
 #[Route(path: '/posts/{id}', name: 'posts.update')]
 #[RequestMethod(Method::PUT, Method::PATCH)]
+#[Head]
 public function update(int $id): ResponseContract { ... }
 ```
 
@@ -182,9 +219,10 @@ rules per parameter:
 
 ```php
 use Valkyrja\Http\Routing\Attribute\Route\Parameter;
+use Valkyrja\Http\Routing\Constant\Regex;
 
 #[Route(path: '/articles/{slug}', name: 'articles.show')]
-#[Parameter(name: 'slug', regex: '[a-z0-9-]+')]
+#[Parameter(name: 'slug', regex: Regex::SLUG)]
 public function show(string $slug): ResponseContract { ... }
 ```
 
@@ -253,7 +291,7 @@ return a new instance.
 use Valkyrja\Http\Message\Request\ServerRequest;
 
 $method   = $request->getMethod();          // RequestMethod enum
-$uri      = $request->getUri();             // UriInterface
+$uri      = $request->getUri();             // UriContract
 $query    = $request->getQueryParams();
 $body     = $request->getParsedBody();
 $cookies  = $request->getCookieParams();
@@ -285,7 +323,7 @@ $json     = new JsonResponse(['user' => $user]);
 $html     = new HtmlResponse('<h1>Hello</h1>');
 $text     = new TextResponse('Hello');
 $redirect = new RedirectResponse('/dashboard');
-$empty    = new EmptyResponse(StatusCode::NO_CONTENT);
+$empty    = new EmptyResponse();
 ```
 
 The `ResponseFactory` available via injection provides a fluent interface for
@@ -315,11 +353,17 @@ Or inline in the `#[Route]` declaration:
     path: '/users',
     name: 'users.store',
     requestMethods: [RequestMethod::POST],
-    requestStruct:  new CreateUserRequest(),
-    responseStruct: new UserResponse(),
+    requestStruct: CreateUserRequest::class,
+    responseStruct: UserResponse::class,
 )]
 public function store(): ResponseContract { ... }
 ```
+
+> Note: You will need to use the
+`\Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware` or
+`\Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware` to
+> automatically validate and hydrate the request and response based on the
+> provided structs.
 
 ## PSR Compatibility
 
@@ -546,7 +590,7 @@ class JsonApiMiddleware implements RouteDispatchedMiddlewareContract
 }
 ```
 
-Declared per-route via `routeDispatchedMiddleware`.
+Can be declared globally or per-route via the via `routeDispatchedMiddleware`.
 
 ### Stage 5 — ThrowableCaught
 
@@ -573,8 +617,7 @@ class ErrorReportingMiddleware implements ThrowableCaughtMiddlewareContract
 }
 ```
 
-Declared per-route via `throwableCaughtMiddleware`, or globally in
-`RequestHandler`.
+Can be declared globally or per-route via `throwableCaughtMiddleware`.
 
 ### Stage 6 — SendingResponse
 
@@ -601,11 +644,11 @@ class CorsPolicyMiddleware implements SendingResponseMiddlewareContract
 }
 ```
 
-Declared per-route via `sendingResponseMiddleware`.
+Can be declared globally or per-route via `sendingResponseMiddleware`.
 
 The built-in `NoCacheResponseMiddleware` operates at this stage — it adds
 `Cache-Control: no-cache, no-store`, `Pragma: no-cache`, and a past `Expires`
-header to prevent client-side caching of sensitive responses.
+header to prevent client-side caching of sensitive responses for example.
 
 ### Stage 7 — Terminated
 
@@ -632,7 +675,7 @@ class ActivityLogMiddleware implements TerminatedMiddlewareContract
 }
 ```
 
-Declared per-route via `terminatedMiddleware`.
+Can be declared globally or per-route via `terminatedMiddleware`.
 
 The `CacheResponseMiddleware` also hooks into this stage: if the response was a
 success (not a 5xx) and has not yet been cached, it serializes the response to a
@@ -656,8 +699,8 @@ requests.
 Valkyrja ships a full-response cache middleware — `CacheResponseMiddleware` —
 that stores serialized response objects on the filesystem and replays them on
 subsequent identical requests. Because it operates at the `RequestReceived`
-stage, a cache hit bypasses route matching, dispatch, and all other middleware
-entirely.
+stage, a cache hit bypasses route matching, dispatch, and goes straight to the
+sending and terminated middleware stages.
 
 Enable it by registering it as global `RequestReceived` middleware and pointing
 it at a writable directory:
@@ -694,10 +737,12 @@ public function show(): ResponseContract { ... }
 
 ## HttpException
 
-When application code needs to produce a specific HTTP error response, throw an
-`HttpException`. The `RequestHandler` detects it and uses its embedded
-`StatusCode` and optional response body, rather than falling back to a generic
-500:
+When application code needs to produce a specific HTTP error response the
+preferred method is to create a response with that status code.
+
+However, you can also throw an `HttpException`. The `RequestHandler` detects it
+and uses its embedded `StatusCode` and optional response body, rather than
+falling back to a generic 500:
 
 ```php
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
@@ -707,7 +752,9 @@ throw new HttpException(StatusCode::NOT_FOUND, 'Resource not found.');
 ```
 
 `ThrowableCaught` middleware sees the exception before the handler's default
-behaviour takes effect, so you can override the response further at that stage.
+behavior takes effect, so you can override the response further at that stage.
+
+> Note: Sending and terminated middleware still run after the throwable is caught.
 
 ## Full Request Lifecycle
 
@@ -723,7 +770,7 @@ From `Http::run()` to process exit, the lifecycle is:
 6. `RequestReceived` middleware runs (cache check, maintenance mode, etc.).
 7. The `Router` asks the `Matcher` to find a matching route.
 8. **If no route matches**: `RouteNotMatched` middleware runs and produces a 404
-   response.
+   response and goes straight to SendingResponse.
 9. **If a route matches**: `RouteMatched` middleware runs (authentication,
    authorization).
 10. The `Dispatcher` calls the matched controller method, injecting dependencies
