@@ -586,3 +586,24 @@ From `Cli::run()` to process exit, the lifecycle is:
 14. `Exited` middleware runs (deferred cleanup).
 15. `Exiter::exit()` is called with the `ExitCode` integer value from the
     output.
+
+```mermaid
+flowchart TD
+    A([Cli::run]) --> B[Bootstrap - build Input from argv]
+    B --> C[Stage 1 - InputReceived]
+    C -->|"short-circuit / throwable"| J[Stage 5 - ThrowableCaught]
+    C --> D{"Router: command matched?"}
+    D -->|"no match"| E["Stage 3 - RouteNotMatched (error output)"]
+    D -->|matched| F[Stage 2 - RouteMatched]
+    E --> H[Write output to stdout]
+    F -->|"short-circuit / throwable"| J
+    F --> G[Dispatcher - controller method]
+    G -->|throwable| J
+    G --> I[Stage 4 - RouteDispatched]
+    I -->|throwable| J
+    I --> H
+    J --> H
+    H --> K[Stage 6 - Exited]
+    K --> L["Exiter::exit(ExitCode)"]
+    L --> M([Process ends])
+```

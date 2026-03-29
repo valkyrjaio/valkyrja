@@ -782,3 +782,25 @@ From `Http::run()` to process exit, the lifecycle is:
 14. The response is written to the output buffer; the session is closed; FastCGI
     or Litespeed finish-request is called if available.
 15. `Terminated` middleware runs (deferred work, cache writes, analytics).
+
+```mermaid
+flowchart TD
+    A([Http::run]) --> B[Bootstrap - build ServerRequest from globals]
+    B --> C[Stage 1 - RequestReceived]
+    C -->|"cache hit / short-circuit"| G[Stage 6 - SendingResponse]
+    C -->|throwable| J[Stage 5 - ThrowableCaught]
+    C --> D{"Router: route matched?"}
+    D -->|"no match"| E["Stage 3 - RouteNotMatched (404 response)"]
+    D -->|matched| F[Stage 2 - RouteMatched]
+    E --> G
+    F -->|"short-circuit / throwable"| J
+    F --> H[Dispatcher - controller method]
+    H -->|throwable| J
+    H --> I[Stage 4 - RouteDispatched]
+    I -->|throwable| J
+    I --> G
+    J --> G
+    G --> K[Write response to output buffer]
+    K --> L[Stage 7 - Terminated]
+    L --> M([Process ends])
+```

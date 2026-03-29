@@ -243,3 +243,62 @@ index.php / bin/cli
                                 ├── Send response / write output
                                 └── Stage 7: Terminated / Exited
 ```
+
+### HTTP Lifecycle
+
+```mermaid
+flowchart TD
+    A([index.php]) --> B["Http::run(HttpConfig)"]
+    B --> C["App::start - bootstrap container"]
+    C --> D{Data cache?}
+    D -->|yes| E[Load data cache]
+    D -->|no| F[Iterate providers]
+    E --> G["Build ServerRequest - RequestHandler::run"]
+    F --> G
+    G --> H[Stage 1 - RequestReceived]
+    H -->|"cache hit / short-circuit"| L[Stage 6 - SendingResponse]
+    H -->|throwable| T[Stage 5 - ThrowableCaught]
+    H --> I{Route matched?}
+    I -->|no| J["Stage 3 - RouteNotMatched (404 response)"]
+    I -->|yes| K[Stage 2 - RouteMatched]
+    J --> L
+    K -->|"short-circuit / throwable"| T
+    K --> M[Dispatcher - controller method]
+    M -->|throwable| T
+    M --> N[Stage 4 - RouteDispatched]
+    N -->|throwable| T
+    N --> L
+    T --> L
+    L --> P[Write response to output buffer]
+    P --> Q[Stage 7 - Terminated]
+    Q --> R([Process ends])
+```
+
+### CLI Lifecycle
+
+```mermaid
+flowchart TD
+    A([bin/cli]) --> B["Cli::run(CliConfig)"]
+    B --> C["App::start - bootstrap container"]
+    C --> D{Data cache?}
+    D -->|yes| E[Load data cache]
+    D -->|no| F[Iterate providers]
+    E --> G["Build Input - InputHandler::run"]
+    F --> G
+    G --> H[Stage 1 - InputReceived]
+    H -->|"short-circuit / throwable"| T[Stage 5 - ThrowableCaught]
+    H --> I{Command matched?}
+    I -->|no| J["Stage 3 - RouteNotMatched (error output)"]
+    I -->|yes| K[Stage 2 - RouteMatched]
+    J --> M[Write output to stdout]
+    K -->|"short-circuit / throwable"| T
+    K --> L[Dispatcher - controller method]
+    L -->|throwable| T
+    L --> N[Stage 4 - RouteDispatched]
+    N -->|throwable| T
+    N --> M
+    T --> M
+    M --> P[Stage 6 - Exited]
+    P --> Q["Exiter::exit(ExitCode)"]
+    Q --> R([Process ends])
+```

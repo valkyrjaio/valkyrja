@@ -137,6 +137,24 @@ When `run()` is called, `App::start()` executes in order:
 7. **Components are loaded.** The container data is populated, either from the
    data cache or from providers (see below).
 
+### Bootstrap Flowchart
+
+```mermaid
+flowchart TD
+    A(["Http::run / Cli::run"]) --> B[App::start]
+    B --> C["1 - Define APP_START constant"]
+    C --> D["2 - Set base path from config->dir"]
+    D --> E["3 - Create Container"]
+    E --> F["4 - Instantiate Valkyrja, set timezone"]
+    F --> G["5 - Register core singletons\nEnv, Config, ContainerContract, ApplicationContract"]
+    G --> H["6 - Run provider callbacks"]
+    H --> I{"Data cache exists\nand debugMode = false?"}
+    I -->|Yes| J["7 - Load data cache class\nno reflection, single step"]
+    I -->|No| K["7 - Iterate component providers\nbuild deferred service map"]
+    J --> L([Container ready])
+    K --> L
+```
+
 ## Component Loading and the Data Cache
 
 After the application is instantiated, Valkyrja populates the container. This is
