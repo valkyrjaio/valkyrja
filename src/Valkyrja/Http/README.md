@@ -790,7 +790,7 @@ flowchart TD
     C -->|"cache hit / short-circuit"| G[Stage 6 - SendingResponse]
     C -->|throwable| J[Stage 5 - ThrowableCaught]
     C --> D{"Router: route matched?"}
-    D -->|"no match"| E["Stage 3 - RouteNotMatched (404 response)"]
+    D -->|"no match"| E["Stage 3 - RouteNotMatched (404/405 response)"]
     D -->|matched| F[Stage 2 - RouteMatched]
     E --> G
     F -->|"short-circuit / throwable"| J
