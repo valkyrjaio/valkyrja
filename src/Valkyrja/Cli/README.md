@@ -587,6 +587,10 @@ From `Cli::run()` to process exit, the lifecycle is:
 15. `Exiter::exit()` is called with the `ExitCode` integer value from the
     output.
 
+<p align="center"><a href="https://valkyrja.io" target="_blank">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/cli-lifecycle.svg" width="100%">
+</a></p>
+
 ```mermaid
 flowchart TD
     A([Cli::run]) --> B[Bootstrap - build Input from argv]

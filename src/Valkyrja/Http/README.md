@@ -783,6 +783,10 @@ From `Http::run()` to process exit, the lifecycle is:
     or Litespeed finish-request is called if available.
 15. `Terminated` middleware runs (deferred work, cache writes, analytics).
 
+<p align="center"><a href="https://valkyrja.io" target="_blank">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/http-lifecycle.svg" width="100%">
+</a></p>
+
 ```mermaid
 flowchart TD
     A([Http::run]) --> B[Bootstrap - build ServerRequest from globals]
