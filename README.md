@@ -117,12 +117,12 @@ For more information view our
 Bug fixes will be provided until 3 months after the next major release. Security
 fixes will be provided for 2 years after the initial release.
 
-| Version  | PHP (*)    | Release              | Bug Fixes Until  | Security Fixes Until  |
-|:---------|:-----------|:---------------------|:-----------------|:----------------------|
-| 25 (**)  | 8.4 - 8.6  | December 11th, 2025  | Q1 2026          | Q1 2026               |
-| 26       | 8.4 - 8.6  | Q1 2026              | Q2 2027          | Q1 2028               |
-| 27       | 8.5 - 8.6  | Q1 2027              | Q2 2028          | Q1 2029               |
-| 28       | 8.6+       | Q1 2028              | Q2 2029          | Q1 2030               |
+| Version | PHP (*)   | Release             | Bug Fixes Until | Security Fixes Until |
+|:--------|:----------|:--------------------|:----------------|:---------------------|
+| 25 (**) | 8.4 - 8.6 | December 11th, 2025 | March 31, 2026  | March 31, 2026       |
+| 26      | 8.4 - 8.6 | March 31, 2026      | Q2 2027         | Q1 2028              |
+| 27      | 8.5 - 8.6 | Q1 2027             | Q2 2028         | Q1 2029              |
+| 28      | 8.6+      | Q1 2028             | Q2 2029         | Q1 2030              |
 
 (*) Supported PHP versions
 (**) Pre-release that is not supported once v26 is released
