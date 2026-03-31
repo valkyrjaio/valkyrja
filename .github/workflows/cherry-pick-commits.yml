@@ -27,7 +27,7 @@ jobs:
         env:
           BRANCH: ${{ inputs.destination }}
         run: |
-          if [ "$BRANCH" == "master" ] || [ $BRANCH =~ ^2([6-9]).x$ ]; then
+          if [ "$BRANCH" == "master" ] || [[ $BRANCH =~ ^2([6-9]).x$ ]]; then
             echo "All new major release version branches must be made from latest master."
             echo "Using master or major version branch. Proceed."
 
