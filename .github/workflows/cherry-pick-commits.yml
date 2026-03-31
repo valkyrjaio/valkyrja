@@ -51,6 +51,12 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.generate-token.outputs.token }}
 
+      - name: Set up Git user
+        id: setup-git-user
+        run: |
+          git config --global user.email "${{ vars.USER_EMAIL }}"
+          git config --global user.name "${{ vars.USER_NAME }}"
+
       - name: Cherry Pick ${{ inputs.hash }} to ${{ inputs.destination }}
         run: |
           git checkout ${{ inputs.destination }}
