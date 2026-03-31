@@ -53,5 +53,6 @@ jobs:
 
       - name: Cherry Pick ${{ inputs.hash }} to ${{ inputs.destination }}
         run: |
+          git checkout ${{ inputs.destination }}
           git cherry-pick ${{ inputs.hash }}
           git push origin ${{ inputs.destination }}
