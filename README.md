@@ -1,5 +1,5 @@
 <p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/full-logo/orange/php.png" width="400">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/25.x/full-logo/orange/php.png" width="400">
 </a></p>
 
 # Valkyrja
@@ -22,8 +22,8 @@ framework do the heavy lifting for your app.
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license" alt="License"></a>
     <!-- <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/downloads" alt="Total Downloads"></a>-->
-    <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/?branch=master"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
-    <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
+    <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/?branch=25.x"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=25.x" alt="Scrutinizer"></a>
+    <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=25.x"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=25.x" alt="Coverage Status" /></a>
     <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" alt="Psalm Shepherd" /></a>
     <a href="https://sonarcloud.io/summary/new_code?id=valkyrjaio_valkyrja"><img src="https://sonarcloud.io/api/project_badges/measure?project=valkyrjaio_valkyrja&metric=sqale_rating" alt="Maintainability Rating" /></a>
 </p>
@@ -36,37 +36,37 @@ Build Status
         <tr>
             <td>Linting</td>
             <td>    
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?branch=master" alt="PHP Code Sniffer Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?branch=25.x" alt="PHP Code Sniffer Build Status"></a>
             </td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?branch=master" alt="PHP CS Fixer Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?branch=25.x" alt="PHP CS Fixer Build Status"></a>
             </td>
         </tr>
         <tr>
             <td>Coding Rules</td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?branch=master" alt="PHPArkitect Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?branch=25.x" alt="PHPArkitect Build Status"></a>
             </td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?branch=master" alt="Rector Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?branch=25.x" alt="Rector Build Status"></a>
             </td>
         </tr>
         <tr>
             <td>Static Analysis</td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?branch=master" alt="PHPStan Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?branch=25.x" alt="PHPStan Build Status"></a>
             </td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?branch=master" alt="Psalm Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?branch=25.x" alt="Psalm Build Status"></a>
             </td>
         </tr>
         <tr>
             <td>Testing</td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=master" alt="PHPUnit Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=25.x" alt="PHPUnit Build Status"></a>
             </td>
             <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=master" alt="Validate Composer Build Status"></a>
+                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=25.x" alt="Validate Composer Build Status"></a>
             </td>
         </tr>
     </tbody>
