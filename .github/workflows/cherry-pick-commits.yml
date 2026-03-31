@@ -3,27 +3,31 @@ name: Cherry-pick pull-requests to Branches
 on:
   workflow_dispatch:
     inputs:
+      destination:
+        description: 'Destination branch to cherry-pick to'
+        required: true
+        type: string
       hash:
         description: 'Hash to cherry-pick'
         required: true
 
-run-name: Cherry Pick ${{ inputs.hash }} To ${{ github.ref_name }}
+run-name: Cherry Pick ${{ inputs.hash }} To ${{ inputs.destination }}
 
 permissions:
   contents: write
 
 jobs:
   cherry-pick:
-    name: Cherry Pick ${{ inputs.hash }} to ${{ github.ref_name }}
+    name: Cherry Pick ${{ inputs.hash }} to ${{ inputs.destination }}
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Ensure using master or major version branch
         env:
-          BRANCH: ${{ github.ref_name }}
+          BRANCH: ${{ inputs.destination }}
         run: |
-          if [[ "$BRANCH" == "master" ] || [ $BRANCH =~ ^(2[6-9].x)$ ]]; then
+          if [[ "$BRANCH" == "master" ] || [ $BRANCH =~ ^(2)([6-9])(.x)$ ]]; then
             echo "All new major release version branches must be made from latest master."
             echo "Using master or major version branch. Proceed."
 
@@ -46,7 +50,7 @@ jobs:
         with:
           token: ${{ steps.generate-token.outputs.token }}
 
-      - name: Cherry Pick ${{ inputs.hash }} to ${{ github.ref_name }}
+      - name: Cherry Pick ${{ inputs.hash }} to ${{ inputs.destination }}
         run: |
           git cherry-pick ${{ inputs.hash }}
-          git push origin ${{ github.ref_name }}
+          git push origin ${{ inputs.destination }}
