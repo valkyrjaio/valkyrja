@@ -25,7 +25,7 @@ jobs:
           - name: PHP Metrics
             command: phpmetrics-outdated-check-major-release
           - name: PHPStan
-            command: phparkitect-outdated-check-major-release
+            command: phpstan-outdated-check-major-release
           - name: PHPUnit
             command: phpunit-outdated-check-major-release
           - name: Psalm
