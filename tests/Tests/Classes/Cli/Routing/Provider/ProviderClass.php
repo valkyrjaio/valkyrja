@@ -13,8 +13,26 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Routing\Provider;
 
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Override;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 
-final class ProviderClass extends Provider
+final class ProviderClass implements CliRouteProviderContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getControllerClasses(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRoutes(): array
+    {
+        return [];
+    }
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Routing\Provider\Contract;
 
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-interface ProviderContract
+interface CliRouteProviderContract
 {
     /**
      * Get a list of attributed controller or action classes.
