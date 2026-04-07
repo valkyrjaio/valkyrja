@@ -17,7 +17,7 @@ use Closure;
 use Override;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 
 use function array_keys;
 use function is_callable;
@@ -42,9 +42,9 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getData(): Data
+    public function getData(): EventData
     {
-        return new Data(
+        return new EventData(
             events: $this->events,
             listeners: $this->listeners,
         );
@@ -54,7 +54,7 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function setFromData(Data $data): void
+    public function setFromData(EventData $data): void
     {
         $this->events    = $data->events;
         $this->listeners = $data->listeners;

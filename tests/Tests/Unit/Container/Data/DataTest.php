@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Data;
 
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -23,7 +23,7 @@ final class DataTest extends TestCase
 {
     public function testDefault(): void
     {
-        $data = new Data();
+        $data = new ContainerData();
 
         self::assertEmpty($data->aliases);
         self::assertEmpty($data->deferred);

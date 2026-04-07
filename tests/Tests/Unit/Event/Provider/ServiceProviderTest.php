@@ -22,7 +22,7 @@ use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
@@ -49,7 +49,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(DispatcherContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(EventData::class, ServiceProvider::publishers());
     }
 
     /**
@@ -94,7 +94,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithCustomDataProvided(): void
     {
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
-        $this->container->setSingleton(Data::class, new Data());
+        $this->container->setSingleton(EventData::class, new EventData());
         $application->method('getDebugMode')->willReturn(false);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
@@ -107,14 +107,14 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $eventId      = self::class;
         $listenerName = 'listener-name';
-        $data         = new Data(
+        $data         = new EventData(
             events: [$eventId => [$listenerName]],
             listeners: [$listenerName => new Listener(eventId: $eventId, name: $listenerName)]
         );
 
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
-        $this->container->setSingleton(Data::class, $data);
+        $this->container->setSingleton(EventData::class, $data);
         $application->method('getDebugMode')->willReturn(false);
 
         self::assertFalse($this->container->has(CollectionContract::class));
@@ -123,7 +123,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
         self::assertTrue($collection->hasListenersForEventById($eventId));
         self::assertTrue($collection->hasListenerById($listenerName));
     }
@@ -149,13 +149,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
         self::assertContains($eventId, $collection->getEvents());
         self::assertTrue($collection->hasListenerById($listenerName));
         self::assertTrue($collection->hasListener($listener));
@@ -186,13 +186,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
         self::assertContains($eventId, $collection->getEvents());
         self::assertTrue($collection->hasListenerById($listenerName));
         self::assertTrue($collection->hasListener($listener));
@@ -223,13 +223,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([]);
 
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $collection = $this->container->getSingleton(CollectionContract::class));
-        self::assertTrue($this->container->has(Data::class));
+        self::assertTrue($this->container->has(EventData::class));
         self::assertNotContains($eventId, $collection->getEvents());
         self::assertFalse($collection->hasListenerById($listenerName));
         self::assertFalse($collection->hasListener($listener));

@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Data;
 use Closure;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
-readonly class Data
+readonly class EventData
 {
     /**
      * The listeners.

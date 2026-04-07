@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
 use stdClass;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
@@ -26,7 +26,7 @@ final class DataTest extends TestCase
 {
     public function testDefault(): void
     {
-        $data = new Data();
+        $data = new CliRoutingData();
 
         self::assertEmpty($data->routes);
     }
@@ -38,7 +38,7 @@ final class DataTest extends TestCase
             'command2' => serialize(new stdClass()),
         ];
 
-        $data = new Data($commands);
+        $data = new CliRoutingData($commands);
 
         self::assertSame($commands, $data->routes);
     }

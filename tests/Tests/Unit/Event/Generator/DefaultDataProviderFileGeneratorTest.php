@@ -60,7 +60,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
             namespace $namespace;
 
             use Override;
-            use Valkyrja\Event\Data\Data;
+            use Valkyrja\Event\Data\EventData;
             use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
             use Valkyrja\Event\Provider\ServiceProvider;
@@ -74,7 +74,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
                 public static function publishers(): array
                 {
                     return [
-                        Data::class => [self::class, 'publishData'],
+                        EventData::class => [self::class, 'publishData'],
                     ];
                 }
 
@@ -85,7 +85,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
                 public static function provides(): array
                 {
                     return [
-                        Data::class,
+                        EventData::class,
                     ];
                 }
 

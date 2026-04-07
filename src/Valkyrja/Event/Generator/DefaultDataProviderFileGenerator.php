@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Generator;
 
 use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Provider\ServiceProvider;
 
 class DefaultDataProviderFileGenerator extends ProviderFileGenerator
@@ -34,8 +34,8 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
             directory: $directory,
             namespace: $namespace,
             className: $className,
-            serviceClassName: 'Data',
-            serviceFullNamespace: Data::class,
+            serviceClassName: 'EventData',
+            serviceFullNamespace: EventData::class,
             publishMethod: 'publishData',
         );
     }

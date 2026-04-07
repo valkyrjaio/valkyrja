@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Routing\Collection\Contract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 
 /**
  * @psalm-type RequestMethodList array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
@@ -28,12 +28,12 @@ interface CollectionContract
     /**
      * Get a data representation of the collection.
      */
-    public function getData(): Data;
+    public function getData(): HttpRoutingData;
 
     /**
      * Set data from a data object.
      */
-    public function setFromData(Data $data): void;
+    public function setFromData(HttpRoutingData $data): void;
 
     /**
      * Add a route.

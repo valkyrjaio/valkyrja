@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Dispatch\Data\MethodDispatch;
@@ -28,7 +28,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingData';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
+        $data       = new CliRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -48,7 +48,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingData';
         $namespace  = 'App';
-        $data       = new Data();
+        $data       = new CliRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -66,9 +66,9 @@ final class DataFileGeneratorTest extends TestCase
 
             namespace $namespace;
 
-            use Valkyrja\Cli\Routing\Data\Data as ValkyrjaData;
+            use Valkyrja\Cli\Routing\Data\CliRoutingData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends CliRoutingData
             {
                 public function __construct()
                 {
@@ -90,7 +90,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'CliDataTestRoutingData';
-        $data       = new Data();
+        $data       = new CliRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -99,7 +99,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = CliRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -117,7 +117,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRoute(): void
     {
-        $data      = new Data(
+        $data      = new CliRoutingData(
             routes: [
                 'route' => new Route(
                     name: 'test',
@@ -136,7 +136,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = CliRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -189,7 +189,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRouteClosure(): void
     {
-        $data      = new Data(
+        $data      = new CliRoutingData(
             routes: [
                 'route' => static fn (): Route => new Route(
                     name: 'test',
@@ -208,7 +208,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = CliRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP

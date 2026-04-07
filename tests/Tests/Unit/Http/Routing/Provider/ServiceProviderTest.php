@@ -36,7 +36,7 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
@@ -74,7 +74,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ProcessorContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(HttpRoutingData::class, ServiceProvider::publishers());
     }
 
     public function testPublishRouter(): void
@@ -105,7 +105,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithCustomDataProvided(): void
     {
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
-        $this->container->setSingleton(Data::class, new Data());
+        $this->container->setSingleton(HttpRoutingData::class, new HttpRoutingData());
         $application->method('getDebugMode')->willReturn(false);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
@@ -120,7 +120,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $path = '/route';
         $name = 'route';
-        $data = new Data(
+        $data = new HttpRoutingData(
             routes: [
                 $name => new Route($path, $name, new MethodDispatch('class', 'method')),
             ],
@@ -131,7 +131,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
-        $container->setSingleton(Data::class, $data);
+        $container->setSingleton(HttpRoutingData::class, $data);
         $application->method('getDebugMode')->willReturn(false);
 
         self::assertFalse($container->has(CollectionContract::class));

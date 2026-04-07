@@ -16,19 +16,19 @@ namespace Valkyrja\Event\Collection\Contract;
 use Override;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 
 interface CollectionContract extends ListenerProviderInterface
 {
     /**
      * Get a data representation of the collection.
      */
-    public function getData(): Data;
+    public function getData(): EventData;
 
     /**
      * Set data from a data object.
      */
-    public function setFromData(Data $data): void;
+    public function setFromData(EventData $data): void;
 
     /**
      * Determine if a listener is registered.

@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidRouteNameException;
@@ -84,7 +84,7 @@ final class CollectionTest extends TestCase
             ]
         );
 
-        $data = new Data(
+        $data = new CliRoutingData(
             routes: [$route->getName() => $routeClosure = static fn () => $route]
         );
 

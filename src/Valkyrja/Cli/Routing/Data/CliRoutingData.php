@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Data;
 use Closure;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-readonly class Data
+readonly class CliRoutingData
 {
     /**
      * @param array<string, RouteContract|Closure():RouteContract> $routes

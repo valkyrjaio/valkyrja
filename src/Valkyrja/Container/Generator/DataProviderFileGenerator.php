@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Generator;
 
 use Override;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 
 class DataProviderFileGenerator extends ProviderFileGenerator
@@ -35,8 +35,8 @@ class DataProviderFileGenerator extends ProviderFileGenerator
             directory: $directory,
             namespace: $namespace,
             className: $className,
-            serviceClassName: 'Data',
-            serviceFullNamespace: Data::class,
+            serviceClassName: 'ContainerData',
+            serviceFullNamespace: ContainerData::class,
             publishMethod: 'publishData',
         );
     }
@@ -63,7 +63,7 @@ class DataProviderFileGenerator extends ProviderFileGenerator
         $dataClassName = $this->dataClassName;
 
         return <<<PHP
-            \$container->setSingleton(Data::class, new $dataClassName());
+            \$container->setSingleton(ContainerData::class, new $dataClassName());
             PHP;
     }
 }

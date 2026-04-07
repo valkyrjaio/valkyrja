@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -23,7 +23,7 @@ final class DataTest extends TestCase
 {
     public function testDefault(): void
     {
-        $data = new Data();
+        $data = new HttpRoutingData();
 
         self::assertEmpty($data->routes);
         self::assertEmpty($data->paths);

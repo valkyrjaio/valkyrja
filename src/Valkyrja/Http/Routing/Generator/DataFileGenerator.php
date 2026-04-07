@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Generator;
 
 use Override;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
@@ -30,7 +30,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
+        protected HttpRoutingData $data,
         protected string $namespace,
         protected string $className,
     ) {
@@ -56,9 +56,9 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
 
             namespace $namespace;
 
-            use Valkyrja\Http\Routing\Data\Data as ValkyrjaData;
+            use Valkyrja\Http\Routing\Data\HttpRoutingData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends HttpRoutingData
             {
                 public function __construct()
                 {
@@ -77,7 +77,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
     #[Override]
     public function generateClassContents(): string
     {
-        $dataNamespace = Data::class;
+        $dataNamespace = HttpRoutingData::class;
 
         $contents = $this->generateClassNamedArguments();
 

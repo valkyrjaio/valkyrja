@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Generator;
 
 use Override;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 
 class DataProviderFileGenerator extends ProviderFileGenerator
@@ -35,8 +35,8 @@ class DataProviderFileGenerator extends ProviderFileGenerator
             directory: $directory,
             namespace: $namespace,
             className: $className,
-            serviceClassName: 'Data',
-            serviceFullNamespace: Data::class,
+            serviceClassName: 'CliRoutingData',
+            serviceFullNamespace: CliRoutingData::class,
             publishMethod: 'publishData',
         );
     }
@@ -63,7 +63,7 @@ class DataProviderFileGenerator extends ProviderFileGenerator
         $dataClassName = $this->dataClassName;
 
         return <<<PHP
-            \$container->setSingleton(Data::class, new $dataClassName());
+            \$container->setSingleton(CliRoutingData::class, new $dataClassName());
             PHP;
     }
 }

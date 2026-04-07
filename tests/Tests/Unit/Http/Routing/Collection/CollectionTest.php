@@ -21,8 +21,8 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
@@ -82,13 +82,13 @@ final class CollectionTest extends TestCase
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
         );
 
-        $data = new Data(
+        $data = new HttpRoutingData(
             routes: [
                 $routeName => $route,
             ]
         );
 
-        $data2 = new Data(
+        $data2 = new HttpRoutingData(
             routes: [
                 $routeName => static fn (): RouteContract => $route,
             ]
@@ -120,7 +120,7 @@ final class CollectionTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
-        $data = new Data(
+        $data = new HttpRoutingData(
             routes: [
                 'test' => static fn () => new stdClass(),
             ],
