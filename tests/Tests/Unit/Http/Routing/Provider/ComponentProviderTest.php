@@ -30,10 +30,24 @@ final class ComponentProviderTest extends TestCase
         self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
     }
 
+    public function testGetEventProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ComponentProvider::getEventProviders($app));
+    }
+
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
         self::assertEmpty(ComponentProvider::getCliProviders($app));
+    }
+
+    public function testGetHttpProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ComponentProvider::getHttpProviders($app));
     }
 }

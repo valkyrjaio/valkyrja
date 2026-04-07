@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Mail\Provider;
+namespace Valkyrja\Tests\Unit\Bin\Provider;
 
+use Valkyrja\Bin\Provider\ComponentProvider;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Mail\Provider\ComponentProvider;
-use Valkyrja\Mail\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -23,11 +22,11 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class ComponentProviderTest extends TestCase
 {
-    public function testGetContainerProvider(): void
+    public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
+        self::assertEmpty(ComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

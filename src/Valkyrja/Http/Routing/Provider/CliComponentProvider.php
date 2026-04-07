@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Abstract\Provider;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class CliComponentProvider extends Provider
+class CliComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc
@@ -34,10 +34,28 @@ class CliComponentProvider extends Provider
      * @inheritDoc
      */
     #[Override]
+    public static function getEventProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public static function getCliProviders(ApplicationContract $app): array
     {
         return [
             CliRouteProvider::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getHttpProviders(ApplicationContract $app): array
+    {
+        return [];
     }
 }

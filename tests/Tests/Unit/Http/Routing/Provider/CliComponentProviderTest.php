@@ -37,4 +37,18 @@ final class CliComponentProviderTest extends TestCase
 
         self::assertContains(CliRouteProvider::class, CliComponentProvider::getCliProviders($app));
     }
+
+    public function testGetEventProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(CliComponentProvider::getEventProviders($app));
+    }
+
+    public function testGetHttpProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(CliComponentProvider::getHttpProviders($app));
+    }
 }
