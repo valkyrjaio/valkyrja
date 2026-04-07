@@ -54,7 +54,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as HttpThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract as HttpRoutingCollection;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Http\Routing\Data\HttpRoutingData as HttpData;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as HttpRoutingRouter;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as HttpRoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
@@ -185,7 +185,7 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(ContainerData::class));
         self::assertTrue($container->has(EventData::class));
         self::assertTrue($container->has(CliRoutingData::class));
-        self::assertTrue($container->has(HttpData::class));
+        self::assertTrue($container->has(HttpRoutingData::class));
         self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($config, $container->getSingleton(Config::class));
         self::assertSame($config->timezone, date_default_timezone_get());
