@@ -15,7 +15,7 @@ namespace Valkyrja\Application\Provider\Contract;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
-interface PublishableProviderContract
+interface PublishableComponentProviderContract
 {
     /**
      * Publish the component.

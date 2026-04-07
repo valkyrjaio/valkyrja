@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Data;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Contract\ProviderContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
 class Config
 {
@@ -29,7 +29,7 @@ class Config
      * @param non-empty-string                          $key
      * @param non-empty-string                          $dataPath
      * @param non-empty-string                          $dataNamespace
-     * @param class-string<ProviderContract>[]          $providers
+     * @param class-string<ComponentProviderContract>[] $providers
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(

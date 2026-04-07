@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Abstract\Provider;
-use Valkyrja\Application\Provider\Contract\PublishableProviderContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Application\Provider\Contract\PublishableComponentProviderContract;
 
-final class HttpComponentProviderClass extends Provider implements PublishableProviderContract
+final class HttpComponentProviderClass implements ComponentProviderContract, PublishableComponentProviderContract
 {
     public static bool $publishedContainerData = false;
 
@@ -32,6 +32,24 @@ final class HttpComponentProviderClass extends Provider implements PublishablePr
             HttpContainerDataProviderClass::class,
             HttpRoutingDataProviderClass::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getEventProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getCliProviders(ApplicationContract $app): array
+    {
+        return [];
     }
 
     /**

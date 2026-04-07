@@ -30,7 +30,7 @@ use Arkitect\Expression\ForClasses\NotHaveNameMatching;
 use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
-use Valkyrja\Application\Provider\Abstract\Provider as ComponentProvider;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -98,13 +98,13 @@ return static function (Config $config): void {
         ->because('All service providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(ComponentProvider::class))
+        ->that(new Implement(ComponentProviderContract::class))
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new HaveNameMatching('*ComponentProvider'))
         ->because('All component providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(ComponentProvider::class))
+        ->that(new Implement(ComponentProviderContract::class))
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
         ->because('All component providers should exist in an appropriate namespace');

@@ -19,7 +19,7 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
-interface ProviderContract
+interface ComponentProviderContract
 {
     /**
      * Get the component's container service providers.

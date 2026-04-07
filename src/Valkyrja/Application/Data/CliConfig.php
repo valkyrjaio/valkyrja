@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Data;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Contract\ProviderContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
 class CliConfig extends Config
@@ -32,7 +32,7 @@ class CliConfig extends Config
      * @param non-empty-string                          $dataNamespace
      * @param non-empty-string                          $applicationName
      * @param non-empty-string                          $defaultCommandName
-     * @param class-string<ProviderContract>[]          $providers
+     * @param class-string<ComponentProviderContract>[] $providers
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
