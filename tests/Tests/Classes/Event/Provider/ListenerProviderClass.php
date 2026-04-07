@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Classes\Event\Provider;
 
 use Override;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Provider\Abstract\Provider;
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 
-final class ListenerProviderClass extends Provider
+final class ListenerProviderClass implements ListenerProviderContract
 {
     #[Override]
     public static function getListenerClasses(): array

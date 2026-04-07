@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Provider\Contract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract as CliProvider;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Event\Provider\Contract\ProviderContract as EventProvider;
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Http\Routing\Provider\Contract\ProviderContract as HttpProvider;
 
 interface ProviderContract
@@ -31,7 +31,7 @@ interface ProviderContract
     /**
      * Get the component's event listener providers.
      *
-     * @return class-string<EventProvider>[]
+     * @return class-string<ListenerProviderContract>[]
      */
     public static function getEventProviders(ApplicationContract $app): array;
 

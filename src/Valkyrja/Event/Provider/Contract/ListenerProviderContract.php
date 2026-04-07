@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Provider\Contract;
 
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
-interface ProviderContract
+interface ListenerProviderContract
 {
     /**
      * Get a list of attributed listener classes.

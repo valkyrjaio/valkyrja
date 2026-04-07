@@ -13,8 +13,26 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Event\Provider;
 
-use Valkyrja\Event\Provider\Abstract\Provider;
+use Override;
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 
-final class ProviderClass extends Provider
+final class ProviderClass implements ListenerProviderContract
 {
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getListenerClasses(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getListeners(): array
+    {
+        return [];
+    }
 }
