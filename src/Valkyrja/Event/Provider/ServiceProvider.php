@@ -32,7 +32,7 @@ use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
-use Valkyrja\Event\Provider\Contract\ProviderContract;
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
@@ -154,7 +154,7 @@ final class ServiceProvider implements ServiceProviderContract
         $listenerClasses = [];
         $listeners       = [];
 
-        /** @var ProviderContract $provider */
+        /** @var ListenerProviderContract $provider */
         foreach ($providers as $provider) {
             $listenerClasses = [
                 ...$listenerClasses,

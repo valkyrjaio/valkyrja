@@ -34,7 +34,7 @@ use Valkyrja\Application\Provider\Abstract\Provider as ComponentProvider;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
 use Valkyrja\Cli\Routing\Provider\Abstract\Provider as CliProvider;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Event\Provider\Abstract\Provider as EventProvider;
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Http\Routing\Provider\Abstract\Provider as HttpProvider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Type\Abstract\Type;
@@ -122,13 +122,13 @@ return static function (Config $config): void {
         ->because('All cli route providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(EventProvider::class))
+        ->that(new Implement(ListenerProviderContract::class))
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new HaveNameMatching('*ListenerProvider'))
         ->because('All event listener providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(EventProvider::class))
+        ->that(new Implement(ListenerProviderContract::class))
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
         ->because('All event listener providers should exist in an appropriate namespace');
