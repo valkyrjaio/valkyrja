@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Bin\Provider;
 
-use Valkyrja\Bin\Provider\ComponentProvider;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Bin\Provider\ComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
