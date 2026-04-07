@@ -15,11 +15,11 @@ namespace Valkyrja\Reflection\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -29,17 +29,6 @@ final class ServiceProvider extends Provider
     {
         return [
             ReflectorContract::class => [self::class, 'publishReflection'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ReflectorContract::class,
         ];
     }
 

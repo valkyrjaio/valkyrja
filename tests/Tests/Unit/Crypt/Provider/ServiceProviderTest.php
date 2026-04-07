@@ -35,13 +35,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullCrypt::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(CryptContract::class, ServiceProvider::provides());
-        self::assertContains(SodiumCrypt::class, ServiceProvider::provides());
-        self::assertContains(NullCrypt::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

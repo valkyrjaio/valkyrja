@@ -21,10 +21,10 @@ use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -38,21 +38,6 @@ final class ServiceProvider extends Provider
             Client::class        => [self::class, 'publishRedisClient'],
             LogCache::class      => [self::class, 'publishLogCache'],
             NullCache::class     => [self::class, 'publishNullCache'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            CacheContract::class,
-            RedisCache::class,
-            Client::class,
-            LogCache::class,
-            NullCache::class,
         ];
     }
 

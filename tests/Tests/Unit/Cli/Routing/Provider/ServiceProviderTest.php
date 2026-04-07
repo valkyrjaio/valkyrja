@@ -60,15 +60,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(CollectorContract::class, ServiceProvider::provides());
-        self::assertContains(RouterContract::class, ServiceProvider::provides());
-        self::assertContains(CollectionContract::class, ServiceProvider::provides());
-        self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
-        self::assertContains(Data::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

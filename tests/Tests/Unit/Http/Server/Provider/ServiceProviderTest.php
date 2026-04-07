@@ -48,17 +48,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CacheResponseMiddleware::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(RequestHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(LogThrowableCaughtMiddleware::class, ServiceProvider::provides());
-        self::assertContains(ViewThrowableCaughtMiddleware::class, ServiceProvider::provides());
-        self::assertContains(RequestStructMiddleware::class, ServiceProvider::provides());
-        self::assertContains(ResponseStructMiddleware::class, ServiceProvider::provides());
-        self::assertContains(ViewRouteNotMatchedMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CacheResponseMiddleware::class, ServiceProvider::provides());
-    }
-
     public function testPublishersArray(): void
     {
         $publishers = ServiceProvider::publishers();
@@ -70,15 +59,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertSame([ServiceProvider::class, 'publishRequestHandler'], $publishers[RequestHandlerContract::class]);
         self::assertSame([ServiceProvider::class, 'publishLogThrowableCaughtMiddleware'], $publishers[LogThrowableCaughtMiddleware::class]);
         self::assertSame([ServiceProvider::class, 'publishViewThrowableCaughtMiddleware'], $publishers[ViewThrowableCaughtMiddleware::class]);
-    }
-
-    public function testProvidesArray(): void
-    {
-        $provides = ServiceProvider::provides();
-
-        self::assertContains(RequestHandlerContract::class, $provides);
-        self::assertContains(LogThrowableCaughtMiddleware::class, $provides);
-        self::assertContains(ViewThrowableCaughtMiddleware::class, $provides);
     }
 
     public function testPublishRequestHandler(): void

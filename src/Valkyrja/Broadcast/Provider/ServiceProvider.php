@@ -23,14 +23,14 @@ use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 use const CURL_IPRESOLVE_V4;
 use const CURLOPT_IPRESOLVE;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -45,22 +45,6 @@ final class ServiceProvider extends Provider
             Pusher::class                 => [self::class, 'publishPusher'],
             LogBroadcaster::class         => [self::class, 'publishLogBroadcaster'],
             NullBroadcaster::class        => [self::class, 'publishNullBroadcaster'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            BroadcasterContract::class,
-            PusherBroadcaster::class,
-            CryptPusherBroadcaster::class,
-            Pusher::class,
-            LogBroadcaster::class,
-            NullBroadcaster::class,
         ];
     }
 

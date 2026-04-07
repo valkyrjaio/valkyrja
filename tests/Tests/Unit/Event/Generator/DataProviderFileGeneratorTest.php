@@ -65,11 +65,11 @@ final class DataProviderFileGeneratorTest extends TestCase
 
             use Override;
             use Valkyrja\Event\Data\Data;
-            use Valkyrja\Container\Provider\Abstract\Provider;
+            use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
             use App\Provider\Data\EventData;
 
-            final class EventDataTestDataProvider extends Provider
+            final class EventDataTestDataProvider implements ServiceProviderContract
             {
                 /**
                  * @inheritDoc

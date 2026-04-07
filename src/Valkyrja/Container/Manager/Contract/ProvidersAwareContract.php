@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Contract;
 
-use Valkyrja\Container\Provider\Contract\ProviderContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 interface ProvidersAwareContract
 {
     /**
      * Register a provider.
      *
-     * @param class-string<ProviderContract> $provider The provider
+     * @param class-string<ServiceProviderContract> $provider The provider
      */
     public function register(string $provider): void;
 
@@ -41,7 +41,7 @@ interface ProvidersAwareContract
     /**
      * Determine whether a provider has been registered.
      *
-     * @param class-string<ProviderContract> $provider The provider
+     * @param class-string<ServiceProviderContract> $provider The provider
      */
     public function isRegistered(string $provider): bool;
 

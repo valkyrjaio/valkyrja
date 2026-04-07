@@ -15,11 +15,11 @@ namespace Valkyrja\Http\Message\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -29,17 +29,6 @@ final class ServiceProvider extends Provider
     {
         return [
             ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ResponseFactoryContract::class,
         ];
     }
 

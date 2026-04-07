@@ -46,17 +46,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(PasswordHasherContract::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(AuthenticatorContract::class, ServiceProvider::provides());
-        self::assertContains(SessionAuthenticator::class, ServiceProvider::provides());
-        self::assertContains(StoreContract::class, ServiceProvider::provides());
-        self::assertContains(OrmStore::class, ServiceProvider::provides());
-        self::assertContains(InMemoryStore::class, ServiceProvider::provides());
-        self::assertContains(NullStore::class, ServiceProvider::provides());
-        self::assertContains(PasswordHasherContract::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

@@ -37,12 +37,12 @@ use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -56,21 +56,6 @@ final class ServiceProvider extends Provider
             CollectionContract::class        => [self::class, 'publishCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
             Data::class                      => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            CollectorContract::class,
-            RouterContract::class,
-            CollectionContract::class,
-            DataFileGeneratorContract::class,
-            Data::class,
         ];
     }
 

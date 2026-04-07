@@ -16,9 +16,9 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 use Override;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
-final class CliRoutingDataProviderClass extends Provider
+final class CliRoutingDataProviderClass implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -28,17 +28,6 @@ final class CliRoutingDataProviderClass extends Provider
     {
         return [
             Data::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            Data::class,
         ];
     }
 

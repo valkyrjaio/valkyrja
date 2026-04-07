@@ -46,18 +46,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullFilesystem::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(FilesystemContract::class, ServiceProvider::provides());
-        self::assertContains(FlysystemFilesystem::class, ServiceProvider::provides());
-        self::assertContains(LocalFlysystemFilesystem::class, ServiceProvider::provides());
-        self::assertContains(LocalFilesystemAdapter::class, ServiceProvider::provides());
-        self::assertContains(S3FlysystemFilesystem::class, ServiceProvider::provides());
-        self::assertContains(AwsS3V3Adapter::class, ServiceProvider::provides());
-        self::assertContains(InMemoryFilesystem::class, ServiceProvider::provides());
-        self::assertContains(NullFilesystem::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

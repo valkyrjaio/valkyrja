@@ -68,26 +68,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CookieParams::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(SessionContract::class, ServiceProvider::provides());
-        self::assertContains(PhpSession::class, ServiceProvider::provides());
-        self::assertContains(NullSession::class, ServiceProvider::provides());
-        self::assertContains(CacheSession::class, ServiceProvider::provides());
-        self::assertContains(CookieSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedCookieSession::class, ServiceProvider::provides());
-        self::assertContains(OptionJwtSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedOptionJwtSession::class, ServiceProvider::provides());
-        self::assertContains(HeaderJwtSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedHeaderJwtSession::class, ServiceProvider::provides());
-        self::assertContains(OptionTokenSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedOptionTokenSession::class, ServiceProvider::provides());
-        self::assertContains(HeaderTokenSession::class, ServiceProvider::provides());
-        self::assertContains(EncryptedHeaderTokenSession::class, ServiceProvider::provides());
-        self::assertContains(LogSession::class, ServiceProvider::provides());
-        self::assertContains(CookieParams::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

@@ -31,11 +31,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(DispatcherContract::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(DispatcherContract::class, ServiceProvider::provides());
-    }
-
     public function testPublishDispatcher(): void
     {
         $callback = ServiceProvider::publishers()[DispatcherContract::class];

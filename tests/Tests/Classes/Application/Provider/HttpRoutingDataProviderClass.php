@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Data\Data;
 
-final class HttpRoutingDataProviderClass extends Provider
+final class HttpRoutingDataProviderClass implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -28,17 +28,6 @@ final class HttpRoutingDataProviderClass extends Provider
     {
         return [
             Data::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            Data::class,
         ];
     }
 

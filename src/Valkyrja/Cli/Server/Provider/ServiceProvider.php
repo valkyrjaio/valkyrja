@@ -47,10 +47,10 @@ use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -71,28 +71,6 @@ final class ServiceProvider extends Provider
             CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
             CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
             CheckCommandForTypoMiddleware::class           => [self::class, 'publishCheckCommandForTypoMiddleware'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            InputHandlerContract::class,
-            HelpCommand::class,
-            ListBashCommand::class,
-            ListCommand::class,
-            VersionCommand::class,
-            GenerateDataCommand::class,
-            LogThrowableCaughtMiddleware::class,
-            OutputThrowableCaughtMiddleware::class,
-            CheckForHelpOptionsMiddleware::class,
-            CheckForVersionOptionsMiddleware::class,
-            CheckGlobalInteractionOptionsMiddleware::class,
-            CheckCommandForTypoMiddleware::class,
         ];
     }
 

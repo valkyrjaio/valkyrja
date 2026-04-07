@@ -17,12 +17,12 @@ use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -34,19 +34,6 @@ final class ServiceProvider extends Provider
             CryptContract::class => [self::class, 'publishCrypt'],
             SodiumCrypt::class   => [self::class, 'publishSodiumCrypt'],
             NullCrypt::class     => [self::class, 'publishNullCrypt'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            CryptContract::class,
-            SodiumCrypt::class,
-            NullCrypt::class,
         ];
     }
 

@@ -22,7 +22,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
@@ -33,7 +33,7 @@ use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -48,22 +48,6 @@ final class ServiceProvider extends Provider
             TwigRenderer::class            => [self::class, 'publishTwigRenderer'],
             Environment::class             => [self::class, 'publishTwigEnvironment'],
             ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            RendererContract::class,
-            PhpRenderer::class,
-            OrkaRenderer::class,
-            TwigRenderer::class,
-            Environment::class,
-            ResponseFactoryContract::class,
         ];
     }
 
@@ -221,7 +205,7 @@ final class ServiceProvider extends Provider
      *
      * @return ReplacementContract[]
      */
-    protected static function getOrkaComponents(ContainerContract $container, Env $env): array
+    private static function getOrkaComponents(ContainerContract $container, Env $env): array
     {
         /** @var class-string<ReplacementContract>[] $coreReplacements */
         $coreReplacements = $env::VIEW_ORKA_CORE_REPLACEMENTS

@@ -16,7 +16,7 @@ namespace Valkyrja\Sms\Provider;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
@@ -26,7 +26,7 @@ use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
 use Vonage\Client\Credentials\CredentialsInterface;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -41,22 +41,6 @@ final class ServiceProvider extends Provider
             CredentialsInterface::class => [self::class, 'publishVonageCredentials'],
             LogMessenger::class         => [self::class, 'publishLogSms'],
             NullMessenger::class        => [self::class, 'publishNullSms'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            MessengerContract::class,
-            VonageMessenger::class,
-            Client::class,
-            CredentialsInterface::class,
-            LogMessenger::class,
-            NullMessenger::class,
         ];
     }
 

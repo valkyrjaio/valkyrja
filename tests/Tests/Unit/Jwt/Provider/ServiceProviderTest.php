@@ -37,13 +37,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullJwt::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(JwtContract::class, ServiceProvider::provides());
-        self::assertContains(FirebaseJwt::class, ServiceProvider::provides());
-        self::assertContains(NullJwt::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

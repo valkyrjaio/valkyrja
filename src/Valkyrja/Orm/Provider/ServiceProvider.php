@@ -17,7 +17,7 @@ use Override;
 use PDO;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\MysqlManager;
@@ -26,7 +26,7 @@ use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Repository\Repository;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -42,23 +42,6 @@ final class ServiceProvider extends Provider
             PDO::class             => [self::class, 'publishPdo'],
             NullManager::class     => [self::class, 'publishNullManager'],
             Repository::class      => [self::class, 'publishRepository'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ManagerContract::class,
-            MysqlManager::class,
-            PgsqlManager::class,
-            SqliteManager::class,
-            PDO::class,
-            NullManager::class,
-            Repository::class,
         ];
     }
 

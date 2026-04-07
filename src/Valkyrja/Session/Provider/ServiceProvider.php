@@ -19,7 +19,7 @@ use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
@@ -43,7 +43,7 @@ use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -68,32 +68,6 @@ final class ServiceProvider extends Provider
             EncryptedHeaderTokenSession::class => [self::class, 'publishEncryptedHeaderTokenSession'],
             LogSession::class                  => [self::class, 'publishLogSession'],
             CookieParams::class                => [self::class, 'publishCookieParams'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            SessionContract::class,
-            PhpSession::class,
-            NullSession::class,
-            CacheSession::class,
-            CookieSession::class,
-            EncryptedCookieSession::class,
-            OptionJwtSession::class,
-            EncryptedOptionJwtSession::class,
-            HeaderJwtSession::class,
-            EncryptedHeaderJwtSession::class,
-            OptionTokenSession::class,
-            EncryptedOptionTokenSession::class,
-            HeaderTokenSession::class,
-            EncryptedHeaderTokenSession::class,
-            LogSession::class,
-            CookieParams::class,
         ];
     }
 

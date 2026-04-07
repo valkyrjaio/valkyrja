@@ -21,7 +21,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributeServiceCollector;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -51,7 +51,7 @@ use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -69,25 +69,6 @@ final class ServiceProvider extends Provider
             ProcessorContract::class         => [self::class, 'publishProcessor'],
             ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
             Data::class                      => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            RouterContract::class,
-            CollectionContract::class,
-            DataFileGeneratorContract::class,
-            MatcherContract::class,
-            UrlContract::class,
-            CollectorContract::class,
-            ProcessorContract::class,
-            ResponseFactoryContract::class,
-            Data::class,
         ];
     }
 

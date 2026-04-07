@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Generator\Abstract;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
 abstract class ProviderFileGenerator extends FileGenerator
@@ -52,7 +52,7 @@ abstract class ProviderFileGenerator extends FileGenerator
         $serviceClassName     = $this->serviceClassName;
         $serviceFullNamespace = $this->serviceFullNamespace;
         $publishMethod        = $this->publishMethod;
-        $providerContract     = Provider::class;
+        $providerContract     = ServiceProviderContract::class;
         $containerContract    = ContainerContract::class;
 
         return <<<PHP
@@ -70,7 +70,7 @@ abstract class ProviderFileGenerator extends FileGenerator
             use $containerContract;
             $imports
 
-            final class $className extends Provider
+            final class $className implements ServiceProviderContract
             {
                 /**
                  * @inheritDoc

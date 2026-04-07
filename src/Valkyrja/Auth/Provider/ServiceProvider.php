@@ -29,11 +29,11 @@ use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -49,23 +49,6 @@ final class ServiceProvider extends Provider
             InMemoryStore::class          => [self::class, 'publishInMemoryStore'],
             NullStore::class              => [self::class, 'publishNullStore'],
             PasswordHasherContract::class => [self::class, 'publishPasswordHasher'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            AuthenticatorContract::class,
-            SessionAuthenticator::class,
-            StoreContract::class,
-            OrmStore::class,
-            InMemoryStore::class,
-            NullStore::class,
-            PasswordHasherContract::class,
         ];
     }
 

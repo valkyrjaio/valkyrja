@@ -39,15 +39,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(Logger::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(LoggerContract::class, ServiceProvider::provides());
-        self::assertContains(PsrLogger::class, ServiceProvider::provides());
-        self::assertContains(NullLogger::class, ServiceProvider::provides());
-        self::assertContains(LoggerInterface::class, ServiceProvider::provides());
-        self::assertContains(Logger::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

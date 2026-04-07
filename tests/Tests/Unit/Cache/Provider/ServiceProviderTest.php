@@ -40,15 +40,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullCache::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(CacheContract::class, ServiceProvider::provides());
-        self::assertContains(RedisCache::class, ServiceProvider::provides());
-        self::assertContains(Client::class, ServiceProvider::provides());
-        self::assertContains(LogCache::class, ServiceProvider::provides());
-        self::assertContains(NullCache::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

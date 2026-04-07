@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
@@ -29,7 +29,7 @@ use Valkyrja\Log\Logger\PsrLogger;
 
 use function date;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -43,21 +43,6 @@ final class ServiceProvider extends Provider
             NullLogger::class      => [self::class, 'publishNullLogger'],
             LoggerInterface::class => [self::class, 'publishLoggerInterface'],
             Logger::class          => [self::class, 'publishMonolog'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            LoggerContract::class,
-            NullLogger::class,
-            PsrLogger::class,
-            LoggerInterface::class,
-            Logger::class,
         ];
     }
 

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
-use Valkyrja\Container\Provider\Contract\ProviderContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 /**
  * Class ProviderClass.
  */
-final class ProviderClass implements ProviderContract
+final class ProviderClass implements ServiceProviderContract
 {
     public static bool $publishCalled = false;
 
@@ -31,15 +31,6 @@ final class ProviderClass implements ProviderContract
         return [
             ProvidedClass::class          => [self::class, 'publish'],
             ProvidedSecondaryClass::class => [self::class, 'publishSecondary'],
-        ];
-    }
-
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ProvidedClass::class,
-            ProvidedSecondaryClass::class,
         ];
     }
 

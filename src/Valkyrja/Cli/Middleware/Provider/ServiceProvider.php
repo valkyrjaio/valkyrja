@@ -35,9 +35,9 @@ use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -52,22 +52,6 @@ final class ServiceProvider extends Provider
             RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
             RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
             ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            InputReceivedHandlerContract::class,
-            RouteDispatchedHandlerContract::class,
-            ThrowableCaughtHandlerContract::class,
-            RouteMatchedHandlerContract::class,
-            RouteNotMatchedHandlerContract::class,
-            ExitedHandlerContract::class,
         ];
     }
 

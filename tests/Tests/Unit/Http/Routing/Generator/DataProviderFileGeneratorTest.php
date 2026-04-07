@@ -65,11 +65,11 @@ final class DataProviderFileGeneratorTest extends TestCase
 
             use Override;
             use Valkyrja\Http\Routing\Data\Data;
-            use Valkyrja\Container\Provider\Abstract\Provider;
+            use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
             use App\Provider\Data\HttpRoutingData;
 
-            final class HttpDataTestRoutingDataProvider extends Provider
+            final class HttpDataTestRoutingDataProvider implements ServiceProviderContract
             {
                 /**
                  * @inheritDoc

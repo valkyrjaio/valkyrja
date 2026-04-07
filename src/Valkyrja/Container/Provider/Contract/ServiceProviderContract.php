@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider\Contract;
 
-interface ProviderContract
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+interface ServiceProviderContract
 {
     /**
      * Any custom publishers for services provided by this provider.
@@ -25,20 +27,13 @@ interface ProviderContract
      *      ]
      *
      * ...
-     *      public static function publishProvidedClass(Container $container): void
+     *      public static function publishProvidedClass(ContainerContract $container): void
      *      {
      *          $container->setSingleton(Provided::class, new Provided());
      *      }
      * </code>
      *
-     * @return array<class-string, callable>
+     * @return array<class-string, callable(ContainerContract):void>
      */
     public static function publishers(): array;
-
-    /**
-     * The services provided by this provider.
-     *
-     * @return class-string[]
-     */
-    public static function provides(): array;
 }

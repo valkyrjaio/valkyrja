@@ -34,11 +34,6 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(GenerateDataCommand::class, CliServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(GenerateDataCommand::class, CliServiceProvider::provides());
-    }
-
     public function testGenerateDataCommand(): void
     {
         $container = $this->container;

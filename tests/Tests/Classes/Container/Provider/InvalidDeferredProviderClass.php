@@ -14,26 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
-use Valkyrja\Container\Provider\Contract\ProviderContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 /**
  * Class InvalidDeferredProviderClass.
  */
-final class InvalidDeferredProviderClass implements ProviderContract
+final class InvalidDeferredProviderClass implements ServiceProviderContract
 {
     #[Override]
     public static function publishers(): array
     {
         return [
             ProvidedSecondaryClass::class => [self::class, 'publishMethodNonExistent'],
-        ];
-    }
-
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ProvidedSecondaryClass::class,
         ];
     }
 }

@@ -41,15 +41,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullClient::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(ClientContract::class, ServiceProvider::provides());
-        self::assertContains(GuzzleClient::class, ServiceProvider::provides());
-        self::assertContains(Client::class, ServiceProvider::provides());
-        self::assertContains(LogClient::class, ServiceProvider::provides());
-        self::assertContains(NullClient::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */
