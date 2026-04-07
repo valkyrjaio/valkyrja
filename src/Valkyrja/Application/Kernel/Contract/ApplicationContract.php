@@ -18,7 +18,7 @@ use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
-use Valkyrja\Http\Routing\Provider\Contract\ProviderContract as HttpProvider;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
 interface ApplicationContract
 {
@@ -63,7 +63,7 @@ interface ApplicationContract
     /**
      * Get all the registered components' http providers.
      *
-     * @return class-string<HttpProvider>[]
+     * @return class-string<HttpRouteProviderContract>[]
      */
     public function getHttpProviders(): array;
 

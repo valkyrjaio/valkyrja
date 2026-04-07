@@ -17,7 +17,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
-use Valkyrja\Http\Routing\Provider\Contract\ProviderContract as HttpProvider;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
 interface ProviderContract
 {
@@ -45,7 +45,7 @@ interface ProviderContract
     /**
      * Get the component's http route providers.
      *
-     * @return class-string<HttpProvider>[]
+     * @return class-string<HttpRouteProviderContract>[]
      */
     public static function getHttpProviders(ApplicationContract $app): array;
 }
