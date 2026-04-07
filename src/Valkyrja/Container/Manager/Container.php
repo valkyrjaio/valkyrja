@@ -87,8 +87,8 @@ class Container implements ContainerContract
             aliases: $this->aliases,
             deferred: $this->deferred,
             deferredCallback: $this->deferredCallback,
-            services: [],
-            singletons: [],
+            services: $this->services,
+            singletons: $this->singletons,
             providers: $this->providers,
         );
     }
