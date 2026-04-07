@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -26,7 +26,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestData';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
+        $data       = new ContainerData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -46,7 +46,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestData';
         $namespace  = 'App';
-        $data       = new Data();
+        $data       = new ContainerData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -64,9 +64,9 @@ final class DataFileGeneratorTest extends TestCase
 
             namespace $namespace;
 
-            use Valkyrja\Container\Data\Data as ValkyrjaData;
+            use Valkyrja\Container\Data\ContainerData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends ContainerData
             {
                 public function __construct()
                 {
@@ -97,7 +97,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'ContainerDataTestData';
-        $data       = new Data();
+        $data       = new ContainerData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -106,7 +106,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = ContainerData::class;
 
         // phpcs:disable
         $expected = <<<PHP

@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collection\Contract;
 
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Data;
 
 interface CollectionContract
 {
     /**
      * Get a data representation of the collection.
      */
-    public function getData(): Data;
+    public function getData(): CliRoutingData;
 
     /**
      * Set data from a data object.
      */
-    public function setFromData(Data $data): void;
+    public function setFromData(CliRoutingData $data): void;
 
     /**
      * Add commands.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
@@ -27,7 +27,7 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            Data::class => [self::class, 'publishData'],
+            CliRoutingData::class => [self::class, 'publishData'],
         ];
     }
 
@@ -38,6 +38,6 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
     {
         $class = 'App\\Provider\\Data\\CliTestCliRoutingData';
 
-        $container->setSingleton(Data::class, new $class());
+        $container->setSingleton(CliRoutingData::class, new $class());
     }
 }

@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Data;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
-readonly class Data
+readonly class ContainerData
 {
     /**
      * @param array<class-string, class-string>                                   $aliases

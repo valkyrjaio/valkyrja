@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Event\Collection;
 use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Tests\Classes\Event\EventClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -73,7 +73,7 @@ final class CollectionTest extends TestCase
             dispatch: new MethodDispatch(self::class, 'test')
         );
 
-        $data = new Data(
+        $data = new EventData(
             events: [EventClass::class => [$listenerName => $listenerName, $listenerName2 => $listenerName2]],
             listeners: [$listenerName => $listener, $listenerName2 => $listener2]
         );
@@ -91,7 +91,7 @@ final class CollectionTest extends TestCase
         self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $collection->getListenersForEvent($event));
         self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $collection->getListenersForEventById($eventId));
 
-        $data2 = new Data(
+        $data2 = new EventData(
             events: [EventClass::class => [$listenerName => $listenerName, $listenerName2 => $listenerName2]],
             listeners: [$listenerName => static fn () => $listener, $listenerName2 => static fn () => $listener2]
         );
@@ -112,7 +112,7 @@ final class CollectionTest extends TestCase
         self::assertArrayHasKey($listenerName2, $collection->getListenersForEvent($event));
         self::assertArrayHasKey($listenerName2, $collection->getListenersForEventById($eventId));
 
-        $data3 = new Data();
+        $data3 = new EventData();
 
         $collection->setFromData($data3);
 

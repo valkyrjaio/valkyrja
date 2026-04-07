@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Generator;
 
 use Override;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Container\Provider\ServiceProvider;
 
@@ -34,8 +34,8 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
             directory: $directory,
             namespace: $namespace,
             className: $className,
-            serviceClassName: 'Data',
-            serviceFullNamespace: Data::class,
+            serviceClassName: 'ContainerData',
+            serviceFullNamespace: ContainerData::class,
             publishMethod: 'publishData',
         );
     }

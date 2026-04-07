@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
@@ -27,7 +27,7 @@ final class CliContainerDataProviderClass implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            Data::class => [self::class, 'publishData'],
+            ContainerData::class => [self::class, 'publishData'],
         ];
     }
 
@@ -38,6 +38,6 @@ final class CliContainerDataProviderClass implements ServiceProviderContract
     {
         $class = 'App\\Provider\\Data\\CliTestContainerData';
 
-        $container->setSingleton(Data::class, new $class());
+        $container->setSingleton(ContainerData::class, new $class());
     }
 }

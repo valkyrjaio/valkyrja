@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Generator;
 
 use Override;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
@@ -30,7 +30,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
+        protected CliRoutingData $data,
         protected string $namespace,
         protected string $className,
     ) {
@@ -56,9 +56,9 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
 
             namespace $namespace;
 
-            use Valkyrja\Cli\Routing\Data\Data as ValkyrjaData;
+            use Valkyrja\Cli\Routing\Data\CliRoutingData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends CliRoutingData
             {
                 public function __construct()
                 {
@@ -77,7 +77,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
     #[Override]
     public function generateClassContents(): string
     {
-        $dataNamespace = Data::class;
+        $dataNamespace = CliRoutingData::class;
 
         $routes = $this->getRoutesAsContent();
 

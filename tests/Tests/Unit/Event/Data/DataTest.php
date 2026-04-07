@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Data;
 
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -23,7 +23,7 @@ final class DataTest extends TestCase
 {
     public function testDefault(): void
     {
-        $data = new Data();
+        $data = new EventData();
 
         self::assertEmpty($data->events);
         self::assertEmpty($data->listeners);

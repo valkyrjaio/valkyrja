@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Generator;
 
 use Override;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
@@ -30,7 +30,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
+        protected EventData $data,
         protected string $namespace,
         protected string $className,
     ) {
@@ -56,9 +56,9 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
 
             namespace $namespace;
 
-            use Valkyrja\Event\Data\Data as ValkyrjaData;
+            use Valkyrja\Event\Data\EventData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends EventData
             {
                 public function __construct()
                 {
@@ -77,7 +77,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
     #[Override]
     public function generateClassContents(): string
     {
-        $dataNamespace = Data::class;
+        $dataNamespace = EventData::class;
 
         $contents = $this->generateClassNamedArguments();
 

@@ -28,7 +28,7 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -57,7 +57,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CliRoutingData::class, ServiceProvider::publishers());
     }
 
     /**
@@ -108,7 +108,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithCustomDataProvided(): void
     {
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
-        $this->container->setSingleton(Data::class, new Data());
+        $this->container->setSingleton(CliRoutingData::class, new CliRoutingData());
         $application->method('getDebugMode')->willReturn(false);
 
         $callback = ServiceProvider::publishers()[CollectionContract::class];
@@ -122,7 +122,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $name = 'version';
-        $data = new Data(
+        $data = new CliRoutingData(
             routes: [
                 $name => new Route($name, 'description', new MethodDispatch('class', 'method')),
             ]
@@ -130,7 +130,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
         $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
-        $container->setSingleton(Data::class, $data);
+        $container->setSingleton(CliRoutingData::class, $data);
         $application->method('getDebugMode')->willReturn(false);
 
         self::assertFalse($container->has(CollectionContract::class));

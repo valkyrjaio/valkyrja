@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Throwable;
 use Valkyrja\Container\Contract\ServiceContract;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
@@ -67,7 +67,7 @@ class Container implements ContainerContract
     protected array $singletons = [];
 
     public function __construct(
-        protected Data $data = new Data()
+        protected ContainerData $data = new ContainerData()
     ) {
         $this->aliases          = $data->aliases;
         $this->deferred         = $data->deferred;
@@ -81,9 +81,9 @@ class Container implements ContainerContract
      * @inheritDoc
      */
     #[Override]
-    public function getData(): Data
+    public function getData(): ContainerData
     {
-        return new Data(
+        return new ContainerData(
             aliases: $this->aliases,
             deferred: $this->deferred,
             deferredCallback: $this->deferredCallback,
@@ -97,7 +97,7 @@ class Container implements ContainerContract
      * @inheritDoc
      */
     #[Override]
-    public function setFromData(Data $data): void
+    public function setFromData(ContainerData $data): void
     {
         $this->aliases          = array_merge($this->aliases, $data->aliases);
         $this->deferred         = array_merge($this->deferred, $data->deferred);

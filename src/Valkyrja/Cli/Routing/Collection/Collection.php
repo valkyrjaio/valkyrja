@@ -16,8 +16,8 @@ namespace Valkyrja\Cli\Routing\Collection;
 use Closure;
 use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function is_callable;
@@ -31,9 +31,9 @@ class Collection implements CollectionContract
      * Get a data representation of the collection.
      */
     #[Override]
-    public function getData(): Data
+    public function getData(): CliRoutingData
     {
-        return new Data(
+        return new CliRoutingData(
             routes: $this->routes,
         );
     }
@@ -42,7 +42,7 @@ class Collection implements CollectionContract
      * Set data from a data object.
      */
     #[Override]
-    public function setFromData(Data $data): void
+    public function setFromData(CliRoutingData $data): void
     {
         $this->routes = $data->routes;
     }

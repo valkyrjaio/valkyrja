@@ -27,7 +27,7 @@ use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
@@ -49,7 +49,7 @@ final class ServiceProvider implements ServiceProviderContract
             DispatcherContract::class        => [self::class, 'publishDispatcher'],
             CollectionContract::class        => [self::class, 'publishCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                      => [self::class, 'publishData'],
+            EventData::class                 => [self::class, 'publishData'],
         ];
     }
 
@@ -107,7 +107,7 @@ final class ServiceProvider implements ServiceProviderContract
             return;
         }
 
-        $data = $container->getSingleton(Data::class);
+        $data = $container->getSingleton(EventData::class);
 
         $collection->setFromData($data);
     }
@@ -124,7 +124,7 @@ final class ServiceProvider implements ServiceProviderContract
         $namespace = $config->dataNamespace;
         /** @var non-empty-string $className */
         $className = $env::EVENT_DATA_CLASS_NAME
-            ?? 'EventData';
+            ?? 'AppEventData';
 
         $directory = Directory::srcPath($dataPath);
 
@@ -183,6 +183,6 @@ final class ServiceProvider implements ServiceProviderContract
             $collection->addListener($listener);
         }
 
-        $container->setSingleton(Data::class, $collection->getData());
+        $container->setSingleton(EventData::class, $collection->getData());
     }
 }

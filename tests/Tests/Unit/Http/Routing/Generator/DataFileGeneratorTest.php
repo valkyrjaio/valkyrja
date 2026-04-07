@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
@@ -28,7 +28,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'HttpDataTestRoutingData';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
+        $data       = new HttpRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -48,7 +48,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'HttpDataTestRoutingData';
         $namespace  = 'App';
-        $data       = new Data();
+        $data       = new HttpRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -66,9 +66,9 @@ final class DataFileGeneratorTest extends TestCase
 
             namespace $namespace;
 
-            use Valkyrja\Http\Routing\Data\Data as ValkyrjaData;
+            use Valkyrja\Http\Routing\Data\HttpRoutingData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends HttpRoutingData
             {
                 public function __construct()
                 {
@@ -96,7 +96,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'HttpDataTestRoutingData';
-        $data       = new Data();
+        $data       = new HttpRoutingData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -105,7 +105,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = HttpRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -129,7 +129,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRoute(): void
     {
-        $data      = new Data(
+        $data      = new HttpRoutingData(
             routes: [
                 'route' => new Route('/', 'route', new MethodDispatch('class', 'method')),
             ]
@@ -144,7 +144,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = HttpRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -208,7 +208,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRouteClosure(): void
     {
-        $data      = new Data(
+        $data      = new HttpRoutingData(
             routes: [
                 'route' => static fn (): Route => new Route('/', 'route', new MethodDispatch('class', 'method')),
             ]
@@ -223,7 +223,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = HttpRoutingData::class;
 
         // phpcs:disable
         $expected = <<<PHP

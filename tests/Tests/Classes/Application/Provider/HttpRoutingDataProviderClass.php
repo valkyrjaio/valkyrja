@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 
 final class HttpRoutingDataProviderClass implements ServiceProviderContract
 {
@@ -27,7 +27,7 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            Data::class => [self::class, 'publishData'],
+            HttpRoutingData::class => [self::class, 'publishData'],
         ];
     }
 
@@ -38,6 +38,6 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
     {
         $class = 'App\\Provider\\Data\\HttpTestHttpRoutingData';
 
-        $container->setSingleton(Data::class, new $class());
+        $container->setSingleton(HttpRoutingData::class, new $class());
     }
 }

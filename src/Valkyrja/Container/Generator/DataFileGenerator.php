@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Generator;
 
 use Override;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
@@ -27,7 +27,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
      */
     public function __construct(
         protected string $directory,
-        protected Data $data,
+        protected ContainerData $data,
         protected string $namespace,
         protected string $className,
     ) {
@@ -53,9 +53,9 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
 
             namespace $namespace;
 
-            use Valkyrja\Container\Data\Data as ValkyrjaData;
+            use Valkyrja\Container\Data\ContainerData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends ContainerData
             {
                 public function __construct()
                 {
@@ -74,7 +74,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
     #[Override]
     public function generateClassContents(): string
     {
-        $dataNamespace = Data::class;
+        $dataNamespace = ContainerData::class;
 
         $contents = $this->generateClassNamedArguments();
 

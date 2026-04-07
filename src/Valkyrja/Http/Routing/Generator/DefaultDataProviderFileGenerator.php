@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Generator;
 
 use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Provider\ServiceProvider;
 
 class DefaultDataProviderFileGenerator extends ProviderFileGenerator
@@ -34,8 +34,8 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
             directory: $directory,
             namespace: $namespace,
             className: $className,
-            serviceClassName: 'Data',
-            serviceFullNamespace: Data::class,
+            serviceClassName: 'HttpRoutingData',
+            serviceFullNamespace: HttpRoutingData::class,
             publishMethod: 'publishData',
         );
     }

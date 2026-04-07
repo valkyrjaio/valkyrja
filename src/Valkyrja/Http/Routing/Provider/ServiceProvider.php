@@ -34,7 +34,7 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
@@ -68,7 +68,7 @@ final class ServiceProvider implements ServiceProviderContract
             CollectorContract::class         => [self::class, 'publishAttributesCollector'],
             ProcessorContract::class         => [self::class, 'publishProcessor'],
             ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
-            Data::class                      => [self::class, 'publishData'],
+            HttpRoutingData::class           => [self::class, 'publishData'],
         ];
     }
 
@@ -123,7 +123,7 @@ final class ServiceProvider implements ServiceProviderContract
             return;
         }
 
-        $data = $container->getSingleton(Data::class);
+        $data = $container->getSingleton(HttpRoutingData::class);
 
         $collection->setFromData($data);
     }
@@ -140,7 +140,7 @@ final class ServiceProvider implements ServiceProviderContract
         $namespace = $config->dataNamespace;
         /** @var non-empty-string $className */
         $className = $env::HTTP_ROUTING_DATA_CLASS_NAME
-            ?? 'HttpRoutingData';
+            ?? 'AppHttpRoutingData';
 
         $directory = Directory::srcPath($dataPath);
 
@@ -287,6 +287,6 @@ final class ServiceProvider implements ServiceProviderContract
             );
         }
 
-        $container->setSingleton(Data::class, $collection->getData());
+        $container->setSingleton(HttpRoutingData::class, $collection->getData());
     }
 }

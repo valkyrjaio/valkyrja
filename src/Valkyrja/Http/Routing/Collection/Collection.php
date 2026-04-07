@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
@@ -69,9 +69,9 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function getData(): Data
+    public function getData(): HttpRoutingData
     {
-        return new Data(
+        return new HttpRoutingData(
             routes: array_map(
                 static fn (RouteContract|Closure $route): RouteContract => is_callable($route)
                     ? $route()
@@ -88,7 +88,7 @@ class Collection implements CollectionContract
      * @inheritDoc
      */
     #[Override]
-    public function setFromData(Data $data): void
+    public function setFromData(HttpRoutingData $data): void
     {
         $this->routes       = $data->routes;
         $this->paths        = $data->paths;

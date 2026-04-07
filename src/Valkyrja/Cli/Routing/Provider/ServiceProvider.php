@@ -29,8 +29,8 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
-use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
@@ -55,7 +55,7 @@ final class ServiceProvider implements ServiceProviderContract
             RouterContract::class            => [self::class, 'publishRouter'],
             CollectionContract::class        => [self::class, 'publishCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                      => [self::class, 'publishData'],
+            CliRoutingData::class            => [self::class, 'publishData'],
         ];
     }
 
@@ -126,7 +126,7 @@ final class ServiceProvider implements ServiceProviderContract
             return;
         }
 
-        $data = $container->getSingleton(Data::class);
+        $data = $container->getSingleton(CliRoutingData::class);
 
         $collection->setFromData($data);
     }
@@ -140,7 +140,7 @@ final class ServiceProvider implements ServiceProviderContract
 
         $dataPath  = $config->dataPath;
         $namespace = $config->dataNamespace;
-        $className = 'CliRoutingData';
+        $className = 'AppCliRoutingData';
 
         if ($config instanceof ConfigContract) {
             $className = $config->dataClassName;
@@ -199,6 +199,6 @@ final class ServiceProvider implements ServiceProviderContract
 
         $collection->add(...$routes);
 
-        $container->setSingleton(Data::class, $collection->getData());
+        $container->setSingleton(CliRoutingData::class, $collection->getData());
     }
 }

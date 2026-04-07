@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Generator;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
@@ -28,7 +28,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'EventDataTestData';
         $filePath   = "$directory/$className.php";
-        $data       = new Data();
+        $data       = new EventData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -48,7 +48,7 @@ final class DataFileGeneratorTest extends TestCase
         $directory  = Directory::storagePath();
         $className  = 'EventDataTestData';
         $namespace  = 'App';
-        $data       = new Data();
+        $data       = new EventData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -66,9 +66,9 @@ final class DataFileGeneratorTest extends TestCase
 
             namespace $namespace;
 
-            use Valkyrja\Event\Data\Data as ValkyrjaData;
+            use Valkyrja\Event\Data\EventData;
 
-            final readonly class $className extends ValkyrjaData
+            final readonly class $className extends EventData
             {
                 public function __construct()
                 {
@@ -92,7 +92,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $directory  = Directory::storagePath();
         $className  = 'EventDataTestData';
-        $data       = new Data();
+        $data       = new EventData();
         $generator  = new DataFileGenerator(
             directory: $directory,
             data: $data,
@@ -101,7 +101,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = EventData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -121,7 +121,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRoute(): void
     {
-        $data      = new Data(
+        $data      = new EventData(
             listeners: [
                 'name' => new Listener(
                     eventId: 'eventId',
@@ -140,7 +140,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = EventData::class;
 
         // phpcs:disable
         $expected = <<<PHP
@@ -176,7 +176,7 @@ final class DataFileGeneratorTest extends TestCase
 
     public function testGenerateClassContentsWithRouteClosure(): void
     {
-        $data      = new Data(
+        $data      = new EventData(
             listeners: [
                 'name' => static fn (): Listener => new Listener(
                     eventId: 'eventId',
@@ -195,7 +195,7 @@ final class DataFileGeneratorTest extends TestCase
         );
         $contents  = $generator->generateClassContents();
 
-        $dataNamespace = Data::class;
+        $dataNamespace = EventData::class;
 
         // phpcs:disable
         $expected = <<<PHP

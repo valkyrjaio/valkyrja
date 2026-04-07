@@ -18,7 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -34,7 +34,7 @@ final class ServiceProvider implements ServiceProviderContract
     {
         return [
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            Data::class                      => [self::class, 'publishData'],
+            ContainerData::class             => [self::class, 'publishData'],
         ];
     }
 
@@ -50,7 +50,7 @@ final class ServiceProvider implements ServiceProviderContract
         $namespace = $config->dataNamespace;
         /** @var non-empty-string $className */
         $className = $env::CONTAINER_DATA_CLASS_NAME
-            ?? 'ContainerData';
+            ?? 'AppContainerData';
 
         $directory = Directory::srcPath($dataPath);
 
@@ -78,6 +78,6 @@ final class ServiceProvider implements ServiceProviderContract
             $container->register($provider);
         }
 
-        $container->setSingleton(Data::class, $container->getData());
+        $container->setSingleton(ContainerData::class, $container->getData());
     }
 }

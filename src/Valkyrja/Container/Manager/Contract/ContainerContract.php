@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Manager\Contract;
 use Override;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Contract\ServiceContract;
-use Valkyrja\Container\Data\Data;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 
 interface ContainerContract extends ContainerInterface, ProvidersAwareContract
@@ -24,12 +24,12 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     /**
      * Get a data representation of the container.
      */
-    public function getData(): Data;
+    public function getData(): ContainerData;
 
     /**
      * Set data from a data object.
      */
-    public function setFromData(Data $data): void;
+    public function setFromData(ContainerData $data): void;
 
     /**
      * Check whether a given service exists.

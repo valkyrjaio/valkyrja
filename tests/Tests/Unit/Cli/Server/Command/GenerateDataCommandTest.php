@@ -55,10 +55,10 @@ final class GenerateDataCommandTest extends TestCase
         $output        = new PlainOutput();
         $outputFactory = $this->createMock(OutputFactoryContract::class);
 
-        $containerDataPath = Directory::srcPath($config->dataPath . '/ContainerData.php');
-        $eventDataPath     = Directory::srcPath($config->dataPath . '/EventData.php');
-        $cliDataPath       = Directory::srcPath($config->dataPath . '/CliRoutingData.php');
-        $httpDataPath      = Directory::srcPath($config->dataPath . '/HttpRoutingData.php');
+        $containerDataPath = Directory::srcPath($config->dataPath . '/AppContainerData.php');
+        $eventDataPath     = Directory::srcPath($config->dataPath . '/AppEventData.php');
+        $cliDataPath       = Directory::srcPath($config->dataPath . '/AppCliRoutingData.php');
+        $httpDataPath      = Directory::srcPath($config->dataPath . '/AppHttpRoutingData.php');
 
         @unlink($containerDataPath);
         @unlink($eventDataPath);
@@ -230,10 +230,10 @@ final class GenerateDataCommandTest extends TestCase
         $output        = new PlainOutput();
         $outputFactory = $this->createMock(OutputFactoryContract::class);
 
-        $containerDataPath = Directory::srcPath($config->dataPath . '/ContainerData.php');
-        $eventDataPath     = Directory::srcPath($config->dataPath . '/EventData.php');
-        $cliDataPath       = Directory::srcPath($config->dataPath . '/CliRoutingData.php');
-        $httpDataPath      = Directory::srcPath($config->dataPath . '/HttpRoutingData.php');
+        $containerDataPath = Directory::srcPath($config->dataPath . '/AppContainerData.php');
+        $eventDataPath     = Directory::srcPath($config->dataPath . '/AppEventData.php');
+        $cliDataPath       = Directory::srcPath($config->dataPath . '/AppCliRoutingData.php');
+        $httpDataPath      = Directory::srcPath($config->dataPath . '/AppHttpRoutingData.php');
 
         @unlink($containerDataPath);
         @unlink($eventDataPath);
