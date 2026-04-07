@@ -21,7 +21,7 @@ use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
@@ -29,7 +29,7 @@ use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Mail\Mailer\PhpMailer;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -46,24 +46,6 @@ final class ServiceProvider extends Provider
             PHPMailerClient::class        => [self::class, 'publishPhpMailerClient'],
             LogMailer::class              => [self::class, 'publishLogMailer'],
             NullMailer::class             => [self::class, 'publishNullMailer'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            MailerContract::class,
-            MailgunMailer::class,
-            Mailgun::class,
-            HttpClientConfigurator::class,
-            PhpMailer::class,
-            PHPMailerClient::class,
-            LogMailer::class,
-            NullMailer::class,
         ];
     }
 

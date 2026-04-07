@@ -19,7 +19,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function array_map;
@@ -30,7 +30,7 @@ use function class_exists;
  */
 abstract class ServiceProviderTestCase extends TestCase
 {
-    /** @var class-string<Provider> */
+    /** @var class-string<ServiceProviderContract> */
     protected static string $provider;
 
     protected Container $container;
@@ -42,7 +42,7 @@ abstract class ServiceProviderTestCase extends TestCase
 
     public static function providesDataProvider(): array
     {
-        return array_map(static fn ($item) => [$item], static::getProvides());
+        return array_map(static fn ($item) => [$item], array_keys(static::getPublishers()));
     }
 
     protected static function getPublishers(): array

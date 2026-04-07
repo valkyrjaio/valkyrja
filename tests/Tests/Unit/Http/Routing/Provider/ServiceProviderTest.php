@@ -77,19 +77,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(Data::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(RouterContract::class, ServiceProvider::provides());
-        self::assertContains(CollectionContract::class, ServiceProvider::provides());
-        self::assertContains(MatcherContract::class, ServiceProvider::provides());
-        self::assertContains(UrlContract::class, ServiceProvider::provides());
-        self::assertContains(CollectorContract::class, ServiceProvider::provides());
-        self::assertContains(ProcessorContract::class, ServiceProvider::provides());
-        self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
-        self::assertContains(DataFileGeneratorContract::class, ServiceProvider::provides());
-        self::assertContains(Data::class, ServiceProvider::provides());
-    }
-
     public function testPublishRouter(): void
     {
         $container = $this->container;

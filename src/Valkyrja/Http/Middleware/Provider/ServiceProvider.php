@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Middleware\Provider;
 use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Data\Contract\ConfigContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -36,7 +36,7 @@ use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddlewar
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -52,23 +52,6 @@ final class ServiceProvider extends Provider
             RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
             SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
             TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            RequestReceivedHandlerContract::class,
-            RouteDispatchedHandlerContract::class,
-            ThrowableCaughtHandlerContract::class,
-            RouteMatchedHandlerContract::class,
-            RouteNotMatchedHandlerContract::class,
-            SendingResponseHandlerContract::class,
-            TerminatedHandlerContract::class,
         ];
     }
 

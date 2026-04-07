@@ -19,13 +19,13 @@ use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -37,19 +37,6 @@ final class ServiceProvider extends Provider
             JwtContract::class => [self::class, 'publishJwt'],
             FirebaseJwt::class => [self::class, 'publishFirebaseJwt'],
             NullJwt::class     => [self::class, 'publishNullJwt'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            JwtContract::class,
-            FirebaseJwt::class,
-            NullJwt::class,
         ];
     }
 

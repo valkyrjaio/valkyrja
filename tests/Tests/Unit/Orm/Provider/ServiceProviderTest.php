@@ -46,17 +46,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(Repository::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(ManagerContract::class, ServiceProvider::provides());
-        self::assertContains(MysqlManager::class, ServiceProvider::provides());
-        self::assertContains(PgsqlManager::class, ServiceProvider::provides());
-        self::assertContains(SqliteManager::class, ServiceProvider::provides());
-        self::assertContains(PDO::class, ServiceProvider::provides());
-        self::assertContains(NullManager::class, ServiceProvider::provides());
-        self::assertContains(Repository::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

@@ -18,10 +18,10 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 
-final class CliServiceProvider extends Provider
+final class CliServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -31,17 +31,6 @@ final class CliServiceProvider extends Provider
     {
         return [
             GenerateDataCommand::class => [self::class, 'publishGenerateDataCommand'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            GenerateDataCommand::class,
         ];
     }
 

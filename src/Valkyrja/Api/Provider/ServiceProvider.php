@@ -18,10 +18,10 @@ use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -31,17 +31,6 @@ final class ServiceProvider extends Provider
     {
         return [
             ApiContract::class => [self::class, 'publishApi'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ApiContract::class,
         ];
     }
 

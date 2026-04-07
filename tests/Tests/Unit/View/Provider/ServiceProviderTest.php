@@ -48,16 +48,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(RendererContract::class, ServiceProvider::provides());
-        self::assertContains(PhpRenderer::class, ServiceProvider::provides());
-        self::assertContains(OrkaRenderer::class, ServiceProvider::provides());
-        self::assertContains(TwigRenderer::class, ServiceProvider::provides());
-        self::assertContains(Environment::class, ServiceProvider::provides());
-        self::assertContains(ResponseFactoryContract::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

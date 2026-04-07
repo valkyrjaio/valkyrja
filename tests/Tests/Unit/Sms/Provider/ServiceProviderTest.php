@@ -43,16 +43,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullMessenger::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(MessengerContract::class, ServiceProvider::provides());
-        self::assertContains(VonageMessenger::class, ServiceProvider::provides());
-        self::assertContains(Client::class, ServiceProvider::provides());
-        self::assertContains(CredentialsInterface::class, ServiceProvider::provides());
-        self::assertContains(LogMessenger::class, ServiceProvider::provides());
-        self::assertContains(NullMessenger::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

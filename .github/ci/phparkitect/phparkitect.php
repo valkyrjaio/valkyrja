@@ -16,6 +16,7 @@ use Arkitect\CLI\Config;
 use Arkitect\Expression\ForClasses\Extend;
 use Arkitect\Expression\ForClasses\HaveAttribute;
 use Arkitect\Expression\ForClasses\HaveNameMatching;
+use Arkitect\Expression\ForClasses\Implement;
 use Arkitect\Expression\ForClasses\IsAbstract;
 use Arkitect\Expression\ForClasses\IsEnum;
 use Arkitect\Expression\ForClasses\IsFinal;
@@ -32,7 +33,7 @@ use Arkitect\Rules\Rule;
 use Valkyrja\Application\Provider\Abstract\Provider as ComponentProvider;
 use Valkyrja\Arkitect\Expression\ForClasses\NotHaveAttribute;
 use Valkyrja\Cli\Routing\Provider\Abstract\Provider as CliProvider;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Abstract\Provider as EventProvider;
 use Valkyrja\Http\Routing\Provider\Abstract\Provider as HttpProvider;
 use Valkyrja\Orm\Entity\Abstract\Entity;
@@ -86,12 +87,12 @@ return static function (Config $config): void {
         ->because('All constants should be final');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(Provider::class))
+        ->that(new Implement(ServiceProviderContract::class))
         ->should(new HaveNameMatching('*ServiceProvider'))
         ->because('All service providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
-        ->that(new Extend(Provider::class))
+        ->that(new Implement(ServiceProviderContract::class))
         ->andThat(new NotHaveNameMatching('*Contract'))
         ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
         ->because('All service providers should exist in an appropriate namespace');

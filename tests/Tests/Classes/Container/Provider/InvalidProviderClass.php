@@ -14,21 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
-use Valkyrja\Container\Provider\Contract\ProviderContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
-final class InvalidProviderClass implements ProviderContract
+final class InvalidProviderClass implements ServiceProviderContract
 {
     #[Override]
     public static function publishers(): array
     {
         return [];
-    }
-
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ProvidedClass::class,
-        ];
     }
 }

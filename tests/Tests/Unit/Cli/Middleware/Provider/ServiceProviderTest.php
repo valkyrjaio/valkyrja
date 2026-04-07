@@ -49,16 +49,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ExitedHandlerContract::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(InputReceivedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(ThrowableCaughtHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(RouteMatchedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(RouteNotMatchedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(RouteDispatchedHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(ExitedHandlerContract::class, ServiceProvider::provides());
-    }
-
     public function testPublishInputReceivedHandler(): void
     {
         $callback = ServiceProvider::publishers()[InputReceivedHandlerContract::class];

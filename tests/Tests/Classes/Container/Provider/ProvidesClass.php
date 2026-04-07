@@ -15,21 +15,15 @@ namespace Valkyrja\Tests\Classes\Container\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 /**
  * Testable Provider/Provides Trait class.
  */
-final class ProvidesClass extends Provider
+final class ProvidesClass implements ServiceProviderContract
 {
     #[Override]
     public static function publishers(): array
-    {
-        return [];
-    }
-
-    #[Override]
-    public static function provides(): array
     {
         return [];
     }

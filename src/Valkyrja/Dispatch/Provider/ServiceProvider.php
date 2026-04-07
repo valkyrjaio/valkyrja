@@ -15,11 +15,11 @@ namespace Valkyrja\Dispatch\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -29,17 +29,6 @@ final class ServiceProvider extends Provider
     {
         return [
             DispatcherContract::class => [self::class, 'publishDispatcher'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            DispatcherContract::class,
         ];
     }
 

@@ -28,11 +28,6 @@ final class ProvidesTest extends TestCase
         self::assertEmpty(ProvidesClass::publishers());
     }
 
-    public function testProvides(): void
-    {
-        self::assertEmpty(ProvidesClass::provides());
-    }
-
     public function testPublish(): void
     {
         $container = new Container();

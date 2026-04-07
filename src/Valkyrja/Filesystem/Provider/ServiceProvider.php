@@ -21,7 +21,7 @@ use Override;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
@@ -29,7 +29,7 @@ use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -46,24 +46,6 @@ final class ServiceProvider extends Provider
             AwsS3V3Adapter::class           => [self::class, 'publishFlysystemAwsS3Adapter'],
             InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
             NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            FilesystemContract::class,
-            FlysystemFilesystem::class,
-            LocalFlysystemFilesystem::class,
-            LocalFilesystemAdapter::class,
-            S3FlysystemFilesystem::class,
-            AwsS3V3Adapter::class,
-            InMemoryFilesystem::class,
-            NullFilesystem::class,
         ];
     }
 

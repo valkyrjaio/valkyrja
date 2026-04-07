@@ -18,7 +18,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
@@ -36,7 +36,7 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -52,23 +52,6 @@ final class ServiceProvider extends Provider
             ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
             ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
             CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            RequestHandlerContract::class,
-            LogThrowableCaughtMiddleware::class,
-            ViewThrowableCaughtMiddleware::class,
-            RequestStructMiddleware::class,
-            ResponseStructMiddleware::class,
-            ViewRouteNotMatchedMiddleware::class,
-            CacheResponseMiddleware::class,
         ];
     }
 

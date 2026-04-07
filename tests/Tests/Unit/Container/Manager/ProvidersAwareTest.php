@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use Valkyrja\Tests\Classes\Container\Manager\ProvidersAwareClass;
 use Valkyrja\Tests\Classes\Container\Provider\DeferredProviderClass;
 use Valkyrja\Tests\Classes\Container\Provider\InvalidDeferredProviderClass;
-use Valkyrja\Tests\Classes\Container\Provider\InvalidProviderClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProviderClass;
@@ -135,14 +134,5 @@ final class ProvidersAwareTest extends TestCase
         $providersAware = new ProvidersAwareClass();
 
         $providersAware->register(InvalidDeferredProviderClass::class);
-    }
-
-    public function testRegisterDeferredMissingPublishersEntry(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $providersAware = new ProvidersAwareClass();
-
-        $providersAware->register(InvalidProviderClass::class);
     }
 }

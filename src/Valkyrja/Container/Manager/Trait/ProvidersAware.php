@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Trait;
 
-use Valkyrja\Container\Provider\Contract\ProviderContract;
-use Valkyrja\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
 
@@ -44,21 +44,21 @@ trait ProvidersAware
     /**
      * The registered providers.
      *
-     * @var array<class-string<ProviderContract>, bool>
+     * @var array<class-string<ServiceProviderContract>, bool>
      */
     protected array $registered = [];
 
     /**
      * The providers.
      *
-     * @var class-string<ProviderContract>[]
+     * @var class-string<ServiceProviderContract>[]
      */
     protected array $providers = [];
 
     /**
      * @inheritDoc
      *
-     * @param class-string<ProviderContract> $provider The provider
+     * @param class-string<ServiceProviderContract> $provider The provider
      */
     public function register(string $provider): void
     {
@@ -69,12 +69,9 @@ trait ProvidersAware
 
         $this->providers[] = $provider;
 
-        /** @var class-string<ProviderContract> $providerClass */
-        $providerClass = $provider;
-
         // If the service provider is deferred
         // and its defined what services it provides
-        $this->registerDeferred($provider, ...$providerClass::provides());
+        $this->registerDeferred($provider);
     }
 
     /**
@@ -101,7 +98,7 @@ trait ProvidersAware
     /**
      * @inheritDoc
      *
-     * @param class-string<ProviderContract> $provider The provider
+     * @param class-string<ServiceProviderContract> $provider The provider
      */
     public function isRegistered(string $provider): bool
     {
@@ -150,26 +147,23 @@ trait ProvidersAware
     /**
      * Register a deferred provider.
      *
-     * @param class-string<ProviderContract> $provider    The provider
-     * @param class-string                   ...$provides The provided items
+     * @param class-string<ServiceProviderContract> $provider The provider
      */
-    protected function registerDeferred(string $provider, string ...$provides): void
+    protected function registerDeferred(string $provider): void
     {
-        /** @var class-string<ProviderContract> $providerClass */
-        $providerClass   = $provider;
-        $publishCallback = $providerClass::publishers();
+        /** @var class-string<ServiceProviderContract> $providerClass */
+        $providerClass    = $provider;
+        $publishCallbacks = $providerClass::publishers();
 
         // Add the services to the service providers list
-        foreach ($provides as $provided) {
+        foreach ($publishCallbacks as $provided => $publishCallback) {
             $this->deferred[$provided] = $provider;
-            $callable                  = $publishCallback[$provided]
-                ?? null;
 
-            if (! is_callable($callable)) {
+            if (! is_callable($publishCallback)) {
                 throw new InvalidArgumentException("$provided should have a valid callable");
             }
 
-            $this->deferredCallback[$provided] = $callable;
+            $this->deferredCallback[$provided] = $publishCallback;
         }
 
         // The provider is now registered

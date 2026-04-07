@@ -193,7 +193,6 @@ class Container implements ContainerContract
     #[Override]
     public function setSingleton(string $id, object $singleton): static
     {
-        $this->singletons[$id] = $id;
         $this->instances[$id]  = $singleton;
         $this->published[$id]  = true;
 
@@ -241,7 +240,7 @@ class Container implements ContainerContract
     #[Override]
     public function isSingleton(string $id): bool
     {
-        return isset($this->singletons[$id]);
+        return isset($this->singletons[$id]) || isset($this->instances[$id]);
     }
 
     /**

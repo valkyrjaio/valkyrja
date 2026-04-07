@@ -20,9 +20,9 @@ use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -33,18 +33,6 @@ final class ServiceProvider extends Provider
         return [
             ConfigContract::class        => [self::class, 'publishConfig'],
             OutputFactoryContract::class => [self::class, 'publishOutputFactory'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ConfigContract::class,
-            OutputFactoryContract::class,
         ];
     }
 

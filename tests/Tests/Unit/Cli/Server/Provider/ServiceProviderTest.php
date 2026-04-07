@@ -69,22 +69,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CheckCommandForTypoMiddleware::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(InputHandlerContract::class, ServiceProvider::provides());
-        self::assertContains(HelpCommand::class, ServiceProvider::provides());
-        self::assertContains(ListBashCommand::class, ServiceProvider::provides());
-        self::assertContains(ListCommand::class, ServiceProvider::provides());
-        self::assertContains(VersionCommand::class, ServiceProvider::provides());
-        self::assertContains(GenerateDataCommand::class, ServiceProvider::provides());
-        self::assertContains(LogThrowableCaughtMiddleware::class, ServiceProvider::provides());
-        self::assertContains(OutputThrowableCaughtMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckForHelpOptionsMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckForVersionOptionsMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::provides());
-        self::assertContains(CheckCommandForTypoMiddleware::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

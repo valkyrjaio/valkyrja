@@ -46,18 +46,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(NullMailer::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(MailerContract::class, ServiceProvider::provides());
-        self::assertContains(MailgunMailer::class, ServiceProvider::provides());
-        self::assertContains(Mailgun::class, ServiceProvider::provides());
-        self::assertContains(HttpClientConfigurator::class, ServiceProvider::provides());
-        self::assertContains(PhpMailer::class, ServiceProvider::provides());
-        self::assertContains(PHPMailerClient::class, ServiceProvider::provides());
-        self::assertContains(LogMailer::class, ServiceProvider::provides());
-        self::assertContains(NullMailer::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

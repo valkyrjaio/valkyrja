@@ -33,11 +33,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
     }
 
-    public function testExpectedProvides(): void
-    {
-        self::assertContains(CollectorContract::class, ServiceProvider::provides());
-    }
-
     /**
      * @throws Exception
      */

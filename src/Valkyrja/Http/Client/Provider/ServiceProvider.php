@@ -17,7 +17,7 @@ use GuzzleHttp\Client;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Abstract\Provider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
@@ -25,7 +25,7 @@ use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-final class ServiceProvider extends Provider
+final class ServiceProvider implements ServiceProviderContract
 {
     /**
      * @inheritDoc
@@ -39,21 +39,6 @@ final class ServiceProvider extends Provider
             Client::class         => [self::class, 'publishGuzzle'],
             LogClient::class      => [self::class, 'publishLogClient'],
             NullClient::class     => [self::class, 'publishNullClient'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function provides(): array
-    {
-        return [
-            ClientContract::class,
-            GuzzleClient::class,
-            Client::class,
-            LogClient::class,
-            NullClient::class,
         ];
     }
 
