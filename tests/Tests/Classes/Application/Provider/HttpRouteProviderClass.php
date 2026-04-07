@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Http\Routing\Provider\Abstract\Provider;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 use Valkyrja\Tests\Functional\Application\Entry\HttpTest;
 
-final class HttpRouteProviderClass extends Provider
+final class HttpRouteProviderClass implements HttpRouteProviderContract
 {
     public static bool $called = false;
 
@@ -32,5 +32,14 @@ final class HttpRouteProviderClass extends Provider
         return [
             HttpTest::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }

@@ -45,7 +45,7 @@ use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
-use Valkyrja\Http\Routing\Provider\Contract\ProviderContract;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceCollector;
@@ -256,7 +256,7 @@ final class ServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var ProviderContract $provider */
+        /** @var HttpRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,
