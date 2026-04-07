@@ -16,9 +16,9 @@ namespace Valkyrja\Application\Provider;
 use Override;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 
-class CliRouteProvider extends Provider
+class CliRouteProvider implements CliRouteProviderContract
 {
     /**
      * @inheritDoc
@@ -30,5 +30,14 @@ class CliRouteProvider extends Provider
             CacheCommand::class,
             ClearCacheCommand::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }

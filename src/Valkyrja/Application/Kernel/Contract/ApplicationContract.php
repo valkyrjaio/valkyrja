@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Kernel\Contract;
 
 use Valkyrja\Application\Provider\Contract\ProviderContract;
-use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract as CliProvider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
@@ -56,7 +56,7 @@ interface ApplicationContract
     /**
      * Get all the registered components' cli providers.
      *
-     * @return class-string<CliProvider>[]
+     * @return class-string<CliRouteProviderContract>[]
      */
     public function getCliProviders(): array;
 

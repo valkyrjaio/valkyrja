@@ -35,7 +35,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
-use Valkyrja\Cli\Routing\Provider\Contract\ProviderContract;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -174,7 +174,7 @@ final class ServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var ProviderContract $provider */
+        /** @var CliRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,

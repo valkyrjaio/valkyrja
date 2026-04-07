@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Classes\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 
-final class RouteProviderClass extends Provider
+final class RouteProviderClass implements CliRouteProviderContract
 {
     #[Override]
     public static function getControllerClasses(): array

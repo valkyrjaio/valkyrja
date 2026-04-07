@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Tests\Functional\Application\Entry\CliTest;
 
-final class CliRouteProviderClass extends Provider
+final class CliRouteProviderClass implements CliRouteProviderContract
 {
     public static bool $called = false;
 
@@ -32,5 +32,14 @@ final class CliRouteProviderClass extends Provider
         return [
             CliTest::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }

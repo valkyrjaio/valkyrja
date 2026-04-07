@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
-class CliRouteProvider extends Provider
+class CliRouteProvider implements CliRouteProviderContract
 {
     /**
      * @inheritDoc
@@ -30,5 +30,14 @@ class CliRouteProvider extends Provider
             ListCommand::class,
             GenerateDataCommand::class,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }
