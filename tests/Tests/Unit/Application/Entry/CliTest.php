@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use TypeError;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Application\Entry\CliClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -29,8 +29,7 @@ final class CliTest extends TestCase
 {
     public function testRunThrowsWhenBaseConfigPassed(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Config must be an instance of CliConfig');
+        $this->expectException(TypeError::class);
 
         Cli::run(config: new Config());
     }

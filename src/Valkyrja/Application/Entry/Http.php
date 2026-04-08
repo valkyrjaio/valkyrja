@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Override;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
@@ -26,15 +23,10 @@ use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 class Http extends App
 {
     /**
-     * @inheritDoc
+     * Run the http app.
      */
-    #[Override]
-    public static function run(Config|HttpConfig $config, Env $env = new Env()): void
+    public static function run(HttpConfig $config, Env $env = new Env()): void
     {
-        if (! $config instanceof HttpConfig) {
-            throw new InvalidArgumentException('Config must be an instance of HttpConfig');
-        }
-
         $app = static::start(
             env: $env,
             config: $config,

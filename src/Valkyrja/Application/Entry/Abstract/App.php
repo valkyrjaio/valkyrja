@@ -96,11 +96,6 @@ abstract class App
     }
 
     /**
-     * Run the app.
-     */
-    abstract public static function run(Config $config, Env $env = new Env()): void;
-
-    /**
      * Get the application.
      */
     protected static function getApplication(ContainerContract $container, Config $config): ApplicationContract
