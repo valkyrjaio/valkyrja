@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Provider;
+namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class CliComponentProvider implements ComponentProviderContract
+class CliMiddlewareComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc
@@ -26,7 +26,7 @@ class CliComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            CliServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 
@@ -45,9 +45,7 @@ class CliComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getCliProviders(ApplicationContract $app): array
     {
-        return [
-            CliRouteProvider::class,
-        ];
+        return [];
     }
 
     /**

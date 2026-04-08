@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Orm\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Orm\Provider\ComponentProvider;
+use Valkyrja\Orm\Provider\OrmComponentProvider;
 use Valkyrja\Orm\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -27,27 +27,27 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders($app));
+        self::assertContains(ServiceProvider::class, OrmComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ComponentProvider::getEventProviders($app));
+        self::assertEmpty(OrmComponentProvider::getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ComponentProvider::getCliProviders($app));
+        self::assertEmpty(OrmComponentProvider::getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ComponentProvider::getHttpProviders($app));
+        self::assertEmpty(OrmComponentProvider::getHttpProviders($app));
     }
 }

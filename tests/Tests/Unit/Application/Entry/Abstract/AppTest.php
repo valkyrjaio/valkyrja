@@ -73,7 +73,7 @@ use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\Classes\Application\Entry\AppExceptionHandlerClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Provider\ComponentProvider;
+use Valkyrja\View\Provider\ViewComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
@@ -287,7 +287,7 @@ final class AppTest extends TestCase
         $config2 = new Config(
             providers: [
                 ComponentClass::CONTAINER,
-                ComponentProvider::class,
+                ViewComponentProvider::class,
             ],
         );
 

@@ -13,36 +13,36 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Constant;
 
-use Valkyrja\Api\Provider\ComponentProvider;
+use Valkyrja\Api\Provider\ApiComponentProvider;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Provider\ComponentProvider as ApplicationComponentProvider;
-use Valkyrja\Attribute\Provider\ComponentProvider as AttributeComponentProvider;
-use Valkyrja\Auth\Provider\ComponentProvider as AuthComponentProvider;
-use Valkyrja\Broadcast\Provider\ComponentProvider as BroadcastComponentProvider;
-use Valkyrja\Cache\Provider\ComponentProvider as CacheComponentProvider;
-use Valkyrja\Cli\Interaction\Provider\ComponentProvider as CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\ComponentProvider as CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\ComponentProvider as CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\ComponentProvider as CliServerComponentProvider;
-use Valkyrja\Container\Provider\ComponentProvider as ContainerComponentProvider;
-use Valkyrja\Crypt\Provider\ComponentProvider as CryptComponentProvider;
-use Valkyrja\Dispatch\Provider\ComponentProvider as DispatchComponentProvider;
-use Valkyrja\Event\Provider\ComponentProvider as EventComponentProvider;
-use Valkyrja\Filesystem\Provider\ComponentProvider as FilesystemComponentProvider;
-use Valkyrja\Http\Client\Provider\ComponentProvider as HttpClientComponentProvider;
-use Valkyrja\Http\Message\Provider\ComponentProvider as HttpMessageComponentProvider;
-use Valkyrja\Http\Middleware\Provider\ComponentProvider as HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\ComponentProvider as HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\ComponentProvider as HttpServerComponentProvider;
-use Valkyrja\Jwt\Provider\ComponentProvider as JwtComponentProvider;
-use Valkyrja\Log\Provider\ComponentProvider as LogComponentProvider;
-use Valkyrja\Mail\Provider\ComponentProvider as MailComponentProvider;
-use Valkyrja\Orm\Provider\ComponentProvider as OrmComponentProvider;
-use Valkyrja\Reflection\Provider\ComponentProvider as ReflectionComponentProvider;
-use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
-use Valkyrja\Sms\Provider\ComponentProvider as SmsComponentProvider;
+use Valkyrja\Application\Provider\ApplicationComponentProvider;
+use Valkyrja\Attribute\Provider\AttributeComponentProvider;
+use Valkyrja\Auth\Provider\AuthComponentProvider;
+use Valkyrja\Broadcast\Provider\BroadcastComponentProvider;
+use Valkyrja\Cache\Provider\CacheComponentProvider;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Crypt\Provider\CryptComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Filesystem\Provider\FilesystemComponentProvider;
+use Valkyrja\Http\Client\Provider\HttpClientComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
+use Valkyrja\Jwt\Provider\JwtComponentProvider;
+use Valkyrja\Log\Provider\LogComponentProvider;
+use Valkyrja\Mail\Provider\MailComponentProvider;
+use Valkyrja\Orm\Provider\OrmComponentProvider;
+use Valkyrja\Reflection\Provider\ReflectionComponentProvider;
+use Valkyrja\Session\Provider\SessionComponentProvider;
+use Valkyrja\Sms\Provider\SmsComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
+use Valkyrja\View\Provider\ViewComponentProvider;
 
 /**
  * Test the ComponentClass constant.
@@ -52,7 +52,7 @@ final class ComponentClassTest extends TestCase
     public function testValues(): void
     {
         self::assertSame(ApplicationComponentProvider::class, ComponentClass::APPLICATION);
-        self::assertSame(ComponentProvider::class, ComponentClass::API);
+        self::assertSame(ApiComponentProvider::class, ComponentClass::API);
         self::assertSame(AttributeComponentProvider::class, ComponentClass::ATTRIBUTE);
         self::assertSame(AuthComponentProvider::class, ComponentClass::AUTH);
         self::assertSame(BroadcastComponentProvider::class, ComponentClass::BROADCAST);

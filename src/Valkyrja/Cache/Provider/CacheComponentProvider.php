@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Provider;
+namespace Valkyrja\Cache\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class ComponentProvider implements ComponentProviderContract
+class CacheComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc

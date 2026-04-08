@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Provider;
+namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class ComponentProvider implements ComponentProviderContract
+class HttpRoutingComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc
