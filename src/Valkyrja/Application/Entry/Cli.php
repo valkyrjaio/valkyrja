@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Override;
 use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
@@ -26,15 +23,10 @@ use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 class Cli extends App
 {
     /**
-     * @inheritDoc
+     * Run the cli app.
      */
-    #[Override]
-    public static function run(Config|CliConfig $config, Env $env = new Env()): void
+    public static function run(CliConfig $config, Env $env = new Env()): void
     {
-        if (! $config instanceof CliConfig) {
-            throw new InvalidArgumentException('Config must be an instance of CliConfig');
-        }
-
         $app = static::start(
             env: $env,
             config: $config,
