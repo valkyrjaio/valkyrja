@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class ComponentProvider implements ComponentProviderContract
+class HttpClientComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc

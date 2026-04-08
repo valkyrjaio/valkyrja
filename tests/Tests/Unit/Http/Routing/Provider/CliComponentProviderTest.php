@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Http\Routing\Provider\CliComponentProvider;
 use Valkyrja\Http\Routing\Provider\CliRouteProvider;
 use Valkyrja\Http\Routing\Provider\CliServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -28,27 +28,27 @@ final class CliComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(CliServiceProvider::class, CliComponentProvider::getContainerProviders($app));
+        self::assertContains(CliServiceProvider::class, HttpRoutingCliComponentProvider::getContainerProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(CliRouteProvider::class, CliComponentProvider::getCliProviders($app));
+        self::assertContains(CliRouteProvider::class, HttpRoutingCliComponentProvider::getCliProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliComponentProvider::getEventProviders($app));
+        self::assertEmpty(HttpRoutingCliComponentProvider::getEventProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliComponentProvider::getHttpProviders($app));
+        self::assertEmpty(HttpRoutingCliComponentProvider::getHttpProviders($app));
     }
 }
