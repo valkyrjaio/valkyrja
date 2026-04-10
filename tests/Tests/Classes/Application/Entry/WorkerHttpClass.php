@@ -66,6 +66,7 @@ final class WorkerHttpClass extends WorkerHttp
         self::$requestResponses                 = [];
         self::$bootstrapParentServicesCallCount = 0;
         self::$handleRequestCallCount           = 0;
+        self::$handleRouteCallCount             = 0;
     }
 
     /**
