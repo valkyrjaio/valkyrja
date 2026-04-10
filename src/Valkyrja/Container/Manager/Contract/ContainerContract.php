@@ -116,6 +116,20 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     public function isSingleton(string $id): bool;
 
     /**
+     * Check whether a given singleton has a class binding (but may not yet be resolved).
+     *
+     * @param class-string $id The service id
+     */
+    public function isSingletonBinding(string $id): bool;
+
+    /**
+     * Check whether a given singleton has already been resolved and cached as an instance.
+     *
+     * @param class-string $id The service id
+     */
+    public function isSingletonInstance(string $id): bool;
+
+    /**
      * Get a service from the container.
      *
      * @template T of object

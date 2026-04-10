@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Trait;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
@@ -30,7 +31,7 @@ trait ProvidersAware
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
-     * @var array<class-string, callable>
+     * @var array<class-string, callable(ContainerContract):void>
      */
     protected array $deferredCallback = [];
 
@@ -112,22 +113,32 @@ trait ProvidersAware
      */
     public function publish(string $id): void
     {
-        // The provider for this provided item
-        $provider = $this->deferred[$id] ?? null;
+        // The publish method for this provided item in the provider
+        $publishCallback = $this->getDeferredCallback($id);
 
-        // If there is no provider found then this provided item doesn't exist
-        if ($provider === null) {
+        // If there is no callback found then this provided item doesn't exist
+        if ($publishCallback === null) {
             return;
         }
-
-        // The publish method for this provided item in the provider
-        $publishCallback = $this->deferredCallback[$id];
 
         // Publish the service provider
         $publishCallback($this);
 
         // Set published cache only after the success of a publish (in case of error)
         $this->published[$id] = true;
+    }
+
+    /**
+     * Get the deferred callback.
+     *
+     * @param class-string $id The id
+     *
+     * @return callable(ContainerContract):void|null
+     */
+    protected function getDeferredCallback(string $id): callable|null
+    {
+        return $this->deferredCallback[$id]
+            ?? null;
     }
 
     /**

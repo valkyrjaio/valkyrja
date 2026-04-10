@@ -17,11 +17,26 @@ framework predictable.
 
 You do not instantiate `Valkyrja` directly. The entry classes handle this:
 
-- `Valkyrja\Application\Entry\Http` — for web applications
+- `Valkyrja\Application\Entry\Http` — for traditional PHP-FPM / CGI web
+  applications
 - `Valkyrja\Application\Entry\Cli` — for console applications
+- Persistent worker entry classes — for long-running worker runtimes (
+  see [Persistent Worker Lifecycle](#persistent-worker-lifecycle))
 
-Both expose a single static `run()` method. Call it with your configuration
-object and the framework handles everything from bootstrap to response:
+The following worker runtime integrations are available as separate packages,
+each extending `Valkyrja\Application\Entry\Abstract\WorkerHttp`:
+
+| Package               | Class                                | Runtime                                                          |
+|-----------------------|--------------------------------------|------------------------------------------------------------------|
+| `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | [FrankenPHP](https://frankenphp.dev/docs/worker/)                |
+| `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | [OpenSwoole](https://openswoole.com/)                            |
+| `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | [RoadRunner](https://docs.roadrunner.dev/docs/php-worker/worker) |
+
+### Standard (PHP-FPM / CGI)
+
+`Http` and `Cli` expose a single static `run()` method. Call it with your
+configuration object and the framework handles everything from bootstrap to
+response:
 
 ```php
 // app/public/index.php
@@ -229,7 +244,7 @@ truly cannot be deferred.
 > Note: The `publish` callback is called before the container is filled with any
 > services. You must be cautious to list your callbacks after any callbacks
 > that would load the container with data. You also do not need to use the
-> contract if you do not wish to, as you will define the callback explicitly in 
+> contract if you do not wish to, as you will define the callback explicitly in
 > the config. However, this can allow you to quickly see any component providers
 > that do have callbacks
 
@@ -331,3 +346,128 @@ Setting `debugMode: true` has two effects:
 Never run with `debugMode: true` in production. The performance difference is
 significant enough, and Whoops output may expose internal details that should
 remain private.
+
+## Persistent Worker Lifecycle
+
+Persistent worker runtimes (where a single PHP process handles many requests
+without restarting) require a different architecture from PHP-FPM. In PHP-FPM
+every request gets a clean process. In a worker, state accumulated during one
+request will bleed into the next unless it is explicitly isolated.
+
+Valkyrja's abstract worker entry class,
+`Valkyrja\Application\Entry\Abstract\WorkerHttp`,
+implements the isolation pattern. Concrete subclasses integrate with a specific
+worker runtime. The abstract class provides the `bootstrap()` and `handle()`
+methods; subclasses supply the request loop and any runtime-specific request
+conversion.
+
+### The Invariant
+
+The parent application and its container are **frozen** after `bootstrap()`
+completes. No code should write to them again. Every request receives its own
+`ChildContainer` and `ChildApplication` that inherit from the frozen parent but
+write only to child-local state. When the request ends, the child is discarded.
+
+### Bootstrap (once, at worker startup)
+
+```php
+$app = static::bootstrap($config, $env);
+
+$container = $app->getContainer();
+$data      = $container->getData(); // captured once, reused each request
+```
+
+`bootstrap()` runs the full application bootstrap sequence and then calls
+`bootstrapParentServices()`. The returned `$app` and the snapshot `$data`
+are captured in the closure or loop scope before any request arrives.
+
+`getData()` returns a `ContainerData` value object holding the parent
+container's maps. It is captured **once**, outside the request loop, and
+passed to every child. Because PHP arrays are copy-on-write, each child gets
+its own logical copy at zero cost until it writes to one of the maps.
+
+### Per-Request Handling
+
+```php
+// Inside the worker request loop:
+static::handle($app, $data, $request);
+```
+
+`handle()` creates a fresh `ChildContainer` and `ChildApplication` for each
+request:
+
+```
+ChildContainer($parent, $data)     ← inherits parent maps; writes stay local
+ChildApplication($app, $container) ← owns child container; delegates everything else to parent
+```
+
+`ChildApplication` owns the child container and returns it from `getContainer()`.
+Every other method — `getEnvironment()`, `getVersion()`, `getProviders()`,
+`getDebugMode()`, and so on — delegates directly to the parent application. No
+re-bootstrapping occurs. The child is a thin wrapper that swaps in a fresh
+container while keeping the rest of the parent's state intact.
+
+The child container checks its own maps first and falls back to the parent via
+the `ContainerContract` interface. Singletons resolved in the child are cached
+in the child only. The parent's `instances` map is never written to after
+`bootstrap()`.
+
+### Lifecycle Flowchart
+
+<p align="center"><a href="https://valkyrja.io" target="_blank">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/worker-http-lifecycle.svg" width="100%">
+</a></p>
+
+```mermaid
+flowchart TD
+    A(["Worker process starts"]) --> B["bootstrap(config)"]
+    B --> C["Full app bootstrap\n(providers, data cache, etc.)"]
+    C --> D["bootstrapParentServices()\nforce-resolve shared singletons"]
+    D --> E["getData()\ncapture ContainerData snapshot"]
+    E --> F(["Parent frozen — request loop begins"])
+    F --> G["Runtime delivers request"]
+    G --> H["handle(app, data, request)"]
+    H --> I["new ChildContainer(parent, data)\nnew ChildApplication(app, container)"]
+    I --> J["Register request-scoped singletons\non child container"]
+    J --> K["Dispatch request"]
+    K --> L["Child discarded"]
+    L --> F
+```
+
+### Customising Bootstrap
+
+Override `bootstrapParentServices()` to force-resolve services that are
+expensive to create and safe to share across requests — for example, the route
+collection:
+
+```php
+protected static function bootstrapParentServices(ApplicationContract $app): void
+{
+    $container = $app->getContainer();
+    $container->getSingleton(CollectionContract::class);
+    $container->getSingleton(MyExpensiveSharedService::class);
+}
+```
+
+Anything resolved here lives in the frozen parent and is shared (read-only)
+across all requests. Anything not resolved here will be created fresh in each
+request's child container, which is correct but pays the creation cost on
+every request.
+
+### Child Container Variants
+
+Two `ChildContainer` implementations are available:
+
+- **`Valkyrja\Container\Manager\ChildContainer`** (default) — delegates to the
+  parent via `ContainerContract`. Works with any parent that implements the
+  contract and is portable to any language or runtime.
+
+- **`Valkyrja\Container\Manager\NativeChildContainer`** — accesses the parent's
+  protected fields directly for slightly lower overhead at construction.
+  Requires
+  a concrete `Container` parent and is PHP-only. Use only when profiling
+  confirms
+  a bottleneck at worker child construction rates.
+
+The abstract worker entry class uses `ChildContainer` by default. Swap in
+`NativeChildContainer` by overriding `handle()` in your concrete subclass.
