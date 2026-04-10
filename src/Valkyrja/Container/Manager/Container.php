@@ -240,7 +240,30 @@ class Container implements ContainerContract
     #[Override]
     public function isSingleton(string $id): bool
     {
-        return isset($this->singletons[$id]) || isset($this->instances[$id]);
+        return $this->isSingletonBinding($id)
+            || $this->isSingletonInstance($id);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     */
+    #[Override]
+    public function isSingletonBinding(string $id): bool
+    {
+        return isset($this->singletons[$id]);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     */
+    #[Override]
+    public function isSingletonInstance(string $id): bool
+    {
+        return isset($this->instances[$id]);
     }
 
     /**
@@ -340,7 +363,7 @@ class Container implements ContainerContract
      */
     protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
     {
-        $aliased = $this->aliases[$id] ?? null;
+        $aliased = $this->getAlias($id);
 
         if ($aliased === null) {
             return null;
@@ -357,7 +380,7 @@ class Container implements ContainerContract
      */
     protected function getCallableWithoutChecks(string $id, array $arguments = []): object|null
     {
-        $closure = $this->callables[$id] ?? null;
+        $closure = $this->getClosure($id);
 
         if ($closure === null) {
             return null;
@@ -373,11 +396,13 @@ class Container implements ContainerContract
      */
     protected function getSingletonWithoutChecks(string $id): object|null
     {
-        if (isset($this->instances[$id])) {
-            return $this->instances[$id];
+        $instance = $this->getSingletonInstance($id);
+
+        if ($instance !== null) {
+            return $instance;
         }
 
-        if (! isset($this->singletons[$id])) {
+        if (! $this->isSingletonBinding($id)) {
             return null;
         }
 
@@ -398,7 +423,7 @@ class Container implements ContainerContract
             return null;
         }
 
-        $service = $this->services[$id] ?? null;
+        $service = $this->getServiceClass($id);
 
         if ($service === null) {
             return null;
@@ -406,6 +431,56 @@ class Container implements ContainerContract
 
         // Make the object by dispatching the service
         return $service::make($this, $arguments);
+    }
+
+    /**
+     * Get the alias target for a given id.
+     *
+     * @param class-string $id The service id
+     *
+     * @return class-string|null
+     */
+    protected function getAlias(string $id): string|null
+    {
+        return $this->aliases[$id]
+            ?? null;
+    }
+
+    /**
+     * Get the callable factory for a given id.
+     *
+     * @param class-string $id The service id
+     *
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
+     */
+    protected function getClosure(string $id): callable|null
+    {
+        return $this->callables[$id]
+            ?? null;
+    }
+
+    /**
+     * Get a cached singleton instance for a given id.
+     *
+     * @param class-string $id The service id
+     */
+    protected function getSingletonInstance(string $id): object|null
+    {
+        return $this->instances[$id]
+            ?? null;
+    }
+
+    /**
+     * Get the service class binding for a given id.
+     *
+     * @param class-string $id The service id
+     *
+     * @return class-string<ServiceContract>|null
+     */
+    protected function getServiceClass(string $id): string|null
+    {
+        return $this->services[$id]
+            ?? null;
     }
 
     /**

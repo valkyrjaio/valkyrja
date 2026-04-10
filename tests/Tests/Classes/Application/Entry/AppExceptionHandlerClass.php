@@ -54,7 +54,7 @@ abstract class AppExceptionHandlerClass extends App
      * @inheritDoc
      */
     #[Override]
-    protected static function defaultExceptionHandler(): void
+    public static function defaultExceptionHandler(): void
     {
         self::$called = true;
     }

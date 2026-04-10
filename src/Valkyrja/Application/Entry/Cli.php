@@ -44,7 +44,7 @@ class Cli extends App
     /**
      * Get the input.
      */
-    protected static function getInput(CliConfig $config): InputContract
+    public static function getInput(CliConfig $config): InputContract
     {
         /** @var non-empty-string[] $args */
         $args = $_SERVER['argv'] ?? [];

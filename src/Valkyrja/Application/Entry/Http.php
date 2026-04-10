@@ -44,7 +44,7 @@ class Http extends App
     /**
      * Get the request.
      */
-    protected static function getRequest(): ServerRequestContract
+    public static function getRequest(): ServerRequestContract
     {
         return RequestFactory::fromGlobals();
     }

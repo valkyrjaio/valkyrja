@@ -118,12 +118,20 @@ callbacks.
 Before resolving, you can inspect what is registered:
 
 ```php
-$container->has(string $id): bool          // PSR-11; true if registered in any form
-$container->isSingleton(string $id): bool
+$container->has(string $id): bool                  // PSR-11; true if registered in any form
+$container->isSingleton(string $id): bool          // true if binding OR resolved instance exists
+$container->isSingletonBinding(string $id): bool   // true if class binding exists (not yet resolved)
+$container->isSingletonInstance(string $id): bool  // true if already resolved and cached
 $container->isService(string $id): bool
 $container->isCallable(string $id): bool
 $container->isAlias(string $id): bool
 ```
+
+`isSingleton` is equivalent to `isSingletonBinding || isSingletonInstance`. The
+two fine-grained methods are useful when you need to distinguish between "this
+singleton is registered but not yet built" and "this singleton is already live
+and can be reused" — which is exactly the distinction child containers rely on
+(see [Child Containers](#child-containers)).
 
 ## Resolving Services
 
@@ -202,6 +210,117 @@ public static function publishCache(ContainerContract $container): void
 The publish callback can resolve other services from the container freely. Those
 services are themselves deferred — resolving them here triggers their own
 publish callbacks if they haven't been resolved yet.
+
+## Child Containers
+
+A child container is a per-request container that inherits the parent's frozen
+state at zero cost and writes only to its own local maps. This is the isolation
+mechanism used by Valkyrja's persistent worker entry points (FrankenPHP,
+OpenSwoole, RoadRunner) to ensure that request-scoped state never bleeds between
+concurrent requests.
+
+### The Parent/Child Invariant
+
+The parent container is bootstrapped once when the worker process starts and
+then **frozen** — nothing may write to it again. Each incoming request receives
+a fresh child container. The child checks its own maps first; if a service is
+not registered locally it falls back to the parent. When the request ends the
+child is discarded; the parent is unmodified.
+
+### ContainerData
+
+Before the request loop begins, the parent's `getData()` is captured once:
+
+```php
+$data = $app->getContainer()->getData();
+```
+
+`getData()` returns a `ContainerData` value object. It is passed to every child
+on construction. Because PHP arrays are copy-on-write, each child gets its own
+logical copy of the maps at zero cost until it writes to one.
+
+### Resolution Order
+
+For each lookup the child follows this order:
+
+1. **Child's own maps** — anything registered or resolved locally this request
+2. **Parent** — read-only fallback; the parent is never written to through the child
+
+Singletons resolved in the child are cached in the child only. The parent's
+instance map is never modified after `bootstrap()`.
+
+For singleton resolution specifically, the child applies this three-step strategy:
+
+1. **Child has a cached instance** — return it directly (child-local write, highest priority)
+2. **Parent has a cached instance** — reuse it safely; the parent is frozen so the instance will not change
+3. **Child has a class binding** — create a fresh instance in the child's scope only
+
+`isPublished` follows the same child-first, parent-fallback pattern. If the
+parent has already published a service, the child treats it as published and
+does not re-publish it — preserving the parent's frozen state.
+
+### Available Implementations
+
+Two implementations are provided:
+
+Both implementations share the same invariant: neither triggers deferred
+resolution in the parent. A lookup on the child will reuse a parent singleton
+only if it is already a resolved instance (`isSingletonInstance`). Services that
+are still in the deferred map — registered but never force-resolved — are
+invisible to child containers. Ensure everything needed at request time is
+eagerly resolved in `bootstrapParentServices()` before the request loop begins.
+
+**`Valkyrja\Container\Manager\ChildContainer`** — The default. Delegates to the
+parent via `ContainerContract`, meaning it works with any parent that implements
+the contract. This is the portable, cross-language implementation.
+
+**`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. Reads fall
+back to the parent's maps via direct protected-field access rather than method
+calls, eliminating any risk of accidentally triggering deferred publishing or
+writing to parent state. Requires a concrete `Container` parent. Use only when
+profiling confirms a bottleneck at very high child construction rates.
+
+### Using a Child Container
+
+```php
+use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Manager\ChildContainer;
+
+// Once, before the request loop:
+$parent = $app->getContainer();
+$data   = $parent->getData();
+
+// Per request, inside the loop:
+$child = new ChildContainer($parent, new ContainerData(
+    deferredCallback: $data->deferredCallback,
+    singletons: $data->singletons,
+));
+
+// Register request-scoped services on the child only:
+$child->setSingleton(RequestContract::class, $request);
+
+// Resolve as normal — falls back to parent transparently:
+$handler = $child->getSingleton(RequestHandlerContract::class);
+```
+
+In practice you will not construct child containers directly. The worker entry
+classes (`WorkerHttp` and its subclasses) handle this for every request. See the
+[Application README](../Application/README.md#persistent-worker-lifecycle) for
+the full lifecycle.
+
+### Singleton State Methods
+
+Child containers rely on the two fine-grained singleton state methods to decide
+how to handle a lookup:
+
+- `isSingletonBinding` — the service is registered as a singleton class but has
+  not yet been resolved. The child should create a fresh instance in its own
+  scope.
+- `isSingletonInstance` — the service has already been resolved and cached. If
+  only the parent has the instance, the child can reuse it safely (the parent is
+  frozen). If the child has its own instance, that takes priority.
+
+Both methods check the child's own state first, then fall back to the parent.
 
 ## A Complete Example
 

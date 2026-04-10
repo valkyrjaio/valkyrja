@@ -98,7 +98,7 @@ abstract class App
     /**
      * Get the application.
      */
-    protected static function getApplication(ContainerContract $container, Config $config): ApplicationContract
+    public static function getApplication(ContainerContract $container, Config $config): ApplicationContract
     {
         return new Valkyrja(
             container: $container,
@@ -109,7 +109,7 @@ abstract class App
     /**
      * Bootstrap container services.
      */
-    protected static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Config $config): void
+    public static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Config $config): void
     {
         $container->setSingleton(Env::class, $env);
         $container->setSingleton(Config::class, $config);
@@ -134,7 +134,7 @@ abstract class App
     /**
      * Load container data.
      */
-    protected static function loadContainerData(ContainerContract $container): void
+    public static function loadContainerData(ContainerContract $container): void
     {
         if (! $container->isSingleton(ContainerData::class)) {
             self::publishContainerData(container: $container);
@@ -148,7 +148,7 @@ abstract class App
     /**
      * Publish the container data.
      */
-    protected static function publishContainerData(ContainerContract $container): void
+    public static function publishContainerData(ContainerContract $container): void
     {
         ServiceProvider::publishData(container: $container);
     }
@@ -156,7 +156,7 @@ abstract class App
     /**
      * Set a default exception handler until the one specified in config is set in the Container\AppProvider.
      */
-    protected static function defaultExceptionHandler(): void
+    public static function defaultExceptionHandler(): void
     {
         WhoopsThrowableHandler::enable(
             displayErrors: true
@@ -166,7 +166,7 @@ abstract class App
     /**
      * Bootstrap throwable handler.
      */
-    protected static function bootstrapThrowableHandler(ApplicationContract $app, ContainerContract $container): void
+    public static function bootstrapThrowableHandler(ApplicationContract $app, ContainerContract $container): void
     {
         // If debug is on, enable debug handling
         if ($app->getDebugMode()) {
@@ -185,7 +185,7 @@ abstract class App
     /**
      * Get the throwable handler.
      */
-    protected static function getThrowableHandler(): ThrowableHandlerContract
+    public static function getThrowableHandler(): ThrowableHandlerContract
     {
         return new WhoopsThrowableHandler();
     }
@@ -193,7 +193,7 @@ abstract class App
     /**
      * Get the container.
      */
-    protected static function getContainer(): ContainerContract
+    public static function getContainer(): ContainerContract
     {
         return new Container();
     }

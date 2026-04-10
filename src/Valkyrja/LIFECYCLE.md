@@ -14,7 +14,8 @@ final response sent or process exited.
 
 ## Entry Points
 
-Every Valkyrja application has one of two entry points depending on its runtime.
+Every Valkyrja application has one of three entry points depending on its
+runtime.
 
 **HTTP** — your web server points to `app/public/index.php`. This file is
 intentionally minimal: it constructs your configuration object and calls
@@ -42,10 +43,26 @@ Cli::run(new CliConfig(
 ));
 ```
 
-Both entry classes — `Valkyrja\Application\Entry\Http` and
-`Valkyrja\Application\Entry\Cli` — exist to give the framework one canonical
-place to evolve the bootstrap sequence. Your entry point files call `run()` and
-are done.
+**Persistent Worker** — for long-running runtimes such as FrankenPHP,
+OpenSwoole, and RoadRunner, where a single PHP process handles many requests
+without restarting. The entry class is runtime-specific but follows the same
+`run()` convention:
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\FrankenPhp\FrankenPhpHttp;
+
+FrankenPhpHttp::run(new HttpConfig(
+    dir: __DIR__ . '/..', // This is the application or module root directory (./app in this case)
+));
+```
+
+Worker entry classes are provided as separate packages — see
+[Worker Mode](#worker-mode-persistent-runtimes) below for the lifecycle details
+and the available runtime integrations.
+
+All three entry classes exist to give the framework one canonical place to
+evolve the bootstrap sequence. Your entry point files call `run()` and are done.
 
 In our examples we're using a module approach where the application code lives
 not in the root of the project folder, but in an app folder. This can allow you
@@ -201,6 +218,85 @@ just due to the nature of an interactive CLI application. The HTTP component has
 a SendingResponse stage because there is only one place in the pipeline where
 the response is actually sent to the client.
 
+## Worker Mode (Persistent Runtimes)
+
+Persistent worker runtimes — FrankenPHP, OpenSwoole, RoadRunner — keep a single
+PHP process alive across many requests. Because state accumulates over time, the
+standard PHP-FPM "clean slate per request" guarantee no longer applies. Valkyrja
+handles this with an explicit parent/child isolation pattern built into
+`Valkyrja\Application\Entry\Abstract\WorkerHttp`.
+
+### The Two-Phase Model
+
+**Phase 1 — Bootstrap (once, at process start)**
+
+`run()` calls `bootstrap()`, which performs the full application bootstrap and
+then calls `bootstrapParentServices()`. After this point the parent application
+and its container are **frozen** — nothing may write to them again.
+
+```
+bootstrap(config)
+  └── App::start()                   ← same sequence as Http/Cli
+        └── bootstrapParentServices()  ← force-resolve shared singletons
+```
+
+A snapshot of the parent container's service maps is captured via `getData()`
+before the request loop begins. Because PHP arrays are copy-on-write, passing
+this snapshot to each child costs nothing until the child writes to it.
+
+**Phase 2 — Handle (once per request, inside the worker loop)**
+
+For every incoming request, `handle()` creates a fresh `ChildContainer` and
+`ChildApplication`. Both inherit from the frozen parent — reads fall through to
+the parent transparently — but all writes stay local to the child. When the
+request ends the child is discarded and the parent is unmodified.
+
+```
+handle(app, data, request)
+  ├── new ChildContainer(parent, data)
+  ├── new ChildApplication(parent, childContainer)
+  ├── Register request-scoped singletons on child
+  └── Dispatch request → (same seven-stage pipeline as Http)
+```
+
+### Available Runtimes
+
+| Package               | Class                                | Runtime       |
+|-----------------------|--------------------------------------|---------------|
+| `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | FrankenPHP    |
+| `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | OpenSwoole    |
+| `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | RoadRunner    |
+
+### Customising Bootstrap
+
+Override `bootstrapParentServices()` to force-resolve services that are
+expensive to create and safe to share across requests:
+
+```php
+protected static function bootstrapParentServices(ApplicationContract $app): void
+{
+    $container = $app->getContainer();
+    $container->getSingleton(CollectionContract::class);
+    $container->getSingleton(MyExpensiveSharedService::class);
+}
+```
+
+Anything resolved here lives in the frozen parent and is shared read-only across
+all requests. Anything not resolved here is created fresh in each request's child
+container — correct but paying the creation cost per request.
+
+### Child Container Variants
+
+Two implementations are available for the per-request child container:
+
+- **`ChildContainer`** (default) — delegates to the parent via
+  `ContainerContract`. Portable and works with any parent that implements the
+  contract.
+- **`NativeChildContainer`** — accesses the parent's protected fields directly
+  for lower construction overhead. Requires a concrete `Container` parent.
+  Use only when profiling confirms a bottleneck at very high child construction
+  rates.
+
 ## Focus on Configuration
 
 Valkyrja's configuration philosophy is worth internalizing early because it
@@ -219,6 +315,8 @@ The base class is `Valkyrja\Application\Data\Config`. `HttpConfig` and
 See [The Application](Application/README.md) for a full reference.
 
 ## Lifecycle at a Glance
+
+### Standard (HTTP / CLI)
 
 ```
 index.php / bin/cli
@@ -242,6 +340,24 @@ index.php / bin/cli
                                 ├── Stage 6: SendingResponse  [HTTP only]
                                 ├── Send response / write output
                                 └── Stage 7: Terminated / Exited
+```
+
+### Worker Mode (Persistent Runtimes)
+
+```
+Worker process starts
+  └── WorkerHttp::run(HttpConfig)
+        └── bootstrap(config)
+              └── App::start()                    ← full bootstrap (same as Http)
+                    └── bootstrapParentServices()  ← freeze parent; resolve shared singletons
+                          └── getData()            ← snapshot parent maps once
+                                └── [request loop]
+                                      └── handle(app, data, request)
+                                            ├── new ChildContainer(parent, data)
+                                            ├── new ChildApplication(parent, childContainer)
+                                            ├── Register request-scoped singletons on child
+                                            └── Dispatch request  ← same seven-stage pipeline
+                                                  └── Child discarded → loop repeats
 ```
 
 ### HTTP Lifecycle
@@ -309,4 +425,45 @@ flowchart TD
     M --> P[Stage 6 - Exited]
     P --> Q["Exiter::exit(ExitCode)"]
     Q --> R([Process ends])
+```
+
+### Worker HTTP Lifecycle
+
+<p align="center"><a href="https://valkyrja.io" target="_blank">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/worker-http-lifecycle.svg" width="100%">
+</a></p>
+
+```mermaid
+flowchart TD
+    A(["Worker process starts"]) --> B["WorkerHttp::run(HttpConfig)"]
+    B --> C["bootstrap(config)\nApp::start - full bootstrap"]
+    C --> D{Data cache?}
+    D -->|yes| E[Load data cache]
+    D -->|no| F[Iterate providers]
+    E --> G["bootstrapParentServices()\nForce-resolve shared singletons"]
+    F --> G
+    G --> H["getData()\nSnapshot parent maps"]
+    H --> I(["Parent frozen — request loop begins"])
+    I --> J[Runtime delivers request]
+    J --> K["handle(app, data, request)"]
+    K --> L["new ChildContainer(parent, data)\nnew ChildApplication(app, container)"]
+    L --> M["Register request-scoped singletons\non child container"]
+    M --> N[Stage 1 - RequestReceived]
+    N -->|"cache hit / short-circuit"| S[Stage 6 - SendingResponse]
+    N -->|throwable| T[Stage 5 - ThrowableCaught]
+    N --> O{Route matched?}
+    O -->|no| P["Stage 3 - RouteNotMatched (404)"]
+    O -->|yes| Q[Stage 2 - RouteMatched]
+    P --> S
+    Q -->|"short-circuit / throwable"| T
+    Q --> R[Dispatcher - controller method]
+    R -->|throwable| T
+    R --> U[Stage 4 - RouteDispatched]
+    U -->|throwable| T
+    U --> S
+    T --> S
+    S --> V[Write response to output buffer]
+    V --> W[Stage 7 - Terminated]
+    W --> X[Child discarded]
+    X --> I
 ```
