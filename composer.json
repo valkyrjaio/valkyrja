@@ -1,7 +1,7 @@
 {
   "name"              : "valkyrja/valkyrja",
   "type"              : "project",
-  "description"       : "The Valkyrja Framework.",
+  "description"       : "The Valkyrja PHP Framework.",
   "homepage"          : "https://www.valkyrja.io",
   "keywords"          : [
     "framework",
