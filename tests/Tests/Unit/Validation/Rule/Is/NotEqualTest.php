@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\NotEqual;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class NotEqualTest extends TestCase
 {
@@ -106,7 +106,7 @@ final class NotEqualTest extends TestCase
     {
         $rule = new NotEqual('same', 'same', errorMessage: ErrorMessage::IS_NOT_EQUAL);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_NOT_EQUAL);
 
         $rule->validate();
@@ -116,7 +116,7 @@ final class NotEqualTest extends TestCase
     {
         $rule = new NotEqual('x', 'x', 'Values must be different');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Values must be different');
 
         $rule->validate();

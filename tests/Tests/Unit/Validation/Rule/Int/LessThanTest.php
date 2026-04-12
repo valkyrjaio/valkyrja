@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Int\LessThan;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class LessThanTest extends TestCase
 {
@@ -119,7 +119,7 @@ final class LessThanTest extends TestCase
     {
         $rule = new LessThan(10, 5, errorMessage: ErrorMessage::INT_LESS_THAN);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::INT_LESS_THAN);
 
         $rule->validate();
@@ -129,7 +129,7 @@ final class LessThanTest extends TestCase
     {
         $rule = new LessThan(10, 5, 'Value must be less than 5');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Value must be less than 5');
 
         $rule->validate();

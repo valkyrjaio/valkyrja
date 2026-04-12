@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsBool;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class IsBoolTest extends TestCase
 {
@@ -98,7 +98,7 @@ final class IsBoolTest extends TestCase
     {
         $rule = new IsBool('true', errorMessage: ErrorMessage::IS_BOOL);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_BOOL);
 
         $rule->validate();
@@ -108,7 +108,7 @@ final class IsBoolTest extends TestCase
     {
         $rule = new IsBool(1, 'Field must be a boolean');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must be a boolean');
 
         $rule->validate();

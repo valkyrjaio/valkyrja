@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsString;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class IsStringTest extends TestCase
 {
@@ -98,7 +98,7 @@ final class IsStringTest extends TestCase
     {
         $rule = new IsString(123, errorMessage: ErrorMessage::IS_STRING);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_STRING);
 
         $rule->validate();
@@ -108,7 +108,7 @@ final class IsStringTest extends TestCase
     {
         $rule = new IsString(123, 'Field must be a string');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must be a string');
 
         $rule->validate();

@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Lowercase;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class LowercaseTest extends TestCase
 {
@@ -105,7 +105,7 @@ final class LowercaseTest extends TestCase
     {
         $rule = new Lowercase('Hello', errorMessage: ErrorMessage::STRING_LOWERCASE);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_LOWERCASE);
 
         $rule->validate();
@@ -115,7 +115,7 @@ final class LowercaseTest extends TestCase
     {
         $rule = new Lowercase('HELLO', 'Field must be lowercase');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must be lowercase');
 
         $rule->validate();

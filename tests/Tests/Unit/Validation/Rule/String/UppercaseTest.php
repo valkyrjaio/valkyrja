@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Uppercase;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class UppercaseTest extends TestCase
 {
@@ -105,7 +105,7 @@ final class UppercaseTest extends TestCase
     {
         $rule = new Uppercase('Hello', errorMessage: ErrorMessage::STRING_UPPERCASE);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_UPPERCASE);
 
         $rule->validate();
@@ -115,7 +115,7 @@ final class UppercaseTest extends TestCase
     {
         $rule = new Uppercase('hello', 'Field must be uppercase');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must be uppercase');
 
         $rule->validate();

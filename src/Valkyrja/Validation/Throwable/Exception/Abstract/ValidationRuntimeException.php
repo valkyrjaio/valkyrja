@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Throwable\Exception;
+namespace Valkyrja\Validation\Throwable\Exception\Abstract;
 
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 use Valkyrja\Validation\Throwable\Contract\ValidationThrowable;
 
-class ValidationRuntimeException extends ValkyrjaRuntimeException implements ValidationThrowable
+abstract class ValidationRuntimeException extends ValkyrjaRuntimeException implements ValidationThrowable
 {
 }

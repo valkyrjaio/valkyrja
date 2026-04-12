@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Min;
-use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class MinTest extends TestCase
 {
@@ -98,7 +98,7 @@ final class MinTest extends TestCase
     {
         $rule = new Min('hi', 5, errorMessage: ErrorMessage::STRING_MIN);
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_MIN);
 
         $rule->validate();
@@ -108,7 +108,7 @@ final class MinTest extends TestCase
     {
         $rule = new Min('ab', 3, 'Minimum 3 characters required');
 
-        $this->expectException(ValidationRuleException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Minimum 3 characters required');
 
         $rule->validate();

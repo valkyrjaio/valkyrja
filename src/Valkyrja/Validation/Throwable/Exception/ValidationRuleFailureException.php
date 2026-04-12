@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Throwable\Exception;
 
-class ValidationRuleException extends ValidationRuntimeException
+use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationRuntimeException;
+
+class ValidationRuleFailureException extends ValidationRuntimeException
 {
 }
