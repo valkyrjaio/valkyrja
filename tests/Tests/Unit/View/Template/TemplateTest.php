@@ -18,7 +18,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Template\Template;
-use Valkyrja\View\Throwable\Exception\ViewInvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewInvalidArgumentException;
 
 /**
  * Test the Template class.

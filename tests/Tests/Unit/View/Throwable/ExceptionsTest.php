@@ -19,9 +19,9 @@ use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 use Valkyrja\View\Throwable\Contract\ViewThrowable;
-use Valkyrja\View\Throwable\Exception\ViewInvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewInvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewRuntimeException;
 use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
-use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
 
 /**
  * Test the View exceptions.

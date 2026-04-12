@@ -15,6 +15,6 @@ namespace Valkyrja\Tests\Classes\Throwable\Exception;
 
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class ValkyrjaInvalidArgumentExceptionClass extends ValkyrjaInvalidArgumentException
+final class ValkyrjaInvalidArgumentExceptionClass extends ValkyrjaInvalidArgumentException
 {
 }

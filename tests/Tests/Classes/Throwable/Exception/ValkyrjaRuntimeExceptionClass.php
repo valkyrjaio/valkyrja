@@ -15,6 +15,6 @@ namespace Valkyrja\Tests\Classes\Throwable\Exception;
 
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class ValkyrjaRuntimeExceptionClass extends ValkyrjaRuntimeException
+final class ValkyrjaRuntimeExceptionClass extends ValkyrjaRuntimeException
 {
 }

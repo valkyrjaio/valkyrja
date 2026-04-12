@@ -21,7 +21,7 @@ use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Orka\Replacement\Variable\Unescaped;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
-use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewRuntimeException;
 
 use function file_exists;
 use function file_get_contents;
