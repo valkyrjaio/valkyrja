@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Throwable\Exception;
+namespace Valkyrja\View\Throwable\Exception\Abstract;
 
-use Valkyrja\View\Throwable\Exception\Abstract\ViewInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\View\Throwable\Contract\ViewThrowable;
 
-class ViewInvalidPathException extends ViewInvalidArgumentException
+abstract class ViewRuntimeException extends ValkyrjaRuntimeException implements ViewThrowable
 {
 }

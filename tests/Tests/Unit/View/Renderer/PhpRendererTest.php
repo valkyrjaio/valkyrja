@@ -119,7 +119,7 @@ final class PhpRendererTest extends TestCase
 
         try {
             $renderer->renderFile('nonexistent');
-        } catch (ValkyrjaRuntimeException $e) {
+        } catch (ViewInvalidPathException $e) {
             $exceptionThrown = true;
             self::assertStringContainsString('Path does not exist at', $e->getMessage());
         } finally {

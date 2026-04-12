@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Throwable\Exception;
 
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
-use Valkyrja\View\Throwable\Contract\ViewThrowable;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewRuntimeException;
 
-class ViewRuntimeException extends ValkyrjaRuntimeException implements ViewThrowable
+class ViewOrkaCacheFailureException extends ViewRuntimeException
 {
 }

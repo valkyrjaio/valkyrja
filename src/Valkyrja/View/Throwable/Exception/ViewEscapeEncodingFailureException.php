@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Throwable\Exception;
 
-use Valkyrja\View\Throwable\Exception\Abstract\ViewInvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewRuntimeException;
 
-class ViewInvalidPathException extends ViewInvalidArgumentException
+class ViewEscapeEncodingFailureException extends ViewRuntimeException
 {
 }

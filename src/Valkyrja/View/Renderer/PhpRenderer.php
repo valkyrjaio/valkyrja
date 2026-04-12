@@ -18,7 +18,7 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Template\Template;
 use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
-use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
+use Valkyrja\View\Throwable\Exception\ViewRenderFailureException;
 
 use function explode;
 use function extract;
@@ -60,7 +60,7 @@ class PhpRenderer implements RendererContract
         $obClean = $this->obGetClean();
 
         if ($obClean === false) {
-            throw new ViewRuntimeException('Render failed');
+            throw new ViewRenderFailureException('Render failed');
         }
 
         return $obClean;
@@ -137,7 +137,7 @@ class PhpRenderer implements RendererContract
             return;
         }
 
-        throw new ViewRuntimeException("Path does not exist at $path");
+        throw new ViewInvalidPathException("Path does not exist at $path");
     }
 
     /**

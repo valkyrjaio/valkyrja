@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Throwable\Exception;
 
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
-use Valkyrja\View\Throwable\Contract\ViewThrowable;
+use Valkyrja\View\Throwable\Exception\Abstract\ViewRuntimeException;
 
-class ViewInvalidArgumentException extends ValkyrjaInvalidArgumentException implements ViewThrowable
+class ViewRenderFailureException extends ViewRuntimeException
 {
 }
