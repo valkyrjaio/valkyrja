@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Validation\Throwable;
 
 use RuntimeException;
-use Throwable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 use Valkyrja\Validation\Throwable\Contract\ValidationThrowable;
