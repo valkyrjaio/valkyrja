@@ -21,7 +21,7 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -172,7 +172,7 @@ final class PdoStatementTest extends TestCase
             ->method('errorInfo')
             ->willReturn(['00000', null, null]);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Error occurred when getting column meta for column number 0');
 
         $this->statement->getColumnMeta(0);
@@ -191,7 +191,7 @@ final class PdoStatementTest extends TestCase
             ->method('errorInfo')
             ->willReturn(['00001', null, 'sql error']);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('sql error');
 
         $this->statement->getColumnMeta(0);
@@ -225,7 +225,7 @@ final class PdoStatementTest extends TestCase
             ->method('errorInfo')
             ->willReturn(['00000', null, null]);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Error occurred when fetching');
 
         $this->statement->fetch();
@@ -244,7 +244,7 @@ final class PdoStatementTest extends TestCase
             ->method('errorInfo')
             ->willReturn(['00001', null, 'some error from sql']);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('some error from sql');
 
         $this->statement->fetch();
@@ -365,7 +365,7 @@ final class PdoStatementTest extends TestCase
             ->method('fetchAll')
             ->willReturn([['COUNT(*)' => ['unsupported' => 'array']]]);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Unsupported count results');
 
         $this->statement->getCount();

@@ -26,8 +26,8 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Exception;
 
 use function ob_start;
 
@@ -131,7 +131,7 @@ final class InputHandlerTest extends TestCase
     {
         $output    = new Output();
         $input     = new Input();
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $router = $this->createMock(Router::class);
         $router
@@ -176,7 +176,7 @@ final class InputHandlerTest extends TestCase
     {
         $output    = new Output();
         $input     = new Input();
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $router = $this->createMock(Router::class);
         $router

@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Throwable\Exception;
 
-class NoResponseStructException extends RuntimeException
+class NoResponseStructException extends HttpRoutingRuntimeException
 {
 }

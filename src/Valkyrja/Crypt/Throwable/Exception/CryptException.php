@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Throwable\Exception;
 
-use Valkyrja\Throwable\Exception\RuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class CryptException extends RuntimeException
+class CryptException extends ValkyrjaRuntimeException
 {
 }

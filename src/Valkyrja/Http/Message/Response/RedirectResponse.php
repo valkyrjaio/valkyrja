@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
@@ -31,7 +31,7 @@ use Valkyrja\Http\Message\Uri\Uri;
 class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      * @throws InvalidStreamException
      */
     public function __construct(
@@ -40,7 +40,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         if (! $statusCode->isRedirect()) {
-            throw new InvalidArgumentException(
+            throw new HttpMessageInvalidArgumentException(
                 "Invalid redirect status code $statusCode->value used."
             );
         }

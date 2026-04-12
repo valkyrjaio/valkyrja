@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as ParentException;
-use Valkyrja\Http\Message\Uri\Throwable\Contract\Throwable;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
+use Valkyrja\Http\Message\Uri\Throwable\Contract\HttpMessageThrowable;
 
-class RuntimeException extends ParentException implements Throwable
+class RuntimeException extends HttpMessageRuntimeException implements HttpMessageThrowable
 {
 }

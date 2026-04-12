@@ -23,7 +23,7 @@ use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -128,7 +128,7 @@ final class PgsqlManagerTest extends TestCase
             ->with('users_id_seq')
             ->willReturn(false);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('No last insert id found');
 
         $this->manager->lastInsertId('users', 'id');
@@ -273,7 +273,7 @@ final class PgsqlManagerTest extends TestCase
             ->with('INVALID QUERY')
             ->willReturn(false);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Statement preparation has failed');
 
         $this->manager->prepare('INVALID QUERY');
@@ -308,7 +308,7 @@ final class PgsqlManagerTest extends TestCase
             ->with('INVALID QUERY')
             ->willReturn(false);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Statement query has failed');
 
         $this->manager->query('INVALID QUERY');

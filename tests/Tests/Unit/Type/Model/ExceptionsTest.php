@@ -13,40 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Throwable as PHPThrowable;
+use Throwable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Exception as ValkyrjaException;
-use Valkyrja\Type\Model\Throwable\Contract\Throwable;
-use Valkyrja\Type\Model\Throwable\Exception\Exception;
-use Valkyrja\Type\Model\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
-use Valkyrja\Type\Throwable\Contract\Throwable as TypeThrowable;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException as TypeInvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException as TypeRuntimeException;
+use Valkyrja\Type\Model\Throwable\Contract\ModelThrowable;
+use Valkyrja\Type\Model\Throwable\Exception\ModelInvalidArgumentException;
+use Valkyrja\Type\Model\Throwable\Exception\ModelRuntimeException;
+use Valkyrja\Type\Throwable\Contract\TypeThrowable;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(TypeThrowable::class, Throwable::class);
-    }
-
-    public function testException(): void
-    {
-        self::isA(Throwable::class, Exception::class);
-        self::isA(ValkyrjaException::class, Exception::class);
+        self::isA(Throwable::class, ModelThrowable::class);
+        self::isA(TypeThrowable::class, ModelThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(TypeInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(ModelThrowable::class, ModelInvalidArgumentException::class);
+        self::isA(TypeInvalidArgumentException::class, ModelInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(TypeRuntimeException::class, RuntimeException::class);
+        self::isA(ModelThrowable::class, ModelRuntimeException::class);
+        self::isA(TypeRuntimeException::class, ModelRuntimeException::class);
     }
 }

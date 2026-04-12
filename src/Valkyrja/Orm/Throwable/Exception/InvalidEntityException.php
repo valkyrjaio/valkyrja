@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-class InvalidEntityException extends InvalidArgumentException
+class InvalidEntityException extends OrmInvalidArgumentException
 {
 }

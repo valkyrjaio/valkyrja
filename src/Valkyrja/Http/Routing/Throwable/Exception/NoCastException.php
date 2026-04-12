@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Throwable\Exception;
 
-class NoCastException extends RuntimeException
+class NoCastException extends HttpRoutingRuntimeException
 {
 }

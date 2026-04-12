@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Throwable\Exception;
 
-class NoHelpTextException extends RuntimeException
+class NoHelpTextException extends CliRoutingRuntimeException
 {
 }

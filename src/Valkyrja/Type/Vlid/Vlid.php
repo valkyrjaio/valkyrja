@@ -16,8 +16,8 @@ namespace Valkyrja\Type\Vlid;
 use Override;
 use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
 use Valkyrja\Type\Vlid\Contract\VlidContract;
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
@@ -32,9 +32,9 @@ use function sprintf;
 class Vlid extends Type implements VlidContract
 {
     /**
-     * @throws InvalidArgumentException
+     * @throws TypeInvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     public function __construct(string|null $subject = null)
     {
@@ -49,15 +49,15 @@ class Vlid extends Type implements VlidContract
     /**
      * @inheritDoc
      *
-     * @throws InvalidArgumentException
+     * @throws TypeInvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     #[Override]
     public static function fromValue(mixed $value): static
     {
         if ($value !== null && ! is_string($value)) {
-            throw new InvalidArgumentException(sprintf('String or null expected value of type `%s` provided', gettype($value)));
+            throw new TypeInvalidArgumentException(sprintf('String or null expected value of type `%s` provided', gettype($value)));
         }
 
         return new static($value);

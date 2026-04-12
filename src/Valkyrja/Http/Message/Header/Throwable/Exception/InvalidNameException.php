@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
-class InvalidNameException extends InvalidArgumentException
+class InvalidNameException extends HttpHeaderInvalidArgumentException
 {
 }

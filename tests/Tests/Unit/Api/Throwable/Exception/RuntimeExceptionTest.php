@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Api\Throwable\Exception;
 
-use Valkyrja\Api\Throwable\Contract\Throwable;
-use Valkyrja\Api\Throwable\Exception\RuntimeException;
+use Valkyrja\Api\Throwable\Contract\ApiThrowable;
+use Valkyrja\Api\Throwable\Exception\ApiRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\RuntimeException as BaseRuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
 /**
  * Test the RuntimeException.
@@ -25,24 +25,24 @@ final class RuntimeExceptionTest extends TestCase
 {
     public function testImplementsThrowable(): void
     {
-        $exception = new RuntimeException();
+        $exception = new ApiRuntimeException();
 
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(ApiThrowable::class, $exception);
     }
 
     public function testExtendsBaseRuntimeException(): void
     {
-        $exception = new RuntimeException();
+        $exception = new ApiRuntimeException();
 
-        self::assertInstanceOf(BaseRuntimeException::class, $exception);
+        self::assertInstanceOf(ValkyrjaRuntimeException::class, $exception);
     }
 
     public function testCanBeThrown(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ApiRuntimeException::class);
         $this->expectExceptionMessage('Test error');
 
-        throw new RuntimeException('Test error');
+        throw new ApiRuntimeException('Test error');
     }
 
     public function testCanBeCaughtAsThrowable(): void
@@ -50,8 +50,8 @@ final class RuntimeExceptionTest extends TestCase
         $caught = false;
 
         try {
-            throw new RuntimeException('Caught as throwable');
-        } catch (Throwable) {
+            throw new ApiRuntimeException('Caught as throwable');
+        } catch (ApiThrowable) {
             $caught = true;
         }
 
@@ -60,7 +60,7 @@ final class RuntimeExceptionTest extends TestCase
 
     public function testExceptionCode(): void
     {
-        $exception = new RuntimeException('Error', 42);
+        $exception = new ApiRuntimeException('Error', 42);
 
         self::assertSame(42, $exception->getCode());
     }

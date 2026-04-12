@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Regex;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class RegexTest extends TestCase
 {
@@ -113,7 +113,7 @@ final class RegexTest extends TestCase
         $regex = '/^[0-9]+$/';
         $rule  = new Regex('abc', $regex, errorMessage: ErrorMessage::STRING_REGEX);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_REGEX);
 
         $rule->validate();
@@ -123,7 +123,7 @@ final class RegexTest extends TestCase
     {
         $rule = new Regex('abc', '/\d+/', 'Field must contain numbers');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Field must contain numbers');
 
         $rule->validate();

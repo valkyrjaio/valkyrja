@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidArgumentException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidHeaderNameException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -277,7 +277,7 @@ final class HeaderCollectionTest extends TestCase
 
     public function testFromArrayThrowsForInvalidData(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpHeaderInvalidArgumentException::class);
 
         HeaderCollection::fromArray(['invalid' => 'not-a-header']);
     }

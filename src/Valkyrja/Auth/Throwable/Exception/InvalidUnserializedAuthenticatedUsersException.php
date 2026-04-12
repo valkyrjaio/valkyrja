@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class InvalidUnserializedAuthenticatedUsersException extends InvalidArgumentException
+class InvalidUnserializedAuthenticatedUsersException extends AuthInvalidArgumentException
 {
 }

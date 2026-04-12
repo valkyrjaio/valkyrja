@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Email;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class EmailTest extends TestCase
 {
@@ -126,7 +126,7 @@ final class EmailTest extends TestCase
     {
         $rule = new Email('invalid', errorMessage: ErrorMessage::IS_EMAIL);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_EMAIL);
 
         $rule->validate();
@@ -136,7 +136,7 @@ final class EmailTest extends TestCase
     {
         $rule = new Email('bad', 'Please provide a valid email address');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Please provide a valid email address');
 
         $rule->validate();

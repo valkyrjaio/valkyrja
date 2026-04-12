@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetExcept
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Trait\Message;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
@@ -43,7 +43,7 @@ class Request implements RequestContract
     protected string|null $requestTarget = null;
 
     /**
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      */
     public function __construct(
         protected UriContract $uri = new Uri(),

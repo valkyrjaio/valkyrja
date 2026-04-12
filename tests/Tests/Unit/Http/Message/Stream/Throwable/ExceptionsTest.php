@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Stream\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\Stream\Throwable\Contract\Throwable;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidArgumentException;
+use Throwable;
+use Valkyrja\Http\Message\Stream\Throwable\Contract\HttpStreamThrowable;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidArgumentException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamRuntimeException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\RuntimeException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
@@ -25,68 +25,68 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
-use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
+use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(MessageThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpStreamThrowable::class);
+        self::isA(HttpMessageThrowable::class, HttpStreamThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(MessageInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpStreamThrowable::class, HttpStreamInvalidArgumentException::class);
+        self::isA(HttpMessageInvalidArgumentException::class, HttpStreamInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(MessageRuntimeException::class, RuntimeException::class);
+        self::isA(HttpStreamThrowable::class, HttpStreamRuntimeException::class);
+        self::isA(HttpMessageRuntimeException::class, HttpStreamRuntimeException::class);
     }
 
     public function testInvalidStreamException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidStreamException::class);
+        self::isA(HttpStreamInvalidArgumentException::class, InvalidStreamException::class);
     }
 
     public function testStreamReadException(): void
     {
-        self::isA(RuntimeException::class, StreamReadException::class);
+        self::isA(HttpStreamRuntimeException::class, StreamReadException::class);
     }
 
     public function testStreamSeekException(): void
     {
-        self::isA(RuntimeException::class, StreamSeekException::class);
+        self::isA(HttpStreamRuntimeException::class, StreamSeekException::class);
     }
 
     public function testStreamTellException(): void
     {
-        self::isA(RuntimeException::class, StreamTellException::class);
+        self::isA(HttpStreamRuntimeException::class, StreamTellException::class);
     }
 
     public function testStreamWriteException(): void
     {
-        self::isA(RuntimeException::class, StreamWriteException::class);
+        self::isA(HttpStreamRuntimeException::class, StreamWriteException::class);
     }
 
     public function testUnreadableStreamException(): void
     {
-        self::isA(RuntimeException::class, UnreadableStreamException::class);
+        self::isA(HttpStreamRuntimeException::class, UnreadableStreamException::class);
     }
 
     public function testUnseekableStreamException(): void
     {
-        self::isA(RuntimeException::class, UnseekableStreamException::class);
+        self::isA(HttpStreamRuntimeException::class, UnseekableStreamException::class);
     }
 
     public function testUnwritableStreamException(): void
     {
-        self::isA(RuntimeException::class, UnwritableStreamException::class);
+        self::isA(HttpStreamRuntimeException::class, UnwritableStreamException::class);
     }
 }

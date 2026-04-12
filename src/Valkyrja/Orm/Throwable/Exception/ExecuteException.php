@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-class ExecuteException extends RuntimeException
+class ExecuteException extends OrmRuntimeException
 {
 }

@@ -13,62 +13,62 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatch\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Dispatch\Throwable\Contract\Throwable;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
+use Throwable;
+use Valkyrja\Dispatch\Throwable\Contract\DispatchThrowable;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchRuntimeException;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidClosureException;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidFunctionException;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidMethodException;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidPropertyException;
-use Valkyrja\Dispatch\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(ValkyrjaThrowable::class, Throwable::class);
+        self::isA(Throwable::class, DispatchThrowable::class);
+        self::isA(ValkyrjaThrowable::class, DispatchThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(ThrowableInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(DispatchThrowable::class, DispatchInvalidArgumentException::class);
+        self::isA(ValkyrjaInvalidArgumentException::class, DispatchInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(ThrowableRuntimeException::class, RuntimeException::class);
+        self::isA(DispatchThrowable::class, DispatchRuntimeException::class);
+        self::isA(ValkyrjaRuntimeException::class, DispatchRuntimeException::class);
     }
 
     public function testInvalidClosureException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidClosureException::class);
+        self::isA(DispatchInvalidArgumentException::class, InvalidClosureException::class);
     }
 
     public function testInvalidDispatchCapabilityException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidDispatchCapabilityException::class);
+        self::isA(DispatchInvalidArgumentException::class, InvalidDispatchCapabilityException::class);
     }
 
     public function testInvalidFunctionException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidFunctionException::class);
+        self::isA(DispatchInvalidArgumentException::class, InvalidFunctionException::class);
     }
 
     public function testInvalidMethodException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidMethodException::class);
+        self::isA(DispatchInvalidArgumentException::class, InvalidMethodException::class);
     }
 
     public function testInvalidPropertyException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidPropertyException::class);
+        self::isA(DispatchInvalidArgumentException::class, InvalidPropertyException::class);
     }
 }

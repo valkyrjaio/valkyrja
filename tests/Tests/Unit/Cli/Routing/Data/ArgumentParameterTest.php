@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
@@ -399,7 +399,7 @@ final class ArgumentParameterTest extends TestCase
 
     public function testValidateValuesException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidArgumentException::class);
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;

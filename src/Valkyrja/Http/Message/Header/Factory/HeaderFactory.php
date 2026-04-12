@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 
 use function array_key_exists;
 use function in_array;
@@ -88,7 +88,7 @@ abstract class HeaderFactory
     /**
      * Assert a header value is valid.
      *
-     * @throws InvalidArgumentException for invalid values
+     * @throws HttpMessageInvalidArgumentException for invalid values
      */
     public static function assertValidValue(string $value): void
     {
@@ -134,7 +134,7 @@ abstract class HeaderFactory
      *
      * @see http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      *
      * @psalm-assert non-empty-string $name
      *

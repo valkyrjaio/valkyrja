@@ -20,10 +20,10 @@ use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingRuntimeException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
-use Valkyrja\Http\Routing\Throwable\Exception\RuntimeException;
 
 use function array_map;
 use function in_array;
@@ -414,6 +414,6 @@ class Collection implements CollectionContract
             return $route;
         }
 
-        throw new RuntimeException('Invalid dynamic route');
+        throw new HttpRoutingRuntimeException('Invalid dynamic route');
     }
 }

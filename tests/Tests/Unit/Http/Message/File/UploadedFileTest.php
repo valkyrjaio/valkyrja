@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidDirectoryExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;
@@ -51,7 +51,7 @@ final class UploadedFileTest extends TestCase
 
     public function testInvalidFile(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         new UploadedFile(uploadError: UploadError::OK);
     }

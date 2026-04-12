@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Api\Throwable\Exception;
 
-use Valkyrja\Api\Throwable\Contract\Throwable;
-use Valkyrja\Api\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Api\Throwable\Contract\ApiThrowable;
+use Valkyrja\Api\Throwable\Exception\ApiInvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as BaseInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
 /**
  * Test the InvalidArgumentException.
@@ -25,24 +25,24 @@ final class InvalidArgumentExceptionTest extends TestCase
 {
     public function testImplementsThrowable(): void
     {
-        $exception = new InvalidArgumentException();
+        $exception = new ApiInvalidArgumentException();
 
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(ApiThrowable::class, $exception);
     }
 
     public function testExtendsBaseInvalidArgumentException(): void
     {
-        $exception = new InvalidArgumentException();
+        $exception = new ApiInvalidArgumentException();
 
-        self::assertInstanceOf(BaseInvalidArgumentException::class, $exception);
+        self::assertInstanceOf(ValkyrjaInvalidArgumentException::class, $exception);
     }
 
     public function testCanBeThrown(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ApiInvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument');
 
-        throw new InvalidArgumentException('Invalid argument');
+        throw new ApiInvalidArgumentException('Invalid argument');
     }
 
     public function testCanBeCaughtAsThrowable(): void
@@ -50,8 +50,8 @@ final class InvalidArgumentExceptionTest extends TestCase
         $caught = false;
 
         try {
-            throw new InvalidArgumentException('Caught as throwable');
-        } catch (Throwable) {
+            throw new ApiInvalidArgumentException('Caught as throwable');
+        } catch (ApiThrowable) {
             $caught = true;
         }
 
@@ -60,7 +60,7 @@ final class InvalidArgumentExceptionTest extends TestCase
 
     public function testExceptionCode(): void
     {
-        $exception = new InvalidArgumentException('Error', 100);
+        $exception = new ApiInvalidArgumentException('Error', 100);
 
         self::assertSame(100, $exception->getCode());
     }

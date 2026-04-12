@@ -23,7 +23,7 @@ use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Throwable\Exception\RuntimeException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchRuntimeException;
 
 use function is_callable;
 
@@ -56,7 +56,7 @@ class DispatchFactory
             $reflection instanceof ReflectionFunction      => new CallableDispatch(
                 callable: is_callable($name)
                     ? $name
-                    : throw new RuntimeException('ReflectionFunction has no valid callable'),
+                    : throw new DispatchRuntimeException('ReflectionFunction has no valid callable'),
             ),
         };
     }

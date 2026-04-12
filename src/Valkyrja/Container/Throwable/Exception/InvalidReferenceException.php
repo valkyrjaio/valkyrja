@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Throwable\Exception;
 
 use Throwable;
 
-class InvalidReferenceException extends InvalidArgumentException
+class InvalidReferenceException extends ContainerInvalidArgumentException
 {
     /**
      * @param class-string $id The invalid reference class name

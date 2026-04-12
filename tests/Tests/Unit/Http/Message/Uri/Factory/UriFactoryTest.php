@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
@@ -74,7 +74,7 @@ final class UriFactoryTest extends TestCase
 
     public function testFromStringException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         UriFactory::fromString('//');
     }

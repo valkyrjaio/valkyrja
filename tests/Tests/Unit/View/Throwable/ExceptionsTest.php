@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\View\Throwable;
 
-use Throwable as PHPThrowable;
+use Throwable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as BaseThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as BaseInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as BaseRuntimeException;
-use Valkyrja\View\Throwable\Contract\Throwable;
-use Valkyrja\View\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\View\Throwable\Exception\InvalidConfigPath;
-use Valkyrja\View\Throwable\Exception\RuntimeException;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\View\Throwable\Contract\ViewThrowable;
+use Valkyrja\View\Throwable\Exception\ViewInvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
+use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
 
 /**
  * Test the View exceptions.
@@ -30,25 +30,25 @@ final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(BaseThrowable::class, Throwable::class);
+        self::isA(Throwable::class, ViewThrowable::class);
+        self::isA(ValkyrjaThrowable::class, ViewThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(BaseInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(ViewThrowable::class, ViewInvalidArgumentException::class);
+        self::isA(ValkyrjaInvalidArgumentException::class, ViewInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(BaseRuntimeException::class, RuntimeException::class);
+        self::isA(ViewThrowable::class, ViewRuntimeException::class);
+        self::isA(ValkyrjaRuntimeException::class, ViewRuntimeException::class);
     }
 
     public function testInvalidConfigPath(): void
     {
-        self::isA(Throwable::class, InvalidConfigPath::class);
-        self::isA(BaseInvalidArgumentException::class, InvalidConfigPath::class);
+        self::isA(ViewThrowable::class, ViewInvalidPathException::class);
+        self::isA(ValkyrjaInvalidArgumentException::class, ViewInvalidPathException::class);
     }
 }

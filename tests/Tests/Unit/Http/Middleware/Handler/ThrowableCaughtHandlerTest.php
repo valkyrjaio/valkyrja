@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Tests\Classes\Http\Middleware\Handler\ThrowableCaughtHandlerClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Throwable\Exception\Exception;
+use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 
 /**
  * Test the throwable caught handler.
@@ -29,7 +29,7 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $handler = new ThrowableCaughtHandlerClass($this->container);
 
@@ -47,7 +47,7 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
     {
         ThrowableCaughtMiddlewareChangedClass::resetCounter();
 
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $handler = new ThrowableCaughtHandlerClass($this->container);
 
@@ -70,7 +70,7 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
         ThrowableCaughtMiddlewareChangedClass::resetCounter();
         ThrowableCaughtMiddlewareClass::resetCounter();
 
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $handler = new ThrowableCaughtHandlerClass(
             $this->container,
@@ -97,7 +97,7 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
         ThrowableCaughtMiddlewareChangedClass::resetCounter();
         ThrowableCaughtMiddlewareClass::resetCounter();
 
-        $exception = new Exception();
+        $exception = new ValkyrjaRuntimeExceptionClass();
 
         $handler = new ThrowableCaughtHandlerClass(
             $this->container,

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uid\Throwable\Contract;
 
-use Valkyrja\Type\Throwable\Contract\Throwable;
+use Valkyrja\Type\Throwable\Contract\TypeThrowable;
 
-interface UidThrowable extends Throwable
+interface UidThrowable extends TypeThrowable
 {
 }

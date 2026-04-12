@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Throwable\Contract\Throwable;
-use Valkyrja\Http\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\RuntimeException;
+use Throwable;
+use Valkyrja\Http\Throwable\Contract\HttpThrowable;
+use Valkyrja\Http\Throwable\Exception\HttpInvalidArgumentException;
+use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(ValkyrjaThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpThrowable::class);
+        self::isA(ValkyrjaThrowable::class, HttpThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(ThrowableInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpThrowable::class, HttpInvalidArgumentException::class);
+        self::isA(ValkyrjaInvalidArgumentException::class, HttpInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(ThrowableRuntimeException::class, RuntimeException::class);
+        self::isA(HttpThrowable::class, HttpRuntimeException::class);
+        self::isA(ValkyrjaRuntimeException::class, HttpRuntimeException::class);
     }
 }

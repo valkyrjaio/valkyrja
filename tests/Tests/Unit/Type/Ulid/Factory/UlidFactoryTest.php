@@ -19,7 +19,7 @@ use InvalidArgumentException;
 use Override;
 use Valkyrja\Tests\Classes\Type\Ulid\UlidFactoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
@@ -228,7 +228,7 @@ final class UlidFactoryTest extends TestCase
     {
         UlidFactoryClass::setForceUnpackFail(true);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(TypeRuntimeException::class);
         $this->expectExceptionMessage('Random bytes failed to unpack');
 
         UlidFactoryClass::generate();

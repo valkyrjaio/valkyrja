@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Factory;
 
 use Valkyrja\Http\Message\Constant\Port;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
@@ -49,7 +49,7 @@ abstract class UriFactory
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw new InvalidArgumentException("Invalid uri `$uri` provided");
+            throw new HttpMessageInvalidArgumentException("Invalid uri `$uri` provided");
         }
 
         return new Uri(

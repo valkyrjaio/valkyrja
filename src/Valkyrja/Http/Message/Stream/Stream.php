@@ -110,7 +110,7 @@ class Stream implements StreamContract
     public function read(int $length): string
     {
         if ($length < 0) {
-            InvalidLengthException::throw("Invalid length of $length provided. Length must be greater than 0");
+            throw new InvalidLengthException("Invalid length of $length provided. Length must be greater than 0");
         }
 
         $stream = $this->resource;

@@ -114,7 +114,7 @@ abstract class StreamFactory
         // If the stream isn't writable
         if (! $stream->isWritable()) {
             // Throw a new runtime exception
-            UnwritableStreamException::throw('Stream is not writable');
+            throw new UnwritableStreamException('Stream is not writable');
         }
     }
 
@@ -130,7 +130,7 @@ abstract class StreamFactory
         // If the write was not successful
         if ($result === false) {
             // Throw a runtime exception
-            StreamWriteException::throw('Error writing to stream');
+            throw new StreamWriteException('Error writing to stream');
         }
     }
 
@@ -142,7 +142,7 @@ abstract class StreamFactory
         // If the stream isn't seekable
         if (! $stream->isSeekable()) {
             // Throw a new runtime exception
-            UnseekableStreamException::throw('Stream is not seekable');
+            throw new UnseekableStreamException('Stream is not seekable');
         }
     }
 
@@ -158,7 +158,7 @@ abstract class StreamFactory
         // If the result was not a 0, denoting an error occurred
         if ($result !== 0) {
             // Throw a new runtime exception
-            StreamSeekException::throw('Error seeking within stream');
+            throw new StreamSeekException('Error seeking within stream');
         }
     }
 
@@ -170,7 +170,7 @@ abstract class StreamFactory
         // If the stream is not readable
         if (! $stream->isReadable()) {
             // Throw a runtime exception
-            UnreadableStreamException::throw('Stream is not readable');
+            throw new UnreadableStreamException('Stream is not readable');
         }
     }
 
@@ -186,7 +186,7 @@ abstract class StreamFactory
         // If there was a failure in reading the stream
         if ($result === false) {
             // Throw a runtime exception
-            StreamReadException::throw('Error reading stream');
+            throw new StreamReadException('Error reading stream');
         }
     }
 
@@ -202,7 +202,7 @@ abstract class StreamFactory
         // If the tell is not an int
         if ($result === false) {
             // Throw a runtime exception
-            StreamTellException::throw('Error occurred during tell operation');
+            throw new StreamTellException('Error occurred during tell operation');
         }
     }
 

@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
-class UnseekableStreamException extends RuntimeException
+class UnseekableStreamException extends HttpStreamRuntimeException
 {
 }

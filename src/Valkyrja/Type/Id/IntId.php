@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Id;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Id\Contract\IntIdContract;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 
 use function is_bool;
 use function is_float;
@@ -42,7 +42,7 @@ class IntId extends Type implements IntIdContract
         return match (true) {
             is_int($value) => new static($value),
             is_string($value), is_float($value), is_bool($value) => new static((int) $value),
-            default        => throw new InvalidArgumentException('Unsupported value provided'),
+            default        => throw new TypeInvalidArgumentException('Unsupported value provided'),
         };
     }
 

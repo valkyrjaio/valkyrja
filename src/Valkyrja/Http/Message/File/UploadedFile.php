@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 
 use function dirname;
 use function fclose;
@@ -52,7 +52,7 @@ class UploadedFile implements UploadedFileContract
      * @param StreamContract|null $stream      [optional] The stream if not passed file is required
      * @param UploadError         $uploadError [optional] The upload error
      *
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      */
     public function __construct(
         protected string|null $file = null,

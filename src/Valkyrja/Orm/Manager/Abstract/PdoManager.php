@@ -23,7 +23,7 @@ use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
 
 use function is_bool;
 use function is_string;
@@ -104,7 +104,7 @@ abstract class PdoManager implements ManagerContract
         $statement = $this->pdo->prepare($query);
 
         if (is_bool($statement)) {
-            throw new RuntimeException('Statement preparation has failed');
+            throw new OrmRuntimeException('Statement preparation has failed');
         }
 
         return new PdoStatement(statement: $statement);
@@ -119,7 +119,7 @@ abstract class PdoManager implements ManagerContract
         $statement = $this->pdo->prepare($query);
 
         if (is_bool($statement)) {
-            throw new RuntimeException('Statement query has failed');
+            throw new OrmRuntimeException('Statement query has failed');
         }
 
         return new PdoStatement(statement: $statement);
@@ -154,6 +154,6 @@ abstract class PdoManager implements ManagerContract
 
         return is_string($lastInsertId)
             ? $lastInsertId
-            : throw new RuntimeException('No last insert id found');
+            : throw new OrmRuntimeException('No last insert id found');
     }
 }

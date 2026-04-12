@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-class HttpException extends RuntimeException
+class HttpException extends HttpMessageRuntimeException
 {
     /**
      * The status code for this exception.

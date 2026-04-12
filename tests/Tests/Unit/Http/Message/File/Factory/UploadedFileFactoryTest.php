@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\File\Factory;
 
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\UploadedFile;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UploadedFileFactoryTest extends TestCase
@@ -39,7 +39,7 @@ final class UploadedFileFactoryTest extends TestCase
 
     public function testNormalizeFilesSingleUploadInvalidTmpName(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         $files = [
             'avatar' => [
@@ -204,7 +204,7 @@ final class UploadedFileFactoryTest extends TestCase
 
     public function testNormalizeFilesInvalid(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         UploadedFileFactory::normalizeFiles([
             [
@@ -215,7 +215,7 @@ final class UploadedFileFactoryTest extends TestCase
 
     public function testNormalizeNestedFileSpecInvalid(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         UploadedFileFactory::normalizeNestedFileSpec([
             [

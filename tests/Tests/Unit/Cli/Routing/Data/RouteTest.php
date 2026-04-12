@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
@@ -920,7 +920,7 @@ final class RouteTest extends TestCase
 
     public function testHelpTextWithClosureThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidArgumentException::class);
         $this->expectExceptionMessage('Help text must be a callable array');
 
         new Route(

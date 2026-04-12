@@ -20,7 +20,7 @@ use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
 /**
  * Test the ProvidersAware support class.
@@ -129,7 +129,7 @@ final class ProvidersAwareTest extends TestCase
 
     public function testRegisterDeferredInvalidCallable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValkyrjaInvalidArgumentException::class);
 
         $providersAware = new ProvidersAwareClass();
 

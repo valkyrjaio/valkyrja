@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
-class InvalidUploadedFileException extends InvalidArgumentException
+class InvalidUploadedFileException extends UploadedFileInvalidArgumentException
 {
 }

@@ -25,10 +25,10 @@ use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingRuntimeException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
-use Valkyrja\Http\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Http\Routing\Collection\CollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -587,7 +587,7 @@ final class CollectionTest extends TestCase
 
     public function testGetDynamicRouteFromName(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(HttpRoutingRuntimeException::class);
         $this->expectExceptionMessage('Invalid dynamic route');
 
         $collection = new CollectionClass();

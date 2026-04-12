@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class NoCurrentUserException extends RuntimeException
+class NoCurrentUserException extends AuthRuntimeException
 {
 }

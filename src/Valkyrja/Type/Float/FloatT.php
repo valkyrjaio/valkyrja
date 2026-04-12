@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Float;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Float\Contract\FloatContract;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 
 use function is_array;
 use function is_bool;
@@ -44,7 +44,7 @@ class FloatT extends Type implements FloatContract
             is_float($value) => new static($value),
             is_string($value), is_int($value), is_bool($value) => new static((float) $value),
             is_array($value) => new static($value !== [] ? 1.0 : 0.0),
-            default          => throw new InvalidArgumentException('Unsupported value provided'),
+            default          => throw new TypeInvalidArgumentException('Unsupported value provided'),
         };
     }
 

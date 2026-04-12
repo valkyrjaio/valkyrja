@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\File\Collection;
 use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidKeyException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UploadedFileCollectionTest extends TestCase
@@ -172,7 +172,7 @@ final class UploadedFileCollectionTest extends TestCase
 
     public function testWithFilesThrowsForInvalidFile(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UploadedFileInvalidArgumentException::class);
 
         /* @phpstan-ignore-next-line */
         $this->fileData->with(['invalid' => 'not-a-file']);
@@ -226,7 +226,7 @@ final class UploadedFileCollectionTest extends TestCase
 
     public function testFromArrayThrowsForInvalidData(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UploadedFileInvalidArgumentException::class);
 
         UploadedFileCollection::fromArray(['invalid' => 'not-a-file']);
     }

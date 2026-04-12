@@ -22,7 +22,7 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
@@ -486,7 +486,7 @@ class Route implements RouteContract
     protected function validateHelpText(callable|null $helpText = null): void
     {
         if ($helpText !== null && ! is_array($helpText)) {
-            throw new InvalidArgumentException('Help text must be a callable array');
+            throw new CliRoutingInvalidArgumentException('Help text must be a callable array');
         }
     }
 

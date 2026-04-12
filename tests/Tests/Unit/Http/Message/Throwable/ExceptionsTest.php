@@ -13,41 +13,40 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\Throwable\Contract\Throwable;
+use Throwable;
+use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Throwable\Exception\NotFoundHttpException;
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Throwable\Contract\Throwable as HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
+use Valkyrja\Http\Throwable\Contract\HttpThrowable;
+use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(HttpThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpMessageThrowable::class);
+        self::isA(HttpThrowable::class, HttpMessageThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(HttpInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpMessageThrowable::class, HttpMessageInvalidArgumentException::class);
+        self::isA(HttpMessageInvalidArgumentException::class, HttpMessageInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(HttpRuntimeException::class, RuntimeException::class);
+        self::isA(HttpMessageThrowable::class, HttpMessageRuntimeException::class);
+        self::isA(HttpRuntimeException::class, HttpMessageRuntimeException::class);
     }
 
     public function testHttpException(): void
     {
-        self::isA(RuntimeException::class, HttpException::class);
+        self::isA(HttpRuntimeException::class, HttpException::class);
     }
 
     public function testHttpRedirectException(): void

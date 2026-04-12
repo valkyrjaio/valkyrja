@@ -13,32 +13,31 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Middleware\Throwable\Contract\Throwable;
-use Valkyrja\Http\Middleware\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Middleware\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Throwable\Contract\Throwable as HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
+use Throwable;
+use Valkyrja\Http\Middleware\Throwable\Contract\HttpMiddlewareThrowable;
+use Valkyrja\Http\Middleware\Throwable\Exception\HttpMiddlewareInvalidArgumentException;
+use Valkyrja\Http\Middleware\Throwable\Exception\HttpMiddlewareRuntimeException;
+use Valkyrja\Http\Throwable\Contract\HttpThrowable;
+use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(HttpThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpMiddlewareThrowable::class);
+        self::isA(HttpThrowable::class, HttpMiddlewareThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(HttpInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpMiddlewareThrowable::class, HttpMiddlewareInvalidArgumentException::class);
+        self::isA(HttpMiddlewareInvalidArgumentException::class, HttpMiddlewareInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(HttpRuntimeException::class, RuntimeException::class);
+        self::isA(HttpMiddlewareThrowable::class, HttpMiddlewareRuntimeException::class);
+        self::isA(HttpRuntimeException::class, HttpMiddlewareRuntimeException::class);
     }
 }

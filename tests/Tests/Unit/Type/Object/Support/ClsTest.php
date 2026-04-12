@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Object\Support;
 use stdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\Support\Cls;
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectPropertyProvidedException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectProvidedException;
 
 final class ClsTest extends TestCase
 {
@@ -25,7 +25,7 @@ final class ClsTest extends TestCase
 
     public function testValidateInherits(): void
     {
-        $this->expectException(InvalidClassProvidedException::class);
+        $this->expectException(InvalidObjectProvidedException::class);
 
         Cls::validateInherits(self::class, stdClass::class);
     }
@@ -38,7 +38,7 @@ final class ClsTest extends TestCase
 
     public function testValidateHasProperty(): void
     {
-        $this->expectException(InvalidClassPropertyProvidedException::class);
+        $this->expectException(InvalidObjectPropertyProvidedException::class);
 
         Cls::validateHasProperty(self::class, 'test');
     }

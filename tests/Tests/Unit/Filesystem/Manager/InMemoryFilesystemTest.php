@@ -20,7 +20,7 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\RuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
 use function fclose;
 use function fopen;
@@ -111,7 +111,7 @@ final class InMemoryFilesystemTest extends TestCase
 
         $resource = fopen('php://memory', 'r+');
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ValkyrjaRuntimeException::class);
         $this->expectExceptionMessage('Failed to read provided resource');
 
         try {

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Object\Support;
 
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectPropertyProvidedException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectProvidedException;
 use Valkyrja\Type\String\Factory\StringFactory;
 
 use function explode;
@@ -28,12 +28,12 @@ class Cls
      * @param class-string $object   The object name to check
      * @param class-string $inherits The inherits class name
      *
-     * @throws InvalidClassProvidedException
+     * @throws InvalidObjectProvidedException
      */
     public static function validateInherits(string $object, string $inherits): void
     {
         if (! static::inherits($object, $inherits)) {
-            throw new InvalidClassProvidedException("Expected $inherits got $object");
+            throw new InvalidObjectProvidedException("Expected $inherits got $object");
         }
     }
 
@@ -54,12 +54,12 @@ class Cls
      * @param class-string|string $object   The object name to validate
      * @param string              $property The property name
      *
-     * @throws InvalidClassProvidedException
+     * @throws InvalidObjectProvidedException
      */
     public static function validateHasProperty(string $object, string $property): void
     {
         if (! static::hasProperty($object, $property)) {
-            throw new InvalidClassPropertyProvidedException("$property does not exist in $object");
+            throw new InvalidObjectPropertyProvidedException("$property does not exist in $object");
         }
     }
 

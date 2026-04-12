@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 use Valkyrja\Http\Message\File\Enum\UploadError;
-use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
+use Valkyrja\Http\Message\File\Throwable\Contract\UploadedFileThrowable;
 use Valkyrja\Http\Message\File\Throwable\Exception\Constant\UploadErrorExceptionMessage;
 
-class UploadErrorException extends RuntimeException
+class UploadErrorException extends UploadedFileRuntimeException
 {
-    public function __construct(UploadError $uploadError, int $code = 0, Throwable|null $previous = null)
+    public function __construct(UploadError $uploadError, int $code = 0, UploadedFileThrowable|null $previous = null)
     {
         $message = match ($uploadError) {
             UploadError::FORM_SIZE  => UploadErrorExceptionMessage::FORM_SIZE_MESSAGE,
@@ -29,7 +29,7 @@ class UploadErrorException extends RuntimeException
             UploadError::NO_TMP_DIR => UploadErrorExceptionMessage::NO_TMP_DIR_MESSAGE,
             UploadError::CANT_WRITE => UploadErrorExceptionMessage::CANT_WRITE_MESSAGE,
             UploadError::EXTENSION  => UploadErrorExceptionMessage::EXTENSION_MESSAGE,
-            UploadError::OK         => throw new InvalidArgumentException(UploadErrorExceptionMessage::OK_MESSAGE),
+            UploadError::OK         => throw new UploadedFileInvalidArgumentException(UploadErrorExceptionMessage::OK_MESSAGE),
         };
 
         parent::__construct($message, $code, $previous);

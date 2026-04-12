@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
-class MoveFailureException extends RuntimeException
+class MoveFailureException extends UploadedFileRuntimeException
 {
 }

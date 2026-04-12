@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -59,28 +59,28 @@ final class MethodDispatchTest extends TestCase
 
     public function testFromCallableOrArrayInvalidArrayCallable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchInvalidArgumentException::class);
 
         MethodDispatch::fromCallableOrArray('str_replace');
     }
 
     public function testFromCallableOrArrayEmpty(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchInvalidArgumentException::class);
 
         MethodDispatch::fromCallableOrArray([]);
     }
 
     public function testFromCallableOrArrayInvalidArrayClassNotString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchInvalidArgumentException::class);
 
         MethodDispatch::fromCallableOrArray([new stdClass()]);
     }
 
     public function testFromCallableOrArrayInvalidArrayMissingMethod(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchInvalidArgumentException::class);
 
         MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class]);
     }

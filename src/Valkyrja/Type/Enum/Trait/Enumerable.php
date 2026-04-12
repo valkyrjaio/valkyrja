@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Enum\Trait;
 
 use BackedEnum;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
 
 use function is_int;
 use function is_string;
@@ -47,7 +47,7 @@ trait Enumerable
     protected static function validateValue(mixed $value): void
     {
         if (! is_string($value) && ! is_int($value)) {
-            throw new InvalidArgumentException('Invalid value provided for enum ' . static::class);
+            throw new TypeInvalidArgumentException('Invalid value provided for enum ' . static::class);
         }
     }
 
@@ -80,7 +80,7 @@ trait Enumerable
             }
         }
 
-        throw new InvalidArgumentException('Invalid value provided for enum ' . static::class);
+        throw new TypeInvalidArgumentException('Invalid value provided for enum ' . static::class);
     }
 
     /**
@@ -115,7 +115,7 @@ trait Enumerable
      */
     public function modify(callable $closure): static
     {
-        throw new RuntimeException('Cannot modify an enum.');
+        throw new TypeRuntimeException('Cannot modify an enum.');
     }
 
     /**

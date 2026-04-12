@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Uuid;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Uuid\Contract\UuidV3Contract;
 use Valkyrja\Type\Uuid\Factory\UuidV3Factory;
@@ -48,7 +48,7 @@ class UuidV3 extends Type implements UuidV3Contract
     public static function fromValue(mixed $value): static
     {
         if (! is_string($value)) {
-            throw new InvalidArgumentException(sprintf('String expected value of type `%s` provided', gettype($value)));
+            throw new TypeInvalidArgumentException(sprintf('String expected value of type `%s` provided', gettype($value)));
         }
 
         return new static($value);

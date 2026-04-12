@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\View\Renderer;
 
 use Override;
-use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Template\Template;
-use Valkyrja\View\Throwable\Exception\InvalidConfigPath;
+use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
+use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
 
 use function explode;
 use function extract;
@@ -60,7 +60,7 @@ class PhpRenderer implements RendererContract
         $obClean = $this->obGetClean();
 
         if ($obClean === false) {
-            throw new RuntimeException('Render failed');
+            throw new ViewRuntimeException('Render failed');
         }
 
         return $obClean;
@@ -137,7 +137,7 @@ class PhpRenderer implements RendererContract
             return;
         }
 
-        throw new RuntimeException("Path does not exist at $path");
+        throw new ViewRuntimeException("Path does not exist at $path");
     }
 
     /**
@@ -145,7 +145,7 @@ class PhpRenderer implements RendererContract
      *
      * @param string $template The template
      *
-     * @throws InvalidConfigPath
+     * @throws ViewInvalidPathException
      */
     protected function getFullPath(string $template): string
     {
@@ -158,7 +158,7 @@ class PhpRenderer implements RendererContract
             // If there is no path
             if ($path === null) {
                 // Then throw an exception
-                throw new InvalidConfigPath(
+                throw new ViewInvalidPathException(
                     'Invalid path '
                     . $parts[0]
                     . ' specified for template '

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Throwable\Handler\Abstract;
 
+use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Exception;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
 
 /**
@@ -24,9 +24,9 @@ final class ThrowableHandlerTest extends TestCase
 {
     public function testGetTraceCode(): void
     {
-        $exception  = new Exception();
-        $exception2 = new Exception();
-        $exception3 = new Exception('Custom message');
+        $exception  = new ValkyrjaRuntimeExceptionClass();
+        $exception2 = new ValkyrjaRuntimeExceptionClass();
+        $exception3 = new ValkyrjaRuntimeExceptionClass('Custom message');
 
         $traceCode  = ThrowableHandler::getTraceCode($exception);
         $traceCode2 = ThrowableHandler::getTraceCode($exception2);

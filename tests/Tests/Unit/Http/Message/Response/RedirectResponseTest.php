@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Header\Referer;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\RedirectResponse;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -177,7 +177,7 @@ final class RedirectResponseTest extends TestCase
     #[DataProvider('invalidStatusCodesProvider')]
     public function testExceptionForNonRedirectStatusCode(StatusCode $code): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         new RedirectResponse(
             new Uri(path: '/'),

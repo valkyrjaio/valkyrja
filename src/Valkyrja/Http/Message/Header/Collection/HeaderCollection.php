@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Header\Collection;
 use Override;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidArgumentException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidHeaderNameException;
 
 use function in_array;
@@ -75,7 +75,7 @@ class HeaderCollection implements HeaderCollectionContract
     protected static function validateHeader(mixed $param): void
     {
         if (! $param instanceof HeaderContract) {
-            throw new InvalidArgumentException('Param must be header');
+            throw new HttpHeaderInvalidArgumentException('Param must be header');
         }
     }
 
@@ -269,7 +269,7 @@ class HeaderCollection implements HeaderCollectionContract
      *
      * @param HeaderContract ...$originalHeaders The original headers
      *
-     * @throws InvalidArgumentException
+     * @throws HttpHeaderInvalidArgumentException
      */
     protected function setHeaders(HeaderContract ...$originalHeaders): void
     {

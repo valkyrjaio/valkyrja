@@ -13,35 +13,35 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Log\Throwable;
 
-use InvalidArgumentException as PhpInvalidArgumentException;
-use RuntimeException as PhpRuntimeException;
-use Throwable as PhpThrowable;
-use Valkyrja\Log\Throwable\Contract\Throwable;
-use Valkyrja\Log\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Log\Throwable\Exception\RuntimeException;
+use InvalidArgumentException;
+use RuntimeException;
+use Throwable;
+use Valkyrja\Log\Throwable\Contract\LogThrowable;
+use Valkyrja\Log\Throwable\Exception\LogInvalidArgumentException;
+use Valkyrja\Log\Throwable\Exception\LogRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(Throwable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(is_a(LogThrowable::class, ValkyrjaThrowable::class, true));
     }
 
     public function testInvalidArgumentExceptionImplementsThrowable(): void
     {
-        $exception = new InvalidArgumentException('Invalid argument');
+        $exception = new LogInvalidArgumentException('Invalid argument');
 
+        self::assertInstanceOf(LogThrowable::class, $exception);
         self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-        self::assertInstanceOf(PhpInvalidArgumentException::class, $exception);
+        self::assertInstanceOf(InvalidArgumentException::class, $exception);
     }
 
     public function testInvalidArgumentExceptionMessage(): void
     {
         $message   = 'Invalid log level provided';
-        $exception = new InvalidArgumentException($message);
+        $exception = new LogInvalidArgumentException($message);
 
         self::assertSame($message, $exception->getMessage());
     }
@@ -49,32 +49,32 @@ final class ExceptionsTest extends TestCase
     public function testInvalidArgumentExceptionCode(): void
     {
         $code      = 400;
-        $exception = new InvalidArgumentException('Error', $code);
+        $exception = new LogInvalidArgumentException('Error', $code);
 
         self::assertSame($code, $exception->getCode());
     }
 
     public function testInvalidArgumentExceptionCanBeThrown(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(LogInvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid log level');
 
-        throw new InvalidArgumentException('Invalid log level');
+        throw new LogInvalidArgumentException('Invalid log level');
     }
 
     public function testRuntimeExceptionImplementsThrowable(): void
     {
-        $exception = new RuntimeException('Runtime error');
+        $exception = new LogRuntimeException('Runtime error');
 
+        self::assertInstanceOf(LogThrowable::class, $exception);
         self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-        self::assertInstanceOf(PhpRuntimeException::class, $exception);
+        self::assertInstanceOf(RuntimeException::class, $exception);
     }
 
     public function testRuntimeExceptionMessage(): void
     {
         $message   = 'Failed to write to log file';
-        $exception = new RuntimeException($message);
+        $exception = new LogRuntimeException($message);
 
         self::assertSame($message, $exception->getMessage());
     }
@@ -82,29 +82,29 @@ final class ExceptionsTest extends TestCase
     public function testRuntimeExceptionCode(): void
     {
         $code      = 500;
-        $exception = new RuntimeException('Error', $code);
+        $exception = new LogRuntimeException('Error', $code);
 
         self::assertSame($code, $exception->getCode());
     }
 
     public function testRuntimeExceptionCanBeThrown(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(LogRuntimeException::class);
         $this->expectExceptionMessage('Log operation failed');
 
-        throw new RuntimeException('Log operation failed');
+        throw new LogRuntimeException('Log operation failed');
     }
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(InvalidArgumentException::class, Throwable::class, true));
-        self::assertTrue(is_a(RuntimeException::class, Throwable::class, true));
+        self::assertTrue(is_a(LogInvalidArgumentException::class, LogThrowable::class, true));
+        self::assertTrue(is_a(LogRuntimeException::class, LogThrowable::class, true));
     }
 
     public function testExceptionWithPreviousException(): void
     {
-        $previous  = new PhpRuntimeException('Previous error');
-        $exception = new RuntimeException('Log error', 0, $previous);
+        $previous  = new RuntimeException('Previous error');
+        $exception = new LogRuntimeException('Log error', 0, $previous);
 
         self::assertSame($previous, $exception->getPrevious());
     }

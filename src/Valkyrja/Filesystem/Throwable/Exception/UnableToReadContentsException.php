@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Throwable\Exception;
 
-class UnableToReadContentsException extends RuntimeException
+class UnableToReadContentsException extends FilesystemRuntimeException
 {
 }

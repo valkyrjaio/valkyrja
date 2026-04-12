@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uid\Throwable\Exception;
 
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 use Valkyrja\Type\Uid\Throwable\Contract\UidThrowable;
 
-class InvalidUidException extends InvalidArgumentException implements UidThrowable
+class InvalidUidException extends TypeInvalidArgumentException implements UidThrowable
 {
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\Validation\Rule\Abstract;
 
 use Override;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 abstract class Rule implements RuleContract
 {
@@ -53,6 +53,6 @@ abstract class Rule implements RuleContract
      */
     protected function getException(): void
     {
-        throw new ValidationException($this->errorMessage);
+        throw new ValidationRuleException($this->errorMessage);
     }
 }

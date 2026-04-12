@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Id\Contract\StringIdContract;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 
 use function is_float;
 use function is_int;
@@ -44,7 +44,7 @@ class StringId extends Type implements StringIdContract
         return match (true) {
             is_string($value) => new static($value),
             is_int($value), is_float($value) => new static((string) $value),
-            default           => throw new InvalidArgumentException('Unsupported value provided'),
+            default           => throw new TypeInvalidArgumentException('Unsupported value provided'),
         };
     }
 

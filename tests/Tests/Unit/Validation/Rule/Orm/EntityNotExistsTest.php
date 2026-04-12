@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Orm\EntityNotExists;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class EntityNotExistsTest extends TestCase
 {
@@ -124,7 +124,7 @@ final class EntityNotExistsTest extends TestCase
 
         $rule = new EntityNotExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_NOT_EXISTS, entity: EntityClass::class);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::ENTITY_NOT_EXISTS);
 
         $rule->validate();
@@ -145,7 +145,7 @@ final class EntityNotExistsTest extends TestCase
 
         $rule = new EntityNotExists($this->orm, subject: 'taken@example.com', errorMessage: 'Email already in use', entity: EntityClass::class);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Email already in use');
 
         $rule->validate();

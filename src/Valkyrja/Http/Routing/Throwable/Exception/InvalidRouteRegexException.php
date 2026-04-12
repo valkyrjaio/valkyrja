@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Throwable\Exception;
 
-class InvalidRouteRegexException extends InvalidArgumentException
+class InvalidRouteRegexException extends HttpRoutingInvalidArgumentException
 {
 }

@@ -20,7 +20,7 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
 
 use function is_array;
 use function is_bool;
@@ -84,7 +84,7 @@ class PdoStatement implements StatementContract
         $columnMeta = $this->statement->getColumnMeta($columnNumber);
 
         if ($columnMeta === false) {
-            throw new RuntimeException(
+            throw new OrmRuntimeException(
                 $this->hasError()
                     ? $this->getErrorMessage()
                     : "Error occurred when getting column meta for column number $columnNumber"
@@ -104,7 +104,7 @@ class PdoStatement implements StatementContract
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         if (! is_array($fetch)) {
-            throw new RuntimeException(
+            throw new OrmRuntimeException(
                 $this->hasError()
                     ? $this->getErrorMessage()
                     : 'Error occurred when fetching'
@@ -199,7 +199,7 @@ class PdoStatement implements StatementContract
             return (int) $count;
         }
 
-        throw new RuntimeException('Unsupported count results');
+        throw new OrmRuntimeException('Unsupported count results');
     }
 
     /**

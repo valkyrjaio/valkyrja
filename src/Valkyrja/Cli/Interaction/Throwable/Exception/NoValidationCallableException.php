@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
-class NoValidationCallableException extends RuntimeException
+class NoValidationCallableException extends CliInteractionRuntimeException
 {
 }

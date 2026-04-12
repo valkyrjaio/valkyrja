@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class InvalidPasswordConfirmationException extends InvalidArgumentException
+class InvalidPasswordConfirmationException extends AuthInvalidArgumentException
 {
 }

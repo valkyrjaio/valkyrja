@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
-class NoFormatterException extends RuntimeException
+class NoFormatterException extends CliInteractionRuntimeException
 {
 }

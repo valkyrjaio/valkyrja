@@ -20,7 +20,7 @@ use Valkyrja\Tests\Classes\Type\Object\Support\ObjectFactoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Object\Factory\ObjectFactory;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
 
 use function serialize;
 
@@ -53,7 +53,7 @@ final class ObjectFactoryTest extends TestCase
      */
     public function testFromStringInvalidString(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(TypeRuntimeException::class);
 
         ObjectFactory::fromString('"validbutnotobject"');
     }
@@ -79,7 +79,7 @@ final class ObjectFactoryTest extends TestCase
 
     public function testFromSerializedStringNotObject(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(TypeRuntimeException::class);
 
         $serialized = serialize('validstring');
 

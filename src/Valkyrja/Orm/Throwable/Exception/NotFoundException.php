@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-class NotFoundException extends RuntimeException
+class NotFoundException extends OrmRuntimeException
 {
 }

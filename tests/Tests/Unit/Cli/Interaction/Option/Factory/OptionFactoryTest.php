@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Option\Factory;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Factory\OptionFactory;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidArgumentException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -25,7 +25,7 @@ final class OptionFactoryTest extends TestCase
 {
     public function testFromArgInvalidArg(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliInteractionInvalidArgumentException::class);
 
         $arg = 'value';
 
@@ -115,7 +115,7 @@ final class OptionFactoryTest extends TestCase
 
     public function testFromArgMultipleShortOptionsWithValueException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliInteractionInvalidArgumentException::class);
 
         $value3 = '-vwf=value';
 
@@ -124,7 +124,7 @@ final class OptionFactoryTest extends TestCase
 
     public function testFromArgEmptyOptionNameException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliInteractionInvalidArgumentException::class);
         $this->expectExceptionMessage('Option name cannot be empty');
 
         OptionFactory::fromArg(arg: '-');

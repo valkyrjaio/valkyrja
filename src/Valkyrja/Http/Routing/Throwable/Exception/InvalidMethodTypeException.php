@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Throwable\Exception;
 
-class InvalidMethodTypeException extends InvalidArgumentException
+class InvalidMethodTypeException extends HttpRoutingInvalidArgumentException
 {
 }

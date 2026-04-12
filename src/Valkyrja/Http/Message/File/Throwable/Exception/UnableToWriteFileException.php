@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
-class UnableToWriteFileException extends RuntimeException
+class UnableToWriteFileException extends UploadedFileRuntimeException
 {
 }

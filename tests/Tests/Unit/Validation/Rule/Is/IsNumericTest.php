@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class IsNumericTest extends TestCase
 {
@@ -119,7 +119,7 @@ final class IsNumericTest extends TestCase
     {
         $rule = new IsNumeric('hello', errorMessage: ErrorMessage::IS_NUMERIC);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_NUMERIC);
 
         $rule->validate();
@@ -129,7 +129,7 @@ final class IsNumericTest extends TestCase
     {
         $rule = new IsNumeric('abc', 'Field must be numeric');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Field must be numeric');
 
         $rule->validate();

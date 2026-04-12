@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
-class StreamTellException extends RuntimeException
+class StreamTellException extends HttpStreamRuntimeException
 {
 }

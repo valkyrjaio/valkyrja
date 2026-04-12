@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Throwable\Exception;
 
-class InvalidArgumentNameException extends InvalidArgumentException
+class InvalidArgumentNameException extends CliRoutingInvalidArgumentException
 {
 }

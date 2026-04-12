@@ -18,7 +18,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Template\Template;
-use Valkyrja\View\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\View\Throwable\Exception\ViewInvalidArgumentException;
 
 /**
  * Test the Template class.
@@ -506,7 +506,7 @@ final class TemplateTest extends TestCase
             }
         };
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ViewInvalidArgumentException::class);
         $this->expectExceptionMessage('Error occurred when encoding `test`');
 
         $template->escape('test');

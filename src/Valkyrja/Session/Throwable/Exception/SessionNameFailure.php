@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Throwable\Exception;
 
-class SessionNameFailure extends RuntimeException
+class SessionNameFailure extends SessionRuntimeException
 {
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\View\Renderer;
 
 use Override;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
-use Valkyrja\View\Throwable\Exception\RuntimeException;
+use Valkyrja\View\Throwable\Exception\ViewRuntimeException;
 
 use function file_get_contents;
 use function file_put_contents;
@@ -63,7 +63,7 @@ class OrkaRenderer extends PhpRenderer
             $fileContents = $this->getFileContents($this->getFullPath($name));
 
             if ($fileContents === false) {
-                throw new RuntimeException("Contents for file $name could not be retrieved");
+                throw new ViewRuntimeException("Contents for file $name could not be retrieved");
             }
 
             $contents = $this->parseContent($fileContents);

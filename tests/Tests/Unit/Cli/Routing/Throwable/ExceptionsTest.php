@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Cli\Routing\Throwable\Contract\Throwable;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
-use Valkyrja\Cli\Throwable\Contract\Throwable as CliThrowable;
-use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
-use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
+use Throwable;
+use Valkyrja\Cli\Routing\Throwable\Contract\CliRoutingThrowable;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingRuntimeException;
+use Valkyrja\Cli\Throwable\Contract\CliThrowable;
+use Valkyrja\Cli\Throwable\Exception\CliInvalidArgumentException;
+use Valkyrja\Cli\Throwable\Exception\CliRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(CliThrowable::class, Throwable::class);
+        self::isA(Throwable::class, CliRoutingThrowable::class);
+        self::isA(CliThrowable::class, CliRoutingThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(CliInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(CliRoutingThrowable::class, CliRoutingInvalidArgumentException::class);
+        self::isA(CliInvalidArgumentException::class, CliRoutingInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(CliRuntimeException::class, RuntimeException::class);
+        self::isA(CliRoutingThrowable::class, CliRoutingRuntimeException::class);
+        self::isA(CliRuntimeException::class, CliRoutingRuntimeException::class);
     }
 }

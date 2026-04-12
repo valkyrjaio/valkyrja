@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Struct\Contract\StructContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
-use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Struct\Throwable\Exception\HttpStructInvalidArgumentException;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedQueryRequestStructEnum;
@@ -268,7 +268,7 @@ final class RequestStructTest extends TestCase
 
     public function testJsonRequestStructException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpStructInvalidArgumentException::class);
 
         $request = new ServerRequest();
 

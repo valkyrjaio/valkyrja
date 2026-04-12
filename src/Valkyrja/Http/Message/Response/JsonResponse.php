@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 use function explode;
@@ -42,7 +42,7 @@ class JsonResponse extends Response implements JsonResponseContract
      * @param array<array-key, mixed> $data            [optional] The data
      * @param int                     $encodingOptions [optional] The encoding options
      *
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      * @throws RuntimeException
      * @throws InvalidStreamException
      * @throws JsonException
@@ -162,7 +162,7 @@ class JsonResponse extends Response implements JsonResponseContract
 
         foreach (explode('.', $callback) as $part) {
             if (! preg_match($pattern, $part)) {
-                throw new InvalidArgumentException(
+                throw new HttpMessageInvalidArgumentException(
                     'The callback name is not valid.'
                 );
             }

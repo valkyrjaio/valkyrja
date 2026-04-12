@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
 use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
@@ -720,7 +720,7 @@ final class OptionParameterTest extends TestCase
 
     public function testInvalidOptionsWithValues(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidArgumentException::class);
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
@@ -756,7 +756,7 @@ final class OptionParameterTest extends TestCase
 
     public function testInvalidWithAddedOptionsWithValues(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidArgumentException::class);
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
@@ -867,7 +867,7 @@ final class OptionParameterTest extends TestCase
 
     public function testValidateValuesException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidArgumentException::class);
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;

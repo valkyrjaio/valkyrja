@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Type\Array;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\NonEmptyArray;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
 
 final class NonEmptyArrayTest extends TestCase
 {
     public function testEmptyArrayThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeInvalidArgumentException::class);
 
         new NonEmptyArray([]);
     }

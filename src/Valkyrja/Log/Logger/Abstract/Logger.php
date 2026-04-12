@@ -17,7 +17,7 @@ use Override;
 use Stringable;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Log\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Log\Throwable\Exception\LogInvalidArgumentException;
 
 abstract class Logger implements LoggerContract
 {
@@ -28,7 +28,7 @@ abstract class Logger implements LoggerContract
     public function log($level, string|Stringable $message, array $context = []): void
     {
         if (! $level instanceof LogLevel) {
-            throw new InvalidArgumentException('Invalid log level passed. Expecting instance of' . LogLevel::class);
+            throw new LogInvalidArgumentException('Invalid log level passed. Expecting instance of' . LogLevel::class);
         }
 
         match ($level) {

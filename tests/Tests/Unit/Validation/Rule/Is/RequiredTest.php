@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Required;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class RequiredTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class RequiredTest extends TestCase
     {
         $rule = new Required('', errorMessage: ErrorMessage::REQUIRED);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::REQUIRED);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class RequiredTest extends TestCase
     {
         $rule = new Required('', 'Field is required');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Field is required');
 
         $rule->validate();

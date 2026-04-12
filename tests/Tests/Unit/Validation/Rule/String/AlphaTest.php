@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Alpha;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class AlphaTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class AlphaTest extends TestCase
     {
         $rule = new Alpha('hello123', errorMessage: ErrorMessage::STRING_ALPHA);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_ALPHA);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class AlphaTest extends TestCase
     {
         $rule = new Alpha('abc123', 'Only letters allowed');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Only letters allowed');
 
         $rule->validate();

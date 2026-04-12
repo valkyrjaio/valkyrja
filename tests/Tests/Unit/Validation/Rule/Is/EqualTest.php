@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\Equal;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleException;
 
 final class EqualTest extends TestCase
 {
@@ -106,7 +106,7 @@ final class EqualTest extends TestCase
     {
         $rule = new Equal('foo', 'bar', errorMessage: ErrorMessage::IS_EMAIL);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_EMAIL);
 
         $rule->validate();
@@ -116,7 +116,7 @@ final class EqualTest extends TestCase
     {
         $rule = new Equal('a', 'b', 'Values must match');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleException::class);
         $this->expectExceptionMessage('Values must match');
 
         $rule->validate();

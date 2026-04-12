@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Throwable\Exception;
 
-class InvalidRequestTargetException extends InvalidArgumentException
+class InvalidRequestTargetException extends RequestInvalidArgumentException
 {
 }

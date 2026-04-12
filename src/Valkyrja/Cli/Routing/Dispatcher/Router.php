@@ -36,7 +36,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingRuntimeException;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
@@ -118,7 +118,7 @@ class Router implements RouterContract
         );
 
         if (! $output instanceof OutputContract) {
-            throw new RuntimeException('All commands must return an output');
+            throw new CliRoutingRuntimeException('All commands must return an output');
         }
 
         return $this->routeDispatchedHandler->routeDispatched(

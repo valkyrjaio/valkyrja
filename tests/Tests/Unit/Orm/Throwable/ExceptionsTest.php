@@ -13,75 +13,75 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Throwable;
 
-use InvalidArgumentException as PhpInvalidArgumentException;
-use RuntimeException as PhpRuntimeException;
-use Throwable as PhpThrowable;
-use Valkyrja\Orm\Throwable\Contract\Throwable;
+use InvalidArgumentException;
+use RuntimeException;
+use Throwable;
+use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
 use Valkyrja\Orm\Throwable\Exception\EntityNotFoundException;
 use Valkyrja\Orm\Throwable\Exception\ExecuteException;
-use Valkyrja\Orm\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Throwable\Exception\InvalidEntityException;
 use Valkyrja\Orm\Throwable\Exception\NotFoundException;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmInvalidArgumentException;
+use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
 use Valkyrja\Orm\Throwable\Exception\WhereException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(Throwable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(is_a(OrmThrowable::class, ValkyrjaThrowable::class, true));
     }
 
     public function testRuntimeExceptionImplementsThrowable(): void
     {
-        $exception = new RuntimeException('Runtime error');
+        $exception = new OrmRuntimeException('Runtime error');
 
+        self::assertInstanceOf(OrmThrowable::class, $exception);
         self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-        self::assertInstanceOf(PhpRuntimeException::class, $exception);
+        self::assertInstanceOf(RuntimeException::class, $exception);
     }
 
     public function testRuntimeExceptionMessage(): void
     {
         $message   = 'Database connection failed';
-        $exception = new RuntimeException($message);
+        $exception = new OrmRuntimeException($message);
 
         self::assertSame($message, $exception->getMessage());
     }
 
     public function testRuntimeExceptionCanBeThrown(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Runtime error');
 
-        throw new RuntimeException('Runtime error');
+        throw new OrmRuntimeException('Runtime error');
     }
 
     public function testInvalidArgumentExceptionImplementsThrowable(): void
     {
-        $exception = new InvalidArgumentException('Invalid argument');
+        $exception = new OrmInvalidArgumentException('Invalid argument');
 
+        self::assertInstanceOf(OrmThrowable::class, $exception);
         self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-        self::assertInstanceOf(PhpInvalidArgumentException::class, $exception);
+        self::assertInstanceOf(InvalidArgumentException::class, $exception);
     }
 
     public function testInvalidArgumentExceptionCanBeThrown(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(OrmInvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument');
 
-        throw new InvalidArgumentException('Invalid argument');
+        throw new OrmInvalidArgumentException('Invalid argument');
     }
 
     public function testNotFoundExceptionExtendsRuntimeException(): void
     {
         $exception = new NotFoundException('Not found');
 
-        self::assertInstanceOf(RuntimeException::class, $exception);
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(OrmRuntimeException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
     }
 
     public function testNotFoundExceptionCanBeThrown(): void
@@ -97,8 +97,8 @@ final class ExceptionsTest extends TestCase
         $exception = new EntityNotFoundException('Entity not found');
 
         self::assertInstanceOf(NotFoundException::class, $exception);
-        self::assertInstanceOf(RuntimeException::class, $exception);
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(OrmRuntimeException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
     }
 
     public function testEntityNotFoundExceptionCanBeThrown(): void
@@ -113,8 +113,8 @@ final class ExceptionsTest extends TestCase
     {
         $exception = new ExecuteException('Execute failed');
 
-        self::assertInstanceOf(RuntimeException::class, $exception);
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(OrmRuntimeException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
     }
 
     public function testExecuteExceptionCanBeThrown(): void
@@ -129,8 +129,8 @@ final class ExceptionsTest extends TestCase
     {
         $exception = new InvalidEntityException('Invalid entity');
 
-        self::assertInstanceOf(InvalidArgumentException::class, $exception);
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(OrmInvalidArgumentException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
     }
 
     public function testInvalidEntityExceptionCanBeThrown(): void
@@ -145,8 +145,8 @@ final class ExceptionsTest extends TestCase
     {
         $exception = new WhereException('Where error');
 
-        self::assertInstanceOf(RuntimeException::class, $exception);
-        self::assertInstanceOf(Throwable::class, $exception);
+        self::assertInstanceOf(OrmRuntimeException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
     }
 
     public function testWhereExceptionCanBeThrown(): void
@@ -160,28 +160,28 @@ final class ExceptionsTest extends TestCase
     public function testExceptionHierarchy(): void
     {
         // RuntimeException hierarchy
-        self::assertTrue(is_a(RuntimeException::class, Throwable::class, true));
-        self::assertTrue(is_a(NotFoundException::class, RuntimeException::class, true));
+        self::assertTrue(is_a(OrmRuntimeException::class, OrmThrowable::class, true));
+        self::assertTrue(is_a(NotFoundException::class, OrmRuntimeException::class, true));
         self::assertTrue(is_a(EntityNotFoundException::class, NotFoundException::class, true));
-        self::assertTrue(is_a(ExecuteException::class, RuntimeException::class, true));
-        self::assertTrue(is_a(WhereException::class, RuntimeException::class, true));
+        self::assertTrue(is_a(ExecuteException::class, OrmRuntimeException::class, true));
+        self::assertTrue(is_a(WhereException::class, OrmRuntimeException::class, true));
 
         // InvalidArgumentException hierarchy
-        self::assertTrue(is_a(InvalidArgumentException::class, Throwable::class, true));
-        self::assertTrue(is_a(InvalidEntityException::class, InvalidArgumentException::class, true));
+        self::assertTrue(is_a(OrmInvalidArgumentException::class, OrmThrowable::class, true));
+        self::assertTrue(is_a(InvalidEntityException::class, OrmInvalidArgumentException::class, true));
     }
 
     public function testExceptionWithPreviousException(): void
     {
-        $previous  = new PhpRuntimeException('Previous error');
-        $exception = new RuntimeException('ORM error', 0, $previous);
+        $previous  = new RuntimeException('Previous error');
+        $exception = new OrmRuntimeException('ORM error', 0, $previous);
 
         self::assertSame($previous, $exception->getPrevious());
     }
 
     public function testExceptionCode(): void
     {
-        $exception = new RuntimeException('Error', 500);
+        $exception = new OrmRuntimeException('Error', 500);
 
         self::assertSame(500, $exception->getCode());
     }

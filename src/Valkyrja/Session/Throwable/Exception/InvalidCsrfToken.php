@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Throwable\Exception;
 
-class InvalidCsrfToken extends InvalidArgumentException
+class InvalidCsrfToken extends SessionInvalidArgumentException
 {
 }

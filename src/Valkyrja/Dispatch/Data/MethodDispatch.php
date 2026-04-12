@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
 
 use function is_array;
 use function is_string;
@@ -49,19 +49,19 @@ class MethodDispatch extends ClassDispatch implements MethodDispatchContract
     public static function fromCallableOrArray(callable|array $callable): static
     {
         if (! is_array($callable)) {
-            throw new InvalidArgumentException('Callable must be an array.');
+            throw new DispatchInvalidArgumentException('Callable must be an array.');
         }
 
         /** @var class-string|object $className */
         $className = $callable[0]
-            ?? throw new InvalidArgumentException('Callable must be an array with a valid class name');
+            ?? throw new DispatchInvalidArgumentException('Callable must be an array with a valid class name');
 
         if (! is_string($className)) {
-            throw new InvalidArgumentException('First part of the callable array must be a class-string');
+            throw new DispatchInvalidArgumentException('First part of the callable array must be a class-string');
         }
 
         $method = $callable[1]
-            ?? throw new InvalidArgumentException('Callable must be an array with a valid method name');
+            ?? throw new DispatchInvalidArgumentException('Callable must be an array with a valid method name');
 
         return new static(
             class: $className,
