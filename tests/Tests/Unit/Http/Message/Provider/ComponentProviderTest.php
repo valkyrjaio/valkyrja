@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
-use Valkyrja\Http\Message\Provider\ServiceProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, HttpMessageComponentProvider::getContainerProviders($app));
+        self::assertContains(HttpMessageServiceProvider::class, HttpMessageComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

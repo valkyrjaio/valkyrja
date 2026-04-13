@@ -26,7 +26,7 @@ class EventComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            EventServiceProvider::class,
         ];
     }
 

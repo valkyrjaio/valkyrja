@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Attribute\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
-use Valkyrja\Attribute\Provider\ServiceProvider;
+use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -26,11 +26,11 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = AttributeServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CollectorContract::class, AttributeServiceProvider::publishers());
     }
 
     /**
@@ -40,7 +40,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
-        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback = AttributeServiceProvider::publishers()[CollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collector::class, $this->container->getSingleton(CollectorContract::class));

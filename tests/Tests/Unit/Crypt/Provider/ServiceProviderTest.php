@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
-use Valkyrja\Crypt\Provider\ServiceProvider;
+use Valkyrja\Crypt\Provider\CryptServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -26,13 +26,13 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = CryptServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(CryptContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(SodiumCrypt::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(NullCrypt::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(CryptContract::class, CryptServiceProvider::publishers());
+        self::assertArrayHasKey(SodiumCrypt::class, CryptServiceProvider::publishers());
+        self::assertArrayHasKey(NullCrypt::class, CryptServiceProvider::publishers());
     }
 
     /**
@@ -42,7 +42,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(SodiumCrypt::class, self::createStub(SodiumCrypt::class));
 
-        $callback = ServiceProvider::publishers()[CryptContract::class];
+        $callback = CryptServiceProvider::publishers()[CryptContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(CryptContract::class));
@@ -50,7 +50,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishSodiumCrypt(): void
     {
-        $callback = ServiceProvider::publishers()[SodiumCrypt::class];
+        $callback = CryptServiceProvider::publishers()[SodiumCrypt::class];
         $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(SodiumCrypt::class));
@@ -58,7 +58,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullCrypt(): void
     {
-        $callback = ServiceProvider::publishers()[NullCrypt::class];
+        $callback = CryptServiceProvider::publishers()[NullCrypt::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullCrypt::class, $this->container->getSingleton(NullCrypt::class));

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Provider;
 
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
-use Valkyrja\Dispatch\Provider\ServiceProvider;
+use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -24,16 +24,16 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = DispatchServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(DispatcherContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(DispatcherContract::class, DispatchServiceProvider::publishers());
     }
 
     public function testPublishDispatcher(): void
     {
-        $callback = ServiceProvider::publishers()[DispatcherContract::class];
+        $callback = DispatchServiceProvider::publishers()[DispatcherContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));

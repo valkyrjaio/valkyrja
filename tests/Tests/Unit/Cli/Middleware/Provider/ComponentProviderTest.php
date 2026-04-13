@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, CliMiddlewareComponentProvider::getContainerProviders($app));
+        self::assertContains(CliMiddlewareServiceProvider::class, CliMiddlewareComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

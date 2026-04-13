@@ -26,7 +26,7 @@ class CliServerComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            CliServerServiceProvider::class,
         ];
     }
 

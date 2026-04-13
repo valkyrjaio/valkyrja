@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Routing\Provider\ServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, HttpRoutingComponentProvider::getContainerProviders($app));
+        self::assertContains(HttpRoutingServiceProvider::class, HttpRoutingComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cache\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cache\Provider\CacheComponentProvider;
-use Valkyrja\Cache\Provider\ServiceProvider;
+use Valkyrja\Cache\Provider\CacheServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, CacheComponentProvider::getContainerProviders($app));
+        self::assertContains(CacheServiceProvider::class, CacheComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

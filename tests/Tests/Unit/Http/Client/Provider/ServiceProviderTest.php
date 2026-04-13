@@ -19,7 +19,7 @@ use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Client\Manager\NullClient;
-use Valkyrja\Http\Client\Provider\ServiceProvider;
+use Valkyrja\Http\Client\Provider\HttpClientServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -30,15 +30,15 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = HttpClientServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ClientContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(GuzzleClient::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(Client::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(LogClient::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(NullClient::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ClientContract::class, HttpClientServiceProvider::publishers());
+        self::assertArrayHasKey(GuzzleClient::class, HttpClientServiceProvider::publishers());
+        self::assertArrayHasKey(Client::class, HttpClientServiceProvider::publishers());
+        self::assertArrayHasKey(LogClient::class, HttpClientServiceProvider::publishers());
+        self::assertArrayHasKey(NullClient::class, HttpClientServiceProvider::publishers());
     }
 
     /**
@@ -48,7 +48,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(GuzzleClient::class, self::createStub(GuzzleClient::class));
 
-        $callback = ServiceProvider::publishers()[ClientContract::class];
+        $callback = HttpClientServiceProvider::publishers()[ClientContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(ClientContract::class));
@@ -62,7 +62,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[GuzzleClient::class];
+        $callback = HttpClientServiceProvider::publishers()[GuzzleClient::class];
         $callback($this->container);
 
         self::assertInstanceOf(GuzzleClient::class, $this->container->getSingleton(GuzzleClient::class));
@@ -75,7 +75,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = ServiceProvider::publishers()[LogClient::class];
+        $callback = HttpClientServiceProvider::publishers()[LogClient::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogClient::class, $this->container->getSingleton(LogClient::class));
@@ -83,7 +83,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullClient(): void
     {
-        $callback = ServiceProvider::publishers()[NullClient::class];
+        $callback = HttpClientServiceProvider::publishers()[NullClient::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullClient::class, $this->container->getSingleton(NullClient::class));
@@ -94,7 +94,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishGuzzle(): void
     {
-        $callback = ServiceProvider::publishers()[Client::class];
+        $callback = HttpClientServiceProvider::publishers()[Client::class];
         $callback($this->container);
 
         self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));

@@ -26,7 +26,7 @@ class ContainerComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            ContainerServiceProvider::class,
         ];
     }
 

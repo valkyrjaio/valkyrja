@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Crypt\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Crypt\Provider\CryptComponentProvider;
-use Valkyrja\Crypt\Provider\ServiceProvider;
+use Valkyrja\Crypt\Provider\CryptServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, CryptComponentProvider::getContainerProviders($app));
+        self::assertContains(CryptServiceProvider::class, CryptComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

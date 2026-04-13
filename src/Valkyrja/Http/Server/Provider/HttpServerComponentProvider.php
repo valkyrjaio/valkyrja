@@ -26,7 +26,7 @@ class HttpServerComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            HttpServerServiceProvider::class,
         ];
     }
 

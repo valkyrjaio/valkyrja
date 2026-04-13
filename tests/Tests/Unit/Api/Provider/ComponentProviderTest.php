@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Api\Provider;
 
 use Valkyrja\Api\Provider\ApiComponentProvider;
-use Valkyrja\Api\Provider\ServiceProvider;
+use Valkyrja\Api\Provider\ApiServiceProvider;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ApiComponentProvider::getContainerProviders($app));
+        self::assertContains(ApiServiceProvider::class, ApiComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

@@ -63,7 +63,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Event\Data\EventData;
             use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-            use Valkyrja\Event\Provider\ServiceProvider;
+            use Valkyrja\Event\Provider\EventServiceProvider;
 
             final class EventDefaultDataTestDataProvider implements ServiceProviderContract
             {
@@ -94,7 +94,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    ServiceProvider::publishData(\$container);
+                    EventServiceProvider::publishData(\$container);
                 }
             }
 

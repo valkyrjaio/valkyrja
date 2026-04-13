@@ -26,7 +26,7 @@ class AuthComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            AuthServiceProvider::class,
         ];
     }
 

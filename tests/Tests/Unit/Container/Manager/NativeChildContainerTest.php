@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\NativeChildContainer;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\ServiceProvider;
+use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -142,14 +142,14 @@ final class NativeChildContainerTest extends TestCase
 
     public function testIsDeferredFromParent(): void
     {
-        $this->parent->register(ServiceProvider::class);
+        $this->parent->register(DispatchServiceProvider::class);
 
         self::assertTrue($this->child->isDeferred(DispatcherContract::class));
     }
 
     public function testIsDeferredFromChild(): void
     {
-        $this->child->register(ServiceProvider::class);
+        $this->child->register(DispatchServiceProvider::class);
 
         self::assertTrue($this->child->isDeferred(DispatcherContract::class));
         self::assertFalse($this->parent->isDeferred(DispatcherContract::class));
@@ -172,17 +172,17 @@ final class NativeChildContainerTest extends TestCase
 
     public function testIsRegisteredFromParent(): void
     {
-        $this->parent->register(ServiceProvider::class);
+        $this->parent->register(DispatchServiceProvider::class);
 
-        self::assertTrue($this->child->isRegistered(ServiceProvider::class));
+        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
     }
 
     public function testIsRegisteredFromChild(): void
     {
-        $this->child->register(ServiceProvider::class);
+        $this->child->register(DispatchServiceProvider::class);
 
-        self::assertTrue($this->child->isRegistered(ServiceProvider::class));
-        self::assertFalse($this->parent->isRegistered(ServiceProvider::class));
+        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
+        self::assertFalse($this->parent->isRegistered(DispatchServiceProvider::class));
     }
 
     // -----------------------------------------------------------------------
@@ -299,7 +299,7 @@ final class NativeChildContainerTest extends TestCase
         $this->parent->bindAlias('svcAlias', ServiceClass::class);
         $this->parent->bindSingleton(SingletonClass::class, SingletonClass::class);
         $this->parent->setCallable(self::class, static fn ($c) => new self('test'));
-        $this->parent->register(ServiceProvider::class);
+        $this->parent->register(DispatchServiceProvider::class);
 
         // Snapshot parent state before any child interaction
         $dataBefore                  = $this->parent->getData();
@@ -335,7 +335,7 @@ final class NativeChildContainerTest extends TestCase
 
     public function testDeferredFromChildPublishedInChild(): void
     {
-        $this->child->register(ServiceProvider::class);
+        $this->child->register(DispatchServiceProvider::class);
 
         self::assertTrue($this->child->has(DispatcherContract::class));
 
@@ -347,7 +347,7 @@ final class NativeChildContainerTest extends TestCase
 
     public function testDeferredFromParentPublishedInChild(): void
     {
-        $this->parent->register(ServiceProvider::class);
+        $this->parent->register(DispatchServiceProvider::class);
 
         // has() should see the deferred service from parent
         self::assertTrue($this->child->has(DispatcherContract::class));

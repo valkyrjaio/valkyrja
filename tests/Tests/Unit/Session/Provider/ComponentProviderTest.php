@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Session\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Session\Provider\ServiceProvider;
 use Valkyrja\Session\Provider\SessionComponentProvider;
+use Valkyrja\Session\Provider\SmsServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, SessionComponentProvider::getContainerProviders($app));
+        self::assertContains(SmsServiceProvider::class, SessionComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

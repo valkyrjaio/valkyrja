@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Mail\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Mail\Provider\MailComponentProvider;
-use Valkyrja\Mail\Provider\ServiceProvider;
+use Valkyrja\Mail\Provider\MailServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, MailComponentProvider::getContainerProviders($app));
+        self::assertContains(MailServiceProvider::class, MailComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

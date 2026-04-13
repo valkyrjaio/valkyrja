@@ -35,7 +35,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as CliRoutingCollector;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Cli\Routing\Provider\CliRouteProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Container\Data\ContainerData;
@@ -59,7 +59,7 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as HttpRoutingRoute
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as HttpRoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
-use Valkyrja\Http\Routing\Provider\CliRouteProvider as HttpCliRouteProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
@@ -253,8 +253,8 @@ final class AppTest extends TestCase
 
         $cliProviders = $application->getCliProviders();
 
-        self::assertContains(CliRouteProvider::class, $cliProviders);
-        self::assertContains(HttpCliRouteProvider::class, $cliProviders);
+        self::assertContains(CliRoutingCliRouteProvider::class, $cliProviders);
+        self::assertContains(HttpRoutingCliRouteProvider::class, $cliProviders);
 
         self::assertEmpty($application->getEventProviders());
         self::assertEmpty($application->getHttpProviders());

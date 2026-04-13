@@ -37,7 +37,7 @@ use Valkyrja\Session\Manager\Token\Cli\EncryptedOptionTokenSession;
 use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
-use Valkyrja\Session\Provider\ServiceProvider;
+use Valkyrja\Session\Provider\SmsServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -46,26 +46,26 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = SmsServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(SessionContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(PhpSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(NullSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CacheSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CookieSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedCookieSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(OptionJwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedOptionJwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(HeaderJwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedHeaderJwtSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(OptionTokenSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedOptionTokenSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(HeaderTokenSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(EncryptedHeaderTokenSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(LogSession::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CookieParams::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(SessionContract::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(PhpSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(NullSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(CacheSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(CookieSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedCookieSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(OptionJwtSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedOptionJwtSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(HeaderJwtSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedHeaderJwtSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(OptionTokenSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedOptionTokenSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(HeaderTokenSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(EncryptedHeaderTokenSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(LogSession::class, SmsServiceProvider::publishers());
+        self::assertArrayHasKey(CookieParams::class, SmsServiceProvider::publishers());
     }
 
     /**
@@ -75,7 +75,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PhpSession::class, self::createStub(PhpSession::class));
 
-        $callback = ServiceProvider::publishers()[SessionContract::class];
+        $callback = SmsServiceProvider::publishers()[SessionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(SessionContract::class));
@@ -85,7 +85,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
-        $callback = ServiceProvider::publishers()[PhpSession::class];
+        $callback = SmsServiceProvider::publishers()[PhpSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpSession::class, $this->container->getSingleton(PhpSession::class));
@@ -93,7 +93,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullSession(): void
     {
-        $callback = ServiceProvider::publishers()[NullSession::class];
+        $callback = SmsServiceProvider::publishers()[NullSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullSession::class, $this->container->getSingleton(NullSession::class));
@@ -106,7 +106,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CacheContract::class, self::createStub(CacheContract::class));
 
-        $callback = ServiceProvider::publishers()[CacheSession::class];
+        $callback = SmsServiceProvider::publishers()[CacheSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(CacheSession::class, $this->container->getSingleton(CacheSession::class));
@@ -119,7 +119,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[CookieSession::class];
+        $callback = SmsServiceProvider::publishers()[CookieSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(CookieSession::class, $this->container->getSingleton(CookieSession::class));
@@ -133,7 +133,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedCookieSession::class];
+        $callback = SmsServiceProvider::publishers()[EncryptedCookieSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(EncryptedCookieSession::class, $this->container->getSingleton(EncryptedCookieSession::class));
@@ -147,7 +147,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
         $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
 
-        $callback = ServiceProvider::publishers()[OptionJwtSession::class];
+        $callback = SmsServiceProvider::publishers()[OptionJwtSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(OptionJwtSession::class, $this->container->getSingleton(OptionJwtSession::class));
@@ -162,7 +162,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
         $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedOptionJwtSession::class];
+        $callback = SmsServiceProvider::publishers()[EncryptedOptionJwtSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(EncryptedOptionJwtSession::class, $this->container->getSingleton(EncryptedOptionJwtSession::class));
@@ -176,7 +176,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[HeaderJwtSession::class];
+        $callback = SmsServiceProvider::publishers()[HeaderJwtSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(HeaderJwtSession::class, $this->container->getSingleton(HeaderJwtSession::class));
@@ -191,7 +191,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(JwtContract::class, self::createStub(JwtContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedHeaderJwtSession::class];
+        $callback = SmsServiceProvider::publishers()[EncryptedHeaderJwtSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(EncryptedHeaderJwtSession::class, $this->container->getSingleton(EncryptedHeaderJwtSession::class));
@@ -204,7 +204,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
 
-        $callback = ServiceProvider::publishers()[OptionTokenSession::class];
+        $callback = SmsServiceProvider::publishers()[OptionTokenSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(OptionTokenSession::class, $this->container->getSingleton(OptionTokenSession::class));
@@ -218,7 +218,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(InputContract::class, self::createStub(InputContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedOptionTokenSession::class];
+        $callback = SmsServiceProvider::publishers()[EncryptedOptionTokenSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(EncryptedOptionTokenSession::class, $this->container->getSingleton(EncryptedOptionTokenSession::class));
@@ -231,7 +231,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[HeaderTokenSession::class];
+        $callback = SmsServiceProvider::publishers()[HeaderTokenSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(HeaderTokenSession::class, $this->container->getSingleton(HeaderTokenSession::class));
@@ -245,7 +245,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
         $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
 
-        $callback = ServiceProvider::publishers()[EncryptedHeaderTokenSession::class];
+        $callback = SmsServiceProvider::publishers()[EncryptedHeaderTokenSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(EncryptedHeaderTokenSession::class, $this->container->getSingleton(EncryptedHeaderTokenSession::class));
@@ -258,7 +258,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = ServiceProvider::publishers()[LogSession::class];
+        $callback = SmsServiceProvider::publishers()[LogSession::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogSession::class, $this->container->getSingleton(LogSession::class));
@@ -266,7 +266,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCookieParams(): void
     {
-        $callback = ServiceProvider::publishers()[CookieParams::class];
+        $callback = SmsServiceProvider::publishers()[CookieParams::class];
         $callback($this->container);
 
         self::assertInstanceOf(CookieParams::class, $cookieParams = $this->container->getSingleton(CookieParams::class));

@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Routing\Generator;
 use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
-use Valkyrja\Http\Routing\Provider\ServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 
 class DefaultDataProviderFileGenerator extends ProviderFileGenerator
 {
@@ -46,7 +46,7 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
     #[Override]
     protected function getImports(): string
     {
-        $serviceProvider = ServiceProvider::class;
+        $serviceProvider = HttpRoutingServiceProvider::class;
 
         return <<<PHP
             use $serviceProvider;
@@ -60,7 +60,7 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
     protected function getPublishContents(): string
     {
         return <<<'PHP'
-            ServiceProvider::publishData($container);
+            HttpRoutingServiceProvider::publishData($container);
             PHP;
     }
 }

@@ -48,7 +48,7 @@ use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
-use Valkyrja\Http\Routing\Provider\ServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
@@ -62,19 +62,19 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = HttpRoutingServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RouterContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CollectionContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(MatcherContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(UrlContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CollectorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ProcessorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(DataFileGeneratorContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(HttpRoutingData::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(RouterContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(CollectionContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(MatcherContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(UrlContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(CollectorContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(ProcessorContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(ResponseFactoryContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(DataFileGeneratorContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(HttpRoutingData::class, HttpRoutingServiceProvider::publishers());
     }
 
     public function testPublishRouter(): void
@@ -94,7 +94,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouterContract::class));
 
-        $callback = ServiceProvider::publishers()[RouterContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[RouterContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouterContract::class));
@@ -108,7 +108,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(HttpRoutingData::class, new HttpRoutingData());
         $application->method('getDebugMode')->willReturn(false);
 
-        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collection::class, $this->container->getSingleton(CollectionContract::class));
@@ -136,7 +136,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectionContract::class));
 
-        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
@@ -148,7 +148,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollectionWithoutData(): void
     {
-        $this->container->register(ServiceProvider::class);
+        $this->container->register(HttpRoutingServiceProvider::class);
 
         $container = $this->container;
 
@@ -171,7 +171,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
-        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
@@ -184,7 +184,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollectionWithoutDataDebugModeTrue(): void
     {
-        $this->container->register(ServiceProvider::class);
+        $this->container->register(HttpRoutingServiceProvider::class);
 
         $container = $this->container;
 
@@ -207,7 +207,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
-        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
@@ -220,7 +220,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollectionWithoutRoutes(): void
     {
-        $this->container->register(ServiceProvider::class);
+        $this->container->register(HttpRoutingServiceProvider::class);
 
         $container = $this->container;
 
@@ -243,7 +243,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([]);
         $processor->expects($this->never())->method('route')->willReturnArgument(0);
 
-        $callback = ServiceProvider::publishers()[CollectionContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectionContract::class));
@@ -262,7 +262,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectorContract::class));
 
-        $callback = ServiceProvider::publishers()[DataFileGeneratorContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[DataFileGeneratorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(DataFileGeneratorContract::class));
@@ -278,7 +278,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(MatcherContract::class));
 
-        $callback = ServiceProvider::publishers()[MatcherContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[MatcherContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(MatcherContract::class));
@@ -296,7 +296,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(UrlContract::class));
 
-        $callback = ServiceProvider::publishers()[UrlContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[UrlContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(UrlContract::class));
@@ -314,7 +314,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectorContract::class));
 
-        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectorContract::class));
@@ -330,7 +330,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectorContract::class));
 
-        $callback = ServiceProvider::publishers()[CollectorContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[CollectorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(CollectorContract::class));
@@ -344,7 +344,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ProcessorContract::class));
 
-        $callback = ServiceProvider::publishers()[ProcessorContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[ProcessorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ProcessorContract::class));
@@ -361,7 +361,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ResponseFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[ResponseFactoryContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ResponseFactoryContract::class));

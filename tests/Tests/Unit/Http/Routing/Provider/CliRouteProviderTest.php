@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
-use Valkyrja\Http\Routing\Provider\CliRouteProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -25,12 +25,12 @@ final class CliRouteProviderTest extends TestCase
 {
     public function testGetRoutes(): void
     {
-        self::assertEmpty(CliRouteProvider::getRoutes());
+        self::assertEmpty(HttpRoutingCliRouteProvider::getRoutes());
     }
 
     public function testGetControllerClasses(): void
     {
-        self::assertContains(ListCommand::class, CliRouteProvider::getControllerClasses());
-        self::assertContains(GenerateDataCommand::class, CliRouteProvider::getControllerClasses());
+        self::assertContains(ListCommand::class, HttpRoutingCliRouteProvider::getControllerClasses());
+        self::assertContains(GenerateDataCommand::class, HttpRoutingCliRouteProvider::getControllerClasses());
     }
 }

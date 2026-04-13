@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Constant;
 
 use Valkyrja\Api\Provider\ApiComponentProvider;
-use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Attribute\Provider\AttributeComponentProvider;
 use Valkyrja\Auth\Provider\AuthComponentProvider;
 use Valkyrja\Broadcast\Provider\BroadcastComponentProvider;
@@ -45,7 +44,6 @@ use Valkyrja\View\Provider\ViewComponentProvider;
 
 final class ComponentClass
 {
-    public const string APPLICATION      = ApplicationComponentProvider::class;
     public const string API              = ApiComponentProvider::class;
     public const string ATTRIBUTE        = AttributeComponentProvider::class;
     public const string AUTH             = AuthComponentProvider::class;

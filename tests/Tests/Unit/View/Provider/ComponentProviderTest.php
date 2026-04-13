@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\View\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Provider\ServiceProvider;
 use Valkyrja\View\Provider\ViewComponentProvider;
+use Valkyrja\View\Provider\ViewServiceProvider;
 
 /**
  * Test the Component service.
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ViewComponentProvider::getContainerProviders($app));
+        self::assertContains(ViewServiceProvider::class, ViewComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

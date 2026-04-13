@@ -23,7 +23,7 @@ use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\ServiceProvider;
+use Valkyrja\Container\Provider\ContainerServiceProvider;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
@@ -150,7 +150,7 @@ abstract class App
      */
     public static function publishContainerData(ContainerContract $container): void
     {
-        ServiceProvider::publishData(container: $container);
+        ContainerServiceProvider::publishData(container: $container);
     }
 
     /**

@@ -63,7 +63,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
             use Valkyrja\Cli\Routing\Data\CliRoutingData;
             use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
             use Valkyrja\Container\Manager\Contract\ContainerContract;
-            use Valkyrja\Cli\Routing\Provider\ServiceProvider;
+            use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
 
             final class CliRoutingDataTestDataProvider implements ServiceProviderContract
             {
@@ -94,7 +94,7 @@ final class DefaultDataProviderFileGeneratorTest extends TestCase
                  */
                 public static function publishData(ContainerContract \$container): void
                 {
-                    ServiceProvider::publishData(\$container);
+                    CliRoutingServiceProvider::publishData(\$container);
                 }
             }
 

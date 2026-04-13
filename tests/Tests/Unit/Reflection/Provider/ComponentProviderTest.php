@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Reflection\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Reflection\Provider\ReflectionComponentProvider;
-use Valkyrja\Reflection\Provider\ServiceProvider;
+use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, ReflectionComponentProvider::getContainerProviders($app));
+        self::assertContains(ReflectionServiceProvider::class, ReflectionComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
