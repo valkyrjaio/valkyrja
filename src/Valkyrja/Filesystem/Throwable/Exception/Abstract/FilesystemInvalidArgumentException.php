@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Throwable\Exception;
+namespace Valkyrja\Filesystem\Throwable\Exception\Abstract;
 
 use Valkyrja\Filesystem\Throwable\Contract\FilesystemThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class FilesystemInvalidArgumentException extends ValkyrjaInvalidArgumentException implements FilesystemThrowable
+abstract class FilesystemInvalidArgumentException extends ValkyrjaInvalidArgumentException implements FilesystemThrowable
 {
 }

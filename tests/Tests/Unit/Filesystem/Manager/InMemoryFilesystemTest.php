@@ -18,9 +18,9 @@ use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
-use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
+use Valkyrja\Filesystem\Throwable\Exception\FilesystemResourceReadException;
+use Valkyrja\Filesystem\Throwable\Exception\FilesystemUnableToReadContentsException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
 use function fclose;
 use function fopen;
@@ -71,7 +71,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testReadThrowsExceptionForNonExistentFile(): void
     {
-        $this->expectException(UnableToReadContentsException::class);
+        $this->expectException(FilesystemUnableToReadContentsException::class);
 
         $this->filesystem->read('non-existent.txt');
     }
@@ -111,7 +111,7 @@ final class InMemoryFilesystemTest extends TestCase
 
         $resource = fopen('php://memory', 'r+');
 
-        $this->expectException(ValkyrjaRuntimeException::class);
+        $this->expectException(FilesystemResourceReadException::class);
         $this->expectExceptionMessage('Failed to read provided resource');
 
         try {

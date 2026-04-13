@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Throwable\Exception;
 
-use Valkyrja\Filesystem\Throwable\Contract\FilesystemThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Filesystem\Throwable\Exception\Abstract\FilesystemRuntimeException;
 
-class FilesystemRuntimeException extends ValkyrjaRuntimeException implements FilesystemThrowable
+class FilesystemUnableToReadContentsException extends FilesystemRuntimeException
 {
 }
