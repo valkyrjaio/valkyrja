@@ -16,6 +16,6 @@ namespace Valkyrja\Mail\Throwable\Exception\Abstract;
 use Valkyrja\Mail\Throwable\Contract\MailThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class MailRuntimeException extends ValkyrjaRuntimeException implements MailThrowable
+abstract class MailRuntimeException extends ValkyrjaRuntimeException implements MailThrowable
 {
 }
