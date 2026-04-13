@@ -15,14 +15,14 @@ namespace Valkyrja\Tests\Unit\Log\Logger;
 
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\NullLogger;
-use Valkyrja\Log\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Log\Throwable\Exception\LogInvalidLogLevelException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class LoggerTest extends TestCase
 {
     public function testLogWithInvalidLevelThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(LogInvalidLogLevelException::class);
         $this->expectExceptionMessage('Invalid log level passed');
 
         $logger = new NullLogger();
@@ -33,7 +33,7 @@ final class LoggerTest extends TestCase
 
     public function testLogWithStringLevelThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(LogInvalidLogLevelException::class);
 
         $logger = new NullLogger();
 

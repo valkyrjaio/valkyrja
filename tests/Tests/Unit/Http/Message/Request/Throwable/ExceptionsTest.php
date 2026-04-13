@@ -13,44 +13,44 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\Request\Throwable\Contract\Throwable;
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidMethodException;
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
-use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
+use Throwable;
+use Valkyrja\Http\Message\Request\Throwable\Contract\HttpRequestThrowable;
+use Valkyrja\Http\Message\Request\Throwable\Exception\Abstract\HttpRequestInvalidArgumentException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\Abstract\HttpRequestRuntimeException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\HttpRequestInvalidMethodException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\HttpRequestInvalidRequestTargetException;
+use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(MessageThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpRequestThrowable::class);
+        self::isA(HttpMessageThrowable::class, HttpRequestThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(MessageInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpRequestThrowable::class, HttpRequestInvalidArgumentException::class);
+        self::isA(HttpMessageInvalidArgumentException::class, HttpRequestInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(MessageRuntimeException::class, RuntimeException::class);
+        self::isA(HttpRequestThrowable::class, HttpRequestRuntimeException::class);
+        self::isA(HttpMessageRuntimeException::class, HttpRequestRuntimeException::class);
     }
 
     public function testInvalidRequestTargetException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidRequestTargetException::class);
+        self::isA(HttpRequestInvalidArgumentException::class, HttpRequestInvalidRequestTargetException::class);
     }
 
     public function testInvalidMethodException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidMethodException::class);
+        self::isA(HttpRequestInvalidArgumentException::class, HttpRequestInvalidMethodException::class);
     }
 }

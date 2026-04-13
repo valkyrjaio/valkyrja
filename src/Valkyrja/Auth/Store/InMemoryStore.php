@@ -18,7 +18,7 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 
 /**
  * @template U of UserContract
@@ -57,7 +57,7 @@ class InMemoryStore implements StoreContract
         $retrievalFields = $retrieval->getRetrievalFields($user);
 
         return $this->getUserViaRetrievalFields($retrievalFields)
-            ?? throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
+            ?? throw new AuthInvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**

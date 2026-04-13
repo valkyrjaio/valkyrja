@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionNoFormatterException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -96,7 +96,7 @@ final class MessageTest extends TestCase
 
     public function testFormatterThrowsWhenNoneSet(): void
     {
-        $this->expectException(NoFormatterException::class);
+        $this->expectException(CliInteractionNoFormatterException::class);
         $this->expectExceptionMessage('No formatter has been set');
 
         $text = 'text';

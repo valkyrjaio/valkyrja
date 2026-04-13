@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Manager\Contract;
 
 use SensitiveParameter;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 interface CryptContract
 {
@@ -31,8 +30,6 @@ interface CryptContract
      * @param non-empty-string      $message The message to encrypt
      * @param non-empty-string|null $key     The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return non-empty-string
      */
     public function encrypt(string $message, #[SensitiveParameter] string|null $key = null): string;
@@ -42,8 +39,6 @@ interface CryptContract
      *
      * @param non-empty-string      $encrypted The encrypted message to decrypt
      * @param non-empty-string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      *
      * @return non-empty-string
      */
@@ -55,8 +50,6 @@ interface CryptContract
      * @param array<array-key, mixed> $array The array to encrypt
      * @param non-empty-string|null   $key   The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return non-empty-string
      */
     public function encryptArray(array $array, #[SensitiveParameter] string|null $key = null): string;
@@ -66,8 +59,6 @@ interface CryptContract
      *
      * @param non-empty-string      $encrypted The encrypted message
      * @param non-empty-string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      *
      * @return array<array-key, mixed>
      */
@@ -79,8 +70,6 @@ interface CryptContract
      * @param object                $object The object to encrypt
      * @param non-empty-string|null $key    The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return non-empty-string
      */
     public function encryptObject(object $object, #[SensitiveParameter] string|null $key = null): string;
@@ -90,8 +79,6 @@ interface CryptContract
      *
      * @param non-empty-string      $encrypted The encrypted message
      * @param non-empty-string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      */
     public function decryptObject(string $encrypted, #[SensitiveParameter] string|null $key = null): object;
 }

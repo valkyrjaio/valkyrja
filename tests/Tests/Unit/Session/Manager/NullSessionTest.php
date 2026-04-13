@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Session\Manager;
 
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\NullSession;
-use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidCsrfTokenException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function strlen;
@@ -219,7 +219,7 @@ final class NullSessionTest extends TestCase
     {
         $this->session->generateCsrfToken('csrf');
 
-        $this->expectException(InvalidCsrfToken::class);
+        $this->expectException(SessionInvalidCsrfTokenException::class);
         $this->expectExceptionMessage('CSRF token id: `csrf` has invalid token of `wrong-token` provided');
 
         $this->session->validateCsrfToken('csrf', 'wrong-token');
@@ -227,7 +227,7 @@ final class NullSessionTest extends TestCase
 
     public function testValidateCsrfTokenThrowsForNonExistentId(): void
     {
-        $this->expectException(InvalidCsrfToken::class);
+        $this->expectException(SessionInvalidCsrfTokenException::class);
 
         $this->session->validateCsrfToken('nonexistent', 'any-token');
     }

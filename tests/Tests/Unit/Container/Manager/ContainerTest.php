@@ -18,7 +18,7 @@ use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
@@ -164,49 +164,49 @@ final class ContainerTest extends TestCase
 
     public function testGetNonExistent(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->get(ApplicationContract::class);
     }
 
     public function testGetNonExistentSingleton(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getSingleton(ServiceClass::class);
     }
 
     public function testGetNonExistentInvalidSingleton(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getSingleton(self::class);
     }
 
     public function testGetNonExistentCallable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getCallable(self::class);
     }
 
     public function testGetNonExistentAliased(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getAliased(self::class);
     }
 
     public function testGetNonExistentService(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getService(ServiceClass::class);
     }
 
     public function testGetNonExistentInvalidService(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getService(self::class);
     }
@@ -318,7 +318,7 @@ final class ContainerTest extends TestCase
 
     public function testNewInstanceOrThrowInvalidReferenceModeWithCaughtThrowable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $container = new Container();
 
@@ -331,7 +331,7 @@ final class ContainerTest extends TestCase
      */
     public function testThrowExceptionInvalidReferenceMode(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $container = new Container();
 
@@ -340,7 +340,7 @@ final class ContainerTest extends TestCase
 
     public function testNewInstanceThrowInvalidReferenceMode(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
 
         $container = new Container();
 

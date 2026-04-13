@@ -15,7 +15,7 @@ namespace Valkyrja\Validation\Validator;
 
 use Override;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
 class Validator implements ValidatorContract
@@ -103,7 +103,7 @@ class Validator implements ValidatorContract
     {
         try {
             $rule->validate();
-        } catch (ValidationException $validationException) {
+        } catch (ValidationRuleFailureException $validationException) {
             $this->errorMessages[$subject] = "$subject: " . $validationException->getMessage();
         }
     }

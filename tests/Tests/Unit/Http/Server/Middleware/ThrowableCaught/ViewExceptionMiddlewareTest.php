@@ -18,8 +18,8 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
+use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Exception;
 use Valkyrja\View\Factory\ResponseFactory;
 
 /**
@@ -32,7 +32,7 @@ final class ViewExceptionMiddlewareTest extends TestCase
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
         $request    = new ServerRequest();
         $response   = new Response(statusCode: $statusCode);
-        $exception  = new Exception();
+        $exception  = new ValkyrjaRuntimeExceptionClass();
 
         $args = [
             'exception' => $exception,

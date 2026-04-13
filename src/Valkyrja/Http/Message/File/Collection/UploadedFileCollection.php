@@ -16,8 +16,8 @@ namespace Valkyrja\Http\Message\File\Collection;
 use Override;
 use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidKeyException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidKeyException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidParamException;
 
 use function in_array;
 use function is_array;
@@ -85,7 +85,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
     protected static function validateFile(mixed $param): void
     {
         if (! $param instanceof UploadedFileCollectionContract && ! $param instanceof UploadedFileContract) {
-            throw new InvalidArgumentException('Param must be an UploadedFileContract or UploadedFileData instance');
+            throw new UploadedFileInvalidParamException('Param must be an UploadedFileContract or UploadedFileData instance');
         }
     }
 
@@ -105,7 +105,7 @@ class UploadedFileCollection implements UploadedFileCollectionContract
     public function get(int|string $key): UploadedFileContract|UploadedFileCollectionContract
     {
         return $this->files[$key]
-            ?? throw new InvalidKeyException("The provided key '$key' does not exist in the collection");
+            ?? throw new UploadedFileInvalidKeyException("The provided key '$key' does not exist in the collection");
     }
 
     /**

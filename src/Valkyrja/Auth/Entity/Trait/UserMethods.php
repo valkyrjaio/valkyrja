@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
-use Valkyrja\Auth\Throwable\Exception\RuntimeException;
+use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedPasswordValueException;
+use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedUsernameValueException;
 
 use function is_string;
 
@@ -65,7 +66,7 @@ trait UserMethods
             return $value;
         }
 
-        throw new RuntimeException('Username field value should be a string');
+        throw new AuthUnexpectedUsernameValueException('Username field value should be a string');
     }
 
     /**
@@ -83,6 +84,6 @@ trait UserMethods
             return $value;
         }
 
-        throw new RuntimeException('Password field value should be a string');
+        throw new AuthUnexpectedPasswordValueException('Password field value should be a string');
     }
 }

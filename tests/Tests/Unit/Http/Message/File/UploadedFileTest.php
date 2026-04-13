@@ -16,15 +16,15 @@ namespace Valkyrja\Tests\Unit\Http\Message\File;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
-use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileAlreadyMovedException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidDirectoryException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileMoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUnableToWriteFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidDirectoryExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;
@@ -51,7 +51,7 @@ final class UploadedFileTest extends TestCase
 
     public function testInvalidFile(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(HttpMessageInvalidArgumentException::class);
 
         new UploadedFile(uploadError: UploadError::OK);
     }
@@ -80,7 +80,7 @@ final class UploadedFileTest extends TestCase
     #[DataProvider('invalidUploadErrorsProvider')]
     public function testGetStreamUploadErrorException(UploadError $error): void
     {
-        $this->expectException(UploadErrorException::class);
+        $this->expectException(UploadedFileUploadErrorException::class);
 
         $stream = new Stream();
         $stream->write('test');
@@ -91,7 +91,7 @@ final class UploadedFileTest extends TestCase
 
     public function testSubsequentMoveGetStreamException(): void
     {
-        $this->expectException(AlreadyMovedException::class);
+        $this->expectException(UploadedFileAlreadyMovedException::class);
 
         $file = Directory::storagePath('/UploadedFileTest-testSubsequentMoveGetStreamException.txt');
 
@@ -108,7 +108,7 @@ final class UploadedFileTest extends TestCase
 
     public function testInvalidUploadedFileException(): void
     {
-        $this->expectException(InvalidUploadedFileException::class);
+        $this->expectException(UploadedFileInvalidUploadedFileException::class);
 
         $uploadedFile = new InvalidUploadedFileExceptionClass();
         $uploadedFile->getStream();
@@ -117,7 +117,7 @@ final class UploadedFileTest extends TestCase
     #[DataProvider('invalidUploadErrorsProvider')]
     public function testMoveUploadErrorException(UploadError $error): void
     {
-        $this->expectException(UploadErrorException::class);
+        $this->expectException(UploadedFileUploadErrorException::class);
 
         $stream = new Stream();
         $stream->write('test');
@@ -128,7 +128,7 @@ final class UploadedFileTest extends TestCase
 
     public function testSubsequentMoveException(): void
     {
-        $this->expectException(AlreadyMovedException::class);
+        $this->expectException(UploadedFileAlreadyMovedException::class);
 
         $file = Directory::storagePath('/UploadedFileTest-testSubsequentMoveException.txt');
 
@@ -184,7 +184,7 @@ final class UploadedFileTest extends TestCase
 
     public function testMoveFailureException(): void
     {
-        $this->expectException(MoveFailureException::class);
+        $this->expectException(UploadedFileMoveFailureException::class);
 
         $file = Directory::storagePath('/uploadedFileTest-testMoveFailureException.txt');
 
@@ -201,7 +201,7 @@ final class UploadedFileTest extends TestCase
 
     public function testInvalidDirectoryException(): void
     {
-        $this->expectException(InvalidDirectoryException::class);
+        $this->expectException(UploadedFileInvalidDirectoryException::class);
 
         // Should fail since this is not a valid uploaded file
         $uploadedFile2 = new InvalidDirectoryExceptionClass(file: 'test');
@@ -210,7 +210,7 @@ final class UploadedFileTest extends TestCase
 
     public function testUnableToWriteFileException(): void
     {
-        $this->expectException(UnableToWriteFileException::class);
+        $this->expectException(UploadedFileUnableToWriteFileException::class);
 
         // Should fail since this is not a valid uploaded file
         $uploadedFile2 = new UnableToWriteFileExceptionClass(file: 'test');

@@ -22,7 +22,7 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 
 /**
  * @template U of UserContract
@@ -115,13 +115,13 @@ abstract class Authenticator implements AuthenticatorContract
         $retrieval = $attempt->getRetrieval();
 
         if (! $this->store->hasRetrievable($retrieval, $this->entity)) {
-            throw new InvalidAuthenticationException('User not found');
+            throw new AuthInvalidAuthenticationException('User not found');
         }
 
         $user = $this->store->retrieve($retrieval, $this->entity);
 
         if (! $this->hasher->confirmPassword($attempt->getPassword(), $user->getPasswordValue())) {
-            throw new InvalidAuthenticationException('Incorrect password');
+            throw new AuthInvalidAuthenticationException('Incorrect password');
         }
 
         $this->authenticatedUsers->setCurrent($user->getIdValue());

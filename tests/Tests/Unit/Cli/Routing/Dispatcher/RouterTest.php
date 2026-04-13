@@ -28,7 +28,7 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoOutputDispatchException;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -292,7 +292,7 @@ final class RouterTest extends TestCase
 
     public function testInvalidOutput(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(CliRoutingNoOutputDispatchException::class);
 
         $router = new Router();
         $input  = new Input(commandName: 'test-command');

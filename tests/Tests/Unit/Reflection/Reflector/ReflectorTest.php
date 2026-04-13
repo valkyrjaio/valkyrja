@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Reflection\Reflector;
 use ReflectionException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
-use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
+use Valkyrja\Reflection\Throwable\Exception\ReflectionInvalidClassConstantException;
 use Valkyrja\Tests\Classes\Reflection\ReflectableClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -56,7 +56,7 @@ final class ReflectorTest extends TestCase
      */
     public function testForClassConstantException(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ReflectionInvalidClassConstantException::class);
 
         $reflector = new Reflector();
 

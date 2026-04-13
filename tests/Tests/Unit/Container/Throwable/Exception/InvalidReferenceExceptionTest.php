@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Throwable\Exception;
 
-use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class InvalidReferenceExceptionTest extends TestCase
@@ -22,7 +22,7 @@ final class InvalidReferenceExceptionTest extends TestCase
     {
         $id = self::class;
 
-        $exception = new InvalidReferenceException($id);
+        $exception = new ContainerInvalidReferenceException($id);
 
         self::assertSame("Service with `$id` not found", $exception->getMessage());
     }

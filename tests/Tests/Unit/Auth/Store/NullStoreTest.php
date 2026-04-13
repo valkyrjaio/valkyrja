@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Auth\Store;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\NullStore;
-use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -40,7 +40,7 @@ final class NullStoreTest extends TestCase
 
     public function testRetrieveAlwaysReturnsNull(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $retrieval = new RetrievalByUsername('testuser');
@@ -50,7 +50,7 @@ final class NullStoreTest extends TestCase
 
     public function testCreateDoesNotThrow(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $user           = new User();
@@ -62,7 +62,7 @@ final class NullStoreTest extends TestCase
 
     public function testUpdateDoesNotThrow(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $user           = new User();

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -134,7 +134,7 @@ final class HeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectException(AuthInvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
         new HeaderJwtSession($jwt, $request);
@@ -160,7 +160,7 @@ final class HeaderJwtSessionTest extends TestCase
             ->expects($this->never())
             ->method('decode');
 
-        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectException(AuthInvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
         new HeaderJwtSession($jwt, $request);

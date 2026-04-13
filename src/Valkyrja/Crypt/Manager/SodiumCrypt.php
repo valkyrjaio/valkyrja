@@ -19,7 +19,11 @@ use Random\RandomException;
 use SensitiveParameter;
 use SodiumException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
+use Valkyrja\Crypt\Throwable\Contract\CryptThrowable;
+use Valkyrja\Crypt\Throwable\Exception\CryptDecodeFailureException;
+use Valkyrja\Crypt\Throwable\Exception\CryptKeyToBytesException;
+use Valkyrja\Crypt\Throwable\Exception\CryptTamperedMessageException;
+use Valkyrja\Crypt\Throwable\Exception\CryptTruncatedMessageException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Object\Factory\ObjectFactory;
 
@@ -55,7 +59,7 @@ class SodiumCrypt implements CryptContract
             $this->getDecoded($encrypted);
 
             return true;
-        } catch (CryptException) {
+        } catch (CryptThrowable) {
             // Left empty to default to false
         }
 
@@ -155,7 +159,7 @@ class SodiumCrypt implements CryptContract
      *
      * @param non-empty-string $encrypted The encrypted message
      *
-     * @throws CryptException
+     * @throws CryptDecodeFailureException
      */
     protected function getDecoded(string $encrypted): string
     {
@@ -171,7 +175,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a decoded encrypted message.
      *
-     * @throws CryptException
+     * @throws CryptDecodeFailureException
      */
     protected function validateDecoded(string|false $decoded): void
     {
@@ -183,12 +187,12 @@ class SodiumCrypt implements CryptContract
     /**
      * Validate a decoded encrypted message type.
      *
-     * @throws CryptException
+     * @throws CryptDecodeFailureException
      */
     protected function validateDecodedType(string|false $decoded): void
     {
         if (! $this->isValidDecodedType($decoded)) {
-            throw new CryptException('The encoding failed');
+            throw new CryptDecodeFailureException('The encoding failed');
         }
     }
 
@@ -202,13 +206,11 @@ class SodiumCrypt implements CryptContract
 
     /**
      * Validate a decoded encrypted message string length.
-     *
-     * @throws CryptException
      */
     protected function validateDecodedStrLen(string $decoded): void
     {
         if (! $this->isValidDecodedStrLen($decoded)) {
-            throw new CryptException('The message was truncated');
+            throw new CryptTruncatedMessageException('The message was truncated');
         }
     }
 
@@ -226,7 +228,6 @@ class SodiumCrypt implements CryptContract
      * @param string           $decoded The decoded encrypted message
      * @param non-empty-string $key     The encryption key
      *
-     * @throws CryptException
      * @throws SodiumException
      *
      * @return non-empty-string
@@ -266,13 +267,11 @@ class SodiumCrypt implements CryptContract
      * Validate a plain text encrypted message.
      *
      * @psalm-assert non-empty-string $plain
-     *
-     * @throws CryptException
      */
     protected function validatePlainDecoded(string|bool $plain): void
     {
         if (! $this->isValidPlainDecoded($plain)) {
-            throw new CryptException('The message was tampered with in transit');
+            throw new CryptTamperedMessageException('The message was tampered with in transit');
         }
     }
 
@@ -300,7 +299,7 @@ class SodiumCrypt implements CryptContract
         $keyAsBytes = $this->hex2bin($key);
 
         if ($keyAsBytes === false || $keyAsBytes === '') {
-            throw new CryptException("$key could not be converted to bytes");
+            throw new CryptKeyToBytesException("$key could not be converted to bytes");
         }
 
         return $keyAsBytes;

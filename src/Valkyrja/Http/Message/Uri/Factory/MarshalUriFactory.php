@@ -17,9 +17,9 @@ use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_change_key_case;
@@ -41,9 +41,9 @@ abstract class MarshalUriFactory
      * @param array<string, string>                   $server  The server
      * @param array<lowercase-string, HeaderContract> $headers The headers
      *
-     * @throws InvalidQueryException
-     * @throws InvalidPortException
-     * @throws InvalidPathException
+     * @throws HttpUriInvalidQueryException
+     * @throws HttpUriInvalidPortException
+     * @throws HttpUriInvalidPathException
      */
     public static function marshalUriFromServer(array $server, array $headers): UriContract
     {

@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class NotEmptyTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class NotEmptyTest extends TestCase
     {
         $rule = new NotEmpty('', errorMessage: ErrorMessage::IS_NOT_EMPTY);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::IS_NOT_EMPTY);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class NotEmptyTest extends TestCase
     {
         $rule = new NotEmpty('', 'Field cannot be empty');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field cannot be empty');
 
         $rule->validate();

@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
 
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Exception\Constant\UploadErrorExceptionMessage;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UploadErrorExceptionTest extends TestCase
@@ -25,45 +25,45 @@ final class UploadErrorExceptionTest extends TestCase
     {
         self::assertSame(
             UploadErrorExceptionMessage::INI_SIZE_MESSAGE,
-            new UploadErrorException(UploadError::INI_SIZE)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::INI_SIZE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::FORM_SIZE_MESSAGE,
-            new UploadErrorException(UploadError::FORM_SIZE)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::FORM_SIZE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::PARTIAL_MESSAGE,
-            new UploadErrorException(UploadError::PARTIAL)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::PARTIAL)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::NO_FILE_MESSAGE,
-            new UploadErrorException(UploadError::NO_FILE)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::NO_FILE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::NO_TMP_DIR_MESSAGE,
-            new UploadErrorException(UploadError::NO_TMP_DIR)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::NO_TMP_DIR)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::CANT_WRITE_MESSAGE,
-            new UploadErrorException(UploadError::CANT_WRITE)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::CANT_WRITE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorExceptionMessage::EXTENSION_MESSAGE,
-            new UploadErrorException(UploadError::EXTENSION)->getMessage()
+            new UploadedFileUploadErrorException(UploadError::EXTENSION)->getMessage()
         );
     }
 
     public function testOkException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UploadedFileInvalidUploadErrorException::class);
         $this->expectExceptionMessage(UploadErrorExceptionMessage::OK_MESSAGE);
 
-        new UploadErrorException(UploadError::OK);
+        new UploadedFileUploadErrorException(UploadError::OK);
     }
 }

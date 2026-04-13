@@ -21,7 +21,7 @@ use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Orka\Replacement\Variable\Unescaped;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
-use Valkyrja\View\Throwable\Exception\RuntimeException;
+use Valkyrja\View\Throwable\Exception\ViewOrkaCacheFailureException;
 
 use function file_exists;
 use function file_get_contents;
@@ -188,7 +188,7 @@ final class OrkaRendererTest extends TestCase
             }
         };
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ViewOrkaCacheFailureException::class);
         $this->expectExceptionMessage('could not be retrieved');
 
         $renderer->renderFile('nonexistent');

@@ -17,7 +17,7 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Override;
 use Random\RandomException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeRuntimeException;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
@@ -63,7 +63,7 @@ class VlidFactory extends UlidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     final public static function v1(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -78,7 +78,7 @@ class VlidFactory extends UlidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     final public static function v2(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -93,7 +93,7 @@ class VlidFactory extends UlidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     final public static function v3(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -108,7 +108,7 @@ class VlidFactory extends UlidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     final public static function v4(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {

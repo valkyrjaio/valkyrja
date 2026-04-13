@@ -15,7 +15,8 @@ namespace Valkyrja\Orm\Schema\Abstract;
 
 use Override;
 use Throwable;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmInvalidMigrationFileException;
+use Valkyrja\Orm\Throwable\Exception\OrmMigrationExecutionException;
 
 use function explode;
 use function file_get_contents;
@@ -51,7 +52,7 @@ abstract class SqlFileMigration extends TransactionalMigration
         $sql = file_get_contents($filePath);
 
         if ($sql === false) {
-            throw new RuntimeException("Invalid file $filePath given");
+            throw new OrmInvalidMigrationFileException("Invalid file $filePath given");
         }
 
         foreach (explode(';', trim($sql)) as $queryString) {
@@ -62,7 +63,7 @@ abstract class SqlFileMigration extends TransactionalMigration
             $statement = $this->orm->prepare($queryString);
 
             if (! $statement->execute()) {
-                throw new RuntimeException($statement->hasError() ? $statement->getErrorMessage() : 'Error occurred');
+                throw new OrmMigrationExecutionException($statement->hasError() ? $statement->getErrorMessage() : 'Error occurred');
             }
         }
     }

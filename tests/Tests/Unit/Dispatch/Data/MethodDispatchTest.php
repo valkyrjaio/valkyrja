@@ -15,7 +15,10 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingClassNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingMethodNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableNonStringClassNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedCallableException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -59,28 +62,28 @@ final class MethodDispatchTest extends TestCase
 
     public function testFromCallableOrArrayInvalidArrayCallable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchUnsupportedCallableException::class);
 
         MethodDispatch::fromCallableOrArray('str_replace');
     }
 
     public function testFromCallableOrArrayEmpty(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchCallableMissingClassNameException::class);
 
         MethodDispatch::fromCallableOrArray([]);
     }
 
     public function testFromCallableOrArrayInvalidArrayClassNotString(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchCallableNonStringClassNameException::class);
 
         MethodDispatch::fromCallableOrArray([new stdClass()]);
     }
 
     public function testFromCallableOrArrayInvalidArrayMissingMethod(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchCallableMissingMethodNameException::class);
 
         MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class]);
     }

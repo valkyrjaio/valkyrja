@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Max;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class MaxTest extends TestCase
 {
@@ -100,7 +100,7 @@ final class MaxTest extends TestCase
     {
         $rule = new Max(123, 10, 'Maximum 10 characters allowed');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Maximum 10 characters allowed');
 
         $rule->validate();
@@ -110,7 +110,7 @@ final class MaxTest extends TestCase
     {
         $rule = new Max(123, 10, errorMessage: ErrorMessage::STRING_MAX);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_MAX);
 
         $rule->validate();

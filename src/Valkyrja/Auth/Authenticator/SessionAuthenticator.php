@@ -20,8 +20,8 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticatedUsersSessionValueException;
-use Valkyrja\Auth\Throwable\Exception\InvalidUnserializedAuthenticatedUsersException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticatedUsersSessionValueException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidUnserializedAuthenticatedUsersException;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
 use function is_string;
@@ -74,7 +74,7 @@ class SessionAuthenticator extends Authenticator
         if (! is_string($sessionSerializedUsers)) {
             $this->session->remove($this->sessionItemId);
 
-            throw new InvalidAuthenticatedUsersSessionValueException('Session contains invalid authenticated users');
+            throw new AuthInvalidAuthenticatedUsersSessionValueException('Session contains invalid authenticated users');
         }
 
         /** @var scalar|object|array<array-key, mixed>|resource|null $sessionUsers */
@@ -86,7 +86,7 @@ class SessionAuthenticator extends Authenticator
         if (! $sessionUsers instanceof AuthenticatedUsersContract) {
             $this->session->remove($this->sessionItemId);
 
-            throw new InvalidUnserializedAuthenticatedUsersException('Session contains invalid authenticated users');
+            throw new AuthInvalidUnserializedAuthenticatedUsersException('Session contains invalid authenticated users');
         }
 
         return $sessionUsers;

@@ -26,7 +26,7 @@ use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Response\TextResponse;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 
 class ResponseFactory implements ResponseFactoryContract
@@ -84,7 +84,7 @@ class ResponseFactory implements ResponseFactoryContract
     /**
      * @inheritDoc
      *
-     * @throws InvalidArgumentException
+     * @throws HttpMessageInvalidArgumentException
      * @throws JsonException
      */
     #[Override]

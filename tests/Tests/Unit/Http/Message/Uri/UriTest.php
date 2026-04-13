@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri;
 
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -406,14 +406,14 @@ final class UriTest extends TestCase
 
     public function testInvalidPort(): void
     {
-        $this->expectException(InvalidPortException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         new Uri(port: 65536);
     }
 
     public function testInvalidPort2(): void
     {
-        $this->expectException(InvalidPortException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         new Uri(port: -1);
     }
@@ -438,21 +438,21 @@ final class UriTest extends TestCase
 
     public function testPathQueryIncluded(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         new Uri(path: '/path?query=test');
     }
 
     public function testPathFragmentIncluded(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         new Uri(path: '/path#anchor');
     }
 
     public function testWithPathQueryIncluded(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         $uri = UriFactory::fromString(self::URI);
         $uri->withPath('/path?query=test');
@@ -460,7 +460,7 @@ final class UriTest extends TestCase
 
     public function testWithPathFragmentIncluded(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         $uri = UriFactory::fromString(self::URI);
         $uri->withPath('/path#anchor');
@@ -486,7 +486,7 @@ final class UriTest extends TestCase
 
     public function testWithQueryFragmentIncluded(): void
     {
-        $this->expectException(InvalidQueryException::class);
+        $this->expectException(HttpUriInvalidQueryException::class);
 
         $uri = UriFactory::fromString(self::URI);
         $uri->withQuery('?query=test#anchor');

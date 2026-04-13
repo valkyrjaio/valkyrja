@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Struct\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Struct\Throwable\Contract\Throwable;
-use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Struct\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Throwable\Contract\Throwable as HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
+use Throwable;
+use Valkyrja\Http\Struct\Throwable\Contract\HttpStructThrowable;
+use Valkyrja\Http\Struct\Throwable\Exception\Abstract\HttpStructInvalidArgumentException;
+use Valkyrja\Http\Struct\Throwable\Exception\Abstract\HttpStructRuntimeException;
+use Valkyrja\Http\Throwable\Contract\HttpThrowable;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpInvalidArgumentException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(HttpThrowable::class, Throwable::class);
+        self::isA(Throwable::class, HttpStructThrowable::class);
+        self::isA(HttpThrowable::class, HttpStructThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(HttpInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(HttpStructThrowable::class, HttpStructInvalidArgumentException::class);
+        self::isA(HttpInvalidArgumentException::class, HttpStructInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(HttpRuntimeException::class, RuntimeException::class);
+        self::isA(HttpStructThrowable::class, HttpStructRuntimeException::class);
+        self::isA(HttpRuntimeException::class, HttpStructRuntimeException::class);
     }
 }

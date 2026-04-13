@@ -15,7 +15,9 @@ namespace Valkyrja\Cli\Interaction\Option\Factory;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Option;
-use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidEmptyValueException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidNonEmptyValueException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidOptionNameException;
 
 use function strlen;
 
@@ -63,7 +65,7 @@ abstract class OptionFactory
     protected static function validateArgIsOption(string $arg): void
     {
         if (! str_starts_with($arg, '-')) {
-            throw new InvalidArgumentException('Options must begin with either a `-` or `--`');
+            throw new CliInteractionInvalidOptionNameException('Options must begin with either a `-` or `--`');
         }
     }
 
@@ -77,7 +79,7 @@ abstract class OptionFactory
     protected static function validateNonEmptyName(string $name): void
     {
         if ($name === '') {
-            throw new InvalidArgumentException('Option name cannot be empty');
+            throw new CliInteractionInvalidNonEmptyValueException('Option name cannot be empty');
         }
     }
 
@@ -101,7 +103,7 @@ abstract class OptionFactory
     protected static function validateValueIsEmpty(string $value): void
     {
         if ($value !== '') {
-            throw new InvalidArgumentException('Cannot combine multiple options and include a value');
+            throw new CliInteractionInvalidEmptyValueException('Cannot combine multiple options and include a value');
         }
     }
 

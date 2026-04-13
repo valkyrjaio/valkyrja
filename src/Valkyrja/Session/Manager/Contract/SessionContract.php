@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Manager\Contract;
 
-use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidCsrfTokenException;
 
 interface SessionContract
 {
@@ -101,7 +101,7 @@ interface SessionContract
      * @param string $id    The csrf unique token id
      * @param string $token The token to validate
      *
-     * @throws InvalidCsrfToken
+     * @throws SessionInvalidCsrfTokenException
      */
     public function validateCsrfToken(string $id, string $token): void;
 

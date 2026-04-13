@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\View\Renderer;
 
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\RuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Template\Template;
-use Valkyrja\View\Throwable\Exception\InvalidConfigPath;
+use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -57,7 +57,7 @@ final class PhpRendererTest extends TestCase
             }
         };
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ValkyrjaRuntimeException::class);
         $this->expectExceptionMessage('Render failed');
 
         $renderer->endRender();
@@ -119,7 +119,7 @@ final class PhpRendererTest extends TestCase
 
         try {
             $renderer->renderFile('nonexistent');
-        } catch (RuntimeException $e) {
+        } catch (ViewInvalidPathException $e) {
             $exceptionThrown = true;
             self::assertStringContainsString('Path does not exist at', $e->getMessage());
         } finally {
@@ -148,7 +148,7 @@ final class PhpRendererTest extends TestCase
     {
         $renderer = new PhpRenderer(self::TEMPLATES_DIR);
 
-        $this->expectException(InvalidConfigPath::class);
+        $this->expectException(ViewInvalidPathException::class);
         $this->expectExceptionMessage('Invalid path @unknown specified for template @unknown/test');
 
         $renderer->renderFile('@unknown/test');

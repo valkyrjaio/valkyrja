@@ -13,68 +13,68 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
-use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
-use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
+use Throwable;
+use Valkyrja\Http\Message\File\Throwable\Contract\UploadedFileThrowable;
+use Valkyrja\Http\Message\File\Throwable\Exception\Abstract\UploadedFileInvalidArgumentException;
+use Valkyrja\Http\Message\File\Throwable\Exception\Abstract\UploadedFileRuntimeException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileAlreadyMovedException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidDirectoryException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileMoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUnableToWriteFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
+use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(MessageThrowable::class, Throwable::class);
+        self::isA(Throwable::class, UploadedFileThrowable::class);
+        self::isA(HttpMessageThrowable::class, UploadedFileThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(MessageInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(UploadedFileThrowable::class, UploadedFileInvalidArgumentException::class);
+        self::isA(HttpMessageInvalidArgumentException::class, UploadedFileInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(MessageRuntimeException::class, RuntimeException::class);
+        self::isA(UploadedFileThrowable::class, UploadedFileRuntimeException::class);
+        self::isA(HttpMessageRuntimeException::class, UploadedFileRuntimeException::class);
     }
 
     public function testAlreadyMovedException(): void
     {
-        self::isA(RuntimeException::class, AlreadyMovedException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileAlreadyMovedException::class);
     }
 
     public function testInvalidDirectoryException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidDirectoryException::class);
+        self::isA(UploadedFileInvalidArgumentException::class, UploadedFileInvalidDirectoryException::class);
     }
 
     public function testInvalidUploadedFileException(): void
     {
-        self::isA(InvalidArgumentException::class, InvalidUploadedFileException::class);
+        self::isA(UploadedFileInvalidArgumentException::class, UploadedFileInvalidUploadedFileException::class);
     }
 
     public function testMoveFailureException(): void
     {
-        self::isA(RuntimeException::class, MoveFailureException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileMoveFailureException::class);
     }
 
     public function testUploadedFileException(): void
     {
-        self::isA(RuntimeException::class, UnableToWriteFileException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileUnableToWriteFileException::class);
     }
 
     public function testUploadErrorException(): void
     {
-        self::isA(RuntimeException::class, UploadErrorException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileUploadErrorException::class);
     }
 }

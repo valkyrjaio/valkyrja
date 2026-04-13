@@ -22,10 +22,10 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 use function is_array;
@@ -127,7 +127,7 @@ class Route implements RouteContract
     public function getHelpText(): callable
     {
         return $this->helpText
-            ?? throw new NoHelpTextException('No help text has been set for this route');
+            ?? throw new CliRoutingNoHelpTextException('No help text has been set for this route');
     }
 
     /**
@@ -192,7 +192,7 @@ class Route implements RouteContract
         $arguments = $this->filterArgumentByName($name);
 
         return reset($arguments)
-            ?: throw new InvalidArgumentNameException("The argument `$name` was not found");
+            ?: throw new CliRoutingInvalidArgumentNameException("The argument `$name` was not found");
     }
 
     /**
@@ -260,7 +260,7 @@ class Route implements RouteContract
         $options = $this->filterOptionByName($name);
 
         return reset($options)
-            ?: throw new InvalidOptionNameException("The option `$name` was not found");
+            ?: throw new CliRoutingInvalidOptionNameException("The option `$name` was not found");
     }
 
     /**
@@ -486,7 +486,7 @@ class Route implements RouteContract
     protected function validateHelpText(callable|null $helpText = null): void
     {
         if ($helpText !== null && ! is_array($helpText)) {
-            throw new InvalidArgumentException('Help text must be a callable array');
+            throw new CliRoutingInvalidHelpTextCallableException('Help text must be a callable array');
         }
     }
 

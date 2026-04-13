@@ -20,7 +20,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
-use Valkyrja\Container\Throwable\Exception\InvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
 use function assert;
@@ -299,7 +299,7 @@ class Container implements ContainerContract
     {
         // @phpstan-ignore-next-line
         return $this->getAliasedWithoutChecks($id, $arguments)
-            ?? throw new InvalidReferenceException($id);
+            ?? throw new ContainerInvalidReferenceException($id);
     }
 
     /**
@@ -316,7 +316,7 @@ class Container implements ContainerContract
 
         // @phpstan-ignore-next-line
         return $this->getCallableWithoutChecks($id, $arguments)
-            ?? throw new InvalidReferenceException($id);
+            ?? throw new ContainerInvalidReferenceException($id);
     }
 
     /**
@@ -335,7 +335,7 @@ class Container implements ContainerContract
 
         // @phpstan-ignore-next-line
         return $this->getServiceWithoutChecks($id, $arguments)
-            ?? throw new InvalidReferenceException($id);
+            ?? throw new ContainerInvalidReferenceException($id);
     }
 
     /**
@@ -352,7 +352,7 @@ class Container implements ContainerContract
 
         // @phpstan-ignore-next-line
         return $this->getSingletonWithoutChecks($id)
-            ?? throw new InvalidReferenceException($id);
+            ?? throw new ContainerInvalidReferenceException($id);
     }
 
     /**
@@ -499,7 +499,7 @@ class Container implements ContainerContract
         InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION
     ): object {
         return match ($mode) {
-            InvalidReferenceMode::THROW_EXCEPTION                 => throw new InvalidReferenceException($id),
+            InvalidReferenceMode::THROW_EXCEPTION                 => throw new ContainerInvalidReferenceException($id),
             InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION => $this->newInstanceOrModeFallback($id, $arguments),
         };
     }
@@ -527,6 +527,6 @@ class Container implements ContainerContract
         }
 
         /** @var class-string $id */
-        throw new InvalidReferenceException($id);
+        throw new ContainerInvalidReferenceException($id);
     }
 }

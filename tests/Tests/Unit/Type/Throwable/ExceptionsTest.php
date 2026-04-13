@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Throwable;
 
-use Throwable as PHPThrowable;
+use Throwable;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
-use Valkyrja\Type\Object\Throwable\Contract\ClassThrowable;
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassPropertyProvidedException;
-use Valkyrja\Type\Object\Throwable\Exception\InvalidClassProvidedException;
-use Valkyrja\Type\Throwable\Contract\Throwable;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Type\Object\Throwable\Contract\ObjectThrowable;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectPropertyProvidedException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectProvidedException;
+use Valkyrja\Type\Throwable\Contract\TypeThrowable;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeRuntimeException;
 use Valkyrja\Type\Uid\Throwable\Contract\UidThrowable;
 use Valkyrja\Type\Uid\Throwable\Exception\InvalidUidException;
 use Valkyrja\Type\Ulid\Throwable\Contract\UlidThrowable;
@@ -48,18 +48,18 @@ final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(ValkyrjaThrowable::class, Throwable::class);
+        self::isA(Throwable::class, TypeThrowable::class);
+        self::isA(ValkyrjaThrowable::class, TypeThrowable::class);
     }
 
     public function testClassThrowable(): void
     {
-        self::isA(Throwable::class, ClassThrowable::class);
+        self::isA(TypeThrowable::class, ObjectThrowable::class);
     }
 
     public function testUidThrowable(): void
     {
-        self::isA(Throwable::class, UidThrowable::class);
+        self::isA(TypeThrowable::class, UidThrowable::class);
     }
 
     public function testUlidThrowable(): void
@@ -79,32 +79,32 @@ final class ExceptionsTest extends TestCase
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(ThrowableInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(TypeThrowable::class, TypeInvalidArgumentException::class);
+        self::isA(ValkyrjaInvalidArgumentException::class, TypeInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(ThrowableRuntimeException::class, RuntimeException::class);
+        self::isA(TypeThrowable::class, TypeRuntimeException::class);
+        self::isA(ValkyrjaRuntimeException::class, TypeRuntimeException::class);
     }
 
     public function testInvalidClassPropertyProvidedException(): void
     {
-        self::isA(ClassThrowable::class, InvalidClassPropertyProvidedException::class);
-        self::isA(InvalidArgumentException::class, InvalidClassPropertyProvidedException::class);
+        self::isA(ObjectThrowable::class, InvalidObjectPropertyProvidedException::class);
+        self::isA(TypeInvalidArgumentException::class, InvalidObjectPropertyProvidedException::class);
     }
 
     public function testInvalidClassProvidedException(): void
     {
-        self::isA(ClassThrowable::class, InvalidClassProvidedException::class);
-        self::isA(InvalidArgumentException::class, InvalidClassProvidedException::class);
+        self::isA(ObjectThrowable::class, InvalidObjectProvidedException::class);
+        self::isA(TypeInvalidArgumentException::class, InvalidObjectProvidedException::class);
     }
 
     public function testInvalidUidException(): void
     {
         self::isA(UidThrowable::class, InvalidUidException::class);
-        self::isA(InvalidArgumentException::class, InvalidUidException::class);
+        self::isA(TypeInvalidArgumentException::class, InvalidUidException::class);
     }
 
     public function testInvalidUlidException(): void

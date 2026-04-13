@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Manager\Token\Http;
 
 use JsonException;
 use Override;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -58,7 +58,7 @@ class HeaderTokenSession extends Session
         [$bearer, $token] = explode(' ', $headerLine);
 
         if ($bearer !== HeaderValue::BEARER || $token === '') {
-            throw new InvalidAuthenticationException('Invalid authorization header');
+            throw new AuthInvalidAuthenticationException('Invalid authorization header');
         }
 
         $this->setDataFromTokenValue($token);

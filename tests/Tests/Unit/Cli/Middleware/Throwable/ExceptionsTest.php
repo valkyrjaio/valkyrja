@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Throwable;
 
-use Throwable as PHPThrowable;
-use Valkyrja\Cli\Middleware\Throwable\Contract\Throwable;
-use Valkyrja\Cli\Middleware\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Middleware\Throwable\Exception\RuntimeException;
-use Valkyrja\Cli\Throwable\Contract\Throwable as CliThrowable;
-use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
-use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
+use Throwable;
+use Valkyrja\Cli\Middleware\Throwable\Contract\CliMiddlewareThrowable;
+use Valkyrja\Cli\Middleware\Throwable\Exception\Abstract\CliMiddlewareInvalidArgumentException;
+use Valkyrja\Cli\Middleware\Throwable\Exception\Abstract\CliMiddlewareRuntimeException;
+use Valkyrja\Cli\Throwable\Contract\CliThrowable;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliInvalidArgumentException;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowable(): void
     {
-        self::isA(PHPThrowable::class, Throwable::class);
-        self::isA(CliThrowable::class, Throwable::class);
+        self::isA(Throwable::class, CliMiddlewareThrowable::class);
+        self::isA(CliThrowable::class, CliMiddlewareThrowable::class);
     }
 
     public function testInvalidArgumentException(): void
     {
-        self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(CliInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(CliMiddlewareThrowable::class, CliMiddlewareInvalidArgumentException::class);
+        self::isA(CliInvalidArgumentException::class, CliMiddlewareInvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
-        self::isA(Throwable::class, RuntimeException::class);
-        self::isA(CliRuntimeException::class, RuntimeException::class);
+        self::isA(CliMiddlewareThrowable::class, CliMiddlewareRuntimeException::class);
+        self::isA(CliRuntimeException::class, CliMiddlewareRuntimeException::class);
     }
 }

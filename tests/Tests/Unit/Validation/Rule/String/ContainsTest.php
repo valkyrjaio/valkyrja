@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\Contains;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class ContainsTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class ContainsTest extends TestCase
     {
         $rule = new Contains('hello world', 'foo', errorMessage: ErrorMessage::STRING_CONTAINS);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_CONTAINS);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class ContainsTest extends TestCase
     {
         $rule = new Contains('hello', 'world', 'Field must contain "world"');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must contain "world"');
 
         $rule->validate();

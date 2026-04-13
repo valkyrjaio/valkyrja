@@ -13,108 +13,60 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Validation\Throwable;
 
-use RuntimeException as PhpRuntimeException;
-use Throwable as PhpThrowable;
+use RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Validation\Throwable\Contract\Throwable;
-use Valkyrja\Validation\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Validation\Throwable\Exception\RuntimeException;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
+use Valkyrja\Validation\Throwable\Contract\ValidationThrowable;
+use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationInvalidArgumentException;
+use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationRuntimeException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(Throwable::class, ValkyrjaThrowable::class, true));
-    }
-
-    public function testRuntimeExceptionImplementsThrowable(): void
-    {
-        $exception = new RuntimeException('Runtime error');
-
-        self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-    }
-
-    public function testRuntimeExceptionMessage(): void
-    {
-        $message   = 'A runtime error occurred';
-        $exception = new RuntimeException($message);
-
-        self::assertSame($message, $exception->getMessage());
-    }
-
-    public function testRuntimeExceptionCode(): void
-    {
-        $code      = 500;
-        $exception = new RuntimeException('Error', $code);
-
-        self::assertSame($code, $exception->getCode());
+        self::assertTrue(is_a(ValidationThrowable::class, ValkyrjaThrowable::class, true));
     }
 
     public function testValidationExceptionImplementsThrowable(): void
     {
-        $exception = new ValidationException('Validation failed');
+        $exception = new ValidationRuleFailureException('Validation failed');
 
-        self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(RuntimeException::class, $exception);
+        self::assertInstanceOf(ValidationThrowable::class, $exception);
+        self::assertInstanceOf(ValidationRuntimeException::class, $exception);
     }
 
     public function testValidationExceptionMessage(): void
     {
         $message   = 'Field is required';
-        $exception = new ValidationException($message);
+        $exception = new ValidationRuleFailureException($message);
 
         self::assertSame($message, $exception->getMessage());
     }
 
     public function testValidationExceptionCanBeThrown(): void
     {
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Must be valid');
 
-        throw new ValidationException('Must be valid');
-    }
-
-    public function testInvalidArgumentExceptionImplementsThrowable(): void
-    {
-        $exception = new InvalidArgumentException('Invalid argument');
-
-        self::assertInstanceOf(Throwable::class, $exception);
-    }
-
-    public function testInvalidArgumentExceptionMessage(): void
-    {
-        $message   = 'Invalid argument provided';
-        $exception = new InvalidArgumentException($message);
-
-        self::assertSame($message, $exception->getMessage());
-    }
-
-    public function testInvalidArgumentExceptionCanBeThrown(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument is not valid');
-
-        throw new InvalidArgumentException('Argument is not valid');
+        throw new ValidationRuleFailureException('Must be valid');
     }
 
     public function testExceptionHierarchy(): void
     {
         // ValidationException extends RuntimeException
-        self::assertTrue(is_a(ValidationException::class, RuntimeException::class, true));
+        self::assertTrue(is_a(ValidationRuleFailureException::class, ValidationRuntimeException::class, true));
 
         // Both implement Throwable
-        self::assertTrue(is_a(ValidationException::class, Throwable::class, true));
-        self::assertTrue(is_a(RuntimeException::class, Throwable::class, true));
-        self::assertTrue(is_a(InvalidArgumentException::class, Throwable::class, true));
+        self::assertTrue(is_a(ValidationRuleFailureException::class, ValidationThrowable::class, true));
+        self::assertTrue(is_a(ValidationRuntimeException::class, ValidationThrowable::class, true));
+        self::assertTrue(is_a(ValidationInvalidArgumentException::class, ValidationThrowable::class, true));
     }
 
     public function testExceptionWithPreviousException(): void
     {
-        $previous  = new PhpRuntimeException('Previous error');
-        $exception = new ValidationException('Validation failed', 0, $previous);
+        $previous  = new RuntimeException('Previous error');
+        $exception = new ValidationRuleFailureException('Validation failed', 0, $previous);
 
         self::assertSame($previous, $exception->getPrevious());
     }

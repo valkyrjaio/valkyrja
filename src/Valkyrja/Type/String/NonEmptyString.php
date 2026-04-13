@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\String;
 
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\String\Throwable\Exception\StringInvalidEmptyStringException;
 
 class NonEmptyString extends StringT
 {
     public function __construct(string $subject)
     {
         if ($subject === '') {
-            throw new InvalidArgumentException('Value must be a non-empty-string.');
+            throw new StringInvalidEmptyStringException('Value must be a non-empty-string.');
         }
 
         parent::__construct($subject);

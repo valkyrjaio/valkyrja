@@ -19,7 +19,7 @@ use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingArgumentValuesValidationException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -186,7 +186,7 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {
-            throw new InvalidArgumentException("$this->name is invalid");
+            throw new CliRoutingArgumentValuesValidationException("$this->name is invalid");
         }
 
         return $this;

@@ -19,7 +19,9 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Abstract\TransactionalMigration;
 use Valkyrja\Orm\Schema\Contract\MigrationContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Orm\Throwable\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\Abstract\OrmRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmInvalidMigrationFileException;
+use Valkyrja\Orm\Throwable\Exception\OrmMigrationExecutionException;
 use Valkyrja\Tests\Classes\Orm\Schema\SqlFileMigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -163,7 +165,7 @@ final class SqlFileMigrationTest extends TestCase
             ->method('rollback')
             ->willReturn(true);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmInvalidMigrationFileException::class);
         $this->expectExceptionMessage('Invalid file /nonexistent/file.sql given');
 
         @$this->migration->run();
@@ -207,7 +209,7 @@ final class SqlFileMigrationTest extends TestCase
             ->method('rollback')
             ->willReturn(true);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmRuntimeException::class);
         $this->expectExceptionMessage('Syntax error');
 
         $this->migration->run();
@@ -246,7 +248,7 @@ final class SqlFileMigrationTest extends TestCase
             ->method('rollback')
             ->willReturn(true);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmMigrationExecutionException::class);
         $this->expectExceptionMessage('Error occurred');
 
         $this->migration->run();
@@ -307,13 +309,13 @@ final class SqlFileMigrationTest extends TestCase
 
         try {
             @$this->migration->run();
-        } catch (RuntimeException) {
+        } catch (OrmRuntimeException) {
             // Expected
         }
 
         self::assertTrue($this->migration->runFailureCalled);
         self::assertNotNull($this->migration->runFailureException);
-        self::assertInstanceOf(RuntimeException::class, $this->migration->runFailureException);
+        self::assertInstanceOf(OrmRuntimeException::class, $this->migration->runFailureException);
         self::assertStringContainsString('Invalid file', $this->migration->runFailureException->getMessage());
     }
 
@@ -357,13 +359,13 @@ final class SqlFileMigrationTest extends TestCase
 
         try {
             $this->migration->run();
-        } catch (RuntimeException) {
+        } catch (OrmRuntimeException) {
             // Expected
         }
 
         self::assertTrue($this->migration->runFailureCalled);
         self::assertNotNull($this->migration->runFailureException);
-        self::assertInstanceOf(RuntimeException::class, $this->migration->runFailureException);
+        self::assertInstanceOf(OrmRuntimeException::class, $this->migration->runFailureException);
         self::assertSame('SQL syntax error', $this->migration->runFailureException->getMessage());
     }
 }

@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\HtmlResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 
 class XmlResponse extends Response implements HtmlResponseContract
 {
@@ -32,7 +32,7 @@ class XmlResponse extends Response implements HtmlResponseContract
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         string $xml = '',

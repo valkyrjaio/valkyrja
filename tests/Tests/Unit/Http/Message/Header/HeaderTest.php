@@ -16,9 +16,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header;
 use JsonException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Header;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -184,7 +184,7 @@ final class HeaderTest extends TestCase
 
     public function testInvalidHeaderName(): void
     {
-        $this->expectException(InvalidNameException::class);
+        $this->expectException(HttpHeaderInvalidNameException::class);
 
         Header::fromValue(' ');
     }
@@ -200,7 +200,7 @@ final class HeaderTest extends TestCase
 
     public function testUnsupportedOffsetSetException(): void
     {
-        $this->expectException(UnsupportedOffsetSetException::class);
+        $this->expectException(HttpHeaderUnsupportedOffsetSetException::class);
 
         $header    = new Header('valid', 'test');
         $header[1] = 'fire';
@@ -208,7 +208,7 @@ final class HeaderTest extends TestCase
 
     public function testUnsupportedOffsetUnsetException(): void
     {
-        $this->expectException(UnsupportedOffsetUnsetException::class);
+        $this->expectException(HttpHeaderUnsupportedOffsetUnsetException::class);
 
         $header = new Header('valid', 'test');
 

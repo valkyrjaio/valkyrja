@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Array;
 
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidNonEmptyException;
 
 class NonEmptyArray extends ArrayT
 {
@@ -23,7 +23,7 @@ class NonEmptyArray extends ArrayT
     public function __construct(array $subject)
     {
         if ($subject === []) {
-            throw new InvalidArgumentException('Value must be a non-empty-array.');
+            throw new ArrayInvalidNonEmptyException('Value must be a non-empty-array.');
         }
 
         parent::__construct($subject);

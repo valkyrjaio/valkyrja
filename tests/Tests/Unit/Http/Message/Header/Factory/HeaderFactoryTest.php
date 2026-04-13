@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class HeaderFactoryTest extends TestCase
@@ -62,7 +62,7 @@ final class HeaderFactoryTest extends TestCase
 
     public function testInvalidHeaderValue(): void
     {
-        $this->expectException(InvalidValueException::class);
+        $this->expectException(HttpHeaderInvalidValueException::class);
 
         HeaderFactory::assertValidValue("\x0a");
     }
@@ -92,7 +92,7 @@ final class HeaderFactoryTest extends TestCase
 
     public function testInvalidHeaderName(): void
     {
-        $this->expectException(InvalidNameException::class);
+        $this->expectException(HttpHeaderInvalidNameException::class);
 
         HeaderFactory::assertValidName(' ');
     }

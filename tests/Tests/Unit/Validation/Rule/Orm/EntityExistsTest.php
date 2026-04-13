@@ -24,7 +24,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Orm\EntityExists;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class EntityExistsTest extends TestCase
 {
@@ -142,7 +142,7 @@ final class EntityExistsTest extends TestCase
 
         $rule = new EntityExists($this->orm, subject: 999, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::ENTITY_EXISTS);
 
         $rule->validate();
@@ -161,7 +161,7 @@ final class EntityExistsTest extends TestCase
 
         $rule = new EntityExists($this->orm, subject: 999, errorMessage: 'User not found', entity: EntityClass::class);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('User not found');
 
         $rule->validate();

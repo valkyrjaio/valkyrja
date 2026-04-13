@@ -20,7 +20,7 @@ use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -81,7 +81,7 @@ final class UrlTest extends TestCase
 
     public function testNonExistentRoute(): void
     {
-        $this->expectException(InvalidRouteNameException::class);
+        $this->expectException(HttpRoutingInvalidRouteNameException::class);
 
         $response = $this->url->getUrl('non-existent-route', []);
     }

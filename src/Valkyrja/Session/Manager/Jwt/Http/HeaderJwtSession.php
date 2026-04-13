@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager\Jwt\Http;
 
 use Override;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Constant\HeaderValue;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -56,7 +56,7 @@ class HeaderJwtSession extends Session
         [$bearer, $token] = explode(' ', $headerLine);
 
         if ($bearer !== HeaderValue::BEARER || $token === '') {
-            throw new InvalidAuthenticationException('Invalid authorization header');
+            throw new AuthInvalidAuthenticationException('Invalid authorization header');
         }
 
         $this->setDataFromTokenValue($token);

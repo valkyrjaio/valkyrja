@@ -17,9 +17,10 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Override;
 use Random\RandomException;
-use Valkyrja\Type\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeRuntimeException;
 use Valkyrja\Type\Uid\Factory\UidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
+use Valkyrja\Type\Ulid\Throwable\Exception\UlidRandomBytesFailureException;
 
 use function microtime;
 use function random_bytes;
@@ -70,7 +71,7 @@ class UlidFactory extends UidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     public static function generate(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
@@ -116,7 +117,7 @@ class UlidFactory extends UidFactory
      *
      * @throws InvalidArgumentException
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     public static function generateLowerCase(DateTimeInterface|null $dateTime = null): string
     {
@@ -216,7 +217,7 @@ class UlidFactory extends UidFactory
      * @param string $time The time to use
      *
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      */
     protected static function randomize(string $time): void
     {
@@ -234,7 +235,7 @@ class UlidFactory extends UidFactory
      * Generate a randomized bytes array.
      *
      * @throws RandomException
-     * @throws RuntimeException
+     * @throws TypeRuntimeException
      *
      * @return array<int, int>
      */
@@ -243,7 +244,7 @@ class UlidFactory extends UidFactory
         $randomBytes = static::unpackRandomBytes(random_bytes(10));
 
         if ($randomBytes === false) {
-            throw new RuntimeException('Random bytes failed to unpack');
+            throw new UlidRandomBytesFailureException('Random bytes failed to unpack');
         }
 
         return $randomBytes;

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid;
 
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 use Valkyrja\Type\Vlid\Vlid;
 
@@ -45,7 +45,7 @@ final class VlidTest extends TestCase
      */
     public function testFromInvalidValue(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeInvalidArgumentException::class);
 
         Vlid::fromValue(1);
     }

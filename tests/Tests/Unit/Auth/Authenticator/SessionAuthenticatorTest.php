@@ -21,8 +21,8 @@ use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticatedUsersSessionValueException;
-use Valkyrja\Auth\Throwable\Exception\InvalidUnserializedAuthenticatedUsersException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticatedUsersSessionValueException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidUnserializedAuthenticatedUsersException;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -82,7 +82,7 @@ final class SessionAuthenticatorTest extends TestCase
      */
     public function testGetAuthenticatedUsersFromSessionThrowsForInvalidObject(): void
     {
-        $this->expectException(InvalidUnserializedAuthenticatedUsersException::class);
+        $this->expectException(AuthInvalidUnserializedAuthenticatedUsersException::class);
         $this->expectExceptionMessage('Session contains invalid authenticated users');
 
         // Serialize an object that is not AuthenticatedUsersContract
@@ -139,7 +139,7 @@ final class SessionAuthenticatorTest extends TestCase
      */
     public function testGetAuthenticatedUsersFromSessionThrowsForNonString(): void
     {
-        $this->expectException(InvalidAuthenticatedUsersSessionValueException::class);
+        $this->expectException(AuthInvalidAuthenticatedUsersSessionValueException::class);
         $this->expectExceptionMessage('Session contains invalid authenticated users');
 
         $this->session->expects($this->once())
@@ -167,7 +167,7 @@ final class SessionAuthenticatorTest extends TestCase
      */
     public function testGetAuthenticatedUsersFromSessionThrowsForInvalidSerializedData(): void
     {
-        $this->expectException(InvalidUnserializedAuthenticatedUsersException::class);
+        $this->expectException(AuthInvalidUnserializedAuthenticatedUsersException::class);
         $this->expectExceptionMessage('Session contains invalid authenticated users');
 
         // Serialize an array instead of an object

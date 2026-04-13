@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatch\Dispatcher;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
@@ -25,6 +24,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedDispatchException;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatchClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
@@ -337,7 +337,7 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchCallable(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DispatchUnsupportedDispatchException::class);
 
         $dispatch = new InvalidDispatchClass();
 

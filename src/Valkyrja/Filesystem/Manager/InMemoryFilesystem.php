@@ -18,8 +18,8 @@ use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
-use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
-use Valkyrja\Throwable\Exception\RuntimeException;
+use Valkyrja\Filesystem\Throwable\Exception\FilesystemResourceReadException;
+use Valkyrja\Filesystem\Throwable\Exception\FilesystemUnableToReadContentsException;
 
 use function fread;
 use function str_starts_with;
@@ -56,7 +56,7 @@ class InMemoryFilesystem implements FilesystemContract
     public function read(string $path): string
     {
         return $this->files[$path]->contents
-            ?? throw new UnableToReadContentsException("Error reading file contents for $path");
+            ?? throw new FilesystemUnableToReadContentsException("Error reading file contents for $path");
     }
 
     /**
@@ -81,7 +81,7 @@ class InMemoryFilesystem implements FilesystemContract
         $pathContents = $this->readFromResource($resource, 4096);
 
         if ($pathContents === false) {
-            throw new RuntimeException('Failed to read provided resource');
+            throw new FilesystemResourceReadException('Failed to read provided resource');
         }
 
         $this->files[$path] = new InMemoryFile($path, $pathContents, timestamp: time());

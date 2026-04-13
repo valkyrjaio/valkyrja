@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Data;
 
 use Override;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
-use Valkyrja\Http\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoCastException;
 use Valkyrja\Type\Data\Cast;
 
 class Parameter implements ParameterContract
@@ -97,7 +97,7 @@ class Parameter implements ParameterContract
     public function getCast(): Cast
     {
         return $this->cast
-            ?? throw new NoCastException('No cast exists');
+            ?? throw new HttpRoutingNoCastException('No cast exists');
     }
 
     /**

@@ -19,7 +19,9 @@ use SodiumException;
 use stdClass;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
+use Valkyrja\Crypt\Throwable\Exception\CryptDecodeFailureException;
+use Valkyrja\Crypt\Throwable\Exception\CryptKeyToBytesException;
+use Valkyrja\Crypt\Throwable\Exception\CryptTamperedMessageException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function bin2hex;
@@ -50,7 +52,6 @@ final class SodiumCryptTest extends TestCase
     }
 
     /**
-     * @throws CryptException
      * @throws RandomException
      * @throws SodiumException
      */
@@ -68,7 +69,6 @@ final class SodiumCryptTest extends TestCase
     }
 
     /**
-     * @throws CryptException
      * @throws JsonException
      * @throws RandomException
      * @throws SodiumException
@@ -86,7 +86,6 @@ final class SodiumCryptTest extends TestCase
     }
 
     /**
-     * @throws CryptException
      * @throws JsonException
      * @throws RandomException
      * @throws SodiumException
@@ -109,7 +108,6 @@ final class SodiumCryptTest extends TestCase
     }
 
     /**
-     * @throws CryptException
      * @throws RandomException
      * @throws SodiumException
      */
@@ -127,18 +125,16 @@ final class SodiumCryptTest extends TestCase
     }
 
     /**
-     * @throws CryptException
      * @throws SodiumException
      */
     public function testDecryptWithInvalidMessageThrowsException(): void
     {
-        $this->expectException(CryptException::class);
+        $this->expectException(CryptDecodeFailureException::class);
 
         @$this->crypt->decrypt('invalid-encrypted-message');
     }
 
     /**
-     * @throws CryptException
      * @throws RandomException
      * @throws SodiumException
      */
@@ -161,7 +157,7 @@ final class SodiumCryptTest extends TestCase
      */
     public function testInvalidPlainDecodedThrowsException(): void
     {
-        $this->expectException(CryptException::class);
+        $this->expectException(CryptTamperedMessageException::class);
         $this->expectExceptionMessage('The message was tampered with in transit');
 
         $crypt = new class('key') extends SodiumCrypt {
@@ -195,7 +191,7 @@ final class SodiumCryptTest extends TestCase
     public function testInvalidKeyThrowsException(): void
     {
         $key = 'test';
-        $this->expectException(CryptException::class);
+        $this->expectException(CryptKeyToBytesException::class);
         $this->expectExceptionMessage("$key could not be converted to bytes");
 
         $crypt = new class($key) extends SodiumCrypt {

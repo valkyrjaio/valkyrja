@@ -19,8 +19,8 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Exception;
 
 /**
  * Class LogExceptionMiddlewareTest.
@@ -32,7 +32,7 @@ final class LogExceptionMiddlewareTest extends TestCase
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
         $request    = new ServerRequest();
         $response   = new Response(statusCode: $statusCode);
-        $exception  = new Exception();
+        $exception  = new ValkyrjaRuntimeExceptionClass();
         $url        = $request->getUri()->getPath();
 
         $logger = $this->createMock(LoggerContract::class);

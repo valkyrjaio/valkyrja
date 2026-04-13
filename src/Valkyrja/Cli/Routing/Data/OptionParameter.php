@@ -19,7 +19,8 @@ use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionWithValueException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingOptionValuesValidationException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;
@@ -258,7 +259,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
 
         foreach ($options as $option) {
             if ($this->valueMode === OptionValueMode::NONE && $option->hasValue()) {
-                throw new InvalidArgumentException("$this->name should have no value");
+                throw new CliRoutingInvalidOptionWithValueException("$this->name should have no value");
             }
 
             $new->options[] = $option;
@@ -277,7 +278,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
 
         foreach ($options as $option) {
             if ($this->valueMode === OptionValueMode::NONE && $option->hasValue()) {
-                throw new InvalidArgumentException("$this->name should have no value");
+                throw new CliRoutingInvalidOptionWithValueException("$this->name should have no value");
             }
 
             $new->options[] = $option;
@@ -345,7 +346,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {
-            throw new InvalidArgumentException("$this->name is invalid");
+            throw new CliRoutingOptionValuesValidationException("$this->name is invalid");
         }
 
         return $this;

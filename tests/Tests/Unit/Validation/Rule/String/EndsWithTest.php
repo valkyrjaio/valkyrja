@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\EndsWith;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class EndsWithTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class EndsWithTest extends TestCase
     {
         $rule = new EndsWith('hello world', 'hello', errorMessage: ErrorMessage::STRING_ENDS_WITH);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_ENDS_WITH);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class EndsWithTest extends TestCase
     {
         $rule = new EndsWith('foo', 'bar', 'Field must end with "bar"');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must end with "bar"');
 
         $rule->validate();

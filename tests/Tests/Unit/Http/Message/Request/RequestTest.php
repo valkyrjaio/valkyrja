@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Request;
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\HttpRequestInvalidRequestTargetException;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -45,7 +45,7 @@ final class RequestTest extends TestCase
 
     public function testInvalidRequestTarget(): void
     {
-        $this->expectException(InvalidRequestTargetException::class);
+        $this->expectException(HttpRequestInvalidRequestTargetException::class);
 
         $request = new Request();
         $request->withRequestTarget('fire ');

@@ -23,7 +23,7 @@ use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Data\Message;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
+use Valkyrja\Crypt\Throwable\Exception\CryptEncryptionFailureException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CryptPusherBroadcasterTest extends TestCase
@@ -52,7 +52,6 @@ final class CryptPusherBroadcasterTest extends TestCase
      * @throws GuzzleException
      * @throws ApiErrorException
      * @throws PusherException
-     * @throws CryptException
      */
     public function testSendSuccess(): void
     {
@@ -87,7 +86,7 @@ final class CryptPusherBroadcasterTest extends TestCase
      * @throws GuzzleException
      * @throws ApiErrorException
      * @throws PusherException
-     * @throws CryptException
+     * @throws CryptEncryptionFailureException
      */
     public function testSendThrowsExceptionOnCryptFailure(): void
     {
@@ -100,13 +99,13 @@ final class CryptPusherBroadcasterTest extends TestCase
         $this->crypt
             ->expects($this->once())
             ->method('encrypt')
-            ->willThrowException(new CryptException('Encryption failed'));
+            ->willThrowException(new CryptEncryptionFailureException('Encryption failed'));
 
         $this->pusher
             ->expects($this->never())
             ->method('trigger');
 
-        $this->expectException(CryptException::class);
+        $this->expectException(CryptEncryptionFailureException::class);
         $this->expectExceptionMessage('Encryption failed');
 
         $broadcaster = new CryptPusherBroadcaster($this->pusher, $this->crypt);

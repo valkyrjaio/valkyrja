@@ -17,7 +17,6 @@ use Override;
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 class CryptPusherBroadcaster extends PusherBroadcaster
 {
@@ -30,8 +29,6 @@ class CryptPusherBroadcaster extends PusherBroadcaster
 
     /**
      * @inheritDoc
-     *
-     * @throws CryptException On a crypt failure
      */
     #[Override]
     protected function prepareMessage(MessageContract $message): MessageContract

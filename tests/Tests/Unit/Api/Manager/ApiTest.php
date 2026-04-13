@@ -23,7 +23,7 @@ use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -101,7 +101,7 @@ final class ApiTest extends TestCase
         $this->responseFactory->expects($this->never())->method(self::anything());
         $this->jsonResponse->expects($this->never())->method(self::anything());
 
-        $exception = new HttpException(StatusCode::NOT_FOUND, 'Resource not found');
+        $exception = new HttpResponseException(StatusCode::NOT_FOUND, 'Resource not found');
 
         $result = $this->api->jsonFromException($exception);
 

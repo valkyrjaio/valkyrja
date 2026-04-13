@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class HttpExceptionTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $exception = new HttpException();
+        $exception = new HttpResponseException();
 
         self::assertSame(StatusCode::INTERNAL_SERVER_ERROR, $exception->getStatusCode());
         self::assertEmpty($exception->getHeaders()->getAll());
@@ -36,7 +36,7 @@ final class HttpExceptionTest extends TestCase
 
     public function testGetStatusCode(): void
     {
-        $exception = new HttpException(statusCode: StatusCode::SERVICE_UNAVAILABLE);
+        $exception = new HttpResponseException(statusCode: StatusCode::SERVICE_UNAVAILABLE);
 
         self::assertSame(StatusCode::SERVICE_UNAVAILABLE, $exception->getStatusCode());
     }
@@ -44,14 +44,14 @@ final class HttpExceptionTest extends TestCase
     public function testGetHeaders(): void
     {
         $headers   = ['test' => new Header('test', ...['foo', 'bar'])];
-        $exception = new HttpException(headers: HeaderCollection::fromArray($headers));
+        $exception = new HttpResponseException(headers: HeaderCollection::fromArray($headers));
 
         self::assertSame($headers, $exception->getHeaders()->getAll());
     }
 
     public function testGetMessage(): void
     {
-        $exception = new HttpException(message: $message = 'test');
+        $exception = new HttpResponseException(message: $message = 'test');
 
         self::assertSame($message, $exception->getMessage());
     }
@@ -59,7 +59,7 @@ final class HttpExceptionTest extends TestCase
     public function testGetResponse(): void
     {
         $response  = new Response(statusCode: StatusCode::INTERNAL_SERVER_ERROR);
-        $exception = new HttpException(response: $response);
+        $exception = new HttpResponseException(response: $response);
 
         self::assertNotSame($response, $exception->getResponse());
         self::assertSame($response->getStatusCode(), $exception->getResponse()?->getStatusCode());
@@ -68,7 +68,7 @@ final class HttpExceptionTest extends TestCase
     public function testGetResponseWithNoStatusCode(): void
     {
         $response  = new Response();
-        $exception = new HttpException(response: $response);
+        $exception = new HttpResponseException(response: $response);
 
         self::assertNotSame($response, $exception->getResponse());
         self::assertSame($response->getStatusCode(), $exception->getResponse()?->getStatusCode());

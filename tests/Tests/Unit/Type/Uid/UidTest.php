@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Uid;
 
 use Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 use Valkyrja\Type\Uid\Factory\UidFactory;
 use Valkyrja\Type\Uid\Throwable\Exception\InvalidUidException;
 use Valkyrja\Type\Uid\Uid;
@@ -43,7 +43,7 @@ final class UidTest extends TestCase
      */
     public function testFromInvalidValue(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(TypeInvalidArgumentException::class);
 
         Uid::fromValue(1);
     }

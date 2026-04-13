@@ -18,10 +18,10 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentNameException;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidOptionNameException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoHelpTextException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
@@ -253,7 +253,7 @@ final class RouteTest extends TestCase
 
     public function testHelpTextThrowsWhenNotExists(): void
     {
-        $this->expectException(NoHelpTextException::class);
+        $this->expectException(CliRoutingNoHelpTextException::class);
         $this->expectExceptionMessage('No help text has been set for this route');
 
         $name        = self::NAME;
@@ -271,7 +271,7 @@ final class RouteTest extends TestCase
 
     public function testHelpTextMessageThrowsWhenNotExists(): void
     {
-        $this->expectException(NoHelpTextException::class);
+        $this->expectException(CliRoutingNoHelpTextException::class);
         $this->expectExceptionMessage('No help text has been set for this route');
 
         $name        = self::NAME;
@@ -432,7 +432,7 @@ final class RouteTest extends TestCase
 
     public function testGetArgumentThrowsWhenNonExistent(): void
     {
-        $this->expectException(InvalidArgumentNameException::class);
+        $this->expectException(CliRoutingInvalidArgumentNameException::class);
         $this->expectExceptionMessage('The argument `name` was not found');
 
         $name        = self::NAME;
@@ -546,7 +546,7 @@ final class RouteTest extends TestCase
 
     public function testGetOptionThrowsWhenNonExistent(): void
     {
-        $this->expectException(InvalidOptionNameException::class);
+        $this->expectException(CliRoutingInvalidOptionNameException::class);
         $this->expectExceptionMessage('The option `name` was not found');
 
         $name        = self::NAME;
@@ -920,7 +920,7 @@ final class RouteTest extends TestCase
 
     public function testHelpTextWithClosureThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(CliRoutingInvalidHelpTextCallableException::class);
         $this->expectExceptionMessage('Help text must be a callable array');
 
         new Route(

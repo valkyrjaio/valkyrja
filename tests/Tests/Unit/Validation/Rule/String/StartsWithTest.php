@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\String\StartsWith;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class StartsWithTest extends TestCase
 {
@@ -112,7 +112,7 @@ final class StartsWithTest extends TestCase
     {
         $rule = new StartsWith('hello world', 'world', errorMessage: ErrorMessage::STRING_STARTS_WITH);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::STRING_STARTS_WITH);
 
         $rule->validate();
@@ -122,7 +122,7 @@ final class StartsWithTest extends TestCase
     {
         $rule = new StartsWith('foo', 'bar', 'Field must start with "bar"');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Field must start with "bar"');
 
         $rule->validate();

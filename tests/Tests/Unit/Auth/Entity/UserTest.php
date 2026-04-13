@@ -15,7 +15,8 @@ namespace Valkyrja\Tests\Unit\Auth\Entity;
 
 use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Entity\User;
-use Valkyrja\Auth\Throwable\Exception\RuntimeException;
+use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedPasswordValueException;
+use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedUsernameValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PASSWORD_DEFAULT;
@@ -58,7 +59,7 @@ final class UserTest extends TestCase
         $user     = new User();
         $user->id = self::USER_ID;
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(AuthUnexpectedUsernameValueException::class);
         $this->expectExceptionMessage('Username field value should be a string');
 
         $user->getUsernameValue();
@@ -80,7 +81,7 @@ final class UserTest extends TestCase
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(AuthUnexpectedPasswordValueException::class);
         $this->expectExceptionMessage('Password field value should be a string');
 
         $user->getPasswordValue();

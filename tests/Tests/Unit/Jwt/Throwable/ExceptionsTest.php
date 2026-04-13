@@ -13,87 +13,22 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Jwt\Throwable;
 
-use RuntimeException as PhpRuntimeException;
-use Throwable as PhpThrowable;
-use Valkyrja\Jwt\Throwable\Contract\Throwable;
-use Valkyrja\Jwt\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Jwt\Throwable\Exception\RuntimeException;
+use Valkyrja\Jwt\Throwable\Contract\JwtThrowable;
+use Valkyrja\Jwt\Throwable\Exception\Abstract\JwtInvalidArgumentException;
+use Valkyrja\Jwt\Throwable\Exception\Abstract\JwtRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
+use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(Throwable::class, ValkyrjaThrowable::class, true));
-    }
-
-    public function testRuntimeExceptionImplementsThrowable(): void
-    {
-        $exception = new RuntimeException('Runtime error');
-
-        self::assertInstanceOf(Throwable::class, $exception);
-        self::assertInstanceOf(PhpThrowable::class, $exception);
-    }
-
-    public function testRuntimeExceptionMessage(): void
-    {
-        $message   = 'A runtime error occurred';
-        $exception = new RuntimeException($message);
-
-        self::assertSame($message, $exception->getMessage());
-    }
-
-    public function testRuntimeExceptionCode(): void
-    {
-        $code      = 500;
-        $exception = new RuntimeException('Error', $code);
-
-        self::assertSame($code, $exception->getCode());
-    }
-
-    public function testRuntimeExceptionCanBeThrown(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('JWT encoding failed');
-
-        throw new RuntimeException('JWT encoding failed');
-    }
-
-    public function testInvalidArgumentExceptionImplementsThrowable(): void
-    {
-        $exception = new InvalidArgumentException('Invalid argument');
-
-        self::assertInstanceOf(Throwable::class, $exception);
-    }
-
-    public function testInvalidArgumentExceptionMessage(): void
-    {
-        $message   = 'Invalid token format';
-        $exception = new InvalidArgumentException($message);
-
-        self::assertSame($message, $exception->getMessage());
-    }
-
-    public function testInvalidArgumentExceptionCanBeThrown(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Token is invalid');
-
-        throw new InvalidArgumentException('Token is invalid');
+        self::assertTrue(is_a(JwtThrowable::class, ValkyrjaThrowable::class, true));
     }
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(RuntimeException::class, Throwable::class, true));
-        self::assertTrue(is_a(InvalidArgumentException::class, Throwable::class, true));
-    }
-
-    public function testExceptionWithPreviousException(): void
-    {
-        $previous  = new PhpRuntimeException('Previous error');
-        $exception = new RuntimeException('JWT error', 0, $previous);
-
-        self::assertSame($previous, $exception->getPrevious());
+        self::assertTrue(is_a(JwtRuntimeException::class, JwtThrowable::class, true));
+        self::assertTrue(is_a(JwtInvalidArgumentException::class, JwtThrowable::class, true));
     }
 }

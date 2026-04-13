@@ -15,6 +15,8 @@ namespace Valkyrja\Tests\Unit\Orm\Entity\Abstract;
 
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\Orm\Throwable\Exception\OrmArrayCastingException;
+use Valkyrja\Orm\Throwable\Exception\OrmUnexpectedIdValueException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityStringIdClass;
@@ -22,8 +24,6 @@ use Valkyrja\Tests\Classes\Orm\Entity\EntityWithAllFeaturesClass;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityWithCastingsClass;
 use Valkyrja\Tests\Classes\Orm\Repository\RepositoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Int\IntT;
 
 final class EntityTest extends TestCase
@@ -115,7 +115,7 @@ final class EntityTest extends TestCase
         $entity     = EntityStringIdClass::fromArray(['id' => '', 'name' => 'Test']);
         $entity->id = '';
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(OrmUnexpectedIdValueException::class);
         $this->expectExceptionMessage('Id field value should be a string or int');
 
         $entity->getIdValue();
@@ -316,7 +316,7 @@ final class EntityTest extends TestCase
         $entity->name   = 'Test';
         $entity->scores = 'not an array';
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(OrmArrayCastingException::class);
         $this->expectExceptionMessage('Expecting array, string provided, for scores cast');
 
         $entity->asStorableArray();

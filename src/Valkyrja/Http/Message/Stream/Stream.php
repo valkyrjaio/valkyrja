@@ -19,8 +19,8 @@ use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Factory\StreamFactory;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidLengthException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 
 use function fclose;
 use function feof;
@@ -44,7 +44,7 @@ class Stream implements StreamContract
     protected $resource;
 
     /**
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         protected PhpWrapper|string $stream = PhpWrapper::temp,
@@ -110,7 +110,7 @@ class Stream implements StreamContract
     public function read(int $length): string
     {
         if ($length < 0) {
-            InvalidLengthException::throw("Invalid length of $length provided. Length must be greater than 0");
+            throw new HttpStreamInvalidLengthException("Invalid length of $length provided. Length must be greater than 0");
         }
 
         $stream = $this->resource;

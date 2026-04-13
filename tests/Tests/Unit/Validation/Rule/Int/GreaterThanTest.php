@@ -17,7 +17,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Rule\Int\GreaterThan;
-use Valkyrja\Validation\Throwable\Exception\ValidationException;
+use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
 final class GreaterThanTest extends TestCase
 {
@@ -119,7 +119,7 @@ final class GreaterThanTest extends TestCase
     {
         $rule = new GreaterThan(3, 5, errorMessage: ErrorMessage::INT_GREATER_THAN);
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::INT_GREATER_THAN);
 
         $rule->validate();
@@ -129,7 +129,7 @@ final class GreaterThanTest extends TestCase
     {
         $rule = new GreaterThan(3, 5, 'Value must be greater than 5');
 
-        $this->expectException(ValidationException::class);
+        $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('Value must be greater than 5');
 
         $rule->validate();

@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
@@ -170,7 +170,7 @@ class RequestHandler implements RequestHandlerContract
         }
 
         // If no response has been set and there is a template with the error code
-        if ($throwable instanceof HttpException) {
+        if ($throwable instanceof HttpResponseException) {
             return $throwable->getResponse()
                 ?? $this->getDefaultErrorResponseForHttpException($throwable);
         }
@@ -198,7 +198,7 @@ class RequestHandler implements RequestHandlerContract
     /**
      * Get the default exception response for an http exception.
      */
-    protected function getDefaultErrorResponseForHttpException(HttpException $httpException): ResponseContract
+    protected function getDefaultErrorResponseForHttpException(HttpResponseException $httpException): ResponseContract
     {
         $statusCode = $httpException->getStatusCode();
 

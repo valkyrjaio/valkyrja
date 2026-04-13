@@ -21,8 +21,9 @@ use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Location;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Response\Throwable\Exception\HttpRequestInvalidRedirectStatusCodeException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
@@ -31,8 +32,8 @@ use Valkyrja\Http\Message\Uri\Uri;
 class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
-     * @throws InvalidArgumentException
-     * @throws InvalidStreamException
+     * @throws HttpMessageInvalidArgumentException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         protected UriContract $uri = new Uri(path: '/'),
@@ -40,7 +41,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         HeaderCollectionContract $headers = new HeaderCollection()
     ) {
         if (! $statusCode->isRedirect()) {
-            throw new InvalidArgumentException(
+            throw new HttpRequestInvalidRedirectStatusCodeException(
                 "Invalid redirect status code $statusCode->value used."
             );
         }
