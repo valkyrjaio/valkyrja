@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Throwable\Exception;
+namespace Valkyrja\Broadcast\Throwable\Exception\Abstract;
 
 use Valkyrja\Broadcast\Throwable\Contract\BroadcastThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class BroadcastRuntimeException extends ValkyrjaRuntimeException implements BroadcastThrowable
+abstract class BroadcastInvalidArgumentException extends ValkyrjaInvalidArgumentException implements BroadcastThrowable
 {
 }
