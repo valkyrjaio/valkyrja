@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 use Override;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
@@ -39,6 +38,7 @@ use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Event\Collector\Contract\CollectorContract as EventCollector;
@@ -270,7 +270,7 @@ final class AppTest extends TestCase
 
         $config = new Config(
             providers: [
-                ComponentClass::CONTAINER,
+                ContainerComponentProvider::class,
             ],
         );
 
@@ -286,7 +286,7 @@ final class AppTest extends TestCase
 
         $config2 = new Config(
             providers: [
-                ComponentClass::CONTAINER,
+                ContainerComponentProvider::class,
                 ViewComponentProvider::class,
             ],
         );

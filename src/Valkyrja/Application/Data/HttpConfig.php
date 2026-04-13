@@ -14,9 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
+use Valkyrja\Log\Provider\LogComponentProvider;
+use Valkyrja\View\Provider\ViewComponentProvider;
 
 class HttpConfig extends Config
 {
@@ -43,16 +52,16 @@ class HttpConfig extends Config
         string $dataPath = 'App/Provider/Data',
         string $dataNamespace = 'App\\Provider\\Data',
         array $providers = [
-            ComponentClass::CONTAINER,
-            ComponentClass::DISPATCHER,
-            ComponentClass::EVENT,
-            ComponentClass::HTTP_MESSAGE,
-            ComponentClass::HTTP_MIDDLEWARE,
-            ComponentClass::HTTP_ROUTING,
-            ComponentClass::HTTP_ROUTING_CLI,
-            ComponentClass::HTTP_SERVER,
-            ComponentClass::LOG,
-            ComponentClass::VIEW,
+            ContainerComponentProvider::class,
+            DispatchComponentProvider::class,
+            EventComponentProvider::class,
+            HttpMessageComponentProvider::class,
+            HttpMiddlewareComponentProvider::class,
+            HttpRoutingComponentProvider::class,
+            HttpRoutingCliComponentProvider::class,
+            HttpServerComponentProvider::class,
+            LogComponentProvider::class,
+            ViewComponentProvider::class,
         ],
         array $callbacks = [],
     ) {

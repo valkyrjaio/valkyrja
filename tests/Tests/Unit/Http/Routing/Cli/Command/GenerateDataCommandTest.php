@@ -13,13 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class GenerateDataCommandTest extends TestCase
@@ -39,17 +49,17 @@ final class GenerateDataCommandTest extends TestCase
         $config        = new HttpConfig(
             dir: $originalPath,
             providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
+                ContainerComponentProvider::class,
+                DispatchComponentProvider::class,
+                CliInteractionComponentProvider::class,
+                CliMiddlewareComponentProvider::class,
+                CliRoutingComponentProvider::class,
+                CliServerComponentProvider::class,
+                EventComponentProvider::class,
+                HttpMessageComponentProvider::class,
+                HttpMiddlewareComponentProvider::class,
+                HttpRoutingComponentProvider::class,
+                HttpServerComponentProvider::class,
             ],
         );
         $output        = new PlainOutput();
@@ -142,17 +152,17 @@ final class GenerateDataCommandTest extends TestCase
         $config = new HttpConfig(
             dir: '/non-existent-dir',
             providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
+                ContainerComponentProvider::class,
+                DispatchComponentProvider::class,
+                CliInteractionComponentProvider::class,
+                CliMiddlewareComponentProvider::class,
+                CliRoutingComponentProvider::class,
+                CliServerComponentProvider::class,
+                EventComponentProvider::class,
+                HttpMessageComponentProvider::class,
+                HttpMiddlewareComponentProvider::class,
+                HttpRoutingComponentProvider::class,
+                HttpServerComponentProvider::class,
             ],
         );
 
@@ -219,12 +229,12 @@ final class GenerateDataCommandTest extends TestCase
         $config        = new HttpConfig(
             dir: $originalPath,
             providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
+                ContainerComponentProvider::class,
+                DispatchComponentProvider::class,
+                HttpMessageComponentProvider::class,
+                HttpMiddlewareComponentProvider::class,
+                HttpRoutingComponentProvider::class,
+                HttpServerComponentProvider::class,
             ],
         );
         $output        = new PlainOutput();
@@ -309,12 +319,12 @@ final class GenerateDataCommandTest extends TestCase
         $config = new HttpConfig(
             dir: '/non-existent-dir',
             providers: [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_SERVER,
+                ContainerComponentProvider::class,
+                DispatchComponentProvider::class,
+                HttpMessageComponentProvider::class,
+                HttpMiddlewareComponentProvider::class,
+                HttpRoutingComponentProvider::class,
+                HttpServerComponentProvider::class,
             ],
         );
 

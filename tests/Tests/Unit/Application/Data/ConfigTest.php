@@ -14,9 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
+use Valkyrja\Log\Provider\LogComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\View\Provider\ViewComponentProvider;
 
 /**
  * Test the Config service.
@@ -33,20 +46,20 @@ final class ConfigTest extends TestCase
         self::assertNotEmpty($data->providers);
         self::assertSame(
             [
-                ComponentClass::CONTAINER,
-                ComponentClass::DISPATCHER,
-                ComponentClass::CLI_INTERACTION,
-                ComponentClass::CLI_MIDDLEWARE,
-                ComponentClass::CLI_ROUTING,
-                ComponentClass::CLI_SERVER,
-                ComponentClass::EVENT,
-                ComponentClass::HTTP_MESSAGE,
-                ComponentClass::HTTP_MIDDLEWARE,
-                ComponentClass::HTTP_ROUTING,
-                ComponentClass::HTTP_ROUTING_CLI,
-                ComponentClass::HTTP_SERVER,
-                ComponentClass::LOG,
-                ComponentClass::VIEW,
+                ContainerComponentProvider::class,
+                DispatchComponentProvider::class,
+                CliInteractionComponentProvider::class,
+                CliMiddlewareComponentProvider::class,
+                CliRoutingComponentProvider::class,
+                CliServerComponentProvider::class,
+                EventComponentProvider::class,
+                HttpMessageComponentProvider::class,
+                HttpMiddlewareComponentProvider::class,
+                HttpRoutingComponentProvider::class,
+                HttpRoutingCliComponentProvider::class,
+                HttpServerComponentProvider::class,
+                LogComponentProvider::class,
+                ViewComponentProvider::class,
             ],
             $data->providers
         );
