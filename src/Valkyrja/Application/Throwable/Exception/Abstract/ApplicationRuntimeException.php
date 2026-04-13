@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Throwable\Exception;
+namespace Valkyrja\Application\Throwable\Exception\Abstract;
 
 use Valkyrja\Application\Throwable\Contract\ApplicationThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class ApplicationRuntimeException extends ValkyrjaRuntimeException implements ApplicationThrowable
+abstract class ApplicationRuntimeException extends ValkyrjaRuntimeException implements ApplicationThrowable
 {
 }
