@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Throwable\Exception;
+namespace Valkyrja\Cache\Throwable\Exception\Abstract;
 
 use Valkyrja\Cache\Throwable\Contract\CacheThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class CacheRuntimeException extends ValkyrjaRuntimeException implements CacheThrowable
+abstract class CacheRuntimeException extends ValkyrjaRuntimeException implements CacheThrowable
 {
 }
