@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Throwable\Exception;
+namespace Valkyrja\Crypt\Throwable\Exception\Abstract;
 
 use Valkyrja\Crypt\Throwable\Contract\CryptThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class CryptInvalidArgumentException extends ValkyrjaInvalidArgumentException implements CryptThrowable
+abstract class CryptInvalidArgumentException extends ValkyrjaInvalidArgumentException implements CryptThrowable
 {
 }
