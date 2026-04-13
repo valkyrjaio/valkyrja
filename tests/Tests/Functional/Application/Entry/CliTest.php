@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
@@ -22,13 +21,24 @@ use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
 use Valkyrja\Tests\EnvClass;
@@ -84,17 +94,17 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        ComponentClass::CONTAINER,
-                        ComponentClass::DISPATCHER,
-                        ComponentClass::CLI_INTERACTION,
-                        ComponentClass::CLI_MIDDLEWARE,
-                        ComponentClass::CLI_ROUTING,
-                        ComponentClass::CLI_SERVER,
-                        ComponentClass::EVENT,
-                        ComponentClass::HTTP_MESSAGE,
-                        ComponentClass::HTTP_MIDDLEWARE,
-                        ComponentClass::HTTP_ROUTING,
-                        ComponentClass::HTTP_SERVER,
+                        ContainerComponentProvider::class,
+                        DispatchComponentProvider::class,
+                        CliInteractionComponentProvider::class,
+                        CliMiddlewareComponentProvider::class,
+                        CliRoutingComponentProvider::class,
+                        CliServerComponentProvider::class,
+                        EventComponentProvider::class,
+                        HttpMessageComponentProvider::class,
+                        HttpMiddlewareComponentProvider::class,
+                        HttpRoutingComponentProvider::class,
+                        HttpServerComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                 );
@@ -165,17 +175,17 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: false,
                     providers: [
-                        ComponentClass::CONTAINER,
-                        ComponentClass::DISPATCHER,
-                        ComponentClass::CLI_INTERACTION,
-                        ComponentClass::CLI_MIDDLEWARE,
-                        ComponentClass::CLI_ROUTING,
-                        ComponentClass::CLI_SERVER,
-                        ComponentClass::EVENT,
-                        ComponentClass::HTTP_MESSAGE,
-                        ComponentClass::HTTP_MIDDLEWARE,
-                        ComponentClass::HTTP_ROUTING,
-                        ComponentClass::HTTP_SERVER,
+                        ContainerComponentProvider::class,
+                        DispatchComponentProvider::class,
+                        CliInteractionComponentProvider::class,
+                        CliMiddlewareComponentProvider::class,
+                        CliRoutingComponentProvider::class,
+                        CliServerComponentProvider::class,
+                        EventComponentProvider::class,
+                        HttpMessageComponentProvider::class,
+                        HttpMiddlewareComponentProvider::class,
+                        HttpRoutingComponentProvider::class,
+                        HttpServerComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                     callbacks: [
@@ -214,17 +224,17 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        ComponentClass::CONTAINER,
-                        ComponentClass::DISPATCHER,
-                        ComponentClass::CLI_INTERACTION,
-                        ComponentClass::CLI_MIDDLEWARE,
-                        ComponentClass::CLI_ROUTING,
-                        ComponentClass::CLI_SERVER,
-                        ComponentClass::EVENT,
-                        ComponentClass::HTTP_MESSAGE,
-                        ComponentClass::HTTP_MIDDLEWARE,
-                        ComponentClass::HTTP_ROUTING,
-                        ComponentClass::HTTP_SERVER,
+                        ContainerComponentProvider::class,
+                        DispatchComponentProvider::class,
+                        CliInteractionComponentProvider::class,
+                        CliMiddlewareComponentProvider::class,
+                        CliRoutingComponentProvider::class,
+                        CliServerComponentProvider::class,
+                        EventComponentProvider::class,
+                        HttpMessageComponentProvider::class,
+                        HttpMiddlewareComponentProvider::class,
+                        HttpRoutingComponentProvider::class,
+                        HttpServerComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                     callbacks: [
