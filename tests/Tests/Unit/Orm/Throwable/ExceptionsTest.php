@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Throwable;
 
-use InvalidArgumentException;
-use RuntimeException;
 use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmInvalidArgumentException;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmRuntimeException;
