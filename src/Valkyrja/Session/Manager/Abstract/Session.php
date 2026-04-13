@@ -16,9 +16,9 @@ namespace Valkyrja\Session\Manager\Abstract;
 use Override;
 use Random\RandomException;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
-use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
-use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidCsrfTokenException;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
 
 use function bin2hex;
 use function hash_equals;
@@ -52,8 +52,8 @@ abstract class Session implements SessionContract
      * @param non-empty-string|null $sessionId   The session id
      * @param non-empty-string|null $sessionName The session id
      *
-     * @throws InvalidSessionId
-     * @throws SessionStartFailure
+     * @throws SessionInvalidSessionIdException
+     * @throws SessionStartFailureException
      */
     public function __construct(
         string|null $sessionId = null,
@@ -198,7 +198,7 @@ abstract class Session implements SessionContract
     public function validateCsrfToken(string $id, string $token): void
     {
         if (! $this->isCsrfTokenValid($id, $token)) {
-            throw new InvalidCsrfToken("CSRF token id: `$id` has invalid token of `$token` provided");
+            throw new SessionInvalidCsrfTokenException("CSRF token id: `$id` has invalid token of `$token` provided");
         }
     }
 

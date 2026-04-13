@@ -16,10 +16,10 @@ namespace Valkyrja\Session\Manager;
 use Override;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\Abstract\Session;
-use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
-use Valkyrja\Session\Throwable\Exception\SessionIdFailure;
-use Valkyrja\Session\Throwable\Exception\SessionNameFailure;
-use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
+use Valkyrja\Session\Throwable\Exception\SessionIdFailureException;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
+use Valkyrja\Session\Throwable\Exception\SessionNameFailureException;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
 
 use function headers_sent;
 use function session_id;
@@ -72,7 +72,7 @@ class PhpSession extends Session
         // If the session failed to start
         if (! $this->sessionStart()) {
             // Throw a new exception
-            throw new SessionStartFailure('The session failed to start');
+            throw new SessionStartFailureException('The session failed to start');
         }
 
         // Set the data
@@ -88,7 +88,7 @@ class PhpSession extends Session
         $sessionId = $this->sessionId();
 
         if ($sessionId === false) {
-            throw new SessionIdFailure('Retrieval of session id failed');
+            throw new SessionIdFailureException('Retrieval of session id failed');
         }
 
         return $sessionId;
@@ -114,7 +114,7 @@ class PhpSession extends Session
         $sessionName = $this->sessionName();
 
         if ($sessionName === false) {
-            throw new SessionNameFailure('Retrieval of session id failed');
+            throw new SessionNameFailureException('Retrieval of session id failed');
         }
 
         return $sessionName;
@@ -201,7 +201,7 @@ class PhpSession extends Session
     protected function validateId(string $id): void
     {
         if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
-            throw new InvalidSessionId(
+            throw new SessionInvalidSessionIdException(
                 "The session id, '$id', is invalid! "
                 . 'Session id can only contain alpha numeric characters, dashes, commas, '
                 . 'and be at least 1 character in length but up to 128 characters long.'

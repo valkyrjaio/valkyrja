@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Throwable\Exception;
+namespace Valkyrja\Session\Throwable\Exception\Abstract;
 
-class InvalidCsrfToken extends SessionInvalidArgumentException
+use Valkyrja\Session\Throwable\Contract\SessionThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+
+abstract class SessionRuntimeException extends ValkyrjaRuntimeException implements SessionThrowable
 {
 }

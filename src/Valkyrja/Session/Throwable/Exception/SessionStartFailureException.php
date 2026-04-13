@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Throwable\Exception;
 
-use Valkyrja\Session\Throwable\Contract\SessionThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Session\Throwable\Exception\Abstract\SessionRuntimeException;
 
-class SessionRuntimeException extends ValkyrjaRuntimeException implements SessionThrowable
+class SessionStartFailureException extends SessionRuntimeException
 {
 }

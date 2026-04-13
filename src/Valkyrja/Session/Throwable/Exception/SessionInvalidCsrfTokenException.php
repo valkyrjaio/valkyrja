@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Throwable\Exception;
 
-class InvalidSessionId extends SessionInvalidArgumentException
+use Valkyrja\Session\Throwable\Exception\Abstract\SessionInvalidArgumentException;
+
+class SessionInvalidCsrfTokenException extends SessionInvalidArgumentException
 {
 }

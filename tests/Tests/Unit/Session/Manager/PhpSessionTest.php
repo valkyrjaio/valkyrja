@@ -21,10 +21,10 @@ use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\PhpSession;
-use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
-use Valkyrja\Session\Throwable\Exception\SessionIdFailure;
-use Valkyrja\Session\Throwable\Exception\SessionNameFailure;
-use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
+use Valkyrja\Session\Throwable\Exception\SessionIdFailureException;
+use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
+use Valkyrja\Session\Throwable\Exception\SessionNameFailureException;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
 use Valkyrja\Tests\Classes\Session\PhpSessionWithAlreadyActiveClass;
 use Valkyrja\Tests\Classes\Session\PhpSessionWithFailingGetIdClass;
 use Valkyrja\Tests\Classes\Session\PhpSessionWithFailingGetNameClass;
@@ -170,7 +170,7 @@ final class PhpSessionTest extends TestCase
 
     public function testStartThrowsSessionStartFailureOnFailure(): void
     {
-        $this->expectException(SessionStartFailure::class);
+        $this->expectException(SessionStartFailureException::class);
         $this->expectExceptionMessage('The session failed to start');
 
         new PhpSessionWithFailingStartClass($this->cookieParams);
@@ -180,7 +180,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSessionWithFailingGetIdClass($this->cookieParams);
 
-        $this->expectException(SessionIdFailure::class);
+        $this->expectException(SessionIdFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');
 
         $session->getId();
@@ -190,7 +190,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSessionWithFailingGetNameClass($this->cookieParams);
 
-        $this->expectException(SessionNameFailure::class);
+        $this->expectException(SessionNameFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');
 
         $session->getName();
@@ -200,7 +200,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSession($this->cookieParams);
 
-        $this->expectException(InvalidSessionId::class);
+        $this->expectException(SessionInvalidSessionIdException::class);
         $this->expectExceptionMessage("The session id, 'invalid id with spaces!', is invalid!");
 
         $session->setId('invalid id with spaces!');
@@ -208,7 +208,7 @@ final class PhpSessionTest extends TestCase
 
     public function testConstructorThrowsInvalidSessionIdForInvalidId(): void
     {
-        $this->expectException(InvalidSessionId::class);
+        $this->expectException(SessionInvalidSessionIdException::class);
         $this->expectExceptionMessage("The session id, 'invalid@id#chars', is invalid!");
 
         new PhpSession($this->cookieParams, 'invalid@id#chars');
@@ -218,7 +218,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSession($this->cookieParams);
 
-        $this->expectException(InvalidSessionId::class);
+        $this->expectException(SessionInvalidSessionIdException::class);
 
         $session->setId(str_repeat('a', 129));
     }
@@ -227,7 +227,7 @@ final class PhpSessionTest extends TestCase
     {
         $session = new PhpSession($this->cookieParams);
 
-        $this->expectException(InvalidSessionId::class);
+        $this->expectException(SessionInvalidSessionIdException::class);
 
         $session->setId('');
     }

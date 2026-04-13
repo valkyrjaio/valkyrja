@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Throwable\Exception;
+namespace Valkyrja\Session\Throwable\Exception\Abstract;
 
 use Valkyrja\Session\Throwable\Contract\SessionThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class SessionInvalidArgumentException extends ValkyrjaInvalidArgumentException implements SessionThrowable
+abstract class SessionInvalidArgumentException extends ValkyrjaInvalidArgumentException implements SessionThrowable
 {
 }
