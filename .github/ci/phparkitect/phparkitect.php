@@ -192,6 +192,31 @@ return static function (Config $config): void {
         ->because('All throwable objects or interfaces should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+        ->that(new Implement(Throwable::class))
+        ->should(new HaveNameMatching('*Exception'))
+        ->because('All throwable objects should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new HaveNameMatching('*RuntimeException'))
+        ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+        ->because('All base runtime exceptions should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new HaveNameMatching('*InvalidArgumentException'))
+        ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+        ->because('All base invalid argument exceptions should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new HaveNameMatching('*RuntimeException'))
+        ->should(new IsAbstract())
+        ->because('All base runtime exceptions should exist be abstract');
+
+    $srcRules[] = Rule::allClasses()
+        ->that(new HaveNameMatching('*InvalidArgumentException'))
+        ->should(new IsAbstract())
+        ->because('All base invalid argument exceptions should exist be abstract');
+
+    $srcRules[] = Rule::allClasses()
         ->that(new Extend(Type::class))
         ->andThat(new NotResideInTheseNamespaces('*Config'))
         ->andThat(new NotResideInTheseNamespaces('*Entity'))
