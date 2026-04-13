@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatch\Throwable\Exception;
 
-class NoClassException extends DispatchRuntimeException
+use Valkyrja\Dispatch\Throwable\Exception\Abstract\DispatchInvalidArgumentException;
+
+class DispatchInvalidFunctionException extends DispatchInvalidArgumentException
 {
 }

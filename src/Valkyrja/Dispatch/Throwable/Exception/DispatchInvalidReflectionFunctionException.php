@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatch\Throwable\Exception;
 
-class InvalidClosureException extends DispatchInvalidArgumentException
+use Valkyrja\Dispatch\Throwable\Exception\Abstract\DispatchInvalidArgumentException;
+
+class DispatchInvalidReflectionFunctionException extends DispatchInvalidArgumentException
 {
 }

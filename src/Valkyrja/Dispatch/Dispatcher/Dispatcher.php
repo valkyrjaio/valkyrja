@@ -24,7 +24,7 @@ use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedDispatchException;
 
 use function array_map;
 use function constant;
@@ -49,7 +49,7 @@ class Dispatcher implements DispatcherContract
             $dispatch instanceof ClassDispatch          => $this->dispatchClass($dispatch, $arguments),
             $dispatch instanceof CallableDispatch       => $this->dispatchCallable($dispatch, $arguments),
             $dispatch instanceof GlobalVariableDispatch => $this->dispatchVariable($dispatch),
-            default                                     => throw new DispatchInvalidArgumentException('Invalid dispatch'),
+            default                                     => throw new DispatchUnsupportedDispatchException('Invalid dispatch'),
         };
     }
 

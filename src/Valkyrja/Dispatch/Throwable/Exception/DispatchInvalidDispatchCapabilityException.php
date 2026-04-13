@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatch\Throwable\Exception;
 
-use Valkyrja\Dispatch\Throwable\Contract\DispatchThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Dispatch\Throwable\Exception\Abstract\DispatchInvalidArgumentException;
 
-class DispatchRuntimeException extends ValkyrjaRuntimeException implements DispatchThrowable
+class DispatchInvalidDispatchCapabilityException extends DispatchInvalidArgumentException
 {
 }

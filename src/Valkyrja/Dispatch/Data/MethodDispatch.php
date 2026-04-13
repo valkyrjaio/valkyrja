@@ -15,7 +15,10 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingClassNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingMethodNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableNonStringClassNameException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedCallableException;
 
 use function is_array;
 use function is_string;
@@ -49,19 +52,19 @@ class MethodDispatch extends ClassDispatch implements MethodDispatchContract
     public static function fromCallableOrArray(callable|array $callable): static
     {
         if (! is_array($callable)) {
-            throw new DispatchInvalidArgumentException('Callable must be an array.');
+            throw new DispatchUnsupportedCallableException('Callable must be an array.');
         }
 
         /** @var class-string|object $className */
         $className = $callable[0]
-            ?? throw new DispatchInvalidArgumentException('Callable must be an array with a valid class name');
+            ?? throw new DispatchCallableMissingClassNameException('Callable must be an array with a valid class name');
 
         if (! is_string($className)) {
-            throw new DispatchInvalidArgumentException('First part of the callable array must be a class-string');
+            throw new DispatchCallableNonStringClassNameException('First part of the callable array must be a class-string');
         }
 
         $method = $callable[1]
-            ?? throw new DispatchInvalidArgumentException('Callable must be an array with a valid method name');
+            ?? throw new DispatchCallableMissingMethodNameException('Callable must be an array with a valid method name');
 
         return new static(
             class: $className,

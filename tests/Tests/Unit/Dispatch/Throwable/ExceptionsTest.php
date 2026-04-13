@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Dispatch\Throwable;
 
 use Throwable;
 use Valkyrja\Dispatch\Throwable\Contract\DispatchThrowable;
-use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidArgumentException;
-use Valkyrja\Dispatch\Throwable\Exception\DispatchRuntimeException;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidClosureException;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidFunctionException;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidMethodException;
-use Valkyrja\Dispatch\Throwable\Exception\InvalidPropertyException;
+use Valkyrja\Dispatch\Throwable\Exception\Abstract\DispatchInvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\Abstract\DispatchRuntimeException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidClosureException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidDispatchCapabilityException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidFunctionException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidMethodException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidPropertyException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
@@ -49,26 +49,26 @@ final class ExceptionsTest extends TestCase
 
     public function testInvalidClosureException(): void
     {
-        self::isA(DispatchInvalidArgumentException::class, InvalidClosureException::class);
+        self::isA(DispatchInvalidArgumentException::class, DispatchInvalidClosureException::class);
     }
 
     public function testInvalidDispatchCapabilityException(): void
     {
-        self::isA(DispatchInvalidArgumentException::class, InvalidDispatchCapabilityException::class);
+        self::isA(DispatchInvalidArgumentException::class, DispatchInvalidDispatchCapabilityException::class);
     }
 
     public function testInvalidFunctionException(): void
     {
-        self::isA(DispatchInvalidArgumentException::class, InvalidFunctionException::class);
+        self::isA(DispatchInvalidArgumentException::class, DispatchInvalidFunctionException::class);
     }
 
     public function testInvalidMethodException(): void
     {
-        self::isA(DispatchInvalidArgumentException::class, InvalidMethodException::class);
+        self::isA(DispatchInvalidArgumentException::class, DispatchInvalidMethodException::class);
     }
 
     public function testInvalidPropertyException(): void
     {
-        self::isA(DispatchInvalidArgumentException::class, InvalidPropertyException::class);
+        self::isA(DispatchInvalidArgumentException::class, DispatchInvalidPropertyException::class);
     }
 }

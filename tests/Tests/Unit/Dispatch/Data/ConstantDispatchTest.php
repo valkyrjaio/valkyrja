@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
-use Valkyrja\Dispatch\Throwable\Exception\NoClassException;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchNoClassException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -78,7 +78,7 @@ final class ConstantDispatchTest extends TestCase
 
     public function testClassThrowsWhenNoClassSet(): void
     {
-        $this->expectException(NoClassException::class);
+        $this->expectException(DispatchNoClassException::class);
         $this->expectExceptionMessage('No class set');
 
         $constant = 'TEST';
