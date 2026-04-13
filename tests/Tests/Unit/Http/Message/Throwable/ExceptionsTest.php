@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Http\Message\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Throwable\Exception\NotFoundHttpException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageRuntimeException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpNotFoundResponseException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectResponseException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Throwable\Contract\HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
@@ -46,16 +46,16 @@ final class ExceptionsTest extends TestCase
 
     public function testHttpException(): void
     {
-        self::isA(HttpRuntimeException::class, HttpException::class);
+        self::isA(HttpRuntimeException::class, HttpResponseException::class);
     }
 
     public function testHttpRedirectException(): void
     {
-        self::isA(HttpException::class, HttpRedirectException::class);
+        self::isA(HttpResponseException::class, HttpRedirectResponseException::class);
     }
 
     public function testNotFoundHttpException(): void
     {
-        self::isA(HttpException::class, NotFoundHttpException::class);
+        self::isA(HttpResponseException::class, HttpNotFoundResponseException::class);
     }
 }

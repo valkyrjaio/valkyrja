@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Throwable\Contract\HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\HttpInvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpInvalidArgumentException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;

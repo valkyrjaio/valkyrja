@@ -15,15 +15,15 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Routing\Throwable\Contract\HttpRoutingThrowable;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidArgumentException;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingRuntimeException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidMethodTypeException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidParameterRegexException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\Abstract\HttpRoutingInvalidArgumentException;
+use Valkyrja\Http\Routing\Throwable\Exception\Abstract\HttpRoutingRuntimeException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidMethodTypeException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidParameterRegexException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Throwable\Contract\HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
@@ -48,26 +48,26 @@ final class ExceptionsTest extends TestCase
 
     public function testInvalidMethodTypeException(): void
     {
-        self::isA(HttpRoutingInvalidArgumentException::class, InvalidMethodTypeException::class);
+        self::isA(HttpRoutingInvalidArgumentException::class, HttpRoutingInvalidMethodTypeException::class);
     }
 
     public function testInvalidParameterRegexException(): void
     {
-        self::isA(HttpRoutingInvalidArgumentException::class, InvalidParameterRegexException::class);
+        self::isA(HttpRoutingInvalidArgumentException::class, HttpRoutingInvalidParameterRegexException::class);
     }
 
     public function testInvalidRouteNameException(): void
     {
-        self::isA(HttpRoutingInvalidArgumentException::class, InvalidRouteNameException::class);
+        self::isA(HttpRoutingInvalidArgumentException::class, HttpRoutingInvalidRouteNameException::class);
     }
 
     public function testInvalidRouteParameterException(): void
     {
-        self::isA(HttpRoutingInvalidArgumentException::class, InvalidRouteParameterException::class);
+        self::isA(HttpRoutingInvalidArgumentException::class, HttpRoutingInvalidRouteParameterException::class);
     }
 
     public function testInvalidRoutePathException(): void
     {
-        self::isA(HttpRoutingInvalidArgumentException::class, InvalidRoutePathException::class);
+        self::isA(HttpRoutingInvalidArgumentException::class, HttpRoutingInvalidRoutePathException::class);
     }
 }

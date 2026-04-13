@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Url;
 
 use Override;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
 use function str_replace;
@@ -30,7 +30,7 @@ class Url implements UrlContract
     /**
      * @inheritDoc
      *
-     * @throws InvalidRouteNameException
+     * @throws HttpRoutingInvalidRouteNameException
      */
     #[Override]
     public function getUrl(string $name, array $data): string

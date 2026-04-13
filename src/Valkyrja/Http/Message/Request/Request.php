@@ -20,11 +20,11 @@ use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\HttpRequestInvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Trait\Message;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
@@ -164,12 +164,12 @@ class Request implements RequestContract
      *
      * @param string $requestTarget The request target
      *
-     * @throws InvalidRequestTargetException
+     * @throws HttpRequestInvalidRequestTargetException
      */
     protected function validateRequestTarget(string $requestTarget): void
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidRequestTargetException('Invalid request target provided; cannot contain whitespace');
+            throw new HttpRequestInvalidRequestTargetException('Invalid request target provided; cannot contain whitespace');
         }
     }
 

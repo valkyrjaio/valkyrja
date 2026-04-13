@@ -24,9 +24,10 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\ContentType;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
+use Valkyrja\Http\Message\Response\Throwable\Exception\HttpRequestInvalidJsonCallbackException;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
 use function explode;
@@ -44,7 +45,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws HttpMessageInvalidArgumentException
      * @throws RuntimeException
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      * @throws JsonException
      */
     public function __construct(
@@ -162,7 +163,7 @@ class JsonResponse extends Response implements JsonResponseContract
 
         foreach (explode('.', $callback) as $part) {
             if (! preg_match($pattern, $part)) {
-                throw new HttpMessageInvalidArgumentException(
+                throw new HttpRequestInvalidJsonCallbackException(
                     'The callback name is not valid.'
                 );
             }

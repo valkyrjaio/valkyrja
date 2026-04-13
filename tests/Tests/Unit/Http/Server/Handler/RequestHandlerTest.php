@@ -20,7 +20,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
@@ -154,7 +154,7 @@ final class RequestHandlerTest extends TestCase
     {
         $response  = new Response();
         $request   = new ServerRequest();
-        $exception = new HttpException(response: $response);
+        $exception = new HttpResponseException(response: $response);
 
         $router = $this->createMock(Router::class);
         $router
@@ -193,7 +193,7 @@ final class RequestHandlerTest extends TestCase
         $response  = new Response();
         $response2 = new Response();
         $request   = new ServerRequest();
-        $exception = new HttpException(response: $response);
+        $exception = new HttpResponseException(response: $response);
 
         $router = $this->createMock(Router::class);
         $router
@@ -230,7 +230,7 @@ final class RequestHandlerTest extends TestCase
     public function testHandleExceptionWithDebugOn(): void
     {
         $response  = new Response();
-        $exception = new HttpException(response: $response);
+        $exception = new HttpResponseException(response: $response);
 
         $this->expectException($exception::class);
 
@@ -262,7 +262,7 @@ final class RequestHandlerTest extends TestCase
     {
         $request = new ServerRequest();
 
-        $exception = new HttpException(message: 'test');
+        $exception = new HttpResponseException(message: 'test');
 
         $router = $this->createMock(Router::class);
         $router

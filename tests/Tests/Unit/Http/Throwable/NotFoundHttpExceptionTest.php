@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
-use Valkyrja\Http\Message\Throwable\Exception\NotFoundHttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpNotFoundResponseException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -24,23 +24,23 @@ final class NotFoundHttpExceptionTest extends TestCase
     /**
      * The exception.
      *
-     * @var NotFoundHttpException
+     * @var HttpNotFoundResponseException
      */
-    protected NotFoundHttpException $exception;
+    protected HttpNotFoundResponseException $exception;
 
     /**
      * Test the construction of a new NotFoundHttpException instance.
      */
     public function testConstruct(): void
     {
-        self::assertTrue($this->getException() instanceof NotFoundHttpException);
+        self::assertTrue($this->getException() instanceof HttpNotFoundResponseException);
     }
 
     /**
      * Get the exception.
      */
-    protected function getException(): NotFoundHttpException
+    protected function getException(): HttpNotFoundResponseException
     {
-        return $this->exception ?? $this->exception = new NotFoundHttpException();
+        return $this->exception ?? $this->exception = new HttpNotFoundResponseException();
     }
 }

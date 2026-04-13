@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Factory;
 
 use Valkyrja\Http\Message\Constant\Port;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidFromStringException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function ltrim;
@@ -49,7 +49,7 @@ abstract class UriFactory
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw new HttpMessageInvalidArgumentException("Invalid uri `$uri` provided");
+            throw new HttpUriInvalidFromStringException("Invalid uri `$uri` provided");
         }
 
         return new Uri(
@@ -94,12 +94,12 @@ abstract class UriFactory
      *
      * @param int $port The port
      *
-     * @throws InvalidPortException
+     * @throws HttpUriInvalidPortException
      */
     public static function validatePort(int $port): void
     {
         if (! Port::isValid($port)) {
-            throw new InvalidPortException("Invalid port `%$port` specified; must be a valid TCP/UDP port");
+            throw new HttpUriInvalidPortException("Invalid port `%$port` specified; must be a valid TCP/UDP port");
         }
     }
 
@@ -118,7 +118,7 @@ abstract class UriFactory
      *
      * @param string $path The path
      *
-     * @throws InvalidPathException
+     * @throws HttpUriInvalidPathException
      */
     public static function filterPath(string $path): string
     {
@@ -138,16 +138,16 @@ abstract class UriFactory
      *
      * @param string $path The path
      *
-     * @throws InvalidPathException
+     * @throws HttpUriInvalidPathException
      */
     public static function validatePath(string $path): void
     {
         if (str_contains($path, '?')) {
-            throw new InvalidPathException("Invalid path of `$path` provided; must not contain a query string");
+            throw new HttpUriInvalidPathException("Invalid path of `$path` provided; must not contain a query string");
         }
 
         if (str_contains($path, '#')) {
-            throw new InvalidPathException("Invalid path of `$path` provided; must not contain a URI fragment");
+            throw new HttpUriInvalidPathException("Invalid path of `$path` provided; must not contain a URI fragment");
         }
     }
 
@@ -156,7 +156,7 @@ abstract class UriFactory
      *
      * @param string $query The query
      *
-     * @throws InvalidQueryException
+     * @throws HttpUriInvalidQueryException
      */
     public static function filterQuery(string $query): string
     {
@@ -172,12 +172,12 @@ abstract class UriFactory
      *
      * @param string $query The query
      *
-     * @throws InvalidQueryException
+     * @throws HttpUriInvalidQueryException
      */
     public static function validateQuery(string $query): void
     {
         if (str_contains($query, '#')) {
-            throw new InvalidQueryException(
+            throw new HttpUriInvalidQueryException(
                 "Invalid query string of `$query` provided; must not contain a URI fragment"
             );
         }

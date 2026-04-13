@@ -17,16 +17,16 @@ use Override;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
-use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileAlreadyMovedException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidDirectoryException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileMoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUnableToWriteFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 
 use function dirname;
 use function fclose;
@@ -65,7 +65,7 @@ class UploadedFile implements UploadedFileContract
         // If the file is not set and the stream is not set
         if ($uploadError === UploadError::OK && $file === null && $stream === null) {
             // Throw an invalid argument exception as on or the other is required
-            throw new InvalidUploadedFileException('One of file or stream are required');
+            throw new UploadedFileInvalidUploadedFileException('One of file or stream are required');
         }
     }
 
@@ -86,7 +86,7 @@ class UploadedFile implements UploadedFileContract
 
         // This should be impossible, but here just in case __construct is overridden
         if ($this->file === null) {
-            throw new InvalidUploadedFileException('One of file or stream are required');
+            throw new UploadedFileInvalidUploadedFileException('One of file or stream are required');
         }
 
         // Set the stream as a new native stream
@@ -185,7 +185,7 @@ class UploadedFile implements UploadedFileContract
         // If the error status is not OK
         if ($this->uploadError !== UploadError::OK) {
             // Throw a runtime exception as there's been an uploaded file error
-            throw new UploadErrorException($this->uploadError);
+            throw new UploadedFileUploadErrorException($this->uploadError);
         }
     }
 
@@ -195,7 +195,7 @@ class UploadedFile implements UploadedFileContract
         if ($this->hasBeenMoved) {
             // Throw a runtime exception as subsequent moves are not allowed
             // in PSR-7
-            throw new AlreadyMovedException(
+            throw new UploadedFileAlreadyMovedException(
                 $message
                     ?? 'Cannot move file after it has already been moved'
             );
@@ -208,7 +208,7 @@ class UploadedFile implements UploadedFileContract
         // or the target directory is not writable
         if (! $this->isDir($targetDirectory) || ! $this->isWritable($targetDirectory)) {
             // Throw a runtime exception
-            throw new InvalidDirectoryException(
+            throw new UploadedFileInvalidDirectoryException(
                 "The target directory `$targetDirectory` does not exists or is not writable"
             );
         }
@@ -238,7 +238,7 @@ class UploadedFile implements UploadedFileContract
             // Otherwise try to use the move_uploaded_file function
             // and if the move_uploaded_file function call failed
             // Throw a runtime exception
-            throw new MoveFailureException('Error occurred while moving uploaded file');
+            throw new UploadedFileMoveFailureException('Error occurred while moving uploaded file');
         }
     }
 
@@ -247,7 +247,7 @@ class UploadedFile implements UploadedFileContract
      *
      * @param string $path The path to write the stream to
      *
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     protected function writeStream(string $path): void
     {
@@ -257,7 +257,7 @@ class UploadedFile implements UploadedFileContract
         // If the handler failed to open
         if ($handle === false) {
             // Throw a runtime exception
-            throw new UnableToWriteFileException('Unable to write to designated path');
+            throw new UploadedFileUnableToWriteFileException('Unable to write to designated path');
         }
 
         // Get the stream

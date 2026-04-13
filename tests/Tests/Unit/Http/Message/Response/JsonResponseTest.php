@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\ContentType;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\JsonResponse;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Response\Throwable\Exception\HttpRequestInvalidJsonCallbackException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class JsonResponseTest extends TestCase
@@ -75,7 +75,7 @@ final class JsonResponseTest extends TestCase
      */
     public function testWithCallbackWithInvalidCallback(): void
     {
-        $this->expectException(HttpMessageInvalidArgumentException::class);
+        $this->expectException(HttpRequestInvalidJsonCallbackException::class);
 
         $response = new JsonResponse(self::JSON, headers: HeaderCollection::fromArray([new ContentType('text')]));
         $response->withCallback('test();');

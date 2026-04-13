@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Middleware\Throwable\Contract\HttpMiddlewareThrowable;
-use Valkyrja\Http\Middleware\Throwable\Exception\HttpMiddlewareInvalidArgumentException;
-use Valkyrja\Http\Middleware\Throwable\Exception\HttpMiddlewareRuntimeException;
+use Valkyrja\Http\Middleware\Throwable\Exception\Abstract\HttpMiddlewareInvalidArgumentException;
+use Valkyrja\Http\Middleware\Throwable\Exception\Abstract\HttpMiddlewareRuntimeException;
 use Valkyrja\Http\Throwable\Contract\HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase

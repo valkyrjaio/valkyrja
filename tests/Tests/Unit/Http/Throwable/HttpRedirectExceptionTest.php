@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
-use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectResponseException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -24,16 +24,16 @@ final class HttpRedirectExceptionTest extends TestCase
     /**
      * The exception.
      *
-     * @var HttpRedirectException
+     * @var HttpRedirectResponseException
      */
-    protected HttpRedirectException $exception;
+    protected HttpRedirectResponseException $exception;
 
     /**
      * Test the construction of a new HttpRedirectException instance.
      */
     public function testConstruct(): void
     {
-        self::assertTrue($this->getException() instanceof HttpRedirectException);
+        self::assertTrue($this->getException() instanceof HttpRedirectResponseException);
     }
 
     /**
@@ -47,8 +47,8 @@ final class HttpRedirectExceptionTest extends TestCase
     /**
      * Get the exception.
      */
-    protected function getException(): HttpRedirectException
+    protected function getException(): HttpRedirectResponseException
     {
-        return $this->exception ?? $this->exception = new HttpRedirectException();
+        return $this->exception ?? $this->exception = new HttpRedirectResponseException();
     }
 }

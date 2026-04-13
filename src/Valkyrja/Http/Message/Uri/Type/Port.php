@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Type;
 
 use Override;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
 use Valkyrja\Type\Abstract\Type;
 
 use function gettype;
@@ -34,7 +34,7 @@ class Port extends Type
             return;
         }
 
-        throw new HttpMessageInvalidArgumentException('Invalid port argument passed.');
+        throw new HttpUriInvalidPortException('Invalid port argument passed.');
     }
 
     /**
@@ -44,7 +44,7 @@ class Port extends Type
     public static function fromValue(mixed $value): static
     {
         if (! is_int($value)) {
-            throw new HttpMessageInvalidArgumentException(sprintf('Int expected value of type `%s` provided', gettype($value)));
+            throw new HttpUriInvalidPortException(sprintf('Int expected value of type `%s` provided', gettype($value)));
         }
 
         return new static($value);

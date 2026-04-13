@@ -20,10 +20,10 @@ use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingRuntimeException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidDynamicRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
 
 use function array_map;
 use function in_array;
@@ -134,7 +134,7 @@ class Collection implements CollectionContract
     public function getByPath(string $path, RequestMethod $method): RouteContract
     {
         return $this->internalGetByPath($path, $method)
-            ?? throw new InvalidRoutePathException("The path '$path' is not a valid route for the given method '$method->value'");
+            ?? throw new HttpRoutingInvalidRoutePathException("The path '$path' is not a valid route for the given method '$method->value'");
     }
 
     /**
@@ -162,7 +162,7 @@ class Collection implements CollectionContract
     public function getByRegex(string $regex, RequestMethod $method): DynamicRouteContract
     {
         return $this->internalGetByRegex($regex, $method)
-            ?? throw new InvalidRouteRegexException("The regex '$regex' is not a valid route for the given method '$method->value'");
+            ?? throw new HttpRoutingInvalidRouteRegexException("The regex '$regex' is not a valid route for the given method '$method->value'");
     }
 
     /**
@@ -246,7 +246,7 @@ class Collection implements CollectionContract
             return $this->ensureRoute($route);
         }
 
-        throw new InvalidRouteNameException("A route with the name '$name' does not exist");
+        throw new HttpRoutingInvalidRouteNameException("A route with the name '$name' does not exist");
     }
 
     /**
@@ -398,7 +398,7 @@ class Collection implements CollectionContract
     protected function getRouteFromName(string $name): RouteContract
     {
         $route = $this->routes[$name]
-            ?? throw new InvalidRouteNameException("Invalid name `$name` provided");
+            ?? throw new HttpRoutingInvalidRouteNameException("Invalid name `$name` provided");
 
         return $this->ensureRoute($route);
     }
@@ -414,6 +414,6 @@ class Collection implements CollectionContract
             return $route;
         }
 
-        throw new HttpRoutingRuntimeException('Invalid dynamic route');
+        throw new HttpRoutingInvalidDynamicRouteNameException("Invalid dynamic route $name");
     }
 }

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -100,14 +100,14 @@ final class UriFactoryTest extends TestCase
 
     public function testValidatePortInvalidForNegative(): void
     {
-        $this->expectException(InvalidPortException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         UriFactory::validatePort(-1);
     }
 
     public function testValidatePortInvalidFor0(): void
     {
-        $this->expectException(InvalidPortException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         UriFactory::validatePort(0);
     }
@@ -129,14 +129,14 @@ final class UriFactoryTest extends TestCase
 
     public function testValidatePathWithQuery(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         UriFactory::validatePath('/path?query');
     }
 
     public function testValidatePathWithFragment(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         UriFactory::validatePath('/path#fragment');
     }
@@ -150,7 +150,7 @@ final class UriFactoryTest extends TestCase
 
     public function testValidateQueryWithFragment(): void
     {
-        $this->expectException(InvalidQueryException::class);
+        $this->expectException(HttpUriInvalidQueryException::class);
 
         UriFactory::validateQuery('query=value#fragment');
     }
@@ -312,14 +312,14 @@ final class UriFactoryTest extends TestCase
 
     public function testFilterPathThrowsForInvalidPath(): void
     {
-        $this->expectException(InvalidPathException::class);
+        $this->expectException(HttpUriInvalidPathException::class);
 
         UriFactory::filterPath('/path?with=query');
     }
 
     public function testFilterQueryThrowsForInvalidQuery(): void
     {
-        $this->expectException(InvalidQueryException::class);
+        $this->expectException(HttpUriInvalidQueryException::class);
 
         UriFactory::filterQuery('query=value#fragment');
     }

@@ -16,8 +16,8 @@ namespace Valkyrja\Http\Message\Header;
 use Override;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
 use function array_filter;
@@ -215,7 +215,7 @@ class Header implements HeaderContract
     #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        throw new UnsupportedOffsetSetException('Use withValues or withAddedValues');
+        throw new HttpHeaderUnsupportedOffsetSetException('Use withValues or withAddedValues');
     }
 
     /**
@@ -224,7 +224,7 @@ class Header implements HeaderContract
     #[Override]
     public function offsetUnset(mixed $offset): void
     {
-        throw new UnsupportedOffsetUnsetException('Use withValues or withAddedValues');
+        throw new HttpHeaderUnsupportedOffsetUnsetException('Use withValues or withAddedValues');
     }
 
     /**

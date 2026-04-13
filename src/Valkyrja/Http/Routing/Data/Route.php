@@ -22,8 +22,8 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Http\Routing\Throwable\Exception\NoRequestStructException;
-use Valkyrja\Http\Routing\Throwable\Exception\NoResponseStructException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoRequestStructException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoResponseStructException;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
@@ -422,7 +422,7 @@ class Route implements RouteContract
     public function getRequestStruct(): RequestStructContract
     {
         return $this->requestStruct
-            ?? throw new NoRequestStructException('No request struct was set for this route');
+            ?? throw new HttpRoutingNoRequestStructException('No request struct was set for this route');
     }
 
     /**
@@ -454,7 +454,7 @@ class Route implements RouteContract
     public function getResponseStruct(): ResponseStructContract
     {
         return $this->responseStruct
-            ?? throw new NoResponseStructException('No response struct was set for this route');
+            ?? throw new HttpRoutingNoResponseStructException('No response struct was set for this route');
     }
 
     /**

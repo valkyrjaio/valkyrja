@@ -21,8 +21,8 @@ use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Type\Data\Cast;
 
 use function preg_match;
@@ -37,8 +37,8 @@ class Matcher implements MatcherContract
     /**
      * @inheritDoc
      *
-     * @throws InvalidRoutePathException
-     * @throws InvalidRouteParameterException
+     * @throws HttpRoutingInvalidRoutePathException
+     * @throws HttpRoutingInvalidRouteParameterException
      */
     #[Override]
     public function match(string $path, RequestMethod $requestMethod): RouteContract|null
@@ -66,8 +66,8 @@ class Matcher implements MatcherContract
     /**
      * @inheritDoc
      *
-     * @throws InvalidRoutePathException
-     * @throws InvalidRouteParameterException
+     * @throws HttpRoutingInvalidRoutePathException
+     * @throws HttpRoutingInvalidRouteParameterException
      */
     #[Override]
     public function matchDynamic(string $path, RequestMethod $requestMethod): RouteContract|null
@@ -94,7 +94,7 @@ class Matcher implements MatcherContract
      *
      * @param array<int|non-empty-string, string> $matches The regex matches
      *
-     * @throws InvalidRoutePathException
+     * @throws HttpRoutingInvalidRoutePathException
      */
     protected function processArguments(DynamicRouteContract $route, array $matches): DynamicRouteContract
     {
@@ -107,7 +107,7 @@ class Matcher implements MatcherContract
         $parameters = $route->getParameters();
 
         if ($parameters === []) {
-            throw new InvalidRoutePathException('Route parameters must not be empty');
+            throw new HttpRoutingInvalidRoutePathException('Route parameters must not be empty');
         }
 
         $arguments            = [];

@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
@@ -322,7 +322,7 @@ final class MatcherTest extends TestCase
 
     public function testInvalidDynamicMatch(): void
     {
-        $this->expectException(InvalidRoutePathException::class);
+        $this->expectException(HttpRoutingInvalidRoutePathException::class);
 
         $dynamicPath = self::INVALID_DYNAMIC_PATH;
 

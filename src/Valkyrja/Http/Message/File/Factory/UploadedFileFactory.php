@@ -17,8 +17,11 @@ use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContrac
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidFilesArrayStructureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidTmpNameException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidValueException;
 use Valkyrja\Http\Message\File\UploadedFile;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 
 use function array_keys;
 use function is_array;
@@ -64,7 +67,7 @@ abstract class UploadedFileFactory
                 continue;
             }
 
-            throw new HttpMessageInvalidArgumentException('Invalid value in files specification');
+            throw new UploadedFileInvalidValueException('Invalid value in files specification');
         }
 
         return new UploadedFileCollection($normalized);
@@ -77,7 +80,7 @@ abstract class UploadedFileFactory
      *
      * @param array<array-key, mixed> $value $_FILES struct
      *
-     * @throws HttpMessageInvalidArgumentException
+     * @throws UploadedFileInvalidFilesArrayStructureException
      */
     public static function createUploadedFileFromSpec(array $value): UploadedFileContract|UploadedFileCollectionContract
     {
@@ -89,7 +92,7 @@ abstract class UploadedFileFactory
         }
 
         if (! is_string($tmpName)) {
-            throw new HttpMessageInvalidArgumentException('Temp file name expected to be a string');
+            throw new UploadedFileInvalidTmpNameException('Temp file name expected to be a string');
         }
 
         /**
@@ -119,7 +122,7 @@ abstract class UploadedFileFactory
      *
      * @param array<array-key, mixed> $files
      *
-     * @throws HttpMessageInvalidArgumentException
+     * @throws UploadedFileInvalidFilesArrayStructureException
      */
     public static function normalizeNestedFileSpec(array $files = []): UploadedFileCollectionContract
     {
@@ -128,7 +131,7 @@ abstract class UploadedFileFactory
         $filesTmpName = $files['tmp_name'] ?? null;
 
         if (! is_array($filesTmpName)) {
-            throw new HttpMessageInvalidArgumentException('Expecting tmp name to be a nested array of files');
+            throw new UploadedFileInvalidFilesArrayStructureException('Expecting tmp name to be a nested array of files');
         }
 
         foreach (array_keys($filesTmpName) as $key) {

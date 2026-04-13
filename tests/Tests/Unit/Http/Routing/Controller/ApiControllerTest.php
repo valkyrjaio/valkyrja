@@ -20,7 +20,7 @@ use Valkyrja\Api\Manager\Api;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
@@ -102,7 +102,7 @@ final class ApiControllerTest extends TestCase
      */
     public function testGetExceptionResponseDefaults(): void
     {
-        $exception = new HttpException(message: 'this is a message');
+        $exception = new HttpResponseException(message: 'this is a message');
 
         $jsonFromException = $this->controller->getExceptionResponse(exception: $exception);
         $jsonFromException->getBody()->rewind();
@@ -123,7 +123,7 @@ final class ApiControllerTest extends TestCase
      */
     public function testGetExceptionResponse(): void
     {
-        $exception = new HttpException(message: 'this is a message');
+        $exception = new HttpResponseException(message: 'this is a message');
         $message   = 'a message';
         $errors    = ['error'];
         $warnings  = ['warning'];

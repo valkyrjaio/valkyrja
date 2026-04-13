@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Http\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoCastException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -114,7 +114,7 @@ final class ParameterTest extends TestCase
 
     public function testCastThrowsWhenNotSet(): void
     {
-        $this->expectException(NoCastException::class);
+        $this->expectException(HttpRoutingNoCastException::class);
         $this->expectExceptionMessage('No cast exists');
 
         $name  = 'name';

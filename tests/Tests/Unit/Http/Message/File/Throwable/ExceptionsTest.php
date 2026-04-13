@@ -15,17 +15,17 @@ namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Message\File\Throwable\Contract\UploadedFileThrowable;
-use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
-use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidArgumentException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileRuntimeException;
-use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\Abstract\UploadedFileInvalidArgumentException;
+use Valkyrja\Http\Message\File\Throwable\Exception\Abstract\UploadedFileRuntimeException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileAlreadyMovedException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidDirectoryException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileMoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUnableToWriteFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
 use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
@@ -50,31 +50,31 @@ final class ExceptionsTest extends TestCase
 
     public function testAlreadyMovedException(): void
     {
-        self::isA(UploadedFileRuntimeException::class, AlreadyMovedException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileAlreadyMovedException::class);
     }
 
     public function testInvalidDirectoryException(): void
     {
-        self::isA(UploadedFileInvalidArgumentException::class, InvalidDirectoryException::class);
+        self::isA(UploadedFileInvalidArgumentException::class, UploadedFileInvalidDirectoryException::class);
     }
 
     public function testInvalidUploadedFileException(): void
     {
-        self::isA(UploadedFileInvalidArgumentException::class, InvalidUploadedFileException::class);
+        self::isA(UploadedFileInvalidArgumentException::class, UploadedFileInvalidUploadedFileException::class);
     }
 
     public function testMoveFailureException(): void
     {
-        self::isA(UploadedFileRuntimeException::class, MoveFailureException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileMoveFailureException::class);
     }
 
     public function testUploadedFileException(): void
     {
-        self::isA(UploadedFileRuntimeException::class, UnableToWriteFileException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileUnableToWriteFileException::class);
     }
 
     public function testUploadErrorException(): void
     {
-        self::isA(UploadedFileRuntimeException::class, UploadErrorException::class);
+        self::isA(UploadedFileRuntimeException::class, UploadedFileUploadErrorException::class);
     }
 }

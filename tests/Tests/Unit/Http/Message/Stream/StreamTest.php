@@ -17,15 +17,15 @@ use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidLengthException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamReadException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamSeekException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamTellException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamWriteException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnreadableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
 use Valkyrja\Tests\Classes\Http\Message\Stream\FalseFstatStreamClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamReadExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamSeekExceptionClass;
@@ -67,7 +67,7 @@ final class StreamTest extends TestCase
 
     public function testSeekFailure(): void
     {
-        $this->expectException(StreamSeekException::class);
+        $this->expectException(HttpStreamStreamSeekException::class);
 
         $stream = new StreamSeekExceptionClass();
         $stream->seek(1);
@@ -75,7 +75,7 @@ final class StreamTest extends TestCase
 
     public function testUnSeekFailure(): void
     {
-        $this->expectException(UnseekableStreamException::class);
+        $this->expectException(HttpStreamUnseekableStreamException::class);
 
         $stream = new UnseekableStreamExceptionClass();
         $stream->seek(1);
@@ -103,7 +103,7 @@ final class StreamTest extends TestCase
 
     public function testReadInvalidLength(): void
     {
-        $this->expectException(InvalidLengthException::class);
+        $this->expectException(HttpStreamInvalidLengthException::class);
 
         $stream = new Stream();
 
@@ -112,7 +112,7 @@ final class StreamTest extends TestCase
 
     public function testReadFailure(): void
     {
-        $this->expectException(StreamReadException::class);
+        $this->expectException(HttpStreamStreamReadException::class);
 
         $stream = new StreamReadExceptionClass();
         $stream->read(4096);
@@ -120,7 +120,7 @@ final class StreamTest extends TestCase
 
     public function testReadAfterDetach(): void
     {
-        $this->expectException(InvalidStreamException::class);
+        $this->expectException(HttpStreamInvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -129,7 +129,7 @@ final class StreamTest extends TestCase
 
     public function testReadUsingWritableOnlyMode(): void
     {
-        $this->expectException(UnreadableStreamException::class);
+        $this->expectException(HttpStreamUnreadableStreamException::class);
 
         $stream = new Stream(PhpWrapper::output);
         $stream->read(4096);
@@ -157,7 +157,7 @@ final class StreamTest extends TestCase
 
     public function testWriteFailure(): void
     {
-        $this->expectException(StreamWriteException::class);
+        $this->expectException(HttpStreamStreamWriteException::class);
 
         $stream = new StreamWriteExceptionClass();
         $stream->write('pie');
@@ -165,7 +165,7 @@ final class StreamTest extends TestCase
 
     public function testWriteAfterDetach(): void
     {
-        $this->expectException(InvalidStreamException::class);
+        $this->expectException(HttpStreamInvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -174,7 +174,7 @@ final class StreamTest extends TestCase
 
     public function testWriteUsingReadableOnlyMode(): void
     {
-        $this->expectException(UnwritableStreamException::class);
+        $this->expectException(HttpStreamUnwritableStreamException::class);
 
         $stream = new Stream(PhpWrapper::input);
 
@@ -294,7 +294,7 @@ final class StreamTest extends TestCase
 
     public function testTellFailure(): void
     {
-        $this->expectException(StreamTellException::class);
+        $this->expectException(HttpStreamStreamTellException::class);
 
         $stream = new StreamTellExceptionClass();
         $stream->tell();
@@ -302,7 +302,7 @@ final class StreamTest extends TestCase
 
     public function testTellInvalidStream(): void
     {
-        $this->expectException(InvalidStreamException::class);
+        $this->expectException(HttpStreamInvalidStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -349,7 +349,7 @@ final class StreamTest extends TestCase
 
     public function testGetContentsFailure(): void
     {
-        $this->expectException(StreamReadException::class);
+        $this->expectException(HttpStreamStreamReadException::class);
 
         $stream = new StreamReadExceptionClass();
         $stream->getContents();
@@ -357,7 +357,7 @@ final class StreamTest extends TestCase
 
     public function testGetContentsNonReadable(): void
     {
-        $this->expectException(UnreadableStreamException::class);
+        $this->expectException(HttpStreamUnreadableStreamException::class);
 
         $stream = new Stream();
         $stream->detach();
@@ -380,7 +380,7 @@ final class StreamTest extends TestCase
 
     public function testInvalidStream(): void
     {
-        $this->expectException(InvalidStreamException::class);
+        $this->expectException(HttpStreamInvalidStreamException::class);
 
         @new Stream('/non-existent', Mode::READ);
     }

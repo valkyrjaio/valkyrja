@@ -20,13 +20,13 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Response\Contract\EmptyResponseContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 
 class EmptyResponse extends Response implements EmptyResponseContract
 {
     /**
      * @throws InvalidArgumentException
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         HeaderCollectionContract $headers = new HeaderCollection()

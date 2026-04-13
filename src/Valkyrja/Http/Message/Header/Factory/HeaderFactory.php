@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Message\Header\Factory;
 
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidValueException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 
 use function array_key_exists;
 use function in_array;
@@ -93,7 +93,7 @@ abstract class HeaderFactory
     public static function assertValidValue(string $value): void
     {
         if (! self::isValidValue($value)) {
-            throw new InvalidValueException(sprintf('"%s" is not valid header value', $value));
+            throw new HttpHeaderInvalidValueException(sprintf('"%s" is not valid header value', $value));
         }
     }
 
@@ -143,7 +143,7 @@ abstract class HeaderFactory
     public static function assertValidName(string $name): void
     {
         if (! self::isValidName($name)) {
-            throw new InvalidNameException(sprintf('"%s" is not valid header name', $name));
+            throw new HttpHeaderInvalidNameException(sprintf('"%s" is not valid header name', $name));
         }
     }
 

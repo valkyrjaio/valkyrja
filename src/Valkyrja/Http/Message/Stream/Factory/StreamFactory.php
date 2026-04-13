@@ -18,14 +18,14 @@ use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamReadException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamSeekException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamTellException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamWriteException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnreadableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
 
 use function is_resource;
 
@@ -38,7 +38,7 @@ abstract class StreamFactory
      * @param Mode              $mode            [optional] The mode
      * @param ModeTranslation   $modeTranslation [optional] The mode translation
      *
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      *
      * @return resource
      */
@@ -114,7 +114,7 @@ abstract class StreamFactory
         // If the stream isn't writable
         if (! $stream->isWritable()) {
             // Throw a new runtime exception
-            throw new UnwritableStreamException('Stream is not writable');
+            throw new HttpStreamUnwritableStreamException('Stream is not writable');
         }
     }
 
@@ -130,7 +130,7 @@ abstract class StreamFactory
         // If the write was not successful
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamWriteException('Error writing to stream');
+            throw new HttpStreamStreamWriteException('Error writing to stream');
         }
     }
 
@@ -142,7 +142,7 @@ abstract class StreamFactory
         // If the stream isn't seekable
         if (! $stream->isSeekable()) {
             // Throw a new runtime exception
-            throw new UnseekableStreamException('Stream is not seekable');
+            throw new HttpStreamUnseekableStreamException('Stream is not seekable');
         }
     }
 
@@ -158,7 +158,7 @@ abstract class StreamFactory
         // If the result was not a 0, denoting an error occurred
         if ($result !== 0) {
             // Throw a new runtime exception
-            throw new StreamSeekException('Error seeking within stream');
+            throw new HttpStreamStreamSeekException('Error seeking within stream');
         }
     }
 
@@ -170,7 +170,7 @@ abstract class StreamFactory
         // If the stream is not readable
         if (! $stream->isReadable()) {
             // Throw a runtime exception
-            throw new UnreadableStreamException('Stream is not readable');
+            throw new HttpStreamUnreadableStreamException('Stream is not readable');
         }
     }
 
@@ -186,7 +186,7 @@ abstract class StreamFactory
         // If there was a failure in reading the stream
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamReadException('Error reading stream');
+            throw new HttpStreamStreamReadException('Error reading stream');
         }
     }
 
@@ -202,7 +202,7 @@ abstract class StreamFactory
         // If the tell is not an int
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamTellException('Error occurred during tell operation');
+            throw new HttpStreamStreamTellException('Error occurred during tell operation');
         }
     }
 
@@ -216,7 +216,7 @@ abstract class StreamFactory
     public static function validateStream(mixed $resource): void
     {
         if (! self::isStream($resource)) {
-            throw new InvalidStreamException('Invalid stream provided');
+            throw new HttpStreamInvalidStreamException('Invalid stream provided');
         }
     }
 

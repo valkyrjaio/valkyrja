@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 use Valkyrja\Http\Message\Trait\Message;
 
 use function sprintf;
@@ -41,7 +41,7 @@ class Response implements ResponseContract
 
     /**
      * @throws InvalidArgumentException
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         StreamContract $body = new Stream(),

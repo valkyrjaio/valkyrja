@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\TextResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 
 class TextResponse extends Response implements TextResponseContract
 {
@@ -33,7 +33,7 @@ class TextResponse extends Response implements TextResponseContract
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @throws InvalidStreamException
+     * @throws HttpStreamInvalidStreamException
      */
     public function __construct(
         string $text = '',

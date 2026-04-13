@@ -17,8 +17,8 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
-use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidArgumentException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidHeaderNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function strtolower;
@@ -101,7 +101,7 @@ final class HeaderCollectionTest extends TestCase
     {
         $name = 'X-Custom';
 
-        $this->expectException(InvalidHeaderNameException::class);
+        $this->expectException(HttpHeaderInvalidHeaderNameException::class);
         $this->expectExceptionMessage("Header $name does not exist");
 
         self::assertFalse($this->headerData->has($name));
@@ -277,7 +277,7 @@ final class HeaderCollectionTest extends TestCase
 
     public function testFromArrayThrowsForInvalidData(): void
     {
-        $this->expectException(HttpHeaderInvalidArgumentException::class);
+        $this->expectException(HttpHeaderInvalidHeaderParamException::class);
 
         HeaderCollection::fromArray(['invalid' => 'not-a-header']);
     }

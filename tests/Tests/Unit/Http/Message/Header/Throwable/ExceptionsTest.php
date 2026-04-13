@@ -15,14 +15,14 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Message\Header\Throwable\Contract\HttpHeaderThrowable;
-use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidArgumentException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderRuntimeException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedMethodException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\Abstract\HttpHeaderInvalidArgumentException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\Abstract\HttpHeaderRuntimeException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidValueException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedMethodException;
 use Valkyrja\Http\Message\Throwable\Contract\HttpMessageThrowable;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageRuntimeException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase
@@ -47,16 +47,16 @@ final class ExceptionsTest extends TestCase
 
     public function testUnsupportedMethodException(): void
     {
-        self::isA(HttpHeaderRuntimeException::class, UnsupportedMethodException::class);
+        self::isA(HttpHeaderRuntimeException::class, HttpHeaderUnsupportedMethodException::class);
     }
 
     public function testInvalidNameException(): void
     {
-        self::isA(HttpHeaderInvalidArgumentException::class, InvalidNameException::class);
+        self::isA(HttpHeaderInvalidArgumentException::class, HttpHeaderInvalidNameException::class);
     }
 
     public function testInvalidValueException(): void
     {
-        self::isA(HttpHeaderInvalidArgumentException::class, InvalidValueException::class);
+        self::isA(HttpHeaderInvalidArgumentException::class, HttpHeaderInvalidValueException::class);
     }
 }

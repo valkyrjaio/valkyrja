@@ -19,7 +19,7 @@ use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Processor;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -85,7 +85,7 @@ final class ProcessorTest extends TestCase
 
     public function testDynamicRouteInvalidPath(): void
     {
-        $this->expectException(InvalidRoutePathException::class);
+        $this->expectException(HttpRoutingInvalidRoutePathException::class);
 
         $processor = new Processor();
 

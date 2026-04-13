@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Struct\Throwable\Exception\HttpStructInvalidArgumentException;
+use Valkyrja\Http\Struct\Throwable\Exception\HttpStructJsonServerRequestExpectedException;
 
 trait JsonRequestStruct
 {
@@ -57,7 +57,7 @@ trait JsonRequestStruct
     protected static function ensureJsonRequest(JsonServerRequestContract|ServerRequestContract $request): void
     {
         if (! is_a($request, JsonServerRequestContract::class)) {
-            throw new HttpStructInvalidArgumentException('JsonServerRequest is required for this to work.');
+            throw new HttpStructJsonServerRequestExpectedException('JsonServerRequest is required for this to work.');
         }
     }
 }

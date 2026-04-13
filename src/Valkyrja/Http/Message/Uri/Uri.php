@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 
 use function strtolower;
 
@@ -45,9 +45,9 @@ class Uri implements UriContract
      * @param string $query    [optional] The query
      * @param string $fragment [optional] The fragment
      *
-     * @throws InvalidPathException
-     * @throws InvalidPortException
-     * @throws InvalidQueryException
+     * @throws HttpUriInvalidPathException
+     * @throws HttpUriInvalidPortException
+     * @throws HttpUriInvalidQueryException
      */
     public function __construct(
         protected Scheme $scheme = Scheme::EMPTY,

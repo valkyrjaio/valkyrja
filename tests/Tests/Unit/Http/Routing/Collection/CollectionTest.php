@@ -25,10 +25,10 @@ use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingRuntimeException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteRegexException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidDynamicRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
 use Valkyrja\Tests\Classes\Http\Routing\Collection\CollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -201,7 +201,7 @@ final class CollectionTest extends TestCase
     {
         $path = 'non-existent';
 
-        $this->expectException(InvalidRoutePathException::class);
+        $this->expectException(HttpRoutingInvalidRoutePathException::class);
         $this->expectExceptionMessage("The path '$path' is not a valid route for the given method 'ANY'");
 
         $this->collection->getByPath($path, RequestMethod::ANY);
@@ -256,7 +256,7 @@ final class CollectionTest extends TestCase
     {
         $regex = 'non-existent';
 
-        $this->expectException(InvalidRouteRegexException::class);
+        $this->expectException(HttpRoutingInvalidRouteRegexException::class);
         $this->expectExceptionMessage("The regex '$regex' is not a valid route for the given method 'ANY'");
 
         $this->collection->getByRegex($regex, RequestMethod::ANY);
@@ -369,7 +369,7 @@ final class CollectionTest extends TestCase
     {
         $name = 'non-existent';
 
-        $this->expectException(InvalidRouteNameException::class);
+        $this->expectException(HttpRoutingInvalidRouteNameException::class);
         $this->expectExceptionMessage("A route with the name '$name' does not exist");
 
         $this->collection->getByName($name);
@@ -578,7 +578,7 @@ final class CollectionTest extends TestCase
     {
         $name = 'non-existent';
 
-        $this->expectException(InvalidRouteNameException::class);
+        $this->expectException(HttpRoutingInvalidRouteNameException::class);
         $this->expectExceptionMessage("Invalid name `$name` provided");
 
         $collection = new CollectionClass();
@@ -587,8 +587,8 @@ final class CollectionTest extends TestCase
 
     public function testGetDynamicRouteFromName(): void
     {
-        $this->expectException(HttpRoutingRuntimeException::class);
-        $this->expectExceptionMessage('Invalid dynamic route');
+        $this->expectException(HttpRoutingInvalidDynamicRouteNameException::class);
+        $this->expectExceptionMessage('Invalid dynamic route ' . self::ROUTE_NAME);
 
         $collection = new CollectionClass();
         $collection->add($this->route);

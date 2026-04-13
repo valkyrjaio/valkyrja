@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -41,7 +41,7 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 
 use function rawurldecode;
 
@@ -119,7 +119,7 @@ class Router implements RouterContract
         );
 
         if (! $response instanceof ResponseContract) {
-            throw new InvalidRouteNameException('Dispatch must be a valid response');
+            throw new HttpRoutingInvalidRouteNameException('Dispatch must be a valid response');
         }
 
         return $this->routeDispatchedHandler->routeDispatched(
@@ -134,7 +134,7 @@ class Router implements RouterContract
      *
      * @param ServerRequestContract $request The request
      *
-     * @throws HttpException
+     * @throws HttpResponseException
      */
     protected function attemptToMatchRoute(ServerRequestContract $request): RouteContract|ResponseContract
     {

@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Throwable;
 
 use Throwable;
 use Valkyrja\Http\Struct\Throwable\Contract\HttpStructThrowable;
-use Valkyrja\Http\Struct\Throwable\Exception\HttpStructInvalidArgumentException;
-use Valkyrja\Http\Struct\Throwable\Exception\HttpStructRuntimeException;
+use Valkyrja\Http\Struct\Throwable\Exception\Abstract\HttpStructInvalidArgumentException;
+use Valkyrja\Http\Struct\Throwable\Exception\Abstract\HttpStructRuntimeException;
 use Valkyrja\Http\Throwable\Contract\HttpThrowable;
-use Valkyrja\Http\Throwable\Exception\HttpInvalidArgumentException;
-use Valkyrja\Http\Throwable\Exception\HttpRuntimeException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpInvalidArgumentException;
+use Valkyrja\Http\Throwable\Exception\Abstract\HttpRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase

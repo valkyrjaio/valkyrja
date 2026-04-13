@@ -26,7 +26,7 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -202,7 +202,7 @@ final class RouterTest extends TestCase
 
     public function testResponseAfterRouteDispatchedWithInvalidDispatch(): void
     {
-        $this->expectException(InvalidRouteNameException::class);
+        $this->expectException(HttpRoutingInvalidRouteNameException::class);
 
         $collection = new Collection();
         $matcher    = new Matcher(collection: $collection);

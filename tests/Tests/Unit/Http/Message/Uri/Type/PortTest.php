@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Type;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Http\Message\Throwable\Exception\HttpMessageInvalidArgumentException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
 use Valkyrja\Http\Message\Uri\Type\Port;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -63,14 +63,14 @@ final class PortTest extends TestCase
     #[DataProvider('invalidPortsProvider')]
     public function testInvalidPorts(int $portNum): void
     {
-        $this->expectException(HttpMessageInvalidArgumentException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         new Port($portNum);
     }
 
     public function testFromValueInvalid(): void
     {
-        $this->expectException(HttpMessageInvalidArgumentException::class);
+        $this->expectException(HttpUriInvalidPortException::class);
 
         Port::fromValue('test');
     }

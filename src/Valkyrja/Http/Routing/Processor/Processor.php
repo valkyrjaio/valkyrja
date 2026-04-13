@@ -19,14 +19,14 @@ use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
-use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 
 class Processor implements ProcessorContract
 {
     /**
      * Process a route.
      *
-     * @throws InvalidRoutePathException
+     * @throws HttpRoutingInvalidRoutePathException
      */
     #[Override]
     public function route(RouteContract $route): RouteContract
@@ -46,7 +46,7 @@ class Processor implements ProcessorContract
     /**
      * Create the regex for a route.
      *
-     * @throws InvalidRoutePathException
+     * @throws HttpRoutingInvalidRoutePathException
      */
     protected function modifyRegex(DynamicRouteContract $route): RouteContract
     {
@@ -95,7 +95,7 @@ class Processor implements ProcessorContract
      * @param ParameterContract $parameter The parameter
      * @param string            $regex     The regex
      *
-     * @throws InvalidRoutePathException
+     * @throws HttpRoutingInvalidRoutePathException
      */
     protected function replaceParameterNameInRegex(RouteContract $route, ParameterContract $parameter, string $regex): string
     {
@@ -106,7 +106,7 @@ class Processor implements ProcessorContract
 
         // Check if the path doesn't contain the parameter's name replacement
         if (! str_contains($regex, $nameReplacement)) {
-            throw new InvalidRoutePathException("{$route->getPath()} is missing $nameReplacement");
+            throw new HttpRoutingInvalidRoutePathException("{$route->getPath()} is missing $nameReplacement");
         }
 
         // Get the parameter's regex

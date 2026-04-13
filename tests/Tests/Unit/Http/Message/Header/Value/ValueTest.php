@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Value;
 
 use JsonException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderUnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -149,7 +149,7 @@ final class ValueTest extends TestCase
 
     public function testUnsupportedOffsetSetException(): void
     {
-        $this->expectException(UnsupportedOffsetSetException::class);
+        $this->expectException(HttpHeaderUnsupportedOffsetSetException::class);
 
         $value    = new Value('test');
         $value[1] = 'fire';
@@ -157,7 +157,7 @@ final class ValueTest extends TestCase
 
     public function testUnsupportedOffsetUnsetException(): void
     {
-        $this->expectException(UnsupportedOffsetUnsetException::class);
+        $this->expectException(HttpHeaderUnsupportedOffsetUnsetException::class);
 
         $value = new Value('test');
 
