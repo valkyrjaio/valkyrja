@@ -17,9 +17,10 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Override;
 use Random\RandomException;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeRuntimeException;
 use Valkyrja\Type\Uid\Factory\UidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
+use Valkyrja\Type\Ulid\Throwable\Exception\UlidRandomBytesFailureException;
 
 use function microtime;
 use function random_bytes;
@@ -243,7 +244,7 @@ class UlidFactory extends UidFactory
         $randomBytes = static::unpackRandomBytes(random_bytes(10));
 
         if ($randomBytes === false) {
-            throw new TypeRuntimeException('Random bytes failed to unpack');
+            throw new UlidRandomBytesFailureException('Random bytes failed to unpack');
         }
 
         return $randomBytes;

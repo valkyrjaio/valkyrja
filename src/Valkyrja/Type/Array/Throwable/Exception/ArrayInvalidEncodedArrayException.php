@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type\Throwable\Exception;
+namespace Valkyrja\Type\Array\Throwable\Exception;
 
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
-use Valkyrja\Type\Throwable\Contract\TypeThrowable;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 
-class TypeRuntimeException extends ValkyrjaRuntimeException implements TypeThrowable
+class ArrayInvalidEncodedArrayException extends TypeInvalidArgumentException
 {
 }

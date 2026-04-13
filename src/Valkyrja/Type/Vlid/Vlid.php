@@ -16,11 +16,12 @@ namespace Valkyrja\Type\Vlid;
 use Override;
 use Random\RandomException;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeRuntimeException;
 use Valkyrja\Type\Vlid\Contract\VlidContract;
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
+use Valkyrja\Type\Vlid\Throwable\Exception\VlidInvalidFromValueException;
 
 use function gettype;
 use function is_string;
@@ -57,7 +58,7 @@ class Vlid extends Type implements VlidContract
     public static function fromValue(mixed $value): static
     {
         if ($value !== null && ! is_string($value)) {
-            throw new TypeInvalidArgumentException(sprintf('String or null expected value of type `%s` provided', gettype($value)));
+            throw new VlidInvalidFromValueException(sprintf('String or null expected value of type `%s` provided', gettype($value)));
         }
 
         return new static($value);

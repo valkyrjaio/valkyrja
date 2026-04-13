@@ -17,7 +17,8 @@ use JsonException;
 use stdClass;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidEncodedObjectException;
+use Valkyrja\Type\Object\Throwable\Exception\InvalidSerializedObjectException;
 
 use function count;
 use function explode;
@@ -56,7 +57,7 @@ class ObjectFactory
         $decoded = json_decode($subject, false, 512, JSON_THROW_ON_ERROR);
 
         if (! is_object($decoded)) {
-            throw new TypeRuntimeException("Invalid json string provided: `$subject`");
+            throw new InvalidEncodedObjectException("Invalid json string provided: `$subject`");
         }
 
         return $decoded;
@@ -90,7 +91,7 @@ class ObjectFactory
         $unserialized = unserialize($subject, $options);
 
         if (! is_object($unserialized)) {
-            throw new TypeRuntimeException("Invalid serialized string provided: `$subject`");
+            throw new InvalidSerializedObjectException("Invalid serialized string provided: `$subject`");
         }
 
         return $unserialized;

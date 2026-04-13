@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Array\Factory;
 use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidEncodedArrayException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 
 use function PHPUnit\Framework\assertSame;
 
@@ -78,7 +78,7 @@ final class ArrayFactoryTest extends TestCase
      */
     public function testFromStringInvalidString(): void
     {
-        $this->expectException(TypeRuntimeException::class);
+        $this->expectException(ArrayInvalidEncodedArrayException::class);
 
         ArrayFactory::fromString('"validbutnotarray"');
     }

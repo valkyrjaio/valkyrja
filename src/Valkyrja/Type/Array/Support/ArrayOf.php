@@ -15,7 +15,9 @@ namespace Valkyrja\Type\Array\Support;
 
 use BackedEnum;
 use UnitEnum;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidFalseValueException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidNullValueException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidTrueValueException;
 
 use function getType;
 
@@ -56,7 +58,7 @@ class ArrayOf
     {
         foreach ($values as $key => $value) {
             if (! $value) {
-                throw new TypeInvalidArgumentException("Argument $key must be of type true, false given");
+                throw new ArrayInvalidTrueValueException("Argument $key must be of type true, false given");
             }
         }
     }
@@ -68,7 +70,7 @@ class ArrayOf
     {
         foreach ($values as $key => $value) {
             if ($value) {
-                throw new TypeInvalidArgumentException("Argument $key must be of type false, true given");
+                throw new ArrayInvalidFalseValueException("Argument $key must be of type false, true given");
             }
         }
     }
@@ -85,7 +87,7 @@ class ArrayOf
             if ($value !== null) {
                 $type = gettype($value);
 
-                throw new TypeInvalidArgumentException("Argument $key must be of type null, $type given");
+                throw new ArrayInvalidNullValueException("Argument $key must be of type null, $type given");
             }
         }
     }

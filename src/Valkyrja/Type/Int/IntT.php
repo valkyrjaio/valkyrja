@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Int;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Int\Contract\IntContract;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Int\Throwable\Exception\IntInvalidFromValueException;
 
 use function is_array;
 use function is_bool;
@@ -44,7 +44,7 @@ class IntT extends Type implements IntContract
             is_int($value)   => new static($value),
             is_string($value), is_float($value), is_bool($value) => new static((int) $value),
             is_array($value) => new static($value !== [] ? 1 : 0),
-            default          => throw new TypeInvalidArgumentException('Unsupported value provided'),
+            default          => throw new IntInvalidFromValueException('Unsupported value provided'),
         };
     }
 

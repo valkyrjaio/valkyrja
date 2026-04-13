@@ -18,8 +18,8 @@ use Valkyrja\Tests\Classes\Enum\EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Enum\Throwable\Exception\EnumCannotModifyException;
+use Valkyrja\Type\Enum\Throwable\Exception\EnumInvalidValueException;
 
 use function json_encode;
 
@@ -52,14 +52,14 @@ final class EnumTest extends TestCase
 
     public function testFromNonStringOrIntValue(): void
     {
-        $this->expectException(TypeInvalidArgumentException::class);
+        $this->expectException(EnumInvalidValueException::class);
 
         EnumClass::fromValue(true);
     }
 
     public function testFromValueInvalidValue(): void
     {
-        $this->expectException(TypeInvalidArgumentException::class);
+        $this->expectException(EnumInvalidValueException::class);
 
         $type = EnumClass::fromValue('invalid');
 
@@ -89,7 +89,7 @@ final class EnumTest extends TestCase
 
     public function testModify(): void
     {
-        $this->expectException(TypeRuntimeException::class);
+        $this->expectException(EnumCannotModifyException::class);
 
         $type = self::VALUE;
 

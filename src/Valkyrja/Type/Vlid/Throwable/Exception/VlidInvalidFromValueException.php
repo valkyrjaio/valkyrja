@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type\Model\Throwable\Contract;
+namespace Valkyrja\Type\Vlid\Throwable\Exception;
 
-use Valkyrja\Type\Throwable\Contract\TypeThrowable;
+use Valkyrja\Type\Uid\Throwable\Exception\UidInvalidFromValueException;
+use Valkyrja\Type\Vlid\Throwable\Contract\VlidThrowable;
 
-interface ModelThrowable extends TypeThrowable
+class VlidInvalidFromValueException extends UidInvalidFromValueException implements VlidThrowable
 {
 }

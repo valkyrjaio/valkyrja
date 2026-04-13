@@ -16,8 +16,8 @@ namespace Valkyrja\Type\Array\Factory;
 use ArrayAccess;
 use JsonException;
 use Stringable;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
-use Valkyrja\Type\Throwable\Exception\TypeRuntimeException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidEncodedArrayException;
+use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidStringKeysException;
 
 use function array_filter;
 use function explode;
@@ -97,7 +97,7 @@ class ArrayFactory
         $decoded = json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
 
         if (! is_array($decoded)) {
-            throw new TypeRuntimeException("Invalid json string provided: `$subject`");
+            throw new ArrayInvalidEncodedArrayException("Invalid json string provided: `$subject`");
         }
 
         return $decoded;
@@ -179,7 +179,7 @@ class ArrayFactory
     public static function validateKeysAreStrings(array $array): void
     {
         if (! static::determineIfKeysAreStrings($array)) {
-            throw new TypeInvalidArgumentException('Array keys must be strings.');
+            throw new ArrayInvalidStringKeysException('Array keys must be strings.');
         }
     }
 

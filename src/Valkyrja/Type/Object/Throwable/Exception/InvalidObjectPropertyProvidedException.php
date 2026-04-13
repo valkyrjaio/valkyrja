@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Object\Throwable\Exception;
 
 use Valkyrja\Type\Object\Throwable\Contract\ObjectThrowable;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 
 class InvalidObjectPropertyProvidedException extends TypeInvalidArgumentException implements ObjectThrowable
 {

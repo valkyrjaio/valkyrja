@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\String;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\NonEmptyString;
-use Valkyrja\Type\Throwable\Exception\TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 
 final class NonEmptyStringTest extends TestCase
 {
