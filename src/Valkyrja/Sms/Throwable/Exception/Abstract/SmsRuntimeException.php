@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Throwable\Exception;
+namespace Valkyrja\Sms\Throwable\Exception\Abstract;
 
 use Valkyrja\Sms\Throwable\Contract\SmsThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class SmsInvalidArgumentException extends ValkyrjaInvalidArgumentException implements SmsThrowable
+abstract class SmsRuntimeException extends ValkyrjaRuntimeException implements SmsThrowable
 {
 }
