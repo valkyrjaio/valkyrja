@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Throwable\Exception;
+namespace Valkyrja\Api\Throwable\Exception\Abstract;
 
 use Valkyrja\Api\Throwable\Contract\ApiThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class ApiRuntimeException extends ValkyrjaRuntimeException implements ApiThrowable
+abstract class ApiInvalidArgumentException extends ValkyrjaInvalidArgumentException implements ApiThrowable
 {
 }
