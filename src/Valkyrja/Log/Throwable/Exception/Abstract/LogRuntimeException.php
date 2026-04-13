@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Throwable\Exception;
+namespace Valkyrja\Log\Throwable\Exception\Abstract;
 
 use Valkyrja\Log\Throwable\Contract\LogThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class LogRuntimeException extends ValkyrjaRuntimeException implements LogThrowable
+abstract class LogRuntimeException extends ValkyrjaRuntimeException implements LogThrowable
 {
 }

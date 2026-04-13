@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Mail\Throwable;
 
-use Throwable;
 use Valkyrja\Mail\Throwable\Contract\MailThrowable;
 use Valkyrja\Mail\Throwable\Exception\Abstract\MailInvalidArgumentException;
 use Valkyrja\Mail\Throwable\Exception\Abstract\MailRuntimeException;
