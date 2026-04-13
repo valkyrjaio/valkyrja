@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Throwable\Exception;
+namespace Valkyrja\Jwt\Throwable\Exception\Abstract;
 
 use Valkyrja\Jwt\Throwable\Contract\JwtThrowable;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class JwtInvalidArgumentException extends ValkyrjaInvalidArgumentException implements JwtThrowable
+abstract class JwtInvalidArgumentException extends ValkyrjaInvalidArgumentException implements JwtThrowable
 {
 }
