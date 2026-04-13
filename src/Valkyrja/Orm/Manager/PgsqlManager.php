@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Manager;
 
 use Override;
 use Valkyrja\Orm\Manager\Abstract\PdoManager;
-use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmNoPgsqlLastIdException;
 
 use function is_string;
 
@@ -34,6 +34,6 @@ class PgsqlManager extends PdoManager
 
         return is_string($lastInsertId)
             ? $lastInsertId
-            : throw new OrmRuntimeException('No last insert id found');
+            : throw new OrmNoPgsqlLastIdException('No last insert id found');
     }
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Factory;
 
 use DateTime;
 use Valkyrja\Orm\Constant\DateFormat;
-use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmDateException;
 
 use function microtime;
 
@@ -31,7 +31,7 @@ class DateFactory
         $dateTime = static::createDateTimeFromMicrotime();
 
         if ($dateTime === false) {
-            throw new OrmRuntimeException('Failure occurred when creating a new DateTime object for current microtime.');
+            throw new OrmDateException('Failure occurred when creating a new DateTime object for current microtime.');
         }
 
         return $dateTime->format($format);

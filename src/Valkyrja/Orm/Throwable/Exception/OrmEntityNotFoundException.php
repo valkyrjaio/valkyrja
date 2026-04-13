@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-class InvalidEntityException extends OrmInvalidArgumentException
+class OrmEntityNotFoundException extends OrmNotFoundException
 {
 }

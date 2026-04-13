@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\Abstract\OrmInvalidArgumentException;
 
-class OrmRuntimeException extends ValkyrjaRuntimeException implements OrmThrowable
+class OrmInvalidColumnNumberException extends OrmInvalidArgumentException
 {
 }

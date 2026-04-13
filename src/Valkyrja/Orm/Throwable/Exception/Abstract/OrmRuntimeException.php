@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Throwable\Exception;
+namespace Valkyrja\Orm\Throwable\Exception\Abstract;
 
-class NotFoundException extends OrmRuntimeException
+use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+
+abstract class OrmRuntimeException extends ValkyrjaRuntimeException implements OrmThrowable
 {
 }

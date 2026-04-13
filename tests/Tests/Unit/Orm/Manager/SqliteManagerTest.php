@@ -23,7 +23,8 @@ use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmNoLastIdException;
+use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
 use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -95,7 +96,7 @@ final class SqliteManagerTest extends TestCase
             ->method('lastInsertId')
             ->willReturn(false);
 
-        $this->expectException(OrmRuntimeException::class);
+        $this->expectException(OrmNoLastIdException::class);
         $this->expectExceptionMessage('No last insert id found');
 
         $this->manager->lastInsertId('table', 'id');
@@ -225,7 +226,7 @@ final class SqliteManagerTest extends TestCase
             ->with('INVALID QUERY')
             ->willReturn(false);
 
-        $this->expectException(OrmRuntimeException::class);
+        $this->expectException(OrmStatementPreparationFailureException::class);
         $this->expectExceptionMessage('Statement preparation has failed');
 
         $this->manager->prepare('INVALID QUERY');
@@ -260,7 +261,7 @@ final class SqliteManagerTest extends TestCase
             ->with('INVALID QUERY')
             ->willReturn(false);
 
-        $this->expectException(OrmRuntimeException::class);
+        $this->expectException(OrmStatementPreparationFailureException::class);
         $this->expectExceptionMessage('Statement query has failed');
 
         $this->manager->query('INVALID QUERY');

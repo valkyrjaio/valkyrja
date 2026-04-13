@@ -17,8 +17,8 @@ use JsonException;
 use Override;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Repository;
-use Valkyrja\Orm\Throwable\Exception\OrmInvalidArgumentException;
-use Valkyrja\Orm\Throwable\Exception\OrmRuntimeException;
+use Valkyrja\Orm\Throwable\Exception\OrmArrayCastingException;
+use Valkyrja\Orm\Throwable\Exception\OrmUnexpectedIdValueException;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
@@ -107,7 +107,7 @@ abstract class Entity extends Model implements EntityContract
             return $id;
         }
 
-        throw new OrmRuntimeException('Id field value should be a string or int');
+        throw new OrmUnexpectedIdValueException('Id field value should be a string or int');
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class Entity extends Model implements EntityContract
             if (! is_array($value)) {
                 $typeOf = gettype($value);
 
-                throw new OrmInvalidArgumentException("Expecting array, $typeOf provided, for $property cast");
+                throw new OrmArrayCastingException("Expecting array, $typeOf provided, for $property cast");
             }
 
             return ArrayFactory::toString(
