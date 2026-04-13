@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection\Throwable\Exception;
+namespace Valkyrja\Reflection\Throwable\Exception\Abstract;
 
 use Valkyrja\Reflection\Throwable\Contract\ReflectionThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class ReflectionRuntimeException extends ValkyrjaRuntimeException implements ReflectionThrowable
+abstract class ReflectionInvalidArgumentException extends ValkyrjaInvalidArgumentException implements ReflectionThrowable
 {
 }
