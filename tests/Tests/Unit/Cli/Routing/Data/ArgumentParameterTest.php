@@ -17,8 +17,8 @@ use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentException;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingArgumentValuesValidationException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoCastException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -358,7 +358,7 @@ final class ArgumentParameterTest extends TestCase
 
     public function testGetCastThrowsWhenNoCastSet(): void
     {
-        $this->expectException(NoCastException::class);
+        $this->expectException(CliRoutingNoCastException::class);
         $this->expectExceptionMessage('No cast exists');
 
         $name        = self::NAME;
@@ -399,7 +399,7 @@ final class ArgumentParameterTest extends TestCase
 
     public function testValidateValuesException(): void
     {
-        $this->expectException(CliRoutingInvalidArgumentException::class);
+        $this->expectException(CliRoutingArgumentValuesValidationException::class);
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;

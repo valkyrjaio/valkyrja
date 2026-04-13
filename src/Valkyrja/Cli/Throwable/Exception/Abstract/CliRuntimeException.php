@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Throwable\Exception;
+namespace Valkyrja\Cli\Throwable\Exception\Abstract;
 
-class InvalidRouteNameException extends CliRoutingInvalidArgumentException
+use Valkyrja\Cli\Throwable\Contract\CliThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+
+abstract class CliRuntimeException extends ValkyrjaRuntimeException implements CliThrowable
 {
 }

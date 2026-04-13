@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
-use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionNoValidationCallableException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function str_contains;
@@ -134,7 +134,7 @@ final class AnswerTest extends TestCase
 
     public function testValidationCallbackThrowsWhenNotSet(): void
     {
-        $this->expectException(NoValidationCallableException::class);
+        $this->expectException(CliInteractionNoValidationCallableException::class);
         $this->expectExceptionMessage('No validation callable has been set');
 
         $message = new Answer(defaultResponse: 'text');

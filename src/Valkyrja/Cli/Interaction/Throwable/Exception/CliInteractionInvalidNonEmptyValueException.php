@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Throwable\Exception;
+namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
-class InvalidArgumentNameException extends CliRoutingInvalidArgumentException
+use Valkyrja\Cli\Interaction\Throwable\Exception\Abstract\CliInteractionInvalidArgumentException;
+
+class CliInteractionInvalidNonEmptyValueException extends CliInteractionInvalidArgumentException
 {
 }

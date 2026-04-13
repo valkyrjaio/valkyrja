@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Throwable;
 
 use Throwable;
 use Valkyrja\Cli\Middleware\Throwable\Contract\CliMiddlewareThrowable;
-use Valkyrja\Cli\Middleware\Throwable\Exception\CliMiddlewareInvalidArgumentException;
-use Valkyrja\Cli\Middleware\Throwable\Exception\CliMiddlewareRuntimeException;
+use Valkyrja\Cli\Middleware\Throwable\Exception\Abstract\CliMiddlewareInvalidArgumentException;
+use Valkyrja\Cli\Middleware\Throwable\Exception\Abstract\CliMiddlewareRuntimeException;
 use Valkyrja\Cli\Throwable\Contract\CliThrowable;
-use Valkyrja\Cli\Throwable\Exception\CliInvalidArgumentException;
-use Valkyrja\Cli\Throwable\Exception\CliRuntimeException;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliInvalidArgumentException;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ExceptionsTest extends TestCase

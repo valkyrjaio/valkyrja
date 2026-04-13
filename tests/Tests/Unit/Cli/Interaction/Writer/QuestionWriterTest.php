@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Writer;
 
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionExpectedQuestionOutputException;
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -23,7 +23,7 @@ final class QuestionWriterTest extends TestCase
 {
     public function testInvalidMessage(): void
     {
-        $this->expectException(CliInteractionInvalidArgumentException::class);
+        $this->expectException(CliInteractionExpectedQuestionOutputException::class);
 
         $questionWriter = new QuestionWriter();
 

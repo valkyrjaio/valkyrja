@@ -22,7 +22,7 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Throwable\Exception\InvalidRouteNameException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -44,7 +44,7 @@ final class CollectionTest extends TestCase
     {
         $name = 'test';
 
-        $this->expectException(InvalidRouteNameException::class);
+        $this->expectException(CliRoutingInvalidRouteNameException::class);
         $this->expectExceptionMessage("The route `$name` was not found.");
 
         $collection = new Collection();

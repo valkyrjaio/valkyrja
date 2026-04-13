@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\Throwable\Exception;
+namespace Valkyrja\Cli\Middleware\Throwable\Exception\Abstract;
 
 use Valkyrja\Cli\Middleware\Throwable\Contract\CliMiddlewareThrowable;
-use Valkyrja\Cli\Throwable\Exception\CliInvalidArgumentException;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliRuntimeException;
 
-class CliMiddlewareInvalidArgumentException extends CliInvalidArgumentException implements CliMiddlewareThrowable
+abstract class CliMiddlewareRuntimeException extends CliRuntimeException implements CliMiddlewareThrowable
 {
 }

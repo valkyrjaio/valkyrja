@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\NoFormatterException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionNoFormatterException;
 
 class Message implements MessageContract
 {
@@ -80,7 +80,7 @@ class Message implements MessageContract
     public function getFormatter(): FormatterContract
     {
         return $this->formatter
-            ?? throw new NoFormatterException('No formatter has been set');
+            ?? throw new CliInteractionNoFormatterException('No formatter has been set');
     }
 
     /**

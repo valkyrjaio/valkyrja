@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Throwable\Exception;
+namespace Valkyrja\Cli\Routing\Throwable\Exception;
 
-class NoFormatterException extends CliInteractionRuntimeException
+use Valkyrja\Cli\Routing\Throwable\Exception\Abstract\CliRoutingInvalidArgumentException;
+
+class CliRoutingInvalidOptionNameException extends CliRoutingInvalidArgumentException
 {
 }

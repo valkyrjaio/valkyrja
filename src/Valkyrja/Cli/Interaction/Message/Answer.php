@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\NoValidationCallableException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionNoValidationCallableException;
 
 use function in_array;
 use function sprintf;
@@ -164,7 +164,7 @@ class Answer extends Message implements AnswerContract
     public function getValidationCallable(): callable
     {
         return $this->validationCallable
-            ?? throw new NoValidationCallableException('No validation callable has been set');
+            ?? throw new CliInteractionNoValidationCallableException('No validation callable has been set');
     }
 
     /**

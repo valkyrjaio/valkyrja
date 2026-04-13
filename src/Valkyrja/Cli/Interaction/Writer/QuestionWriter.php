@@ -21,7 +21,7 @@ use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidArgumentException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionExpectedQuestionOutputException;
 use Valkyrja\Cli\Interaction\Writer\Contract\WriterContract;
 
 use function array_map;
@@ -51,7 +51,7 @@ class QuestionWriter implements WriterContract
     public function write(OutputContract $output, MessageContract $message): OutputContract
     {
         if (! $message instanceof QuestionContract) {
-            throw new CliInteractionInvalidArgumentException('This writer expects only questions');
+            throw new CliInteractionExpectedQuestionOutputException('This writer expects only questions');
         }
 
         return $this->askQuestion($output, $message);

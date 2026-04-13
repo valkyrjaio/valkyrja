@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\Throwable\Exception;
+namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
-use Valkyrja\Cli\Middleware\Throwable\Contract\CliMiddlewareThrowable;
-use Valkyrja\Cli\Throwable\Exception\CliRuntimeException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\Abstract\CliInteractionRuntimeException;
 
-class CliMiddlewareRuntimeException extends CliRuntimeException implements CliMiddlewareThrowable
+class CliInteractionNoValidationCallableException extends CliInteractionRuntimeException
 {
 }

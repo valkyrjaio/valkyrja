@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
-use Valkyrja\Cli\Routing\Throwable\Exception\NoCastException;
+use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoCastException;
 use Valkyrja\Type\Data\Cast;
 
 abstract class Parameter implements ParameterContract
@@ -71,7 +71,7 @@ abstract class Parameter implements ParameterContract
     public function getCast(): Cast
     {
         return $this->cast
-            ?? throw new NoCastException('No cast exists');
+            ?? throw new CliRoutingNoCastException('No cast exists');
     }
 
     /**

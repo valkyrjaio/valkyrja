@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Throwable\Exception;
+namespace Valkyrja\Cli\Routing\Throwable\Exception\Abstract;
 
 use Valkyrja\Cli\Routing\Throwable\Contract\CliRoutingThrowable;
-use Valkyrja\Cli\Throwable\Exception\CliInvalidArgumentException;
+use Valkyrja\Cli\Throwable\Exception\Abstract\CliInvalidArgumentException;
 
-class CliRoutingInvalidArgumentException extends CliInvalidArgumentException implements CliRoutingThrowable
+abstract class CliRoutingInvalidArgumentException extends CliInvalidArgumentException implements CliRoutingThrowable
 {
 }

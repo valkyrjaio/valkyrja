@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Server\Throwable\Exception;
+namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
-use Valkyrja\Cli\Server\Throwable\Contract\CliServerThrowable;
-use Valkyrja\Cli\Throwable\Exception\CliRuntimeException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\Abstract\CliInteractionInvalidArgumentException;
 
-class CliServerRuntimeException extends CliRuntimeException implements CliServerThrowable
+class CliInteractionExpectedQuestionOutputException extends CliInteractionInvalidArgumentException
 {
 }
