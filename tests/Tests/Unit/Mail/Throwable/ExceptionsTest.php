@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Mail\Throwable;
 use RuntimeException;
 use Throwable;
 use Valkyrja\Mail\Throwable\Contract\MailThrowable;
-use Valkyrja\Mail\Throwable\Exception\MailInvalidArgumentException;
-use Valkyrja\Mail\Throwable\Exception\MailRuntimeException;
+use Valkyrja\Mail\Throwable\Exception\Abstract\MailInvalidArgumentException;
+use Valkyrja\Mail\Throwable\Exception\Abstract\MailRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 

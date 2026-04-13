@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Throwable\Exception;
+namespace Valkyrja\Mail\Throwable\Exception\Abstract;
 
 use Valkyrja\Mail\Throwable\Contract\MailThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
-class MailRuntimeException extends ValkyrjaRuntimeException implements MailThrowable
+class MailInvalidArgumentException extends ValkyrjaInvalidArgumentException implements MailThrowable
 {
 }
