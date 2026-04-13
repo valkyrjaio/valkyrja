@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Manager\Trait;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Container\Throwable\Exception\ContainerInvalidArgumentException;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackException;
 
 use function is_callable;
 
@@ -171,7 +171,7 @@ trait ProvidersAware
             $this->deferred[$provided] = $provider;
 
             if (! is_callable($publishCallback)) {
-                throw new ContainerInvalidArgumentException("$provided should have a valid callable");
+                throw new ContainerInvalidPublishCallbackException("$provided should have a valid callable");
             }
 
             $this->deferredCallback[$provided] = $publishCallback;

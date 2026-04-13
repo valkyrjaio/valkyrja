@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Throwable\Exception;
 
-use Valkyrja\Container\Throwable\Contract\ContainerThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+use Valkyrja\Container\Throwable\Exception\Abstract\ContainerRuntimeException;
 
-class ContainerRuntimeException extends ValkyrjaRuntimeException implements ContainerThrowable
+class ContainerInvalidPublishCallbackException extends ContainerRuntimeException
 {
 }

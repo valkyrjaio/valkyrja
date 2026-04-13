@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Throwable\Exception;
+namespace Valkyrja\Container\Throwable\Exception\Abstract;
 
 use Valkyrja\Container\Throwable\Contract\ContainerThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class ContainerInvalidArgumentException extends ValkyrjaInvalidArgumentException implements ContainerThrowable
+abstract class ContainerRuntimeException extends ValkyrjaRuntimeException implements ContainerThrowable
 {
 }

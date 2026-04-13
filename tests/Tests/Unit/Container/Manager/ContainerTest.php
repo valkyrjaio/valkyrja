@@ -18,7 +18,7 @@ use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Throwable\Exception\ContainerInvalidArgumentException;
+use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackException;
 use Valkyrja\Tests\Classes\Container\Manager\ProvidersAwareClass;
 use Valkyrja\Tests\Classes\Container\Provider\DeferredProviderClass;
 use Valkyrja\Tests\Classes\Container\Provider\InvalidDeferredProviderClass;
@@ -20,7 +21,6 @@ use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
 
 /**
  * Test the ProvidersAware support class.
@@ -129,7 +129,7 @@ final class ProvidersAwareTest extends TestCase
 
     public function testRegisterDeferredInvalidCallable(): void
     {
-        $this->expectException(ValkyrjaInvalidArgumentException::class);
+        $this->expectException(ContainerInvalidPublishCallbackException::class);
 
         $providersAware = new ProvidersAwareClass();
 
