@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-use Valkyrja\Auth\Throwable\Contract\AuthThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Auth\Throwable\Exception\Abstract\AuthInvalidArgumentException;
 
-class AuthInvalidArgumentException extends ValkyrjaInvalidArgumentException implements AuthThrowable
+class AuthInvalidAuthenticationException extends AuthInvalidArgumentException
 {
 }

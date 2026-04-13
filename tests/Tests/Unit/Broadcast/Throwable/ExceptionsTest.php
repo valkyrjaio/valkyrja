@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Broadcast\Throwable;
 
-use Throwable;
 use Valkyrja\Broadcast\Throwable\Contract\BroadcastThrowable;
 use Valkyrja\Broadcast\Throwable\Exception\Abstract\BroadcastInvalidArgumentException;
 use Valkyrja\Broadcast\Throwable\Exception\Abstract\BroadcastRuntimeException;

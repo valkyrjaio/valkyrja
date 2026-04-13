@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Throwable\Exception;
+namespace Valkyrja\Auth\Throwable\Exception\Abstract;
 
-class InvalidCurrentAuthenticationException extends InvalidAuthenticationException
+use Valkyrja\Auth\Throwable\Contract\AuthThrowable;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
+
+abstract class AuthRuntimeException extends ValkyrjaRuntimeException implements AuthThrowable
 {
 }

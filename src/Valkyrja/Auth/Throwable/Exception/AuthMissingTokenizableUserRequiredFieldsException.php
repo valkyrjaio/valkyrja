@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class InvalidRegistrationException extends AuthInvalidArgumentException
+use Valkyrja\Auth\Throwable\Exception\Abstract\AuthInvalidArgumentException;
+
+class AuthMissingTokenizableUserRequiredFieldsException extends AuthInvalidArgumentException
 {
 }

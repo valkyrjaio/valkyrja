@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class NoImpersonatedUserException extends AuthRuntimeException
+use Valkyrja\Auth\Throwable\Exception\Abstract\AuthInvalidArgumentException;
+
+class AuthInvalidRegistrationException extends AuthInvalidArgumentException
 {
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-class InvalidAuthenticatedUsersSessionValueException extends AuthInvalidArgumentException
+use Valkyrja\Auth\Throwable\Exception\Abstract\AuthRuntimeException;
+
+class AuthUnexpectedUsernameValueException extends AuthRuntimeException
 {
 }

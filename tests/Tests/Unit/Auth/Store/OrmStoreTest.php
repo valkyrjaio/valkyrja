@@ -19,7 +19,7 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\OrmStore;
-use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -115,7 +115,7 @@ final class OrmStoreTest extends TestCase
 
     public function testRetrieveThrowsWhenUserNotFound(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $retrieval = new RetrievalById('non-existent-id');

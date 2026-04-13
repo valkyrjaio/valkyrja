@@ -18,7 +18,7 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\InMemoryStore;
-use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PASSWORD_DEFAULT;
@@ -93,7 +93,7 @@ final class InMemoryStoreTest extends TestCase
      */
     public function testNonExistentUserSave(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         $nonExistentUser           = new User();
@@ -125,7 +125,7 @@ final class InMemoryStoreTest extends TestCase
 
     public function testFailedUserRetrieval(): void
     {
-        $this->expectException(InvalidRetrievableUserException::class);
+        $this->expectException(AuthInvalidRetrievableUserException::class);
         $this->expectExceptionMessage('A user could not be retrieved with the given criteria');
 
         self::assertFalse($this->hasRetrieveUser());

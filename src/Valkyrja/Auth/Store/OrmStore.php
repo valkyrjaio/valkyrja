@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidRetrievableUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -51,7 +51,7 @@ class OrmStore implements StoreContract
     public function retrieve(RetrievalContract $retrieval, string $user): UserContract
     {
         return $this->internalRetrieval($retrieval, $user)
-            ?? throw new InvalidRetrievableUserException('A user could not be retrieved with the given criteria');
+            ?? throw new AuthInvalidRetrievableUserException('A user could not be retrieved with the given criteria');
     }
 
     /**

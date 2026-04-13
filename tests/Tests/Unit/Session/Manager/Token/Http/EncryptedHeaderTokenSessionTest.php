@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Session\Manager\Token\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
@@ -140,7 +140,7 @@ final class EncryptedHeaderTokenSessionTest extends TestCase
             ->expects($this->never())
             ->method('decrypt');
 
-        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectException(AuthInvalidAuthenticationException::class);
         $this->expectExceptionMessage('Invalid authorization header');
 
         new EncryptedHeaderTokenSession($crypt, $request);

@@ -20,9 +20,9 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
-use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
-use Valkyrja\Auth\Throwable\Exception\NoCurrentUserException;
-use Valkyrja\Auth\Throwable\Exception\NoImpersonatedUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
+use Valkyrja\Auth\Throwable\Exception\AuthNoCurrentUserException;
+use Valkyrja\Auth\Throwable\Exception\AuthNoImpersonatedUserException;
 use Valkyrja\Tests\Classes\Auth\Authenticator\Abstract\AuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -93,7 +93,7 @@ final class AuthenticatorTest extends TestCase
 
     public function testGetAuthenticatedThrowsWhenNoUserAuthenticated(): void
     {
-        $this->expectException(NoCurrentUserException::class);
+        $this->expectException(AuthNoCurrentUserException::class);
         $this->expectExceptionMessage('No current user');
 
         $this->store->expects($this->never())->method(self::anything());
@@ -126,7 +126,7 @@ final class AuthenticatorTest extends TestCase
 
     public function testGetImpersonatedThrowsWhenNotImpersonating(): void
     {
-        $this->expectException(NoImpersonatedUserException::class);
+        $this->expectException(AuthNoImpersonatedUserException::class);
         $this->expectExceptionMessage('No impersonated user');
 
         $this->store->expects($this->never())->method(self::anything());
@@ -206,7 +206,7 @@ final class AuthenticatorTest extends TestCase
 
     public function testAuthenticateThrowsWhenUserNotFound(): void
     {
-        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectException(AuthInvalidAuthenticationException::class);
         $this->expectExceptionMessage('User not found');
 
         $this->store->expects($this->once())
@@ -240,7 +240,7 @@ final class AuthenticatorTest extends TestCase
             self::WRONG_PASSWORD
         );
 
-        $this->expectException(InvalidAuthenticationException::class);
+        $this->expectException(AuthInvalidAuthenticationException::class);
         $this->expectExceptionMessage('Incorrect password');
 
         $this->authenticator->authenticate($attempt);
@@ -274,7 +274,7 @@ final class AuthenticatorTest extends TestCase
         self::assertFalse($this->authenticator->isAuthenticated());
 
         // Ensure the getAuthenticated method throws once the user is unauthenticated
-        $this->expectException(NoCurrentUserException::class);
+        $this->expectException(AuthNoCurrentUserException::class);
         $this->expectExceptionMessage('No current user');
 
         self::assertNull($this->authenticator->getAuthenticated());
