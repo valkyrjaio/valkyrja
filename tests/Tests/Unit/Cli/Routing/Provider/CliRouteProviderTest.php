@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
-use Valkyrja\Cli\Routing\Provider\CliRouteProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
@@ -28,12 +28,12 @@ final class CliRouteProviderTest extends TestCase
 {
     public function testGetRoutes(): void
     {
-        self::assertEmpty(CliRouteProvider::getRoutes());
+        self::assertEmpty(CliRoutingCliRouteProvider::getRoutes());
     }
 
     public function testGetControllerClasses(): void
     {
-        $controllers = CliRouteProvider::getControllerClasses();
+        $controllers = CliRoutingCliRouteProvider::getControllerClasses();
 
         self::assertContains(HelpCommand::class, $controllers);
         self::assertContains(ListBashCommand::class, $controllers);

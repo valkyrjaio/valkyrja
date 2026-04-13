@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Generator;
 use Override;
 use Valkyrja\Container\Generator\Abstract\ProviderFileGenerator;
 use Valkyrja\Event\Data\EventData;
-use Valkyrja\Event\Provider\ServiceProvider;
+use Valkyrja\Event\Provider\EventServiceProvider;
 
 class DefaultDataProviderFileGenerator extends ProviderFileGenerator
 {
@@ -46,7 +46,7 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
     #[Override]
     protected function getImports(): string
     {
-        $serviceProvider = ServiceProvider::class;
+        $serviceProvider = EventServiceProvider::class;
 
         return <<<PHP
             use $serviceProvider;
@@ -60,7 +60,7 @@ class DefaultDataProviderFileGenerator extends ProviderFileGenerator
     protected function getPublishContents(): string
     {
         return <<<'PHP'
-            ServiceProvider::publishData($container);
+            EventServiceProvider::publishData($container);
             PHP;
     }
 }

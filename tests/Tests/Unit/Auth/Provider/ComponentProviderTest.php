@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Auth\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Auth\Provider\AuthComponentProvider;
-use Valkyrja\Auth\Provider\ServiceProvider;
+use Valkyrja\Auth\Provider\AuthServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, AuthComponentProvider::getContainerProviders($app));
+        self::assertContains(AuthServiceProvider::class, AuthComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

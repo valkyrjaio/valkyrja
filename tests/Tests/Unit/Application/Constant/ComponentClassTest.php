@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Application\Constant;
 
 use Valkyrja\Api\Provider\ApiComponentProvider;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Attribute\Provider\AttributeComponentProvider;
 use Valkyrja\Auth\Provider\AuthComponentProvider;
 use Valkyrja\Broadcast\Provider\BroadcastComponentProvider;
@@ -51,7 +50,6 @@ final class ComponentClassTest extends TestCase
 {
     public function testValues(): void
     {
-        self::assertSame(ApplicationComponentProvider::class, ComponentClass::APPLICATION);
         self::assertSame(ApiComponentProvider::class, ComponentClass::API);
         self::assertSame(AttributeComponentProvider::class, ComponentClass::ATTRIBUTE);
         self::assertSame(AuthComponentProvider::class, ComponentClass::AUTH);

@@ -40,7 +40,7 @@ use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMi
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
-use Valkyrja\Cli\Server\Provider\ServiceProvider;
+use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Classes\Cli\Server\Data\ConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -51,22 +51,22 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = CliServerServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(InputHandlerContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(HelpCommand::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ListBashCommand::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(ListCommand::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(VersionCommand::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(GenerateDataCommand::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(OutputThrowableCaughtMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckForVersionOptionsMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckGlobalInteractionOptionsMiddleware::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(CheckCommandForTypoMiddleware::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(InputHandlerContract::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(HelpCommand::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(ListBashCommand::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(ListCommand::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(VersionCommand::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(GenerateDataCommand::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(OutputThrowableCaughtMiddleware::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(CheckForVersionOptionsMiddleware::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(CheckGlobalInteractionOptionsMiddleware::class, CliServerServiceProvider::publishers());
+        self::assertArrayHasKey(CheckCommandForTypoMiddleware::class, CliServerServiceProvider::publishers());
     }
 
     /**
@@ -80,7 +80,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
         $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
 
-        $callback = ServiceProvider::publishers()[InputHandlerContract::class];
+        $callback = CliServerServiceProvider::publishers()[InputHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(InputHandler::class, $this->container->getSingleton(InputHandlerContract::class));
@@ -96,7 +96,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[HelpCommand::class];
+        $callback = CliServerServiceProvider::publishers()[HelpCommand::class];
         $callback($this->container);
 
         self::assertInstanceOf(HelpCommand::class, $this->container->getSingleton(HelpCommand::class));
@@ -111,7 +111,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[ListBashCommand::class];
+        $callback = CliServerServiceProvider::publishers()[ListBashCommand::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListBashCommand::class, $this->container->getSingleton(ListBashCommand::class));
@@ -127,7 +127,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[ListCommand::class];
+        $callback = CliServerServiceProvider::publishers()[ListCommand::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListCommand::class, $this->container->getSingleton(ListCommand::class));
@@ -140,7 +140,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[VersionCommand::class];
+        $callback = CliServerServiceProvider::publishers()[VersionCommand::class];
         $callback($this->container);
 
         self::assertInstanceOf(VersionCommand::class, $this->container->getSingleton(VersionCommand::class));
@@ -153,7 +153,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = ServiceProvider::publishers()[LogThrowableCaughtMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[LogThrowableCaughtMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogThrowableCaughtMiddleware::class, $this->container->getSingleton(LogThrowableCaughtMiddleware::class));
@@ -161,7 +161,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOutputThrowableCaughtMiddleware(): void
     {
-        $callback = ServiceProvider::publishers()[OutputThrowableCaughtMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[OutputThrowableCaughtMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(OutputThrowableCaughtMiddleware::class, $this->container->getSingleton(OutputThrowableCaughtMiddleware::class));
@@ -171,7 +171,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckForHelpOptionsMiddleware::class, $this->container->getSingleton(CheckForHelpOptionsMiddleware::class));
@@ -189,7 +189,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckForHelpOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckForHelpOptionsMiddleware::class));
@@ -212,7 +212,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckForVersionOptionsMiddleware::class, $this->container->getSingleton(CheckForVersionOptionsMiddleware::class));
@@ -230,7 +230,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckForVersionOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckForVersionOptionsMiddleware::class));
@@ -254,7 +254,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckGlobalInteractionOptionsMiddleware::class, $this->container->getSingleton(CheckGlobalInteractionOptionsMiddleware::class));
@@ -276,7 +276,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckGlobalInteractionOptionsMiddleware::class, $middleware = $this->container->getSingleton(CheckGlobalInteractionOptionsMiddleware::class));
@@ -317,7 +317,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
 
-        $callback = ServiceProvider::publishers()[CheckCommandForTypoMiddleware::class];
+        $callback = CliServerServiceProvider::publishers()[CheckCommandForTypoMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(CheckCommandForTypoMiddleware::class, $this->container->getSingleton(CheckCommandForTypoMiddleware::class));
@@ -333,7 +333,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(GenerateDataCommand::class));
 
-        $callback = ServiceProvider::publishers()[GenerateDataCommand::class];
+        $callback = CliServerServiceProvider::publishers()[GenerateDataCommand::class];
         $callback($this->container);
 
         self::assertTrue($container->has(GenerateDataCommand::class));

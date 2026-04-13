@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Filesystem\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Filesystem\Provider\FilesystemComponentProvider;
-use Valkyrja\Filesystem\Provider\ServiceProvider;
+use Valkyrja\Filesystem\Provider\FilesystemServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, FilesystemComponentProvider::getContainerProviders($app));
+        self::assertContains(FilesystemServiceProvider::class, FilesystemComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

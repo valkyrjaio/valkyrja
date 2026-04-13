@@ -26,7 +26,7 @@ class CliRoutingComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            CliRoutingServiceProvider::class,
         ];
     }
 
@@ -46,7 +46,7 @@ class CliRoutingComponentProvider implements ComponentProviderContract
     public static function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CliRouteProvider::class,
+            CliRoutingCliRouteProvider::class,
         ];
     }
 

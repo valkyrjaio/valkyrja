@@ -26,7 +26,7 @@ class SessionComponentProvider implements ComponentProviderContract
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            ServiceProvider::class,
+            SmsServiceProvider::class,
         ];
     }
 

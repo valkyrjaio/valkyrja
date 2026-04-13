@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Interaction\Provider\ServiceProvider;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, CliInteractionComponentProvider::getContainerProviders($app));
+        self::assertContains(CliInteractionServiceProvider::class, CliInteractionComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

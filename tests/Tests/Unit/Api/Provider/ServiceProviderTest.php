@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Api\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
-use Valkyrja\Api\Provider\ServiceProvider;
+use Valkyrja\Api\Provider\ApiServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -26,11 +26,11 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = ApiServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ApiContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ApiContract::class, ApiServiceProvider::publishers());
     }
 
     /**
@@ -40,7 +40,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[ApiContract::class];
+        $callback = ApiServiceProvider::publishers()[ApiContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Api::class, $this->container->getSingleton(ApiContract::class));

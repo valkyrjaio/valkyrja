@@ -20,7 +20,7 @@ use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\ServiceProvider;
+use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -157,7 +157,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(ServiceProvider::class);
+        $container->register(DispatchServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
     }
@@ -215,7 +215,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(ServiceProvider::class);
+        $container->register(DispatchServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -223,20 +223,20 @@ final class ContainerTest extends TestCase
 
         self::assertSame(
             [
-                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
+                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
             $data->deferredCallback
         );
 
         self::assertSame(
             [
-                DispatcherContract::class => ServiceProvider::class,
+                DispatcherContract::class => DispatchServiceProvider::class,
             ],
             $data->deferred
         );
 
         self::assertEmpty($data->aliases);
-        self::assertSame([ServiceProvider::class], $data->providers);
+        self::assertSame([DispatchServiceProvider::class], $data->providers);
         self::assertEmpty($data->services);
         self::assertEmpty($data->singletons);
     }
@@ -245,7 +245,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(ServiceProvider::class);
+        $container->register(DispatchServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -263,14 +263,14 @@ final class ContainerTest extends TestCase
 
         self::assertSame(
             [
-                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
+                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
             $newData->deferredCallback
         );
 
         self::assertSame(
             [
-                DispatcherContract::class => ServiceProvider::class,
+                DispatcherContract::class => DispatchServiceProvider::class,
             ],
             $newData->deferred
         );
@@ -280,7 +280,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(ServiceProvider::class);
+        $container->register(DispatchServiceProvider::class);
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -294,14 +294,14 @@ final class ContainerTest extends TestCase
 
         self::assertSame(
             [
-                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
+                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
             $newData->deferredCallback
         );
 
         self::assertSame(
             [
-                DispatcherContract::class => ServiceProvider::class,
+                DispatcherContract::class => DispatchServiceProvider::class,
             ],
             $newData->deferred
         );

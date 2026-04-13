@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Jwt\Provider\JwtComponentProvider;
-use Valkyrja\Jwt\Provider\ServiceProvider;
+use Valkyrja\Jwt\Provider\JwtServiceProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -27,7 +27,7 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ServiceProvider::class, JwtComponentProvider::getContainerProviders($app));
+        self::assertContains(JwtServiceProvider::class, JwtComponentProvider::getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void

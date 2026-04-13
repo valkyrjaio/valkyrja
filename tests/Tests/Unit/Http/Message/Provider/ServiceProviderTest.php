@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 
-use Valkyrja\Http\Message\Provider\ServiceProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -24,16 +24,16 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = HttpMessageServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ResponseFactoryContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ResponseFactoryContract::class, HttpMessageServiceProvider::publishers());
     }
 
     public function testPublishResponseFactory(): void
     {
-        $callback = ServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback = HttpMessageServiceProvider::publishers()[ResponseFactoryContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ResponseFactory::class, $this->container->getSingleton(ResponseFactoryContract::class));

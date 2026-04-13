@@ -23,7 +23,7 @@ use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Mail\Mailer\PhpMailer;
-use Valkyrja\Mail\Provider\ServiceProvider;
+use Valkyrja\Mail\Provider\MailServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -32,18 +32,18 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = MailServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(MailerContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(MailgunMailer::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(Mailgun::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(HttpClientConfigurator::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(PhpMailer::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(PHPMailerClient::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(LogMailer::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(NullMailer::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(MailerContract::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(MailgunMailer::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(Mailgun::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(HttpClientConfigurator::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(PhpMailer::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(PHPMailerClient::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(LogMailer::class, MailServiceProvider::publishers());
+        self::assertArrayHasKey(NullMailer::class, MailServiceProvider::publishers());
     }
 
     /**
@@ -53,7 +53,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(MailgunMailer::class, self::createStub(MailgunMailer::class));
 
-        $callback = ServiceProvider::publishers()[MailerContract::class];
+        $callback = MailServiceProvider::publishers()[MailerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(MailerContract::class));
@@ -66,7 +66,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Mailgun::class, self::createStub(Mailgun::class));
 
-        $callback = ServiceProvider::publishers()[MailgunMailer::class];
+        $callback = MailServiceProvider::publishers()[MailgunMailer::class];
         $callback($this->container);
 
         self::assertInstanceOf(MailgunMailer::class, $this->container->getSingleton(MailgunMailer::class));
@@ -74,9 +74,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMailgun(): void
     {
-        ServiceProvider::publishMailgunHttpClientConfigurator($this->container);
+        MailServiceProvider::publishMailgunHttpClientConfigurator($this->container);
 
-        $callback = ServiceProvider::publishers()[Mailgun::class];
+        $callback = MailServiceProvider::publishers()[Mailgun::class];
         $callback($this->container);
 
         self::assertInstanceOf(Mailgun::class, $this->container->getSingleton(Mailgun::class));
@@ -84,7 +84,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMailgunHttpClientConfigurator(): void
     {
-        $callback = ServiceProvider::publishers()[HttpClientConfigurator::class];
+        $callback = MailServiceProvider::publishers()[HttpClientConfigurator::class];
         $callback($this->container);
 
         self::assertInstanceOf(HttpClientConfigurator::class, $this->container->getSingleton(HttpClientConfigurator::class));
@@ -97,7 +97,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PHPMailerClient::class, self::createStub(PHPMailerClient::class));
 
-        $callback = ServiceProvider::publishers()[PhpMailer::class];
+        $callback = MailServiceProvider::publishers()[PhpMailer::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpMailer::class, $this->container->getSingleton(PhpMailer::class));
@@ -105,7 +105,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPhpMailerClient(): void
     {
-        $callback = ServiceProvider::publishers()[PHPMailerClient::class];
+        $callback = MailServiceProvider::publishers()[PHPMailerClient::class];
         $callback($this->container);
 
         self::assertInstanceOf(PHPMailerClient::class, $this->container->getSingleton(PHPMailerClient::class));
@@ -118,7 +118,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = ServiceProvider::publishers()[LogMailer::class];
+        $callback = MailServiceProvider::publishers()[LogMailer::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogMailer::class, $this->container->getSingleton(LogMailer::class));
@@ -126,7 +126,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullMailer(): void
     {
-        $callback = ServiceProvider::publishers()[NullMailer::class];
+        $callback = MailServiceProvider::publishers()[NullMailer::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullMailer::class, $this->container->getSingleton(NullMailer::class));

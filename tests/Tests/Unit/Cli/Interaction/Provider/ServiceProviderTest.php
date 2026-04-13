@@ -18,7 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Cli\Interaction\Provider\ServiceProvider;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
 use Valkyrja\Tests\Classes\Cli\Interaction\Data\ConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -28,17 +28,17 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = CliInteractionServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ConfigContract::class, ServiceProvider::publishers());
-        self::assertArrayHasKey(OutputFactoryContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ConfigContract::class, CliInteractionServiceProvider::publishers());
+        self::assertArrayHasKey(OutputFactoryContract::class, CliInteractionServiceProvider::publishers());
     }
 
     public function testPublishConfig(): void
     {
-        $callback = ServiceProvider::publishers()[ConfigContract::class];
+        $callback = CliInteractionServiceProvider::publishers()[ConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ConfigContract::class, $config = $this->container->getSingleton(ConfigContract::class));
@@ -55,7 +55,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             isSilent: true,
         ));
 
-        $callback = ServiceProvider::publishers()[ConfigContract::class];
+        $callback = CliInteractionServiceProvider::publishers()[ConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ConfigContract::class, $config = $this->container->getSingleton(ConfigContract::class));
@@ -71,7 +71,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ConfigContract::class, self::createStub(ConfigContract::class));
 
-        $callback = ServiceProvider::publishers()[OutputFactoryContract::class];
+        $callback = CliInteractionServiceProvider::publishers()[OutputFactoryContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(OutputFactory::class, $this->container->getSingleton(OutputFactoryContract::class));

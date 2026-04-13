@@ -17,8 +17,8 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
-use Valkyrja\Http\Routing\Provider\CliServiceProvider;
-use Valkyrja\Http\Routing\Provider\ServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliServiceProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -27,11 +27,11 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class CliServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = HttpRoutingServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(GenerateDataCommand::class, CliServiceProvider::publishers());
+        self::assertArrayHasKey(GenerateDataCommand::class, HttpRoutingCliServiceProvider::publishers());
     }
 
     public function testGenerateDataCommand(): void
@@ -44,7 +44,7 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(GenerateDataCommand::class));
 
-        $callback = CliServiceProvider::publishers()[GenerateDataCommand::class];
+        $callback = HttpRoutingCliServiceProvider::publishers()[GenerateDataCommand::class];
         $callback($this->container);
 
         self::assertTrue($container->has(GenerateDataCommand::class));

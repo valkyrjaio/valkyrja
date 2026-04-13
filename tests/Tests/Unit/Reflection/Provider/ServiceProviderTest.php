@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Reflection\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Reflection\Provider\ServiceProvider;
+use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -26,11 +26,11 @@ use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
-    protected static string $provider = ServiceProvider::class;
+    protected static string $provider = ReflectionServiceProvider::class;
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ReflectorContract::class, ServiceProvider::publishers());
+        self::assertArrayHasKey(ReflectorContract::class, ReflectionServiceProvider::publishers());
     }
 
     /**
@@ -40,7 +40,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        $callback = ServiceProvider::publishers()[ReflectorContract::class];
+        $callback = ReflectionServiceProvider::publishers()[ReflectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Reflector::class, $this->container->getSingleton(ReflectorContract::class));
