@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Throwable\Exception;
+namespace Valkyrja\Event\Throwable\Exception\Abstract;
 
 use Valkyrja\Event\Throwable\Contract\EventThrowable;
-use Valkyrja\Throwable\Exception\Abstract\ValkyrjaInvalidArgumentException;
+use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 
-class EventInvalidArgumentException extends ValkyrjaInvalidArgumentException implements EventThrowable
+abstract class EventRuntimeException extends ValkyrjaRuntimeException implements EventThrowable
 {
 }
