@@ -15,21 +15,8 @@ namespace Valkyrja\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
-use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
-use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
-use Valkyrja\View\Provider\ViewComponentProvider;
 
 class Config
 {
@@ -56,20 +43,7 @@ class Config
         public readonly string $dataPath = 'App/Provider/Data',
         public readonly string $dataNamespace = 'App\\Provider\\Data',
         public readonly array $providers = [
-            ContainerComponentProvider::class,
-            DispatchComponentProvider::class,
-            CliInteractionComponentProvider::class,
-            CliMiddlewareComponentProvider::class,
-            CliRoutingComponentProvider::class,
-            CliServerComponentProvider::class,
-            EventComponentProvider::class,
-            HttpMessageComponentProvider::class,
-            HttpMiddlewareComponentProvider::class,
-            HttpRoutingComponentProvider::class,
-            HttpRoutingCliComponentProvider::class,
-            HttpServerComponentProvider::class,
-            LogComponentProvider::class,
-            ViewComponentProvider::class,
+            ApplicationComponentProvider::class,
         ],
         public readonly array $callbacks = [],
     ) {

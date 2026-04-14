@@ -16,21 +16,9 @@ namespace Valkyrja\Tests\Classes\Cli\Interaction\Data;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
-use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
-use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
-use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
 
 final class ConfigClass extends Config implements ConfigContract
 {
@@ -57,19 +45,7 @@ final class ConfigClass extends Config implements ConfigContract
         string $dataPath = 'App/Provider/Data',
         string $dataNamespace = 'App\\Provider\\Data',
         array $providers = [
-            ContainerComponentProvider::class,
-            DispatchComponentProvider::class,
-            CliInteractionComponentProvider::class,
-            CliMiddlewareComponentProvider::class,
-            CliRoutingComponentProvider::class,
-            CliServerComponentProvider::class,
-            EventComponentProvider::class,
-            HttpMessageComponentProvider::class,
-            HttpMiddlewareComponentProvider::class,
-            HttpRoutingComponentProvider::class,
-            HttpRoutingCliComponentProvider::class,
-            HttpServerComponentProvider::class,
-            LogComponentProvider::class,
+            CliWithHttpApplicationComponentProvider::class,
         ],
         array $callbacks = [],
         public bool $isQuiet = false,

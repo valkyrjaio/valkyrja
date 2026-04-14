@@ -11,13 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Bin\Provider;
+namespace Valkyrja\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
+use Valkyrja\Log\Provider\LogComponentProvider;
+use Valkyrja\View\Provider\ViewComponentProvider;
 
-class ComponentProvider implements ComponentProviderContract
+class HttpApplicationComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc
@@ -25,7 +35,18 @@ class ComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getComponentProviders(ApplicationContract $app): array
     {
-        return [];
+        return [
+            ContainerComponentProvider::class,
+            DispatchComponentProvider::class,
+            EventComponentProvider::class,
+            HttpMessageComponentProvider::class,
+            HttpMiddlewareComponentProvider::class,
+            HttpRoutingComponentProvider::class,
+            HttpRoutingCliComponentProvider::class,
+            HttpServerComponentProvider::class,
+            LogComponentProvider::class,
+            ViewComponentProvider::class,
+        ];
     }
 
     /**

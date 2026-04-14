@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Provider;
+namespace Valkyrja\Tests\Classes\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class OrmComponentProvider implements ComponentProviderContract
+final class HttpRouteComponentProviderClass implements ComponentProviderContract
 {
     /**
      * @inheritDoc
@@ -34,9 +34,7 @@ class OrmComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getContainerProviders(ApplicationContract $app): array
     {
-        return [
-            OrmServiceProvider::class,
-        ];
+        return [];
     }
 
     /**
@@ -63,6 +61,8 @@ class OrmComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getHttpProviders(ApplicationContract $app): array
     {
-        return [];
+        return [
+            HttpRouteProviderClass::class,
+        ];
     }
 }

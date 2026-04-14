@@ -23,6 +23,13 @@ use Valkyrja\View\Provider\ViewServiceProvider;
  */
 final class ComponentProviderTest extends TestCase
 {
+    public function testGetComponentProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(ViewComponentProvider::getComponentProviders($app));
+    }
+
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);

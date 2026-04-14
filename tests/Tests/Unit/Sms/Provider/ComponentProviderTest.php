@@ -23,6 +23,13 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class ComponentProviderTest extends TestCase
 {
+    public function testGetComponentProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(SmsComponentProvider::getComponentProviders($app));
+    }
+
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);

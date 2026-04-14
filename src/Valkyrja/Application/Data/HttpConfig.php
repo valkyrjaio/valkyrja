@@ -16,16 +16,7 @@ namespace Valkyrja\Application\Data;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
-use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
-use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
-use Valkyrja\View\Provider\ViewComponentProvider;
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 
 class HttpConfig extends Config
 {
@@ -52,16 +43,7 @@ class HttpConfig extends Config
         string $dataPath = 'App/Provider/Data',
         string $dataNamespace = 'App\\Provider\\Data',
         array $providers = [
-            ContainerComponentProvider::class,
-            DispatchComponentProvider::class,
-            EventComponentProvider::class,
-            HttpMessageComponentProvider::class,
-            HttpMiddlewareComponentProvider::class,
-            HttpRoutingComponentProvider::class,
-            HttpRoutingCliComponentProvider::class,
-            HttpServerComponentProvider::class,
-            LogComponentProvider::class,
-            ViewComponentProvider::class,
+            HttpApplicationComponentProvider::class,
         ],
         array $callbacks = [],
     ) {
