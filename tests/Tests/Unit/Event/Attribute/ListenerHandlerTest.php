@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Attribute;
 
-use Valkyrja\Event\Attribute\Listener;
 use Valkyrja\Event\Attribute\ListenerHandler;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
