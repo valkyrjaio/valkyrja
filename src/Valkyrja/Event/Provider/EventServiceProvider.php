@@ -22,7 +22,6 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollecto
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
@@ -69,8 +68,7 @@ class EventServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             CollectorContract::class,
             new AttributeCollector(
-                $container->getSingleton(AttributeCollectorContract::class),
-                $container->getSingleton(ReflectorContract::class)
+                $container->getSingleton(AttributeCollectorContract::class)
             )
         );
     }
@@ -84,7 +82,7 @@ class EventServiceProvider implements ServiceProviderContract
             EventDispatcherContract::class,
             new EventDispatcher(
                 $container->getSingleton(CollectionContract::class),
-                $container->getSingleton(DispatcherContract::class),
+                $container,
             )
         );
     }

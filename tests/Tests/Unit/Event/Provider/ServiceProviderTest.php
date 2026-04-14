@@ -29,7 +29,6 @@ use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\EventServiceProvider;
-use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Classes\Event\Provider\ListenerProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -58,7 +57,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishAttributesCollector(): void
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
-        $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
         $callback = EventServiceProvider::publishers()[CollectorContract::class];
         $callback($this->container);
@@ -109,7 +107,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $listenerName = 'listener-name';
         $data         = new EventData(
             events: [$eventId => [$listenerName]],
-            listeners: [$listenerName => new Listener(eventId: $eventId, name: $listenerName)]
+            listeners: [
+                $listenerName => new Listener(
+                    eventId: $eventId,
+                    name: $listenerName,
+                    handler: static fn () => null
+                ),
+            ]
         );
 
         $this->container->setSingleton(ApplicationContract::class, $application = self::createStub(ApplicationContract::class));
@@ -142,7 +146,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
-        $listener     = new Listener(eventId: $eventId, name: $listenerName);
+        $listener     = new Listener(
+            eventId: $eventId,
+            name: $listenerName,
+            handler: static fn () => null
+        );
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -179,7 +187,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
-        $listener     = new Listener(eventId: $eventId, name: $listenerName);
+        $listener     = new Listener(
+            eventId: $eventId,
+            name: $listenerName,
+            handler: static fn () => null
+        );
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -216,7 +228,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
-        $listener     = new Listener(eventId: $eventId, name: $listenerName);
+        $listener     = new Listener(
+            eventId: $eventId,
+            name: $listenerName,
+            handler: static fn () => null
+        );
 
         $collector->expects($this->never())->method('getListeners')->willReturn([$listener]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);

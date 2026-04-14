@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Generator\DataFileGenerator;
@@ -126,7 +125,7 @@ final class DataFileGeneratorTest extends TestCase
                 'name' => new Listener(
                     eventId: 'eventId',
                     name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
+                    handler: static fn () => null
                 ),
             ]
         );
@@ -149,20 +148,11 @@ final class DataFileGeneratorTest extends TestCase
             ),
             listeners: [
                 'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
+               'handler' => 
+              new \Closure(...array(
+              )),
                'eventId' => 'eventId',
                'name' => 'name',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
             )),
             
             ],
@@ -181,7 +171,7 @@ final class DataFileGeneratorTest extends TestCase
                 'name' => static fn (): Listener => new Listener(
                     eventId: 'eventId',
                     name: 'name',
-                    dispatch: new MethodDispatch('class', 'method')
+                    handler: static fn () => null
                 ),
             ]
         );
@@ -204,20 +194,11 @@ final class DataFileGeneratorTest extends TestCase
             ),
             listeners: [
                 'name' => static fn (): \Valkyrja\Event\Data\Contract\ListenerContract => new \Valkyrja\Event\Data\Listener(...array(
+               'handler' => 
+              new \Closure(...array(
+              )),
                'eventId' => 'eventId',
                'name' => 'name',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
             )),
             
             ],

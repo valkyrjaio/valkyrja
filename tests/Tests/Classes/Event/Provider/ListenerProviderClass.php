@@ -29,7 +29,11 @@ final class ListenerProviderClass implements ListenerProviderContract
     public static function getListeners(): array
     {
         return [
-            new Listener(eventId: self::class, name: 'listener-from-provider-name'),
+            new Listener(
+                eventId: self::class,
+                name: 'listener-from-provider-name',
+                handler: static fn () => null
+            ),
         ];
     }
 }

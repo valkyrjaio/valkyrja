@@ -16,8 +16,8 @@ namespace Valkyrja\Event\Dispatcher;
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
 use stdClass;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Dispatcher\Dispatcher;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
@@ -29,7 +29,7 @@ class EventDispatcher implements EventDispatcherContract
 {
     public function __construct(
         protected CollectionContract $collection = new Collection(),
-        protected DispatcherContract $dispatcher = new Dispatcher(),
+        protected ContainerContract $container = new Container(),
     ) {
     }
 
@@ -108,9 +108,10 @@ class EventDispatcher implements EventDispatcherContract
     #[Override]
     public function dispatchListener(object $event, ListenerContract $listener): object
     {
+        $handler = $listener->getHandler();
         // Dispatch the listener with the event
         /** @var scalar|object|array<array-key, mixed>|resource|null $dispatch */
-        $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), ['event' => $event]);
+        $dispatch = $handler($this->container, ['event' => $event]);
 
         // If the event is a dispatch collectable event
         if ($event instanceof DispatchCollectableEventContract) {

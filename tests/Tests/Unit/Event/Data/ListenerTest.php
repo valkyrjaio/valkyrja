@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Data;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -26,7 +25,7 @@ final class ListenerTest extends TestCase
     {
         $class    = self::class;
         $name     = 'test';
-        $listener = new Listener(eventId: $class, name: $name);
+        $listener = new Listener(eventId: $class, name: $name, handler: static fn () => null);
 
         self::assertSame($class, $listener->getEventId());
 
@@ -41,7 +40,7 @@ final class ListenerTest extends TestCase
     {
         $class    = self::class;
         $name     = 'test';
-        $listener = new Listener(eventId: $class, name: $name);
+        $listener = new Listener(eventId: $class, name: $name, handler: static fn () => null);
 
         self::assertSame($name, $listener->getName());
 
@@ -52,19 +51,20 @@ final class ListenerTest extends TestCase
         self::assertSame($name2, $listener2->getName());
     }
 
-    public function testDispatch(): void
+    public function testHandler(): void
     {
         $class    = self::class;
         $name     = 'test';
-        $dispatch = new MethodDispatch(self::class, 'test');
-        $listener = new Listener(eventId: $class, name: $name, dispatch: $dispatch);
+        $handler  = static fn () => null;
+        $listener = new Listener(eventId: $class, name: $name, handler: $handler);
 
         self::assertSame($name, $listener->getName());
+        self::assertSame($handler, $listener->getHandler());
 
-        $dispatch2 = new MethodDispatch(self::class, 'test2');
-        $listener2 = $listener->withDispatch($dispatch2);
+        $handler2  = static fn () => 'string';
+        $listener2 = $listener->withHandler($handler2);
 
         self::assertNotSame($listener, $listener2);
-        self::assertSame($dispatch2, $listener2->getDispatch());
+        self::assertSame($handler2, $listener2->getHandler());
     }
 }
