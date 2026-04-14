@@ -43,7 +43,7 @@ use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
 use Valkyrja\Event\Collector\Contract\CollectorContract as EventCollector;
 use Valkyrja\Event\Data\EventData;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as EventDispatcher;
+use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract as HttpRouteDispatchedHandlerContract;
@@ -226,7 +226,7 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(CliLogThrowableCaughtMiddleware::class));
         self::assertTrue($container->has(DispatcherContract::class));
         self::assertTrue($container->has(EventCollector::class));
-        self::assertTrue($container->has(EventDispatcher::class));
+        self::assertTrue($container->has(EventDispatcherContract::class));
         self::assertTrue($container->has(EventCollection::class));
         self::assertTrue($container->has(ResponseFactoryContract::class));
         self::assertTrue($container->has(RequestReceivedHandlerContract::class));

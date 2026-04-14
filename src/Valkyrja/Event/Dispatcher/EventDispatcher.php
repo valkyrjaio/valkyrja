@@ -16,20 +16,20 @@ namespace Valkyrja\Event\Dispatcher;
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
 use stdClass;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcherContract;
-use Valkyrja\Dispatch\Dispatcher\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 
-class Dispatcher implements DispatcherContract
+class EventDispatcher implements EventDispatcherContract
 {
     public function __construct(
         protected CollectionContract $collection = new Collection(),
-        protected DispatchDispatcherContract $dispatcher = new DispatchDispatcher(),
+        protected DispatcherContract $dispatcher = new Dispatcher(),
     ) {
     }
 
