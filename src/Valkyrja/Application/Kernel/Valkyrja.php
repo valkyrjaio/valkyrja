@@ -81,7 +81,7 @@ class Valkyrja implements ApplicationContract
             $providers[] = [$provider];
         }
 
-        $this->providers = array_merge(...$providers);
+        $this->providers = array_unique(array_merge(...$providers));
 
         return $this->providers;
     }
@@ -102,7 +102,7 @@ class Valkyrja implements ApplicationContract
             $providers[] = $provider::getContainerProviders($this);
         }
 
-        $this->serviceProviders = array_merge(...$providers);
+        $this->serviceProviders = array_unique(array_merge(...$providers));
 
         return $this->serviceProviders;
     }
@@ -123,7 +123,7 @@ class Valkyrja implements ApplicationContract
             $providers[] = $provider::getEventProviders($this);
         }
 
-        $this->eventProviders = array_merge(...$providers);
+        $this->eventProviders = array_unique(array_merge(...$providers));
 
         return $this->eventProviders;
     }
@@ -144,7 +144,7 @@ class Valkyrja implements ApplicationContract
             $providers[] = $provider::getCliProviders($this);
         }
 
-        $this->cliRouteProviders = array_merge(...$providers);
+        $this->cliRouteProviders = array_unique(array_merge(...$providers));
 
         return $this->cliRouteProviders;
     }
@@ -165,7 +165,7 @@ class Valkyrja implements ApplicationContract
             $providers[] = $provider::getHttpProviders($this);
         }
 
-        $this->httpRouteProviders = array_merge(...$providers);
+        $this->httpRouteProviders = array_unique(array_merge(...$providers));
 
         return $this->httpRouteProviders;
     }
