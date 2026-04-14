@@ -17,15 +17,15 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Event\Dispatcher\Dispatcher;
+use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
+use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\EventServiceProvider;
@@ -46,7 +46,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(CollectorContract::class, EventServiceProvider::publishers());
-        self::assertArrayHasKey(DispatcherContract::class, EventServiceProvider::publishers());
+        self::assertArrayHasKey(EventDispatcherContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(CollectionContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(DataFileGeneratorContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(EventData::class, EventServiceProvider::publishers());
@@ -82,13 +82,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishDispatcher(): void
     {
-        $this->container->setSingleton(DispatchDispatcherContract::class, self::createStub(DispatchDispatcherContract::class));
+        $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
 
-        $callback = EventServiceProvider::publishers()[DispatcherContract::class];
+        $callback = EventServiceProvider::publishers()[EventDispatcherContract::class];
         $callback($this->container);
 
-        self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));
+        self::assertInstanceOf(EventDispatcher::class, $this->container->getSingleton(EventDispatcherContract::class));
     }
 
     public function testPublishCollectionWithCustomDataProvided(): void

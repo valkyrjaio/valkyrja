@@ -17,7 +17,7 @@ use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Dispatcher\Dispatcher;
+use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Tests\Classes\Event\ArgumentsCapableEventClass;
 use Valkyrja\Tests\Classes\Event\DispatchCollectableEventClass;
 use Valkyrja\Tests\Classes\Event\StoppableEventClass;
@@ -60,7 +60,7 @@ final class DispatcherTest extends TestCase
 
         $collection->addListener($listener);
 
-        $dispatcher = new Dispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection);
 
         /** @var DispatchCollectableEventClass $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
@@ -108,7 +108,7 @@ final class DispatcherTest extends TestCase
 
         $collection = new Collection();
 
-        $dispatcher = new Dispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection);
 
         $eventAfterDispatch     = $dispatcher->dispatchIfHasListeners($event);
         $eventAfterDispatchById = $dispatcher->dispatchByIdIfHasListeners($eventId);
@@ -153,7 +153,7 @@ final class DispatcherTest extends TestCase
         $collection->addListener($listener->withName('listener2'));
         $collection->addListener($listener->withName('listener3'));
 
-        $dispatcher = new Dispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection);
 
         /** @var StoppableEventClass $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
@@ -173,7 +173,7 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchByIdWithNonExistentClassReturnsStdClass(): void
     {
-        $dispatcher = new Dispatcher();
+        $dispatcher = new EventDispatcher();
 
         $result = $dispatcher->dispatchById('NonExistent\\Class\\Name');
 
@@ -185,7 +185,7 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchByIdWithArgumentsCapableEvent(): void
     {
-        $dispatcher = new Dispatcher();
+        $dispatcher = new EventDispatcher();
 
         $result = $dispatcher->dispatchById(ArgumentsCapableEventClass::class);
 

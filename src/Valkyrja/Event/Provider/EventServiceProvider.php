@@ -22,14 +22,14 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollecto
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\EventData;
-use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Event\Dispatcher\Dispatcher;
+use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
+use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
@@ -46,7 +46,7 @@ class EventServiceProvider implements ServiceProviderContract
     {
         return [
             CollectorContract::class         => [self::class, 'publishAttributesCollector'],
-            DispatcherContract::class        => [self::class, 'publishDispatcher'],
+            EventDispatcherContract::class   => [self::class, 'publishDispatcher'],
             CollectionContract::class        => [self::class, 'publishCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
             EventData::class                 => [self::class, 'publishData'],
@@ -81,10 +81,10 @@ class EventServiceProvider implements ServiceProviderContract
     public static function publishDispatcher(ContainerContract $container): void
     {
         $container->setSingleton(
-            DispatcherContract::class,
-            new Dispatcher(
+            EventDispatcherContract::class,
+            new EventDispatcher(
                 $container->getSingleton(CollectionContract::class),
-                $container->getSingleton(DispatchDispatcher::class),
+                $container->getSingleton(DispatcherContract::class),
             )
         );
     }
