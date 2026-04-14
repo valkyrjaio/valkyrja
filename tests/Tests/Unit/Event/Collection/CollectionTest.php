@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Collection;
 
-use Valkyrja\Dispatch\Data\ClassDispatch;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
@@ -40,7 +38,8 @@ final class CollectionTest extends TestCase
         $listenerName = 'listener';
         $listener     = new Listener(
             eventId: $eventId,
-            name: $listenerName
+            name: $listenerName,
+            handler: static fn () => null
         );
 
         $collection->addListener($listener);
@@ -65,12 +64,12 @@ final class CollectionTest extends TestCase
         $listener      = new Listener(
             eventId: $eventId,
             name: $listenerName,
-            dispatch: new ClassDispatch(self::class)
+            handler: static fn () => null
         );
         $listener2     = new Listener(
             eventId: $eventId,
             name: $listenerName2,
-            dispatch: new MethodDispatch(self::class, 'test')
+            handler: static fn () => null
         );
 
         $data = new EventData(
@@ -136,7 +135,8 @@ final class CollectionTest extends TestCase
         $listenerName = 'listener';
         $listener     = new Listener(
             eventId: $eventId,
-            name: $listenerName
+            name: $listenerName,
+            handler: static fn () => null
         );
 
         self::assertFalse($collection->hasListener($listener));

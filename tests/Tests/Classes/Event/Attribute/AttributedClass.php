@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Event\Attribute;
 
 use Valkyrja\Event\Attribute\Listener;
+use Valkyrja\Event\Attribute\ListenerHandler;
 use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
 
 /**
@@ -26,9 +27,15 @@ final class AttributedClass
 {
     #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClass::staticMethodValue1')]
     #[Listener(AttributesCollectorTest::VALUE2, 'AttributedClass::staticMethodValue2')]
+    #[ListenerHandler([self::class, 'handler'])]
     public static function staticMethod(): string
     {
         return 'Static Method';
+    }
+
+    public static function handler(): string
+    {
+        return 'Handler';
     }
 
     #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClass->methodValue1')]

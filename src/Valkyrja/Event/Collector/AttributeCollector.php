@@ -14,30 +14,23 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collector;
 
 use Override;
-use ReflectionException;
 use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
-use Valkyrja\Dispatch\Data\ClassDispatch;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Attribute\Listener as Attribute;
+use Valkyrja\Event\Attribute\ListenerHandler;
 use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 class AttributeCollector implements CollectorContract
 {
     public function __construct(
         protected AttributeCollectorContract $attributes,
-        protected ReflectorContract $reflection,
     ) {
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws ReflectionException
      */
     #[Override]
     public function getListeners(string ...$classes): array
@@ -53,15 +46,13 @@ class AttributeCollector implements CollectorContract
             foreach ($attributes as $attribute) {
                 $reflection = $attribute->getReflection();
                 $method     = null;
-                $isStatic   = false;
 
                 if ($reflection instanceof ReflectionMethod) {
                     $method   = $reflection->getName();
-                    $isStatic = $reflection->isStatic();
                 }
 
                 $listener = $this->getListenerFromAttribute($attribute);
-                $listener = $this->updateDispatch($listener, $class, $method, $isStatic);
+                $listener = $this->updateHandler($listener, $class, $method);
 
                 $listeners[] = $this->setListenerProperties($listener);
             }
@@ -71,56 +62,51 @@ class AttributeCollector implements CollectorContract
     }
 
     /**
+     * Update the handler for a listener.
+     *
      * @param class-string          $class  The class name
      * @param non-empty-string|null $method The method name
      */
-    protected function updateDispatch(ListenerContract $listener, string $class, string|null $method = null, bool $isStatic = false): ListenerContract
+    protected function updateHandler(ListenerContract $listener, string $class, string|null $method = null): ListenerContract
     {
         if ($method === null) {
-            $dispatch = new ClassDispatch($class);
+            /** @var ListenerHandler[] $classHandlers */
+            $classHandlers = $this->attributes->forClass($class, ListenerHandler::class);
+            $classHandler  = $classHandlers[0] ?? null;
+
+            $handler = $classHandler->handler ?? null;
         } else {
-            $dispatch = new MethodDispatch($class, $method, isStatic: $isStatic);
+            /** @var ListenerHandler[] $routeHandlers */
+            $routeHandlers = $this->attributes->forMethod($class, $method, ListenerHandler::class);
+            $routeHandler  = $routeHandlers[0] ?? null;
+
+            $handler = $routeHandler->handler ?? null;
         }
 
-        return $listener->withDispatch($dispatch);
+        if ($handler === null) {
+            return $listener;
+        }
+
+        return $listener->withHandler($handler);
     }
 
     /**
      * Set the properties for a listener attribute.
-     *
-     * @throws ReflectionException
      */
     protected function setListenerProperties(ListenerContract $listener): ListenerContract
     {
-        $dispatch     = $listener->getDispatch();
-        $dependencies = [];
-
-        if ($dispatch instanceof MethodDispatchContract) {
-            $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
-
-            $dependencies = $this->reflection->getDependencies($methodReflection);
-        } elseif (method_exists($dispatch->getClass(), '__construct')) {
-            $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), '__construct');
-
-            $dependencies = $this->reflection->getDependencies($methodReflection);
-        }
-
-        return $listener->withDispatch(
-            $dispatch->withDependencies($dependencies)
-        );
+        return $listener;
     }
 
     /**
      * Get a listener from an attribute.
-     *
-     * @param ListenerContract $attribute The attribute
      */
     protected function getListenerFromAttribute(ListenerContract $attribute): ListenerContract
     {
         return new Listener(
             eventId: $attribute->getEventId(),
             name: $attribute->getName(),
-            dispatch: $attribute->getDispatch()
+            handler: $attribute->getHandler()
         );
     }
 }

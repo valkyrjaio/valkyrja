@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Data\Contract;
 
-use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 interface ListenerContract
 {
@@ -47,14 +46,16 @@ interface ListenerContract
     public function withName(string $name): static;
 
     /**
-     * Get the dispatch.
+     * Get the handler.
+     *
+     * @return callable(ContainerContract, array<string, mixed>):mixed
      */
-    public function getDispatch(): ClassDispatchContract|MethodDispatchContract;
+    public function getHandler(): callable;
 
     /**
-     * Create new listener with the specified dispatch.
+     * Create new listener with the specified handler.
      *
-     * @param ClassDispatchContract|MethodDispatchContract $dispatch The dispatch
+     * @param callable(ContainerContract, array<string, mixed>):mixed $handler The handler
      */
-    public function withDispatch(ClassDispatchContract|MethodDispatchContract $dispatch): static;
+    public function withHandler(callable $handler): static;
 }

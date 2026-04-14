@@ -14,22 +14,25 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\ClassDispatch;
-use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
 class Listener implements ListenerContract
 {
+    /** @var callable(ContainerContract, array<string, mixed>):mixed */
+    protected $handler;
+
     /**
-     * @param class-string     $eventId The event class name
-     * @param non-empty-string $name    A unique name for this listener
+     * @param class-string                                            $eventId The event class name
+     * @param non-empty-string                                        $name    A unique name for this listener
+     * @param callable(ContainerContract, array<string, mixed>):mixed $handler The handler
      */
     public function __construct(
         protected string $eventId,
         protected string $name,
-        protected ClassDispatchContract|MethodDispatchContract $dispatch = new ClassDispatch(self::class),
+        callable $handler,
     ) {
+        $this->handler = $handler;
     }
 
     /**
@@ -80,20 +83,20 @@ class Listener implements ListenerContract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): ClassDispatchContract|MethodDispatchContract
+    public function getHandler(): callable
     {
-        return $this->dispatch;
+        return $this->handler;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(ClassDispatchContract|MethodDispatchContract $dispatch): static
+    public function withHandler(callable $handler): static
     {
         $new = clone $this;
 
-        $new->dispatch = $dispatch;
+        $new->handler = $handler;
 
         return $new;
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Dispatcher;
 
 use stdClass;
-use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
@@ -53,7 +53,7 @@ final class DispatcherTest extends TestCase
         $listener     = new Listener(
             eventId: $eventId,
             name: $listenerName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatchCallback'])
+            handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
         $collection = new Collection();
@@ -103,7 +103,7 @@ final class DispatcherTest extends TestCase
         $listener     = new Listener(
             eventId: $eventId,
             name: $listenerName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatchCallback'])
+            handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
         $collection = new Collection();
@@ -144,7 +144,7 @@ final class DispatcherTest extends TestCase
         $listener     = new Listener(
             eventId: $eventId,
             name: $listenerName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatchCallback'])
+            handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
         $collection = new Collection();
