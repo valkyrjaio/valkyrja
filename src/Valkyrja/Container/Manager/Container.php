@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Manager;
 
 use Override;
 use Throwable;
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -23,8 +22,6 @@ use Valkyrja\Container\Manager\Trait\ProvidersAware;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
-use function assert;
-use function is_a;
 use function is_object;
 
 class Container implements ContainerContract
@@ -48,16 +45,9 @@ class Container implements ContainerContract
     /**
      * The services.
      *
-     * @var array<class-string<ServiceContract>, class-string<ServiceContract>>
-     */
-    protected array $services = [];
-
-    /**
-     * The service callables.
-     *
      * @var array<class-string, callable(ContainerContract, array<array-key, mixed>):object>
      */
-    protected array $callables = [];
+    protected array $services = [];
 
     /**
      * The singletons.
@@ -119,23 +109,20 @@ class Container implements ContainerContract
         return $this->isDeferred($id)
             || $this->isSingleton($id)
             || $this->isService($id)
-            || $this->isCallable($id)
             || $this->isAlias($id);
     }
 
     /**
      * @inheritDoc
      *
-     * @param class-string                  $id      The service id
-     * @param class-string<ServiceContract> $service The service
+     * @param class-string $id The service id
      */
     #[Override]
-    public function bind(string $id, string $service): static
+    public function bind(string $id, callable $callable): static
     {
-        assert(is_a($service, ServiceContract::class, true));
-
-        /** @var class-string<ServiceContract> $id */
-        $this->services[$id] = $service;
+        /** @var callable(ContainerContract, mixed...):object $callable */
+        $this->services[$id]  = $callable;
+        $this->published[$id] = true;
 
         return $this;
     }
@@ -157,30 +144,15 @@ class Container implements ContainerContract
     /**
      * @inheritDoc
      *
-     * @param class-string                  $id        The service id
-     * @param class-string<ServiceContract> $singleton The singleton service
-     */
-    #[Override]
-    public function bindSingleton(string $id, string $singleton): static
-    {
-        $this->singletons[$id] = $singleton;
-
-        $this->bind($id, $singleton);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     *
      * @param class-string $id The service id
      */
     #[Override]
-    public function setCallable(string $id, callable $callable): static
+    public function bindSingleton(string $id, callable $callable): static
     {
+        $this->singletons[$id] = $id;
+
         /** @var callable(ContainerContract, mixed...):object $callable */
-        $this->callables[$id] = $callable;
-        $this->published[$id] = true;
+        $this->bind($id, $callable);
 
         return $this;
     }
@@ -208,17 +180,6 @@ class Container implements ContainerContract
     public function isAlias(string $id): bool
     {
         return isset($this->aliases[$id]);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    #[Override]
-    public function isCallable(string $id): bool
-    {
-        return isset($this->callables[$id]);
     }
 
     /**
@@ -281,7 +242,6 @@ class Container implements ContainerContract
 
         // @phpstan-ignore-next-line
         return $this->getSingletonWithoutChecks($id)
-            ?? $this->getCallableWithoutChecks($id, $arguments)
             ?? $this->getServiceWithoutChecks($id, $arguments)
             ?? $this->getAliasedWithoutChecks($id, $arguments)
             ?? $this->getFallback($id, $arguments, $mode);
@@ -310,28 +270,9 @@ class Container implements ContainerContract
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
     #[Override]
-    public function getCallable(string $id, array $arguments = []): object
+    public function getService(string $id, array $arguments = []): object
     {
         $this->publishUnpublishedProvided($id);
-
-        // @phpstan-ignore-next-line
-        return $this->getCallableWithoutChecks($id, $arguments)
-            ?? throw new ContainerInvalidReferenceException($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @psalm-suppress InvalidReturnType
-     * @psalm-suppress InvalidReturnStatement
-     * @psalm-suppress ImplementedReturnTypeMismatch
-     */
-    #[Override]
-    public function getService(string $id, array $arguments = []): ServiceContract
-    {
-        $this->publishUnpublishedProvided($id);
-
-        /** @var class-string<ServiceContract> $id */
 
         // @phpstan-ignore-next-line
         return $this->getServiceWithoutChecks($id, $arguments)
@@ -373,23 +314,6 @@ class Container implements ContainerContract
     }
 
     /**
-     * Get a service bound to a callable from the container without trying to get an alias or ensuring published.
-     *
-     * @param class-string            $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     */
-    protected function getCallableWithoutChecks(string $id, array $arguments = []): object|null
-    {
-        $closure = $this->getClosure($id);
-
-        if ($closure === null) {
-            return null;
-        }
-
-        return $closure($this, $arguments);
-    }
-
-    /**
      * Get a singleton from the container without trying to get an alias or ensuring published.
      *
      * @param class-string $id The service id
@@ -417,20 +341,16 @@ class Container implements ContainerContract
      * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      */
-    protected function getServiceWithoutChecks(string $id, array $arguments = []): ServiceContract|null
+    protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
-        if (! is_a($id, ServiceContract::class, true)) {
-            return null;
-        }
-
-        $service = $this->getServiceClass($id);
+        $service = $this->getServiceCallable($id);
 
         if ($service === null) {
             return null;
         }
 
         // Make the object by dispatching the service
-        return $service::make($this, $arguments);
+        return $service($this, $arguments);
     }
 
     /**
@@ -443,19 +363,6 @@ class Container implements ContainerContract
     protected function getAlias(string $id): string|null
     {
         return $this->aliases[$id]
-            ?? null;
-    }
-
-    /**
-     * Get the callable factory for a given id.
-     *
-     * @param class-string $id The service id
-     *
-     * @return callable(ContainerContract, array<array-key, mixed>):object|null
-     */
-    protected function getClosure(string $id): callable|null
-    {
-        return $this->callables[$id]
             ?? null;
     }
 
@@ -475,9 +382,9 @@ class Container implements ContainerContract
      *
      * @param class-string $id The service id
      *
-     * @return class-string<ServiceContract>|null
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
      */
-    protected function getServiceClass(string $id): string|null
+    protected function getServiceCallable(string $id): callable|null
     {
         return $this->services[$id]
             ?? null;

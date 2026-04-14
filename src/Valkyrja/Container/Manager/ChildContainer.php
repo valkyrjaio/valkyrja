@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Manager;
 
 use Override;
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -41,18 +40,6 @@ class ChildContainer extends Container
     {
         return parent::isAlias($id)
             || $this->parent->isAlias($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    #[Override]
-    public function isCallable(string $id): bool
-    {
-        return parent::isCallable($id)
-            || $this->parent->isCallable($id);
     }
 
     /**
@@ -144,30 +131,13 @@ class ChildContainer extends Container
      * @param array<array-key, mixed> $arguments [optional] The arguments
      */
     #[Override]
-    protected function getServiceWithoutChecks(string $id, array $arguments = []): ServiceContract|null
+    protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
-            /** @var class-string<ServiceContract> $id */
             return $this->parent->getService($id, $arguments);
         }
 
         return parent::getServiceWithoutChecks($id, $arguments);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string            $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     */
-    #[Override]
-    protected function getCallableWithoutChecks(string $id, array $arguments = []): object|null
-    {
-        if (! parent::isCallable($id) && $this->parent->isCallable($id)) {
-            return $this->parent->getCallable($id, $arguments);
-        }
-
-        return parent::getCallableWithoutChecks($id, $arguments);
     }
 
     /**

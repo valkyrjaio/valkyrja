@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Testable Service class.
  */
-final class ServiceClass implements ServiceContract
+final class ServiceClass
 {
     public function __construct(
         public ContainerContract $container,

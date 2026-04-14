@@ -42,7 +42,7 @@ final class ChildContainerTest extends TestCase
 
     public function testIsAliasFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, ServiceClass::class);
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->parent->bindAlias('myAlias', ServiceClass::class);
 
         self::assertTrue($this->child->isAlias('myAlias'));
@@ -51,31 +51,11 @@ final class ChildContainerTest extends TestCase
 
     public function testIsAliasFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, ServiceClass::class);
+        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->child->bindAlias('childAlias', ServiceClass::class);
 
         self::assertTrue($this->child->isAlias('childAlias'));
         self::assertFalse($this->parent->isAlias('childAlias'));
-    }
-
-    // -----------------------------------------------------------------------
-    // isCallable
-    // -----------------------------------------------------------------------
-
-    public function testIsCallableFromParent(): void
-    {
-        $this->parent->setCallable(ServiceClass::class, static fn ($c) => new SingletonClass());
-
-        self::assertTrue($this->child->isCallable(ServiceClass::class));
-        self::assertFalse($this->child->isCallable(SingletonClass::class));
-    }
-
-    public function testIsCallableFromChild(): void
-    {
-        $this->child->setCallable(ServiceClass::class, static fn ($c) => new SingletonClass());
-
-        self::assertTrue($this->child->isCallable(ServiceClass::class));
-        self::assertFalse($this->parent->isCallable(ServiceClass::class));
     }
 
     // -----------------------------------------------------------------------
@@ -84,7 +64,7 @@ final class ChildContainerTest extends TestCase
 
     public function testIsServiceFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, ServiceClass::class);
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         self::assertTrue($this->child->isService(ServiceClass::class));
         self::assertFalse($this->child->isService(SingletonClass::class));
@@ -92,7 +72,7 @@ final class ChildContainerTest extends TestCase
 
     public function testIsServiceFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, ServiceClass::class);
+        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         self::assertTrue($this->child->isService(ServiceClass::class));
         self::assertFalse($this->parent->isService(ServiceClass::class));
@@ -104,7 +84,7 @@ final class ChildContainerTest extends TestCase
 
     public function testIsSingletonBindingFromParent(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, SingletonClass::class);
+        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
         // Re-create child after parent setup so the copied data includes the binding
         $child = $this->createChild();
 
@@ -124,7 +104,7 @@ final class ChildContainerTest extends TestCase
 
     public function testIsSingletonBindingFromChild(): void
     {
-        $this->child->bindSingleton(SingletonClass::class, SingletonClass::class);
+        $this->child->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
 
         self::assertTrue($this->child->isSingletonBinding(SingletonClass::class));
         self::assertFalse($this->parent->isSingletonBinding(SingletonClass::class));
@@ -160,14 +140,14 @@ final class ChildContainerTest extends TestCase
 
     public function testIsPublishedFromParent(): void
     {
-        $this->parent->setCallable(ServiceClass::class, static fn ($c) => new ServiceClass($c));
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         self::assertTrue($this->child->isPublished(ServiceClass::class));
     }
 
     public function testIsPublishedFromChild(): void
     {
-        $this->child->setCallable(ServiceClass::class, static fn ($c) => new ServiceClass($c));
+        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         self::assertTrue($this->child->isPublished(ServiceClass::class));
         self::assertFalse($this->parent->isPublished(ServiceClass::class));
@@ -194,7 +174,7 @@ final class ChildContainerTest extends TestCase
 
     public function testGetSingletonFromParentBinding(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, SingletonClass::class);
+        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
         // Re-create child so the copied data includes the binding
         $child = $this->createChild();
 
@@ -230,7 +210,7 @@ final class ChildContainerTest extends TestCase
 
     public function testChildSingletonDoesNotPollutesParent(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, SingletonClass::class);
+        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
         // Re-create child so the copied data includes the binding
         $child = $this->createChild();
 
@@ -247,7 +227,7 @@ final class ChildContainerTest extends TestCase
 
     public function testGetServiceFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, ServiceClass::class);
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         $instance = $this->child->getService(ServiceClass::class);
 
@@ -257,7 +237,7 @@ final class ChildContainerTest extends TestCase
 
     public function testGetServiceFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, ServiceClass::class);
+        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
 
         $instance = $this->child->getService(ServiceClass::class);
 
@@ -266,26 +246,12 @@ final class ChildContainerTest extends TestCase
     }
 
     // -----------------------------------------------------------------------
-    // getCallable — parent fallback
-    // -----------------------------------------------------------------------
-
-    public function testGetCallableFromParent(): void
-    {
-        $singleton = new SingletonClass();
-        $this->parent->setCallable(ServiceClass::class, static fn ($c) => $singleton);
-
-        $result = $this->child->getCallable(ServiceClass::class);
-
-        self::assertSame($singleton, $result);
-    }
-
-    // -----------------------------------------------------------------------
     // getAliased — parent fallback
     // -----------------------------------------------------------------------
 
     public function testGetAliasedFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, ServiceClass::class);
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->parent->bindAlias('svcAlias', ServiceClass::class);
 
         $instance = $this->child->getAliased('svcAlias');
@@ -295,7 +261,7 @@ final class ChildContainerTest extends TestCase
 
     public function testGetAliasedFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, ServiceClass::class);
+        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->child->bindAlias('childAlias', ServiceClass::class);
 
         $instance = $this->child->getAliased('childAlias');
@@ -311,24 +277,22 @@ final class ChildContainerTest extends TestCase
     public function testParentStateUnchangedAfterChildOperations(): void
     {
         // Set up parent with each registration type
-        $this->parent->bind(ServiceClass::class, ServiceClass::class);
+        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->parent->bindAlias('svcAlias', ServiceClass::class);
-        $this->parent->bindSingleton(SingletonClass::class, SingletonClass::class);
-        $this->parent->setCallable(self::class, static fn ($c) => new self('test'));
+        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
         $this->parent->register(DispatchServiceProvider::class);
 
         // Build child from the fully-set-up parent
         $child = $this->createChild();
 
         // Snapshot parent state before any child interaction
-        $dataBefore                  = $this->parent->getData();
-        $singletonInstanceBefore     = $this->parent->isSingletonInstance(SingletonClass::class);
-        $dispatcherPublishedBefore   = $this->parent->isPublished(DispatcherContract::class);
+        $dataBefore                = $this->parent->getData();
+        $singletonInstanceBefore   = $this->parent->isSingletonInstance(SingletonClass::class);
+        $dispatcherPublishedBefore = $this->parent->isPublished(DispatcherContract::class);
 
         // Perform a broad set of child operations
         $child->get(ServiceClass::class);
         $child->getService(ServiceClass::class);
-        $child->getCallable(self::class);
         $child->getAliased('svcAlias');
         $child->getSingleton(SingletonClass::class);
         $child->get(DispatcherContract::class); // triggers deferred publish in child

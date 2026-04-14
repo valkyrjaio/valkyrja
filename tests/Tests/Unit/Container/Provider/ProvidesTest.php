@@ -39,7 +39,6 @@ final class ProvidesTest extends TestCase
         self::assertEmpty($reflection->getProperty('aliases')->getValue($container));
         self::assertEmpty($reflection->getProperty('instances')->getValue($container));
         self::assertEmpty($reflection->getProperty('services')->getValue($container));
-        self::assertEmpty($reflection->getProperty('callables')->getValue($container));
         self::assertEmpty($reflection->getProperty('singletons')->getValue($container));
     }
 }

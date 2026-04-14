@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Manager\Contract;
 
 use Override;
 use Psr\Container\ContainerInterface;
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 
@@ -44,10 +43,12 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     /**
      * Bind a service to the container.
      *
-     * @param class-string                  $id      The service id
-     * @param class-string<ServiceContract> $service The service
+     * @template T of object
+     *
+     * @param class-string<T>                           $id       The service id
+     * @param callable(self, array<array-key, mixed>):T $callable The callable
      */
-    public function bind(string $id, string $service): static;
+    public function bind(string $id, callable $callable): static;
 
     /**
      * Bind an alias to the container.
@@ -60,22 +61,12 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     /**
      * Bind a singleton to the container.
      *
-     * @param class-string                  $id        The service id
-     * @param class-string<ServiceContract> $singleton The singleton service
-     */
-    public function bindSingleton(string $id, string $singleton): static;
-
-    /**
-     * Set a callable in the container.
-     *
      * @template T of object
      *
      * @param class-string<T>                           $id       The service id
      * @param callable(self, array<array-key, mixed>):T $callable The callable
-     *
-     * @see https://psalm.dev/r/4431cf022b callable(Container, mixed...):T
      */
-    public function setCallable(string $id, callable $callable): static;
+    public function bindSingleton(string $id, callable $callable): static;
 
     /**
      * Set a singleton in the container.
@@ -93,13 +84,6 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * @param class-string $id The service id
      */
     public function isAlias(string $id): bool;
-
-    /**
-     * Check whether a given service is bound to a callable.
-     *
-     * @param class-string $id The service id
-     */
-    public function isCallable(string $id): bool;
 
     /**
      * Check whether a given service exists.
@@ -157,7 +141,7 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     public function getAliased(string $id, array $arguments = []): object;
 
     /**
-     * Get a service bound to a callable from the container.
+     * Get a service from the container.
      *
      * @template T of object
      *
@@ -166,19 +150,7 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      *
      * @return T
      */
-    public function getCallable(string $id, array $arguments = []): object;
-
-    /**
-     * Get a service from the container.
-     *
-     * @template T of ServiceContract
-     *
-     * @param class-string<T>         $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return T
-     */
-    public function getService(string $id, array $arguments = []): ServiceContract;
+    public function getService(string $id, array $arguments = []): object;
 
     /**
      * Get a singleton from the container.

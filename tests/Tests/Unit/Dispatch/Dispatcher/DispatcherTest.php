@@ -350,7 +350,7 @@ final class DispatcherTest extends TestCase
         $container2 = new Container();
         $dispatcher = new Dispatcher($container);
 
-        $container->bind(ServiceClass::class, ServiceClass::class);
+        $container->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $container->setSingleton(Container::class, $container);
 
         $dispatch = new ClassDispatch(class: ServiceClass::class, dependencies: [Container::class]);
