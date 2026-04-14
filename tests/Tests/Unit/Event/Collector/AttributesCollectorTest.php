@@ -74,6 +74,8 @@ final class AttributesCollectorTest extends TestCase
 
         self::assertSame(self::VALUE1, $attributes[4]->getEventId());
         self::assertSame(self::VALUE2, $attributes[5]->getEventId());
+        self::assertSame([AttributedClass::class, 'handler2'], $attributes[4]->getHandler());
+        self::assertSame([AttributedClass::class, 'handler2'], $attributes[5]->getHandler());
     }
 
     public function testGetListeners2(): void

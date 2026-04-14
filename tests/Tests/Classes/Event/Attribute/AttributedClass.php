@@ -38,8 +38,13 @@ final class AttributedClass
         return 'Handler';
     }
 
-    #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClass->methodValue1')]
-    #[Listener(AttributesCollectorTest::VALUE2, 'AttributedClass->methodValue2')]
+    public static function handler2(): string
+    {
+        return 'Handler2';
+    }
+
+    #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClass->methodValue1', [self::class, 'handler2'])]
+    #[Listener(AttributesCollectorTest::VALUE2, 'AttributedClass->methodValue2', [self::class, 'handler2'])]
     public function method(): string
     {
         return 'Method';
