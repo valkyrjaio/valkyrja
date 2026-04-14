@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
-use AssertionError;
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
@@ -45,31 +44,20 @@ final class ContainerTest extends TestCase
         $this->container = new Container();
     }
 
-    public function testInvalidBind(): void
-    {
-        $this->expectException(AssertionError::class);
-        $this->expectExceptionMessage('assert(is_a($service, ServiceContract::class, true))');
-
-        $container = $this->container;
-
-        $container->bind(self::class, self::class);
-    }
-
     public function testBind(): void
     {
         $container = new Container();
         $id        = ServiceClass::class;
 
-        $container->bind($id, $id);
+        $container->bind($id, [ServiceClass::class, 'make']);
 
         self::assertTrue($container->has($id));
         self::assertTrue($container->isService($id));
+        self::assertTrue($container->isPublished($id));
 
         self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isDeferred($id));
-        self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved
@@ -83,16 +71,15 @@ final class ContainerTest extends TestCase
         $id        = ServiceClass::class;
         $alias     = 'alias';
 
-        $container->bind($id, $id);
+        $container->bind($id, [ServiceClass::class, 'make']);
         $container->bindAlias($alias, $id);
 
         self::assertTrue($container->has($alias));
         self::assertTrue($container->isAlias($alias));
+        self::assertTrue($container->isPublished($id));
         self::assertFalse($container->isService($alias));
-        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isDeferred($id));
-        self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($alias));
         // A bound service should return a new instance each time it is retrieved
@@ -107,50 +94,21 @@ final class ContainerTest extends TestCase
         $container = $this->container;
         $id        = SingletonClass::class;
 
-        $container->bindSingleton($id, $id);
+        $container->bindSingleton($id, [SingletonClass::class, 'make']);
 
         self::assertTrue($container->has($id));
         self::assertTrue($container->isSingleton($id));
         // A singleton is a service when bound
         self::assertTrue($container->isService($id));
+        self::assertTrue($container->isPublished($id));
 
         self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isDeferred($id));
-        self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound singleton should return the same instance each time it is retrieved
         self::assertSame($service, $container->get($id));
         self::assertSame($service, $container->getSingleton($id));
-    }
-
-    public function testClosure(): void
-    {
-        $container = $this->container;
-        $id        = self::class;
-        $closure   = static fn () => new self('test');
-
-        $container->setCallable($id, $closure);
-
-        self::assertTrue($container->has($id));
-        self::assertTrue($container->isCallable($id));
-        // Set methods will automatically set the service id to published
-        // Bounding is a deferment technique, whilst setting is not-deferred and hence should be used through providers
-        self::assertTrue($container->isPublished($id));
-
-        self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isSingleton($id));
-        self::assertFalse($container->isService($id));
-        self::assertFalse($container->isDeferred($id));
-
-        self::assertInstanceOf($id, $service = $container->get($id));
-        // A bound service should return a new instance each time it is retrieved
-        // Of course an application can choose to return the same instance each time, but why not use a singleton then?
-        self::assertNotSame($service, $container->get($id));
-
-        self::assertInstanceOf($id, $container->getCallable($id));
-        self::assertNotSame($service, $container->getCallable($id));
     }
 
     public function testProvided(): void
@@ -181,13 +139,6 @@ final class ContainerTest extends TestCase
         $this->expectException(ContainerInvalidArgumentException::class);
 
         $this->container->getSingleton(self::class);
-    }
-
-    public function testGetNonExistentCallable(): void
-    {
-        $this->expectException(ContainerInvalidArgumentException::class);
-
-        $this->container->getCallable(self::class);
     }
 
     public function testGetNonExistentAliased(): void

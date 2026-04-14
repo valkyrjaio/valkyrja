@@ -61,7 +61,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMysqlManager(): void
     {
-        $this->container->setCallable(
+        $this->container->bind(
             PDO::class,
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
@@ -74,7 +74,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPgsqlManager(): void
     {
-        $this->container->setCallable(
+        $this->container->bind(
             PDO::class,
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
@@ -87,7 +87,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishSqliteManager(): void
     {
-        $this->container->setCallable(
+        $this->container->bind(
             PDO::class,
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
@@ -117,7 +117,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback = OrmServiceProvider::publishers()[Repository::class];
         $callback($this->container);
 
-        self::assertInstanceOf(Repository::class, $this->container->getCallable(Repository::class, [$manager, $entity]));
+        self::assertInstanceOf(Repository::class, $this->container->getService(Repository::class, [$manager, $entity]));
     }
 
     /**
@@ -131,6 +131,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback = OrmServiceProvider::publishers()[PDO::class];
         $callback($this->container);
 
-        self::assertInstanceOf(PDO::class, $this->container->getCallable(PDO::class, [$dsn, $options]));
+        self::assertInstanceOf(PDO::class, $this->container->getService(PDO::class, [$dsn, $options]));
     }
 }

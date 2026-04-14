@@ -113,7 +113,7 @@ class OrmServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             MysqlManager::class,
             new MysqlManager(
-                pdo: $container->getCallable(PDO::class, [$dsn, $options]),
+                pdo: $container->getService(PDO::class, [$dsn, $options]),
                 container: $container
             )
         );
@@ -172,7 +172,7 @@ class OrmServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             PgsqlManager::class,
             new PgsqlManager(
-                pdo: $pdo = $container->getCallable(PDO::class, [$dsn, $options]),
+                pdo: $pdo = $container->getService(PDO::class, [$dsn, $options]),
                 container: $container
             )
         );
@@ -226,7 +226,7 @@ class OrmServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             SqliteManager::class,
             new SqliteManager(
-                pdo: $container->getCallable(PDO::class, [$dsn, $options]),
+                pdo: $container->getService(PDO::class, [$dsn, $options]),
                 container: $container
             )
         );
@@ -237,7 +237,7 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function publishPdo(ContainerContract $container): void
     {
-        $container->setCallable(
+        $container->bind(
             PDO::class,
             [self::class, 'createPdo'],
         );
@@ -279,7 +279,7 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function publishRepository(ContainerContract $container): void
     {
-        $container->setCallable(
+        $container->bind(
             Repository::class,
             [self::class, 'createRepository'],
         );

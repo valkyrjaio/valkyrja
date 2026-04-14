@@ -57,7 +57,7 @@ final class CacheResponseMiddlewareTest extends TestCase
     {
         $container  = new Container();
 
-        $container->setCallable(CacheResponseMiddleware::class, fn () => new CacheResponseMiddleware($this->filePath));
+        $container->bind(CacheResponseMiddleware::class, fn () => new CacheResponseMiddleware($this->filePath));
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);

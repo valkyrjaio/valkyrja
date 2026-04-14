@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Manager;
 
 use Override;
-use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
@@ -43,20 +42,9 @@ class NativeChildContainer extends Container
      * @param class-string $id The service id
      */
     #[Override]
-    public function isCallable(string $id): bool
-    {
-        return $this->getClosure($id) !== null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    #[Override]
     public function isService(string $id): bool
     {
-        return $this->getServiceClass($id) !== null;
+        return $this->getServiceCallable($id) !== null;
     }
 
     /**
@@ -155,21 +143,6 @@ class NativeChildContainer extends Container
      * @inheritDoc
      *
      * @param class-string $id The service id
-     *
-     * @return callable(ContainerContract, array<array-key, mixed>):object|null
-     */
-    #[Override]
-    protected function getClosure(string $id): callable|null
-    {
-        return $this->callables[$id]
-            ?? $this->parent->callables[$id]
-            ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
      */
     #[Override]
     protected function getSingletonInstance(string $id): object|null
@@ -184,10 +157,10 @@ class NativeChildContainer extends Container
      *
      * @param class-string $id The service id
      *
-     * @return class-string<ServiceContract>|null
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
      */
     #[Override]
-    protected function getServiceClass(string $id): string|null
+    protected function getServiceCallable(string $id): callable|null
     {
         return $this->services[$id]
             ?? $this->parent->services[$id]
