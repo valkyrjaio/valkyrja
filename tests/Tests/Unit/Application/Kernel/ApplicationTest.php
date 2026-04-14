@@ -39,16 +39,18 @@ use Valkyrja\Tests\Classes\Application\Provider\CliRouteComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRoutingDataProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\ComponentProviderClass;
+use Valkyrja\Tests\Classes\Application\Provider\DuplicateSubProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\EventComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpContainerDataProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\DuplicateSubProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\Tests\Classes\Event\Provider\ListenerProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Provider\ViewComponentProvider;
+
+use function count;
 
 /**
  * Test the Application service.
