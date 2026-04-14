@@ -127,48 +127,41 @@ $dispatch->getVariable(): string;
 $dispatch->withVariable(string $variable): static;
 ```
 
-## How It Connects to Events, CLI, and HTTP
+## How It Connects to CLI and HTTP
 
-The same Dispatcher underpins all three runtime contexts:
+The same Dispatcher underpins both runtime contexts:
 
-- **Events** — When an event is fired, the Dispatcher invokes each registered
-  listener's dispatch, passing the event object as the argument.
 - **CLI** — When a command is matched, the Dispatcher invokes the route's
   dispatch.
 - **HTTP** — When a route is matched, the Dispatcher invokes the route's
   dispatch.
 
-The pattern is identical in each context. Only the argument passed and the
-surrounding lifecycle differ.
+> **Note:** The event system no longer uses the Dispatcher. Event listeners are
+> invoked directly through their handler callables — see the
+> [Event README](../Event/README.md) for details.
 
 ## Return Values
 
-The Dispatcher returns whatever the invoked dispatch returns. In the context of
-events, return values can be collected by the event if it implements
-`DispatchCollectableContract`. In CLI and HTTP contexts, the return value
-becomes the response or output that the respective router passes back to the
-handler, and subsequent stepped middleware.
+The Dispatcher returns whatever the invoked dispatch returns. In CLI and HTTP
+contexts, the return value becomes the response or output that the respective
+router passes back to the handler, and subsequent stepped middleware.
 
 ## Why This Design
 
 Describing calls as data objects rather than executing them directly enables the
 framework's caching system. When the data cache is generated, the full set of
-dispatch descriptions — for every event listener, every command, every route —
-is captured in a generated PHP class. On subsequent requests, the framework
-loads that class directly and the Dispatcher can invoke any handler without any
-registration overhead.
-
-> Note: Handlers may be added in the future for direct callables to be used
-> instead, but this feature is currently not supported and so dispatches becomes
-> the way to handle a listener call or route call at this time.
+dispatch descriptions — for every command and every route — is captured in a
+generated PHP class. On subsequent requests, the framework loads that class
+directly and the Dispatcher can invoke any handler without any registration
+overhead.
 
 This is a significant part of why Valkyrja is fast. The Dispatcher does very
 little work per request when the cache is warm — it simply receives a dispatch
 description and executes it.
 
-> Note: Handlers in the future would be even faster, but may not allow for data
-> caching if closures are used instead of direct callables in the form of arrays
-> like the service provider `publishers` method for example.
+> **Note:** Array callables (e.g. `[ClassName::class, 'method']`) can be written
+> to the generated cache file. Closures cannot. Prefer array callables anywhere
+> the dispatch description may be cached.
 
 ## Service Registration
 
