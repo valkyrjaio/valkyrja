@@ -20,19 +20,13 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
-use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
-use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\EnvClass;
@@ -76,13 +70,7 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: true,
             providers: [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpServerComponentProvider::class,
+                HttpApplicationComponentProvider::class,
                 HttpComponentProviderClass::class,
             ],
         );
@@ -147,13 +135,7 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: false,
             providers: [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpServerComponentProvider::class,
+                HttpApplicationComponentProvider::class,
                 HttpComponentProviderClass::class,
             ],
             callbacks: [
@@ -186,13 +168,7 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: true,
             providers: [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpServerComponentProvider::class,
+                HttpApplicationComponentProvider::class,
                 HttpComponentProviderClass::class,
             ],
             callbacks: [

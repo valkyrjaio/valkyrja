@@ -213,7 +213,8 @@ Understanding the provider hierarchy makes the entire system predictable.
 
 ```
 config->providers[]
-  └── ComponentProvider          implements ProviderContract
+  └── ComponentProvider          implements ComponentProviderContract
+        ├── getComponentProviders()  → ComponentProvider[]  (dependencies, loaded after declaring component)
         ├── getContainerProviders()  → ServiceProvider[]
         ├── getEventProviders()      → EventProvider[]
         ├── getCliProviders()        → CliRouteProvider[]
@@ -247,6 +248,14 @@ truly cannot be deferred.
 > contract if you do not wish to, as you will define the callback explicitly in
 > the config. However, this can allow you to quickly see any component providers
 > that do have callbacks
+
+**Sub-component providers** are returned by `getComponentProviders()`. They
+declare which other component providers this component depends on. The framework
+expands these into the flat provider list in the order they are returned,
+positioned after the declaring component. This means the declaring component's
+own registrations are processed first, followed by those of its dependencies —
+ensuring any explicit binding in the declaring component takes precedence over
+what a dependency registers.
 
 **Service providers** live inside component providers and are returned by
 `getContainerProviders()`. They declare which services they provide and publish
@@ -286,24 +295,36 @@ application object. The application is a framework-level concern.
 
 ## Component Providers
 
-Service providers live inside **component providers**, which are the top-level
-organisational unit of a Valkyrja application. A component provider extends
-`Valkyrja\Application\Provider\Abstract\Provider` or implements
-`Valkyrja\Application\Provider\Contract\ProviderContract`. It groups the service
-providers, CLI route providers, HTTP route providers, and event listener
-providers that make up a logical component of your application.
+**Component providers** are the top-level organisational unit of a Valkyrja
+application. A component provider implements
+`Valkyrja\Application\Provider\Contract\ComponentProviderContract`. It groups
+the service providers, CLI route providers, HTTP route providers, event listener
+providers, and sub-component providers that make up a logical component of your
+application.
 
 Component providers are registered in your config's `providers` array. When the
-application boots, it calls `getContainerProviders()`, `getEventProviders()`,
-`getCliProviders()`, and `getHttpProviders()` on each component provider to
-collect all child providers.
+application boots, it calls `getComponentProviders()` on each config provider to
+expand the full flat provider list, then calls `getContainerProviders()`,
+`getEventProviders()`, `getCliProviders()`, and `getHttpProviders()` on every
+provider in that flat list to collect all child providers.
 
 ```php
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Abstract\Provider;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class AppComponentProvider extends Provider
+class AppComponentProvider implements ComponentProviderContract
 {
+    // Declare components this provider depends on.
+    // This component's own registrations are processed first, then the
+    // sub-components load after — so this component's bindings take
+    // precedence and can override anything a dependency declares.
+    public static function getComponentProviders(ApplicationContract $app): array
+    {
+        return [
+            SomeDependencyComponentProvider::class,
+        ];
+    }
+
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [
@@ -325,14 +346,141 @@ class AppComponentProvider extends Provider
             AppEventProvider::class,
         ];
     }
+
+    public static function getCliProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
 }
 ```
 
-A component provider may additionally implement `PublishableProviderContract`,
-which adds a `publish(ApplicationContract $app)` method that **runs on every
-boot, cached or not**. Use this only for registrations that genuinely cannot be
-deferred. Binding services or routes here defeats the caching mechanism
-entirely.
+### Dependency Loading Order
+
+When the application calls `getProviders()`, it builds the flat provider list by
+first collecting all entries from `config->providers` in order, then appending
+the results of `getComponentProviders()` for each of those entries in the same
+order. This means:
+
+1. The declaring component appears first in the flat list.
+2. Its declared sub-components follow immediately after, in the order they are
+   returned from `getComponentProviders()`.
+3. Each provider's own `getContainerProviders()`, `getEventProviders()`,
+   `getCliProviders()`, and `getHttpProviders()` are called in flat-list order.
+
+Because the declaring component is processed first (its own service, route, and
+event providers are collected and registered before its sub-components'), and
+because sub-components are loaded after, any registration made by the declaring
+component takes effect before the sub-components' registrations are processed.
+This guarantees that a component can **override** anything a dependency
+declares: the component's own bindings are in place first, and a sub-component
+can only add new registrations on top — it cannot silently replace an explicit
+registration the parent made.
+
+If you need a dependency's registration to be overridable by your component,
+declare it in `getComponentProviders()` rather than listing it before your
+component in `config->providers`. Providers listed directly in
+`config->providers` before your component would have their own registrations
+processed first, giving them precedence.
+
+A component provider may additionally implement
+`PublishableComponentProviderContract`, which adds a
+`publish(ApplicationContract $app)` method that **runs on every boot, cached or
+not**. Use this only for registrations that genuinely cannot be deferred.
+Binding services or routes here defeats the caching mechanism entirely.
+
+## Built-in Application Component Providers
+
+The framework ships four ready-made aggregator component providers in
+`Valkyrja\Application\Provider`. Each declares a curated set of framework
+sub-components via `getComponentProviders()` and returns `[]` from all other
+methods. Use one as your sole entry in `config->providers` (alongside your own
+app provider), or compose them as sub-components of your own top-level
+aggregator.
+
+### `ApplicationComponentProvider`
+
+The widest bundle — includes every framework component: Container, Dispatch,
+all CLI components (Interaction, Middleware, Routing, Server), Event, all HTTP
+components (Message, Middleware, Routing, RoutingCli, Server), Log, and View.
+
+Use this when your entry point is neither purely CLI nor purely HTTP, or when
+you need the full framework surface without any trimming. It is the default for
+base `Config`.
+
+```php
+use Valkyrja\Application\Provider\ApplicationComponentProvider;
+
+new Config(providers: [
+    ApplicationComponentProvider::class,
+    AppComponentProvider::class,
+]);
+```
+
+### `CliApplicationComponentProvider`
+
+A bare CLI-only bundle — includes Container, Dispatch, CLI Interaction,
+Middleware, Routing, Server, Event, and Log. Omits every HTTP component and
+View entirely.
+
+Use this when building a pure console application that has no HTTP surface and
+does not need to generate or serve HTTP routes.
+
+```php
+use Valkyrja\Application\Provider\CliApplicationComponentProvider;
+
+new CliConfig(providers: [
+    CliApplicationComponentProvider::class,
+    AppComponentProvider::class,
+]);
+```
+
+### `CliWithHttpApplicationComponentProvider`
+
+A CLI application that runs alongside an HTTP application — includes all CLI
+components plus the full HTTP stack (Message, Middleware, Routing, RoutingCli,
+Server, Log), but omits View.
+
+This is the **default for `CliConfig`**. Use it when your CLI commands need to
+work with HTTP routing data — for example, commands that generate HTTP route
+cache files or interact with HTTP-specific configuration — but the process never
+actually serves HTTP responses.
+
+```php
+use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
+
+new CliConfig(providers: [
+    CliWithHttpApplicationComponentProvider::class,
+    AppComponentProvider::class,
+]);
+```
+
+### `HttpApplicationComponentProvider`
+
+An HTTP-optimised bundle — includes Container, Dispatch, Event, the full HTTP
+stack (Message, Middleware, Routing, RoutingCli, Server), Log, and View. Omits
+all CLI-specific components (Interaction, Middleware, Routing, Server).
+
+This is the **default for `HttpConfig`**. Use it for traditional web
+applications and persistent HTTP workers where CLI tooling is not needed inside
+the web process itself.
+
+```php
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
+
+new HttpConfig(providers: [
+    HttpApplicationComponentProvider::class,
+    AppComponentProvider::class,
+]);
+```
+
+### Choosing the right built-in provider
+
+| Provider                              | CLI | HTTP | View | Typical entry config |
+|---------------------------------------|-----|------|------|----------------------|
+| `ApplicationComponentProvider`        | ✓   | ✓    | ✓    | `Config`             |
+| `CliApplicationComponentProvider`     | ✓   |      |      | custom `CliConfig`   |
+| `CliWithHttpApplicationComponentProvider` | ✓ | ✓  |      | `CliConfig`          |
+| `HttpApplicationComponentProvider`    |     | ✓    | ✓    | `HttpConfig`         |
 
 ## Debug Mode
 

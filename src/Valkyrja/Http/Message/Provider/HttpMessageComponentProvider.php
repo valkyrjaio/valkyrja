@@ -23,6 +23,15 @@ class HttpMessageComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
+    public static function getComponentProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public static function getContainerProviders(ApplicationContract $app): array
     {
         return [

@@ -11,13 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Provider;
+namespace Valkyrja\Application\Provider;
 
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
+use Valkyrja\Container\Provider\ContainerComponentProvider;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
+use Valkyrja\Log\Provider\LogComponentProvider;
 
-class OrmComponentProvider implements ComponentProviderContract
+class CliApplicationComponentProvider implements ComponentProviderContract
 {
     /**
      * @inheritDoc
@@ -25,7 +33,16 @@ class OrmComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getComponentProviders(ApplicationContract $app): array
     {
-        return [];
+        return [
+            ContainerComponentProvider::class,
+            DispatchComponentProvider::class,
+            CliInteractionComponentProvider::class,
+            CliMiddlewareComponentProvider::class,
+            CliRoutingComponentProvider::class,
+            CliServerComponentProvider::class,
+            EventComponentProvider::class,
+            LogComponentProvider::class,
+        ];
     }
 
     /**
@@ -34,9 +51,7 @@ class OrmComponentProvider implements ComponentProviderContract
     #[Override]
     public static function getContainerProviders(ApplicationContract $app): array
     {
-        return [
-            OrmServiceProvider::class,
-        ];
+        return [];
     }
 
     /**

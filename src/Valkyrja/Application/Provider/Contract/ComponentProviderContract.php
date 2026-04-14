@@ -22,6 +22,13 @@ use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 interface ComponentProviderContract
 {
     /**
+     * Get the component providers this component depends on.
+     *
+     * @return class-string<ComponentProviderContract>[]
+     */
+    public static function getComponentProviders(ApplicationContract $app): array;
+
+    /**
      * Get the component's container service providers.
      *
      * @return class-string<ServiceProviderContract>[]

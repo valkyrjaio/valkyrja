@@ -24,6 +24,13 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class CliComponentProviderTest extends TestCase
 {
+    public function testGetComponentProviders(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+
+        self::assertEmpty(HttpRoutingCliComponentProvider::getComponentProviders($app));
+    }
+
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
