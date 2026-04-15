@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Collector;
 
 use ReflectionException;
-use Valkyrja\Http\Routing\Collector\AttributeCollector;
+use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Tests\Classes\Http\Middleware\AllMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
@@ -31,16 +31,16 @@ use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
- * Test the AttributeCollector service.
+ * Test the AttributeRouteCollector service.
  */
-final class AttributeCollectorTest extends TestCase
+final class AttributeRouteCollectorTest extends TestCase
 {
     /**
      * @throws ReflectionException
      */
     public function testGetRoutes(): void
     {
-        $routes = new AttributeCollector()->getRoutes(ControllerClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerClass::class);
 
         self::assertCount(3, $routes);
 
@@ -92,7 +92,7 @@ final class AttributeCollectorTest extends TestCase
      */
     public function testGetRoutesWithControllerAttributes(): void
     {
-        $routes = new AttributeCollector()->getRoutes(ControllerAttributedClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerAttributedClass::class);
 
         self::assertCount(1, $routes);
 
@@ -108,7 +108,7 @@ final class AttributeCollectorTest extends TestCase
      */
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
-        $routes = new AttributeCollector()->getRoutes(ControllerWithAllMiddlewareClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerWithAllMiddlewareClass::class);
 
         self::assertCount(2, $routes);
 

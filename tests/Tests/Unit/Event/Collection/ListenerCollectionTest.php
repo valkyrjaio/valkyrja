@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Collection;
 
-use Valkyrja\Event\Collection\Collection;
+use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
@@ -23,11 +23,11 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection service.
  */
-final class CollectionTest extends TestCase
+final class ListenerCollectionTest extends TestCase
 {
     public function testGetData(): void
     {
-        $collection = new Collection();
+        $collection = new ListenerCollection();
 
         $data = $collection->getData();
 
@@ -82,7 +82,7 @@ final class CollectionTest extends TestCase
             ]
         );
 
-        $collection = new Collection();
+        $collection = new ListenerCollection();
         $collection->setFromData($data);
 
         $dataFromCollection = $collection->getData();
@@ -103,7 +103,7 @@ final class CollectionTest extends TestCase
             listeners: [$listenerName => static fn () => $listener, $listenerName2 => static fn () => $listener2]
         );
 
-        $collection = new Collection();
+        $collection = new ListenerCollection();
         $collection->setFromData($data2);
 
         $dataFromCollection2 = $collection->getData();
@@ -136,7 +136,7 @@ final class CollectionTest extends TestCase
 
     public function testAddAndRemoveListener(): void
     {
-        $collection = new Collection();
+        $collection = new ListenerCollection();
 
         $eventId      = EventClass::class;
         $event        = new EventClass();

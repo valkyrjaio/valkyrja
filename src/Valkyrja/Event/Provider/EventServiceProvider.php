@@ -18,14 +18,14 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Collection\Contract\CollectionContract;
-use Valkyrja\Event\Collector\AttributeCollector;
-use Valkyrja\Event\Collector\Contract\CollectorContract;
+use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
+use Valkyrja\Event\Collection\ListenerCollection;
+use Valkyrja\Event\Collector\AttributeListenerCollector;
+use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
@@ -44,31 +44,31 @@ class EventServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
-            EventDispatcherContract::class   => [self::class, 'publishDispatcher'],
-            CollectionContract::class        => [self::class, 'publishCollection'],
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            EventData::class                 => [self::class, 'publishData'],
+            ListenerCollectorContract::class  => [self::class, 'publishAttributesListenerCollector'],
+            EventDispatcherContract::class    => [self::class, 'publishDispatcher'],
+            ListenerCollectionContract::class => [self::class, 'publishListenerCollection'],
+            DataFileGeneratorContract::class  => [self::class, 'publishDataFileGenerator'],
+            EventData::class                  => [self::class, 'publishData'],
         ];
     }
 
     /**
      * Publish the attributes service.
      */
-    public static function publishAttributesCollector(ContainerContract $container): void
+    public static function publishAttributesListenerCollector(ContainerContract $container): void
     {
         if (! $container->isSingleton(ReflectorContract::class)) {
             ReflectionServiceProvider::publishReflection($container);
         }
 
-        if (! $container->isSingleton(AttributeCollectorContract::class)) {
+        if (! $container->isSingleton(CollectorContract::class)) {
             AttributeServiceProvider::publishAttributes($container);
         }
 
         $container->setSingleton(
-            CollectorContract::class,
-            new AttributeCollector(
-                $container->getSingleton(AttributeCollectorContract::class)
+            ListenerCollectorContract::class,
+            new AttributeListenerCollector(
+                $container->getSingleton(CollectorContract::class)
             )
         );
     }
@@ -81,7 +81,7 @@ class EventServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             EventDispatcherContract::class,
             new EventDispatcher(
-                $container->getSingleton(CollectionContract::class),
+                $container->getSingleton(ListenerCollectionContract::class),
                 $container,
             )
         );
@@ -90,11 +90,11 @@ class EventServiceProvider implements ServiceProviderContract
     /**
      * Publish the collection service.
      */
-    public static function publishCollection(ContainerContract $container): void
+    public static function publishListenerCollection(ContainerContract $container): void
     {
         $container->setSingleton(
-            CollectionContract::class,
-            $collection = new Collection()
+            ListenerCollectionContract::class,
+            $collection = new ListenerCollection()
         );
 
         $app = $container->getSingleton(ApplicationContract::class);
@@ -126,7 +126,7 @@ class EventServiceProvider implements ServiceProviderContract
 
         $directory = Directory::srcPath($dataPath);
 
-        $collection = $container->getSingleton(CollectionContract::class);
+        $collection = $container->getSingleton(ListenerCollectionContract::class);
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
@@ -144,7 +144,7 @@ class EventServiceProvider implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
-        $collection  = $container->getSingleton(CollectionContract::class);
+        $collection  = $container->getSingleton(ListenerCollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
         $providers = $application->getEventProviders();
@@ -166,8 +166,8 @@ class EventServiceProvider implements ServiceProviderContract
         }
 
         if ($listenerClasses !== []) {
-            /** @var CollectorContract $listenerAttributes */
-            $listenerAttributes = $container->getSingleton(CollectorContract::class);
+            /** @var ListenerCollectorContract $listenerAttributes */
+            $listenerAttributes = $container->getSingleton(ListenerCollectorContract::class);
 
             // Get all the annotated listeners from the list of classes
             // Iterate through the listeners

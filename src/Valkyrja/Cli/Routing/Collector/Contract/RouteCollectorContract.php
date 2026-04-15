@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Collector\Contract;
+namespace Valkyrja\Cli\Routing\Collector\Contract;
 
-use Valkyrja\Event\Data\Contract\ListenerContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-interface CollectorContract
+interface RouteCollectorContract
 {
     /**
-     * Get the listeners.
+     * Get the commands.
      *
      * @param class-string ...$classes The classes
      *
-     * @return ListenerContract[]
+     * @return RouteContract[]
      */
-    public function getListeners(string ...$classes): array;
+    public function getRoutes(string ...$classes): array;
 }

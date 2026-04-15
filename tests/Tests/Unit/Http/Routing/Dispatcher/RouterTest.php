@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
@@ -77,7 +77,7 @@ final class RouterTest extends TestCase
 
     public function testMethodNotAllowed(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
@@ -104,7 +104,7 @@ final class RouterTest extends TestCase
         $routeNotMatchedHandler = new RouteNotMatchedHandler();
         $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedClass::class);
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher, routeNotMatchedHandler: $routeNotMatchedHandler);
         $request    = new ServerRequest(
@@ -131,7 +131,7 @@ final class RouterTest extends TestCase
         $routeNotMatchedHandler = new RouteMatchedHandler();
         $routeNotMatchedHandler->add(RouteMatchedMiddlewareChangedClass::class);
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher, routeMatchedHandler: $routeNotMatchedHandler);
         $request    = new ServerRequest(
@@ -155,7 +155,7 @@ final class RouterTest extends TestCase
     {
         RouteMatchedMiddlewareChangedClass::resetCounter();
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(
@@ -178,7 +178,7 @@ final class RouterTest extends TestCase
 
     public function testResponseAfterRouteDispatched(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
         $router     = new Router(matcher: $matcher);
         $request    = new ServerRequest(

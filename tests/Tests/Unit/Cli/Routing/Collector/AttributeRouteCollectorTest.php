@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Cli\Routing\Collector\AttributeCollector;
+use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
@@ -38,14 +38,14 @@ use Valkyrja\Type\Enum\CastType;
 /**
  * Test the AttributeCollector class.
  */
-final class AttributeCollectorTest extends TestCase
+final class AttributeRouteCollectorTest extends TestCase
 {
     /**
      * @throws ReflectionException
      */
     public function testDefaults(): void
     {
-        $collector = new AttributeCollector(
+        $collector = new AttributeRouteCollector(
             attributes: new Collector(),
             reflection: new Reflector()
         );
@@ -55,7 +55,7 @@ final class AttributeCollectorTest extends TestCase
 
     public function testGetCommands(): void
     {
-        $collector = new AttributeCollector(
+        $collector = new AttributeRouteCollector(
             attributes: new Collector(),
             reflection: new Reflector()
         );
@@ -79,7 +79,7 @@ final class AttributeCollectorTest extends TestCase
 
     public function testGetCommandsWithMoreAttributes(): void
     {
-        $collector = new AttributeCollector(
+        $collector = new AttributeRouteCollector(
             attributes: new Collector(),
             reflection: new Reflector()
         );
@@ -119,7 +119,7 @@ final class AttributeCollectorTest extends TestCase
 
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
-        $collector = new AttributeCollector(
+        $collector = new AttributeRouteCollector(
             attributes: new Collector(),
             reflection: new Reflector()
         );

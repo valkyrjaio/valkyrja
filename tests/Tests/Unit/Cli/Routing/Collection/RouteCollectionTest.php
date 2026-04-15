@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
@@ -28,11 +28,11 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection class.
  */
-final class CollectionTest extends TestCase
+final class RouteCollectionTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
 
         self::assertEmpty($collection->all());
         self::assertEmpty($collection->getData()->routes);
@@ -46,7 +46,7 @@ final class CollectionTest extends TestCase
         $this->expectException(CliRoutingInvalidRouteNameException::class);
         $this->expectExceptionMessage("The route `$name` was not found.");
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
 
         $collection->get($name);
     }
@@ -59,7 +59,7 @@ final class CollectionTest extends TestCase
             handler: static fn (): null => null,
         );
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add($route);
 
         self::assertSame([$route->getName() => $route], $collection->all());
@@ -88,7 +88,7 @@ final class CollectionTest extends TestCase
             routes: [$route->getName() => $routeClosure = static fn () => $route]
         );
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->setFromData($data);
 
         $routeFromCollection = $collection->get($route->getName());

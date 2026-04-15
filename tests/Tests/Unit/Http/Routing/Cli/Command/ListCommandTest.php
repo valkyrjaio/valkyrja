@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -41,7 +41,7 @@ final class ListCommandTest extends TestCase
 
         $outputFactory = new OutputFactory();
         $version       = new VersionCommand($outputFactory);
-        $collection    = new Collection();
+        $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();
 
@@ -66,7 +66,7 @@ final class ListCommandTest extends TestCase
     {
         $outputFactory = new OutputFactory();
         $version       = new VersionCommand($outputFactory);
-        $collection    = new Collection();
+        $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();
 

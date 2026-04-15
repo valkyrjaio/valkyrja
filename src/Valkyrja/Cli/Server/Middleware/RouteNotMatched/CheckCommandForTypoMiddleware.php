@@ -22,7 +22,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 
@@ -40,7 +40,7 @@ class CheckCommandForTypoMiddleware implements RouteNotMatchedMiddlewareContract
      */
     public function __construct(
         protected RouterContract $router,
-        protected CollectionContract $collection,
+        protected RouteCollectionContract $collection,
         protected string $defaultAnswer = 'no',
     ) {
     }

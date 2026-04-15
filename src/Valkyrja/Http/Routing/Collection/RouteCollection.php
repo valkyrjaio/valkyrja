@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Routing\Collection;
 use Closure;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
@@ -29,11 +29,11 @@ use function array_map;
 use function in_array;
 
 /**
- * @phpstan-import-type RequestMethodList from CollectionContract
+ * @phpstan-import-type RequestMethodList from RouteCollectionContract
  *
- * @psalm-import-type RequestMethodList from CollectionContract
+ * @psalm-import-type RequestMethodList from RouteCollectionContract
  */
-class Collection implements CollectionContract
+class RouteCollection implements RouteCollectionContract
 {
     /**
      * The routes.

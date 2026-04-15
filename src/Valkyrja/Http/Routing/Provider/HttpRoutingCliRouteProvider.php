@@ -21,7 +21,7 @@ use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 
 class HttpRoutingCliRouteProvider implements CliRouteProviderContract
 {
@@ -53,7 +53,7 @@ class HttpRoutingCliRouteProvider implements CliRouteProviderContract
     {
         return $container->getSingleton(ListCommand::class)->run(
             $container->getSingleton(VersionCommand::class),
-            $container->getSingleton(CollectionContract::class),
+            $container->getSingleton(RouteCollectionContract::class),
             $container->getSingleton(OutputFactoryContract::class),
         );
     }

@@ -22,7 +22,7 @@ use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 /**
@@ -137,6 +137,6 @@ abstract class WorkerHttp extends App
     public static function bootstrapParentServices(ApplicationContract $app): void
     {
         // Subclasses may force-resolve expensive shared services here, e.g.:
-        $app->getContainer()->getSingleton(CollectionContract::class);
+        $app->getContainer()->getSingleton(RouteCollectionContract::class);
     }
 }

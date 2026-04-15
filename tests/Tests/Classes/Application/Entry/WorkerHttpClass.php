@@ -22,7 +22,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\TextResponse;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
 
 /**
@@ -102,7 +102,7 @@ final class WorkerHttpClass extends WorkerHttp
 
         parent::bootstrapParentServices($app);
 
-        $collection = $app->getContainer()->getSingleton(CollectionContract::class);
+        $collection = $app->getContainer()->getSingleton(RouteCollectionContract::class);
 
         $collection->add(
             new Route(

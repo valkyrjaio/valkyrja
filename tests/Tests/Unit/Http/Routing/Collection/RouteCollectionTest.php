@@ -17,7 +17,7 @@ use Override;
 use stdClass;
 use TypeError;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
@@ -34,7 +34,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the Collection service.
  */
-final class CollectionTest extends TestCase
+final class RouteCollectionTest extends TestCase
 {
     protected const string ROUTE_PATH = '/version';
     protected const string ROUTE_NAME = 'version';
@@ -45,7 +45,7 @@ final class CollectionTest extends TestCase
 
     protected Route $route;
     protected DynamicRoute $dynamicRoute;
-    protected Collection $collection;
+    protected RouteCollection $collection;
 
     #[Override]
     protected function setUp(): void
@@ -66,7 +66,7 @@ final class CollectionTest extends TestCase
             handler: static fn (): null => null,
         );
 
-        $this->collection = new Collection();
+        $this->collection = new RouteCollection();
         $this->collection->add($this->route);
         $this->collection->add($this->dynamicRoute);
     }
@@ -93,13 +93,13 @@ final class CollectionTest extends TestCase
             ]
         );
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->setFromData($data);
 
-        $collection2 = new Collection();
+        $collection2 = new RouteCollection();
         $collection2->add($route);
 
-        $collection3 = new Collection();
+        $collection3 = new RouteCollection();
         $collection3->setFromData($data2);
 
         $dataFromCollection  = $collection->getData();
@@ -130,7 +130,7 @@ final class CollectionTest extends TestCase
             ],
         );
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->setFromData($data);
 
         $collection->getByPath('test', RequestMethod::GET);
@@ -434,7 +434,7 @@ final class CollectionTest extends TestCase
             requestMethods: [RequestMethod::ANY]
         );
 
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add($route);
         $collection->add($dynamicRoute);
 
