@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Closure;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
@@ -24,10 +25,10 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 readonly class HttpRoutingData
 {
     /**
-     * @param array<string, RouteContract|Closure():RouteContract> $routes       The routes
-     * @param RequestArray                                         $paths        The static paths list
-     * @param RequestArray                                         $regexes      The regex list
-     * @param RequestArray                                         $dynamicPaths The dynamic paths list
+     * @param array<string, Closure():(RouteContract|DynamicRouteContract)> $routes       The routes
+     * @param RequestArray                                                  $paths        The static paths list
+     * @param RequestArray                                                  $regexes      The regex list
+     * @param RequestArray                                                  $dynamicPaths The dynamic paths list
      */
     public function __construct(
         public array $routes = [],

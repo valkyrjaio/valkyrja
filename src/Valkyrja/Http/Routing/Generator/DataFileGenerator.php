@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
-use function is_callable;
-
 class DataFileGenerator extends FileGenerator implements DataFileGeneratorContract
 {
     /**
@@ -124,9 +122,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
         $routesContent = '';
 
         foreach ($routes as $key => $route) {
-            if (is_callable($route)) {
-                $route = $route();
-            }
+            $route = $route();
 
             $routeContent = $this->getRouteAsContent($route);
 

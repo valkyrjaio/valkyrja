@@ -27,7 +27,6 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexExcept
 
 use function array_map;
 use function in_array;
-use function is_callable;
 
 /**
  * @phpstan-import-type RequestMethodList from CollectionContract
@@ -40,7 +39,7 @@ class Collection implements CollectionContract
      * The routes.
      * Keyed by route name.
      *
-     * @var array<string, RouteContract|DynamicRouteContract|(Closure():RouteContract|DynamicRouteContract)>
+     * @var array<string, Closure():(RouteContract|DynamicRouteContract)>
      */
     protected array $routes = [];
 
@@ -72,12 +71,7 @@ class Collection implements CollectionContract
     public function getData(): HttpRoutingData
     {
         return new HttpRoutingData(
-            routes: array_map(
-                static fn (RouteContract|Closure $route): RouteContract => is_callable($route)
-                    ? $route()
-                    : $route,
-                $this->routes
-            ),
+            routes: $this->routes,
             paths: $this->paths,
             dynamicPaths: $this->dynamicPaths,
             regexes: $this->regexes,
@@ -105,7 +99,7 @@ class Collection implements CollectionContract
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
 
-        $this->routes[$route->getName()] = $route;
+        $this->routes[$route->getName()] = static fn (): RouteContract => $route;
     }
 
     /**
@@ -381,15 +375,11 @@ class Collection implements CollectionContract
     /**
      * Ensure a route is returned.
      *
-     * @param RouteContract|Closure():RouteContract $route The route
+     * @param Closure():(RouteContract|DynamicRouteContract) $route The route
      */
-    protected function ensureRoute(RouteContract|Closure $route): RouteContract
+    protected function ensureRoute(Closure $route): RouteContract
     {
-        if (is_callable($route)) {
-            return $route();
-        }
-
-        return $route;
+        return $route();
     }
 
     /**

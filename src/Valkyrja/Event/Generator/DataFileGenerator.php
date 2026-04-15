@@ -19,8 +19,6 @@ use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Support\Generator\Abstract\FileGenerator;
 
-use function is_callable;
-
 class DataFileGenerator extends FileGenerator implements DataFileGeneratorContract
 {
     /**
@@ -118,9 +116,7 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
         $listenersContent = '';
 
         foreach ($listeners as $key => $listener) {
-            if (is_callable($listener)) {
-                $listener = $listener();
-            }
+            $listener = $listener();
 
             $listenerContent = $this->getListenerAsContent($listener);
 

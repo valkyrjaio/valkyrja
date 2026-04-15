@@ -20,7 +20,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 
 use function array_keys;
-use function is_callable;
 
 class Collection implements CollectionContract
 {
@@ -34,7 +33,7 @@ class Collection implements CollectionContract
     /**
      * The listeners.
      *
-     * @var array<string, ListenerContract|Closure():ListenerContract>
+     * @var array<string, Closure():ListenerContract>
      */
     protected array $listeners = [];
 
@@ -89,7 +88,7 @@ class Collection implements CollectionContract
 
         $this->events[$eventId] ??= [];
         $this->events[$eventId][$listenerId] = $listenerId;
-        $this->listeners[$listenerId]        = $listener;
+        $this->listeners[$listenerId]        = static fn (): ListenerContract => $listener;
     }
 
     /**
@@ -220,7 +219,7 @@ class Collection implements CollectionContract
     public function getListeners(): array
     {
         return array_map(
-            fn (ListenerContract|Closure $listener): ListenerContract => $this->ensureListener($listener),
+            fn (Closure $listener): ListenerContract => $this->ensureListener($listener),
             $this->listeners
         );
     }
@@ -253,14 +252,10 @@ class Collection implements CollectionContract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param ListenerContract|Closure():ListenerContract $listener The listener
+     * @param Closure():ListenerContract $listener The listener
      */
-    protected function ensureListener(ListenerContract|Closure $listener): ListenerContract
+    protected function ensureListener(Closure $listener): ListenerContract
     {
-        if (is_callable($listener)) {
-            return $listener();
-        }
-
-        return $listener;
+        return $listener();
     }
 }

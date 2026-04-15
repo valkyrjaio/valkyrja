@@ -20,11 +20,9 @@ use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
 
-use function is_callable;
-
 class Collection implements CollectionContract
 {
-    /** @var array<string, RouteContract|Closure():RouteContract> */
+    /** @var array<string, Closure():RouteContract> */
     protected array $routes = [];
 
     /**
@@ -54,7 +52,7 @@ class Collection implements CollectionContract
     public function add(RouteContract ...$commands): static
     {
         foreach ($commands as $command) {
-            $this->routes[$command->getName()] = $command;
+            $this->routes[$command->getName()] = static fn (): RouteContract => $command;
         }
 
         return $this;
@@ -92,7 +90,7 @@ class Collection implements CollectionContract
     public function all(): array
     {
         return array_map(
-            fn (RouteContract|Closure $route): RouteContract => $this->ensureRoute($route),
+            fn (Closure $route): RouteContract => $this->ensureRoute($route),
             $this->routes
         );
     }
@@ -100,14 +98,10 @@ class Collection implements CollectionContract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param RouteContract|Closure():RouteContract $route The route
+     * @param Closure():RouteContract $route The route
      */
-    protected function ensureRoute(RouteContract|Closure $route): RouteContract
+    protected function ensureRoute(Closure $route): RouteContract
     {
-        if (is_callable($route)) {
-            return $route();
-        }
-
-        return $route;
+        return $route();
     }
 }
