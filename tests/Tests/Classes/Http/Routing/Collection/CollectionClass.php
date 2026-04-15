@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Routing\Collection;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-final class CollectionClass extends Collection
+final class CollectionClass extends RouteCollection
 {
     public function setRouteToRequestMethodWrapper(RouteContract $route, RequestMethod $requestMethod): void
     {

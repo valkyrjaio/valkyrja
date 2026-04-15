@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Event\Attribute;
 
 use Valkyrja\Event\Attribute\Listener;
-use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
+use Valkyrja\Tests\Unit\Event\Collector\AttributesListenerCollectorTest;
 
 /**
  * Class with attributes used for unit testing.
  */
 // Testing valid class attributes that will be attached to the constructor
-#[Listener(AttributesCollectorTest::VALUE1, 'Attributed2ClassValue1')]
-#[Listener(AttributesCollectorTest::VALUE2, 'Attributed2ClassValue2')]
+#[Listener(AttributesListenerCollectorTest::VALUE1, 'Attributed2ClassValue1')]
+#[Listener(AttributesListenerCollectorTest::VALUE2, 'Attributed2ClassValue2')]
 final class Attributed2Class
 {
     public function __construct()
     {
     }
 
-    #[Listener(AttributesCollectorTest::VALUE1, 'Attributed2Class::staticMethodValue1')]
-    #[Listener(AttributesCollectorTest::VALUE2, 'Attributed2Class::staticMethodValue2')]
+    #[Listener(AttributesListenerCollectorTest::VALUE1, 'Attributed2Class::staticMethodValue1')]
+    #[Listener(AttributesListenerCollectorTest::VALUE2, 'Attributed2Class::staticMethodValue2')]
     public static function staticMethod(): string
     {
         return 'Static Method';
     }
 
-    #[Listener(AttributesCollectorTest::VALUE1, 'Attributed2Class->methodValue1')]
-    #[Listener(AttributesCollectorTest::VALUE2, 'Attributed2Class->methodValue1')]
+    #[Listener(AttributesListenerCollectorTest::VALUE1, 'Attributed2Class->methodValue1')]
+    #[Listener(AttributesListenerCollectorTest::VALUE2, 'Attributed2Class->methodValue1')]
     public function method(): string
     {
         return 'Method';

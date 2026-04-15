@@ -25,7 +25,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
@@ -121,7 +121,7 @@ final class CliTest extends TestCase
         $application = Cli::app($env, $config);
         $container   = $application->getContainer();
 
-        $cli = $container->getSingleton(CollectionContract::class);
+        $cli = $container->getSingleton(RouteCollectionContract::class);
 
         self::assertTrue($container->has(CliConfig::class));
         self::assertTrue($container->has(HttpConfig::class));

@@ -15,17 +15,17 @@ namespace Valkyrja\Event\Collector;
 
 use Override;
 use ReflectionMethod;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Attribute\ListenerHandler;
-use Valkyrja\Event\Collector\Contract\CollectorContract;
+use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Listener;
 
-class AttributeCollector implements CollectorContract
+class AttributeListenerCollector implements ListenerCollectorContract
 {
     public function __construct(
-        protected AttributeCollectorContract $attributes,
+        protected CollectorContract $attributes,
     ) {
     }
 

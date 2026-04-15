@@ -18,7 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -29,10 +29,10 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Http\Routing\Collection\Collection;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
-use Valkyrja\Http\Routing\Collector\AttributeCollector;
-use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
+use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
+use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
@@ -60,11 +60,11 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
     {
         return [
             RouterContract::class            => [self::class, 'publishRouter'],
-            CollectionContract::class        => [self::class, 'publishCollection'],
+            RouteCollectionContract::class   => [self::class, 'publishRouteCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
             MatcherContract::class           => [self::class, 'publishMatcher'],
             UrlContract::class               => [self::class, 'publishUrl'],
-            CollectorContract::class         => [self::class, 'publishAttributesCollector'],
+            RouteCollectorContract::class    => [self::class, 'publishAttributesRouteCollector'],
             ProcessorContract::class         => [self::class, 'publishProcessor'],
             ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
             HttpRoutingData::class           => [self::class, 'publishData'],
@@ -106,11 +106,11 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
      *
      * @param ContainerContract $container The container
      */
-    public static function publishCollection(ContainerContract $container): void
+    public static function publishRouteCollection(ContainerContract $container): void
     {
         $container->setSingleton(
-            CollectionContract::class,
-            $collection = new Collection()
+            RouteCollectionContract::class,
+            $collection = new RouteCollection()
         );
 
         $app = $container->getSingleton(ApplicationContract::class);
@@ -142,7 +142,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
 
         $directory = Directory::srcPath($dataPath);
 
-        $collection = $container->getSingleton(CollectionContract::class);
+        $collection = $container->getSingleton(RouteCollectionContract::class);
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
@@ -165,7 +165,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             MatcherContract::class,
             new Matcher(
-                collection: $container->getSingleton(CollectionContract::class)
+                collection: $container->getSingleton(RouteCollectionContract::class)
             )
         );
     }
@@ -180,7 +180,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             UrlContract::class,
             new Url(
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
             )
         );
     }
@@ -190,20 +190,20 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
      *
      * @param ContainerContract $container The container
      */
-    public static function publishAttributesCollector(ContainerContract $container): void
+    public static function publishAttributesRouteCollector(ContainerContract $container): void
     {
         if (! $container->isSingleton(ReflectorContract::class)) {
             ReflectionServiceProvider::publishReflection($container);
         }
 
-        if (! $container->isSingleton(AttributeCollectorContract::class)) {
+        if (! $container->isSingleton(CollectorContract::class)) {
             AttributeServiceProvider::publishAttributes($container);
         }
 
         $container->setSingleton(
-            CollectorContract::class,
-            new AttributeCollector(
-                attributes: $container->getSingleton(AttributeCollectorContract::class),
+            RouteCollectorContract::class,
+            new AttributeRouteCollector(
+                attributes: $container->getSingleton(CollectorContract::class),
                 reflection: $container->getSingleton(ReflectorContract::class),
                 processor: $container->getSingleton(ProcessorContract::class)
             )
@@ -244,7 +244,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
-        $collection  = $container->getSingleton(CollectionContract::class);
+        $collection  = $container->getSingleton(RouteCollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
         $processor = $container->getSingleton(ProcessorContract::class);
@@ -268,8 +268,8 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         }
 
         if ($controllers !== []) {
-            /** @var CollectorContract $collector */
-            $collector = $container->getSingleton(CollectorContract::class);
+            /** @var RouteCollectorContract $collector */
+            $collector = $container->getSingleton(RouteCollectorContract::class);
 
             // Get all the attributes routes from the list of controllers
             // Iterate through the routes

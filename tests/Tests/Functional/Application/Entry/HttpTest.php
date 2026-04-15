@@ -27,7 +27,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
@@ -104,7 +104,7 @@ final class HttpTest extends TestCase
         $application = Http::app($env, $config);
         $container   = $application->getContainer();
 
-        $http = $container->getSingleton(CollectionContract::class);
+        $http = $container->getSingleton(RouteCollectionContract::class);
 
         self::assertFalse($container->has(CliConfig::class));
         self::assertTrue($container->has(HttpConfig::class));

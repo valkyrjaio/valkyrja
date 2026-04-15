@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Collector\Contract;
+namespace Valkyrja\Http\Routing\Collector\Contract;
 
-use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-interface CollectorContract
+interface RouteCollectorContract
 {
     /**
-     * Get the commands.
+     * Get route attributes.
      *
      * @param class-string ...$classes The classes
      *

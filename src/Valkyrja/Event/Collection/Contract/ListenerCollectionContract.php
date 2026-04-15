@@ -18,7 +18,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 
-interface CollectionContract extends ListenerProviderInterface
+interface ListenerCollectionContract extends ListenerProviderInterface
 {
     /**
      * Get a data representation of the collection.

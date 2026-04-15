@@ -22,7 +22,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
@@ -104,7 +104,7 @@ class CliServerServiceProvider implements ServiceProviderContract
             new HelpCommand(
                 version: $container->getSingleton(VersionCommand::class),
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
@@ -119,7 +119,7 @@ class CliServerServiceProvider implements ServiceProviderContract
             ListBashCommand::class,
             new ListBashCommand(
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
@@ -135,7 +135,7 @@ class CliServerServiceProvider implements ServiceProviderContract
             new ListCommand(
                 version: $container->getSingleton(VersionCommand::class),
                 route: $container->getSingleton(RouteContract::class),
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
@@ -301,7 +301,7 @@ class CliServerServiceProvider implements ServiceProviderContract
             CheckCommandForTypoMiddleware::class,
             new CheckCommandForTypoMiddleware(
                 router: $container->getSingleton(RouterContract::class),
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
             )
         );
     }

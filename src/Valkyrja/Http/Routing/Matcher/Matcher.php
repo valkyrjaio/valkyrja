@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Routing\Matcher;
 
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Collection\Collection;
-use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
@@ -30,7 +30,7 @@ use function preg_match;
 class Matcher implements MatcherContract
 {
     public function __construct(
-        protected CollectionContract $collection = new Collection()
+        protected RouteCollectionContract $collection = new RouteCollection()
     ) {
     }
 

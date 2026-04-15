@@ -21,7 +21,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
@@ -67,7 +67,7 @@ final class RouterTest extends TestCase
 
     public function testRouteFound(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'test-command');
 
@@ -85,7 +85,7 @@ final class RouterTest extends TestCase
 
     public function testRouteFoundWithRouteMatchedMiddleware(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $input      = new Input(commandName: 'test-command');
 
         $handler = $this->createMock(RouteMatchedHandlerContract::class);
@@ -110,7 +110,7 @@ final class RouterTest extends TestCase
 
     public function testRouteFoundWithRouteMatchedMiddlewareReturningOutput(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $input      = new Input(commandName: 'test-command');
         $output     = new Output(exitCode: ExitCode::SUCCESS);
 
@@ -138,7 +138,7 @@ final class RouterTest extends TestCase
 
     public function testRouteFoundWithRouteDispatchedMiddleware(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $input      = new Input(commandName: 'test-command');
 
         $handler = $this->createMock(RouteDispatchedHandlerContract::class);
@@ -242,7 +242,7 @@ final class RouterTest extends TestCase
 
     public function testHelpRoute(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'help');
 
@@ -260,7 +260,7 @@ final class RouterTest extends TestCase
 
     public function testHelpRouteWithSpecificRoute(): void
     {
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'help', arguments: [new Argument(value: 'test-command')]);
 

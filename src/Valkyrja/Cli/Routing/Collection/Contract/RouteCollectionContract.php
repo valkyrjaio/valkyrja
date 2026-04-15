@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Collection\Contract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-interface CollectionContract
+interface RouteCollectionContract
 {
     /**
      * Get a data representation of the collection.

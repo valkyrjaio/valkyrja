@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
@@ -29,7 +29,7 @@ class ListBashCommand
 {
     public function __construct(
         protected RouteContract $route,
-        protected CollectionContract $collection,
+        protected RouteCollectionContract $collection,
         protected OutputFactoryContract $outputFactory
     ) {
     }

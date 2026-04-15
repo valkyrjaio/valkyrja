@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Collector;
 
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Event\Collector\AttributeCollector;
+use Valkyrja\Event\Collector\AttributeListenerCollector;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
@@ -23,14 +23,14 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 /**
  * Test the attributes collector class.
  */
-final class AttributesCollectorTest extends TestCase
+final class AttributesListenerCollectorTest extends TestCase
 {
     /**
      * The value to test with.
      *
      * @var class-string
      */
-    public const string VALUE1 = AttributeCollector::class;
+    public const string VALUE1 = AttributeListenerCollector::class;
 
     /**
      * The value to test with.
@@ -42,14 +42,14 @@ final class AttributesCollectorTest extends TestCase
     /**
      * The class  to test with.
      */
-    protected AttributeCollector $class;
+    protected AttributeListenerCollector $class;
 
     /**
      * Setup the test.
      */
     protected function setUp(): void
     {
-        $this->class = new AttributeCollector(
+        $this->class = new AttributeListenerCollector(
             new Collector()
         );
     }

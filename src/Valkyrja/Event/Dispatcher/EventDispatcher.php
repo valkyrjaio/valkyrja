@@ -18,8 +18,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use stdClass;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Collection\Contract\CollectionContract;
+use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
+use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
@@ -28,7 +28,7 @@ use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 class EventDispatcher implements EventDispatcherContract
 {
     public function __construct(
-        protected CollectionContract $collection = new Collection(),
+        protected ListenerCollectionContract $collection = new ListenerCollection(),
         protected ContainerContract $container = new Container(),
     ) {
     }

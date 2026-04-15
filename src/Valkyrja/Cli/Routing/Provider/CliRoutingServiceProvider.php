@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
@@ -25,10 +25,10 @@ use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Collection;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
-use Valkyrja\Cli\Routing\Collector\AttributeCollector;
-use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Cli\Routing\Collection\RouteCollection;
+use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
+use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
@@ -50,9 +50,9 @@ class CliRoutingServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            CollectorContract::class         => [self::class, 'publishAttributeCollector'],
+            RouteCollectorContract::class    => [self::class, 'publishAttributeRouteCollector'],
             RouterContract::class            => [self::class, 'publishRouter'],
-            CollectionContract::class        => [self::class, 'publishCollection'],
+            RouteCollectionContract::class   => [self::class, 'publishRouteCollection'],
             DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
             CliRoutingData::class            => [self::class, 'publishData'],
         ];
@@ -61,20 +61,20 @@ class CliRoutingServiceProvider implements ServiceProviderContract
     /**
      * Publish the attribute collector service.
      */
-    public static function publishAttributeCollector(ContainerContract $container): void
+    public static function publishAttributeRouteCollector(ContainerContract $container): void
     {
         if (! $container->isSingleton(ReflectorContract::class)) {
             ReflectionServiceProvider::publishReflection($container);
         }
 
-        if (! $container->isSingleton(AttributeCollectorContract::class)) {
+        if (! $container->isSingleton(CollectorContract::class)) {
             AttributeServiceProvider::publishAttributes($container);
         }
 
         $container->setSingleton(
-            CollectorContract::class,
-            new AttributeCollector(
-                attributes: $container->getSingleton(AttributeCollectorContract::class),
+            RouteCollectorContract::class,
+            new AttributeRouteCollector(
+                attributes: $container->getSingleton(CollectorContract::class),
                 reflection: $container->getSingleton(ReflectorContract::class),
             )
         );
@@ -95,7 +95,7 @@ class CliRoutingServiceProvider implements ServiceProviderContract
             RouterContract::class,
             new Router(
                 container: $container,
-                collection: $container->getSingleton(CollectionContract::class),
+                collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
                 throwableCaughtHandler: $throwableCaughtHandler,
                 routeMatchedHandler: $commandMatchedHandler,
@@ -109,11 +109,11 @@ class CliRoutingServiceProvider implements ServiceProviderContract
     /**
      * Publish the collection service.
      */
-    public static function publishCollection(ContainerContract $container): void
+    public static function publishRouteCollection(ContainerContract $container): void
     {
         $container->setSingleton(
-            CollectionContract::class,
-            $collection = new Collection()
+            RouteCollectionContract::class,
+            $collection = new RouteCollection()
         );
 
         $app = $container->getSingleton(ApplicationContract::class);
@@ -146,7 +146,7 @@ class CliRoutingServiceProvider implements ServiceProviderContract
 
         $directory = Directory::srcPath($dataPath);
 
-        $collection = $container->getSingleton(CollectionContract::class);
+        $collection = $container->getSingleton(RouteCollectionContract::class);
 
         $container->setSingleton(
             DataFileGeneratorContract::class,
@@ -164,7 +164,7 @@ class CliRoutingServiceProvider implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
-        $collection  = $container->getSingleton(CollectionContract::class);
+        $collection  = $container->getSingleton(RouteCollectionContract::class);
         $application = $container->getSingleton(ApplicationContract::class);
 
         $providers = $application->getCliProviders();
@@ -186,8 +186,8 @@ class CliRoutingServiceProvider implements ServiceProviderContract
         }
 
         if ($controllers !== []) {
-            /** @var CollectorContract $collector */
-            $collector = $container->getSingleton(CollectorContract::class);
+            /** @var RouteCollectorContract $collector */
+            $collector = $container->getSingleton(RouteCollectorContract::class);
 
             // Get all the attributes routes from the list of controllers
             $collection->add(

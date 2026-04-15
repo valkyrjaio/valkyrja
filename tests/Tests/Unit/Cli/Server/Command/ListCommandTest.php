@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -38,7 +38,7 @@ final class ListCommandTest extends TestCase
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->never())
             ->method('run');
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
@@ -75,7 +75,7 @@ final class ListCommandTest extends TestCase
         $versionCommand = $this->createMock(VersionCommand::class);
         $versionCommand->expects($this->never())
             ->method('run');
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
@@ -138,7 +138,7 @@ final class ListCommandTest extends TestCase
         $versionCommand->expects($this->once())
             ->method('run')
             ->willReturn($output->withMessages(new Message($versionText)));
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2]);
@@ -211,7 +211,7 @@ final class ListCommandTest extends TestCase
         $versionCommand->expects($this->once())
             ->method('run')
             ->willReturn($output->withMessages(new Message($versionText)));
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2, $listRoute3]);

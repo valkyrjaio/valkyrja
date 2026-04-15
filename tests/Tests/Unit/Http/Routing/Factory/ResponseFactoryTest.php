@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory as MessageResponseFactory;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Url\Url;
@@ -42,7 +42,7 @@ final class ResponseFactoryTest extends TestCase
             name: self::ROUTE_NAME,
             handler: static fn (): null => null,
         );
-        $collection      = new Collection();
+        $collection      = new RouteCollection();
         $responseFactory = new MessageResponseFactory();
         $url             = new Url(
             collection: $collection,

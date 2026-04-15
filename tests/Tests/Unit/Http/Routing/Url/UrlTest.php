@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Url;
 
 use Override;
-use Valkyrja\Http\Routing\Collection\Collection;
+use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
@@ -53,7 +53,7 @@ final class UrlTest extends TestCase
             ],
             handler: static fn (): null => null,
         );
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $this->url  = new Url(
             collection: $collection,
         );

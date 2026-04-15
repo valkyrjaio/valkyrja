@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Dispatcher;
 
 use stdClass;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Event\Collection\Collection;
+use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Tests\Classes\Event\ArgumentsCapableEventClass;
@@ -56,7 +56,7 @@ final class DispatcherTest extends TestCase
             handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
-        $collection = new Collection();
+        $collection = new ListenerCollection();
 
         $collection->addListener($listener);
 
@@ -106,7 +106,7 @@ final class DispatcherTest extends TestCase
             handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
-        $collection = new Collection();
+        $collection = new ListenerCollection();
 
         $dispatcher = new EventDispatcher(collection: $collection);
 
@@ -147,7 +147,7 @@ final class DispatcherTest extends TestCase
             handler: static fn (ContainerContract $container, array $arguments) => self::dispatchCallback($arguments['event'])
         );
 
-        $collection = new Collection();
+        $collection = new ListenerCollection();
 
         $collection->addListener($listener);
         $collection->addListener($listener->withName('listener2'));

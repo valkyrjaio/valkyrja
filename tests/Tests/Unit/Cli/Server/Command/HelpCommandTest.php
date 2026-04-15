@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
@@ -47,7 +47,7 @@ final class HelpCommandTest extends TestCase
             ->method('getOption')
             ->with('command')
             ->willReturn($option);
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
             ->with($commandName)
@@ -137,7 +137,7 @@ final class HelpCommandTest extends TestCase
             ->method('getOption')
             ->with('command')
             ->willReturn($option);
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
             ->with($commandName)
@@ -217,7 +217,7 @@ final class HelpCommandTest extends TestCase
             ->method('getOption')
             ->with('command')
             ->willReturn($option);
-        $collection = $this->createMock(CollectionContract::class);
+        $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
             ->with($commandName)

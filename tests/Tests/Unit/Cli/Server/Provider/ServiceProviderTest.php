@@ -24,7 +24,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Command\GenerateDataCommand;
@@ -93,7 +93,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = CliServerServiceProvider::publishers()[HelpCommand::class];
@@ -108,7 +108,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishListBashCommand(): void
     {
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = CliServerServiceProvider::publishers()[ListBashCommand::class];
@@ -124,7 +124,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
-        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         $callback = CliServerServiceProvider::publishers()[ListCommand::class];
@@ -315,7 +315,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCheckCommandForTypoMiddleware(): void
     {
         $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
-        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckCommandForTypoMiddleware::class];
         $callback($this->container);

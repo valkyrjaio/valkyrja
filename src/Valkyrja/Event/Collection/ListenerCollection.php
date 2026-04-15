@@ -15,13 +15,13 @@ namespace Valkyrja\Event\Collection;
 
 use Closure;
 use Override;
-use Valkyrja\Event\Collection\Contract\CollectionContract;
+use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 
 use function array_keys;
 
-class Collection implements CollectionContract
+class ListenerCollection implements ListenerCollectionContract
 {
     /**
      * The events.

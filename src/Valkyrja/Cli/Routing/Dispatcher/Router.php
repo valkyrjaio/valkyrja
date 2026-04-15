@@ -31,8 +31,8 @@ use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Collection\Collection;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
@@ -45,7 +45,7 @@ class Router implements RouterContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
-        protected CollectionContract $collection = new Collection(),
+        protected RouteCollectionContract $collection = new RouteCollection(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),

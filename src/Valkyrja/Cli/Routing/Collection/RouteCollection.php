@@ -15,12 +15,12 @@ namespace Valkyrja\Cli\Routing\Collection;
 
 use Closure;
 use Override;
-use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
 
-class Collection implements CollectionContract
+class RouteCollection implements RouteCollectionContract
 {
     /** @var array<string, Closure():RouteContract> */
     protected array $routes = [];

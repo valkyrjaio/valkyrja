@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\RouteNotMatched;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
-use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
@@ -39,7 +39,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             ->method('dispatch')
             ->withAnyParameters()
             ->willReturn($output2);
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add(
             new Route(
                 name: 'command',
@@ -83,7 +83,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             ->method('dispatch')
             ->withAnyParameters()
             ->willReturn($output2);
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add(
             new Route(
                 name: 'command',
@@ -128,7 +128,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             ->method('dispatch')
             ->withAnyParameters()
             ->willReturn($output2);
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add(
             new Route(
                 name: 'command',
@@ -173,7 +173,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             ->method('dispatch')
             ->withAnyParameters()
             ->willReturn($output2);
-        $collection = new Collection();
+        $collection = new RouteCollection();
         $collection->add(
             new Route(
                 name: 'nomatch',
