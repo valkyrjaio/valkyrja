@@ -17,7 +17,6 @@ use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -45,7 +44,7 @@ abstract class HandlerTestCase extends TestCase
         $this->command = new Route(
             name: 'test',
             description: 'Test Command',
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
     }
 }

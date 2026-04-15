@@ -27,8 +27,10 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\OptionParameter;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
 class ListCommand
@@ -60,6 +62,7 @@ class ListCommand
         valueDisplayName: 'namespace',
         shortNames: ['n']
     )]
+    #[RouteHandler([CliRoutingCliRouteProvider::class, 'listHandler'])]
     public function run(): OutputContract
     {
         $namespace = '';

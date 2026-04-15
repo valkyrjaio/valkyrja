@@ -17,6 +17,8 @@ use Attribute;
 use Valkyrja\Attribute\Contract\ReflectionAwareAttributeContract;
 use Valkyrja\Attribute\Trait\ReflectionAwareAttribute;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
@@ -24,8 +26,7 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
-use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends Model implements ReflectionAwareAttributeContract
@@ -35,6 +36,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
+     * @param (callable(ContainerContract):OutputContract)|null $handler                   The handler
      * @param (callable():MessageContract)|null                 $helpText                  The help text
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
@@ -46,8 +48,8 @@ class Route extends Model implements ReflectionAwareAttributeContract
     public function __construct(
         protected string $name,
         protected string $description,
+        callable|null $handler = null,
         callable|null $helpText = null,
-        protected MethodDispatchContract $dispatch = new MethodDispatch(self::class, '__construct'),
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
@@ -58,7 +60,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
         parent::__construct(
             name: $name,
             description: $description,
-            dispatch: $dispatch,
+            handler: $handler ?? static fn (ContainerContract $container): OutputContract => new Output(),
             helpText: $helpText,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,

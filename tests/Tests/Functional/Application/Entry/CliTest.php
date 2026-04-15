@@ -21,8 +21,10 @@ use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
@@ -31,6 +33,7 @@ use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
+use Valkyrja\Tests\Classes\Application\Provider\CliRoutingDataProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
@@ -43,9 +46,18 @@ use function restore_exception_handler;
 #[RunTestsInSeparateProcesses]
 final class CliTest extends TestCase
 {
-    protected static bool $runCalled = false;
+    protected static bool $handlerCalled = false;
+    protected static bool $runCalled     = false;
+
+    public static function routeHandler(ContainerContract $container): OutputContract
+    {
+        self::$handlerCalled = true;
+
+        return self::routeCallback();
+    }
 
     #[Route('version', 'test')]
+    #[RouteHandler([self::class, 'routeHandler'])]
     public static function routeCallback(): Output
     {
         self::$runCalled = true;
@@ -57,9 +69,12 @@ final class CliTest extends TestCase
     {
         Cli::directory(Directory::$basePath);
 
-        self::$runCalled = false;
+        self::$handlerCalled = false;
+        self::$runCalled     = false;
 
         CliComponentProviderClass::$publishedContainerData = false;
+
+        CliRoutingDataProviderClass::$published = false;
 
         Exiter::freeze();
 
@@ -135,6 +150,9 @@ final class CliTest extends TestCase
         // With debug mode on we expect the component publish method to bypass
         self::assertFalse(CliComponentProviderClass::$publishedContainerData);
         CliComponentProviderClass::$publishedContainerData = false;
+        // With debug mode on we expect the route data publisher publish method to bypass
+        self::assertFalse(CliRoutingDataProviderClass::$published);
+        CliRoutingDataProviderClass::$published = false;
 
         require_once $absoluteContainerDataFilePath;
 
@@ -167,10 +185,13 @@ final class CliTest extends TestCase
 
         ob_start();
         Cli::run(config: $config, env: $env);
-        $content = ob_get_clean();
+        ob_get_clean();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
+
+        self::assertTrue(self::$handlerCalled);
+        self::$handlerCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
         self::assertFalse(CliRouteProviderClass::$called);
@@ -178,6 +199,9 @@ final class CliTest extends TestCase
         // With debug mode off we expect the component publish method to NOT bypass
         self::assertTrue(CliComponentProviderClass::$publishedContainerData);
         CliComponentProviderClass::$publishedContainerData = false;
+        // With debug mode off we expect the route data publisher publish method to NOT bypass
+        self::assertTrue(CliRoutingDataProviderClass::$published);
+        CliRoutingDataProviderClass::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -214,12 +238,18 @@ final class CliTest extends TestCase
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
 
+        self::assertTrue(self::$handlerCalled);
+        self::$handlerCalled = false;
+
         // With debug mode on we expect the data service providers to NOT provide the data and routes
         self::assertTrue(CliRouteProviderClass::$called);
         CliRouteProviderClass::$called = false;
         // With debug mode on we expect the component publish method to bypass
         self::assertFalse(CliComponentProviderClass::$publishedContainerData);
         CliComponentProviderClass::$publishedContainerData = false;
+        // With debug mode on we expect the route data publisher publish method to bypass
+        self::assertFalse(CliRoutingDataProviderClass::$published);
+        CliRoutingDataProviderClass::$published = false;
 
         Exiter::unfreeze();
 

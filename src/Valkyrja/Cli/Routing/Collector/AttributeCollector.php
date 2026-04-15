@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Collector;
 
 use Override;
-use ReflectionException;
 use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
@@ -26,6 +25,7 @@ use Valkyrja\Cli\Routing\Attribute\OptionParameter as OptionAttribute;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
@@ -51,8 +51,6 @@ class AttributeCollector implements CollectorContract
      *
      * @param class-string ...$classes The classes
      *
-     * @throws ReflectionException
-     *
      * @return RouteContract[]
      */
     #[Override]
@@ -72,7 +70,7 @@ class AttributeCollector implements CollectorContract
                 $method     = $reflection->getName();
                 $route      = $this->convertAttributeToData($attribute);
 
-                $route = $this->updateDispatch($route, $class, $method, $reflection->isStatic());
+                $route = $this->updateHandler($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
                 $route = $this->updateMiddleware($route, $class, $method);
                 $route = $this->updateArguments($route, $class, $method);
@@ -86,35 +84,34 @@ class AttributeCollector implements CollectorContract
     }
 
     /**
+     * Update the handler for a route.
+     *
      * @param class-string     $class  The class name
      * @param non-empty-string $method The method name
      */
-    protected function updateDispatch(Route $route, string $class, string $method, bool $isStatic): Route
+    protected function updateHandler(Route $route, string $class, string $method): Route
     {
-        return $route->withDispatch(
-            $route->getDispatch()
-                ->withClass($class)
-                ->withMethod($method)
-                ->withIsStatic($isStatic)
-        );
+        /** @var RouteHandler[] $routeHandlers */
+        $routeHandlers = $this->attributes->forMethod($class, $method, RouteHandler::class);
+        $routeHandler  = $routeHandlers[0] ?? null;
+
+        $handler = $routeHandler->handler ?? null;
+
+        if ($handler === null) {
+            return $route;
+        }
+
+        return $route->withHandler($handler);
     }
 
     /**
      * Get a command from an attribute.
      *
      * @param Route $route The attribute
-     *
-     * @throws ReflectionException
      */
     protected function setRouteProperties(Route $route): Route
     {
-        $dispatch = $route->getDispatch();
-
-        $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
-        $dependencies     = $this->reflection->getDependencies($methodReflection);
-
         return $route
-            ->withDispatch($route->getDispatch()->withDependencies($dependencies))
             ->withArguments(...$route->getArguments())
             ->withOptions(...$route->getOptions());
     }
@@ -149,8 +146,6 @@ class AttributeCollector implements CollectorContract
     /**
      * @param class-string     $class  The class name
      * @param non-empty-string $method The method name
-     *
-     * @throws ReflectionException
      */
     protected function updateMiddleware(Route $route, string $class, string $method): Route
     {
@@ -270,7 +265,7 @@ class AttributeCollector implements CollectorContract
         return new Route(
             name: $route->getName(),
             description: $route->getDescription(),
-            dispatch: $route->getDispatch(),
+            handler: $route->getHandler(),
             helpText: $route->hasHelpText()
                 ? $route->getHelpText()
                 : null,

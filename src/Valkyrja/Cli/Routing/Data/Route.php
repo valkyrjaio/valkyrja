@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
@@ -26,7 +27,7 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentNameExcept
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 use function is_array;
 
@@ -38,10 +39,13 @@ class Route implements RouteContract
      * @var (callable():MessageContract)|null
      */
     protected $helpText;
+    /** @var callable(ContainerContract): OutputContract */
+    protected $handler;
 
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
+     * @param callable(ContainerContract):OutputContract        $handler                   The handler
      * @param (callable():MessageContract)|null                 $helpText                  The help text
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
@@ -53,7 +57,7 @@ class Route implements RouteContract
     public function __construct(
         protected string $name,
         protected string $description,
-        protected MethodDispatchContract $dispatch,
+        callable $handler,
         callable|null $helpText = null,
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -65,6 +69,7 @@ class Route implements RouteContract
         $this->validateHelpText($helpText);
 
         $this->helpText = $helpText;
+        $this->handler  = $handler;
     }
 
     /**
@@ -460,20 +465,20 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): MethodDispatchContract
+    public function getHandler(): callable
     {
-        return $this->dispatch;
+        return $this->handler;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(MethodDispatchContract $dispatch): static
+    public function withHandler(callable $handler): static
     {
         $new = clone $this;
 
-        $new->dispatch = $dispatch;
+        $new->handler = $handler;
 
         return $new;
     }

@@ -38,7 +38,6 @@ use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
@@ -96,7 +95,6 @@ class CliRoutingServiceProvider implements ServiceProviderContract
             RouterContract::class,
             new Router(
                 container: $container,
-                dispatcher: $container->getSingleton(DispatcherContract::class),
                 collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
                 throwableCaughtHandler: $throwableCaughtHandler,

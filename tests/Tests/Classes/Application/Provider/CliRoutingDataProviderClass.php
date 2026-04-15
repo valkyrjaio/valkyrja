@@ -20,6 +20,8 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 final class CliRoutingDataProviderClass implements ServiceProviderContract
 {
+    public static bool $published = false;
+
     /**
      * @inheritDoc
      */
@@ -36,6 +38,8 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
+        self::$published = true;
+
         $class = 'App\\Provider\\Data\\CliTestCliRoutingData';
 
         $container->setSingleton(CliRoutingData::class, new $class());

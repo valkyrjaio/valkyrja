@@ -22,6 +22,8 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
 class GenerateDataCommand extends GenerateData
@@ -51,6 +53,7 @@ class GenerateDataCommand extends GenerateData
         description: 'Generate data for the cli component',
         helpText: [self::class, 'help'],
     )]
+    #[RouteHandler([CliRoutingCliRouteProvider::class, 'generateDataHandler'])]
     public function run(): OutputContract
     {
         return $this->generateData();

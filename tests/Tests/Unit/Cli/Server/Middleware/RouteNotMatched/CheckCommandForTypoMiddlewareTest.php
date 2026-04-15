@@ -20,7 +20,6 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CheckCommandForTypoMiddlewareTest extends TestCase
@@ -45,12 +44,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             )
         );
 
@@ -89,12 +88,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             )
         );
 
@@ -134,12 +133,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             )
         );
 
@@ -179,12 +178,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'nomatch',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             ),
             new Route(
                 name: 'nomatch2',
                 description: 'description',
-                dispatch: new MethodDispatch(class: self::class, method: '__construct')
+                handler: static fn (): null => null,
             )
         );
 

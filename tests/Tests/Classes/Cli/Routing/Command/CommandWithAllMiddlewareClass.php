@@ -19,6 +19,8 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
 
 final class CommandWithAllMiddlewareClass
@@ -38,11 +40,24 @@ final class CommandWithAllMiddlewareClass
         return new Message(self::HELP_TEXT);
     }
 
+    /**
+     * Handler for the command.
+     */
+    public static function handler(ContainerContract $container): OutputContract
+    {
+        $controller = new self();
+
+        return $controller->run(
+            $container->getSingleton(OutputFactoryContract::class)
+        );
+    }
+
     #[Route(
         name: self::NAME,
         description: self::DESCRIPTION,
         helpText: [self::class, 'help'],
     )]
+    #[RouteHandler([self::class, 'handler'])]
     #[Middleware(AllMiddlewareClass::class)]
     public function run(OutputFactoryContract $outputFactory): OutputContract
     {

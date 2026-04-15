@@ -4,9 +4,9 @@
 
 Valkyrja's CLI layer mirrors the HTTP layer in structure and philosophy. Where
 HTTP maps requests to controller methods, CLI maps input tokens to command
-methods. Where HTTP has a `RequestHandler`, CLI has an `InputHandler`. The same
-Dispatcher that resolves HTTP routes and fires events resolves CLI commands, and
-the middleware pipeline follows the same chain-of-responsibility pattern.
+methods. Where HTTP has a `RequestHandler`, CLI has an `InputHandler`. Commands
+are dispatched directly via a handler callable — no separate Dispatcher object —
+and the middleware pipeline follows the same chain-of-responsibility pattern.
 
 This design means that concepts you already understand from the HTTP layer —
 route providers, attribute-based registration, per-route middleware — carry over
@@ -77,9 +77,9 @@ route objects. The framework iterates over all registered providers during
 bootstrap to build the command collection.
 
 ```php
-use Valkyrja\Cli\Routing\Provider\Abstract\Provider;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 
-class AppCommandProvider extends Provider
+class AppCommandProvider implements CliRouteProviderContract
 {
     public static function getControllerClasses(): array
     {
@@ -88,6 +88,11 @@ class AppCommandProvider extends Provider
             DatabaseCommands::class,
             MakeCommands::class,
         ];
+    }
+
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }
 ```
@@ -238,6 +243,90 @@ use Valkyrja\Cli\Interaction\Message\Message;
 )]
 public function migrate(InputContract $input): OutputContract { ... }
 ```
+
+### Route Handlers
+
+Every command must have a **handler** — a callable with the signature:
+
+```php
+callable(ContainerContract $container): OutputContract
+```
+
+The `$container` gives the handler access to all registered services. The
+handler is responsible for resolving the command class from the container and
+calling it with any parsed arguments or options that the command method expects.
+
+The idiomatic way to wire a handler to a command method is the companion
+`#[RouteHandler]` attribute, placed on the same method as `#[Route]`:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+
+class UserCommands
+{
+    #[Route(name: 'user:create', description: 'Create a new user')]
+    #[RouteHandler([UserCommandProvider::class, 'createHandler'])]
+    public function create(): OutputContract { ... }
+}
+```
+
+The referenced static method on the provider receives the container and returns
+the output:
+
+```php
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+class UserCommandProvider implements CliRouteProviderContract
+{
+    public static function getControllerClasses(): array
+    {
+        return [UserCommands::class];
+    }
+
+    public static function getRoutes(): array
+    {
+        return [];
+    }
+
+    public static function createHandler(ContainerContract $container): OutputContract
+    {
+        return $container->getSingleton(UserCommands::class)->create();
+    }
+}
+```
+
+The `#[Route]` attribute also accepts a `handler` parameter directly for inline
+definitions:
+
+```php
+#[Route(
+    name:        'user:create',
+    description: 'Create a new user',
+    handler:     [UserCommandProvider::class, 'createHandler'],
+)]
+```
+
+#### Caching Trade-off
+
+How you express the handler determines whether it participates in Valkyrja's
+data file cache. The cache captures the full command collection in a generated
+PHP class so that production boots require no reflection.
+
+**Array callables can be cached.** A handler expressed as
+`[ClassName::class, 'method']` is a plain array — serializable, writable to a
+file, and loadable without loss of fidelity:
+
+```php
+handler: [UserCommandProvider::class, 'createHandler'],
+```
+
+**Closures cannot be cached.** A handler expressed as `static fn (...)` is an
+anonymous function — it cannot be serialized. Use closures during development or
+when inline definitions are clearer, but prefer array callables in production
+code that will be cached.
 
 ### Command Data Generation
 
@@ -577,8 +666,8 @@ From `Cli::run()` to process exit, the lifecycle is:
    error output.
 9. **If a command matches**: `RouteMatched` middleware runs (access control,
    production guards).
-10. The `Dispatcher` calls the matched controller method, injecting dependencies
-    from the container.
+10. The route's handler callable is invoked as `$handler($container)`. The
+    handler resolves the command class from the container and calls it.
 11. `RouteDispatched` middleware runs (auditing, output transformation).
 12. **If a throwable is caught** at any point: `ThrowableCaught` middleware
     runs.
@@ -601,7 +690,7 @@ flowchart TD
     D -->|matched| F[Stage 2 - RouteMatched]
     E --> H[Write output to stdout]
     F -->|"short-circuit / throwable"| J
-    F --> G[Dispatcher - controller method]
+    F --> G[Route handler callable]
     G -->|throwable| J
     G --> I[Stage 4 - RouteDispatched]
     I -->|throwable| J

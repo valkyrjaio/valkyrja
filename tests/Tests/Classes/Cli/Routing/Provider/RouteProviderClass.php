@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Classes\Cli\Routing\Provider;
 use Override;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 
 final class RouteProviderClass implements CliRouteProviderContract
 {
@@ -33,7 +32,7 @@ final class RouteProviderClass implements CliRouteProviderContract
             new Route(
                 name: 'test-provider',
                 description: 'test',
-                dispatch: new MethodDispatch(self::class, 'dispatch')
+                handler: static fn (): null => null,
             ),
         ];
     }

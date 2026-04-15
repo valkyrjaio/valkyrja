@@ -53,9 +53,6 @@ final class AttributeCollectorTest extends TestCase
         self::assertEmpty($collector->getRoutes(self::class));
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testGetCommands(): void
     {
         $collector = new AttributeCollector(
@@ -71,9 +68,7 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame(CommandClass::NAME, $command->getName());
         self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
         self::assertSame(CommandClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
-        self::assertSame(CommandClass::class, $command->getDispatch()->getClass());
-        self::assertSame('run', $command->getDispatch()->getMethod());
-        self::assertTrue($command->getDispatch()->isStatic());
+        self::assertSame([CommandClass::class, 'handler'], $command->getHandler());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertFalse($option->hasCast());
@@ -82,9 +77,6 @@ final class AttributeCollectorTest extends TestCase
         self::assertFalse($argument->hasCast());
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testGetCommandsWithMoreAttributes(): void
     {
         $collector = new AttributeCollector(
@@ -100,9 +92,7 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame('className.test2.actionName', $command->getName());
         self::assertSame(CommandWithAllAttributesClass::DESCRIPTION, $command->getDescription());
         self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
-        self::assertSame(CommandWithAllAttributesClass::class, $command->getDispatch()->getClass());
-        self::assertSame('run', $command->getDispatch()->getMethod());
-        self::assertFalse($command->getDispatch()->isStatic());
+        self::assertSame([CommandWithAllAttributesClass::class, 'handler'], $command->getHandler());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertNotEmpty($command->getArguments());
@@ -127,9 +117,6 @@ final class AttributeCollectorTest extends TestCase
         self::assertSame([ExitedMiddlewareClass::class], $command->getExitedMiddleware());
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
         $collector = new AttributeCollector(

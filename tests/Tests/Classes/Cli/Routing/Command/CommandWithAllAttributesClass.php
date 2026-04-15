@@ -22,10 +22,12 @@ use Valkyrja\Cli\Routing\Attribute\OptionParameter;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
@@ -54,11 +56,24 @@ final class CommandWithAllAttributesClass
         return new Message(self::HELP_TEXT);
     }
 
+    /**
+     * Handler for the command.
+     */
+    public static function handler(ContainerContract $container): OutputContract
+    {
+        $controller = new self();
+
+        return $controller->run(
+            $container->getSingleton(OutputFactoryContract::class)
+        );
+    }
+
     #[Route(
         name: self::NAME,
         description: self::DESCRIPTION,
         helpText: [self::class, 'help'],
     )]
+    #[RouteHandler([self::class, 'handler'])]
     #[Name('actionName')]
     #[OptionParameter(
         name: 'optionName',

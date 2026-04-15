@@ -28,9 +28,7 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoOutputDispatchException;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -41,11 +39,6 @@ final class RouterTest extends TestCase
     public static function dispatch(): Output
     {
         return new Output(exitCode: ExitCode::SUCCESS);
-    }
-
-    public static function invalidDispatch(): string
-    {
-        return 'invalid';
     }
 
     public function testRouteNotFound(): void
@@ -81,7 +74,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
@@ -104,7 +97,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
@@ -130,7 +123,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
@@ -157,7 +150,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
@@ -176,7 +169,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
 
         $output = $router->dispatchRoute($input, $command);
@@ -197,7 +190,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
+            handler: [self::class, 'dispatch'],
             arguments: [
                 new ArgumentParameter(
                     name: 'arg1',
@@ -230,7 +223,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch']),
+            handler: [self::class, 'dispatch'],
             options: [
                 new OptionParameter(
                     name: 'option',
@@ -256,7 +249,7 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'help',
             description: 'Help Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
@@ -274,35 +267,19 @@ final class RouterTest extends TestCase
         $command = new Route(
             name: 'help',
             description: 'Help Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command);
 
         $command2 = new Route(
             name: 'test-command',
             description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch']
         );
         $collection->add($command2);
 
         $output = $router->dispatch($input);
 
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
-    }
-
-    public function testInvalidOutput(): void
-    {
-        $this->expectException(CliRoutingNoOutputDispatchException::class);
-
-        $router = new Router();
-        $input  = new Input(commandName: 'test-command');
-
-        $route = new Route(
-            name: 'test-command',
-            description: 'Test Command',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'invalidDispatch'])
-        );
-
-        $router->dispatchRoute($input, $route);
     }
 }
