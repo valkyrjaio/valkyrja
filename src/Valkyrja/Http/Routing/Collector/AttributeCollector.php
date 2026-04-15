@@ -18,6 +18,7 @@ use ReflectionException;
 use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Cli\Routing\Factory\RouteFactory;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -34,7 +35,6 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
-use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
@@ -81,7 +81,8 @@ class AttributeCollector implements CollectorContract
                 /** @var ReflectionMethod $reflection */
                 $reflection = $attribute->getReflection();
                 $method     = $reflection->getName();
-                $route      = $this->convertRouteAttributesToDataClass($attribute);
+                /** @var Route $route */
+                $route      = RouteFactory::fromRoute($attribute);
 
                 $route = $this->updatePath($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
@@ -356,61 +357,6 @@ class AttributeCollector implements CollectorContract
         }
 
         return $route->withParameters(...$parameters);
-    }
-
-    protected function convertRouteAttributesToDataClass(RouteContract $route): Route
-    {
-        if (str_contains($route->getPath(), '{')) {
-            $parameters = [];
-
-            if ($route instanceof DynamicRouteContract) {
-                $parameters = $route->getParameters();
-            }
-
-            return new DynamicRoute(
-                path: $route->getPath(),
-                name: $route->getName(),
-                regex: '',
-                parameters: $parameters,
-                handler: $route->getHandler(),
-                requestMethods: $route->getRequestMethods(),
-                routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
-                routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
-                throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
-                sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
-                terminatedMiddleware: $route->getTerminatedMiddleware(),
-                requestStruct: $this->getRequestStructFromRoute($route),
-                responseStruct: $this->getResponseStructFromRoute($route),
-            );
-        }
-
-        return new Route(
-            path: $route->getPath(),
-            name: $route->getName(),
-            handler: $route->getHandler(),
-            requestMethods: $route->getRequestMethods(),
-            routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
-            routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
-            throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
-            sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
-            terminatedMiddleware: $route->getTerminatedMiddleware(),
-            requestStruct: $this->getRequestStructFromRoute($route),
-            responseStruct: $this->getResponseStructFromRoute($route),
-        );
-    }
-
-    protected function getRequestStructFromRoute(RouteContract $route): RequestStructContract|null
-    {
-        return $route->hasRequestStruct()
-            ? $route->getRequestStruct()
-            : null;
-    }
-
-    protected function getResponseStructFromRoute(RouteContract $route): ResponseStructContract|null
-    {
-        return $route->hasResponseStruct()
-            ? $route->getResponseStruct()
-            : null;
     }
 
     protected function convertParameterAttributesToDataClass(ParameterContract $parameter): DataParameter
