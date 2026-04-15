@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Collection;
 use Override;
 use stdClass;
 use TypeError;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
@@ -54,17 +53,17 @@ final class CollectionTest extends TestCase
         $this->route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback'])
+            handler: static fn (): null => null,
         );
 
         $this->dynamicRoute = new DynamicRoute(
             path: self::DYNAMIC_ROUTE_PATH,
             name: self::DYNAMIC_ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
             regex: self::DYNAMIC_ROUTE_REGEX,
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
-            ]
+            ],
+            handler: static fn (): null => null,
         );
 
         $this->collection = new Collection();
@@ -79,7 +78,7 @@ final class CollectionTest extends TestCase
         $route = new Route(
             path: "/$routeName",
             name: $routeName,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            handler: static fn (): null => null,
         );
 
         $data = new HttpRoutingData(
@@ -420,19 +419,19 @@ final class CollectionTest extends TestCase
         $route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            handler: static fn (): null => null,
             requestMethods: [RequestMethod::ANY],
         );
 
         $dynamicRoute = new DynamicRoute(
             path: self::DYNAMIC_ROUTE_PATH,
             name: self::DYNAMIC_ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
-            requestMethods: [RequestMethod::ANY],
             regex: self::DYNAMIC_ROUTE_REGEX,
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
-            ]
+            ],
+            handler: static fn (): null => null,
+            requestMethods: [RequestMethod::ANY]
         );
 
         $collection = new Collection();
@@ -478,19 +477,19 @@ final class CollectionTest extends TestCase
         $route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
+            handler: static fn (): null => null,
             requestMethods: [RequestMethod::ANY],
         );
 
         $dynamicRoute = new DynamicRoute(
             path: self::DYNAMIC_ROUTE_PATH,
             name: self::DYNAMIC_ROUTE_NAME,
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
-            requestMethods: [RequestMethod::ANY],
             regex: self::DYNAMIC_ROUTE_REGEX,
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
-            ]
+            ],
+            handler: static fn (): null => null,
+            requestMethods: [RequestMethod::ANY]
         );
 
         // Should not be added to the collection when called with ANY

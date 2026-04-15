@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
@@ -33,8 +35,16 @@ final class RouteProviderClass implements HttpRouteProviderContract
             new Route(
                 path: '/from-provider',
                 name: 'route-from-provider',
-                dispatch: new MethodDispatch(self::class, 'dispatch'),
+                handler: static fn (): null => null,
             ),
         ];
+    }
+
+    /**
+     * @param array<array-key, mixed> $arguments
+     */
+    public static function handler(ContainerContract $container, array $arguments = []): ResponseContract
+    {
+        return new Response();
     }
 }

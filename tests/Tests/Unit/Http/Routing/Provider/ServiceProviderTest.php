@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -122,7 +121,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'route';
         $data = new HttpRoutingData(
             routes: [
-                $name => new Route($path, $name, new MethodDispatch('class', 'method')),
+                $name => new Route(
+                    $path,
+                    $name,
+                    handler: static fn (): null => null,
+                ),
             ],
             paths: [
                 'GET' => [$path => $name],
@@ -163,7 +166,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -199,7 +202,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -235,7 +238,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$route]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);

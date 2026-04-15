@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Server\Command\VersionCommand;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
@@ -37,7 +36,7 @@ final class ListCommandTest extends TestCase
             name: $name,
             regex: $regex,
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
 
         $outputFactory = new OutputFactory();
@@ -61,7 +60,6 @@ final class ListCommandTest extends TestCase
         self::assertStringContainsString($path, $contents);
         self::assertStringContainsString($name, $contents);
         self::assertStringContainsString($regex, $contents);
-        self::assertStringContainsString($route->getDispatch()->__toString(), $contents);
     }
 
     public function testNoRoutes(): void

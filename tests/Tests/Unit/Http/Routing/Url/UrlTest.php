@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Url;
 
 use Override;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
@@ -40,7 +39,7 @@ final class UrlTest extends TestCase
         $route      = new Route(
             path: '/',
             name: self::ROUTE_NAME,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2     = new DynamicRoute(
             path: '/{value}',
@@ -52,7 +51,7 @@ final class UrlTest extends TestCase
                     regex: Regex::ALPHA,
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
         $collection = new Collection();
         $this->url  = new Url(

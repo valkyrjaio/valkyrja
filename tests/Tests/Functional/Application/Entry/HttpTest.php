@@ -23,12 +23,15 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
+use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
@@ -40,7 +43,16 @@ final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;
 
+    /**
+     * @param array<array-key, mixed> $arguments
+     */
+    public static function routeHandler(ContainerContract $container, array $arguments): ResponseContract
+    {
+        return self::routeCallback();
+    }
+
     #[Route('/version', 'version')]
+    #[RouteHandler([self::class, 'routeHandler'])]
     public static function routeCallback(): Response
     {
         self::$runCalled = true;
@@ -55,6 +67,8 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         HttpComponentProviderClass::$publishedContainerData = false;
+
+        HttpRoutingDataProviderClass::$published = false;
 
         $_SERVER['REQUEST_URI'] = '/version';
 
@@ -119,6 +133,9 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the component publish method to bypass
         self::assertFalse(HttpComponentProviderClass::$publishedContainerData);
         HttpComponentProviderClass::$publishedContainerData = false;
+        // With debug mode on we expect the route data publisher publish method to bypass
+        self::assertFalse(HttpRoutingDataProviderClass::$published);
+        HttpRoutingDataProviderClass::$published = false;
 
         require_once $absoluteContainerDataFilePath;
 
@@ -156,6 +173,9 @@ final class HttpTest extends TestCase
         // With debug mode off we expect the component publish method to NOT bypass
         self::assertTrue(HttpComponentProviderClass::$publishedContainerData);
         HttpComponentProviderClass::$publishedContainerData = false;
+        // With debug mode on we expect the route data publisher publish method to NOT bypass
+        self::assertTrue(HttpRoutingDataProviderClass::$published);
+        HttpRoutingDataProviderClass::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -189,6 +209,9 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the component publish method to bypass
         self::assertFalse(HttpComponentProviderClass::$publishedContainerData);
         HttpComponentProviderClass::$publishedContainerData = false;
+        // With debug mode on we expect the route data publisher publish method to bypass
+        self::assertFalse(HttpRoutingDataProviderClass::$published);
+        HttpRoutingDataProviderClass::$published = false;
 
         @unlink($absoluteContainerDataFilePath);
         @unlink($absoluteRoutesDataFilePath);

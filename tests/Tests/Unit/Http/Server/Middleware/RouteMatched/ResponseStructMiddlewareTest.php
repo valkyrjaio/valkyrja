@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware\RouteMatched;
 
 use JsonException;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Response\Response;
@@ -36,7 +35,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $handler  = new RouteDispatchedHandler();
 
@@ -59,7 +58,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();
@@ -86,7 +85,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();

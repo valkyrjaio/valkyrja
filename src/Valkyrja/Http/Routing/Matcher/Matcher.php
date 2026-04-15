@@ -98,8 +98,6 @@ class Matcher implements MatcherContract
      */
     protected function processArguments(DynamicRouteContract $route, array $matches): DynamicRouteContract
     {
-        $dispatch = $route->getDispatch();
-
         // The first match is the path itself, the rest could be empty.
         array_shift($matches);
 
@@ -135,7 +133,7 @@ class Matcher implements MatcherContract
 
         return $route
             ->withParameters(...$parametersWithValues)
-            ->withDispatch($dispatch->withArguments($arguments));
+            ->withArguments($arguments);
     }
 
     /**

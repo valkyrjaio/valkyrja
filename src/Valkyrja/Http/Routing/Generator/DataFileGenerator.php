@@ -153,6 +153,14 @@ class DataFileGenerator extends FileGenerator implements DataFileGeneratorContra
         $contract = RouteContract::class;
         $content  = $this->generateObjectsContents($route);
 
+        $replace = <<<PHP
+               'arguments' => 
+              array (
+              ),
+            PHP;
+
+        $content = str_replace($replace, '', $content);
+
         // phpcs:disable
         return <<<PHP
             static fn (): \\$contract => $content

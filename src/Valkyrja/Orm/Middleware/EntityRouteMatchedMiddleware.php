@@ -75,9 +75,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      */
     protected function checkRouteForEntities(DynamicRouteContract $route): ResponseContract|DynamicRouteContract
     {
-        $dispatch     = $route->getDispatch();
-        $arguments    = $dispatch->getArguments();
-        $dependencies = $dispatch->getDependencies();
+        $arguments = $route->getArguments();
 
         // Iterate through the params
         foreach ($route->getParameters() as $parameter) {
@@ -105,16 +103,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
                 return $response;
             }
 
-            unset($dependencies[$name]);
-
             $arguments[$name] = $response;
         }
 
-        return $route->withDispatch(
-            $dispatch
-                ->withDependencies($dependencies)
-                ->withArguments($arguments)
-        );
+        return $route->withArguments($arguments);
     }
 
     /**

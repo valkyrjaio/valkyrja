@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Dispatcher;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -26,7 +25,6 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -90,7 +88,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $collection->add($route);
 
@@ -117,7 +115,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: [self::class, 'dispatch'],
         );
         $collection->add($route);
 
@@ -144,7 +142,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: [self::class, 'dispatch'],
         );
         $collection->add($route);
 
@@ -168,7 +166,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: [self::class, 'dispatch'],
             routeMatchedMiddleware: [RouteMatchedMiddlewareChangedClass::class]
         );
         $collection->add($route);
@@ -191,34 +189,12 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'dispatch'])
+            handler: [self::class, 'dispatch'],
         );
         $collection->add($route);
 
         $response = $router->dispatch(request: $request);
 
         self::assertSame(StatusCode::I_AM_A_TEAPOT, $response->getStatusCode());
-    }
-
-    public function testResponseAfterRouteDispatchedWithInvalidDispatch(): void
-    {
-        $this->expectException(HttpRoutingInvalidRouteNameException::class);
-
-        $collection = new Collection();
-        $matcher    = new Matcher(collection: $collection);
-        $router     = new Router(matcher: $matcher);
-        $request    = new ServerRequest(
-            uri: UriFactory::fromString('/'),
-            method: RequestMethod::GET
-        );
-
-        $route = new Route(
-            path: '/',
-            name: 'route',
-            dispatch: MethodDispatch::fromCallableOrArray([self::class, 'invalidDispatch'])
-        );
-        $collection->add($route);
-
-        $router->dispatch(request: $request);
     }
 }

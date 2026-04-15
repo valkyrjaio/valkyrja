@@ -20,6 +20,8 @@ use Valkyrja\Http\Routing\Data\HttpRoutingData;
 
 final class HttpRoutingDataProviderClass implements ServiceProviderContract
 {
+    public static bool $published = false;
+
     /**
      * @inheritDoc
      */
@@ -36,6 +38,8 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
+        self::$published = true;
+
         $class = 'App\\Provider\\Data\\HttpTestHttpRoutingData';
 
         $container->setSingleton(HttpRoutingData::class, new $class());
