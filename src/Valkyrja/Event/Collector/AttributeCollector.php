@@ -76,11 +76,11 @@ class AttributeCollector implements CollectorContract
 
             $handler = $classHandler->handler ?? null;
         } else {
-            /** @var ListenerHandler[] $routeHandlers */
-            $routeHandlers = $this->attributes->forMethod($class, $method, ListenerHandler::class);
-            $routeHandler  = $routeHandlers[0] ?? null;
+            /** @var ListenerHandler[] $methodHandlers */
+            $methodHandlers = $this->attributes->forMethod($class, $method, ListenerHandler::class);
+            $methodHandler  = $methodHandlers[0] ?? null;
 
-            $handler = $routeHandler->handler ?? null;
+            $handler = $methodHandler->handler ?? null;
         }
 
         if ($handler === null) {
