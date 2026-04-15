@@ -36,11 +36,8 @@ use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoOutputDispatchException;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 use function in_array;
 
@@ -48,7 +45,6 @@ class Router implements RouterContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
-        protected DispatcherContract $dispatcher = new Dispatcher(),
         protected CollectionContract $collection = new Collection(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
@@ -107,19 +103,9 @@ class Router implements RouterContract
         // Set the command after middleware has potentially modified it in the service container
         $this->container->setSingleton(RouteContract::class, $routeAfterMiddleware);
 
-        $dispatch  = $routeAfterMiddleware->getDispatch();
-        $arguments = $dispatch->getArguments();
-
+        $handler = $routeAfterMiddleware->getHandler();
         // Attempt to dispatch the route using any one of the callable options
-        /** @var scalar|object|array<array-key, mixed>|resource|null $output */
-        $output = $this->dispatcher->dispatch(
-            dispatch: $dispatch,
-            arguments: $arguments
-        );
-
-        if (! $output instanceof OutputContract) {
-            throw new CliRoutingNoOutputDispatchException('All commands must return an output');
-        }
+        $output = $handler($this->container);
 
         return $this->routeDispatchedHandler->routeDispatched(
             input: $input,

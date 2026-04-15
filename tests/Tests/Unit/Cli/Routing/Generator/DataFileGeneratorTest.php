@@ -17,8 +17,8 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandWithAllAttributesClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class DataFileGeneratorTest extends TestCase
@@ -122,7 +122,7 @@ final class DataFileGeneratorTest extends TestCase
                 'route' => new Route(
                     name: 'test',
                     description: 'description',
-                    dispatch: new MethodDispatch(class: 'class', method: 'method')
+                    handler: [CommandWithAllAttributesClass::class, 'handler']
                 ),
             ]
         );
@@ -144,20 +144,13 @@ final class DataFileGeneratorTest extends TestCase
                 routes: [
                 'route' => static fn (): \Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
                'helpText' => NULL,
+               'handler' => 
+              array (
+                0 => 'Valkyrja\\\\Tests\\\\Classes\\\\Cli\\\\Routing\\\\Command\\\\CommandWithAllAttributesClass',
+                1 => 'handler',
+              ),
                'name' => 'test',
                'description' => 'description',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
                'routeMatchedMiddleware' => 
               array (
               ),
@@ -194,7 +187,7 @@ final class DataFileGeneratorTest extends TestCase
                 'route' => static fn (): Route => new Route(
                     name: 'test',
                     description: 'description',
-                    dispatch: new MethodDispatch(class: 'class', method: 'method')
+                    handler: [CommandWithAllAttributesClass::class, 'handler']
                 ),
             ]
         );
@@ -216,20 +209,13 @@ final class DataFileGeneratorTest extends TestCase
                 routes: [
                 'route' => static fn (): \Valkyrja\Cli\Routing\Data\Contract\RouteContract => new \Valkyrja\Cli\Routing\Data\Route(...array(
                'helpText' => NULL,
+               'handler' => 
+              array (
+                0 => 'Valkyrja\\\\Tests\\\\Classes\\\\Cli\\\\Routing\\\\Command\\\\CommandWithAllAttributesClass',
+                1 => 'handler',
+              ),
                'name' => 'test',
                'description' => 'description',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
                'routeMatchedMiddleware' => 
               array (
               ),

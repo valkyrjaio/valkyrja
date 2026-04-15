@@ -35,7 +35,6 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
@@ -124,7 +123,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'version';
         $data = new CliRoutingData(
             routes: [
-                $name => new Route($name, 'description', new MethodDispatch('class', 'method')),
+                $name => new Route(
+                    $name,
+                    'description',
+                    handler: static fn (): null => null,
+                ),
             ]
         );
 
@@ -159,7 +162,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -189,7 +192,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
@@ -219,7 +222,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$command]);
         $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);

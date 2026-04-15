@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
+use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -40,5 +43,80 @@ final class CliRouteProviderTest extends TestCase
         self::assertContains(ListCommand::class, $controllers);
         self::assertContains(VersionCommand::class, $controllers);
         self::assertContains(GenerateDataCommand::class, $controllers);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testListHandler(): void
+    {
+        $output  = self::createStub(OutputContract::class);
+        $command = $this->createMock(ListCommand::class);
+        $command->expects($this->once())->method('run')->willReturn($output);
+
+        $container = new Container();
+        $container->setSingleton(ListCommand::class, $command);
+
+        self::assertSame($output, CliRoutingCliRouteProvider::listHandler($container));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testListBashHandler(): void
+    {
+        $output  = self::createStub(OutputContract::class);
+        $command = $this->createMock(ListBashCommand::class);
+        $command->expects($this->once())->method('run')->willReturn($output);
+
+        $container = new Container();
+        $container->setSingleton(ListBashCommand::class, $command);
+
+        self::assertSame($output, CliRoutingCliRouteProvider::listBashHandler($container));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testHelpHandler(): void
+    {
+        $output  = self::createStub(OutputContract::class);
+        $command = $this->createMock(HelpCommand::class);
+        $command->expects($this->once())->method('run')->willReturn($output);
+
+        $container = new Container();
+        $container->setSingleton(HelpCommand::class, $command);
+
+        self::assertSame($output, CliRoutingCliRouteProvider::helpHandler($container));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testVersionHandler(): void
+    {
+        $output  = self::createStub(OutputContract::class);
+        $command = $this->createMock(VersionCommand::class);
+        $command->expects($this->once())->method('run')->willReturn($output);
+
+        $container = new Container();
+        $container->setSingleton(VersionCommand::class, $command);
+
+        self::assertSame($output, CliRoutingCliRouteProvider::versionHandler($container));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGenerateDataHandler(): void
+    {
+        $output  = self::createStub(OutputContract::class);
+        $command = $this->createMock(GenerateDataCommand::class);
+        $command->expects($this->once())->method('run')->willReturn($output);
+
+        $container = new Container();
+        $container->setSingleton(GenerateDataCommand::class, $command);
+
+        self::assertSame($output, CliRoutingCliRouteProvider::generateDataHandler($container));
     }
 }

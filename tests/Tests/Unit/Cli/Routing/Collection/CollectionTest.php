@@ -23,7 +23,6 @@ use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -57,7 +56,7 @@ final class CollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            dispatch: new MethodDispatch(self::class, '__construct')
+            handler: static fn (): null => null,
         );
 
         $collection = new Collection();
@@ -74,7 +73,7 @@ final class CollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            dispatch: new MethodDispatch(self::class, '__construct'),
+            handler: static fn (): null => null,
             helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(name: 'test', description: 'test'),
@@ -107,10 +106,7 @@ final class CollectionTest extends TestCase
         self::assertSame($route->getRouteMatchedMiddleware(), $routeFromCollection->getRouteMatchedMiddleware());
         self::assertSame($route->getThrowableCaughtMiddleware(), $routeFromCollection->getThrowableCaughtMiddleware());
         self::assertSame($route->getExitedMiddleware(), $routeFromCollection->getExitedMiddleware());
-        self::assertSame($route->getDispatch()->getClass(), $routeFromCollection->getDispatch()->getClass());
-        self::assertSame($route->getDispatch()->getMethod(), $routeFromCollection->getDispatch()->getMethod());
-        self::assertSame($route->getDispatch()->getArguments(), $routeFromCollection->getDispatch()->getArguments());
-        self::assertSame($route->getDispatch()->getDependencies(), $routeFromCollection->getDispatch()->getDependencies());
+        self::assertSame($route->getHandler(), $routeFromCollection->getHandler());
         self::assertTrue($collection->has($route->getName()));
     }
 

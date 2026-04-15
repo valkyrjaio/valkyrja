@@ -21,9 +21,9 @@ or completes normally, there is a dedicated middleware stage for it.
 
 The two primary concerns in this component are **routing** — matching an
 incoming request to a handler — and **middleware** — operating on the request
-and response before, during, and after dispatch. Both are handled through the
-same Dispatcher that underpins events and CLI commands, so the behavioral
-contracts are consistent across the framework.
+and response before, during, and after dispatch. Routes are dispatched directly
+via a handler callable — no separate Dispatcher object — keeping the execution
+path simple and the handler target explicit and statically checkable.
 
 ## Configuration
 
@@ -82,9 +82,9 @@ route objects. The framework iterates over all registered providers during
 bootstrap to build the route collection.
 
 ```php
-use Valkyrja\Http\Routing\Provider\Abstract\Provider;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
-class ApiRouteProvider extends Provider
+class ApiRouteProvider implements HttpRouteProviderContract
 {
     public static function getControllerClasses(): array
     {
@@ -92,6 +92,11 @@ class ApiRouteProvider extends Provider
             UserController::class,
             PostController::class,
         ];
+    }
+
+    public static function getRoutes(): array
+    {
+        return [];
     }
 }
 ```
@@ -173,6 +178,92 @@ paths or methods by stacking attributes. The default `requestMethods` are
 > defined on that method. If a certain route requires specific configuration
 > unique to that route and not others you will need to use that route's
 > arguments
+
+### Route Handlers
+
+Every route must have a **handler** — a callable with the signature:
+
+```php
+callable(ContainerContract $container, array<string, mixed> $arguments): ResponseContract
+```
+
+The `$container` gives the handler access to all registered services. The
+`$arguments` array carries matched path parameters (e.g. `['id' => '42']` for a
+`/users/{id}` route). The handler is responsible for resolving the controller
+from the container and calling it.
+
+The idiomatic way to wire a handler to a route method is the companion
+`#[RouteHandler]` attribute, placed on the same method as `#[Route]`:
+
+```php
+use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
+
+class UserController
+{
+    #[Route(path: '/users/{id}', name: 'users.show')]
+    #[Parameter(name: 'id', regex: '\d+')]
+    #[RouteHandler([UserRouteProvider::class, 'showHandler'])]
+    public function show(int $id): ResponseContract { ... }
+}
+```
+
+The referenced static method on the provider receives the container and
+arguments and returns the response:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
+
+class UserRouteProvider implements HttpRouteProviderContract
+{
+    public static function getControllerClasses(): array
+    {
+        return [UserController::class];
+    }
+
+    public static function getRoutes(): array
+    {
+        return [];
+    }
+
+    public static function showHandler(ContainerContract $container, array $arguments): ResponseContract
+    {
+        return $container->getSingleton(UserController::class)->show((int) $arguments['id']);
+    }
+}
+```
+
+The `#[Route]` attribute also accepts a `handler` parameter directly, which is
+convenient for inline definitions:
+
+```php
+#[Route(
+    path:    '/users/{id}',
+    name:    'users.show',
+    handler: [UserRouteProvider::class, 'showHandler'],
+)]
+```
+
+#### Caching Trade-off
+
+How you express the handler determines whether it participates in Valkyrja's
+data file cache. The cache captures the full route collection in a generated PHP
+class so that production boots require no reflection.
+
+**Array callables can be cached.** A handler expressed as
+`[ClassName::class, 'method']` is a plain array — serialisable, writable to a
+file, and loadable without loss of fidelity:
+
+```php
+handler: [UserRouteProvider::class, 'showHandler'],
+```
+
+**Closures cannot be cached.** A handler expressed as `static fn (...)` is an
+anonymous function — it cannot be serialised. Use closures during development or
+when inline definitions are clearer, but prefer array callables in production
+code that will be cached.
 
 ### Route Modifiers
 
@@ -773,8 +864,9 @@ From `Http::run()` to process exit, the lifecycle is:
    response and goes straight to SendingResponse.
 9. **If a route matches**: `RouteMatched` middleware runs (authentication,
    authorization).
-10. The `Dispatcher` calls the matched controller method, injecting dependencies
-    from the container.
+10. The route's handler callable is invoked as `$handler($container, $arguments)`,
+    where `$arguments` contains the matched path parameters. The handler resolves
+    the controller from the container and calls it.
 11. `RouteDispatched` middleware runs (response transformation, logging).
 12. **If a throwable is caught** at any point: `ThrowableCaught` middleware
     runs.
@@ -798,9 +890,9 @@ flowchart TD
     D -->|matched| F[Stage 2 - RouteMatched]
     E --> G
     F -->|"short-circuit / throwable"| J
-    F --> H[Dispatcher - controller method]
+    F --> H[Route handler callable]
     H -->|throwable| J
-    H --> I[Stage 4 - RouteDispatched]
+    H[Route handler callable] --> I[Stage 4 - RouteDispatched]
     I -->|throwable| J
     I --> G
     J --> G

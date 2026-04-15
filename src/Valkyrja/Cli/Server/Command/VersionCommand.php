@@ -23,6 +23,8 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
 use const PHP_VERSION;
@@ -47,6 +49,7 @@ class VersionCommand
         description: 'Get the application version',
         helpText: [self::class, 'help'],
     )]
+    #[RouteHandler([CliRoutingCliRouteProvider::class, 'versionHandler'])]
     public function run(): OutputContract
     {
         return $this->outputFactory

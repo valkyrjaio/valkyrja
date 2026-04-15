@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 interface RouteContract
 {
@@ -237,14 +238,16 @@ interface RouteContract
     public function withAddedExitedMiddleware(string ...$middleware): static;
 
     /**
-     * Get the dispatch.
+     * Get the handler.
+     *
+     * @return callable(ContainerContract): OutputContract
      */
-    public function getDispatch(): MethodDispatchContract;
+    public function getHandler(): callable;
 
     /**
-     * Create a new route with the specified dispatch.
+     * Create a new route with the specified handler.
      *
-     * @param MethodDispatchContract $dispatch The dispatch
+     * @param callable(ContainerContract): OutputContract $handler The handler
      */
-    public function withDispatch(MethodDispatchContract $dispatch): static;
+    public function withHandler(callable $handler): static;
 }

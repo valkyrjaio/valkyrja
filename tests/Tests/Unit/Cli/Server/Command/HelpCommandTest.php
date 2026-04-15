@@ -29,7 +29,6 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class HelpCommandTest extends TestCase
@@ -88,7 +87,7 @@ final class HelpCommandTest extends TestCase
         $helpRoute   = new Route(
             name: $commandName,
             description: $description,
-            dispatch: new MethodDispatch(class: self::class, method: '__construct'),
+            handler: static fn (): null => null,
             helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(
@@ -205,7 +204,7 @@ final class HelpCommandTest extends TestCase
         $helpRoute = new Route(
             name: $commandName,
             description: $description,
-            dispatch: new MethodDispatch(class: self::class, method: '__construct'),
+            handler: static fn (): null => null,
         );
 
         $output = new Output();

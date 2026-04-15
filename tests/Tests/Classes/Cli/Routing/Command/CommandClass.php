@@ -22,6 +22,7 @@ use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Command class to test commands.
@@ -43,9 +44,20 @@ final class CommandClass
         return new Message(self::HELP_TEXT);
     }
 
+    /**
+     * Handler for the command.
+     */
+    public static function handler(ContainerContract $container): OutputContract
+    {
+        return self::run(
+            $container->getSingleton(OutputFactoryContract::class)
+        );
+    }
+
     #[Route(
         name: self::NAME,
         description: self::DESCRIPTION,
+        handler: [self::class, 'handler'],
         helpText: [self::class, 'help'],
         arguments: [
             new ArgumentParameter(
