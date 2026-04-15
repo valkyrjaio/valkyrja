@@ -19,7 +19,7 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 readonly class CliRoutingData
 {
     /**
-     * @param array<string, RouteContract|Closure():RouteContract> $routes
+     * @param array<string, Closure():RouteContract> $routes
      */
     public function __construct(
         public array $routes = []

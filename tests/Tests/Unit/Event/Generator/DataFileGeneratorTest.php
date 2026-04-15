@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Generator;
 
 use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Generator\DataFileGenerator;
@@ -122,7 +123,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $data      = new EventData(
             listeners: [
-                'name' => new Listener(
+                'name' => static fn (): ListenerContract => new Listener(
                     eventId: 'eventId',
                     name: 'name',
                     handler: static fn () => null

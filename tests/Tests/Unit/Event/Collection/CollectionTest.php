@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Collection;
 
 use Valkyrja\Event\Collection\Collection;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Tests\Classes\Event\EventClass;
@@ -46,7 +47,8 @@ final class CollectionTest extends TestCase
 
         $data = $collection->getData();
 
-        self::assertSame([$listenerName => $listener], $data->listeners);
+        self::assertArrayHasKey($listenerName, $data->listeners);
+        self::assertSame($listener, $data->listeners[$listenerName]());
         self::assertSame([EventClass::class => [$listenerName => $listenerName]], $data->events);
         self::assertSame([$listenerName => $listener], $collection->getListeners());
         self::assertSame([EventClass::class], $collection->getEvents());
@@ -74,7 +76,10 @@ final class CollectionTest extends TestCase
 
         $data = new EventData(
             events: [EventClass::class => [$listenerName => $listenerName, $listenerName2 => $listenerName2]],
-            listeners: [$listenerName => $listener, $listenerName2 => $listener2]
+            listeners: [
+                $listenerName  => static fn (): ListenerContract => $listener,
+                $listenerName2 => static fn (): ListenerContract => $listener2,
+            ]
         );
 
         $collection = new Collection();
@@ -82,7 +87,10 @@ final class CollectionTest extends TestCase
 
         $dataFromCollection = $collection->getData();
 
-        self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $dataFromCollection->listeners);
+        self::assertArrayHasKey($listenerName, $dataFromCollection->listeners);
+        self::assertSame($listener, $dataFromCollection->listeners[$listenerName]());
+        self::assertArrayHasKey($listenerName2, $dataFromCollection->listeners);
+        self::assertSame($listener2, $dataFromCollection->listeners[$listenerName2]());
         self::assertSame($data->events, $dataFromCollection->events);
         self::assertSame([$listenerName => $listener, $listenerName2 => $listener2], $collection->getListeners());
         self::assertSame([EventClass::class], $collection->getEvents());

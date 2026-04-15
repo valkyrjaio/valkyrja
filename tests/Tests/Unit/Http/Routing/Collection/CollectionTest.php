@@ -83,7 +83,7 @@ final class CollectionTest extends TestCase
 
         $data = new HttpRoutingData(
             routes: [
-                $routeName => $route,
+                $routeName => static fn (): RouteContract => $route,
             ]
         );
 
@@ -107,9 +107,9 @@ final class CollectionTest extends TestCase
         $dataFromCollection3 = $collection3->getData();
 
         self::assertNotSame($data, $dataFromCollection);
-        self::assertSame($route, $dataFromCollection->routes[$routeName]);
-        self::assertSame($route, $dataFromCollection2->routes[$routeName]);
-        self::assertSame($route, $dataFromCollection3->routes[$routeName]);
+        self::assertSame($route, $dataFromCollection->routes[$routeName]());
+        self::assertSame($route, $dataFromCollection2->routes[$routeName]());
+        self::assertSame($route, $dataFromCollection3->routes[$routeName]());
         self::assertSame($routeName, $collection->getByName($routeName)->getName());
         self::assertSame($routeName, $collection2->getByName($routeName)->getName());
         self::assertSame($routeName, $collection3->getByName($routeName)->getName());

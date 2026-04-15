@@ -63,7 +63,8 @@ final class CollectionTest extends TestCase
         $collection->add($route);
 
         self::assertSame([$route->getName() => $route], $collection->all());
-        self::assertSame([$route->getName() => $route], $collection->getData()->routes);
+        self::assertArrayHasKey($route->getName(), $collection->getData()->routes);
+        self::assertSame($route, $collection->getData()->routes[$route->getName()]());
         self::assertSame($route, $collection->get($route->getName()));
         self::assertTrue($collection->has($route->getName()));
     }

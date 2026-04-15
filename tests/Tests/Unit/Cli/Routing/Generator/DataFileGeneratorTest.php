@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
@@ -119,7 +120,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $data      = new CliRoutingData(
             routes: [
-                'route' => new Route(
+                'route' => static fn (): RouteContract => new Route(
                     name: 'test',
                     description: 'description',
                     handler: [CommandWithAllAttributesClass::class, 'handler']

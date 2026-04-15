@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator;
@@ -131,7 +132,11 @@ final class DataFileGeneratorTest extends TestCase
     {
         $data      = new HttpRoutingData(
             routes: [
-                'route' => new Route('/', 'route', [RouteProviderClass::class, 'handler']),
+                'route' => static fn (): RouteContract => new Route(
+                    '/',
+                    'route',
+                    [RouteProviderClass::class, 'handler']
+                ),
             ]
         );
         $directory  = Directory::storagePath();
