@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware\RouteMatched;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
@@ -36,7 +35,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $handler = new RouteMatchedHandler();
 
@@ -64,7 +63,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
@@ -93,7 +92,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
@@ -122,7 +121,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();

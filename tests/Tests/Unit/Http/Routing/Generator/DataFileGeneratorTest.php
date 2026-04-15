@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Generator;
 
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
+use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class DataFileGeneratorTest extends TestCase
@@ -131,7 +131,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $data      = new HttpRoutingData(
             routes: [
-                'route' => new Route('/', 'route', new MethodDispatch('class', 'method')),
+                'route' => new Route('/', 'route', [RouteProviderClass::class, 'handler']),
             ]
         );
         $directory  = Directory::storagePath();
@@ -151,20 +151,14 @@ final class DataFileGeneratorTest extends TestCase
             new \\$dataNamespace(
                 routes: [
                 'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
+
+               'handler' => 
+              array (
+                0 => 'Valkyrja\\\\Tests\\\\Classes\\\\Http\\\\Routing\\\\Provider\\\\RouteProviderClass',
+                1 => 'handler',
+              ),
                'path' => '/',
                'name' => 'route',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
                'requestMethods' => 
               array (
                 0 => 
@@ -210,7 +204,7 @@ final class DataFileGeneratorTest extends TestCase
     {
         $data      = new HttpRoutingData(
             routes: [
-                'route' => static fn (): Route => new Route('/', 'route', new MethodDispatch('class', 'method')),
+                'route' => static fn (): Route => new Route('/', 'route', [RouteProviderClass::class, 'handler']),
             ]
         );
         $directory  = Directory::storagePath();
@@ -230,20 +224,14 @@ final class DataFileGeneratorTest extends TestCase
             new \\$dataNamespace(
                 routes: [
                 'route' => static fn (): \Valkyrja\Http\Routing\Data\Contract\RouteContract => new \Valkyrja\Http\Routing\Data\Route(...array(
+
+               'handler' => 
+              array (
+                0 => 'Valkyrja\\\\Tests\\\\Classes\\\\Http\\\\Routing\\\\Provider\\\\RouteProviderClass',
+                1 => 'handler',
+              ),
                'path' => '/',
                'name' => 'route',
-               'dispatch' => 
-              new \Valkyrja\Dispatch\Data\MethodDispatch(...array(
-                 'class' => 'class',
-                 'arguments' => 
-                array (
-                ),
-                 'dependencies' => 
-                array (
-                ),
-                 'method' => 'method',
-                 'isStatic' => false,
-              )),
                'requestMethods' => 
               array (
                 0 => 

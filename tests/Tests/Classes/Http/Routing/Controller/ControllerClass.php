@@ -25,12 +25,14 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Head;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Post;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
+use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Type\Contract\TypeContract;
@@ -95,6 +97,7 @@ final class ControllerClass
     #[Head]
     #[Post]
     #[Route(path: self::PARAMETERS_PATH, name: self::PARAMETERS_NAME)]
+    #[RouteHandler([RouteProviderClass::class, 'handler'])]
     #[Middleware(RouteDispatchedMiddlewareClass::class)]
     #[Middleware(RouteMatchedMiddlewareClass::class)]
     #[Middleware(SendingResponseMiddlewareClass::class)]

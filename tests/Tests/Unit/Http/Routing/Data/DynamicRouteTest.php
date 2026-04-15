@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
@@ -49,13 +48,12 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: $handler = static fn (): null => null,
         );
 
         self::assertSame($path, $route->getPath());
         self::assertSame($name, $route->getName());
-        self::assertSame(self::class, $route->getDispatch()->getClass());
-        self::assertSame('dispatch', $route->getDispatch()->getMethod());
+        self::assertSame($handler, $route->getHandler());
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET], $route->getRequestMethods());
         self::assertSame('', $route->getRegex());
         self::assertEmpty($route->getParameters());
@@ -72,7 +70,7 @@ final class DynamicRouteTest extends TestCase
     {
         $path                      = '/';
         $name                      = 'route';
-        $dispatch                  = new MethodDispatch(self::class, 'dispatch');
+        $handler                   = static fn (): null => null;
         $methods                   = [RequestMethod::HEAD, RequestMethod::POST];
         $regex                     = 'regex';
         $parameters                = [new Parameter(name: 'test', regex: Regex::ALPHA)];
@@ -89,7 +87,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: $regex,
             parameters: $parameters,
-            dispatch: $dispatch,
+            handler: $handler,
             requestMethods: $methods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
@@ -102,8 +100,7 @@ final class DynamicRouteTest extends TestCase
 
         self::assertSame($path, $route->getPath());
         self::assertSame($name, $route->getName());
-        self::assertSame(self::class, $route->getDispatch()->getClass());
-        self::assertSame('dispatch', $route->getDispatch()->getMethod());
+        self::assertSame($handler, $route->getHandler());
         self::assertSame($methods, $route->getRequestMethods());
         self::assertSame($regex, $route->getRegex());
         self::assertSame($parameters, $route->getParameters());
@@ -127,7 +124,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withPath($path2);
         $route3 = $route->withAddedPath('version');
@@ -157,7 +154,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withName($name2);
         $route3 = $route->withAddedName('.version');
@@ -188,7 +185,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: $regex,
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withRegex($regex2);
         $route3 = $route->withRegex($regex2);
@@ -205,31 +202,31 @@ final class DynamicRouteTest extends TestCase
         self::assertSame($regex, $route4->getRegex());
     }
 
-    public function testDispatch(): void
+    public function testHandler(): void
     {
         $path = '/';
         $name = 'route';
 
-        $dispatch  = new MethodDispatch(class: self::class, method: 'test');
-        $dispatch2 = new MethodDispatch(class: self::class, method: 'test2');
-        $dispatch3 = new MethodDispatch(class: self::class, method: 'test3');
+        $handler  = static fn (): null => null;
+        $handler2 = static fn (): string => 'test2';
+        $handler3 = static fn (): string => 'test3';
 
         $route  = new DynamicRoute(
             path: $path,
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: $dispatch
+            handler: $handler
         );
-        $route2 = $route->withDispatch($dispatch2);
-        $route3 = $route2->withDispatch($dispatch3);
+        $route2 = $route->withHandler($handler2);
+        $route3 = $route2->withHandler($handler3);
 
         self::assertNotSame($route, $route2);
         self::assertNotSame($route, $route3);
         self::assertNotSame($route2, $route3);
-        self::assertSame($dispatch, $route->getDispatch());
-        self::assertSame($dispatch2, $route2->getDispatch());
-        self::assertSame($dispatch3, $route3->getDispatch());
+        self::assertSame($handler, $route->getHandler());
+        self::assertSame($handler2, $route2->getHandler());
+        self::assertSame($handler3, $route3->getHandler());
     }
 
     public function testRequestMethods(): void
@@ -245,7 +242,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
@@ -299,7 +296,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [$parameter],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withParameters($parameter2);
         $route3 = $route->withParameters($parameter3);
@@ -330,7 +327,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             routeMatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteMatchedMiddleware($middleware2);
@@ -356,7 +353,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             routeDispatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteDispatchedMiddleware($middleware2);
@@ -382,7 +379,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             throwableCaughtMiddleware: [$middleware]
         );
         $route2 = $route->withThrowableCaughtMiddleware($middleware2);
@@ -408,7 +405,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             sendingResponseMiddleware: [$middleware]
         );
         $route2 = $route->withSendingResponseMiddleware($middleware2);
@@ -434,7 +431,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             terminatedMiddleware: [$middleware]
         );
         $route2 = $route->withTerminatedMiddleware($middleware2);
@@ -460,7 +457,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             requestStruct: $requestStruct
         );
         $route2 = $route->withRequestStruct($requestStruct2);
@@ -483,7 +480,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             responseStruct: $responseStruct
         );
         $route2 = $route->withResponseStruct($responseStruct2);

@@ -73,7 +73,7 @@ final class DynamicRouteTest extends TestCase
         $value = [
             RequestMethod::POST,
         ];
-        $route = new DynamicRoute(path: '/', name: 'test', requestMethods: $value, parameters: []);
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], requestMethods: $value);
 
         self::assertSame($value, $route->getRequestMethods());
     }
@@ -86,6 +86,14 @@ final class DynamicRouteTest extends TestCase
         $route = new DynamicRoute(path: '/', name: 'test', parameters: $value);
 
         self::assertSame($value, $route->getParameters());
+    }
+
+    public function testHandler(): void
+    {
+        $value = static fn (): null => null;
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], handler: $value);
+
+        self::assertSame($value, $route->getHandler());
     }
 
     public function testRequestStruct(): void

@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data\Contract;
 
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -68,16 +69,32 @@ interface RouteContract
     public function withAddedName(string $name): static;
 
     /**
-     * Get the dispatch.
+     * Get the arguments.
+     *
+     * @return array<non-empty-string, mixed>
      */
-    public function getDispatch(): MethodDispatchContract;
+    public function getArguments(): array;
 
     /**
-     * Create a new request method with the specified dispatch.
+     * Create a new dispatch with the specified arguments.
      *
-     * @param MethodDispatchContract $dispatch The dispatch
+     * @param array<non-empty-string, mixed> $arguments The arguments
      */
-    public function withDispatch(MethodDispatchContract $dispatch): static;
+    public function withArguments(array $arguments): static;
+
+    /**
+     * Get the handler.
+     *
+     * @return callable(ContainerContract, array<string, mixed>): ResponseContract
+     */
+    public function getHandler(): callable;
+
+    /**
+     * Create a new route with the specified handler.
+     *
+     * @param callable(ContainerContract, array<string, mixed>): ResponseContract $handler The handler
+     */
+    public function withHandler(callable $handler): static;
 
     /**
      * Get the request methods.

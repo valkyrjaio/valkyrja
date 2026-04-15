@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -31,20 +32,26 @@ use function in_array;
 
 class Route implements RouteContract
 {
+    /** @var array<non-empty-string, mixed> */
+    protected array $arguments = [];
+    /** @var callable(ContainerContract, array<string, mixed>): ResponseContract */
+    protected $handler;
+
     /**
-     * @param non-empty-string                                  $path                      The path
-     * @param non-empty-string                                  $name                      The name
-     * @param RequestMethod[]                                   $requestMethods            The request methods
-     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
+     * @param non-empty-string                                                   $path                      The path
+     * @param non-empty-string                                                   $name                      The name
+     * @param callable(ContainerContract, array<string, mixed>):ResponseContract $handler                   The handler
+     * @param RequestMethod[]                                                    $requestMethods            The request methods
+     * @param class-string<RouteMatchedMiddlewareContract>[]                     $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
      */
     public function __construct(
         protected string $path,
         protected string $name,
-        protected MethodDispatchContract $dispatch,
+        callable $handler,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -54,6 +61,7 @@ class Route implements RouteContract
         protected RequestStructContract|null $requestStruct = null,
         protected ResponseStructContract|null $responseStruct = null,
     ) {
+        $this->handler = $handler;
     }
 
     /**
@@ -133,20 +141,42 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): MethodDispatchContract
+    public function getArguments(): array
     {
-        return $this->dispatch;
+        return $this->arguments;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(MethodDispatchContract $dispatch): static
+    public function withArguments(array $arguments): static
     {
         $new = clone $this;
 
-        $new->dispatch = $dispatch;
+        $new->arguments = $arguments;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getHandler(): callable
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withHandler(callable $handler): static
+    {
+        $new = clone $this;
+
+        $new->handler = $handler;
 
         return $new;
     }

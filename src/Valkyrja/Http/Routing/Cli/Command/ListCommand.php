@@ -82,10 +82,6 @@ class ListCommand
                 new Message('Name: '),
                 new Message($route->getName(), new HighlightedTextFormatter()),
                 new NewLine(),
-                new Message('    - '),
-                new Message('Dispatch: '),
-                new Message($route->getDispatch()->__toString(), new HighlightedTextFormatter()),
-                new NewLine(),
             );
 
             $output = $this->getOutputForDynamicRoute($output, $route);

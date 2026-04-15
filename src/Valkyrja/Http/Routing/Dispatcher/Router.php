@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Routing\Dispatcher;
 use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -41,7 +39,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 
 use function rawurldecode;
 
@@ -49,7 +46,6 @@ class Router implements RouterContract
 {
     public function __construct(
         protected ContainerContract $container = new Container(),
-        protected DispatcherContract $dispatcher = new Dispatcher(),
         protected MatcherContract $matcher = new Matcher(),
         protected ResponseFactoryContract $responseFactory = new ResponseFactory(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
@@ -108,19 +104,11 @@ class Router implements RouterContract
         // Set the route after middleware has potentially modified it in the service container
         $this->container->setSingleton(RouteContract::class, $routeAfterMiddleware);
 
-        $dispatch  = $routeAfterMiddleware->getDispatch();
-        $arguments = $dispatch->getArguments();
+        $handler   = $routeAfterMiddleware->getHandler();
+        $arguments = $routeAfterMiddleware->getArguments();
 
         // Attempt to dispatch the route using any one of the callable options
-        /** @var scalar|object|array<array-key, mixed>|resource|null $response */
-        $response = $this->dispatcher->dispatch(
-            dispatch: $dispatch,
-            arguments: $arguments
-        );
-
-        if (! $response instanceof ResponseContract) {
-            throw new HttpRoutingInvalidRouteNameException('Dispatch must be a valid response');
-        }
+        $response = $handler($this->container, $arguments);
 
         return $this->routeDispatchedHandler->routeDispatched(
             request: $request,

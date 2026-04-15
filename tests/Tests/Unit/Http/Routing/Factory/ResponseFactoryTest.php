@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Factory;
 
 use Override;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
@@ -41,7 +40,7 @@ final class ResponseFactoryTest extends TestCase
         $route           = new Route(
             path: '/',
             name: self::ROUTE_NAME,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $collection      = new Collection();
         $responseFactory = new MessageResponseFactory();

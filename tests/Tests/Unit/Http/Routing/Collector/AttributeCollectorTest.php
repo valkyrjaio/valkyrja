@@ -25,6 +25,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerAttributedClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerWithAllMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -47,18 +48,13 @@ final class AttributeCollectorTest extends TestCase
 
         self::assertSame(ControllerClass::WELCOME_PATH, $welcomeRoute->getPath());
         self::assertSame(ControllerClass::WELCOME_NAME, $welcomeRoute->getName());
-        self::assertSame(ControllerClass::class, $welcomeRoute->getDispatch()->getClass());
-        self::assertSame('welcome', $welcomeRoute->getDispatch()->getMethod());
-        self::assertFalse($welcomeRoute->getDispatch()->isStatic());
 
         $parametersRoute = $routes[1];
 
         self::assertInstanceOf(DynamicRouteContract::class, $parametersRoute);
         self::assertSame(ControllerClass::PARAMETERS_PATH, $parametersRoute->getPath());
         self::assertSame(ControllerClass::PARAMETERS_NAME, $parametersRoute->getName());
-        self::assertSame(ControllerClass::class, $parametersRoute->getDispatch()->getClass());
-        self::assertSame('parameters', $parametersRoute->getDispatch()->getMethod());
-        self::assertFalse($parametersRoute->getDispatch()->isStatic());
+        self::assertSame([RouteProviderClass::class, 'handler'], $parametersRoute->getHandler());
         self::assertSame('/^\/parameters\/(?<name>[a-zA-Z]+)$/', $parametersRoute->getRegex());
         self::assertSame([RouteDispatchedMiddlewareClass::class], $parametersRoute->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareClass::class], $parametersRoute->getRouteMatchedMiddleware());
@@ -76,9 +72,6 @@ final class AttributeCollectorTest extends TestCase
         self::assertInstanceOf(DynamicRouteContract::class, $dynamicRoute);
         self::assertSame(ControllerClass::DYNAMIC_PATH, $dynamicRoute->getPath());
         self::assertSame(ControllerClass::DYNAMIC_NAME, $dynamicRoute->getName());
-        self::assertSame(ControllerClass::class, $dynamicRoute->getDispatch()->getClass());
-        self::assertSame('dynamic', $dynamicRoute->getDispatch()->getMethod());
-        self::assertTrue($dynamicRoute->getDispatch()->isStatic());
         self::assertSame('/^\/dynamic\/(?<foo>[a-zA-Z]+)\/(?<bar>[a-zA-Z]+)$/', $dynamicRoute->getRegex());
         self::assertSame([RouteDispatchedMiddlewareClass::class], $dynamicRoute->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareClass::class], $dynamicRoute->getRouteMatchedMiddleware());
@@ -107,8 +100,7 @@ final class AttributeCollectorTest extends TestCase
 
         self::assertSame('/controller/welcome/path', $welcomeRoute->getPath());
         self::assertSame('controller.' . ControllerAttributedClass::WELCOME_NAME . '.name', $welcomeRoute->getName());
-        self::assertSame(ControllerAttributedClass::class, $welcomeRoute->getDispatch()->getClass());
-        self::assertSame('welcome', $welcomeRoute->getDispatch()->getMethod());
+        self::assertSame([ControllerAttributedClass::class, 'welcomeHandler'], $welcomeRoute->getHandler());
     }
 
     /**
@@ -124,8 +116,6 @@ final class AttributeCollectorTest extends TestCase
 
         self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_PATH, $route->getPath());
         self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_NAME, $route->getName());
-        self::assertSame(ControllerWithAllMiddlewareClass::class, $route->getDispatch()->getClass());
-        self::assertSame('welcome', $route->getDispatch()->getMethod());
         self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $route->getSendingResponseMiddleware());
@@ -138,8 +128,6 @@ final class AttributeCollectorTest extends TestCase
 
         self::assertSame(ControllerWithAllMiddlewareClass::DYNAMIC_PATH, $dynamicRoute->getPath());
         self::assertSame(ControllerWithAllMiddlewareClass::DYNAMIC_NAME, $dynamicRoute->getName());
-        self::assertSame(ControllerWithAllMiddlewareClass::class, $dynamicRoute->getDispatch()->getClass());
-        self::assertSame('welcomeDynamic', $dynamicRoute->getDispatch()->getMethod());
         self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getSendingResponseMiddleware());

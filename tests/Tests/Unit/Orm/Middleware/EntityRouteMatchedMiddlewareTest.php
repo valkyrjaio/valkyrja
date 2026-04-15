@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Orm\Middleware;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -123,7 +122,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request   = self::createStub(ServerRequestContract::class);
         $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
         $cast      = new Cast(type: CastType::string);
 
@@ -149,18 +147,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->exactly(2))
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $dispatch
-            ->expects($this->exactly(2))
             ->method('getArguments')
             ->willReturn(['id' => '123']);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn([]);
 
         $handler
             ->expects($this->once())
@@ -170,7 +158,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
         self::assertInstanceOf(DynamicRouteContract::class, $result);
-        self::assertSame('123', $result->getDispatch()->getArguments()['id']);
+        self::assertSame('123', $result->getArguments()['id']);
     }
 
     public function testRouteMatchedWithNonEntityParameter(): void
@@ -182,7 +170,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request   = self::createStub(ServerRequestContract::class);
         $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
         $cast      = new Cast(type: CastType::string);
 
@@ -208,18 +195,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['id' => '123']);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn([]);
 
         $handler
             ->expects($this->once())
@@ -240,7 +217,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request   = self::createStub(ServerRequestContract::class);
         $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
         $entity    = self::createStub(EntityContract::class);
 
@@ -269,30 +245,10 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $route
-            ->expects($this->once())
-            ->method('withDispatch')
-            ->willReturnSelf();
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['user' => $entity]);
 
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn(['user' => $entityClass]);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('withDependencies')
-            ->willReturnSelf();
-
-        $dispatch
+        $route
             ->expects($this->once())
             ->method('withArguments')
             ->willReturnSelf();
@@ -314,7 +270,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request    = self::createStub(ServerRequestContract::class);
         $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
         $repository = $this->createMock(RepositoryContract::class);
         $response   = self::createStub(ResponseContract::class);
@@ -344,18 +299,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['user' => 999]);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn(['user' => $entityClass]);
 
         $this->orm
             ->expects($this->once())
@@ -392,7 +337,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request   = self::createStub(ServerRequestContract::class);
         $route     = $this->createMock(DynamicRouteContract::class);
         $handler   = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch  = $this->createMock(MethodDispatchContract::class);
         $parameter = $this->createMock(ParameterContract::class);
         $response  = self::createStub(ResponseContract::class);
 
@@ -421,18 +365,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['user' => '']);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn(['user' => $entityClass]);
 
         $this->responseFactory
             ->expects($this->once())
@@ -457,7 +391,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request    = self::createStub(ServerRequestContract::class);
         $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
         $repository = $this->createMock(RepositoryContract::class);
         $entity     = self::createStub(EntityContract::class);
@@ -487,30 +420,10 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $route
-            ->expects($this->once())
-            ->method('withDispatch')
-            ->willReturnSelf();
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['user' => 'john-doe']);
 
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn(['user' => $entityClass]);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('withDependencies')
-            ->willReturnSelf();
-
-        $dispatch
+        $route
             ->expects($this->once())
             ->method('withArguments')
             ->willReturnSelf();
@@ -544,7 +457,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $request    = self::createStub(ServerRequestContract::class);
         $route      = $this->createMock(DynamicRouteContract::class);
         $handler    = $this->createMock(RouteMatchedHandlerContract::class);
-        $dispatch   = $this->createMock(MethodDispatchContract::class);
         $parameter  = $this->createMock(ParameterContract::class);
         $repository = $this->createMock(RepositoryContract::class);
         $entity     = self::createStub(EntityContract::class);
@@ -574,30 +486,10 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getDispatch')
-            ->willReturn($dispatch);
-
-        $route
-            ->expects($this->once())
-            ->method('withDispatch')
-            ->willReturnSelf();
-
-        $dispatch
-            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['user' => 42]);
 
-        $dispatch
-            ->expects($this->once())
-            ->method('getDependencies')
-            ->willReturn(['user' => $entityClass]);
-
-        $dispatch
-            ->expects($this->once())
-            ->method('withDependencies')
-            ->willReturnSelf();
-
-        $dispatch
+        $route
             ->expects($this->once())
             ->method('withArguments')
             ->willReturnSelf();

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Processor;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
@@ -34,7 +33,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -50,7 +49,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: 'some/path',
             name: 'route',
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -73,7 +72,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -99,7 +98,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
 
         $processor->route($route);
@@ -119,7 +118,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -145,7 +144,7 @@ final class ProcessorTest extends TestCase
                     isOptional: true
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch')
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -170,7 +169,7 @@ final class ProcessorTest extends TestCase
                     shouldCapture: false
                 ),
             ],
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
 
         $routeAfterProcessing = $processor->route($route);

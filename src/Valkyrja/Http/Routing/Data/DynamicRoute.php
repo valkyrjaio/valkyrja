@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
@@ -29,22 +30,23 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 class DynamicRoute extends Route implements DynamicRouteContract
 {
     /**
-     * @param non-empty-string                                  $path                      The path
-     * @param non-empty-string                                  $name                      The name
-     * @param RequestMethod[]                                   $requestMethods            The request methods
-     * @param ParameterContract[]                               $parameters                The parameters
-     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
+     * @param non-empty-string                                                   $path                      The path
+     * @param non-empty-string                                                   $name                      The name
+     * @param callable(ContainerContract, array<string, mixed>):ResponseContract $handler                   The handler
+     * @param RequestMethod[]                                                    $requestMethods            The request methods
+     * @param ParameterContract[]                                                $parameters                The parameters
+     * @param class-string<RouteMatchedMiddlewareContract>[]                     $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
      */
     public function __construct(
         protected string $path,
         protected string $name,
         protected string $regex,
         protected array $parameters,
-        protected MethodDispatchContract $dispatch,
+        callable $handler,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
@@ -57,7 +59,7 @@ class DynamicRoute extends Route implements DynamicRouteContract
         parent::__construct(
             path: $path,
             name: $name,
-            dispatch: $dispatch,
+            handler: $handler,
             requestMethods: $requestMethods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,

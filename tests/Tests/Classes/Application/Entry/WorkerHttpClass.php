@@ -20,7 +20,6 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
@@ -109,7 +108,7 @@ final class WorkerHttpClass extends WorkerHttp
             new Route(
                 path: '/',
                 name: 'home',
-                dispatch: MethodDispatch::fromCallableOrArray([self::class, 'handleRoute'])
+                handler: [self::class, 'handleRoute']
             )
         );
     }

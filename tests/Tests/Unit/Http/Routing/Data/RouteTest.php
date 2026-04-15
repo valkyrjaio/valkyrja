@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
-use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Constant\Regex;
-use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
@@ -47,13 +44,11 @@ final class RouteTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
 
         self::assertSame($path, $route->getPath());
         self::assertSame($name, $route->getName());
-        self::assertSame(self::class, $route->getDispatch()->getClass());
-        self::assertSame('dispatch', $route->getDispatch()->getMethod());
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET], $route->getRequestMethods());
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
@@ -68,10 +63,8 @@ final class RouteTest extends TestCase
     {
         $path                      = '/';
         $name                      = 'route';
-        $dispatch                  = new MethodDispatch(self::class, 'dispatch');
+        $handler                   = static fn (): null => null;
         $methods                   = [RequestMethod::HEAD, RequestMethod::POST];
-        $regex                     = 'regex';
-        $parameters                = [new Parameter(name: 'test', regex: Regex::ALPHA)];
         $routeMatchedMiddleware    = [RouteMatchedMiddlewareClass::class];
         $routeDispatchedMiddleware = [RouteDispatchedMiddlewareClass::class];
         $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
@@ -83,7 +76,7 @@ final class RouteTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
-            dispatch: $dispatch,
+            handler: $handler,
             requestMethods: $methods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
@@ -96,8 +89,7 @@ final class RouteTest extends TestCase
 
         self::assertSame($path, $route->getPath());
         self::assertSame($name, $route->getName());
-        self::assertSame(self::class, $route->getDispatch()->getClass());
-        self::assertSame('dispatch', $route->getDispatch()->getMethod());
+        self::assertSame($handler, $route->getHandler());
         self::assertSame($methods, $route->getRequestMethods());
         self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
         self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
@@ -117,7 +109,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withPath($path2);
         $route3 = $route->withAddedPath('version');
@@ -145,7 +137,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withName($name2);
         $route3 = $route->withAddedName('.version');
@@ -164,25 +156,25 @@ final class RouteTest extends TestCase
         self::assertSame($name2, $route5->getName());
     }
 
-    public function testDispatch(): void
+    public function testHandler(): void
     {
         $path = '/';
         $name = 'route';
 
-        $dispatch  = new MethodDispatch(class: self::class, method: 'test');
-        $dispatch2 = new MethodDispatch(class: self::class, method: 'test2');
-        $dispatch3 = new MethodDispatch(class: self::class, method: 'test3');
+        $handler  = static fn (): null => null;
+        $handler2 = static fn (): string => 'test2';
+        $handler3 = static fn (): string => 'test3';
 
-        $route  = new Route(path: $path, name: $name, dispatch: $dispatch);
-        $route2 = $route->withDispatch($dispatch2);
-        $route3 = $route2->withDispatch($dispatch3);
+        $route  = new Route(path: $path, name: $name, handler: $handler);
+        $route2 = $route->withHandler($handler2);
+        $route3 = $route2->withHandler($handler3);
 
         self::assertNotSame($route, $route2);
         self::assertNotSame($route, $route3);
         self::assertNotSame($route2, $route3);
-        self::assertSame($dispatch, $route->getDispatch());
-        self::assertSame($dispatch2, $route2->getDispatch());
-        self::assertSame($dispatch3, $route3->getDispatch());
+        self::assertSame($handler, $route->getHandler());
+        self::assertSame($handler2, $route2->getHandler());
+        self::assertSame($handler3, $route3->getHandler());
     }
 
     public function testRequestMethods(): void
@@ -196,7 +188,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
         );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
@@ -246,7 +238,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             routeMatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteMatchedMiddleware($middleware2);
@@ -270,7 +262,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             routeDispatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteDispatchedMiddleware($middleware2);
@@ -294,7 +286,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             throwableCaughtMiddleware: [$middleware]
         );
         $route2 = $route->withThrowableCaughtMiddleware($middleware2);
@@ -318,7 +310,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             sendingResponseMiddleware: [$middleware]
         );
         $route2 = $route->withSendingResponseMiddleware($middleware2);
@@ -342,7 +334,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             terminatedMiddleware: [$middleware]
         );
         $route2 = $route->withTerminatedMiddleware($middleware2);
@@ -366,7 +358,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             requestStruct: $requestStruct
         );
         $route2 = $route->withRequestStruct($requestStruct2);
@@ -387,7 +379,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            handler: static fn (): null => null,
             responseStruct: $responseStruct
         );
         $route2 = $route->withResponseStruct($responseStruct2);

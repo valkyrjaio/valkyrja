@@ -22,7 +22,6 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollecto
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -90,7 +89,6 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
             RouterContract::class,
             new Router(
                 container: $container,
-                dispatcher: $container->getSingleton(DispatcherContract::class),
                 matcher: $container->getSingleton(MatcherContract::class),
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 throwableCaughtHandler: $exception,

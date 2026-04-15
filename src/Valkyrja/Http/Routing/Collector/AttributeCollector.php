@@ -32,6 +32,7 @@ use Valkyrja\Http\Routing\Attribute\Route\Path;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
+use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
@@ -82,9 +83,9 @@ class AttributeCollector implements CollectorContract
                 $method     = $reflection->getName();
                 $route      = $this->convertRouteAttributesToDataClass($attribute);
 
-                $route = $this->updateDispatch($route, $class, $method, $reflection->isStatic());
                 $route = $this->updatePath($route, $class, $method);
                 $route = $this->updateName($route, $class, $method);
+                $route = $this->updateHandler($route, $class, $method);
                 $route = $this->updateMiddleware($route, $class, $method);
                 $route = $this->updateRequestStruct($route, $class, $method);
                 $route = $this->updateResponseStruct($route, $class, $method);
@@ -103,34 +104,10 @@ class AttributeCollector implements CollectorContract
     }
 
     /**
-     * @param class-string     $class  The class name
-     * @param non-empty-string $method The method name
-     */
-    protected function updateDispatch(Route $route, string $class, string $method, bool $isStatic): Route
-    {
-        return $route->withDispatch(
-            $route->getDispatch()
-                ->withClass($class)
-                ->withMethod($method)
-                ->withIsStatic($isStatic)
-        );
-    }
-
-    /**
      * Set the route properties from arguments.
-     *
-     * @throws ReflectionException
      */
     protected function setRouteProperties(RouteContract $route): RouteContract
     {
-        $dispatch = $route->getDispatch();
-
-        $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
-        // Set the dependencies
-        $route = $route->withDispatch(
-            $dispatch->withDependencies($this->reflection->getDependencies($methodReflection))
-        );
-
         return $this->processor->route($route);
     }
 
@@ -190,6 +167,29 @@ class AttributeCollector implements CollectorContract
         }
 
         return $route;
+    }
+
+    /**
+     * Update the handler for a route.
+     *
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateHandler(Route $route, string $class, string $method): Route
+    {
+        /** @var RouteHandler[] $routeHandlers */
+        $routeHandlers = $this->attributes->forMethod($class, $method, RouteHandler::class);
+        $routeHandler  = $routeHandlers[0] ?? null;
+
+        $handler = $routeHandler->handler ?? null;
+
+        if ($handler === null) {
+            return $route;
+        }
+
+        return $route->withHandler($handler);
     }
 
     /**
@@ -372,7 +372,7 @@ class AttributeCollector implements CollectorContract
                 name: $route->getName(),
                 regex: '',
                 parameters: $parameters,
-                dispatch: $route->getDispatch(),
+                handler: $route->getHandler(),
                 requestMethods: $route->getRequestMethods(),
                 routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
                 routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
@@ -387,7 +387,7 @@ class AttributeCollector implements CollectorContract
         return new Route(
             path: $route->getPath(),
             name: $route->getName(),
-            dispatch: $route->getDispatch(),
+            handler: $route->getHandler(),
             requestMethods: $route->getRequestMethods(),
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
