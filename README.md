@@ -1,5 +1,5 @@
 <p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/full-logo/orange/php.png" width="400">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/long-banner/orange/php.png" width="100%">
 </a></p>
 
 # Valkyrja
@@ -161,7 +161,7 @@ the [MIT license][MIT license url]. You can view the
 
 [Versioning and Release Process url]: ./src/Valkyrja/VERSIONING_AND_RELEASE_PROCESS.md
 
-[security vulnerabilities url]: ./SECURITY.md
+[security vulnerabilities url]: https://github.com/valkyrjaio/.github/SECURITY.md
 
 [semantic versioning url]: https://semver.org/
 
@@ -169,4 +169,4 @@ the [MIT license][MIT license url]. You can view the
 
 [license url]: ./LICENSE.md
 
-[contributing url]: ./CONTRIBUTING.md
+[contributing url]: https://github.com/valkyrjaio/.github/CONTRIBUTING.md
