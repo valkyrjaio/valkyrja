@@ -34,12 +34,12 @@ jobs:
         [
           {"name": "Root and Suggested Packages", "command": "root-and-suggested-outdated-check"},
           {"name": "PHPArkitect",                 "command": "phparkitect-outdated-check"},
-          {"name": "PHP Code Sniffer",             "command": "phpcodesniffer-outdated-check"},
-          {"name": "PHP CS Fixer",                 "command": "phpcsfixer-outdated-check"},
-          {"name": "PHPStan",                      "command": "phpstan-outdated-check"},
-          {"name": "PHPUnit",                      "command": "phpunit-outdated-check"},
-          {"name": "Psalm",                        "command": "psalm-outdated-check"},
-          {"name": "Rector",                       "command": "rector-outdated-check"}
+          {"name": "PHP Code Sniffer",            "command": "phpcodesniffer-outdated-check"},
+          {"name": "PHP CS Fixer",                "command": "phpcsfixer-outdated-check"},
+          {"name": "PHPStan",                     "command": "phpstan-outdated-check"},
+          {"name": "PHPUnit",                     "command": "phpunit-outdated-check"},
+          {"name": "Psalm",                       "command": "psalm-outdated-check"},
+          {"name": "Rector",                      "command": "rector-outdated-check"}
         ]
 
   update-version-files:

@@ -1,0 +1,13 @@
+name: Restore Branch From Backup
+
+on:
+  workflow_dispatch:
+
+run-name: "Restore ${{ github.ref_name }} from ${{ github.ref_name }}-backup"
+
+jobs:
+  restore:
+    uses: valkyrjaio/.github/.github/workflows/_restore-branch-from-backup.yml@master
+    permissions:
+      contents: write
+    secrets: inherit
