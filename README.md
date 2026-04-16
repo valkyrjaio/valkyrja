@@ -161,7 +161,7 @@ the [MIT license][MIT license url]. You can view the
 
 [Versioning and Release Process url]: ./src/Valkyrja/VERSIONING_AND_RELEASE_PROCESS.md
 
-[security vulnerabilities url]: ./SECURITY.md
+[security vulnerabilities url]: https://github.com/valkyrjaio/.github/SECURITY.md
 
 [semantic versioning url]: https://semver.org/
 
@@ -169,4 +169,4 @@ the [MIT license][MIT license url]. You can view the
 
 [license url]: ./LICENSE.md
 
-[contributing url]: ./CONTRIBUTING.md
+[contributing url]: https://github.com/valkyrjaio/.github/CONTRIBUTING.md
