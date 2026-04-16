@@ -44,8 +44,15 @@ jobs:
 
   update-version-files:
     needs: [check-outdated-dependencies, check-version]
+    uses: valkyrjaio/.github/.github/workflows/_update-version-files.yml@master
+    secrets: inherit
+    with:
+      version: ${{ needs.check-version.outputs.version }}
 
-    name: "Update version files for v${{ needs.check-version.outputs.version }}"
+  update-application-info:
+    needs: [update-version-files, check-version]
+
+    name: "Update ApplicationInfo for v${{ needs.check-version.outputs.version }}"
 
     runs-on: ubuntu-latest
 
@@ -57,10 +64,23 @@ jobs:
           app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
           private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
 
+      - name: Get bot user ID
+        id: get-bot-user-id
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          APP_SLUG: ${{ steps.generate-token.outputs.app-slug }}
+        run: |
+          BOT_USER_ID=$(gh api "/users/$APP_SLUG[bot]" --jq '.id')
+          echo "user-id=$BOT_USER_ID" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           token: ${{ steps.generate-token.outputs.token }}
+          ref: ${{ github.ref_name }}
+
+      - name: Pull latest changes
+        run: git pull --rebase origin ${{ github.ref_name }}
 
       - name: Update ApplicationInfo.php
         env:
@@ -70,22 +90,16 @@ jobs:
           sed -i "s/const string VERSION = '.*';/const string VERSION = '$VERSION';/g" src/Valkyrja/Application/Constant/ApplicationInfo.php
           sed -i "s/const string VERSION_BUILD_DATE_TIME = '.*';/const string VERSION_BUILD_DATE_TIME = '$BUILD_DATE';/g" src/Valkyrja/Application/Constant/ApplicationInfo.php
 
-      - name: Update VERSION.md
-        env:
-          VERSION: ${{ needs.check-version.outputs.version }}
-        run: |
-          sed -i "s/.*/$VERSION/g" VERSION.md
-
-      - name: Commit version change
+      - name: Commit ApplicationInfo change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Release] Update version for v${{ needs.check-version.outputs.version }} release"
+          commit_message: "[Release] Update ApplicationInfo for v${{ needs.check-version.outputs.version }} release"
           commit_user_name: ${{ steps.generate-token.outputs.app-slug }}[bot]
-          commit_user_email: ${{ secrets.VALKYRJA_GHA_APP_ID }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com
-          commit_author: ${{ steps.generate-token.outputs.app-slug }}[bot] <${{ secrets.VALKYRJA_GHA_APP_ID }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com>
+          commit_user_email: ${{ steps.get-bot-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com
+          commit_author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
 
   release:
-    needs: [update-version-files, check-version]
+    needs: [update-application-info, check-version]
     uses: valkyrjaio/.github/.github/workflows/_release.yml@master
     secrets: inherit
     with:
