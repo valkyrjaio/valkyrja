@@ -4,16 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10fffda7860aa238f99d9b62c15e38fa",
+    "content-hash": "efb7485edf85071a0600ea94c1f8c976",
     "packages": [],
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.42",
+            "version": "2.1.48",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1279e1ce86ba768f0780c9d889852b4e02ff40d0",
-                "reference": "1279e1ce86ba768f0780c9d889852b4e02ff40d0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/231397213efb7c0a066ee024b5c3c87f2d3adfa0",
+                "reference": "231397213efb7c0a066ee024b5c3c87f2d3adfa0",
                 "shasum": ""
             },
             "require": {
@@ -58,25 +58,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-17T14:58:32+00:00"
+            "time": "2026-04-15T20:24:19+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "2.3.9",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "917842143fd9f5331a2adefc214b8d7143bd32c4"
+                "reference": "000b7050b9e4fe98db2192971e56eb0b302b3feb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/917842143fd9f5331a2adefc214b8d7143bd32c4",
-                "reference": "917842143fd9f5331a2adefc214b8d7143bd32c4",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/000b7050b9e4fe98db2192971e56eb0b302b3feb",
+                "reference": "000b7050b9e4fe98db2192971e56eb0b302b3feb",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.40"
+                "phpstan/phpstan": "^2.1.41"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -110,7 +110,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.3.9"
+                "source": "https://github.com/rectorphp/rector/tree/2.4.1"
             },
             "funding": [
                 {
@@ -118,7 +118,54 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-16T09:43:55+00:00"
+            "time": "2026-04-08T08:43:56+00:00"
+        },
+        {
+            "name": "valkyrja/rector",
+            "version": "v26.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/valkyrjaio/rector.git",
+                "reference": "f12d6b9714b2b84b727a488b8a737876c36d30f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/valkyrjaio/rector/zipball/f12d6b9714b2b84b727a488b8a737876c36d30f3",
+                "reference": "f12d6b9714b2b84b727a488b8a737876c36d30f3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4",
+                "rector/rector": "^2.4.1"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Valkyrja\\Rector\\": "src/Rector"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Melech Mizrachi",
+                    "email": "melechmizrachi@gmail.com"
+                }
+            ],
+            "description": "Rector for the Valkyrja Project.",
+            "homepage": "https://www.valkyrja.io/",
+            "keywords": [
+                "ci",
+                "rector",
+                "valkyrja"
+            ],
+            "support": {
+                "issues": "https://github.com/valkyrjaio/rector/issues",
+                "source": "https://github.com/valkyrjaio/rector/tree/v26.1.0"
+            },
+            "time": "2026-04-16T04:41:45+00:00"
         }
     ],
     "aliases": [],

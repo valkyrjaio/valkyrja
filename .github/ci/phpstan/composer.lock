@@ -4,16 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db5c1e01eec75fa2a0f3c39adb3873ab",
+    "content-hash": "f09e44a12dbf36773e33b2eb8a4c2bbc",
     "packages": [],
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.45",
+            "version": "2.1.48",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f8cdfd9421b7edb7686a2d150a234870464eac70",
-                "reference": "f8cdfd9421b7edb7686a2d150a234870464eac70",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/231397213efb7c0a066ee024b5c3c87f2d3adfa0",
+                "reference": "231397213efb7c0a066ee024b5c3c87f2d3adfa0",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,54 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-30T13:22:02+00:00"
+            "time": "2026-04-15T20:24:19+00:00"
+        },
+        {
+            "name": "valkyrja/phpstan",
+            "version": "v26.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/valkyrjaio/phpstan.git",
+                "reference": "7b63ec22c6bb9131aff27993a4ddc29556f0edb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/valkyrjaio/phpstan/zipball/7b63ec22c6bb9131aff27993a4ddc29556f0edb0",
+                "reference": "7b63ec22c6bb9131aff27993a4ddc29556f0edb0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4",
+                "phpstan/phpstan": "^2.1.48"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Valkyrja\\PhpStan\\": "src/PhpStan"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Melech Mizrachi",
+                    "email": "melechmizrachi@gmail.com"
+                }
+            ],
+            "description": "PHPStan for the Valkyrja Project.",
+            "homepage": "https://www.valkyrja.io/",
+            "keywords": [
+                "PHPStan",
+                "ci",
+                "valkyrja"
+            ],
+            "support": {
+                "issues": "https://github.com/valkyrjaio/phpstan/issues",
+                "source": "https://github.com/valkyrjaio/phpstan/tree/v26.1.0"
+            },
+            "time": "2026-04-16T04:41:44+00:00"
         }
     ],
     "aliases": [],

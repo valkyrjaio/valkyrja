@@ -41,10 +41,10 @@ class IntT extends Type implements IntContract
     public static function fromValue(mixed $value): static
     {
         return match (true) {
-            is_int($value)   => new static($value),
+            is_int($value)                                       => new static($value),
             is_string($value), is_float($value), is_bool($value) => new static((int) $value),
-            is_array($value) => new static($value !== [] ? 1 : 0),
-            default          => throw new IntInvalidFromValueException('Unsupported value provided'),
+            is_array($value)                                     => new static($value !== [] ? 1 : 0),
+            default                                              => throw new IntInvalidFromValueException('Unsupported value provided'),
         };
     }
 

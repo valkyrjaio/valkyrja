@@ -40,9 +40,9 @@ class IntId extends Type implements IntIdContract
     public static function fromValue(mixed $value): static
     {
         return match (true) {
-            is_int($value) => new static($value),
+            is_int($value)                                       => new static($value),
             is_string($value), is_float($value), is_bool($value) => new static((int) $value),
-            default        => throw new IdInvalidFromValueException('Unsupported value provided'),
+            default                                              => throw new IdInvalidFromValueException('Unsupported value provided'),
         };
     }
 

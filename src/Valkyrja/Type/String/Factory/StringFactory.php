@@ -277,13 +277,13 @@ class StringFactory
     public static function fromMixed(mixed $subject): string
     {
         return match (true) {
-            is_string($subject) => $subject,
+            is_string($subject)                  => $subject,
             is_int($subject), is_float($subject) => (string) $subject,
-            is_bool($subject)   => $subject ? 'true' : 'false',
-            is_array($subject)  => ArrayFactory::toString($subject),
-            is_object($subject) => ObjectFactory::toString($subject),
-            $subject === null   => 'null',
-            default             => gettype($subject),
+            is_bool($subject)                    => $subject ? 'true' : 'false',
+            is_array($subject)                   => ArrayFactory::toString($subject),
+            is_object($subject)                  => ObjectFactory::toString($subject),
+            $subject === null                    => 'null',
+            default                              => gettype($subject),
         };
     }
 

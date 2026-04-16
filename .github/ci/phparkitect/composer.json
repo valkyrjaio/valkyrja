@@ -3,15 +3,11 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
+    "valkyrja/phparkitect"    : "^26.2.1",
     "phparkitect/phparkitect" : "^0.8.0"
   },
   "scripts"           : {
     "check" : "vendor/bin/phparkitect check --config=phparkitect.php"
-  },
-  "autoload"          : {
-    "psr-4" : {
-      "Valkyrja\\Arkitect\\" : "Arkitect"
-    }
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
