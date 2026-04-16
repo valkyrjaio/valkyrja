@@ -7,7 +7,7 @@ on:
 jobs:
   commit-message-check:
     name: Commit Message Check
-    uses: valkyrjaio/.github/workflows/_commit-message-check.yml@master
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@master
     permissions:
       pull-requests: write
       contents: read
