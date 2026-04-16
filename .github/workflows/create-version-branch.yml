@@ -35,35 +35,3 @@ jobs:
     with:
       version: ${{ needs.get-version.outputs.version }}
       branch: ${{ needs.get-version.outputs.branch }}
-
-  update-composer:
-    needs: [create, get-version]
-
-    name: "Update composer.json for ${{ needs.get-version.outputs.branch }}"
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
-          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
-
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.get-version.outputs.branch }}
-          token: ${{ steps.generate-token.outputs.token }}
-
-      - name: Update composer.json
-        env:
-          BRANCH: ${{ needs.get-version.outputs.branch }}
-        run: |
-          sed -i "s/\"dev-master\" : \"*-dev\"/\"dev-master\" : \"$BRANCH-dev\"/g" composer.json
-
-      - name: Commit composer.json update
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "[${{ needs.get-version.outputs.branch }}] Update composer.json for v${{ needs.get-version.outputs.version }}"
