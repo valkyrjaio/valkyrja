@@ -3,11 +3,16 @@ name: Create a New Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to release'
+      bump:
+        description: 'Version component to bump'
         required: true
+        type: choice
+        options:
+          - minor
+          - patch
+          - major
 
-run-name: Release ${{ inputs.version }}
+run-name: "Release ${{ inputs.bump }} bump on ${{ github.ref_name }}"
 
 permissions:
   contents: write
@@ -17,7 +22,7 @@ jobs:
     uses: valkyrjaio/.github/.github/workflows/_get-version-for-release.yml@master
     secrets: inherit
     with:
-      version: ${{ inputs.version }}
+      bump: ${{ inputs.bump }}
 
   check-outdated-dependencies:
     needs: check-version
@@ -40,7 +45,7 @@ jobs:
   update-version-files:
     needs: [check-outdated-dependencies, check-version]
 
-    name: "Update version files for ${{ inputs.version }}"
+    name: "Update version files for v${{ needs.check-version.outputs.version }}"
 
     runs-on: ubuntu-latest
 
@@ -74,7 +79,7 @@ jobs:
       - name: Commit version change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Release] Update version for ${{ inputs.version }} release"
+          commit_message: "[Release] Update version for v${{ needs.check-version.outputs.version }} release"
 
   release:
     needs: [update-version-files, check-version]
