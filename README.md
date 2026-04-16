@@ -65,9 +65,7 @@ Build Status
             <td>
                 <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3A26.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=26.x" alt="PHPUnit Build Status"></a>
             </td>
-            <td>
-                <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3A26.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=26.x" alt="Validate Composer Build Status"></a>
-            </td>
+            <td></td>
         </tr>
     </tbody>
 </table>
