@@ -40,8 +40,8 @@ class Id extends Type implements IdContract
     {
         return match (true) {
             is_string($value), is_int($value) => new static($value),
-            is_float($value) => new static((string) $value),
-            default          => throw new IdInvalidFromValueException('Unsupported value provided'),
+            is_float($value)                  => new static((string) $value),
+            default                           => throw new IdInvalidFromValueException('Unsupported value provided'),
         };
     }
 

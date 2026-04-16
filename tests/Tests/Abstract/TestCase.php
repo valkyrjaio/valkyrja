@@ -13,78 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Abstract;
 
-use Countable;
 use Override;
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Directory\Directory;
-
-use function class_exists;
-use function count;
-use function interface_exists;
-use function is_a;
-use function method_exists;
-use function trait_exists;
+use Valkyrja\PhpUnit\Abstract\ValkyrjaTestCase;
 
 /**
  * Test case for tests.
  */
-abstract class TestCase extends PHPUnitTestCase
+abstract class TestCase extends ValkyrjaTestCase
 {
-    /**
-     * Assert if a final classis of expected final classor has the expected final classas one of its parents.
-     *
-     * @param class-string $expected The expected class
-     * @param class-string $actual   The actual string
-     */
-    protected static function assertIsA(string $expected, string $actual): void
-    {
-        self::assertTrue(is_a($actual, $expected, true));
-    }
-
-    /**
-     * @param object|class-string $class
-     */
-    protected static function assertMethodExists(object|string $class, string $method): void
-    {
-        self::assertTrue(method_exists($class, $method));
-    }
-
-    /**
-     * @param class-string $class
-     */
-    protected static function assertClassExists(string $class): void
-    {
-        self::assertTrue(class_exists($class));
-    }
-
-    protected static function assertInterfaceExists(string $interface): void
-    {
-        self::assertTrue(interface_exists($interface));
-    }
-
-    protected static function assertTraitExists(string $trait): void
-    {
-        self::assertTrue(trait_exists($trait));
-    }
-
-    /**
-     * @param class-string $expected The final classinherited
-     * @param class-string $actual   The final classto test
-     */
-    protected static function isA(string $expected, string $actual): void
-    {
-        self::assertTrue(is_a($actual, $expected, true));
-    }
-
-    /**
-     * @param array<array-key, mixed>|Countable $expected The expected count
-     * @param array<array-key, mixed>|Countable $actual   The actual count
-     */
-    protected static function assertSameCount(array|Countable $expected, array|Countable $actual): void
-    {
-        self::assertCount(count($expected), $actual);
-    }
-
     /**
      * @inheritDoc
      */

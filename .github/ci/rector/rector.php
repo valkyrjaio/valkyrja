@@ -11,25 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Rector\CodeQuality\Rector\Class_\ConvertStaticToSelfRector;
-use Rector\CodingStyle\Rector\Stmt\RemoveUselessAliasInUseStatementRector;
-use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
-use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
-use Rector\DeadCode\Rector\StaticCall\RemoveParentCallWithoutParentRector;
-use Rector\Php55\Rector\ClassConstFetch\StaticToSelfOnFinalClassRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
-use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
-use Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
-use Valkyrja\Rector\CodingStyle\Rector\Stmt\RemoveNonConflictingAliasInUseStatementRector;
+use Valkyrja\Rector\Rules;
 
-$rector = RectorConfig::configure();
-
-return $rector
-    ->withParallel()
-    ->withImportNames(removeUnusedImports: true)
+return Rules::getConfig()
     ->withAutoloadPaths([
         __DIR__ . '/../../../vendor/autoload.php',
     ])
@@ -37,18 +21,4 @@ return $rector
         __DIR__ . '/../../../functions',
         __DIR__ . '/../../../src',
         __DIR__ . '/../../../tests',
-    ])
-    ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
-        AddOverrideAttributeToOverriddenMethodsRector::class,
-        ConvertStaticToSelfRector::class,
-        ExplicitNullableParamTypeRector::class,
-        NewMethodCallWithoutParenthesesRector::class,
-        RemoveNonConflictingAliasInUseStatementRector::class,
-        RemoveParentCallWithoutParentRector::class,
-        RemoveUselessAliasInUseStatementRector::class,
-        RemoveUselessParamTagRector::class,
-        RemoveUselessReturnTagRector::class,
-        SeparateMultiUseImportsRector::class,
-        StaticToSelfOnFinalClassRector::class,
     ]);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2db61e761ca513c512325a2df5d7276",
+    "content-hash": "54e52d59a20c96aa9be7507dbc2ada52",
     "packages": [],
     "packages-dev": [
         {
@@ -293,6 +293,54 @@
                 }
             ],
             "time": "2025-11-10T16:43:36+00:00"
+        },
+        {
+            "name": "valkyrja/phpcodesniffer",
+            "version": "v26.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/valkyrjaio/phpcodesniffer.git",
+                "reference": "8579582a7f725536faefc940647d92f0403e0d42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/valkyrjaio/phpcodesniffer/zipball/8579582a7f725536faefc940647d92f0403e0d42",
+                "reference": "8579582a7f725536faefc940647d92f0403e0d42",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4",
+                "slevomat/coding-standard": "^8.28.1",
+                "squizlabs/php_codesniffer": "^4.0.1"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Valkyrja\\CodeSniffer\\": "src/CodeSniffer"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Melech Mizrachi",
+                    "email": "melechmizrachi@gmail.com"
+                }
+            ],
+            "description": "PHPCodeSniffer for the Valkyrja Project.",
+            "homepage": "https://www.valkyrja.io/",
+            "keywords": [
+                "PHPCodeSniffer",
+                "ci",
+                "valkyrja"
+            ],
+            "support": {
+                "issues": "https://github.com/valkyrjaio/phpcodesniffer/issues",
+                "source": "https://github.com/valkyrjaio/phpcodesniffer/tree/v26.1.0"
+            },
+            "time": "2026-04-16T04:41:44+00:00"
         }
     ],
     "aliases": [],

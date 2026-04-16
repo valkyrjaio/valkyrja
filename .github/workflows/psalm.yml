@@ -6,103 +6,28 @@ on:
   pull_request:
     branches: [ 'master', '*.x' ]
 
-permissions:
-  # Required for commenting on pull requests
-  pull-requests: write
-  contents: read
-
 jobs:
-  build:
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ 'ubuntu-latest' ]
-        php: [ '8.4' ]
-
-    name: PHP ${{ matrix.php }}
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Determine if workflow should run based on files changed
-        id: changes
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            ci:
-              - '.github/ci/psalm/**'
-              - '.github/ci/root-and-suggested/**'
-              - '.github/workflows/psalm.yml'
-            files:
-              - '.github/ci/psalm/**'
-              - '.github/ci/root-and-suggested/**'
-              - '.github/workflows/psalm.yml'
-              - 'bin/valkyrja'
-              - 'functions/**/*.php'
-              - 'src/**/*.php'
-              - 'tests/**/*.php'
-              - 'composer.json'
-
-      - name: Get latest CI code from target
-        if: steps.changes.outputs.ci != 'true' && github.base_ref
-        env:
-          REF: ${{ github.base_ref }}
-        run: |
-          echo "Using CI code from $REF"
-          git fetch origin "$REF"
-          git checkout origin/"$REF" -- .github/ci/psalm
-          git checkout origin/"$REF" -- .github/ci/root-and-suggested
-
-      - name: Setup PHP
-        if: steps.changes.outputs.files == 'true'
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mbstring, intl
-
-      - name: Install Composer dependencies
-        if: steps.changes.outputs.files == 'true'
-        uses: ramsey/composer-install@v3
-        with:
-          composer-options: --prefer-dist --no-progress
-          custom-cache-suffix: $(date -u "+%Y-%m")
-
-      - name: Install Psalm Composer dependencies
-        if: steps.changes.outputs.files == 'true'
-        uses: ramsey/composer-install@v3
-        with:
-          composer-options: --prefer-dist --no-progress
-          custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/psalm
-
-      - name: Install Suggested Packages Composer dependencies
-        if: steps.changes.outputs.files == 'true'
-        uses: ramsey/composer-install@v3
-        with:
-          composer-options: --prefer-dist --no-progress
-          custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/root-and-suggested
-
-      - name: Run Psalm with Shepherd
-        if: steps.changes.outputs.files == 'true'
-        # TODO: Remove PSALM_ALLOW_XDEBUG=1 issue with JIT and the Override
-        # attribute is fixed. See: https://github.com/vimeo/psalm/issues/11723
-        run: |
-          PSALM_ALLOW_XDEBUG=1 composer psalm-shepherd-with-stats
-
-      - name: Report failure in PR comment
-        if: steps.build_step.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          # Check if it's a pull request event
-          if [ -z "$PR_URL" ]; then
-            echo "Not a pull request, skipping comment."
-            exit 0
-          fi
-
-          gh pr comment "$PR_URL" --body "Psalm failed. Please run \`composer psalm\` locally, fix all the issues, and commit the changes."
+  psalm:
+    name: Psalm
+    uses: valkyrjaio/psalm/.github/workflows/_workflow-call.yml@master
+    permissions:
+      pull-requests: write
+      contents: read
+    with:
+      php-version: '8.4'
+      additional-directory: '.github/ci/root-and-suggested'
+      run-script: 'psalm-shepherd-with-stats'
+      paths: |
+        ci:
+          - '.github/ci/psalm/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/psalm.yml'
+        files:
+          - '.github/ci/psalm/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/psalm.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'

@@ -71,16 +71,16 @@ class JwtServiceProvider implements ServiceProviderContract
         $encodeKey = match ($algorithm) {
             Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
             Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PRIVATE_KEY ?? 'private-key',
-            Algorithm::EdDSA => $env::JWT_EDDSA_PRIVATE_KEY ?? 'private-key',
-            default          => $config->key,
+            Algorithm::EdDSA                                     => $env::JWT_EDDSA_PRIVATE_KEY ?? 'private-key',
+            default                                              => $config->key,
         };
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey */
         $decodeKey = match ($algorithm) {
             Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
             Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PUBLIC_KEY ?? 'public-key',
-            Algorithm::EdDSA => $env::JWT_EDDSA_PUBLIC_KEY ?? 'public-key',
-            default          => $config->key,
+            Algorithm::EdDSA                                     => $env::JWT_EDDSA_PUBLIC_KEY ?? 'public-key',
+            default                                              => $config->key,
         };
 
         $container->setSingleton(

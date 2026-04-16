@@ -41,10 +41,10 @@ class FloatT extends Type implements FloatContract
     public static function fromValue(mixed $value): static
     {
         return match (true) {
-            is_float($value) => new static($value),
+            is_float($value)                                   => new static($value),
             is_string($value), is_int($value), is_bool($value) => new static((float) $value),
-            is_array($value) => new static($value !== [] ? 1.0 : 0.0),
-            default          => throw new FloatInvalidFromValueException('Unsupported value provided'),
+            is_array($value)                                   => new static($value !== [] ? 1.0 : 0.0),
+            default                                            => throw new FloatInvalidFromValueException('Unsupported value provided'),
         };
     }
 

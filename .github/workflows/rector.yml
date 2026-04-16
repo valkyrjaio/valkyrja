@@ -6,90 +6,24 @@ on:
   pull_request:
     branches: [ 'master', '*.x' ]
 
-permissions:
-  # Required for commenting on pull requests
-  pull-requests: write
-  contents: read
-
 jobs:
-  build:
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ 'ubuntu-latest' ]
-        php: [ '8.4' ]
-
-    name: PHP ${{ matrix.php }}
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Determine if workflow should run based on files changed
-        uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            ci:
-              - '.github/ci/rector/**'
-              - '.github/workflows/rector.yml'
-            files:
-              - '.github/ci/rector/**'
-              - '.github/workflows/rector.yml'
-              - 'bin/valkyrja'
-              - 'functions/**/*.php'
-              - 'src/**/*.php'
-              - 'tests/**/*.php'
-              - 'composer.json'
-
-      - name: Get latest CI code from target
-        if: steps.changes.outputs.ci != 'true' && github.base_ref
-        env:
-          REF: ${{ github.base_ref }}
-        run: |
-          echo "Using CI code from $REF"
-          git fetch origin "$REF"
-          git checkout origin/"$REF" -- .github/ci/rector
-
-      - name: Setup PHP
-        if: steps.changes.outputs.files == 'true'
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mbstring, intl
-
-      - name: Install Composer dependencies
-        if: steps.changes.outputs.files == 'true'
-        uses: ramsey/composer-install@v3
-        with:
-          composer-options: --prefer-dist --no-progress
-          custom-cache-suffix: $(date -u "+%Y-%m")
-
-      - name: Install Rector Composer dependencies
-        if: steps.changes.outputs.files == 'true'
-        uses: ramsey/composer-install@v3
-        with:
-          composer-options: --prefer-dist --no-progress
-          custom-cache-suffix: $(date -u "+%Y-%m")
-          working-directory: .github/ci/rector
-
-      - name: Run Rector
-        if: steps.changes.outputs.files == 'true'
-        run: |
-          composer rector-check
-
-      - name: Report failure in PR comment
-        if: steps.build_step.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          # Check if it's a pull request event
-          if [ -z "$PR_URL" ]; then
-            echo "Not a pull request, skipping comment."
-            exit 0
-          fi
-
-          gh pr comment "$PR_URL" --body "Rector failed. Please run \`composer rector\` locally and commit the changes."
+  rector:
+    name: Rector
+    uses: valkyrjaio/rector/.github/workflows/_workflow-call.yml@master
+    permissions:
+      pull-requests: write
+      contents: read
+    with:
+      php-version: '8.4'
+      paths: |
+        ci:
+          - '.github/ci/rector/**'
+          - '.github/workflows/rector.yml'
+        files:
+          - '.github/ci/rector/**'
+          - '.github/workflows/rector.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'

@@ -42,9 +42,9 @@ class StringId extends Type implements StringIdContract
     public static function fromValue(mixed $value): static
     {
         return match (true) {
-            is_string($value) => new static($value),
+            is_string($value)                => new static($value),
             is_int($value), is_float($value) => new static((string) $value),
-            default           => throw new IdInvalidFromValueException('Unsupported value provided'),
+            default                          => throw new IdInvalidFromValueException('Unsupported value provided'),
         };
     }
 
