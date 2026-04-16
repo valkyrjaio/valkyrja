@@ -8,8 +8,8 @@ on:
         required: true
         type: choice
         options:
-          - minor
           - patch
+          - minor
           - major
 
 run-name: "Release ${{ inputs.bump }} bump on ${{ github.ref_name }}"
@@ -80,6 +80,9 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Release] Update version for v${{ needs.check-version.outputs.version }} release"
+          commit_user_name: ${{ steps.generate-token.outputs.app-slug }}[bot]
+          commit_user_email: ${{ secrets.VALKYRJA_GHA_APP_ID }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com
+          commit_author: ${{ steps.generate-token.outputs.app-slug }}[bot] <${{ secrets.VALKYRJA_GHA_APP_ID }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com>
 
   release:
     needs: [update-version-files, check-version]
