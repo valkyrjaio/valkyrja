@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "valkyrja/phpcsfixer"       : "^26.1.1",
+    "valkyrja/phpcsfixer"       : "^26.1.2",
     "friendsofphp/php-cs-fixer" : "^3.95.1"
   },
   "scripts"           : {
