@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "valkyrja/phparkitect"    : "^26.2.1",
+    "valkyrja/phparkitect"    : "^26.2.2",
     "phparkitect/phparkitect" : "^0.8.0"
   },
   "scripts"           : {
