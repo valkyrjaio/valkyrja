@@ -1,0 +1,13 @@
+name: Rebase from Master
+
+on:
+  workflow_dispatch:
+
+run-name: "Rebase ${{ github.ref_name }} from master"
+
+jobs:
+  rebase:
+    uses: valkyrjaio/.github/.github/workflows/_rebase-from-master.yml@master
+    permissions:
+      contents: write
+    secrets: inherit
