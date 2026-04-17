@@ -2,13 +2,8 @@ name: Rebase to Master
 
 on:
   workflow_dispatch:
-    inputs:
-      source-branch:
-        description: 'Branch to rebase master onto. Defaults to the latest major version branch.'
-        required: false
-        type: string
 
-run-name: "Rebase ${{ inputs.source-branch || 'latest major version branch' }} to master"
+run-name: "Rebase ${{ github.ref_name }} to master"
 
 jobs:
   rebase:
@@ -16,5 +11,3 @@ jobs:
     permissions:
       contents: write
     secrets: inherit
-    with:
-      source-branch: ${{ inputs.source-branch || '' }}
