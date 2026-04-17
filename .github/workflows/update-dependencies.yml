@@ -1,0 +1,25 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    uses: valkyrjaio/.github/.github/workflows/_update-php-dependencies.yml@master
+    secrets: inherit
+    with:
+      php-version: '8.4'
+      dependencies: |
+        [
+          {"name": "Root and Suggested Packages",  "command": "update",                              "directory": "."},
+          {"name": "Root and Suggested CI",        "command": "root-and-suggested-composer-update",  "directory": ".github/ci/root-and-suggested"},
+          {"name": "PHPArkitect",                  "command": "phparkitect-composer-update",         "directory": ".github/ci/phparkitect"},
+          {"name": "PHPCodeSniffer",               "command": "phpcodesniffer-composer-update",      "directory": ".github/ci/phpcodesniffer"},
+          {"name": "PHP-CS-Fixer",                 "command": "phpcsfixer-composer-update",          "directory": ".github/ci/phpcsfixer"},
+          {"name": "PHPStan",                      "command": "phpstan-composer-update",             "directory": ".github/ci/phpstan"},
+          {"name": "PHPUnit",                      "command": "phpunit-composer-update",             "directory": ".github/ci/phpunit"},
+          {"name": "Psalm",                        "command": "psalm-composer-update",               "directory": ".github/ci/psalm"},
+          {"name": "Rector",                       "command": "rector-composer-update",              "directory": ".github/ci/rector"}
+        ]
