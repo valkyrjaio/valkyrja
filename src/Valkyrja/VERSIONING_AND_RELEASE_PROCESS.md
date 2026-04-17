@@ -11,6 +11,18 @@ This cadence gives you a predictable upgrade path: you know when a new version
 is coming, how long your current version will be maintained, and what the
 support window looks like before you need to plan a migration.
 
+## Versioning
+
+Valkyrja uses a three-part version number. Each part signals what kind of
+changes are included in the release.
+
+- **Major** — Breaking changes, new features, and major internal API changes.
+  Released yearly.
+- **Minor** — New features or fixes that are breaking changes but must be
+  implemented before the next major release.
+- **Patch** — Non-breaking fixes, documentation updates, and small atomic
+  changes that don't affect existing functionality.
+
 ## Release Schedule
 
 | Version | PHP       | Release             | Bug Fixes Until | Security Fixes Until |
