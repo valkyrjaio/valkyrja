@@ -16,22 +16,18 @@ entities, test helpers, asset files, etc.) are optional additions.
 
 ```json
 {
-  "require"  : {
-    "php"               : ">=8.4",
-    "monolog/monolog"   : "^3.10.0",
-    "valkyrja/valkyrja" : "^25.34.3"
-  },
-  "autoload" : {
-    "psr-4" : {
-      "App\\" : "app/src/App/"
-    }
-  },
-  "scripts"  : {
-    "post-root-package-install" : [
-      "php -r \"file_exists('app/src/App/Http/Config.php') || copy('app/src/App/Http/Config.example.php', 'app/src/App/Http/Config.php');\"",
-      "php -r \"file_exists('app/src/App/Cli/Config.php') || copy('app/src/App/Cli/Config.example.php', 'app/src/App/Cli/Config.php');\""
-    ]
-  }
+   "require"  : {
+      "php"               : ">=8.4",
+      "monolog/monolog"   : "^3.10.0",
+      "valkyrja/valkyrja" : "^26.0.0"
+   },
+   "autoload" : {
+      "psr-4" : {
+         "App\\" : "app/src/App/"
+      }
+   },
+   "scripts"  : {
+   }
 }
 ```
 
@@ -51,43 +47,50 @@ your-project/
 ├── composer.json
 └── app/
     ├── public/
-    │   └── index.php                              # HTTP entry point
+    │   └── index.php                               # HTTP entry point
     ├── bin/
-    │   └── cli                                    # CLI entry point
+    │   └── cli                                     # CLI entry point
     └── src/App/
         ├── Throwable/Handler/
-        │   └── ThrowableHandler.php               # Error/exception handler
+        │   └── ThrowableHandler.php                # Error/exception handler
         ├── Http/
-        │   ├── App.php                            # HTTP application bootstrap
-        │   ├── Config.php                         # HTTP configuration (gitignored)
-        │   ├── Config.example.php                 # Config template (committed)
+        │   ├── App.php                             # HTTP application bootstrap
+        │   ├── Config.php                          # HTTP configuration (gitignored)
+        │   ├── Config.example.php                  # Config template (committed)
         │   ├── Controller/
-        │   │   └── Controller.php                 # Base HTTP controller
+        │   │   └── Controller.php                  # Base HTTP controller
+        │   ├── Data/
+        │   │   ├── AppContainerData.php            # Pre-generated DI config (gitignored)
+        │   │   ├── AppContainerData.example.php    # Empty baseline (committed)
+        │   │   ├── AppEventData.php                # Pre-generated event config (gitignored)
+        │   │   ├── AppEventData.example.php        # Empty baseline (committed)
+        │   │   ├── AppHttpRoutingData.php          # Pre-generated route config (gitignored)
+        │   │   └── AppHttpRoutingData.example.php  # Empty baseline (committed)
         │   └── Provider/
-        │       ├── ComponentProvider.php          # Wires providers together
-        │       ├── DataProvider.php               # Registers pre-generated data
-        │       ├── ServiceProvider.php            # Registers app services
-        │       ├── RouteProvider.php              # Declares controller classes
-        │       └── Data/
-        │           ├── AppContainerData.php       # Pre-generated DI config
-        │           ├── AppEventData.php           # Pre-generated event config
-        │           └── AppHttpRoutingData.php     # Pre-generated route config
+        │       ├── ComponentProvider.php           # Wires providers together
+        │       ├── DataProvider.php                # Registers pre-generated data
+        │       ├── ServiceProvider.php             # Registers app services
+        │       └── RouteProvider.php               # Declares controller classes
         └── Cli/
-            ├── App.php                            # CLI application bootstrap
-            ├── Config.php                         # CLI configuration (gitignored)
-            ├── Config.example.php                 # Config template (committed)
+            ├── App.php                             # CLI application bootstrap
+            ├── Config.php                          # CLI configuration (gitignored)
+            ├── Config.example.php                  # Config template (committed)
             ├── Controller/
-            │   └── Controller.php                 # Base CLI controller
+            │   └── Controller.php                  # Base CLI controller
+            ├── Data/
+            │   ├── AppContainerData.php            # Pre-generated DI config (gitignored)
+            │   ├── AppContainerData.example.php    # Empty baseline (committed)
+            │   ├── AppEventData.php                # Pre-generated event config (gitignored)
+            │   ├── AppEventData.example.php        # Empty baseline (committed)
+            │   ├── AppCliRoutingData.php           # Pre-generated CLI route config (gitignored)
+            │   ├── AppCliRoutingData.example.php   # Empty baseline (committed)
+            │   ├── AppHttpRoutingData.php          # Pre-generated HTTP route config (gitignored)
+            │   └── AppHttpRoutingData.example.php  # Empty baseline (committed)
             └── Provider/
                 ├── ComponentProvider.php
                 ├── DataProvider.php
                 ├── ServiceProvider.php
-                ├── RouteProvider.php
-                └── Data/
-                    ├── AppContainerData.php
-                    ├── AppEventData.php
-                    ├── AppCliRoutingData.php
-                    └── AppHttpRoutingData.php
+                └── RouteProvider.php
 ```
 
 ---
@@ -214,8 +217,8 @@ Key constructor parameters:
 | `$environment`               | `'production'` or `'development'`                                                                                                             |
 | `$debugMode`                 | Enables debug mode — attributes are scanned live, data files ignored                                                                          |
 | `$key`                       | Application secret key used for signing/encryption; generate with a cryptographically secure random string (e.g. `bin2hex(random_bytes(32))`) |
-| `$dataPath`                  | Relative path to the generated `Data/` directory                                                                                              |
-| `$dataNamespace`             | PHP namespace of the generated `Data/` classes                                                                                                |
+| `$dataPath`                  | Relative path to the `Data/` directory                                                                                                        |
+| `$dataNamespace`             | PHP namespace of the `Data/` classes (e.g. `App\Http\Data`)                                                                                   |
 | `$providers`                 | Ordered list of `ComponentClass` constants + `ComponentProvider::class`                                                                       |
 | `$callbacks`                 | Callbacks run after providers are booted (e.g. `ComponentProvider::publish`)                                                                  |
 | `$requestReceivedMiddleware` | Middleware run on every incoming request                                                                                                      |
@@ -362,8 +365,8 @@ final class RouteProvider implements HttpRouteProviderContract
 
 ### `app/src/App/Http/Provider/DataProvider.php`
 
-Registers the three pre-generated data classes (container, event, routing) into
-the DI container. Used in production mode to skip runtime attribute scanning.
+Registers the three pre-generated data classes from `App\Http\Data` into the DI
+container. Used in production mode to skip runtime attribute scanning.
 
 ```php
 <?php
@@ -371,9 +374,9 @@ declare(strict_types=1);
 
 namespace App\Http\Provider;
 
-use App\Http\Provider\Data\AppContainerData;
-use App\Http\Provider\Data\AppEventData;
-use App\Http\Provider\Data\AppHttpRoutingData;
+use App\Http\Data\AppContainerData;
+use App\Http\Data\AppEventData;
+use App\Http\Data\AppHttpRoutingData;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -454,6 +457,60 @@ final class ServiceProvider implements ServiceProviderContract
 
 ---
 
+## HTTP Data Classes (`App\Http\Data`)
+
+The `App\Http\Data` namespace holds the three pre-generated data classes for the
+HTTP application. Each has a committed `.example.php` counterpart containing a
+minimal empty baseline, and a gitignored `.php` counterpart populated by
+`generate:data` at build/deploy time.
+
+**`AppContainerData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Http\Data;
+
+use Valkyrja\Container\Data\ContainerData;
+
+readonly class AppContainerData extends ContainerData
+{
+}
+```
+
+**`AppEventData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Http\Data;
+
+use Valkyrja\Event\Data\EventData;
+
+readonly class AppEventData extends EventData
+{
+}
+```
+
+**`AppHttpRoutingData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Http\Data;
+
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
+
+readonly class AppHttpRoutingData extends HttpRoutingData
+{
+}
+```
+
+---
+
 ## CLI Application
 
 The CLI application follows the same structure as the HTTP application — the
@@ -485,9 +542,69 @@ ComponentClass::CLI_SERVER,
 ComponentClass::HTTP_ROUTING_CLI,  // HTTP route access from CLI
 
 // Additional constructor parameters:
-string $applicationName = 'cli',
+string $applicationName    = 'cli',
 string $defaultCommandName = CommandName::LIST,
-HttpConfig $http = new AppHttpConfig(),
+HttpConfig $http           = new AppHttpConfig(),
+```
+
+The `$dataNamespace` for the CLI config should point to `App\Cli\Data`.
+
+### `App\Cli\Provider\DataProvider.php`
+
+Same structure as the HTTP `DataProvider` but imports from `App\Cli\Data` and
+registers four data classes instead of three — adding `AppCliRoutingData`.
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Cli\Provider;
+
+use App\Cli\Data\AppCliRoutingData;
+use App\Cli\Data\AppContainerData;
+use App\Cli\Data\AppEventData;
+use App\Cli\Data\AppHttpRoutingData;
+use Override;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
+use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Event\Data\EventData;
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
+
+final class DataProvider implements ServiceProviderContract
+{
+    #[Override]
+    public static function publishers(): array
+    {
+        return [
+            ContainerData::class   => [self::class, 'publishContainerData'],
+            EventData::class       => [self::class, 'publishEventData'],
+            CliRoutingData::class  => [self::class, 'publishCliRoutingData'],
+            HttpRoutingData::class => [self::class, 'publishHttpRoutingData'],
+        ];
+    }
+
+    public static function publishContainerData(ContainerContract $container): void
+    {
+        $container->setSingleton(ContainerData::class, new AppContainerData());
+    }
+
+    public static function publishEventData(ContainerContract $container): void
+    {
+        $container->setSingleton(EventData::class, new AppEventData());
+    }
+
+    public static function publishCliRoutingData(ContainerContract $container): void
+    {
+        $container->setSingleton(CliRoutingData::class, new AppCliRoutingData());
+    }
+
+    public static function publishHttpRoutingData(ContainerContract $container): void
+    {
+        $container->setSingleton(HttpRoutingData::class, new AppHttpRoutingData());
+    }
+}
 ```
 
 ### `App\Cli\Provider\ServiceProvider.php`
@@ -495,24 +612,80 @@ HttpConfig $http = new AppHttpConfig(),
 Same structure as the HTTP `ServiceProvider`. Register CLI controllers and any
 CLI-specific services here.
 
-### `Data/` directory
+---
 
-The CLI `Data/` directory contains four generated files instead of three —
-`AppCliRoutingData` is added alongside the HTTP set:
+## CLI Data Classes (`App\Cli\Data`)
 
-| File                 | Extends                                      |
-|----------------------|----------------------------------------------|
-| `AppContainerData`   | `Valkyrja\Container\Data\ContainerData`      |
-| `AppEventData`       | `Valkyrja\Event\Data\EventData`              |
-| `AppHttpRoutingData` | `Valkyrja\Http\Routing\Data\HttpRoutingData` |
-| `AppCliRoutingData`  | `Valkyrja\Cli\Routing\Data\CliRoutingData`   |
+The `App\Cli\Data` namespace holds four pre-generated data classes — the same
+three as HTTP plus `AppCliRoutingData`. Each follows the same
+`.example.php` / `.php` pattern.
+
+**`AppContainerData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Cli\Data;
+
+use Valkyrja\Container\Data\ContainerData;
+
+readonly class AppContainerData extends ContainerData
+{
+}
+```
+
+**`AppEventData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Cli\Data;
+
+use Valkyrja\Event\Data\EventData;
+
+readonly class AppEventData extends EventData
+{
+}
+```
+
+**`AppCliRoutingData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Cli\Data;
+
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
+
+readonly class AppCliRoutingData extends CliRoutingData
+{
+}
+```
+
+**`AppHttpRoutingData.example.php`**
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Cli\Data;
+
+use Valkyrja\Http\Routing\Data\HttpRoutingData;
+
+readonly class AppHttpRoutingData extends HttpRoutingData
+{
+}
+```
 
 ---
 
-## Pre-generated Data Files (`Data/`)
+## Pre-generated Data Files
 
-The classes in each `Provider/Data/` directory are **auto-generated** by
-running:
+The `.php` data classes in `App\Http\Data` and `App\Cli\Data` are
+**auto-generated** by running:
 
 ```bash
 php app/bin/cli generate:data
@@ -522,9 +695,10 @@ php app/bin/cli generate:data
 > providers must be correctly registered in `ComponentProvider` before running
 > this command, or the generated files will be incomplete.
 
-The generated files must be committed to version control. In production mode
-(`$debugMode = false`) the framework loads them instead of scanning PHP
-attributes at runtime, which is significantly faster.
+The generated `.php` files are gitignored and must exist at deploy time —
+either committed for that environment or generated as part of the deploy
+pipeline. In production mode (`$debugMode = false`) the framework loads them
+instead of scanning PHP attributes at runtime, which is significantly faster.
 
 In debug mode (`$debugMode = true`) these files are ignored entirely and
 attributes are scanned live on every request — so you never need to regenerate
@@ -568,7 +742,7 @@ HTTP request
         └── framework loads providers from $config->providers
             └── ComponentProvider::publish() (registered in $config->callbacks)
                 ├── debug mode  → scan attributes at runtime
-                └── production → load pre-generated Data files
+                └── production → load pre-generated Data files from App\Http\Data
                     └── router matches request → controller method → response
 ```
 
@@ -577,5 +751,6 @@ CLI invocation
 └── app/bin/cli
     └── App::run(config: new Config())
         └── same provider boot as HTTP
-            └── CLI router matches command → controller method → output
+            └── pre-generated Data files loaded from App\Cli\Data
+                └── CLI router matches command → controller method → output
 ```
