@@ -4,6 +4,8 @@
 
 - [Getting Started](GETTING_STARTED.md) — Installation, configuration, and first
   steps
+- [Application Structure](APPLICATION_STRUCTURE.md) — Required files, provider
+  wiring, pre-generated data classes, and how to add routes and services
 - [Request Lifecycle](LIFECYCLE.md) — What happens from entry point to response,
   for both HTTP and CLI
 - [Versioning & Release Process](VERSIONING_AND_RELEASE_PROCESS.md) — Release
@@ -15,7 +17,8 @@
   configuration, component loading, and the data cache
 - [The Container](Container/README.md) — Dependency injection, service types,
   service providers, and component providers
-- [The Dispatcher](Dispatch/README.md) — Dispatch types, the dispatcher contract,
+- [The Dispatcher](Dispatch/README.md) — Dispatch types, the dispatcher
+  contract,
   and how events, CLI, and HTTP all share the same invocation engine
 
 ### HTTP
@@ -63,7 +66,8 @@
   identifiers, UUID/VLID/ULID, models, collections, and JSON
 - [Models](Type/Model/README.md) — Property access callables, casting, exposure,
   original properties, and indexed models
-- [UUID](Type/Uuid/README.md) — RFC 4122 UUID generation and validation, versions
+- [UUID](Type/Uuid/README.md) — RFC 4122 UUID generation and validation,
+  versions
   V1 through V8, with typed value objects and version-specific factories
 - [ULID](Type/Ulid/README.md) — Lexicographically sortable IDs with millisecond
   precision, Crockford Base32 encoding, and monotonic generation
