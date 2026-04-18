@@ -106,6 +106,7 @@
     "phpcsfixer-outdated-check"                       : "cd .github/ci/phpcsfixer && composer install && composer outdated --direct --minor-only",
     "phpcsfixer-outdated-check-major-release"         : "cd .github/ci/phpcsfixer && composer install && composer outdated --direct",
     "phpcsfixer-composer-update"                      : "cd .github/ci/phpcsfixer && composer update",
+    "phpmd-composer-update"                           : "cd .github/ci/phpmd && composer update",
     "phpmetrics"                                      : "cd .github/ci/phpmetrics && composer check",
     "phpmetrics-outdated-check"                       : "cd .github/ci/phpmetrics && composer install && composer outdated --direct --minor-only",
     "phpmetrics-outdated-check-major-release"         : "cd .github/ci/phpmetrics && composer install && composer outdated --direct",
