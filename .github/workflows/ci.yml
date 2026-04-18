@@ -1,0 +1,163 @@
+name: CI
+
+on:
+  push:
+    branches: [ 'master', '*.x' ]
+  pull_request:
+    branches: [ 'master', '*.x' ]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  commit-message-check:
+    name: Commit Message Check
+    if: github.event_name == 'pull_request'
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@master
+    secrets: inherit
+
+  phparkitect:
+    name: PHPArkitect
+    uses: valkyrjaio/phparkitect/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      paths: |
+        ci:
+          - '.github/ci/phparkitect/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/phparkitect/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  phpcodesniffer:
+    name: PHP Code Sniffer
+    uses: valkyrjaio/phpcodesniffer/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      paths: |
+        ci:
+          - '.github/ci/phpcodesniffer/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/phpcodesniffer/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  phpcsfixer:
+    name: PHP CS Fixer
+    uses: valkyrjaio/phpcsfixer/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      paths: |
+        ci:
+          - '.github/ci/phpcsfixer/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/phpcsfixer/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  phpstan:
+    name: PHPStan
+    uses: valkyrjaio/phpstan/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      additional-directory: '.github/ci/root-and-suggested'
+      paths: |
+        ci:
+          - '.github/ci/phpstan/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/phpstan/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  phpunit:
+    name: PHPUnit
+    uses: valkyrjaio/phpunit/.github/workflows/_workflow-call.yml@master
+    with:
+      php-versions: '["8.4", "8.5", "8.6"]'
+      php-version-bleeding-edge: '8.6'
+      additional-directory: '.github/ci/root-and-suggested'
+      extensions: 'mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql xdebug'
+      paths: |
+        ci:
+          - '.github/ci/phpunit/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/phpunit/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  psalm:
+    name: Psalm
+    uses: valkyrjaio/psalm/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      additional-directory: '.github/ci/root-and-suggested'
+      run-script: 'psalm-shepherd-with-stats'
+      paths: |
+        ci:
+          - '.github/ci/psalm/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/psalm/**'
+          - '.github/ci/root-and-suggested/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
+
+  rector:
+    name: Rector
+    uses: valkyrjaio/rector/.github/workflows/_workflow-call.yml@master
+    with:
+      php-version: '8.4'
+      paths: |
+        ci:
+          - '.github/ci/rector/**'
+          - '.github/workflows/ci.yml'
+        files:
+          - '.github/ci/rector/**'
+          - '.github/workflows/ci.yml'
+          - 'bin/valkyrja'
+          - 'functions/**/*.php'
+          - 'src/**/*.php'
+          - 'tests/**/*.php'
+          - 'composer.json'
+    secrets: inherit
