@@ -11,6 +11,7 @@ on:
           - patch
           - minor
           - major
+          - rc
 
 run-name: "Release ${{ inputs.bump }} bump on ${{ github.ref_name }}"
 
@@ -18,18 +19,11 @@ permissions:
   contents: write
 
 jobs:
-  check-version:
-    uses: valkyrjaio/.github/.github/workflows/_get-version-for-release.yml@master
+  release:
+    uses: valkyrjaio/.github/.github/workflows/_create-php-release.yml@2b626b4cd5090fb9d998ba35450775bfea79b21b
     secrets: inherit
     with:
       bump: ${{ inputs.bump }}
-
-  check-outdated-dependencies:
-    needs: check-version
-    uses: valkyrjaio/.github/.github/workflows/_check-outdated-php-dependencies.yml@master
-    secrets: inherit
-    with:
-      php-version: '8.4'
       dependencies: |
         [
           {"name": "Root and Suggested Packages", "command": "root-and-suggested-outdated-check"},
@@ -41,66 +35,5 @@ jobs:
           {"name": "Psalm",                       "command": "psalm-outdated-check"},
           {"name": "Rector",                      "command": "rector-outdated-check"}
         ]
-
-  update-version-files:
-    needs: [check-outdated-dependencies, check-version]
-    uses: valkyrjaio/.github/.github/workflows/_update-version-files.yml@master
-    secrets: inherit
-    with:
-      version: ${{ needs.check-version.outputs.version }}
-
-  update-application-info:
-    needs: [update-version-files, check-version]
-
-    name: "Update ApplicationInfo for v${{ needs.check-version.outputs.version }}"
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
-          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
-
-      - name: Get bot user ID
-        id: get-bot-user-id
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-          APP_SLUG: ${{ steps.generate-token.outputs.app-slug }}
-        run: |
-          BOT_USER_ID=$(gh api "/users/$APP_SLUG[bot]" --jq '.id')
-          echo "user-id=$BOT_USER_ID" >> "$GITHUB_OUTPUT"
-
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-          ref: ${{ github.ref_name }}
-
-      - name: Pull latest changes
-        run: git pull --rebase origin ${{ github.ref_name }}
-
-      - name: Update ApplicationInfo.php
-        env:
-          VERSION: ${{ needs.check-version.outputs.version }}
-          BUILD_DATE: ${{ needs.check-version.outputs.build-date }}
-        run: |
-          sed -i "s/const string VERSION = '.*';/const string VERSION = '$VERSION';/g" src/Valkyrja/Application/Constant/ApplicationInfo.php
-          sed -i "s/const string VERSION_BUILD_DATE_TIME = '.*';/const string VERSION_BUILD_DATE_TIME = '$BUILD_DATE';/g" src/Valkyrja/Application/Constant/ApplicationInfo.php
-
-      - name: Commit ApplicationInfo change
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "[Release] Update ApplicationInfo for v${{ needs.check-version.outputs.version }} release"
-          commit_user_name: ${{ steps.generate-token.outputs.app-slug }}[bot]
-          commit_user_email: ${{ steps.get-bot-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com
-          commit_author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-
-  release:
-    needs: [update-application-info, check-version]
-    uses: valkyrjaio/.github/.github/workflows/_release.yml@master
-    secrets: inherit
-    with:
-      version: ${{ needs.check-version.outputs.version }}
+      info-class-path: src/Valkyrja/Application/Constant/ApplicationInfo.php
+      info-class-name: ApplicationInfo
