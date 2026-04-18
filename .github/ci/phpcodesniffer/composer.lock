@@ -299,12 +299,12 @@
             "version": "v26.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/valkyrjaio/phpcodesniffer.git",
+                "url": "https://github.com/valkyrjaio/ci-phpcodesniffer-php.git",
                 "reference": "41eaf11b7713506377fbb4e83aebbca096792f49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/phpcodesniffer/zipball/41eaf11b7713506377fbb4e83aebbca096792f49",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpcodesniffer-php/zipball/41eaf11b7713506377fbb4e83aebbca096792f49",
                 "reference": "41eaf11b7713506377fbb4e83aebbca096792f49",
                 "shasum": ""
             },
@@ -337,8 +337,8 @@
                 "valkyrja"
             ],
             "support": {
-                "issues": "https://github.com/valkyrjaio/phpcodesniffer/issues",
-                "source": "https://github.com/valkyrjaio/phpcodesniffer/tree/v26.1.1"
+                "issues": "https://github.com/valkyrjaio/ci-phpcodesniffer-php/issues",
+                "source": "https://github.com/valkyrjaio/ci-phpcodesniffer-php/tree/v26.1.1"
             },
             "time": "2026-04-17T05:20:07+00:00"
         }
