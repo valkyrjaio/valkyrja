@@ -21,5 +21,9 @@ jobs:
           {"name": "PHPStan",                      "command": "phpstan-composer-update",             "directory": ".github/ci/phpstan"},
           {"name": "PHPUnit",                      "command": "phpunit-composer-update",             "directory": ".github/ci/phpunit"},
           {"name": "Psalm",                        "command": "psalm-composer-update",               "directory": ".github/ci/psalm"},
-          {"name": "Rector",                       "command": "rector-composer-update",              "directory": ".github/ci/rector"}
+          {"name": "Rector",                       "command": "rector-composer-update",              "directory": ".github/ci/rector"},
+          {"name": "Churn",                        "command": "churn-composer-update",               "directory": ".github/ci/churn"},
+          {"name": "Infection",                    "command": "infection-composer-update",           "directory": ".github/ci/infection"},
+          {"name": "PHPMD",                        "command": "phpmd-composer-update",               "directory": ".github/ci/phpmd"},
+          {"name": "PHP Metrics",                  "command": "phpmetrics-composer-update",          "directory": ".github/ci/phpmetrics"}
         ]
