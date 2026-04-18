@@ -14,12 +14,12 @@ jobs:
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@master
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@2b626b4cd5090fb9d998ba35450775bfea79b21b
     secrets: inherit
 
   phparkitect:
     name: PHPArkitect
-    uses: valkyrjaio/phparkitect/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-phparkitect-php/.github/workflows/_workflow-call.yml@7544c1072fbfbc50496993cae3b78ed3f8faf268
     with:
       php-version: '8.4'
       paths: |
@@ -38,7 +38,7 @@ jobs:
 
   phpcodesniffer:
     name: PHP Code Sniffer
-    uses: valkyrjaio/phpcodesniffer/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-phpcodesniffer-php/.github/workflows/_workflow-call.yml@41eaf11b7713506377fbb4e83aebbca096792f49
     with:
       php-version: '8.4'
       paths: |
@@ -57,7 +57,7 @@ jobs:
 
   phpcsfixer:
     name: PHP CS Fixer
-    uses: valkyrjaio/phpcsfixer/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-phpcsfixer-php/.github/workflows/_workflow-call.yml@e005d94ff60bf7eee383e88bb97d6a87dde5a0cd
     with:
       php-version: '8.4'
       paths: |
@@ -76,7 +76,7 @@ jobs:
 
   phpstan:
     name: PHPStan
-    uses: valkyrjaio/phpstan/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-phpstan-php/.github/workflows/_workflow-call.yml@f3b678de9c71620572278d9bc09030d5812f00c4
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
@@ -98,7 +98,7 @@ jobs:
 
   phpunit:
     name: PHPUnit
-    uses: valkyrjaio/phpunit/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-phpunit-php/.github/workflows/_workflow-call.yml@da8fc9da6eafb90f3d9cdeb9b65a5ab3d35ab873
     with:
       php-versions: '["8.4", "8.5", "8.6"]'
       php-version-bleeding-edge: '8.6'
@@ -122,7 +122,7 @@ jobs:
 
   psalm:
     name: Psalm
-    uses: valkyrjaio/psalm/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-psalm-php/.github/workflows/_workflow-call.yml@1f216925b5ff78a88c1728d734cab165071b11c2
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
@@ -145,7 +145,7 @@ jobs:
 
   rector:
     name: Rector
-    uses: valkyrjaio/rector/.github/workflows/_workflow-call.yml@master
+    uses: valkyrjaio/ci-rector-php/.github/workflows/_workflow-call.yml@088293583eecdfc094660818a51b15a4699ba2ba
     with:
       php-version: '8.4'
       paths: |

@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   release:
-    uses: valkyrjaio/.github/.github/workflows/_create-php-release.yml@e0d0947d4a6a8631e392d4ccbc3fbe4f349e5349
+    uses: valkyrjaio/.github/.github/workflows/_create-php-release.yml@2b626b4cd5090fb9d998ba35450775bfea79b21b
     secrets: inherit
     with:
       bump: ${{ inputs.bump }}
