@@ -3170,12 +3170,12 @@
             "version": "v26.1.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/valkyrjaio/psalm.git",
+                "url": "https://github.com/valkyrjaio/ci-psalm-php.git",
                 "reference": "1f216925b5ff78a88c1728d734cab165071b11c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/psalm/zipball/1f216925b5ff78a88c1728d734cab165071b11c2",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-psalm-php/zipball/1f216925b5ff78a88c1728d734cab165071b11c2",
                 "reference": "1f216925b5ff78a88c1728d734cab165071b11c2",
                 "shasum": ""
             },
@@ -3207,8 +3207,8 @@
                 "valkyrja"
             ],
             "support": {
-                "issues": "https://github.com/valkyrjaio/psalm/issues",
-                "source": "https://github.com/valkyrjaio/psalm/tree/v26.1.4"
+                "issues": "https://github.com/valkyrjaio/ci-psalm-php/issues",
+                "source": "https://github.com/valkyrjaio/ci-psalm-php/tree/v26.1.4"
             },
             "time": "2026-04-17T02:41:49+00:00"
         },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fee8313b8e50cc78917a98dc733d04a4",
+    "content-hash": "a89a8fa74cbf7c5ecb5aaf620b93beb5",
     "packages": [],
     "packages-dev": [
         {
@@ -1297,16 +1297,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.1.5",
+            "version": "13.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "89adcba73441b38db31d5c0473b61e2907311db0"
+                "reference": "c3c414ea438e5a37d00697eaea43e6e05e201a42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/89adcba73441b38db31d5c0473b61e2907311db0",
-                "reference": "89adcba73441b38db31d5c0473b61e2907311db0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c3c414ea438e5a37d00697eaea43e6e05e201a42",
+                "reference": "c3c414ea438e5a37d00697eaea43e6e05e201a42",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1376,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.6"
             },
             "funding": [
                 {
@@ -1384,7 +1384,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-04-16T04:58:40+00:00"
+            "time": "2026-04-17T12:52:50+00:00"
         },
         {
             "name": "psr/container",
@@ -3796,12 +3796,12 @@
             "version": "v26.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/valkyrjaio/phpunit.git",
+                "url": "https://github.com/valkyrjaio/ci-phpunit-php.git",
                 "reference": "da8fc9da6eafb90f3d9cdeb9b65a5ab3d35ab873"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/phpunit/zipball/da8fc9da6eafb90f3d9cdeb9b65a5ab3d35ab873",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/da8fc9da6eafb90f3d9cdeb9b65a5ab3d35ab873",
                 "reference": "da8fc9da6eafb90f3d9cdeb9b65a5ab3d35ab873",
                 "shasum": ""
             },
@@ -3837,8 +3837,8 @@
                 "valkyrja"
             ],
             "support": {
-                "issues": "https://github.com/valkyrjaio/phpunit/issues",
-                "source": "https://github.com/valkyrjaio/phpunit/tree/v26.1.1"
+                "issues": "https://github.com/valkyrjaio/ci-phpunit-php/issues",
+                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.1.1"
             },
             "time": "2026-04-17T04:01:51+00:00"
         }

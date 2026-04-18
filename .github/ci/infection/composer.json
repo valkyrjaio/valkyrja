@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "infection/infection" : "^0.32.4"
+    "infection/infection" : "^0.32.6"
   },
   "scripts"           : {
     "check" : "php -d memory_limit=-1 vendor/bin/infection --threads=4"

@@ -1363,12 +1363,12 @@
             "version": "v26.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/valkyrjaio/phparkitect.git",
+                "url": "https://github.com/valkyrjaio/ci-phparkitect-php.git",
                 "reference": "7544c1072fbfbc50496993cae3b78ed3f8faf268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/phparkitect/zipball/7544c1072fbfbc50496993cae3b78ed3f8faf268",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phparkitect-php/zipball/7544c1072fbfbc50496993cae3b78ed3f8faf268",
                 "reference": "7544c1072fbfbc50496993cae3b78ed3f8faf268",
                 "shasum": ""
             },
@@ -1400,8 +1400,8 @@
                 "valkyrja"
             ],
             "support": {
-                "issues": "https://github.com/valkyrjaio/phparkitect/issues",
-                "source": "https://github.com/valkyrjaio/phparkitect/tree/v26.2.2"
+                "issues": "https://github.com/valkyrjaio/ci-phparkitect-php/issues",
+                "source": "https://github.com/valkyrjaio/ci-phparkitect-php/tree/v26.2.2"
             },
             "time": "2026-04-17T05:11:29+00:00"
         },
