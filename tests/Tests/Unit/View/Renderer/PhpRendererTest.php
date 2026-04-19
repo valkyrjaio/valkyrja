@@ -93,7 +93,7 @@ final class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer(self::TEMPLATES_DIR);
         $result   = $renderer->renderFile('home', ['title' => 'Home Page']);
 
-        self::assertSame('<html lang="en"><body>Home Page</body></html>', $result);
+        self::assertSame("<html lang=\"en\"><body>Home Page</body></html>\n", $result);
     }
 
     public function testRenderFileWithCustomExtension(): void
@@ -101,7 +101,7 @@ final class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer(self::TEMPLATES_DIR, '.php');
         $result   = $renderer->renderFile('page', ['content' => 'Hello World']);
 
-        self::assertSame('<p>Hello World</p>', $result);
+        self::assertSame("<p>Hello World</p>\n", $result);
     }
 
     public function testRenderFileWithSubdirectory(): void
@@ -109,7 +109,7 @@ final class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer(self::TEMPLATES_DIR);
         $result   = $renderer->renderFile('partials/header', ['siteName' => 'My Site']);
 
-        self::assertSame('<header>My Site</header>', $result);
+        self::assertSame("<header>My Site</header>\n", $result);
     }
 
     public function testRenderFileThrowsExceptionForMissingFile(): void
@@ -141,7 +141,7 @@ final class PhpRendererTest extends TestCase
 
         $result = $renderer->renderFile('@custom/widget', ['name' => 'Widget Name']);
 
-        self::assertSame('<div>Widget Name</div>', $result);
+        self::assertSame("<div>Widget Name</div>\n", $result);
     }
 
     public function testRenderFileThrowsExceptionForInvalidConfigPath(): void
@@ -159,7 +159,7 @@ final class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer(self::TEMPLATES_DIR);
         $result   = $renderer->render('simple');
 
-        self::assertSame('Simple content', $result);
+        self::assertSame("Simple content\n", $result);
     }
 
     public function testRenderWithVariables(): void
@@ -167,6 +167,6 @@ final class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer(self::TEMPLATES_DIR);
         $result   = $renderer->render('greeting', ['name' => 'World']);
 
-        self::assertSame('Hello, World!', $result);
+        self::assertSame("Hello, World!\n", $result);
     }
 }
