@@ -14,7 +14,7 @@ jobs:
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@2b626b4cd5090fb9d998ba35450775bfea79b21b
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@2bbc24ee6f121652e6be7a6a9a7a32a376f9a817
     secrets: inherit
 
   phparkitect:
