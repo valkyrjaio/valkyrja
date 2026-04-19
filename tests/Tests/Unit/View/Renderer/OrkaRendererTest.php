@@ -78,7 +78,7 @@ final class OrkaRendererTest extends TestCase
         );
         $result   = $renderer->renderFile('simple');
 
-        self::assertSame('Simple orka content', $result);
+        self::assertSame("Simple orka content\n", $result);
     }
 
     public function testRenderFileWithReplacements(): void
@@ -93,7 +93,7 @@ final class OrkaRendererTest extends TestCase
         );
         $result   = $renderer->renderFile('home', ['title' => 'Home Page']);
 
-        self::assertSame('<html lang="en"><body>Home Page</body></html>', $result);
+        self::assertSame("<html lang=\"en\"><body>Home Page</body></html>\n", $result);
     }
 
     public function testRenderFileCachesContent(): void
@@ -137,7 +137,7 @@ final class OrkaRendererTest extends TestCase
 
         // Verify content in cache
         $cachedContent = file_get_contents($cachedPath);
-        self::assertSame('Simple orka content', $cachedContent);
+        self::assertSame("Simple orka content\n", $cachedContent);
     }
 
     public function testRenderFileInDebugModeAlwaysRecompiles(): void
@@ -175,8 +175,8 @@ final class OrkaRendererTest extends TestCase
 
         // In debug mode, file should be recompiled (mtime should be updated)
         self::assertGreaterThanOrEqual($mtime1, $mtime2);
-        self::assertSame('Simple orka content', $result1);
-        self::assertSame('Simple orka content', $result2);
+        self::assertSame("Simple orka content\n", $result1);
+        self::assertSame("Simple orka content\n", $result2);
     }
 
     public function testRenderFileThrowsExceptionForMissingFile(): void
@@ -204,7 +204,7 @@ final class OrkaRendererTest extends TestCase
 
         $result = $renderer->renderFile('home');
 
-        self::assertSame('<html lang="en"><body>Custom Home</body></html>', $result);
+        self::assertSame("<html lang=\"en\"><body>Custom Home</body></html>\n", $result);
     }
 
     public function testConstructorWithPaths(): void
@@ -218,7 +218,7 @@ final class OrkaRendererTest extends TestCase
 
         $result = $renderer->renderFile('@custom/simple');
 
-        self::assertSame('Simple custom directory orka content', $result);
+        self::assertSame("Simple custom directory orka content\n", $result);
     }
 
     public function testConstructorWithMultipleReplacements(): void
