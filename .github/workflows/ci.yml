@@ -17,6 +17,15 @@ jobs:
     uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@95cda0ed015efe46c0f0577b2c0e103b68a1ef80
     secrets: inherit
 
+  trailing-newline-check:
+    name: Trailing Newline Check
+    if: github.event_name == 'pull_request'
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@95cda0ed015efe46c0f0577b2c0e103b68a1ef80
+    permissions:
+      pull-requests: write
+      contents: read
+    secrets: inherit
+
   phparkitect:
     name: PHPArkitect
     uses: valkyrjaio/ci-phparkitect-php/.github/workflows/_workflow-call.yml@7544c1072fbfbc50496993cae3b78ed3f8faf268
