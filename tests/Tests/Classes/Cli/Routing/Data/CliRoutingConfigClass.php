@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Routing\Data;
 
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 
-final class ConfigClass extends Config implements ConfigContract
+final class CliRoutingConfigClass extends Config implements CliRoutingConfigContract
 {
     /**
      * @param non-empty-string $dataClassName

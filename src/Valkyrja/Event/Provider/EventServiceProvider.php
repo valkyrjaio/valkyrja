@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -116,7 +116,7 @@ class EventServiceProvider implements ServiceProviderContract
     public static function publishDataFileGenerator(ContainerContract $container): void
     {
         $env    = $container->getSingleton(Env::class);
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $dataPath  = $config->dataPath;
         $namespace = $config->dataNamespace;

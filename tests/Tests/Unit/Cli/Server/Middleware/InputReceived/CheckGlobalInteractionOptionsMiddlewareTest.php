@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Middleware\InputReceived;
 
-use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -26,7 +26,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 {
     public function testWithoutHelpOptions(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input();
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -55,7 +55,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithNoInteractionOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionName::NO_INTERACTION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -84,7 +84,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithNoInteractionShortOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionShortName::NO_INTERACTION));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -113,7 +113,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithQuietOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionName::QUIET));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -142,7 +142,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithQuietShortOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionShortName::QUIET));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -171,7 +171,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithSilentOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionName::SILENT));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -200,7 +200,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithSilentShortOption(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(new Option(name: OptionShortName::SILENT));
         $handler = $this->createMock(InputReceivedHandlerContract::class);
         $handler
@@ -229,7 +229,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithAllOptions(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(
             new Option(name: OptionName::NO_INTERACTION),
             new Option(name: OptionName::QUIET),
@@ -262,7 +262,7 @@ final class CheckGlobalInteractionOptionsMiddlewareTest extends TestCase
 
     public function testWithAllShortOptions(): void
     {
-        $config  = new Config();
+        $config  = new CliInteractionConfig();
         $input   = new Input()->withOptions(
             new Option(name: OptionShortName::NO_INTERACTION),
             new Option(name: OptionShortName::QUIET),

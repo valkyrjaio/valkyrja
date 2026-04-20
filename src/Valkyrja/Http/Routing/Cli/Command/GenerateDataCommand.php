@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Cli\Command;
 
 use Override;
 use Valkyrja\Application\Cli\Command\Abstract\GenerateData;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
@@ -30,7 +31,7 @@ class GenerateDataCommand extends GenerateData
 {
     public function __construct(
         protected Env $env,
-        protected HttpConfig $config,
+        protected HttpConfigContract $config,
         protected OutputFactoryContract $outputFactory,
     ) {
         parent::__construct(
@@ -63,8 +64,10 @@ class GenerateDataCommand extends GenerateData
      * Get the debug config.
      */
     #[Override]
-    protected function getDebugConfig(): HttpConfig
+    protected function getDebugConfig(): HttpConfigContract
     {
+        // Psalm is silly and not figuring out the type from the property hooks defined in the contract; this is a workaround
+        /** @psalm-var HttpConfig $config */
         $config = $this->config;
 
         return new HttpConfig(

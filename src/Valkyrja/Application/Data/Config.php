@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class Config
+class Config implements ConfigContract
 {
     /**
      * @param non-empty-string                          $namespace

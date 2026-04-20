@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Middleware\Data\Contract;
+namespace Valkyrja\Application\Data\Contract;
 
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -21,7 +21,7 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
-interface ConfigContract
+interface HttpConfigContract extends ConfigContract
 {
     /** @var class-string<RequestReceivedMiddlewareContract>[] */
     public array $requestReceivedMiddleware {

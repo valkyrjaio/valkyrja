@@ -16,7 +16,7 @@ namespace Valkyrja\Jwt\Provider;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -61,7 +61,7 @@ class JwtServiceProvider implements ServiceProviderContract
      */
     public static function publishFirebaseJwt(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
         $env    = $container->getSingleton(Env::class);
         /** @var Algorithm $algorithm */
         $algorithm = $env::JWT_ALGORITHM

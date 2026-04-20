@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use ReflectionProperty;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -38,7 +38,7 @@ use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
-use Valkyrja\Tests\Classes\Cli\Routing\Data\ConfigClass;
+use Valkyrja\Tests\Classes\Cli\Routing\Data\CliRoutingConfigClass;
 use Valkyrja\Tests\Classes\Cli\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -257,7 +257,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(Config::class, $config = new ConfigClass(dataClassName: 'CustomDataClassName'));
+        $container->setSingleton(ConfigContract::class, $config = new CliRoutingConfigClass(dataClassName: 'CustomDataClassName'));
         $container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
 
         self::assertFalse($container->has(RouteCollectorContract::class));

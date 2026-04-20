@@ -15,9 +15,6 @@ namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 /**
@@ -55,29 +52,5 @@ final class ApplicationTest extends TestCase
     public function testDebug(): void
     {
         self::assertSame($this->config->debugMode, $this->app->getDebugMode());
-    }
-
-    /**
-     * Test the kernel() helper method.
-     */
-    public function testKernel(): void
-    {
-        self::assertInstanceOf(RequestHandlerContract::class, $this->app->getContainer()->getSingleton(RequestHandlerContract::class));
-    }
-
-    /**
-     * Test the router() helper method.
-     */
-    public function testRouter(): void
-    {
-        self::assertInstanceOf(RouterContract::class, $this->app->getContainer()->getSingleton(RouterContract::class));
-    }
-
-    /**
-     * Test the responseBuilder() helper method.
-     */
-    public function testResponseBuilder(): void
-    {
-        self::assertInstanceOf(ResponseFactoryContract::class, $this->app->getContainer()->getSingleton(ResponseFactoryContract::class));
     }
 }

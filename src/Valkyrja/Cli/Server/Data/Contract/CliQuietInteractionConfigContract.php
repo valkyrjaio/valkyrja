@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Data\Contract;
 
-interface NoInteractionConfigContract
+interface CliQuietInteractionConfigContract
 {
     /** @var non-empty-string */
-    public string $noInteractionOptionName {
+    public string $quietOptionName {
         get;
     }
 
     /** @var non-empty-string */
-    public string $noInteractionOptionShortName {
+    public string $quietOptionShortName {
         get;
     }
 }

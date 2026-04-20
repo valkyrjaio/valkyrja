@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
@@ -64,6 +66,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishRequestHandler(): void
     {
         $container = $this->container;
+
+        $container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
         HttpMiddlewareServiceProvider::publishRequestReceivedHandler($container);
         HttpMiddlewareServiceProvider::publishThrowableCaughtHandler($container);

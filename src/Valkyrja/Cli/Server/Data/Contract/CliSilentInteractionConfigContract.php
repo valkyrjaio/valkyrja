@@ -11,20 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Data\Contract;
+namespace Valkyrja\Cli\Server\Data\Contract;
 
-interface ConfigContract
+interface CliSilentInteractionConfigContract
 {
-    public bool $isQuiet {
+    /** @var non-empty-string */
+    public string $silentOptionName {
         get;
-        set;
     }
-    public bool $isInteractive {
+
+    /** @var non-empty-string */
+    public string $silentOptionShortName {
         get;
-        set;
-    }
-    public bool $isSilent {
-        get;
-        set;
     }
 }

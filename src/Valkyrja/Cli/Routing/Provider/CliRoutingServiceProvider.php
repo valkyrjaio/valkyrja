@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
@@ -30,7 +30,7 @@ use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
-use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
@@ -134,13 +134,13 @@ class CliRoutingServiceProvider implements ServiceProviderContract
      */
     public static function publishDataFileGenerator(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $dataPath  = $config->dataPath;
         $namespace = $config->dataNamespace;
         $className = 'AppCliRoutingData';
 
-        if ($config instanceof ConfigContract) {
+        if ($config instanceof CliRoutingConfigContract) {
             $className = $config->dataClassName;
         }
 

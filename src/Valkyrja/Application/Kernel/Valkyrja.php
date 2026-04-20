@@ -15,6 +15,7 @@ namespace Valkyrja\Application\Kernel;
 
 use Override;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
@@ -38,7 +39,7 @@ class Valkyrja implements ApplicationContract
 
     public function __construct(
         protected ContainerContract $container,
-        protected Config $config = new Config(),
+        protected ConfigContract $config = new Config(),
     ) {
         $this->bootstrapTimezone();
     }

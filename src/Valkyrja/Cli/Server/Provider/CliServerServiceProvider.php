@@ -15,9 +15,9 @@ namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
 use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -33,11 +33,11 @@ use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Cli\Server\Constant\CommandName;
-use Valkyrja\Cli\Server\Data\Contract\HelpConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\NoInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\QuietInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\SilentInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\VersionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliHelpCommandConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliNoInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliQuietInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliSilentInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliVersionCommandConfigContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
@@ -79,7 +79,7 @@ class CliServerServiceProvider implements ServiceProviderContract
      */
     public static function publishInputHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(ConfigContract::class);
+        $config = $container->getSingleton(CliInteractionConfigContract::class);
 
         $container->setSingleton(
             InputHandlerContract::class,
@@ -198,13 +198,13 @@ class CliServerServiceProvider implements ServiceProviderContract
      */
     public static function publishCheckForHelpOptionsMiddleware(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $commandName = CommandName::HELP;
         $name        = OptionName::HELP;
         $shortName   = OptionShortName::HELP;
 
-        if ($config instanceof HelpConfigContract) {
+        if ($config instanceof CliHelpCommandConfigContract) {
             $commandName = $config->helpCommandName;
             $name        = $config->helpOptionName;
             $shortName   = $config->helpOptionShortName;
@@ -225,13 +225,13 @@ class CliServerServiceProvider implements ServiceProviderContract
      */
     public static function publishCheckForVersionOptionsMiddleware(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $commandName = CommandName::VERSION;
         $name        = OptionName::VERSION;
         $shortName   = OptionShortName::VERSION;
 
-        if ($config instanceof VersionConfigContract) {
+        if ($config instanceof CliVersionCommandConfigContract) {
             $commandName = $config->versionCommandName;
             $name        = $config->versionOptionName;
             $shortName   = $config->versionOptionShortName;
@@ -252,7 +252,7 @@ class CliServerServiceProvider implements ServiceProviderContract
      */
     public static function publishCheckGlobalInteractionOptionsMiddleware(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $noInteractionOptionName      = OptionName::NO_INTERACTION;
         $noInteractionOptionShortName = OptionShortName::NO_INTERACTION;
@@ -263,17 +263,17 @@ class CliServerServiceProvider implements ServiceProviderContract
         $isSilentOptionName      = OptionName::SILENT;
         $isSilentOptionShortName = OptionShortName::SILENT;
 
-        if ($config instanceof NoInteractionConfigContract) {
+        if ($config instanceof CliNoInteractionConfigContract) {
             $noInteractionOptionName      = $config->noInteractionOptionName;
             $noInteractionOptionShortName = $config->noInteractionOptionShortName;
         }
 
-        if ($config instanceof QuietInteractionConfigContract) {
+        if ($config instanceof CliQuietInteractionConfigContract) {
             $isQuietOptionName      = $config->quietOptionName;
             $isQuietOptionShortName = $config->quietOptionShortName;
         }
 
-        if ($config instanceof SilentInteractionConfigContract) {
+        if ($config instanceof CliSilentInteractionConfigContract) {
             $isSilentOptionName      = $config->silentOptionName;
             $isSilentOptionShortName = $config->silentOptionShortName;
         }
@@ -281,7 +281,7 @@ class CliServerServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             CheckGlobalInteractionOptionsMiddleware::class,
             new CheckGlobalInteractionOptionsMiddleware(
-                config: $container->getSingleton(ConfigContract::class),
+                config: $container->getSingleton(CliInteractionConfigContract::class),
                 noInteractionOptionName: $noInteractionOptionName,
                 noInteractionOptionShortName: $noInteractionOptionShortName,
                 quietOptionName: $isQuietOptionName,

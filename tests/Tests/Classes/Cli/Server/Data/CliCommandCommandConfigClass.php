@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Server\Data;
 
-use Valkyrja\Cli\Server\Data\Contract\HelpConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\NoInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\QuietInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\SilentInteractionConfigContract;
-use Valkyrja\Cli\Server\Data\Contract\VersionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliHelpCommandConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliNoInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliQuietInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliSilentInteractionConfigContract;
+use Valkyrja\Cli\Server\Data\Contract\CliVersionCommandConfigContract;
 
-final class ConfigClass implements HelpConfigContract, VersionConfigContract, NoInteractionConfigContract, QuietInteractionConfigContract, SilentInteractionConfigContract
+final class CliCommandCommandConfigClass implements CliHelpCommandConfigContract, CliVersionCommandConfigContract, CliNoInteractionConfigContract, CliQuietInteractionConfigContract, CliSilentInteractionConfigContract
 {
     public function __construct(
         public string $helpCommandName = '',

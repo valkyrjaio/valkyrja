@@ -15,7 +15,8 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Env\Env;
@@ -26,7 +27,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
-use Valkyrja\Cli\Routing\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Generator\DataFileGenerator;
@@ -89,7 +90,7 @@ final class CliTest extends TestCase
         };
         $dir = Directory::$basePath;
 
-        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+        $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
             public function __construct(
@@ -123,8 +124,8 @@ final class CliTest extends TestCase
 
         $cli = $container->getSingleton(RouteCollectionContract::class);
 
-        self::assertTrue($container->has(CliConfig::class));
-        self::assertTrue($container->has(HttpConfig::class));
+        self::assertTrue($container->has(CliConfigContract::class));
+        self::assertTrue($container->has(HttpConfigContract::class));
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ContainerContract::class));
         self::assertTrue($container->has(ApplicationContract::class));
@@ -163,7 +164,7 @@ final class CliTest extends TestCase
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
         };
 
-        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+        $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
             public function __construct(
@@ -208,7 +209,7 @@ final class CliTest extends TestCase
             public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
         };
 
-        $config = new class(dir: $dir) extends CliConfig implements ConfigContract {
+        $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
             public function __construct(

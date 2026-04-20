@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output\Factory;
 
-use Valkyrja\Cli\Interaction\Data\Config;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
@@ -33,7 +33,7 @@ final class OutputFactoryTest extends TestCase
 {
     public function testCreateOutput(): void
     {
-        $config  = new Config(
+        $config  = new CliInteractionConfig(
             isQuiet: true,
             isInteractive: false,
             isSilent: true
@@ -62,7 +62,7 @@ final class OutputFactoryTest extends TestCase
 
     public function testCreateEmptyOutput(): void
     {
-        $config  = new Config(
+        $config  = new CliInteractionConfig(
             isQuiet: true,
             isInteractive: false,
             isSilent: true
@@ -91,7 +91,7 @@ final class OutputFactoryTest extends TestCase
 
     public function testCreatePlainOutput(): void
     {
-        $config  = new Config(
+        $config  = new CliInteractionConfig(
             isQuiet: true,
             isInteractive: false,
             isSilent: true
@@ -120,7 +120,7 @@ final class OutputFactoryTest extends TestCase
 
     public function testCreateFileOutput(): void
     {
-        $config  = new Config(
+        $config  = new CliInteractionConfig(
             isQuiet: true,
             isInteractive: false,
             isSilent: true
@@ -154,7 +154,7 @@ final class OutputFactoryTest extends TestCase
         $stream  = fopen(filename: 'php://input', mode: 'rb');
         $stream2 = fopen(filename: 'php://memory', mode: 'rb');
 
-        $config  = new Config(
+        $config  = new CliInteractionConfig(
             isQuiet: true,
             isInteractive: false,
             isSilent: true

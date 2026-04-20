@@ -18,9 +18,9 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 
-final class ConfigClass extends Config implements ConfigContract
+final class CliInteractionConfigClass extends Config implements CliInteractionConfigContract
 {
     /**
      * @param non-empty-string                          $namespace

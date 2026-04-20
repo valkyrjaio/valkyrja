@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
 use ReflectionProperty;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -28,7 +29,6 @@ use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\Provider\CliMiddlewareServiceProvider;
-use Valkyrja\Tests\Classes\Cli\Middleware\Data\ConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -51,6 +51,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishInputReceivedHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[InputReceivedHandlerContract::class];
         $callback($this->container);
 
@@ -62,7 +64,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishInputReceivedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(inputReceivedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(inputReceivedMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[InputReceivedHandlerContract::class];
         $callback($this->container);
@@ -80,6 +82,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteDispatchedHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
 
@@ -91,7 +95,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteDispatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(routeDispatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeDispatchedMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
@@ -109,6 +113,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
 
@@ -120,7 +126,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(throwableCaughtMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(throwableCaughtMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
@@ -138,6 +144,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteMatchedHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
 
@@ -149,7 +157,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteMatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(routeMatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeMatchedMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
@@ -167,6 +175,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteNotMatchedHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
 
@@ -178,7 +188,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteNotMatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(routeNotMatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeNotMatchedMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
@@ -196,6 +206,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishExitedHandler(): void
     {
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+
         $callback = CliMiddlewareServiceProvider::publishers()[ExitedHandlerContract::class];
         $callback($this->container);
 
@@ -207,7 +219,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishExitedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(Config::class, new ConfigClass(exitedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(exitedMiddleware: ['test']));
 
         $callback = CliMiddlewareServiceProvider::publishers()[ExitedHandlerContract::class];
         $callback($this->container);

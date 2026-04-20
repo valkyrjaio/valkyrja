@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Data\Contract;
 
-interface HelpConfigContract
+interface CliHelpCommandConfigContract
 {
     /** @var non-empty-string */
     public string $helpCommandName {
