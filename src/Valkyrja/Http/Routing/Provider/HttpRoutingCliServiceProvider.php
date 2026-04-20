@@ -20,6 +20,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
+use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 class HttpRoutingCliServiceProvider implements ServiceProviderContract
 {
@@ -31,6 +32,7 @@ class HttpRoutingCliServiceProvider implements ServiceProviderContract
     {
         return [
             GenerateDataCommand::class => [self::class, 'publishGenerateDataCommand'],
+            ListCommand::class         => [self::class, 'publishListCommand'],
         ];
     }
 
@@ -46,6 +48,17 @@ class HttpRoutingCliServiceProvider implements ServiceProviderContract
                 $container->getSingleton(HttpConfigContract::class),
                 $container->getSingleton(OutputFactoryContract::class),
             )
+        );
+    }
+
+    /**
+     * Publish the list command service.
+     */
+    public static function publishListCommand(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            ListCommand::class,
+            new ListCommand()
         );
     }
 }

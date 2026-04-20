@@ -18,6 +18,7 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
+use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliServiceProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
@@ -33,6 +34,7 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(GenerateDataCommand::class, HttpRoutingCliServiceProvider::publishers());
+        self::assertArrayHasKey(ListCommand::class, HttpRoutingCliServiceProvider::publishers());
     }
 
     public function testGenerateDataCommand(): void
@@ -51,5 +53,19 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(GenerateDataCommand::class));
         self::assertTrue($container->isSingleton(GenerateDataCommand::class));
         self::assertInstanceOf(GenerateDataCommand::class, $container->getSingleton(GenerateDataCommand::class));
+    }
+
+    public function testListCommand(): void
+    {
+        $container = $this->container;
+
+        self::assertFalse($container->has(ListCommand::class));
+
+        $callback = HttpRoutingCliServiceProvider::publishers()[ListCommand::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(ListCommand::class));
+        self::assertTrue($container->isSingleton(ListCommand::class));
+        self::assertInstanceOf(ListCommand::class, $container->getSingleton(ListCommand::class));
     }
 }
