@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Application\Entry;
 
 use Override;
-use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -74,7 +74,7 @@ final class WorkerHttpClass extends WorkerHttp
      * Mirrors the real worker entry class pattern: bootstrap once, capture data,
      * build a handler closure, then invoke it requestCount times.
      */
-    public static function run(HttpConfig $config, int $requestCount = 1, Env $env = new Env()): void
+    public static function run(HttpConfigContract $config, int $requestCount = 1, Env $env = new Env()): void
     {
         $app  = self::bootstrap(config: $config, env: $env);
         $data = $app->getContainer()->getData();

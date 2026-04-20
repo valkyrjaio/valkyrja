@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry\Abstract;
 
-use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Config;
-use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
+use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -36,7 +36,7 @@ abstract class App
     /**
      * Start the application.
      */
-    public static function start(Env $env, Config $config): ApplicationContract
+    public static function start(Env $env, ConfigContract $config): ApplicationContract
     {
         if ($config->debugMode) {
             static::defaultExceptionHandler();
@@ -80,7 +80,7 @@ abstract class App
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
      */
-    public static function app(Env $env, Config $config): ApplicationContract
+    public static function app(Env $env, ConfigContract $config): ApplicationContract
     {
         $container = static::getContainer();
         $app       = static::getApplication(container: $container, config: $config);
@@ -98,7 +98,7 @@ abstract class App
     /**
      * Get the application.
      */
-    public static function getApplication(ContainerContract $container, Config $config): ApplicationContract
+    public static function getApplication(ContainerContract $container, ConfigContract $config): ApplicationContract
     {
         return new Valkyrja(
             container: $container,
@@ -109,21 +109,21 @@ abstract class App
     /**
      * Bootstrap container services.
      */
-    public static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, Config $config): void
+    public static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, ConfigContract $config): void
     {
         $container->setSingleton(Env::class, $env);
-        $container->setSingleton(Config::class, $config);
+        $container->setSingleton(ConfigContract::class, $config);
         $container->setSingleton($config::class, $config);
         $container->setSingleton(ContainerContract::class, $container);
         $container->setSingleton(ApplicationContract::class, $app);
 
-        if ($config instanceof CliConfig) {
-            $container->setSingleton(CliConfig::class, $config);
-            $container->setSingleton(HttpConfig::class, $config->http);
+        if ($config instanceof CliConfigContract) {
+            $container->setSingleton(CliConfigContract::class, $config);
+            $container->setSingleton(HttpConfigContract::class, $config->http);
         }
 
-        if ($config instanceof HttpConfig) {
-            $container->setSingleton(HttpConfig::class, $config);
+        if ($config instanceof HttpConfigContract) {
+            $container->setSingleton(HttpConfigContract::class, $config);
         }
 
         $app->publishProviderCallbacks();

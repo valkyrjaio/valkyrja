@@ -16,10 +16,10 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use ReflectionProperty;
 use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Config as ApplicationConfig;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
@@ -42,7 +42,7 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Classes\Cli\Server\Data\ConfigClass;
+use Valkyrja\Tests\Classes\Cli\Server\Data\CliCommandCommandConfigClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
@@ -74,7 +74,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishInputHandler(): void
     {
-        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
+        $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfig::class));
         $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
         $this->container->setSingleton(InputReceivedHandlerContract::class, self::createStub(InputReceivedHandlerContract::class));
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
@@ -180,8 +180,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCheckForHelpOptionsMiddlewareWithCustomConfig(): void
     {
         $this->container->setSingleton(
-            ApplicationConfig::class,
-            $config = new ConfigClass(
+            ConfigContract::class,
+            $config = new CliCommandCommandConfigClass(
                 helpCommandName: 'helpTest',
                 helpOptionName: 'helpOptionNameTest',
                 helpOptionShortName: 'helpOptionShortNameTest',
@@ -221,8 +221,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCheckForVersionOptionsMiddlewareWithCustomConfig(): void
     {
         $this->container->setSingleton(
-            ApplicationConfig::class,
-            $config = new ConfigClass(
+            ConfigContract::class,
+            $config = new CliCommandCommandConfigClass(
                 versionCommandName: 'versionTest',
                 versionOptionName: 'versionOptionNameTest',
                 versionOptionShortName: 'versionOptionShortNameTest',
@@ -251,7 +251,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCheckGlobalInteractionOptionsMiddleware(): void
     {
-        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
+        $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfig::class));
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
@@ -263,8 +263,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCheckGlobalInteractionOptionsMiddlewareWithCustomConfig(): void
     {
         $this->container->setSingleton(
-            ApplicationConfig::class,
-            $config = new ConfigClass(
+            ConfigContract::class,
+            $config = new CliCommandCommandConfigClass(
                 noInteractionOptionName: 'noInteractionOptionNameTest',
                 noInteractionOptionShortName: 'noInteractionOptionShortNameTest',
                 quietOptionName: 'quietOptionNameTest',
@@ -273,7 +273,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
                 silentOptionShortName: 'silentOptionShortNameTest',
             )
         );
-        $this->container->setSingleton(ConfigContract::class, self::createStub(Config::class));
+        $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfig::class));
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];

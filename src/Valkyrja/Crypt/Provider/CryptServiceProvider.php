@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -58,7 +58,7 @@ class CryptServiceProvider implements ServiceProviderContract
      */
     public static function publishSodiumCrypt(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
         $container->setSingleton(
             SodiumCrypt::class,

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\Data\Contract;
+namespace Valkyrja\Application\Data\Contract;
 
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
@@ -20,8 +20,16 @@ use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
-interface ConfigContract
+interface CliConfigContract extends ConfigContract
 {
+    /** @var non-empty-string */
+    public string $applicationName {
+        get;
+    }
+    /** @var non-empty-string */
+    public string $defaultCommandName {
+        get;
+    }
     /** @var class-string<InputReceivedMiddlewareContract>[] */
     public array $inputReceivedMiddleware {
         get;
@@ -44,6 +52,9 @@ interface ConfigContract
     }
     /** @var class-string<ExitedMiddlewareContract>[] */
     public array $exitedMiddleware {
+        get;
+    }
+    public HttpConfigContract $http {
         get;
     }
 }

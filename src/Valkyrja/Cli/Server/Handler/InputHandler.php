@@ -15,8 +15,8 @@ namespace Valkyrja\Cli\Server\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -47,7 +47,7 @@ class InputHandler implements InputHandlerContract
         protected InputReceivedHandlerContract $inputReceivedHandler = new InputReceivedHandler(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
-        protected ConfigContract $interactionConfig = new Config(),
+        protected CliInteractionConfigContract $interactionConfig = new CliInteractionConfig(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
     ) {
     }

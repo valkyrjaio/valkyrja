@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Cli\Command\Abstract;
 
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Entry\Http;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Formatter\ErrorFormatter;
@@ -198,5 +198,5 @@ abstract class GenerateData
     /**
      * Get the debug config.
      */
-    abstract protected function getDebugConfig(): Config;
+    abstract protected function getDebugConfig(): ConfigContract;
 }

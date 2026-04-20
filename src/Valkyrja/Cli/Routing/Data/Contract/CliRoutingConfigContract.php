@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Contract;
 
-interface ConfigContract
+interface CliRoutingConfigContract
 {
     /** @var non-empty-string */
     public string $dataClassName {

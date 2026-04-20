@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config as ApplicationConfig;
-use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -31,8 +31,8 @@ class CliInteractionServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            ConfigContract::class        => [self::class, 'publishConfig'],
-            OutputFactoryContract::class => [self::class, 'publishOutputFactory'],
+            CliInteractionConfigContract::class => [self::class, 'publishConfig'],
+            OutputFactoryContract::class        => [self::class, 'publishOutputFactory'],
         ];
     }
 
@@ -41,17 +41,17 @@ class CliInteractionServiceProvider implements ServiceProviderContract
      */
     public static function publishConfig(ContainerContract $container): void
     {
-        $config = $container->getSingleton(ApplicationConfig::class);
+        $config = $container->getSingleton(ConfigContract::class);
 
-        if ($config instanceof ConfigContract) {
-            $container->setSingleton(ConfigContract::class, $config);
+        if ($config instanceof CliInteractionConfigContract) {
+            $container->setSingleton(CliInteractionConfigContract::class, $config);
 
             return;
         }
 
         $container->setSingleton(
-            ConfigContract::class,
-            new Config()
+            CliInteractionConfigContract::class,
+            new CliInteractionConfig()
         );
     }
 
@@ -60,7 +60,7 @@ class CliInteractionServiceProvider implements ServiceProviderContract
      */
     public static function publishOutputFactory(ContainerContract $container): void
     {
-        $config = $container->getSingleton(ConfigContract::class);
+        $config = $container->getSingleton(CliInteractionConfigContract::class);
 
         $container->setSingleton(
             OutputFactoryContract::class,

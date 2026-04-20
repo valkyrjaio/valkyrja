@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
@@ -25,7 +25,7 @@ class Cli extends App
     /**
      * Run the cli app.
      */
-    public static function run(CliConfig $config, Env $env = new Env()): void
+    public static function run(CliConfigContract $config, Env $env = new Env()): void
     {
         $app = static::start(
             env: $env,
@@ -44,7 +44,7 @@ class Cli extends App
     /**
      * Get the input.
      */
-    public static function getInput(CliConfig $config): InputContract
+    public static function getInput(CliConfigContract $config): InputContract
     {
         /** @var non-empty-string[] $args */
         $args = $_SERVER['argv'] ?? [];

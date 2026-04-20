@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Data\Contract;
 
-interface VersionConfigContract
+interface CliNoInteractionConfigContract
 {
     /** @var non-empty-string */
-    public string $versionCommandName {
+    public string $noInteractionOptionName {
         get;
     }
 
     /** @var non-empty-string */
-    public string $versionOptionName {
-        get;
-    }
-
-    /** @var non-empty-string */
-    public string $versionOptionShortName {
+    public string $noInteractionOptionShortName {
         get;
     }
 }

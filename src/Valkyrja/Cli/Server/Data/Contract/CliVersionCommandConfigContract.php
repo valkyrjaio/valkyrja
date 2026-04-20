@@ -13,15 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Data\Contract;
 
-interface SilentInteractionConfigContract
+interface CliVersionCommandConfigContract
 {
     /** @var non-empty-string */
-    public string $silentOptionName {
+    public string $versionCommandName {
         get;
     }
 
     /** @var non-empty-string */
-    public string $silentOptionShortName {
+    public string $versionOptionName {
+        get;
+    }
+
+    /** @var non-empty-string */
+    public string $versionOptionShortName {
         get;
     }
 }

@@ -27,6 +27,9 @@
         <!-- Classes aren't extended because they could potentially be since this is a framework -->
         <ClassMustBeFinal errorLevel="suppress" />
 
+        <!-- Property hooks are a real feature, kthx -->
+        <NoInterfaceProperties errorLevel="suppress" />
+
         <!-- A bunch of false-positives with ??= -->
         <RedundantPropertyInitializationCheck errorLevel="suppress" />
 

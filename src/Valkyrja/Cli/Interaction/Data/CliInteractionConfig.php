@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Data;
 
-use Valkyrja\Cli\Interaction\Data\Contract\ConfigContract;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 
-class Config implements ConfigContract
+class CliInteractionConfig implements CliInteractionConfigContract
 {
     public function __construct(
         public bool $isQuiet = false,

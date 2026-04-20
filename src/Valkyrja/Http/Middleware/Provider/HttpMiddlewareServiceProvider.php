@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Http\Middleware\Data\Contract\ConfigContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
@@ -32,9 +31,6 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
-use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
-use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 
 class HttpMiddlewareServiceProvider implements ServiceProviderContract
 {
@@ -62,11 +58,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishRequestReceivedHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->requestReceivedMiddleware
-            : [];
+        $middleware = $config->requestReceivedMiddleware;
 
         $container->setSingleton(
             RequestReceivedHandlerContract::class,
@@ -83,11 +77,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishRouteDispatchedHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->routeDispatchedMiddleware
-            : [];
+        $middleware = $config->routeDispatchedMiddleware;
 
         $container->setSingleton(
             RouteDispatchedHandlerContract::class,
@@ -104,14 +96,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishThrowableCaughtHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->throwableCaughtMiddleware
-            : [
-                LogThrowableCaughtMiddleware::class,
-                ViewThrowableCaughtMiddleware::class,
-            ];
+        $middleware = $config->throwableCaughtMiddleware;
 
         $container->setSingleton(
             ThrowableCaughtHandlerContract::class,
@@ -128,11 +115,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishRouteMatchedHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->routeMatchedMiddleware
-            : [];
+        $middleware = $config->routeMatchedMiddleware;
 
         $container->setSingleton(
             RouteMatchedHandlerContract::class,
@@ -149,13 +134,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishRouteNotMatchedHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->routeNotMatchedMiddleware
-            : [
-                ViewRouteNotMatchedMiddleware::class,
-            ];
+        $middleware = $config->routeNotMatchedMiddleware;
 
         $container->setSingleton(
             RouteNotMatchedHandlerContract::class,
@@ -172,11 +153,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishSendingResponseHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->sendingResponseMiddleware
-            : [];
+        $middleware = $config->sendingResponseMiddleware;
 
         $container->setSingleton(
             SendingResponseHandlerContract::class,
@@ -193,11 +172,9 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      */
     public static function publishTerminatedHandler(ContainerContract $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config instanceof ConfigContract
-            ? $config->terminatedMiddleware
-            : [];
+        $middleware = $config->terminatedMiddleware;
 
         $container->setSingleton(
             TerminatedHandlerContract::class,
