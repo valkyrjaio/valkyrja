@@ -44,14 +44,14 @@ abstract class Rule implements RuleContract
     public function validate(): void
     {
         if (! $this->isValid()) {
-            $this->getException();
+            $this->throwException();
         }
     }
 
     /**
-     * Get the exception.
+     * Throw a validation rule failure exception with the error message.
      */
-    protected function getException(): void
+    protected function throwException(): void
     {
         throw new ValidationRuleFailureException($this->errorMessage);
     }
