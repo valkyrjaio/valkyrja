@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use ReflectionProperty;
 use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
@@ -328,7 +329,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $container->setSingleton(Env::class, self::createStub(Env::class));
-        $container->setSingleton(CliConfig::class, self::createStub(CliConfig::class));
+        $container->setSingleton(CliConfigContract::class, self::createStub(CliConfig::class));
         $container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         self::assertFalse($container->has(GenerateDataCommand::class));

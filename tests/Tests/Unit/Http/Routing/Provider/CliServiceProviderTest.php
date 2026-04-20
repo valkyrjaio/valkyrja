@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -39,7 +40,7 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $container->setSingleton(Env::class, self::createStub(Env::class));
-        $container->setSingleton(HttpConfig::class, self::createStub(HttpConfig::class));
+        $container->setSingleton(HttpConfigContract::class, self::createStub(HttpConfig::class));
         $container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         self::assertFalse($container->has(GenerateDataCommand::class));

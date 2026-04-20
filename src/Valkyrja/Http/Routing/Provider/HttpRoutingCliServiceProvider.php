@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -43,7 +43,7 @@ class HttpRoutingCliServiceProvider implements ServiceProviderContract
             GenerateDataCommand::class,
             new GenerateDataCommand(
                 $container->getSingleton(Env::class),
-                $container->getSingleton(HttpConfig::class),
+                $container->getSingleton(HttpConfigContract::class),
                 $container->getSingleton(OutputFactoryContract::class),
             )
         );

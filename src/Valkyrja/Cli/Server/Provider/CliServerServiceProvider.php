@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
-use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
@@ -163,7 +163,7 @@ class CliServerServiceProvider implements ServiceProviderContract
             GenerateDataCommand::class,
             new GenerateDataCommand(
                 env: $container->getSingleton(Env::class),
-                config: $container->getSingleton(CliConfig::class),
+                config: $container->getSingleton(CliConfigContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );
