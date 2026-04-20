@@ -63,9 +63,6 @@
       "functions/helpers.php"
     ]
   },
-  "bin"               : [
-    "bin/valkyrja"
-  ],
   "suggest"           : {
     "filp/whoops"                : "Required to use the default Throwable handler (^2.18.4)",
     "firebase/php-jwt"           : "Required to use the default Jwt adapter (^7.0.5)",
