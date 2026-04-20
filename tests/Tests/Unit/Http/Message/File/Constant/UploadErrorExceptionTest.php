@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
+namespace Valkyrja\Tests\Unit\Http\Message\File\Constant;
 
+use Valkyrja\Http\Message\File\Constant\UploadErrorExceptionMessage;
 use Valkyrja\Http\Message\File\Enum\UploadError;
-use Valkyrja\Http\Message\File\Throwable\Exception\Constant\UploadErrorExceptionMessage;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidUploadErrorException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;

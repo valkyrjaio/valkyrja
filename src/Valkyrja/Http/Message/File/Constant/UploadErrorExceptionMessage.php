@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\File\Throwable\Exception\Constant;
+namespace Valkyrja\Http\Message\File\Constant;
 
 final class UploadErrorExceptionMessage
 {
