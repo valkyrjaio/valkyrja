@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
+use Valkyrja\Http\Message\File\Constant\UploadErrorExceptionMessage;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Contract\UploadedFileThrowable;
 use Valkyrja\Http\Message\File\Throwable\Exception\Abstract\UploadedFileRuntimeException;
-use Valkyrja\Http\Message\File\Throwable\Exception\Constant\UploadErrorExceptionMessage;
 
 class UploadedFileUploadErrorException extends UploadedFileRuntimeException
 {
