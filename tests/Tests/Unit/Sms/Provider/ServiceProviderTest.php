@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Sms\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Sms\Provider\SmsServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
 use Vonage\Client\Credentials\CredentialsInterface;

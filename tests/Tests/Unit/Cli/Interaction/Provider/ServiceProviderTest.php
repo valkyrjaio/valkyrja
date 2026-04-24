@@ -19,8 +19,8 @@ use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Classes\Cli\Interaction\Data\CliInteractionConfigClass;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -24,7 +24,7 @@ use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Filesystem\Provider\FilesystemServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -21,7 +21,7 @@ use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Provider\CacheServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

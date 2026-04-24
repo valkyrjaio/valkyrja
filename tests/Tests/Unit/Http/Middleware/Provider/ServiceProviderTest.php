@@ -31,7 +31,7 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

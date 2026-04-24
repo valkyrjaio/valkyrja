@@ -24,7 +24,7 @@ use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Broadcast\Provider\BroadcastServiceProvider;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

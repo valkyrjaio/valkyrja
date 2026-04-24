@@ -24,8 +24,8 @@ use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Session\Manager\Contract\SessionContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

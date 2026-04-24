@@ -20,7 +20,7 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Jwt\Provider\JwtServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

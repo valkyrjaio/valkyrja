@@ -18,7 +18,7 @@ use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Crypt\Provider\CryptServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.
