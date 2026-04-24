@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
@@ -27,7 +25,6 @@ use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -64,7 +61,6 @@ class CliServerServiceProvider implements ServiceProviderContract
             ListBashCommand::class                         => [self::class, 'publishListBashCommand'],
             ListCommand::class                             => [self::class, 'publishListCommand'],
             VersionCommand::class                          => [self::class, 'publishVersionCommand'],
-            GenerateDataCommand::class                     => [self::class, 'publishGenerateDataCommand'],
             LogThrowableCaughtMiddleware::class            => [self::class, 'publishLogThrowableCaughtMiddleware'],
             OutputThrowableCaughtMiddleware::class         => [self::class, 'publishOutputThrowableCaughtMiddleware'],
             CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
@@ -149,21 +145,6 @@ class CliServerServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             VersionCommand::class,
             new VersionCommand(
-                outputFactory: $container->getSingleton(OutputFactoryContract::class),
-            )
-        );
-    }
-
-    /**
-     * Publish the GenerateDataCommand service.
-     */
-    public static function publishGenerateDataCommand(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            GenerateDataCommand::class,
-            new GenerateDataCommand(
-                env: $container->getSingleton(Env::class),
-                config: $container->getSingleton(CliConfigContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
             )
         );

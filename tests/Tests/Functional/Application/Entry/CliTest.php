@@ -16,21 +16,18 @@ namespace Valkyrja\Tests\Functional\Application\Entry;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
-use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
+use Valkyrja\Application\Provider\CliApplicationComponentProvider;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
-use Valkyrja\Cli\Routing\Generator\DataFileGenerator as CliDataFileGenerator;
 use Valkyrja\Cli\Server\Support\Exiter;
-use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
@@ -100,50 +97,22 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        CliWithHttpApplicationComponentProvider::class,
+                        CliApplicationComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                 );
             }
         };
 
-        $containerDataClassName        = 'CliTestContainerData';
-        $containerDataFilePath         = "/$containerDataClassName.php";
-        $containerDirectory            = Directory::srcPath($config->dataPath);
-        $absoluteContainerDataFilePath = $containerDirectory . $containerDataFilePath;
-        $routesDataClassName           = 'CliTestCliRoutingData';
-        $routesDataFilePath            = "/$routesDataClassName.php";
-        $routesDirectory               = Directory::srcPath($config->dataPath);
-        $absoluteRoutesDataFilePath    = $routesDirectory . $routesDataFilePath;
-
-        @unlink($absoluteContainerDataFilePath);
-        @unlink($absoluteRoutesDataFilePath);
-
         $application = Cli::app($env, $config);
         $container   = $application->getContainer();
 
-        $cli = $container->getSingleton(RouteCollectionContract::class);
+        $container->getSingleton(RouteCollectionContract::class);
 
         self::assertTrue($container->has(CliConfigContract::class));
-        self::assertTrue($container->has(HttpConfigContract::class));
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ContainerContract::class));
         self::assertTrue($container->has(ApplicationContract::class));
-
-        $dataFileGenerator = new DataFileGenerator(
-            directory: $containerDirectory,
-            data: $container->getData(),
-            namespace: $config->dataNamespace,
-            className: $containerDataClassName
-        );
-        $dataFileGenerator->generateFile();
-        $cliDataFileGenerator = new CliDataFileGenerator(
-            directory: $routesDirectory,
-            data: $cli->getData(),
-            namespace: $config->dataNamespace,
-            className: $routesDataClassName
-        );
-        $cliDataFileGenerator->generateFile();
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
         self::assertTrue(CliRouteProviderClass::$called);
@@ -154,10 +123,6 @@ final class CliTest extends TestCase
         // With debug mode on we expect the route data publisher publish method to bypass
         self::assertFalse(CliRoutingDataProviderClass::$published);
         CliRoutingDataProviderClass::$published = false;
-
-        require_once $absoluteContainerDataFilePath;
-
-        require_once $absoluteRoutesDataFilePath;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -174,7 +139,7 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: false,
                     providers: [
-                        CliWithHttpApplicationComponentProvider::class,
+                        CliApplicationComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                     callbacks: [
@@ -219,7 +184,7 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        CliWithHttpApplicationComponentProvider::class,
+                        CliApplicationComponentProvider::class,
                         CliComponentProviderClass::class,
                     ],
                     callbacks: [
@@ -253,8 +218,5 @@ final class CliTest extends TestCase
         CliRoutingDataProviderClass::$published = false;
 
         Exiter::unfreeze();
-
-        @unlink($absoluteContainerDataFilePath);
-        @unlink($absoluteRoutesDataFilePath);
     }
 }

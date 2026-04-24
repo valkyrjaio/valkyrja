@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
@@ -30,11 +28,8 @@ use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
-use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Cli\Routing\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Cli\Routing\Generator\DataFileGenerator;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -50,11 +45,10 @@ class CliRoutingServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            RouteCollectorContract::class    => [self::class, 'publishAttributeRouteCollector'],
-            RouterContract::class            => [self::class, 'publishRouter'],
-            RouteCollectionContract::class   => [self::class, 'publishRouteCollection'],
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            CliRoutingData::class            => [self::class, 'publishData'],
+            RouteCollectorContract::class  => [self::class, 'publishAttributeRouteCollector'],
+            RouterContract::class          => [self::class, 'publishRouter'],
+            RouteCollectionContract::class => [self::class, 'publishRouteCollection'],
+            CliRoutingData::class          => [self::class, 'publishData'],
         ];
     }
 
@@ -127,36 +121,6 @@ class CliRoutingServiceProvider implements ServiceProviderContract
         $data = $container->getSingleton(CliRoutingData::class);
 
         $collection->setFromData($data);
-    }
-
-    /**
-     * Publish the data file generator service.
-     */
-    public static function publishDataFileGenerator(ContainerContract $container): void
-    {
-        $config = $container->getSingleton(ConfigContract::class);
-
-        $dataPath  = $config->dataPath;
-        $namespace = $config->dataNamespace;
-        $className = 'AppCliRoutingData';
-
-        if ($config instanceof CliRoutingConfigContract) {
-            $className = $config->dataClassName;
-        }
-
-        $directory = Directory::srcPath($dataPath);
-
-        $collection = $container->getSingleton(RouteCollectionContract::class);
-
-        $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
-                directory: $directory,
-                data: $collection->getData(),
-                namespace: $namespace,
-                className: $className,
-            )
-        );
     }
 
     /**

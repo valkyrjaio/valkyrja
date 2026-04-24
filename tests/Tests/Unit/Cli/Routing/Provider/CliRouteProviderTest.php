@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
-use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -42,7 +41,6 @@ final class CliRouteProviderTest extends TestCase
         self::assertContains(ListBashCommand::class, $controllers);
         self::assertContains(ListCommand::class, $controllers);
         self::assertContains(VersionCommand::class, $controllers);
-        self::assertContains(GenerateDataCommand::class, $controllers);
     }
 
     /**
@@ -103,20 +101,5 @@ final class CliRouteProviderTest extends TestCase
         $container->setSingleton(VersionCommand::class, $command);
 
         self::assertSame($output, CliRoutingCliRouteProvider::versionHandler($container));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGenerateDataHandler(): void
-    {
-        $output  = self::createStub(OutputContract::class);
-        $command = $this->createMock(GenerateDataCommand::class);
-        $command->expects($this->once())->method('run')->willReturn($output);
-
-        $container = new Container();
-        $container->setSingleton(GenerateDataCommand::class, $command);
-
-        self::assertSame($output, CliRoutingCliRouteProvider::generateDataHandler($container));
     }
 }

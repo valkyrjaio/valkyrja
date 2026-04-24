@@ -21,14 +21,12 @@ use Valkyrja\Application\Entry\Http;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
-use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
-use Valkyrja\Http\Routing\Generator\DataFileGenerator as HttpDataFileGenerator;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
@@ -89,43 +87,16 @@ final class HttpTest extends TestCase
             ],
         );
 
-        $containerDataClassName        = 'HttpTestContainerData';
-        $containerDataFilePath         = "/$containerDataClassName.php";
-        $containerDirectory            = Directory::srcPath($config->dataPath);
-        $absoluteContainerDataFilePath = $containerDirectory . $containerDataFilePath;
-        $routesDataClassName           = 'HttpTestHttpRoutingData';
-        $routesDataFilePath            = "/$routesDataClassName.php";
-        $routesDirectory               = Directory::srcPath($config->dataPath);
-        $absoluteRoutesDataFilePath    = $routesDirectory . $routesDataFilePath;
-
-        @unlink($absoluteContainerDataFilePath);
-        @unlink($absoluteRoutesDataFilePath);
-
         $application = Http::app($env, $config);
         $container   = $application->getContainer();
 
-        $http = $container->getSingleton(RouteCollectionContract::class);
+        $container->getSingleton(RouteCollectionContract::class);
 
         self::assertFalse($container->has(CliConfig::class));
         self::assertTrue($container->has(HttpConfig::class));
         self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ContainerContract::class));
         self::assertTrue($container->has(ApplicationContract::class));
-
-        $dataFileGenerator = new DataFileGenerator(
-            directory: $containerDirectory,
-            data: $container->getData(),
-            namespace: $config->dataNamespace,
-            className: $containerDataClassName
-        );
-        $dataFileGenerator->generateFile();
-        $httpDataFileGenerator = new HttpDataFileGenerator(
-            directory: $routesDirectory,
-            data: $http->getData(),
-            namespace: $config->dataNamespace,
-            className: $routesDataClassName
-        );
-        $httpDataFileGenerator->generateFile();
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
         self::assertTrue(HttpRouteProviderClass::$called);
@@ -136,10 +107,6 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the route data publisher publish method to bypass
         self::assertFalse(HttpRoutingDataProviderClass::$published);
         HttpRoutingDataProviderClass::$published = false;
-
-        require_once $absoluteContainerDataFilePath;
-
-        require_once $absoluteRoutesDataFilePath;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -212,8 +179,5 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the route data publisher publish method to bypass
         self::assertFalse(HttpRoutingDataProviderClass::$published);
         HttpRoutingDataProviderClass::$published = false;
-
-        @unlink($absoluteContainerDataFilePath);
-        @unlink($absoluteRoutesDataFilePath);
     }
 }

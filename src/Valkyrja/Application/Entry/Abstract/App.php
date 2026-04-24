@@ -119,7 +119,6 @@ abstract class App
 
         if ($config instanceof CliConfigContract) {
             $container->setSingleton(CliConfigContract::class, $config);
-            $container->setSingleton(HttpConfigContract::class, $config->http);
         }
 
         if ($config instanceof HttpConfigContract) {

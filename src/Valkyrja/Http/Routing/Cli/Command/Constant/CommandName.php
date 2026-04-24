@@ -17,6 +17,4 @@ final class CommandName
 {
     /** @var non-empty-string */
     public const string LIST = 'http:list';
-    /** @var non-empty-string */
-    public const string DATA_GENERATE = 'http:data:generate';
 }

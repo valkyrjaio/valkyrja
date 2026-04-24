@@ -16,7 +16,6 @@ namespace Valkyrja\Cli\Routing\Provider;
 use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
-use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -36,7 +35,6 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
             ListBashCommand::class,
             ListCommand::class,
             VersionCommand::class,
-            GenerateDataCommand::class,
         ];
     }
 
@@ -79,13 +77,5 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     public static function versionHandler(ContainerContract $container): OutputContract
     {
         return $container->getSingleton(VersionCommand::class)->run();
-    }
-
-    /**
-     * The generate data command handler.
-     */
-    public static function generateDataHandler(ContainerContract $container): OutputContract
-    {
-        return $container->getSingleton(GenerateDataCommand::class)->run();
     }
 }

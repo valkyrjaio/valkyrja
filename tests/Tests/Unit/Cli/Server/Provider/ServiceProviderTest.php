@@ -15,10 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use ReflectionProperty;
-use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -28,7 +25,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Cli\Server\Command\GenerateDataCommand;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -61,7 +57,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ListBashCommand::class, CliServerServiceProvider::publishers());
         self::assertArrayHasKey(ListCommand::class, CliServerServiceProvider::publishers());
         self::assertArrayHasKey(VersionCommand::class, CliServerServiceProvider::publishers());
-        self::assertArrayHasKey(GenerateDataCommand::class, CliServerServiceProvider::publishers());
         self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, CliServerServiceProvider::publishers());
         self::assertArrayHasKey(OutputThrowableCaughtMiddleware::class, CliServerServiceProvider::publishers());
         self::assertArrayHasKey(CheckForHelpOptionsMiddleware::class, CliServerServiceProvider::publishers());
@@ -170,8 +165,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCheckForHelpOptionsMiddleware(): void
     {
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
-
         $callback = CliServerServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
         $callback($this->container);
 
@@ -188,7 +181,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
                 helpOptionShortName: 'helpOptionShortNameTest',
             )
         );
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckForHelpOptionsMiddleware::class];
         $callback($this->container);
@@ -211,8 +203,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCheckForVersionOptionsMiddleware(): void
     {
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
-
         $callback = CliServerServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
         $callback($this->container);
 
@@ -229,7 +219,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
                 versionOptionShortName: 'versionOptionShortNameTest',
             )
         );
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckForVersionOptionsMiddleware::class];
         $callback($this->container);
@@ -253,7 +242,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCheckGlobalInteractionOptionsMiddleware(): void
     {
         $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfig::class));
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
         $callback($this->container);
@@ -275,7 +263,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             )
         );
         $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfig::class));
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
         $callback = CliServerServiceProvider::publishers()[CheckGlobalInteractionOptionsMiddleware::class];
         $callback($this->container);
@@ -322,23 +309,5 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(CheckCommandForTypoMiddleware::class, $this->container->getSingleton(CheckCommandForTypoMiddleware::class));
-    }
-
-    public function testGenerateDataCommand(): void
-    {
-        $container = $this->container;
-
-        $container->setSingleton(Env::class, self::createStub(Env::class));
-        $container->setSingleton(CliConfigContract::class, self::createStub(CliConfig::class));
-        $container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
-
-        self::assertFalse($container->has(GenerateDataCommand::class));
-
-        $callback = CliServerServiceProvider::publishers()[GenerateDataCommand::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(GenerateDataCommand::class));
-        self::assertTrue($container->isSingleton(GenerateDataCommand::class));
-        self::assertInstanceOf(GenerateDataCommand::class, $container->getSingleton(GenerateDataCommand::class));
     }
 }
