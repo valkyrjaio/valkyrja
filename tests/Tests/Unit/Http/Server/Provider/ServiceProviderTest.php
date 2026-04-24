@@ -27,7 +27,7 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\HttpServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 

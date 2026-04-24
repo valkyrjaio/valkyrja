@@ -32,9 +32,9 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Classes\Cli\Routing\Provider\RouteProviderClass;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

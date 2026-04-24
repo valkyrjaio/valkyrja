@@ -21,6 +21,7 @@ use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -38,7 +39,6 @@ use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 use Valkyrja\Session\Provider\SmsServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

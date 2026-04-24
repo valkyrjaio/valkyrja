@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 use Valkyrja\Http\Message\Provider\HttpMessageServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -24,7 +24,7 @@ use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Mail\Mailer\PhpMailer;
 use Valkyrja\Mail\Provider\MailServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

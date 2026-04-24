@@ -39,8 +39,8 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Classes\Cli\Server\Data\CliCommandCommandConfigClass;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

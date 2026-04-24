@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Reflection\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

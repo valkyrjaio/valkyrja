@@ -18,7 +18,7 @@ use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Provider\ApiServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

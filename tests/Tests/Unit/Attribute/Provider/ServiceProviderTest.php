@@ -17,8 +17,8 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

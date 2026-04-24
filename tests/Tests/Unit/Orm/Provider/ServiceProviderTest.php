@@ -24,8 +24,8 @@ use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Provider\OrmServiceProvider;
 use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Classes\Orm\PdoClass;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

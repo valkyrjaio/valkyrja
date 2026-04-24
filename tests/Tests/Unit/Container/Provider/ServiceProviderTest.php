@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Provider\ContainerServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliServiceProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
-use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
+use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
  * Test the CliServiceProviderTest.
