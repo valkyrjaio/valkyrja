@@ -66,7 +66,7 @@ use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
 
-readonly class HttpTestContainerData extends ContainerData
+final readonly class HttpTestContainerDataClass extends ContainerData
 {
     public function __construct()
     {

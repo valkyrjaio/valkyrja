@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Tests\Classes\Application\Data\CliTestCliRoutingData;
+use Valkyrja\Tests\Classes\Application\Data\CliTestCliRoutingDataClass;
 
 final class CliRoutingDataProviderClass implements ServiceProviderContract
 {
@@ -41,6 +41,6 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
     {
         self::$published = true;
 
-        $container->setSingleton(CliRoutingData::class, new CliTestCliRoutingData());
+        $container->setSingleton(CliRoutingData::class, new CliTestCliRoutingDataClass());
     }
 }

@@ -19,7 +19,7 @@ use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Functional\Application\Entry\HttpTest;
 
-readonly class HttpTestHttpRoutingData extends HttpRoutingData
+final readonly class HttpTestHttpRoutingDataClass extends HttpRoutingData
 {
     public function __construct()
     {

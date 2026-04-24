@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
-use Valkyrja\Tests\Classes\Application\Data\HttpTestHttpRoutingData;
+use Valkyrja\Tests\Classes\Application\Data\HttpTestHttpRoutingDataClass;
 
 final class HttpRoutingDataProviderClass implements ServiceProviderContract
 {
@@ -41,6 +41,6 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
     {
         self::$published = true;
 
-        $container->setSingleton(HttpRoutingData::class, new HttpTestHttpRoutingData());
+        $container->setSingleton(HttpRoutingData::class, new HttpTestHttpRoutingDataClass());
     }
 }

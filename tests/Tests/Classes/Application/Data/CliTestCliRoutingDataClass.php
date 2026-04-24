@@ -18,7 +18,7 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Tests\Functional\Application\Entry\CliTest;
 
-readonly class CliTestCliRoutingData extends CliRoutingData
+final readonly class CliTestCliRoutingDataClass extends CliRoutingData
 {
     public function __construct()
     {

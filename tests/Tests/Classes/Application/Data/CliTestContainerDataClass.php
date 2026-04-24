@@ -57,7 +57,7 @@ use Valkyrja\Log\Provider\LogServiceProvider;
 use Valkyrja\Tests\Classes\Application\Provider\CliContainerDataProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\CliRoutingDataProviderClass;
 
-readonly class CliTestContainerData extends ContainerData
+final readonly class CliTestContainerDataClass extends ContainerData
 {
     public function __construct()
     {
