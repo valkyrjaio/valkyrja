@@ -26,10 +26,7 @@ use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
-use Valkyrja\Event\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Event\Generator\DataFileGenerator;
 use Valkyrja\Event\Provider\EventServiceProvider;
-use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Classes\Event\Provider\ListenerProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -47,7 +44,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ListenerCollectorContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(EventDispatcherContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(ListenerCollectionContract::class, EventServiceProvider::publishers());
-        self::assertArrayHasKey(DataFileGeneratorContract::class, EventServiceProvider::publishers());
         self::assertArrayHasKey(EventData::class, EventServiceProvider::publishers());
     }
 
@@ -141,7 +137,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(ListenerCollectorContract::class, $collector = $this->createMock(ListenerCollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(false);
 
         $eventId      = self::class;
@@ -153,7 +148,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
@@ -182,7 +176,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(ListenerCollectorContract::class, $collector = $this->createMock(ListenerCollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $eventId      = self::class;
@@ -194,7 +187,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([ListenerProviderClass::class]);
 
@@ -223,7 +215,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(ListenerCollectorContract::class, $collector = $this->createMock(ListenerCollectorContract::class));
-        $this->container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
         $eventId      = self::class;
@@ -235,7 +226,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
 
         $collector->expects($this->never())->method('getListeners')->willReturn([$listener]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getEventProviders')->willReturn([]);
 
@@ -253,21 +243,5 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertNotContains(ListenerProviderClass::class, $collection->getEvents());
         self::assertFalse($collection->hasListenerById('listener-from-provider-name'));
         self::assertFalse($collection->hasListenersForEventById(ListenerProviderClass::class));
-    }
-
-    public function testPublishDataFileGenerator(): void
-    {
-        $container = $this->container;
-
-        $container->setSingleton(ListenerCollectionContract::class, self::createStub(ListenerCollectionContract::class));
-
-        self::assertFalse($container->has(ListenerCollectorContract::class));
-
-        $callback = EventServiceProvider::publishers()[DataFileGeneratorContract::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(DataFileGeneratorContract::class));
-        self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
-        self::assertInstanceOf(DataFileGenerator::class, $container->getSingleton(DataFileGeneratorContract::class));
     }
 }

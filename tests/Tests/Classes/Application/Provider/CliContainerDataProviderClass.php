@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Tests\Classes\Application\Data\CliTestContainerData;
 
 final class CliContainerDataProviderClass implements ServiceProviderContract
 {
@@ -36,8 +37,6 @@ final class CliContainerDataProviderClass implements ServiceProviderContract
      */
     public static function publishData(ContainerContract $container): void
     {
-        $class = 'App\\Provider\\Data\\CliTestContainerData';
-
-        $container->setSingleton(ContainerData::class, new $class());
+        $container->setSingleton(ContainerData::class, new CliTestContainerData());
     }
 }

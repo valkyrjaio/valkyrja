@@ -43,9 +43,8 @@ Two properties are specific to `CliConfig`:
 - **`defaultCommandName`** — The command invoked when no command name is given
   on the command line. Defaults to `list`.
 
-`CliConfig` also carries an embedded `HttpConfig` instance (`$config->http`) for
-applications that run CLI and HTTP side-by-side and need HTTP services available
-from CLI commands.
+`CliConfig` can be used alongside HTTP components for applications that run
+CLI and HTTP side-by-side.
 
 ## Entry Point
 
@@ -328,22 +327,8 @@ anonymous function — it cannot be serialized. Use closures during development 
 when inline definitions are clearer, but prefer array callables in production
 code that will be cached.
 
-### Command Data Generation
-
-Like HTTP routes, CLI routes can be compiled into a generated PHP data class for
-zero-reflection production performance:
-
-```bash
-php myapp data:generate
-```
-
-The generated class is written to the path defined by `dataPath` and
-`dataNamespace` in your configuration and is loaded automatically when
-`debugMode` is `false`.
-
-The HTTP routing component ships its own pair of CLI commands — `http:list` and
-`http:data:generate` — registered via the
-`Http\Routing\Provider\CliRouteProvider`.
+The HTTP routing component ships its own CLI command — `http:list` — registered
+via the `Http\Routing\Provider\CliRouteProvider`.
 
 ## Input and Output
 
@@ -639,15 +624,13 @@ The framework registers several built-in commands via its own route providers.
 These are available in any application that includes the relevant component
 providers:
 
-| Command              | Description                                           |
-|----------------------|-------------------------------------------------------|
-| `list`               | Lists all registered commands with their descriptions |
-| `list:bash`          | Outputs a bash-completion-compatible command list     |
-| `help`               | Displays help text for a given command                |
-| `-v` / `version`     | Displays the application and framework version        |
-| `data:generate`      | Compiles CLI routes to a generated PHP data class     |
-| `http:list`          | Lists all registered HTTP routes (HTTP component)     |
-| `http:data:generate` | Compiles HTTP routes to a generated PHP data class    |
+| Command          | Description                                           |
+|------------------|-------------------------------------------------------|
+| `list`           | Lists all registered commands with their descriptions |
+| `list:bash`      | Outputs a bash-completion-compatible command list     |
+| `help`           | Displays help text for a given command                |
+| `-v` / `version` | Displays the application and framework version        |
+| `http:list`      | Lists all registered HTTP routes (HTTP component)     |
 
 ## Full Input Lifecycle
 

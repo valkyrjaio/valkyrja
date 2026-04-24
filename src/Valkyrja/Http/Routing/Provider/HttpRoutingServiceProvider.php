@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
@@ -38,8 +35,6 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -59,15 +54,14 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            RouterContract::class            => [self::class, 'publishRouter'],
-            RouteCollectionContract::class   => [self::class, 'publishRouteCollection'],
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            MatcherContract::class           => [self::class, 'publishMatcher'],
-            UrlContract::class               => [self::class, 'publishUrl'],
-            RouteCollectorContract::class    => [self::class, 'publishAttributesRouteCollector'],
-            ProcessorContract::class         => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class   => [self::class, 'publishResponseFactory'],
-            HttpRoutingData::class           => [self::class, 'publishData'],
+            RouterContract::class          => [self::class, 'publishRouter'],
+            RouteCollectionContract::class => [self::class, 'publishRouteCollection'],
+            MatcherContract::class         => [self::class, 'publishMatcher'],
+            UrlContract::class             => [self::class, 'publishUrl'],
+            RouteCollectorContract::class  => [self::class, 'publishAttributesRouteCollector'],
+            ProcessorContract::class       => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+            HttpRoutingData::class         => [self::class, 'publishData'],
         ];
     }
 
@@ -124,35 +118,6 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         $data = $container->getSingleton(HttpRoutingData::class);
 
         $collection->setFromData($data);
-    }
-
-    /**
-     * Publish the data file generator service.
-     */
-    public static function publishDataFileGenerator(ContainerContract $container): void
-    {
-        $env    = $container->getSingleton(Env::class);
-        $config = $container->getSingleton(ConfigContract::class);
-
-        $dataPath  = $config->dataPath;
-        $namespace = $config->dataNamespace;
-        /** @var non-empty-string $className */
-        $className = $env::HTTP_ROUTING_DATA_CLASS_NAME
-            ?? 'AppHttpRoutingData';
-
-        $directory = Directory::srcPath($dataPath);
-
-        $collection = $container->getSingleton(RouteCollectionContract::class);
-
-        $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
-                directory: $directory,
-                data: $collection->getData(),
-                namespace: $namespace,
-                className: $className,
-            )
-        );
     }
 
     /**

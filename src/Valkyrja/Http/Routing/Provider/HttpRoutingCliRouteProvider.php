@@ -19,7 +19,6 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 
@@ -33,7 +32,6 @@ class HttpRoutingCliRouteProvider implements CliRouteProviderContract
     {
         return [
             ListCommand::class,
-            GenerateDataCommand::class,
         ];
     }
 
@@ -56,13 +54,5 @@ class HttpRoutingCliRouteProvider implements CliRouteProviderContract
             $container->getSingleton(RouteCollectionContract::class),
             $container->getSingleton(OutputFactoryContract::class),
         );
-    }
-
-    /**
-     * The generate data command handler.
-     */
-    public static function generateDataHandler(ContainerContract $container): OutputContract
-    {
-        return $container->getSingleton(GenerateDataCommand::class)->run();
     }
 }

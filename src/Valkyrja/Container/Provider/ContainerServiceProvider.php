@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Override;
-use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Container\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Container\Generator\DataFileGenerator;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
@@ -33,38 +28,8 @@ class ContainerServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            DataFileGeneratorContract::class => [self::class, 'publishDataFileGenerator'],
-            ContainerData::class             => [self::class, 'publishData'],
+            ContainerData::class => [self::class, 'publishData'],
         ];
-    }
-
-    /**
-     * Publish the data file generator service.
-     */
-    public static function publishDataFileGenerator(ContainerContract $container): void
-    {
-        $env    = $container->getSingleton(Env::class);
-        $config = $container->getSingleton(ConfigContract::class);
-
-        $dataPath  = $config->dataPath;
-        $namespace = $config->dataNamespace;
-        /** @var non-empty-string $className */
-        $className = $env::CONTAINER_DATA_CLASS_NAME
-            ?? 'AppContainerData';
-
-        $directory = Directory::srcPath($dataPath);
-
-        $data = $container->getData();
-
-        $container->setSingleton(
-            DataFileGeneratorContract::class,
-            new DataFileGenerator(
-                directory: $directory,
-                data: $data,
-                namespace: $namespace,
-                className: $className,
-            )
-        );
     }
 
     /**

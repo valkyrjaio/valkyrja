@@ -41,8 +41,6 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Generator\Contract\DataFileGeneratorContract;
-use Valkyrja\Http\Routing\Generator\DataFileGenerator;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -51,7 +49,6 @@ use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
 use Valkyrja\Tests\Unit\Container\Provider\Abstract\ServiceProviderTestCase;
 
@@ -72,7 +69,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouteCollectorContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(ProcessorContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(ResponseFactoryContract::class, HttpRoutingServiceProvider::publishers());
-        self::assertArrayHasKey(DataFileGeneratorContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(HttpRoutingData::class, HttpRoutingServiceProvider::publishers());
     }
 
@@ -157,7 +153,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
-        $container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $container->setSingleton(ProcessorContract::class, $processor = $this->createMock(ProcessorContract::class));
         $application->method('getDebugMode')->willReturn(false);
 
@@ -169,7 +164,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
@@ -193,7 +187,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
-        $container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $container->setSingleton(ProcessorContract::class, $processor = $this->createMock(ProcessorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
@@ -205,7 +198,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             handler: static fn (): null => null,
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getHttpProviders')->willReturn([RouteProviderClass::class]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
@@ -229,7 +221,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
-        $container->setSingleton(DataFileGeneratorContract::class, $generator = $this->createMock(DataFileGeneratorContract::class));
         $container->setSingleton(ProcessorContract::class, $processor = $this->createMock(ProcessorContract::class));
         $application->method('getDebugMode')->willReturn(true);
 
@@ -241,7 +232,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             handler: static fn (): null => null,
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$route]);
-        $generator->expects($this->never())->method('generateFile')->willReturn(GenerateStatus::SUCCESS);
 
         $application->expects($this->once())->method('getHttpProviders')->willReturn([]);
         $processor->expects($this->never())->method('route')->willReturnArgument(0);
@@ -255,22 +245,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($collection->hasPath('/', RequestMethod::ANY));
         self::assertFalse($collection->hasPath('/from-provider', RequestMethod::ANY));
-    }
-
-    public function testPublishDataFileGenerator(): void
-    {
-        $container = $this->container;
-
-        $container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
-
-        self::assertFalse($container->has(RouteCollectorContract::class));
-
-        $callback = HttpRoutingServiceProvider::publishers()[DataFileGeneratorContract::class];
-        $callback($this->container);
-
-        self::assertTrue($container->has(DataFileGeneratorContract::class));
-        self::assertTrue($container->isSingleton(DataFileGeneratorContract::class));
-        self::assertInstanceOf(DataFileGenerator::class, $container->getSingleton(DataFileGeneratorContract::class));
     }
 
     public function testPublishMatcher(): void

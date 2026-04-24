@@ -54,7 +54,4 @@ interface CliConfigContract extends ConfigContract
     public array $exitedMiddleware {
         get;
     }
-    public HttpConfigContract $http {
-        get;
-    }
 }

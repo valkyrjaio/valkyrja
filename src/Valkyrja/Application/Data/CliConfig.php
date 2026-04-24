@@ -15,7 +15,6 @@ namespace Valkyrja\Application\Data;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
-use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
@@ -86,7 +85,6 @@ class CliConfig implements CliConfigContract
             OutputThrowableCaughtMiddleware::class,
         ],
         public readonly array $exitedMiddleware = [],
-        public readonly HttpConfigContract $http = new HttpConfig(),
     ) {
     }
 }

@@ -18,7 +18,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Http\Routing\Cli\Command\GenerateDataCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
@@ -37,7 +36,6 @@ final class CliRouteProviderTest extends TestCase
     public function testGetControllerClasses(): void
     {
         self::assertContains(ListCommand::class, HttpRoutingCliRouteProvider::getControllerClasses());
-        self::assertContains(GenerateDataCommand::class, HttpRoutingCliRouteProvider::getControllerClasses());
     }
 
     /**
@@ -64,20 +62,5 @@ final class CliRouteProviderTest extends TestCase
         $container->setSingleton(OutputFactoryContract::class, $outputFactory);
 
         self::assertSame($output, HttpRoutingCliRouteProvider::listHandler($container));
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGenerateDataHandler(): void
-    {
-        $output  = self::createStub(OutputContract::class);
-        $command = $this->createMock(GenerateDataCommand::class);
-        $command->expects($this->once())->method('run')->willReturn($output);
-
-        $container = new Container();
-        $container->setSingleton(GenerateDataCommand::class, $command);
-
-        self::assertSame($output, HttpRoutingCliRouteProvider::generateDataHandler($container));
     }
 }
