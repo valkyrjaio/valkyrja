@@ -17,6 +17,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterException;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
@@ -312,6 +313,44 @@ final class DynamicRouteTest extends TestCase
         self::assertSame([$parameter3], $route3->getParameters());
         self::assertSame([$parameter, $parameter2], $route4->getParameters());
         self::assertSame([$parameter, $parameter3, $parameter4], $route5->getParameters());
+    }
+
+    public function testGetParameterAndHasParameter(): void
+    {
+        $path = '/';
+        $name = 'route';
+
+        $parameter  = new Parameter(name: 'test1', regex: Regex::ALPHA);
+        $parameter2 = new Parameter(name: 'test2', regex: Regex::ALPHA);
+
+        $route = new DynamicRoute(
+            path: $path,
+            name: $name,
+            regex: '',
+            parameters: [$parameter, $parameter2],
+            handler: static fn (): null => null,
+        );
+
+        self::assertTrue($route->hasParameter('test1'));
+        self::assertTrue($route->hasParameter('test2'));
+        self::assertFalse($route->hasParameter('nonexistent'));
+        self::assertSame($parameter, $route->getParameter('test1'));
+        self::assertSame($parameter2, $route->getParameter('test2'));
+    }
+
+    public function testGetParameterThrowsForMissingParameter(): void
+    {
+        $this->expectException(HttpRoutingInvalidRouteParameterException::class);
+
+        $route = new DynamicRoute(
+            path: '/',
+            name: 'route',
+            regex: '',
+            parameters: [],
+            handler: static fn (): null => null,
+        );
+
+        $route->getParameter('nonexistent');
     }
 
     public function testRouteMatchedMiddleware(): void
