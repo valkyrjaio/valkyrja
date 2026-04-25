@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
@@ -40,10 +41,7 @@ final class RouteProviderClass implements HttpRouteProviderContract
         ];
     }
 
-    /**
-     * @param array<array-key, mixed> $arguments
-     */
-    public static function handler(ContainerContract $container, array $arguments = []): ResponseContract
+    public static function handler(ContainerContract $container, RouteContract $route): ResponseContract
     {
         return new Response();
     }

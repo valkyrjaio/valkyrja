@@ -104,11 +104,10 @@ class Router implements RouterContract
         // Set the route after middleware has potentially modified it in the service container
         $this->container->setSingleton(RouteContract::class, $routeAfterMiddleware);
 
-        $handler   = $routeAfterMiddleware->getHandler();
-        $arguments = $routeAfterMiddleware->getArguments();
+        $handler = $routeAfterMiddleware->getHandler();
 
         // Attempt to dispatch the route using any one of the callable options
-        $response = $handler($this->container, $arguments);
+        $response = $handler($this->container, $routeAfterMiddleware);
 
         return $this->routeDispatchedHandler->routeDispatched(
             request: $request,

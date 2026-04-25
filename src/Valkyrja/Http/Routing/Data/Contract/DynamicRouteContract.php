@@ -45,4 +45,18 @@ interface DynamicRouteContract extends RouteContract
      * @param ParameterContract ...$parameters The parameter
      */
     public function withAddedParameters(ParameterContract ...$parameters): static;
+
+    /**
+     * Get a parameter by name.
+     *
+     * @param non-empty-string $name The parameter name
+     */
+    public function getParameter(string $name): ParameterContract;
+
+    /**
+     * Determine if a parameter exists by name.
+     *
+     * @param non-empty-string $name The parameter name
+     */
+    public function hasParameter(string $name): bool;
 }

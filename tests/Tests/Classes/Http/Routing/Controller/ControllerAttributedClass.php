@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Name;
 use Valkyrja\Http\Routing\Attribute\Route\Path;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Controller class to test routes.
@@ -32,12 +33,7 @@ final class ControllerAttributedClass
     /** @var non-empty-string */
     public const string WELCOME_NAME = 'welcome';
 
-    /**
-     * Handler for the welcome route.
-     *
-     * @param array<array-key, mixed> $arguments The arguments
-     */
-    public static function welcomeHandler(ContainerContract $container, array $arguments): ResponseContract
+    public static function welcomeHandler(ContainerContract $container, RouteContract $route): ResponseContract
     {
         $controller = new self();
 

@@ -126,9 +126,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast      = new Cast(type: CastType::string);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('id');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -137,8 +136,11 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $parameter
             ->expects($this->never())
-            ->method('getCast')
-            ->willReturn($cast);
+            ->method('getCast');
+
+        $parameter
+            ->expects($this->never())
+            ->method('getValue');
 
         $route
             ->expects($this->exactly(2))
@@ -146,9 +148,10 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->willReturn([$parameter]);
 
         $route
-            ->expects($this->exactly(2))
-            ->method('getArguments')
-            ->willReturn(['id' => '123']);
+            ->expects($this->once())
+            ->method('withParameters')
+            ->with($parameter)
+            ->willReturnSelf();
 
         $handler
             ->expects($this->once())
@@ -158,7 +161,6 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $result = $this->middleware->routeMatched($request, $route, $handler);
 
         self::assertInstanceOf(DynamicRouteContract::class, $result);
-        self::assertSame('123', $result->getArguments()['id']);
     }
 
     public function testRouteMatchedWithNonEntityParameter(): void
@@ -174,9 +176,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast      = new Cast(type: CastType::string);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('id');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -188,6 +189,10 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->never())
+            ->method('getValue');
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
@@ -195,8 +200,9 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['id' => '123']);
+            ->method('withParameters')
+            ->with($parameter)
+            ->willReturnSelf();
 
         $handler
             ->expects($this->once())
@@ -224,9 +230,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast        = new Cast(type: $entityClass);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('user');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -238,6 +243,17 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn($entity);
+
+        $parameter
+            ->expects($this->once())
+            ->method('withValue')
+            ->with($entity)
+            ->willReturnSelf();
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
@@ -245,12 +261,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['user' => $entity]);
-
-        $route
-            ->expects($this->once())
-            ->method('withArguments')
+            ->method('withParameters')
             ->willReturnSelf();
 
         $handler
@@ -278,9 +289,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast        = new Cast(type: $entityClass);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('user');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -292,15 +302,15 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn(999);
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
-
-        $route
-            ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['user' => 999]);
 
         $this->orm
             ->expects($this->once())
@@ -344,9 +354,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast        = new Cast(type: $entityClass);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('user');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -358,15 +367,15 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn('');
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
             ->willReturn([$parameter]);
-
-        $route
-            ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['user' => '']);
 
         $this->responseFactory
             ->expects($this->once())
@@ -399,9 +408,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast        = new EntityCast(type: $entityClass, column: 'slug');
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('user');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -413,6 +421,17 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn('john-doe');
+
+        $parameter
+            ->expects($this->once())
+            ->method('withValue')
+            ->with($entity)
+            ->willReturnSelf();
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
@@ -420,12 +439,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['user' => 'john-doe']);
-
-        $route
-            ->expects($this->once())
-            ->method('withArguments')
+            ->method('withParameters')
             ->willReturnSelf();
 
         $this->orm
@@ -465,9 +479,8 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $cast        = new Cast(type: $entityClass);
 
         $parameter
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('user');
+            ->expects($this->never())
+            ->method('getName');
 
         $parameter
             ->expects($this->once())
@@ -479,6 +492,17 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
             ->method('getCast')
             ->willReturn($cast);
 
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn(42);
+
+        $parameter
+            ->expects($this->once())
+            ->method('withValue')
+            ->with($entity)
+            ->willReturnSelf();
+
         $route
             ->expects($this->exactly(2))
             ->method('getParameters')
@@ -486,12 +510,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
         $route
             ->expects($this->once())
-            ->method('getArguments')
-            ->willReturn(['user' => 42]);
-
-        $route
-            ->expects($this->once())
-            ->method('withArguments')
+            ->method('withParameters')
             ->willReturnSelf();
 
         $this->orm

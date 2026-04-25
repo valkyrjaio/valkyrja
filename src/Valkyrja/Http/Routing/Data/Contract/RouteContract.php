@@ -69,30 +69,16 @@ interface RouteContract
     public function withAddedName(string $name): static;
 
     /**
-     * Get the arguments.
-     *
-     * @return array<non-empty-string, mixed>
-     */
-    public function getArguments(): array;
-
-    /**
-     * Create a new dispatch with the specified arguments.
-     *
-     * @param array<non-empty-string, mixed> $arguments The arguments
-     */
-    public function withArguments(array $arguments): static;
-
-    /**
      * Get the handler.
      *
-     * @return callable(ContainerContract, array<string, mixed>): ResponseContract
+     * @return callable(ContainerContract, self): ResponseContract
      */
     public function getHandler(): callable;
 
     /**
      * Create a new route with the specified handler.
      *
-     * @param callable(ContainerContract, array<string, mixed>): ResponseContract $handler The handler
+     * @param callable(ContainerContract, self): ResponseContract $handler The handler
      */
     public function withHandler(callable $handler): static;
 

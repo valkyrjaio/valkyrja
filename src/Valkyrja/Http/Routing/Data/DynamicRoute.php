@@ -24,22 +24,24 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterException;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 class DynamicRoute extends Route implements DynamicRouteContract
 {
     /**
-     * @param non-empty-string                                                   $path                      The path
-     * @param non-empty-string                                                   $name                      The name
-     * @param callable(ContainerContract, array<string, mixed>):ResponseContract $handler                   The handler
-     * @param RequestMethod[]                                                    $requestMethods            The request methods
-     * @param ParameterContract[]                                                $parameters                The parameters
-     * @param class-string<RouteMatchedMiddlewareContract>[]                     $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
+     * @param non-empty-string                                            $path                      The path
+     * @param non-empty-string                                            $name                      The name
+     * @param callable(ContainerContract, RouteContract):ResponseContract $handler                   The handler
+     * @param RequestMethod[]                                             $requestMethods            The request methods
+     * @param ParameterContract[]                                         $parameters                The parameters
+     * @param class-string<RouteMatchedMiddlewareContract>[]              $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]           $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]           $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[]           $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]                $terminatedMiddleware      The terminated middleware
      */
     public function __construct(
         protected string $path,
@@ -128,5 +130,35 @@ class DynamicRoute extends Route implements DynamicRouteContract
         $new->parameters = array_merge($this->parameters, $parameters);
 
         return $new;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws HttpRoutingInvalidRouteParameterException
+     */
+    #[Override]
+    public function getParameter(string $name): ParameterContract
+    {
+        /** @var ParameterContract $parameter */
+        $parameter = array_find(
+            $this->parameters,
+            static fn (ParameterContract $parameter): bool => $parameter->getName() === $name
+        )
+            ?? throw new HttpRoutingInvalidRouteParameterException("No parameter named '$name' exists on this route");
+
+        return $parameter;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function hasParameter(string $name): bool
+    {
+        return array_any(
+            $this->parameters,
+            static fn (ParameterContract $parameter): bool => $parameter->getName() === $name
+        );
     }
 }

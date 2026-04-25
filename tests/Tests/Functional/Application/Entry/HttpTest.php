@@ -27,6 +27,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
@@ -41,10 +42,7 @@ final class HttpTest extends TestCase
 {
     protected static bool $runCalled = false;
 
-    /**
-     * @param array<array-key, mixed> $arguments
-     */
-    public static function routeHandler(ContainerContract $container, array $arguments): ResponseContract
+    public static function routeHandler(ContainerContract $container, RouteContract $route): ResponseContract
     {
         return self::routeCallback();
     }
