@@ -32,21 +32,19 @@ use function in_array;
 
 class Route implements RouteContract
 {
-    /** @var array<non-empty-string, mixed> */
-    protected array $arguments = [];
-    /** @var callable(ContainerContract, array<string, mixed>): ResponseContract */
+    /** @var callable(ContainerContract, RouteContract): ResponseContract */
     protected $handler;
 
     /**
-     * @param non-empty-string                                                   $path                      The path
-     * @param non-empty-string                                                   $name                      The name
-     * @param callable(ContainerContract, array<string, mixed>):ResponseContract $handler                   The handler
-     * @param RequestMethod[]                                                    $requestMethods            The request methods
-     * @param class-string<RouteMatchedMiddlewareContract>[]                     $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
+     * @param non-empty-string                                            $path                      The path
+     * @param non-empty-string                                            $name                      The name
+     * @param callable(ContainerContract, RouteContract):ResponseContract $handler                   The handler
+     * @param RequestMethod[]                                             $requestMethods            The request methods
+     * @param class-string<RouteMatchedMiddlewareContract>[]              $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]           $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]           $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[]           $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]                $terminatedMiddleware      The terminated middleware
      */
     public function __construct(
         protected string $path,
@@ -133,28 +131,6 @@ class Route implements RouteContract
         $new = clone $this;
 
         $new->name = $this->name . $name;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function getArguments(): array
-    {
-        return $this->arguments;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function withArguments(array $arguments): static
-    {
-        $new = clone $this;
-
-        $new->arguments = $arguments;
 
         return $new;
     }

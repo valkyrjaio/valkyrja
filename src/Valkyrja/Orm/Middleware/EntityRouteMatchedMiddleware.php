@@ -75,22 +75,25 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
      */
     protected function checkRouteForEntities(DynamicRouteContract $route): ResponseContract|DynamicRouteContract
     {
-        $arguments = $route->getArguments();
+        $updatedParameters = [];
 
         // Iterate through the params
         foreach ($route->getParameters() as $parameter) {
-            $name = $parameter->getName();
-            /** @var scalar|object|array<array-key, mixed>|resource|null $value */
-            $value = $arguments[$name];
-            $type  = $this->getParameterCastType($parameter);
+            $type = $this->getParameterCastType($parameter);
 
             $isParameterEntityType = $this->isParameterEntityType($type);
 
             if (! $isParameterEntityType) {
+                $updatedParameters[] = $parameter;
+
                 continue;
             }
 
-            /** @var class-string<EntityContract> $type */
+            /**
+             * @var class-string<EntityContract>                        $type
+             * @var scalar|object|array<array-key, mixed>|resource|null $value
+             */
+            $value = $parameter->getValue();
 
             // Check if the parameter is an entity
             $response = $this->checkParameterForEntity(
@@ -103,10 +106,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
                 return $response;
             }
 
-            $arguments[$name] = $response;
+            $updatedParameters[] = $parameter->withValue($response);
         }
 
-        return $route->withArguments($arguments);
+        return $route->withParameters(...$updatedParameters);
     }
 
     /**

@@ -26,6 +26,7 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute as ParentRoute;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
@@ -36,16 +37,16 @@ class DynamicRoute extends ParentRoute implements ReflectionAwareAttributeContra
     use ReflectionAwareAttribute;
 
     /**
-     * @param non-empty-string                                                          $path                      The path
-     * @param non-empty-string                                                          $name                      The name
-     * @param RequestMethod[]                                                           $requestMethods            The request methods
-     * @param ParameterContract[]                                                       $parameters                The parameters
-     * @param (callable(ContainerContract, array<string, mixed>):ResponseContract)|null $handler                   The handler
-     * @param class-string<RouteMatchedMiddlewareContract>[]                            $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[]                         $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[]                         $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddlewareContract>[]                         $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]                              $terminatedMiddleware      The terminated middleware
+     * @param non-empty-string                                                   $path                      The path
+     * @param non-empty-string                                                   $name                      The name
+     * @param RequestMethod[]                                                    $requestMethods            The request methods
+     * @param ParameterContract[]                                                $parameters                The parameters
+     * @param (callable(ContainerContract, RouteContract):ResponseContract)|null $handler                   The handler
+     * @param class-string<RouteMatchedMiddlewareContract>[]                     $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
      */
     public function __construct(
         protected string $path,
@@ -66,7 +67,7 @@ class DynamicRoute extends ParentRoute implements ReflectionAwareAttributeContra
             name: $name,
             regex: '',
             parameters: $parameters,
-            handler: $handler ?? static fn (ContainerContract $container, array $arguments): ResponseContract => new Response(),
+            handler: $handler ?? static fn (ContainerContract $container, RouteContract $route): ResponseContract => new Response(),
             requestMethods: $requestMethods,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,

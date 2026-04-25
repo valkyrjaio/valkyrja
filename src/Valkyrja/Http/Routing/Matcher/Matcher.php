@@ -108,7 +108,6 @@ class Matcher implements MatcherContract
             throw new HttpRoutingInvalidRoutePathException('Route parameters must not be empty');
         }
 
-        $arguments            = [];
         $parametersWithValues = [];
 
         // Iterate through the matches
@@ -123,17 +122,15 @@ class Matcher implements MatcherContract
                 continue;
             }
 
-            $arguments[$name] = $this->checkAndCastMatchValue(
+            $value = $this->checkAndCastMatchValue(
                 parameter: $parameter,
                 match: $match
             );
 
-            $parametersWithValues[] = $parameter->withValue($arguments[$name]);
+            $parametersWithValues[] = $parameter->withValue($value);
         }
 
-        return $route
-            ->withParameters(...$parametersWithValues)
-            ->withArguments($arguments);
+        return $route->withParameters(...$parametersWithValues);
     }
 
     /**

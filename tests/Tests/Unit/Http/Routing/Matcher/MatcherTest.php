@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
@@ -181,9 +182,7 @@ final class MatcherTest extends TestCase
         self::assertNotNull($matcher->matchStatic($path, RequestMethod::ANY));
         self::assertNull($matcher->matchStatic($dynamicPath, RequestMethod::ANY));
 
-        $arguments = $route->getArguments();
-
-        self::assertEmpty($arguments);
+        self::assertNotInstanceOf(DynamicRouteContract::class, $route);
     }
 
     public function testDynamicMatch(): void
@@ -199,11 +198,10 @@ final class MatcherTest extends TestCase
         self::assertNull($matcher->matchDynamic($path, RequestMethod::ANY));
         self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
-        $arguments = $route->getArguments();
-
-        self::assertNotEmpty($arguments);
-        self::assertIsString($arguments['dynamic']);
-        self::assertSame('dynamic', $arguments['dynamic']);
+        self::assertInstanceOf(DynamicRouteContract::class, $route);
+        self::assertTrue($route->hasParameter('dynamic'));
+        self::assertIsString($route->getParameter('dynamic')->getValue());
+        self::assertSame('dynamic', $route->getParameter('dynamic')->getValue());
     }
 
     public function testOptionalDynamicMatch(): void
@@ -217,22 +215,20 @@ final class MatcherTest extends TestCase
         self::assertNotNull($route);
         self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
-        $arguments = $route->getArguments();
-
-        self::assertNotEmpty($arguments);
-        self::assertIsString($arguments['dynamic']);
-        self::assertSame('default', $arguments['dynamic']);
+        self::assertInstanceOf(DynamicRouteContract::class, $route);
+        self::assertTrue($route->hasParameter('dynamic'));
+        self::assertIsString($route->getParameter('dynamic')->getValue());
+        self::assertSame('default', $route->getParameter('dynamic')->getValue());
 
         $route2 = $matcher->match($dynamicPath . '/optionalvalue', RequestMethod::ANY);
 
         self::assertNotNull($route2);
         self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue', RequestMethod::ANY));
 
-        $arguments2 = $route2->getArguments();
-
-        self::assertNotEmpty($arguments2);
-        self::assertIsString($arguments2['dynamic']);
-        self::assertSame('optionalvalue', $arguments2['dynamic']);
+        self::assertInstanceOf(DynamicRouteContract::class, $route2);
+        self::assertTrue($route2->hasParameter('dynamic'));
+        self::assertIsString($route2->getParameter('dynamic')->getValue());
+        self::assertSame('optionalvalue', $route2->getParameter('dynamic')->getValue());
     }
 
     public function testOptionalNullDefaultDynamicMatch(): void
@@ -246,21 +242,19 @@ final class MatcherTest extends TestCase
         self::assertNotNull($route);
         self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
-        $arguments = $route->getArguments();
-
-        self::assertEmpty($arguments);
-        self::assertNull($arguments['dynamic'] ?? null);
+        self::assertInstanceOf(DynamicRouteContract::class, $route);
+        self::assertTrue($route->hasParameter('dynamic'));
+        self::assertNull($route->getParameter('dynamic')->getValue());
 
         $route2 = $matcher->match($dynamicPath . '/optionalvalue', RequestMethod::ANY);
 
         self::assertNotNull($route2);
         self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue', RequestMethod::ANY));
 
-        $arguments2 = $route2->getArguments();
-
-        self::assertNotEmpty($arguments2);
-        self::assertIsString($arguments2['dynamic']);
-        self::assertSame('optionalvalue', $arguments2['dynamic']);
+        self::assertInstanceOf(DynamicRouteContract::class, $route2);
+        self::assertTrue($route2->hasParameter('dynamic'));
+        self::assertIsString($route2->getParameter('dynamic')->getValue());
+        self::assertSame('optionalvalue', $route2->getParameter('dynamic')->getValue());
     }
 
     public function testCastDynamicMatch(): void
@@ -274,12 +268,12 @@ final class MatcherTest extends TestCase
         self::assertNotNull($route);
         self::assertNotNull($matcher->matchDynamic($dynamicPath, RequestMethod::ANY));
 
-        $arguments = $route->getArguments();
-
-        self::assertNotEmpty($arguments);
-        self::assertIsInt($arguments['dynamic1']);
-        self::assertInstanceOf(IntT::class, $arguments['dynamic2']);
-        self::assertIsInt($arguments['dynamic2']->asValue());
+        self::assertInstanceOf(DynamicRouteContract::class, $route);
+        self::assertTrue($route->hasParameter('dynamic1'));
+        self::assertTrue($route->hasParameter('dynamic2'));
+        self::assertIsInt($route->getParameter('dynamic1')->getValue());
+        self::assertInstanceOf(IntT::class, $route->getParameter('dynamic2')->getValue());
+        self::assertIsInt($route->getParameter('dynamic2')->getValue()->asValue());
     }
 
     public function testInvalidDynamicMatch(): void
