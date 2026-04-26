@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
@@ -50,7 +51,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     /**
      * The list command handler.
      */
-    public static function listHandler(ContainerContract $container): OutputContract
+    public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(ListCommand::class)->run();
     }
@@ -58,7 +59,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     /**
      * The list bash command handler.
      */
-    public static function listBashHandler(ContainerContract $container): OutputContract
+    public static function listBashHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(ListBashCommand::class)->run();
     }
@@ -66,7 +67,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     /**
      * The help command handler.
      */
-    public static function helpHandler(ContainerContract $container): OutputContract
+    public static function helpHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(HelpCommand::class)->run();
     }
@@ -74,7 +75,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     /**
      * The version command handler.
      */
-    public static function versionHandler(ContainerContract $container): OutputContract
+    public static function versionHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(VersionCommand::class)->run();
     }

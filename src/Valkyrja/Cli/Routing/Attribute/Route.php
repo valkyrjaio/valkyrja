@@ -25,6 +25,7 @@ use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
@@ -36,7 +37,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
     /**
      * @param non-empty-string                                  $name                      The name
      * @param non-empty-string                                  $description               The description
-     * @param (callable(ContainerContract):OutputContract)|null $handler                   The handler
+     * @param (callable(ContainerContract, RouteContract):OutputContract)|null $handler                   The handler
      * @param (callable():MessageContract)|null                 $helpText                  The help text
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
@@ -60,7 +61,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
         parent::__construct(
             name: $name,
             description: $description,
-            handler: $handler ?? static fn (ContainerContract $container): OutputContract => new Output(),
+            handler: $handler ?? static fn (ContainerContract $container, RouteContract $route): OutputContract => new Output(),
             helpText: $helpText,
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,

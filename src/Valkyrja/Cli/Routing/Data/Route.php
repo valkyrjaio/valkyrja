@@ -39,7 +39,7 @@ class Route implements RouteContract
      * @var (callable():MessageContract)|null
      */
     protected $helpText;
-    /** @var callable(ContainerContract): OutputContract */
+    /** @var callable(ContainerContract, RouteContract): OutputContract */
     protected $handler;
 
     /**

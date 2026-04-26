@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
@@ -61,6 +62,6 @@ final class CliRouteProviderTest extends TestCase
         $container->setSingleton(RouteCollectionContract::class, $collection);
         $container->setSingleton(OutputFactoryContract::class, $outputFactory);
 
-        self::assertSame($output, HttpRoutingCliRouteProvider::listHandler($container));
+        self::assertSame($output, HttpRoutingCliRouteProvider::listHandler($container, self::createStub(RouteContract::class)));
     }
 }

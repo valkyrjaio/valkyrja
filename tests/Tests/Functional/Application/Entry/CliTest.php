@@ -27,6 +27,7 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
@@ -47,7 +48,7 @@ final class CliTest extends TestCase
     protected static bool $handlerCalled = false;
     protected static bool $runCalled     = false;
 
-    public static function routeHandler(ContainerContract $container): OutputContract
+    public static function routeHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         self::$handlerCalled = true;
 

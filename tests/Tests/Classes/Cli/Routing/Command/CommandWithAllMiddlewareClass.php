@@ -20,6 +20,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
 
@@ -43,7 +44,7 @@ final class CommandWithAllMiddlewareClass
     /**
      * Handler for the command.
      */
-    public static function handler(ContainerContract $container): OutputContract
+    public static function handler(ContainerContract $container, RouteContract $route): OutputContract
     {
         $controller = new self();
 

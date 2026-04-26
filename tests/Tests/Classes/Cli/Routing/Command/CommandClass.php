@@ -19,6 +19,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
@@ -47,7 +48,7 @@ final class CommandClass
     /**
      * Handler for the command.
      */
-    public static function handler(ContainerContract $container): OutputContract
+    public static function handler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return self::run(
             $container->getSingleton(OutputFactoryContract::class)
