@@ -43,16 +43,16 @@ class Route implements RouteContract
     protected $handler;
 
     /**
-     * @param non-empty-string                                  $name                      The name
-     * @param non-empty-string                                  $description               The description
-     * @param callable(ContainerContract):OutputContract        $handler                   The handler
-     * @param (callable():MessageContract)|null                 $helpText                  The help text
-     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The command matched middleware
-     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware          The exited middleware
-     * @param ArgumentParameterContract[]                       $arguments                 The arguments
-     * @param OptionParameterContract[]                         $options                   The options
+     * @param non-empty-string                                          $name                      The name
+     * @param non-empty-string                                          $description               The description
+     * @param callable(ContainerContract, RouteContract):OutputContract $handler                   The handler
+     * @param (callable():MessageContract)|null                         $helpText                  The help text
+     * @param class-string<RouteMatchedMiddlewareContract>[]            $routeMatchedMiddleware    The command matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[]         $routeDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]         $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]                  $exitedMiddleware          The exited middleware
+     * @param ArgumentParameterContract[]                               $arguments                 The arguments
+     * @param OptionParameterContract[]                                 $options                   The options
      */
     public function __construct(
         protected string $name,
