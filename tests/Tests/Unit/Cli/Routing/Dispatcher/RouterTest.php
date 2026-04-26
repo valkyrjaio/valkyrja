@@ -29,6 +29,7 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -36,7 +37,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class RouterTest extends TestCase
 {
-    public static function dispatch(): Output
+    public static function dispatch(ContainerContract $container, RouteContract $route): Output
     {
         return new Output(exitCode: ExitCode::SUCCESS);
     }

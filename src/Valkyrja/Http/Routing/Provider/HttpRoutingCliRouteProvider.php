@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Routing\Provider;
 use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -47,7 +48,7 @@ class HttpRoutingCliRouteProvider implements CliRouteProviderContract
     /**
      * The list command handler.
      */
-    public static function listHandler(ContainerContract $container): OutputContract
+    public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(ListCommand::class)->run(
             $container->getSingleton(VersionCommand::class),

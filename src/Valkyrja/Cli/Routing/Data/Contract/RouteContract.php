@@ -240,14 +240,14 @@ interface RouteContract
     /**
      * Get the handler.
      *
-     * @return callable(ContainerContract): OutputContract
+     * @return callable(ContainerContract, self): OutputContract
      */
     public function getHandler(): callable;
 
     /**
      * Create a new route with the specified handler.
      *
-     * @param callable(ContainerContract): OutputContract $handler The handler
+     * @param callable(ContainerContract, self): OutputContract $handler The handler
      */
     public function withHandler(callable $handler): static;
 }

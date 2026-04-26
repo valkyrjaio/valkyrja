@@ -23,6 +23,7 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
@@ -59,7 +60,7 @@ final class CommandWithAllAttributesClass
     /**
      * Handler for the command.
      */
-    public static function handler(ContainerContract $container): OutputContract
+    public static function handler(ContainerContract $container, RouteContract $route): OutputContract
     {
         $controller = new self();
 

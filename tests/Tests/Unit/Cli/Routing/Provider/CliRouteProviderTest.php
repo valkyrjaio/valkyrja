@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Command\HelpCommand;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
@@ -55,7 +56,7 @@ final class CliRouteProviderTest extends TestCase
         $container = new Container();
         $container->setSingleton(ListCommand::class, $command);
 
-        self::assertSame($output, CliRoutingCliRouteProvider::listHandler($container));
+        self::assertSame($output, CliRoutingCliRouteProvider::listHandler($container, self::createStub(RouteContract::class)));
     }
 
     /**
@@ -70,7 +71,7 @@ final class CliRouteProviderTest extends TestCase
         $container = new Container();
         $container->setSingleton(ListBashCommand::class, $command);
 
-        self::assertSame($output, CliRoutingCliRouteProvider::listBashHandler($container));
+        self::assertSame($output, CliRoutingCliRouteProvider::listBashHandler($container, self::createStub(RouteContract::class)));
     }
 
     /**
@@ -85,7 +86,7 @@ final class CliRouteProviderTest extends TestCase
         $container = new Container();
         $container->setSingleton(HelpCommand::class, $command);
 
-        self::assertSame($output, CliRoutingCliRouteProvider::helpHandler($container));
+        self::assertSame($output, CliRoutingCliRouteProvider::helpHandler($container, self::createStub(RouteContract::class)));
     }
 
     /**
@@ -100,6 +101,6 @@ final class CliRouteProviderTest extends TestCase
         $container = new Container();
         $container->setSingleton(VersionCommand::class, $command);
 
-        self::assertSame($output, CliRoutingCliRouteProvider::versionHandler($container));
+        self::assertSame($output, CliRoutingCliRouteProvider::versionHandler($container, self::createStub(RouteContract::class)));
     }
 }

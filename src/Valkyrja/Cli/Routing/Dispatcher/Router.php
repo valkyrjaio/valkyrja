@@ -105,7 +105,7 @@ class Router implements RouterContract
 
         $handler = $routeAfterMiddleware->getHandler();
         // Attempt to dispatch the route using any one of the callable options
-        $output = $handler($this->container);
+        $output = $handler($this->container, $routeAfterMiddleware);
 
         return $this->routeDispatchedHandler->routeDispatched(
             input: $input,
