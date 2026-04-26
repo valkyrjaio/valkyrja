@@ -27,9 +27,9 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
