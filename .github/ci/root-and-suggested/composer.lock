@@ -326,16 +326,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.379.8",
+            "version": "3.379.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "856ddf3d241c29132fe1eb946e112351ab043542"
+                "reference": "aaa9aab5d077018dbc9af63338b2c5aa44a5add3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/856ddf3d241c29132fe1eb946e112351ab043542",
-                "reference": "856ddf3d241c29132fe1eb946e112351ab043542",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/aaa9aab5d077018dbc9af63338b2c5aa44a5add3",
+                "reference": "aaa9aab5d077018dbc9af63338b2c5aa44a5add3",
                 "shasum": ""
             },
             "require": {
@@ -417,9 +417,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.9"
             },
-            "time": "2026-04-27T19:13:21+00:00"
+            "time": "2026-04-29T18:07:13+00:00"
         },
         {
             "name": "brick/math",
@@ -1414,16 +1414,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v4.4.0",
+            "version": "v4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "7e736edfed645fb60e66ef183d7c08bdb7ac0ca8"
+                "reference": "fc237ff552fc52abd0a878686d67c7bc984c0ed8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/7e736edfed645fb60e66ef183d7c08bdb7ac0ca8",
-                "reference": "7e736edfed645fb60e66ef183d7c08bdb7ac0ca8",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/fc237ff552fc52abd0a878686d67c7bc984c0ed8",
+                "reference": "fc237ff552fc52abd0a878686d67c7bc984c0ed8",
                 "shasum": ""
             },
             "require": {
@@ -1472,9 +1472,9 @@
             "description": "The Mailgun SDK provides methods for all API functions.",
             "support": {
                 "issues": "https://github.com/mailgun/mailgun-php/issues",
-                "source": "https://github.com/mailgun/mailgun-php/tree/v4.4.0"
+                "source": "https://github.com/mailgun/mailgun-php/tree/v4.5.0"
             },
-            "time": "2026-03-21T11:45:49+00:00"
+            "time": "2026-04-29T18:19:32+00:00"
         },
         {
             "name": "monolog/monolog",
