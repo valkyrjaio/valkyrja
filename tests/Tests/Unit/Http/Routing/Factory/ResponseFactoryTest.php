@@ -18,10 +18,10 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
-use Valkyrja\Http\Message\Response\Factory\ResponseFactory as MessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Factory\ResponseFactory;
+use Valkyrja\Http\Routing\Factory\RoutingResponseFactory;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -32,7 +32,7 @@ final class ResponseFactoryTest extends TestCase
 {
     protected const string ROUTE_NAME = 'route';
 
-    protected ResponseFactory $responseFactory;
+    protected RoutingResponseFactory $responseFactory;
 
     #[Override]
     protected function setUp(): void
@@ -43,13 +43,13 @@ final class ResponseFactoryTest extends TestCase
             handler: static fn (): null => null,
         );
         $collection      = new RouteCollection();
-        $responseFactory = new MessageResponseFactory();
+        $responseFactory = new ResponseFactory();
         $url             = new Url(
             collection: $collection,
         );
         $collection->add($route);
 
-        $this->responseFactory = new ResponseFactory(
+        $this->responseFactory = new RoutingResponseFactory(
             responseFactory: $responseFactory,
             url: $url
         );

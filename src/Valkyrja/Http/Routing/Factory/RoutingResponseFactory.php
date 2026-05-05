@@ -17,14 +17,14 @@ use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
-class ResponseFactory implements ResponseFactoryContract
+class RoutingResponseFactory implements RoutingResponseFactoryContract
 {
     public function __construct(
-        protected HttpMessageResponseFactory $responseFactory,
+        protected ResponseFactoryContract $responseFactory,
         protected UrlContract $url
     ) {
     }
