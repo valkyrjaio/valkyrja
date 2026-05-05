@@ -20,7 +20,7 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Factory\ViewResponseFactory;
 
 /**
  * Class ViewExceptionMiddlewareTest.
@@ -44,7 +44,7 @@ final class ViewExceptionMiddlewareTest extends TestCase
 
         $viewResponse = Response::create(content: $templateText, statusCode: $statusCode);
 
-        $view = $this->createMock(ResponseFactory::class);
+        $view = $this->createMock(ViewResponseFactory::class);
         $view->expects($this->once())
             ->method('createResponseFromView')
             ->with(

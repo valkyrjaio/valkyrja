@@ -32,7 +32,7 @@ use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 
 final class EntityRouteMatchedMiddlewareTest extends TestCase
 {
@@ -40,7 +40,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
     protected ManagerContract&MockObject $orm;
 
-    protected ResponseFactoryContract&MockObject $responseFactory;
+    protected ViewResponseFactoryContract&MockObject $responseFactory;
 
     protected EntityRouteMatchedMiddleware $middleware;
 
@@ -48,7 +48,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
     {
         $this->container       = $this->createMock(ContainerContract::class);
         $this->orm             = $this->createMock(ManagerContract::class);
-        $this->responseFactory = $this->createMock(ResponseFactoryContract::class);
+        $this->responseFactory = $this->createMock(ViewResponseFactoryContract::class);
 
         $this->middleware = new EntityRouteMatchedMiddleware(
             $this->container,

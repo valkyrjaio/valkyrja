@@ -29,7 +29,7 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Type\Contract\TypeContract;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 
 use function is_a;
 use function is_int;
@@ -47,7 +47,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     public function __construct(
         protected ContainerContract $container,
         protected ManagerContract $orm,
-        protected ResponseFactoryContract $responseFactory,
+        protected ViewResponseFactoryContract $responseFactory,
     ) {
     }
 

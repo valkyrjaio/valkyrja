@@ -59,7 +59,7 @@ use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Log\Provider\LogServiceProvider;
 use Valkyrja\Tests\Classes\Application\Provider\HttpContainerDataProviderClass;
 use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract as ViewResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
