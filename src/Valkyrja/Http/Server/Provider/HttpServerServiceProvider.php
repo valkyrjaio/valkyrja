@@ -33,7 +33,7 @@ use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddlewar
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
 class HttpServerServiceProvider implements ServiceProviderContract
@@ -104,7 +104,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             ViewThrowableCaughtMiddleware::class,
             new ViewThrowableCaughtMiddleware(
-                viewResponseFactory: $container->getSingleton(ResponseFactoryContract::class),
+                viewResponseFactory: $container->getSingleton(ViewResponseFactoryContract::class),
             )
         );
     }

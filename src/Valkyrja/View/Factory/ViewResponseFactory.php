@@ -19,11 +19,11 @@ use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
-class ResponseFactory implements ResponseFactoryContract
+class ViewResponseFactory implements ViewResponseFactoryContract
 {
     public function __construct(
         protected HttpMessageResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),

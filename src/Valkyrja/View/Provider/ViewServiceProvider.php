@@ -24,8 +24,8 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
+use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Orka\Constant\OrkaReplacement;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
@@ -42,12 +42,12 @@ class ViewServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            RendererContract::class        => [self::class, 'publishRenderer'],
-            PhpRenderer::class             => [self::class, 'publishPhpRenderer'],
-            OrkaRenderer::class            => [self::class, 'publishOrkaRenderer'],
-            TwigRenderer::class            => [self::class, 'publishTwigRenderer'],
-            Environment::class             => [self::class, 'publishTwigEnvironment'],
-            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+            RendererContract::class            => [self::class, 'publishRenderer'],
+            PhpRenderer::class                 => [self::class, 'publishPhpRenderer'],
+            OrkaRenderer::class                => [self::class, 'publishOrkaRenderer'],
+            TwigRenderer::class                => [self::class, 'publishTwigRenderer'],
+            Environment::class                 => [self::class, 'publishTwigEnvironment'],
+            ViewResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -192,8 +192,8 @@ class ViewServiceProvider implements ServiceProviderContract
     public static function publishResponseFactory(ContainerContract $container): void
     {
         $container->setSingleton(
-            ResponseFactoryContract::class,
-            new ResponseFactory(
+            ViewResponseFactoryContract::class,
+            new ViewResponseFactory(
                 $container->getSingleton(HttpMessageResponseFactory::class),
                 $container->getSingleton(RendererContract::class)
             )

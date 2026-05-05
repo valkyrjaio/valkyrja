@@ -20,8 +20,8 @@ use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
+use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
@@ -35,9 +35,9 @@ final class ResponseFactoryTest extends TestCase
      */
     public function testImplementsContract(): void
     {
-        $factory = new ResponseFactory();
+        $factory = new ViewResponseFactory();
 
-        self::assertInstanceOf(ResponseFactoryContract::class, $factory);
+        self::assertInstanceOf(ViewResponseFactoryContract::class, $factory);
     }
 
     /**
@@ -67,7 +67,7 @@ final class ResponseFactoryTest extends TestCase
             ->with($templateContent, StatusCode::OK, null)
             ->willReturn($response);
 
-        $factory = new ResponseFactory($httpResponseFactory, $renderer);
+        $factory = new ViewResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName);
 
         self::assertSame($response, $result);
@@ -101,7 +101,7 @@ final class ResponseFactoryTest extends TestCase
             ->with($templateContent, StatusCode::OK, null)
             ->willReturn($response);
 
-        $factory = new ResponseFactory($httpResponseFactory, $renderer);
+        $factory = new ViewResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, $data);
 
         self::assertSame($response, $result);
@@ -135,7 +135,7 @@ final class ResponseFactoryTest extends TestCase
             ->with($templateContent, $statusCode, null)
             ->willReturn($response);
 
-        $factory = new ResponseFactory($httpResponseFactory, $renderer);
+        $factory = new ViewResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, statusCode: $statusCode);
 
         self::assertSame($response, $result);
@@ -169,7 +169,7 @@ final class ResponseFactoryTest extends TestCase
             ->with($templateContent, StatusCode::OK, $headers)
             ->willReturn($response);
 
-        $factory = new ResponseFactory($httpResponseFactory, $renderer);
+        $factory = new ViewResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, headers: $headers);
 
         self::assertSame($response, $result);
@@ -205,7 +205,7 @@ final class ResponseFactoryTest extends TestCase
             ->with($templateContent, $statusCode, $headers)
             ->willReturn($response);
 
-        $factory = new ResponseFactory($httpResponseFactory, $renderer);
+        $factory = new ViewResponseFactory($httpResponseFactory, $renderer);
         $result  = $factory->createResponseFromView($templateName, $data, $statusCode, $headers);
 
         self::assertSame($response, $result);

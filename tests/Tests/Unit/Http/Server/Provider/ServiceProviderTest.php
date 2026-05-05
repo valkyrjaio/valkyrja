@@ -28,7 +28,7 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddlewar
 use Valkyrja\Http\Server\Provider\HttpServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
@@ -104,7 +104,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
+        $container->setSingleton(ViewResponseFactoryContract::class, self::createStub(ViewResponseFactoryContract::class));
 
         $callback = HttpServerServiceProvider::publishers()[ViewThrowableCaughtMiddleware::class];
         $callback($this->container);

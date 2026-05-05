@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-interface ResponseFactoryContract
+interface ViewResponseFactoryContract
 {
     /**
      * View response builder.

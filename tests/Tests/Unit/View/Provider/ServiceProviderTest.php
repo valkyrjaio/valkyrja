@@ -22,8 +22,8 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\View\Factory\ResponseFactory;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
+use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -45,7 +45,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(OrkaRenderer::class, ViewServiceProvider::publishers());
         self::assertArrayHasKey(TwigRenderer::class, ViewServiceProvider::publishers());
         self::assertArrayHasKey(Environment::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(ResponseFactoryContract::class, ViewServiceProvider::publishers());
+        self::assertArrayHasKey(ViewResponseFactoryContract::class, ViewServiceProvider::publishers());
     }
 
     /**
@@ -136,9 +136,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
         $this->container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
-        $callback = ViewServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback = ViewServiceProvider::publishers()[ViewResponseFactoryContract::class];
         $callback($this->container);
 
-        self::assertInstanceOf(ResponseFactory::class, $this->container->getSingleton(ResponseFactoryContract::class));
+        self::assertInstanceOf(ViewResponseFactory::class, $this->container->getSingleton(ViewResponseFactoryContract::class));
     }
 }
