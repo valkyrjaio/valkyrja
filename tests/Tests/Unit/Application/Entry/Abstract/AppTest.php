@@ -56,7 +56,7 @@ use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract as HttpRou
 use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as HttpRoutingRouter;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as HttpRoutingResponseFactory;
+use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
@@ -243,7 +243,7 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(UrlContract::class));
         self::assertTrue($container->has(RouteCollectorContract::class));
         self::assertTrue($container->has(ProcessorContract::class));
-        self::assertTrue($container->has(HttpRoutingResponseFactory::class));
+        self::assertTrue($container->has(RoutingResponseFactoryContract::class));
         self::assertTrue($container->has(RequestStructMiddleware::class));
         self::assertTrue($container->has(ResponseStructMiddleware::class));
         self::assertTrue($container->has(ViewRouteNotMatchedMiddleware::class));

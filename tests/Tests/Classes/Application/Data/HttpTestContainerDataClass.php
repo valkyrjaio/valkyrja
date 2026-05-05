@@ -39,7 +39,7 @@ use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as RoutingResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliServiceProvider;

@@ -19,7 +19,7 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -33,8 +33,8 @@ use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Routing\Factory\ResponseFactory;
+use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\RoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -54,14 +54,14 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
     public static function publishers(): array
     {
         return [
-            RouterContract::class          => [self::class, 'publishRouter'],
-            RouteCollectionContract::class => [self::class, 'publishRouteCollection'],
-            MatcherContract::class         => [self::class, 'publishMatcher'],
-            UrlContract::class             => [self::class, 'publishUrl'],
-            RouteCollectorContract::class  => [self::class, 'publishAttributesRouteCollector'],
-            ProcessorContract::class       => [self::class, 'publishProcessor'],
-            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-            HttpRoutingData::class         => [self::class, 'publishData'],
+            RouterContract::class                 => [self::class, 'publishRouter'],
+            RouteCollectionContract::class        => [self::class, 'publishRouteCollection'],
+            MatcherContract::class                => [self::class, 'publishMatcher'],
+            UrlContract::class                    => [self::class, 'publishUrl'],
+            RouteCollectorContract::class         => [self::class, 'publishAttributesRouteCollector'],
+            ProcessorContract::class              => [self::class, 'publishProcessor'],
+            RoutingResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+            HttpRoutingData::class                => [self::class, 'publishData'],
         ];
     }
 
@@ -84,7 +84,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
             new Router(
                 container: $container,
                 matcher: $container->getSingleton(MatcherContract::class),
-                responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
+                responseFactory: $container->getSingleton(ResponseFactoryContract::class),
                 throwableCaughtHandler: $exception,
                 routeMatchedHandler: $routeMatched,
                 routeNotMatchedHandler: $routeNotMatched,
@@ -196,9 +196,9 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
     public static function publishResponseFactory(ContainerContract $container): void
     {
         $container->setSingleton(
-            ResponseFactoryContract::class,
-            new ResponseFactory(
-                responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
+            RoutingResponseFactoryContract::class,
+            new RoutingResponseFactory(
+                responseFactory: $container->getSingleton(ResponseFactoryContract::class),
                 url: $container->getSingleton(UrlContract::class),
             )
         );

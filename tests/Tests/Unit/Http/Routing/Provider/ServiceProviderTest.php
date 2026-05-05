@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -39,8 +39,8 @@ use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Http\Routing\Factory\ResponseFactory;
+use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\RoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
@@ -68,7 +68,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(UrlContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(RouteCollectorContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(ProcessorContract::class, HttpRoutingServiceProvider::publishers());
-        self::assertArrayHasKey(ResponseFactoryContract::class, HttpRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(RoutingResponseFactoryContract::class, HttpRoutingServiceProvider::publishers());
         self::assertArrayHasKey(HttpRoutingData::class, HttpRoutingServiceProvider::publishers());
     }
 
@@ -85,7 +85,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
-        $container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
+        $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
         self::assertFalse($container->has(RouterContract::class));
 
@@ -334,15 +334,15 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $container->setSingleton(UrlContract::class, self::createStub(UrlContract::class));
-        $container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
+        $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        self::assertFalse($container->has(ResponseFactoryContract::class));
+        self::assertFalse($container->has(RoutingResponseFactoryContract::class));
 
-        $callback = HttpRoutingServiceProvider::publishers()[ResponseFactoryContract::class];
+        $callback = HttpRoutingServiceProvider::publishers()[RoutingResponseFactoryContract::class];
         $callback($this->container);
 
-        self::assertTrue($container->has(ResponseFactoryContract::class));
-        self::assertTrue($container->isSingleton(ResponseFactoryContract::class));
-        self::assertInstanceOf(ResponseFactory::class, $container->getSingleton(ResponseFactoryContract::class));
+        self::assertTrue($container->has(RoutingResponseFactoryContract::class));
+        self::assertTrue($container->isSingleton(RoutingResponseFactoryContract::class));
+        self::assertInstanceOf(RoutingResponseFactory::class, $container->getSingleton(RoutingResponseFactoryContract::class));
     }
 }

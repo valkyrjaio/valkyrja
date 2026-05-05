@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 
-interface ResponseFactoryContract
+interface RoutingResponseFactoryContract
 {
     /**
      * Redirect to a named route response builder.
