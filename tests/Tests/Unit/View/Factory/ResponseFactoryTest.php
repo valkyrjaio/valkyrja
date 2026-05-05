@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
@@ -61,7 +61,7 @@ final class ResponseFactoryTest extends TestCase
 
         $response = self::createStub(ResponseContract::class);
 
-        $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
+        $httpResponseFactory = $this->createMock(ResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
             ->with($templateContent, StatusCode::OK, null)
@@ -95,7 +95,7 @@ final class ResponseFactoryTest extends TestCase
 
         $response = self::createStub(ResponseContract::class);
 
-        $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
+        $httpResponseFactory = $this->createMock(ResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
             ->with($templateContent, StatusCode::OK, null)
@@ -129,7 +129,7 @@ final class ResponseFactoryTest extends TestCase
 
         $response = self::createStub(ResponseContract::class);
 
-        $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
+        $httpResponseFactory = $this->createMock(ResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
             ->with($templateContent, $statusCode, null)
@@ -163,7 +163,7 @@ final class ResponseFactoryTest extends TestCase
 
         $response = self::createStub(ResponseContract::class);
 
-        $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
+        $httpResponseFactory = $this->createMock(ResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
             ->with($templateContent, StatusCode::OK, $headers)
@@ -199,7 +199,7 @@ final class ResponseFactoryTest extends TestCase
 
         $response = self::createStub(ResponseContract::class);
 
-        $httpResponseFactory = $this->createMock(HttpMessageResponseFactoryContract::class);
+        $httpResponseFactory = $this->createMock(ResponseFactoryContract::class);
         $httpResponseFactory->expects($this->once())
             ->method('createResponse')
             ->with($templateContent, $statusCode, $headers)

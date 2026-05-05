@@ -23,7 +23,7 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Orka\Constant\OrkaReplacement;
@@ -194,7 +194,7 @@ class ViewServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             ViewResponseFactoryContract::class,
             new ViewResponseFactory(
-                $container->getSingleton(HttpMessageResponseFactory::class),
+                $container->getSingleton(ResponseFactoryContract::class),
                 $container->getSingleton(RendererContract::class)
             )
         );

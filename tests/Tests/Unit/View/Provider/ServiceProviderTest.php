@@ -19,7 +19,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
@@ -133,7 +133,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishResponseFactory(): void
     {
-        $this->container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
+        $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
         $this->container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
         $callback = ViewServiceProvider::publishers()[ViewResponseFactoryContract::class];
