@@ -124,7 +124,7 @@ class Header extends Message
     public function getText(): string
     {
         $iconLines = array_map(
-            static fn(string $line): string => '│   ' . $line,
+            static fn (string $line): string => '│   ' . $line,
             explode("\n", $this->icon)
         );
 
