@@ -47,7 +47,7 @@ jobs:
 
   phpcodesniffer:
     name: PHP Code Sniffer
-    uses: valkyrjaio/ci-phpcodesniffer-php/.github/workflows/_workflow-call.yml@41eaf11b7713506377fbb4e83aebbca096792f49
+    uses: valkyrjaio/ci-phpcodesniffer-php/.github/workflows/_workflow-call.yml@09a173a12239c41b2d78f55ebbedf4767ebba5cd
     with:
       php-version: '8.4'
       paths: |
