@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 
-use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_get_clean;
@@ -30,15 +29,8 @@ final class ListCommandTest extends TestCase
 {
     public function testRunWithNoRoutes(): void
     {
-        $output        = new Output();
-        $outputFactory = $this->createMock(OutputFactory::class);
-        $outputFactory->expects($this->once())
-            ->method('createOutput')
-            ->willReturn($output);
-        $versionCommand = $this->createMock(VersionCommand::class);
-        $versionCommand->expects($this->never())
-            ->method('run');
-        $collection = $this->createMock(RouteCollectionContract::class);
+        $outputFactory = $this->makeOutputFactory();
+        $collection    = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
@@ -50,10 +42,10 @@ final class ListCommandTest extends TestCase
             ->method('getOption');
 
         $command = new ListCommand(
-            version: $versionCommand,
+            config: new CliConfig(),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $outputFactory,
         );
 
         $outputFromRun = $command->run();
@@ -67,15 +59,8 @@ final class ListCommandTest extends TestCase
 
     public function testRunNonExistentNamespace(): void
     {
-        $output        = new Output();
-        $outputFactory = $this->createMock(OutputFactory::class);
-        $outputFactory->expects($this->once())
-            ->method('createOutput')
-            ->willReturn($output);
-        $versionCommand = $this->createMock(VersionCommand::class);
-        $versionCommand->expects($this->never())
-            ->method('run');
-        $collection = $this->createMock(RouteCollectionContract::class);
+        $outputFactory = $this->makeOutputFactory();
+        $collection    = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
@@ -92,10 +77,10 @@ final class ListCommandTest extends TestCase
             ->willReturn($option);
 
         $command = new ListCommand(
-            version: $versionCommand,
+            config: new CliConfig(),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $outputFactory,
         );
 
         $outputFromRun = $command->run();
@@ -109,6 +94,9 @@ final class ListCommandTest extends TestCase
 
     public function testRun(): void
     {
+        $appName    = 'TestApp';
+        $appVersion = '1.0.0';
+
         $listRouteName        = 'Route1name';
         $listRouteDescription = 'Route 1 description';
         $listRoute            = $this->createMock(Route::class);
@@ -129,16 +117,8 @@ final class ListCommandTest extends TestCase
             ->method('getDescription')
             ->willReturn($listRoute2Description);
 
-        $versionText   = 'Version Command Output';
-        $output        = new Output();
-        $outputFactory = $this->createMock(OutputFactory::class);
-        $outputFactory->expects($this->never())
-            ->method('createOutput');
-        $versionCommand = $this->createMock(VersionCommand::class);
-        $versionCommand->expects($this->once())
-            ->method('run')
-            ->willReturn($output->withMessages(new Message($versionText)));
-        $collection = $this->createMock(RouteCollectionContract::class);
+        $outputFactory = $this->makeOutputFactory();
+        $collection    = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2]);
@@ -148,12 +128,18 @@ final class ListCommandTest extends TestCase
             ->willReturn(false);
         $route->expects($this->never())
             ->method('getOption');
+        $route->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('List all commands');
+        $route->expects($this->once())
+            ->method('getName')
+            ->willReturn('list');
 
         $command = new ListCommand(
-            version: $versionCommand,
+            config: new CliConfig(namespace: $appName, version: $appVersion),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $outputFactory,
         );
 
         $outputFromRun = $command->run();
@@ -162,7 +148,7 @@ final class ListCommandTest extends TestCase
         $outputFromRun->writeMessages();
         $obOutput = ob_get_clean();
 
-        self::assertStringContainsString($versionText, $obOutput);
+        self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString('Commands:', $obOutput);
         self::assertStringContainsString($listRouteName, $obOutput);
         self::assertStringContainsString($listRouteDescription, $obOutput);
@@ -172,7 +158,9 @@ final class ListCommandTest extends TestCase
 
     public function testRunWithNamespace(): void
     {
-        $namespace = 'namespace';
+        $appName    = 'TestApp';
+        $appVersion = '1.0.0';
+        $namespace  = 'namespace';
 
         $listRouteName        = "$namespace:Route1name";
         $listRouteDescription = 'Route 1 description';
@@ -202,16 +190,8 @@ final class ListCommandTest extends TestCase
         $listRoute3->expects($this->never())
             ->method('getDescription');
 
-        $versionText   = 'Version Command Output';
-        $output        = new Output();
-        $outputFactory = $this->createMock(OutputFactory::class);
-        $outputFactory->expects($this->never())
-            ->method('createOutput');
-        $versionCommand = $this->createMock(VersionCommand::class);
-        $versionCommand->expects($this->once())
-            ->method('run')
-            ->willReturn($output->withMessages(new Message($versionText)));
-        $collection = $this->createMock(RouteCollectionContract::class);
+        $outputFactory = $this->makeOutputFactory();
+        $collection    = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2, $listRoute3]);
@@ -226,12 +206,18 @@ final class ListCommandTest extends TestCase
         $route->expects($this->once())
             ->method('getOption')
             ->willReturn($option);
+        $route->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('List all commands');
+        $route->expects($this->once())
+            ->method('getName')
+            ->willReturn('list');
 
         $command = new ListCommand(
-            version: $versionCommand,
+            config: new CliConfig(namespace: $appName, version: $appVersion),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $outputFactory,
         );
 
         $outputFromRun = $command->run();
@@ -240,7 +226,7 @@ final class ListCommandTest extends TestCase
         $outputFromRun->writeMessages();
         $obOutput = ob_get_clean();
 
-        self::assertStringContainsString($versionText, $obOutput);
+        self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString("Commands [$namespace]:", $obOutput);
         self::assertStringContainsString($listRouteName, $obOutput);
         self::assertStringContainsString($listRouteDescription, $obOutput);
@@ -254,5 +240,13 @@ final class ListCommandTest extends TestCase
 
         self::assertSame($text, ListCommand::help()->getText());
         self::assertSame($text, ListCommand::help()->getFormattedText());
+    }
+
+    private function makeOutputFactory(): OutputFactoryContract
+    {
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
+
+        return $outputFactory;
     }
 }

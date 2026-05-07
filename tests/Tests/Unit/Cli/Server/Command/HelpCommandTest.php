@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
@@ -28,8 +29,10 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+
+use function ob_get_clean;
+use function ob_start;
 
 final class HelpCommandTest extends TestCase
 {
@@ -37,7 +40,6 @@ final class HelpCommandTest extends TestCase
     {
         $commandName = 'foo';
 
-        $output = new Output();
         $option = $this->createMock(OptionParameterContract::class);
         $option->expects($this->once())
             ->method('getFirstValue')
@@ -54,19 +56,12 @@ final class HelpCommandTest extends TestCase
             ->willReturn(false);
         $collection->expects($this->never())
             ->method('get');
-        $version = $this->createMock(VersionCommand::class);
-        $version->expects($this->never())
-            ->method('run');
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->once())
-            ->method('createOutput')
-            ->willReturn($output);
 
         $helpCommand   = new HelpCommand(
-            version: $version,
+            config: new CliConfig(),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $this->makeOutputFactory(),
         );
         $outputFromRun = $helpCommand->run();
 
@@ -80,10 +75,10 @@ final class HelpCommandTest extends TestCase
 
     public function testRun(): void
     {
+        $appName     = 'TestApp';
+        $appVersion  = '1.0.0';
         $commandName = 'foo';
         $description = 'description here';
-        $versionText = 'Version Command Output';
-        $helpText    = 'Help Command Output';
         $helpRoute   = new Route(
             name: $commandName,
             description: $description,
@@ -127,7 +122,6 @@ final class HelpCommandTest extends TestCase
             ]
         );
 
-        $output = new Output();
         $option = $this->createMock(OptionParameterContract::class);
         $option->expects($this->once())
             ->method('getFirstValue')
@@ -137,6 +131,12 @@ final class HelpCommandTest extends TestCase
             ->method('getOption')
             ->with('command')
             ->willReturn($option);
+        $route->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('Help for a command');
+        $route->expects($this->once())
+            ->method('getName')
+            ->willReturn('help');
         $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
@@ -146,19 +146,12 @@ final class HelpCommandTest extends TestCase
             ->method('get')
             ->with($commandName)
             ->willReturn($helpRoute);
-        $version = $this->createMock(VersionCommand::class);
-        $version->expects($this->once())
-            ->method('run')
-            ->willReturn($output->withMessages(new Message($versionText)));
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->never())
-            ->method('createOutput');
 
         $helpCommand   = new HelpCommand(
-            version: $version,
+            config: new CliConfig(namespace: $appName, version: $appVersion),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $this->makeOutputFactory(),
         );
         $outputFromRun = $helpCommand->run();
 
@@ -167,11 +160,11 @@ final class HelpCommandTest extends TestCase
         $obOutput = ob_get_clean();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
+        self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString('foo [options] [global options] [argument1] [argument2...]', $obOutput);
-        self::assertStringContainsString($versionText, $obOutput);
         self::assertStringContainsString($commandName, $obOutput);
         self::assertStringContainsString($description, $obOutput);
-        self::assertStringContainsString($helpText, $obOutput);
+        self::assertStringContainsString('Help Command Output', $obOutput);
         self::assertStringContainsString('argument1', $obOutput);
         self::assertStringContainsString('Argument 1 description', $obOutput);
         self::assertStringContainsString('argument2', $obOutput);
@@ -196,18 +189,17 @@ final class HelpCommandTest extends TestCase
 
     public function testRunWithNoHelpText(): void
     {
+        $appName     = 'TestApp';
+        $appVersion  = '1.0.0';
         $commandName = 'bar';
         $description = 'command without help text';
-        $versionText = 'Version Command Output';
 
-        // Create a route WITHOUT helpText to trigger line 199 (return new Messages())
         $helpRoute = new Route(
             name: $commandName,
             description: $description,
             handler: static fn (): null => null,
         );
 
-        $output = new Output();
         $option = $this->createMock(OptionParameterContract::class);
         $option->expects($this->once())
             ->method('getFirstValue')
@@ -217,6 +209,12 @@ final class HelpCommandTest extends TestCase
             ->method('getOption')
             ->with('command')
             ->willReturn($option);
+        $route->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('Help for a command');
+        $route->expects($this->once())
+            ->method('getName')
+            ->willReturn('help');
         $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
@@ -226,19 +224,12 @@ final class HelpCommandTest extends TestCase
             ->method('get')
             ->with($commandName)
             ->willReturn($helpRoute);
-        $version = $this->createMock(VersionCommand::class);
-        $version->expects($this->once())
-            ->method('run')
-            ->willReturn($output->withMessages(new Message($versionText)));
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->never())
-            ->method('createOutput');
 
         $helpCommand   = new HelpCommand(
-            version: $version,
+            config: new CliConfig(namespace: $appName, version: $appVersion),
             route: $route,
             collection: $collection,
-            outputFactory: $outputFactory
+            outputFactory: $this->makeOutputFactory(),
         );
         $outputFromRun = $helpCommand->run();
 
@@ -247,10 +238,9 @@ final class HelpCommandTest extends TestCase
         $obOutput = ob_get_clean();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
-        self::assertStringContainsString($versionText, $obOutput);
+        self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString($commandName, $obOutput);
         self::assertStringContainsString($description, $obOutput);
-        // Should NOT contain "Help:" section since there's no help text
         self::assertStringNotContainsString('Help:', $obOutput);
     }
 
@@ -268,5 +258,13 @@ final class HelpCommandTest extends TestCase
     public function getHelpText(): MessageContract
     {
         return new Message(text: 'Help Command Output');
+    }
+
+    private function makeOutputFactory(): OutputFactoryContract
+    {
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
+
+        return $outputFactory;
     }
 }

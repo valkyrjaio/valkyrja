@@ -15,6 +15,8 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use ReflectionProperty;
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
@@ -87,7 +89,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishHelpCommand(): void
     {
-        $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
         $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
@@ -118,7 +120,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishListCommand(): void
     {
-        $this->container->setSingleton(VersionCommand::class, self::createStub(VersionCommand::class));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
         $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
         $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
@@ -135,6 +137,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishVersionCommand(): void
     {
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig());
+        $this->container->setSingleton(RouteContract::class, self::createStub(RouteContract::class));
 
         $callback = CliServerServiceProvider::publishers()[VersionCommand::class];
         $callback($this->container);
