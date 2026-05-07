@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
@@ -40,7 +42,7 @@ final class ListCommandTest extends TestCase
         );
 
         $outputFactory = new OutputFactory();
-        $version       = new VersionCommand($outputFactory);
+        $version       = new VersionCommand($outputFactory, new CliConfig(), $this->createStub(RouteContract::class));
         $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();
@@ -65,7 +67,7 @@ final class ListCommandTest extends TestCase
     public function testNoRoutes(): void
     {
         $outputFactory = new OutputFactory();
-        $version       = new VersionCommand($outputFactory);
+        $version       = new VersionCommand($outputFactory, new CliConfig(), $this->createStub(RouteContract::class));
         $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();

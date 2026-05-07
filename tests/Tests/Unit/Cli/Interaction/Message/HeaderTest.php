@@ -27,11 +27,21 @@ use function getcwd;
  */
 final class HeaderTest extends TestCase
 {
-    private function makeRoute(string $description = 'Run command', string $name = 'cmd'): RouteContract
-    {
+    private function makeRoute(
+        string $description = 'Run command',
+        string $name = 'cmd',
+        bool $expectDescriptionCall = true,
+        bool $expectNameCall = true,
+    ): RouteContract {
         $route = $this->createMock(RouteContract::class);
-        $route->method('getDescription')->willReturn($description);
-        $route->method('getName')->willReturn($name);
+
+        $route->expects($expectDescriptionCall ? $this->once() : $this->never())
+            ->method('getDescription')
+            ->willReturn($description);
+
+        $route->expects($expectNameCall ? $this->once() : $this->never())
+            ->method('getName')
+            ->willReturn($name);
 
         return $route;
     }
@@ -69,7 +79,7 @@ final class HeaderTest extends TestCase
         $header = new Header(
             appName: $appName,
             appVersion: $appVersion,
-            route: $this->makeRoute(),
+            route: $this->makeRoute(expectDescriptionCall: false, expectNameCall: false),
             icon: $icon,
             valkyrjaVersion: $valkyrjaVersion,
             valkyrjaBuildDate: $valkyrjaBuildDate,
@@ -160,7 +170,7 @@ final class HeaderTest extends TestCase
 
     public function testWithActionDescription(): void
     {
-        $original = new Header('App', '1.0.0', $this->makeRoute(), actionDescription: 'Old action');
+        $original = new Header('App', '1.0.0', $this->makeRoute(expectDescriptionCall: false), actionDescription: 'Old action');
         $updated  = $original->withActionDescription('New action');
 
         self::assertNotSame($original, $updated);
@@ -170,7 +180,7 @@ final class HeaderTest extends TestCase
 
     public function testWithCommandName(): void
     {
-        $original = new Header('App', '1.0.0', $this->makeRoute(), commandName: 'old:cmd');
+        $original = new Header('App', '1.0.0', $this->makeRoute(expectNameCall: false), commandName: 'old:cmd');
         $updated  = $original->withCommandName('new:cmd');
 
         self::assertNotSame($original, $updated);

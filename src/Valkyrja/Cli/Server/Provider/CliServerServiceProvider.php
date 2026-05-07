@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
@@ -98,7 +99,7 @@ class CliServerServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             HelpCommand::class,
             new HelpCommand(
-                version: $container->getSingleton(VersionCommand::class),
+                config: $container->getSingleton(CliConfigContract::class),
                 route: $container->getSingleton(RouteContract::class),
                 collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
@@ -129,7 +130,7 @@ class CliServerServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             ListCommand::class,
             new ListCommand(
-                version: $container->getSingleton(VersionCommand::class),
+                config: $container->getSingleton(CliConfigContract::class),
                 route: $container->getSingleton(RouteContract::class),
                 collection: $container->getSingleton(RouteCollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
@@ -146,6 +147,8 @@ class CliServerServiceProvider implements ServiceProviderContract
             VersionCommand::class,
             new VersionCommand(
                 outputFactory: $container->getSingleton(OutputFactoryContract::class),
+                config: $container->getSingleton(CliConfigContract::class),
+                route: $container->getSingleton(RouteContract::class),
             )
         );
     }

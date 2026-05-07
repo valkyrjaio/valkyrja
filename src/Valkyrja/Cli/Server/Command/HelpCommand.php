@@ -95,9 +95,14 @@ class HelpCommand
 
         $this->helpRoute = $this->collection->get($commandName);
 
+        /** @var string $namespace */
+        $namespace = $this->config->namespace;
+        /** @var string $version */
+        $version = $this->config->version;
+
         $output = $this->outputFactory
             ->createOutput()
-            ->withMessages(new Header($this->config->namespace, $this->config->version, $this->route));
+            ->withMessages(new Header($namespace, $version, $this->route));
 
         return $this->getHelpText($output);
     }

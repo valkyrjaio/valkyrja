@@ -33,15 +33,19 @@ final class VersionCommandTest extends TestCase
     {
         $route = $this->createMock(RouteContract::class);
 
-        $route->method('hasOption')
+        $route->expects($this->exactly($isShort ? 1 : 2))
+            ->method('hasOption')
             ->willReturnMap([
                 ['short', $isShort],
                 ['plain', $isPlain],
             ]);
 
         if (! $isShort && ! $isPlain) {
-            $route->method('getDescription')->willReturn('Get the application version');
-            $route->method('getName')->willReturn('version');
+            $route->expects($this->once())->method('getDescription')->willReturn('Get the application version');
+            $route->expects($this->once())->method('getName')->willReturn('version');
+        } else {
+            $route->expects($this->never())->method('getDescription');
+            $route->expects($this->never())->method('getName');
         }
 
         return $route;
@@ -50,7 +54,7 @@ final class VersionCommandTest extends TestCase
     private function makeOutputFactory(): OutputFactoryContract
     {
         $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->method('createOutput')->willReturn(new PlainOutput());
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
 
         return $outputFactory;
     }

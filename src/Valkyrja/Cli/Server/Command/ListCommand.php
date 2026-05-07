@@ -81,9 +81,14 @@ class ListCommand
 
         $this->sortRoutes($routes);
 
+        /** @var string $appNamespace */
+        $appNamespace = $this->config->namespace;
+        /** @var string $appVersion */
+        $appVersion = $this->config->version;
+
         $output = $this->outputFactory
             ->createOutput()
-            ->withMessages(new Header($this->config->namespace, $this->config->version, $this->route));
+            ->withMessages(new Header($appNamespace, $appVersion, $this->route));
 
         $output = $this->addHeaderMessages($output, $namespace);
         $output = $this->addRoutesMessages($output, $routes);

@@ -65,17 +65,22 @@ class VersionCommand
     #[RouteHandler([CliRoutingCliRouteProvider::class, 'versionHandler'])]
     public function run(): OutputContract
     {
+        /** @var string $namespace */
+        $namespace = $this->config->namespace;
+        /** @var string $version */
+        $version = $this->config->version;
+
         if ($this->route->hasOption('short')) {
             return $this->outputFactory
                 ->createOutput()
-                ->withMessages(new Message($this->config->version));
+                ->withMessages(new Message($version));
         }
 
         if ($this->route->hasOption('plain')) {
             return $this->outputFactory
                 ->createOutput()
                 ->withMessages(
-                    new Message($this->config->namespace . ' v' . $this->config->version),
+                    new Message($namespace . ' v' . $version),
                     new NewLine(),
                     new Message('Built on Valkyrja v' . ApplicationInfo::VERSION . ' (date: ' . ApplicationInfo::VERSION_BUILD_DATE_TIME . ')'),
                     new NewLine(),
@@ -86,7 +91,7 @@ class VersionCommand
         return $this->outputFactory
             ->createOutput()
             ->withMessages(
-                new Header($this->config->namespace, $this->config->version, $this->route),
+                new Header($namespace, $version, $this->route),
             );
     }
 }

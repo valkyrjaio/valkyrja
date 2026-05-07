@@ -39,7 +39,7 @@ final class HelpCommandTest extends TestCase
     private function makeOutputFactory(): OutputFactoryContract
     {
         $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->method('createOutput')->willReturn(new PlainOutput());
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
 
         return $outputFactory;
     }
