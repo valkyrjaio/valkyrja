@@ -27,14 +27,6 @@ use function ob_start;
 
 final class ListCommandTest extends TestCase
 {
-    private function makeOutputFactory(): OutputFactoryContract
-    {
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
-
-        return $outputFactory;
-    }
-
     public function testRunWithNoRoutes(): void
     {
         $outputFactory = $this->makeOutputFactory();
@@ -248,5 +240,13 @@ final class ListCommandTest extends TestCase
 
         self::assertSame($text, ListCommand::help()->getText());
         self::assertSame($text, ListCommand::help()->getFormattedText());
+    }
+
+    private function makeOutputFactory(): OutputFactoryContract
+    {
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
+
+        return $outputFactory;
     }
 }

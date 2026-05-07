@@ -18,34 +18,15 @@ use Valkyrja\Cli\Interaction\Message\Header;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use const PHP_VERSION;
-
 use function getcwd;
+
+use const PHP_VERSION;
 
 /**
  * Test the Header class.
  */
 final class HeaderTest extends TestCase
 {
-    private function makeRoute(
-        string $description = 'Run command',
-        string $name = 'cmd',
-        bool $expectDescriptionCall = true,
-        bool $expectNameCall = true,
-    ): RouteContract {
-        $route = $this->createMock(RouteContract::class);
-
-        $route->expects($expectDescriptionCall ? $this->once() : $this->never())
-            ->method('getDescription')
-            ->willReturn($description);
-
-        $route->expects($expectNameCall ? $this->once() : $this->never())
-            ->method('getName')
-            ->willReturn($name);
-
-        return $route;
-    }
-
     public function testDefaults(): void
     {
         $appName     = 'TestApp';
@@ -203,5 +184,24 @@ final class HeaderTest extends TestCase
         $header = new Header('App', '1.0.0', $this->makeRoute($description, $name));
 
         self::assertStringContainsString("╰── $description · $name", $header->getText());
+    }
+
+    private function makeRoute(
+        string $description = 'Run command',
+        string $name = 'cmd',
+        bool $expectDescriptionCall = true,
+        bool $expectNameCall = true,
+    ): RouteContract {
+        $route = $this->createMock(RouteContract::class);
+
+        $route->expects($expectDescriptionCall ? $this->once() : $this->never())
+            ->method('getDescription')
+            ->willReturn($description);
+
+        $route->expects($expectNameCall ? $this->once() : $this->never())
+            ->method('getName')
+            ->willReturn($name);
+
+        return $route;
     }
 }

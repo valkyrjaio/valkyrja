@@ -36,14 +36,6 @@ use function ob_start;
 
 final class HelpCommandTest extends TestCase
 {
-    private function makeOutputFactory(): OutputFactoryContract
-    {
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
-
-        return $outputFactory;
-    }
-
     public function testRunWithNonExistentCommandName(): void
     {
         $commandName = 'foo';
@@ -266,5 +258,13 @@ final class HelpCommandTest extends TestCase
     public function getHelpText(): MessageContract
     {
         return new Message(text: 'Help Command Output');
+    }
+
+    private function makeOutputFactory(): OutputFactoryContract
+    {
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
+
+        return $outputFactory;
     }
 }

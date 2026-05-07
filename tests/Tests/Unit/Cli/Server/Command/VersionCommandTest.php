@@ -22,43 +22,13 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use const PHP_VERSION;
-
 use function ob_get_clean;
 use function ob_start;
 
+use const PHP_VERSION;
+
 final class VersionCommandTest extends TestCase
 {
-    private function makeRoute(bool $isShort = false, bool $isPlain = false): RouteContract
-    {
-        $route = $this->createMock(RouteContract::class);
-
-        $route->expects($this->exactly($isShort ? 1 : 2))
-            ->method('hasOption')
-            ->willReturnMap([
-                ['short', $isShort],
-                ['plain', $isPlain],
-            ]);
-
-        if (! $isShort && ! $isPlain) {
-            $route->expects($this->once())->method('getDescription')->willReturn('Get the application version');
-            $route->expects($this->once())->method('getName')->willReturn('version');
-        } else {
-            $route->expects($this->never())->method('getDescription');
-            $route->expects($this->never())->method('getName');
-        }
-
-        return $route;
-    }
-
-    private function makeOutputFactory(): OutputFactoryContract
-    {
-        $outputFactory = $this->createMock(OutputFactoryContract::class);
-        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
-
-        return $outputFactory;
-    }
-
     public function testRun(): void
     {
         $appName    = 'TestApp';
@@ -130,5 +100,35 @@ final class VersionCommandTest extends TestCase
 
         self::assertSame($text, VersionCommand::help()->getText());
         self::assertSame($text, VersionCommand::help()->getFormattedText());
+    }
+
+    private function makeRoute(bool $isShort = false, bool $isPlain = false): RouteContract
+    {
+        $route = $this->createMock(RouteContract::class);
+
+        $route->expects($this->exactly($isShort ? 1 : 2))
+            ->method('hasOption')
+            ->willReturnMap([
+                ['short', $isShort],
+                ['plain', $isPlain],
+            ]);
+
+        if (! $isShort && ! $isPlain) {
+            $route->expects($this->once())->method('getDescription')->willReturn('Get the application version');
+            $route->expects($this->once())->method('getName')->willReturn('version');
+        } else {
+            $route->expects($this->never())->method('getDescription');
+            $route->expects($this->never())->method('getName');
+        }
+
+        return $route;
+    }
+
+    private function makeOutputFactory(): OutputFactoryContract
+    {
+        $outputFactory = $this->createMock(OutputFactoryContract::class);
+        $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
+
+        return $outputFactory;
     }
 }

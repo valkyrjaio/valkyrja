@@ -42,7 +42,7 @@ final class ListCommandTest extends TestCase
         );
 
         $outputFactory = new OutputFactory();
-        $version       = new VersionCommand($outputFactory, new CliConfig(), $this->createStub(RouteContract::class));
+        $version       = new VersionCommand($outputFactory, new CliConfig(), self::createStub(RouteContract::class));
         $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();
@@ -67,7 +67,7 @@ final class ListCommandTest extends TestCase
     public function testNoRoutes(): void
     {
         $outputFactory = new OutputFactory();
-        $version       = new VersionCommand($outputFactory, new CliConfig(), $this->createStub(RouteContract::class));
+        $version       = new VersionCommand($outputFactory, new CliConfig(), self::createStub(RouteContract::class));
         $collection    = new RouteCollection();
 
         $listCommand = new ListCommand();
