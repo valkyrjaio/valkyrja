@@ -1,6 +1,14 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.1.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.2.0...26.x)
+
+## [v26.2.0](https://github.com/valkyrjaio/valkyrja/compare/v26.1.0...v26.2.0) - 2026-05-07
+
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/793
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/794
+* [GitHub] Update ci-phpcodesniffer-php workflow refs to v26.1.2 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/795
+* [Cli] Add Header banner message class and update all commands to use it by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/796
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/797
 
 ## [v26.1.0](https://github.com/valkyrjaio/valkyrja/compare/v26.0.0...v26.1.0) - 2026-05-05
 
