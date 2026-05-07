@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Command;
 
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Format\TextColorFormat;
@@ -21,6 +22,7 @@ use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Message\Header;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -49,7 +51,7 @@ class HelpCommand
     protected RouteContract $helpRoute;
 
     public function __construct(
-        protected VersionCommand $version,
+        protected CliConfigContract $config,
         protected RouteContract $route,
         protected RouteCollectionContract $collection,
         protected OutputFactoryContract $outputFactory,
@@ -93,7 +95,9 @@ class HelpCommand
 
         $this->helpRoute = $this->collection->get($commandName);
 
-        $output = $this->version->run();
+        $output = $this->outputFactory
+            ->createOutput()
+            ->withMessages(new Header($this->config->namespace, $this->config->version, $this->route));
 
         return $this->getHelpText($output);
     }

@@ -42,4 +42,16 @@ final class ApplicationInfo
            \_/ \__,_|_|_|\_\\__, |_| _/ |\__,_|
                             |___/   |__/
         TEXT;
+
+    /**
+     * The default CLI banner icon (Valkyrie).
+     *
+     * @var non-empty-string
+     */
+    public const string ICON = <<<'ICON'
+        ▗▄▄▖     ▗▄▄▖
+        ▝▜██▄▄▄▄▄██▛▘
+           ▝▜███▛▘
+              █
+        ICON;
 }

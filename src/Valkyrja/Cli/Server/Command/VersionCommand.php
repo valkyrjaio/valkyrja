@@ -14,16 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server\Command;
 
 use Valkyrja\Application\Constant\ApplicationInfo;
-use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Format\TextColorFormat;
-use Valkyrja\Cli\Interaction\Formatter\Formatter;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Message\Header;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
@@ -32,7 +33,9 @@ use const PHP_VERSION;
 class VersionCommand
 {
     public function __construct(
-        protected OutputFactoryContract $outputFactory
+        protected OutputFactoryContract $outputFactory,
+        protected CliConfigContract $config,
+        protected RouteContract $route,
     ) {
     }
 
@@ -49,29 +52,41 @@ class VersionCommand
         description: 'Get the application version',
         helpText: [self::class, 'help'],
     )]
+    #[OptionParameter(
+        name: 'short',
+        description: 'Output the version number only',
+        shortNames: ['s'],
+    )]
+    #[OptionParameter(
+        name: 'plain',
+        description: 'Output version info without the banner',
+        shortNames: ['p'],
+    )]
     #[RouteHandler([CliRoutingCliRouteProvider::class, 'versionHandler'])]
     public function run(): OutputContract
     {
+        if ($this->route->hasOption('short')) {
+            return $this->outputFactory
+                ->createOutput()
+                ->withMessages(new Message($this->config->version));
+        }
+
+        if ($this->route->hasOption('plain')) {
+            return $this->outputFactory
+                ->createOutput()
+                ->withMessages(
+                    new Message($this->config->namespace . ' v' . $this->config->version),
+                    new NewLine(),
+                    new Message('Built on Valkyrja v' . ApplicationInfo::VERSION . ' (date: ' . ApplicationInfo::VERSION_BUILD_DATE_TIME . ')'),
+                    new NewLine(),
+                    new Message('Running on PHP ' . PHP_VERSION),
+                );
+        }
+
         return $this->outputFactory
             ->createOutput()
             ->withMessages(
-                new Message(ApplicationInfo::ASCII),
-                new NewLine(),
-                new NewLine(),
-                new Message('Valkyrja Framework', new Formatter(new TextColorFormat(TextColor::CYAN))),
-                new Message(' version '),
-                new Message(ApplicationInfo::VERSION, new Formatter(new TextColorFormat(TextColor::MAGENTA))),
-                new Message(' (built: '),
-                new Message(ApplicationInfo::VERSION_BUILD_DATE_TIME, new Formatter(new TextColorFormat(TextColor::MAGENTA))),
-                new Message(')'),
-                new NewLine(),
-                new Message('Copyright (c) Melech Mizrachi'),
-                new NewLine(),
-                new Message('GitHub https://github.com/valkyrjaio/valkyrja'),
-                new NewLine(),
-                new Message('Running on PHP ' . PHP_VERSION),
-                new NewLine(),
-                new NewLine(),
+                new Header($this->config->namespace, $this->config->version, $this->route),
             );
     }
 }
