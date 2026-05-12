@@ -9,16 +9,16 @@
     "packages-dev": [
         {
             "name": "nette/utils",
-            "version": "v4.1.3",
+            "version": "v4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "bb3ea637e3d131d72acc033cfc2746ee893349fe"
+                "reference": "7da6c396d7ebe142bc857c20479d5e70a5e1aac7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/bb3ea637e3d131d72acc033cfc2746ee893349fe",
-                "reference": "bb3ea637e3d131d72acc033cfc2746ee893349fe",
+                "url": "https://api.github.com/repos/nette/utils/zipball/7da6c396d7ebe142bc857c20479d5e70a5e1aac7",
+                "reference": "7da6c396d7ebe142bc857c20479d5e70a5e1aac7",
                 "shasum": ""
             },
             "require": {
@@ -94,9 +94,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.1.3"
+                "source": "https://github.com/nette/utils/tree/v4.1.4"
             },
-            "time": "2026-02-13T03:05:33+00:00"
+            "time": "2026-05-11T20:49:54+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -216,12 +216,12 @@
             "version": "v26.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/valkyrjaio/ci-rector-php.git",
+                "url": "https://github.com/valkyrjaio/rector.git",
                 "reference": "088293583eecdfc094660818a51b15a4699ba2ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/088293583eecdfc094660818a51b15a4699ba2ba",
+                "url": "https://api.github.com/repos/valkyrjaio/rector/zipball/088293583eecdfc094660818a51b15a4699ba2ba",
                 "reference": "088293583eecdfc094660818a51b15a4699ba2ba",
                 "shasum": ""
             },
@@ -254,8 +254,8 @@
                 "valkyrja"
             ],
             "support": {
-                "issues": "https://github.com/valkyrjaio/ci-rector-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.1.1"
+                "issues": "https://github.com/valkyrjaio/rector/issues",
+                "source": "https://github.com/valkyrjaio/rector/tree/v26.1.1"
             },
             "time": "2026-04-17T03:45:52+00:00"
         }
