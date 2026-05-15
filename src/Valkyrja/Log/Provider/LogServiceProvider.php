@@ -32,21 +32,6 @@ use function date;
 class LogServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            LoggerContract::class  => [self::class, 'publishLogger'],
-            PsrLogger::class       => [self::class, 'publishPsrLogger'],
-            NullLogger::class      => [self::class, 'publishNullLogger'],
-            LoggerInterface::class => [self::class, 'publishLoggerInterface'],
-            Logger::class          => [self::class, 'publishMonolog'],
-        ];
-    }
-
-    /**
      * Publish the logger service.
      */
     public static function publishLogger(ContainerContract $container): void
@@ -130,5 +115,20 @@ class LogServiceProvider implements ServiceProviderContract
                 ]
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            LoggerContract::class  => [self::class, 'publishLogger'],
+            PsrLogger::class       => [self::class, 'publishPsrLogger'],
+            NullLogger::class      => [self::class, 'publishNullLogger'],
+            LoggerInterface::class => [self::class, 'publishLoggerInterface'],
+            Logger::class          => [self::class, 'publishMonolog'],
+        ];
     }
 }

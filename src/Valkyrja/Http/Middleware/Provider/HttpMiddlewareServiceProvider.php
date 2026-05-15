@@ -35,23 +35,6 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 class HttpMiddlewareServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            RequestReceivedHandlerContract::class => [self::class, 'publishRequestReceivedHandler'],
-            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
-            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
-            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
-            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
-            SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
-            TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
-        ];
-    }
-
-    /**
      * Publish the RequestReceivedHandler service.
      *
      * @param ContainerContract $container The container
@@ -182,5 +165,22 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
         );
 
         $handler->add(...$middleware);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            RequestReceivedHandlerContract::class => [self::class, 'publishRequestReceivedHandler'],
+            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
+            SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
+            TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
+        ];
     }
 }

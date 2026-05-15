@@ -37,13 +37,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ManagerContract::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(MysqlManager::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(PgsqlManager::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(SqliteManager::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(PDO::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(NullManager::class, (new OrmServiceProvider())->publishers());
-        self::assertArrayHasKey(Repository::class, (new OrmServiceProvider())->publishers());
+        self::assertArrayHasKey(ManagerContract::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(MysqlManager::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(PgsqlManager::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(SqliteManager::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(PDO::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(NullManager::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(Repository::class, new OrmServiceProvider()->publishers());
     }
 
     /**
@@ -53,7 +53,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(MysqlManager::class, self::createStub(MysqlManager::class));
 
-        $callback = (new OrmServiceProvider())->publishers()[ManagerContract::class];
+        $callback = new OrmServiceProvider()->publishers()[ManagerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(ManagerContract::class));
@@ -66,7 +66,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
-        $callback = (new OrmServiceProvider())->publishers()[MysqlManager::class];
+        $callback = new OrmServiceProvider()->publishers()[MysqlManager::class];
         $callback($this->container);
 
         self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(MysqlManager::class));
@@ -79,7 +79,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
-        $callback = (new OrmServiceProvider())->publishers()[PgsqlManager::class];
+        $callback = new OrmServiceProvider()->publishers()[PgsqlManager::class];
         $callback($this->container);
 
         self::assertInstanceOf(PgsqlManager::class, $this->container->getSingleton(PgsqlManager::class));
@@ -92,7 +92,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
         );
 
-        $callback = (new OrmServiceProvider())->publishers()[SqliteManager::class];
+        $callback = new OrmServiceProvider()->publishers()[SqliteManager::class];
         $callback($this->container);
 
         self::assertInstanceOf(SqliteManager::class, $this->container->getSingleton(SqliteManager::class));
@@ -100,7 +100,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullManager(): void
     {
-        $callback = (new OrmServiceProvider())->publishers()[NullManager::class];
+        $callback = new OrmServiceProvider()->publishers()[NullManager::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullManager::class, $this->container->getSingleton(NullManager::class));
@@ -114,7 +114,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $manager = self::createStub(MysqlManager::class);
         $entity  = Entity::class;
 
-        $callback = (new OrmServiceProvider())->publishers()[Repository::class];
+        $callback = new OrmServiceProvider()->publishers()[Repository::class];
         $callback($this->container);
 
         self::assertInstanceOf(Repository::class, $this->container->getService(Repository::class, [$manager, $entity]));
@@ -128,7 +128,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $dsn     = 'sqlite::memory:';
         $options = [];
 
-        $callback = (new OrmServiceProvider())->publishers()[PDO::class];
+        $callback = new OrmServiceProvider()->publishers()[PDO::class];
         $callback($this->container);
 
         self::assertInstanceOf(PDO::class, $this->container->getService(PDO::class, [$dsn, $options]));

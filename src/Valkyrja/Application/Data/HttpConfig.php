@@ -40,7 +40,7 @@ class HttpConfig implements HttpConfigContract
      * @param non-empty-string                                  $key
      * @param non-empty-string                                  $dataPath
      * @param non-empty-string                                  $dataNamespace
-     * @param ComponentProviderContract[]                        $providers
+     * @param ComponentProviderContract[]                       $providers
      * @param array<callable(ApplicationContract):void>         $callbacks
      * @param class-string<RequestReceivedMiddlewareContract>[] $requestReceivedMiddleware
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware

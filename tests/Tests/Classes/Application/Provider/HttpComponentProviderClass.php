@@ -21,6 +21,15 @@ final class HttpComponentProviderClass implements ComponentProviderContract
 {
     public static bool $publishedContainerData = false;
 
+    public static function publish(ApplicationContract $app): void
+    {
+        if ($app->getDebugMode()) {
+            return;
+        }
+
+        self::$publishedContainerData = true;
+    }
+
     /**
      * @inheritDoc
      */
@@ -69,14 +78,5 @@ final class HttpComponentProviderClass implements ComponentProviderContract
         return [
             new HttpRouteProviderClass(),
         ];
-    }
-
-    public static function publish(ApplicationContract $app): void
-    {
-        if ($app->getDebugMode()) {
-            return;
-        }
-
-        self::$publishedContainerData = true;
     }
 }

@@ -20,11 +20,11 @@ final class ProviderTest extends TestCase
 {
     public function testGetRoutes(): void
     {
-        self::assertEmpty((new ProviderClass())->getRoutes());
+        self::assertEmpty(new ProviderClass()->getRoutes());
     }
 
     public function testGetControllerClasses(): void
     {
-        self::assertEmpty((new ProviderClass())->getControllerClasses());
+        self::assertEmpty(new ProviderClass()->getControllerClasses());
     }
 }

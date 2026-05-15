@@ -22,17 +22,6 @@ use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 class HttpMessageServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-        ];
-    }
-
-    /**
      * Publish the response factory service.
      *
      * @param ContainerContract $container The container
@@ -43,5 +32,16 @@ class HttpMessageServiceProvider implements ServiceProviderContract
             ResponseFactoryContract::class,
             new ResponseFactory()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+        ];
     }
 }

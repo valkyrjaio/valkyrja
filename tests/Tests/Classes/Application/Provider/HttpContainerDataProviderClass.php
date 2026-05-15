@@ -22,6 +22,14 @@ use Valkyrja\Tests\Classes\Application\Data\HttpTestContainerDataClass;
 final class HttpContainerDataProviderClass implements ServiceProviderContract
 {
     /**
+     * Publish the service.
+     */
+    public static function publishData(ContainerContract $container): void
+    {
+        $container->setSingleton(ContainerData::class, new HttpTestContainerDataClass());
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]
@@ -30,13 +38,5 @@ final class HttpContainerDataProviderClass implements ServiceProviderContract
         return [
             ContainerData::class => [self::class, 'publishData'],
         ];
-    }
-
-    /**
-     * Publish the service.
-     */
-    public static function publishData(ContainerContract $container): void
-    {
-        $container->setSingleton(ContainerData::class, new HttpTestContainerDataClass());
     }
 }

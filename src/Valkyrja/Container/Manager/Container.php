@@ -60,7 +60,7 @@ class Container implements ContainerContract
         protected ContainerData $data = new ContainerData()
     ) {
         $this->aliases          = $data->aliases;
-        $this->callbacks = $data->callbacks;
+        $this->callbacks        = $data->callbacks;
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
     }
@@ -86,7 +86,7 @@ class Container implements ContainerContract
     public function setFromData(ContainerData $data): void
     {
         $this->aliases          = array_merge($this->aliases, $data->aliases);
-        $this->callbacks = array_merge($this->callbacks, $data->callbacks);
+        $this->callbacks        = array_merge($this->callbacks, $data->callbacks);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
     }

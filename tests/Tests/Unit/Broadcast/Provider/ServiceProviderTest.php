@@ -36,12 +36,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(BroadcasterContract::class, (new BroadcastServiceProvider())->publishers());
-        self::assertArrayHasKey(PusherBroadcaster::class, (new BroadcastServiceProvider())->publishers());
-        self::assertArrayHasKey(CryptPusherBroadcaster::class, (new BroadcastServiceProvider())->publishers());
-        self::assertArrayHasKey(Pusher::class, (new BroadcastServiceProvider())->publishers());
-        self::assertArrayHasKey(LogBroadcaster::class, (new BroadcastServiceProvider())->publishers());
-        self::assertArrayHasKey(NullBroadcaster::class, (new BroadcastServiceProvider())->publishers());
+        self::assertArrayHasKey(BroadcasterContract::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(PusherBroadcaster::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(CryptPusherBroadcaster::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(Pusher::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(LogBroadcaster::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(NullBroadcaster::class, new BroadcastServiceProvider()->publishers());
     }
 
     /**
@@ -51,7 +51,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PusherBroadcaster::class, self::createStub(PusherBroadcaster::class));
 
-        $callback = (new BroadcastServiceProvider())->publishers()[BroadcasterContract::class];
+        $callback = new BroadcastServiceProvider()->publishers()[BroadcasterContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(BroadcasterContract::class));
@@ -64,7 +64,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
 
-        $callback = (new BroadcastServiceProvider())->publishers()[PusherBroadcaster::class];
+        $callback = new BroadcastServiceProvider()->publishers()[PusherBroadcaster::class];
         $callback($this->container);
 
         self::assertInstanceOf(PusherBroadcaster::class, $this->container->getSingleton(PusherBroadcaster::class));
@@ -78,7 +78,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
         $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
 
-        $callback = (new BroadcastServiceProvider())->publishers()[CryptPusherBroadcaster::class];
+        $callback = new BroadcastServiceProvider()->publishers()[CryptPusherBroadcaster::class];
         $callback($this->container);
 
         self::assertInstanceOf(CryptPusherBroadcaster::class, $this->container->getSingleton(CryptPusherBroadcaster::class));
@@ -89,7 +89,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPusher(): void
     {
-        $callback = (new BroadcastServiceProvider())->publishers()[Pusher::class];
+        $callback = new BroadcastServiceProvider()->publishers()[Pusher::class];
         $callback($this->container);
 
         self::assertInstanceOf(Pusher::class, $this->container->getSingleton(Pusher::class));
@@ -102,7 +102,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = (new BroadcastServiceProvider())->publishers()[LogBroadcaster::class];
+        $callback = new BroadcastServiceProvider()->publishers()[LogBroadcaster::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogBroadcaster::class, $this->container->getSingleton(LogBroadcaster::class));
@@ -110,7 +110,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullBroadcaster(): void
     {
-        $callback = (new BroadcastServiceProvider())->publishers()[NullBroadcaster::class];
+        $callback = new BroadcastServiceProvider()->publishers()[NullBroadcaster::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullBroadcaster::class, $this->container->getSingleton(NullBroadcaster::class));

@@ -27,34 +27,34 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new OrmComponentProvider())->getComponentProviders($app));
+        self::assertEmpty(new OrmComponentProvider()->getComponentProviders($app));
     }
 
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertInstanceOf(OrmServiceProvider::class, (new OrmComponentProvider())->getContainerProviders($app)[0]);
+        self::assertInstanceOf(OrmServiceProvider::class, new OrmComponentProvider()->getContainerProviders($app)[0]);
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new OrmComponentProvider())->getEventProviders($app));
+        self::assertEmpty(new OrmComponentProvider()->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new OrmComponentProvider())->getCliProviders($app));
+        self::assertEmpty(new OrmComponentProvider()->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new OrmComponentProvider())->getHttpProviders($app));
+        self::assertEmpty(new OrmComponentProvider()->getHttpProviders($app));
     }
 }

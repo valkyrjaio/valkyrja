@@ -21,17 +21,6 @@ use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 class HttpRoutingCliServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            ListCommand::class => [self::class, 'publishListCommand'],
-        ];
-    }
-
-    /**
      * Publish the list command service.
      */
     public static function publishListCommand(ContainerContract $container): void
@@ -40,5 +29,16 @@ class HttpRoutingCliServiceProvider implements ServiceProviderContract
             ListCommand::class,
             new ListCommand()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ListCommand::class => [self::class, 'publishListCommand'],
+        ];
     }
 }

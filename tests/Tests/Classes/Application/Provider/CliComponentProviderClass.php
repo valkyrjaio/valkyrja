@@ -21,6 +21,15 @@ final class CliComponentProviderClass implements ComponentProviderContract
 {
     public static bool $publishedContainerData = false;
 
+    public static function publish(ApplicationContract $app): void
+    {
+        if ($app->getDebugMode()) {
+            return;
+        }
+
+        self::$publishedContainerData = true;
+    }
+
     /**
      * @inheritDoc
      */
@@ -69,14 +78,5 @@ final class CliComponentProviderClass implements ComponentProviderContract
     public function getHttpProviders(ApplicationContract $app): array
     {
         return [];
-    }
-
-    public static function publish(ApplicationContract $app): void
-    {
-        if ($app->getDebugMode()) {
-            return;
-        }
-
-        self::$publishedContainerData = true;
     }
 }

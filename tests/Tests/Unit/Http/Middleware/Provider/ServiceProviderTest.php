@@ -43,20 +43,20 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RequestReceivedHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(ThrowableCaughtHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteMatchedHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteDispatchedHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(SendingResponseHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(TerminatedHandlerContract::class, (new HttpMiddlewareServiceProvider())->publishers());
+        self::assertArrayHasKey(RequestReceivedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(ThrowableCaughtHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteMatchedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteDispatchedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(SendingResponseHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(TerminatedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
     }
 
     public function testPublishRequestReceivedHandler(): void
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RequestReceivedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RequestReceivedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -69,7 +69,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(requestReceivedMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RequestReceivedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RequestReceivedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -87,7 +87,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteDispatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -100,7 +100,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeDispatchedMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteDispatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -118,7 +118,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[ThrowableCaughtHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -131,7 +131,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(throwableCaughtMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[ThrowableCaughtHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -149,7 +149,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteMatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -162,7 +162,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeMatchedMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteMatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -180,7 +180,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteNotMatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -193,7 +193,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeNotMatchedMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[RouteNotMatchedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -211,7 +211,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[SendingResponseHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[SendingResponseHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -224,7 +224,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(sendingResponseMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[SendingResponseHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[SendingResponseHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -242,7 +242,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[TerminatedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[TerminatedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -255,7 +255,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(terminatedMiddleware: ['test']));
 
-        $callback = (new HttpMiddlewareServiceProvider())->publishers()[TerminatedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[TerminatedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(

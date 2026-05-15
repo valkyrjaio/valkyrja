@@ -39,23 +39,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 class HttpServerServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            RequestHandlerContract::class        => [self::class, 'publishRequestHandler'],
-            LogThrowableCaughtMiddleware::class  => [self::class, 'publishLogThrowableCaughtMiddleware'],
-            ViewThrowableCaughtMiddleware::class => [self::class, 'publishViewThrowableCaughtMiddleware'],
-            RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
-            ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
-            ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
-            CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
-        ];
-    }
-
-    /**
      * Publish the RequestHandler service.
      */
     public static function publishRequestHandler(ContainerContract $container): void
@@ -170,5 +153,22 @@ class HttpServerServiceProvider implements ServiceProviderContract
                 debug: $app->getDebugMode(),
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            RequestHandlerContract::class        => [self::class, 'publishRequestHandler'],
+            LogThrowableCaughtMiddleware::class  => [self::class, 'publishLogThrowableCaughtMiddleware'],
+            ViewThrowableCaughtMiddleware::class => [self::class, 'publishViewThrowableCaughtMiddleware'],
+            RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
+            ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
+            ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
+            CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
+        ];
     }
 }

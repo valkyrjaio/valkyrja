@@ -27,34 +27,34 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new JwtComponentProvider())->getComponentProviders($app));
+        self::assertEmpty(new JwtComponentProvider()->getComponentProviders($app));
     }
 
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertInstanceOf(JwtServiceProvider::class, (new JwtComponentProvider())->getContainerProviders($app)[0]);
+        self::assertInstanceOf(JwtServiceProvider::class, new JwtComponentProvider()->getContainerProviders($app)[0]);
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new JwtComponentProvider())->getEventProviders($app));
+        self::assertEmpty(new JwtComponentProvider()->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new JwtComponentProvider())->getCliProviders($app));
+        self::assertEmpty(new JwtComponentProvider()->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new JwtComponentProvider())->getHttpProviders($app));
+        self::assertEmpty(new JwtComponentProvider()->getHttpProviders($app));
     }
 }

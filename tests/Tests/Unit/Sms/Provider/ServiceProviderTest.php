@@ -35,12 +35,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(MessengerContract::class, (new SmsServiceProvider())->publishers());
-        self::assertArrayHasKey(VonageMessenger::class, (new SmsServiceProvider())->publishers());
-        self::assertArrayHasKey(Client::class, (new SmsServiceProvider())->publishers());
-        self::assertArrayHasKey(CredentialsInterface::class, (new SmsServiceProvider())->publishers());
-        self::assertArrayHasKey(LogMessenger::class, (new SmsServiceProvider())->publishers());
-        self::assertArrayHasKey(NullMessenger::class, (new SmsServiceProvider())->publishers());
+        self::assertArrayHasKey(MessengerContract::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(VonageMessenger::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(Client::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(CredentialsInterface::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(LogMessenger::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(NullMessenger::class, new SmsServiceProvider()->publishers());
     }
 
     /**
@@ -50,7 +50,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(VonageMessenger::class, self::createStub(VonageMessenger::class));
 
-        $callback = (new SmsServiceProvider())->publishers()[MessengerContract::class];
+        $callback = new SmsServiceProvider()->publishers()[MessengerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(MessengerContract::class));
@@ -63,7 +63,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
 
-        $callback = (new SmsServiceProvider())->publishers()[VonageMessenger::class];
+        $callback = new SmsServiceProvider()->publishers()[VonageMessenger::class];
         $callback($this->container);
 
         self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(VonageMessenger::class));
@@ -76,7 +76,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CredentialsInterface::class, new Basic('', ''));
 
-        $callback = (new SmsServiceProvider())->publishers()[Client::class];
+        $callback = new SmsServiceProvider()->publishers()[Client::class];
         $callback($this->container);
 
         self::assertInstanceOf(Client::class, $this->container->getSingleton(Client::class));
@@ -84,7 +84,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishVonageCredentials(): void
     {
-        $callback = (new SmsServiceProvider())->publishers()[CredentialsInterface::class];
+        $callback = new SmsServiceProvider()->publishers()[CredentialsInterface::class];
         $callback($this->container);
 
         self::assertInstanceOf(Basic::class, $this->container->getSingleton(CredentialsInterface::class));
@@ -97,7 +97,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = (new SmsServiceProvider())->publishers()[LogMessenger::class];
+        $callback = new SmsServiceProvider()->publishers()[LogMessenger::class];
         $callback($this->container);
 
         self::assertInstanceOf(LogMessenger::class, $this->container->getSingleton(LogMessenger::class));
@@ -105,7 +105,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullSms(): void
     {
-        $callback = (new SmsServiceProvider())->publishers()[NullMessenger::class];
+        $callback = new SmsServiceProvider()->publishers()[NullMessenger::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullMessenger::class, $this->container->getSingleton(NullMessenger::class));

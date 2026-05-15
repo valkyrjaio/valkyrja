@@ -28,12 +28,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ResponseFactoryContract::class, (new HttpMessageServiceProvider())->publishers());
+        self::assertArrayHasKey(ResponseFactoryContract::class, new HttpMessageServiceProvider()->publishers());
     }
 
     public function testPublishResponseFactory(): void
     {
-        $callback = (new HttpMessageServiceProvider())->publishers()[ResponseFactoryContract::class];
+        $callback = new HttpMessageServiceProvider()->publishers()[ResponseFactoryContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ResponseFactory::class, $this->container->getSingleton(ResponseFactoryContract::class));

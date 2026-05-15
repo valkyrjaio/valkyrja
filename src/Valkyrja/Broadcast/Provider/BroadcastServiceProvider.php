@@ -33,22 +33,6 @@ use const CURLOPT_IPRESOLVE;
 class BroadcastServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            BroadcasterContract::class    => [self::class, 'publishBroadcaster'],
-            PusherBroadcaster::class      => [self::class, 'publishPusherBroadcaster'],
-            CryptPusherBroadcaster::class => [self::class, 'publishCryptPusherBroadcaster'],
-            Pusher::class                 => [self::class, 'publishPusher'],
-            LogBroadcaster::class         => [self::class, 'publishLogBroadcaster'],
-            NullBroadcaster::class        => [self::class, 'publishNullBroadcaster'],
-        ];
-    }
-
-    /**
      * Publish the broadcaster service.
      */
     public static function publishBroadcaster(ContainerContract $container): void
@@ -159,5 +143,21 @@ class BroadcastServiceProvider implements ServiceProviderContract
             NullBroadcaster::class,
             new NullBroadcaster()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            BroadcasterContract::class    => [self::class, 'publishBroadcaster'],
+            PusherBroadcaster::class      => [self::class, 'publishPusherBroadcaster'],
+            CryptPusherBroadcaster::class => [self::class, 'publishCryptPusherBroadcaster'],
+            Pusher::class                 => [self::class, 'publishPusher'],
+            LogBroadcaster::class         => [self::class, 'publishLogBroadcaster'],
+            NullBroadcaster::class        => [self::class, 'publishNullBroadcaster'],
+        ];
     }
 }

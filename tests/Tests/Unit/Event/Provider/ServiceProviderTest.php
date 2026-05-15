@@ -41,10 +41,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ListenerCollectorContract::class, (new EventServiceProvider())->publishers());
-        self::assertArrayHasKey(EventDispatcherContract::class, (new EventServiceProvider())->publishers());
-        self::assertArrayHasKey(ListenerCollectionContract::class, (new EventServiceProvider())->publishers());
-        self::assertArrayHasKey(EventData::class, (new EventServiceProvider())->publishers());
+        self::assertArrayHasKey(ListenerCollectorContract::class, new EventServiceProvider()->publishers());
+        self::assertArrayHasKey(EventDispatcherContract::class, new EventServiceProvider()->publishers());
+        self::assertArrayHasKey(ListenerCollectionContract::class, new EventServiceProvider()->publishers());
+        self::assertArrayHasKey(EventData::class, new EventServiceProvider()->publishers());
     }
 
     /**
@@ -54,7 +54,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectorContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(AttributeListenerCollector::class, $this->container->getSingleton(ListenerCollectorContract::class));
@@ -65,7 +65,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributesCollectorWithoutAttributesOrReflector(): void
     {
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectorContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(AttributeListenerCollector::class, $this->container->getSingleton(ListenerCollectorContract::class));
@@ -79,7 +79,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(ListenerCollectionContract::class, self::createStub(ListenerCollectionContract::class));
 
-        $callback = (new EventServiceProvider())->publishers()[EventDispatcherContract::class];
+        $callback = new EventServiceProvider()->publishers()[EventDispatcherContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(EventDispatcher::class, $this->container->getSingleton(EventDispatcherContract::class));
@@ -91,7 +91,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(EventData::class, new EventData());
         $application->method('getDebugMode')->willReturn(false);
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectionContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListenerCollection::class, $this->container->getSingleton(ListenerCollectionContract::class));
@@ -119,7 +119,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($this->container->has(ListenerCollectionContract::class));
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectionContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListenerCollection::class, $collection = $this->container->getSingleton(ListenerCollectionContract::class));
@@ -153,7 +153,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertTrue($this->container->has(EventData::class));
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectionContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListenerCollection::class, $collection = $this->container->getSingleton(ListenerCollectionContract::class));
@@ -192,7 +192,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertTrue($this->container->has(EventData::class));
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectionContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListenerCollection::class, $collection = $this->container->getSingleton(ListenerCollectionContract::class));
@@ -231,7 +231,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertTrue($this->container->has(EventData::class));
 
-        $callback = (new EventServiceProvider())->publishers()[ListenerCollectionContract::class];
+        $callback = new EventServiceProvider()->publishers()[ListenerCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ListenerCollection::class, $collection = $this->container->getSingleton(ListenerCollectionContract::class));

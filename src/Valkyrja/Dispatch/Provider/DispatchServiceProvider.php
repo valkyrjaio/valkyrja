@@ -22,17 +22,6 @@ use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 class DispatchServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            DispatcherContract::class => [self::class, 'publishDispatcher'],
-        ];
-    }
-
-    /**
      * Publish the dispatcher service.
      *
      * @param ContainerContract $container The container
@@ -45,5 +34,16 @@ class DispatchServiceProvider implements ServiceProviderContract
                 container: $container
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            DispatcherContract::class => [self::class, 'publishDispatcher'],
+        ];
     }
 }

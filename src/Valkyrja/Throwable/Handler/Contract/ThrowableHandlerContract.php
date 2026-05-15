@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Throwable\Handler\Contract;
 
-use Throwable;
-
 use const E_ALL;
 
 interface ThrowableHandlerContract
@@ -26,5 +24,4 @@ interface ThrowableHandlerContract
      * @param bool $displayErrors       [optional] Whether to display errors
      */
     public function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void;
-
 }

@@ -30,7 +30,7 @@ final class ProvidersAwareTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        ProviderClass::$publishCalled         = false;
+        ProviderClass::$publishCalled          = false;
         ProviderClass::$publishSecondaryCalled = false;
     }
 

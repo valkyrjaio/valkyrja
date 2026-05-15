@@ -41,19 +41,19 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(InputReceivedHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(ThrowableCaughtHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteMatchedHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteDispatchedHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
-        self::assertArrayHasKey(ExitedHandlerContract::class, (new CliMiddlewareServiceProvider())->publishers());
+        self::assertArrayHasKey(InputReceivedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(ThrowableCaughtHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteMatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteDispatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(ExitedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
     }
 
     public function testPublishInputReceivedHandler(): void
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[InputReceivedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[InputReceivedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -66,7 +66,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(inputReceivedMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[InputReceivedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[InputReceivedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -84,7 +84,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteDispatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -97,7 +97,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeDispatchedMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteDispatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -115,7 +115,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[ThrowableCaughtHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -128,7 +128,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(throwableCaughtMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[ThrowableCaughtHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -146,7 +146,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteMatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -159,7 +159,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeMatchedMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteMatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -177,7 +177,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteNotMatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -190,7 +190,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeNotMatchedMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[RouteNotMatchedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -208,7 +208,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[ExitedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ExitedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -221,7 +221,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig(exitedMiddleware: ['test']));
 
-        $callback = (new CliMiddlewareServiceProvider())->publishers()[ExitedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ExitedHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(

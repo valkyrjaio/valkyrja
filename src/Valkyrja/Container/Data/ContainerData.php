@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Data;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 readonly class ContainerData
 {

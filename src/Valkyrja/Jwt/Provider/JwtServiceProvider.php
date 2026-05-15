@@ -28,19 +28,6 @@ use Valkyrja\Jwt\Manager\NullJwt;
 class JwtServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            JwtContract::class => [self::class, 'publishJwt'],
-            FirebaseJwt::class => [self::class, 'publishFirebaseJwt'],
-            NullJwt::class     => [self::class, 'publishNullJwt'],
-        ];
-    }
-
-    /**
      * Publish the jwt service.
      */
     public static function publishJwt(ContainerContract $container): void
@@ -102,5 +89,18 @@ class JwtServiceProvider implements ServiceProviderContract
             NullJwt::class,
             new NullJwt(),
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            JwtContract::class => [self::class, 'publishJwt'],
+            FirebaseJwt::class => [self::class, 'publishFirebaseJwt'],
+            NullJwt::class     => [self::class, 'publishNullJwt'],
+        ];
     }
 }

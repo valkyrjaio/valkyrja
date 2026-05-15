@@ -36,23 +36,6 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 class AuthServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            AuthenticatorContract::class  => [self::class, 'publishAuthenticator'],
-            SessionAuthenticator::class   => [self::class, 'publishSessionAuthenticator'],
-            StoreContract::class          => [self::class, 'publishStore'],
-            OrmStore::class               => [self::class, 'publishOrmStore'],
-            InMemoryStore::class          => [self::class, 'publishInMemoryStore'],
-            NullStore::class              => [self::class, 'publishNullStore'],
-            PasswordHasherContract::class => [self::class, 'publishPasswordHasher'],
-        ];
-    }
-
-    /**
      * Publish the authenticator service.
      */
     public static function publishAuthenticator(ContainerContract $container): void
@@ -157,5 +140,22 @@ class AuthServiceProvider implements ServiceProviderContract
             PasswordHasherContract::class,
             new PhpPasswordHasher()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            AuthenticatorContract::class  => [self::class, 'publishAuthenticator'],
+            SessionAuthenticator::class   => [self::class, 'publishSessionAuthenticator'],
+            StoreContract::class          => [self::class, 'publishStore'],
+            OrmStore::class               => [self::class, 'publishOrmStore'],
+            InMemoryStore::class          => [self::class, 'publishInMemoryStore'],
+            NullStore::class              => [self::class, 'publishNullStore'],
+            PasswordHasherContract::class => [self::class, 'publishPasswordHasher'],
+        ];
     }
 }

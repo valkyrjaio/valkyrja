@@ -45,7 +45,7 @@ class CliConfig implements CliConfigContract
      * @param non-empty-string                                  $dataNamespace
      * @param non-empty-string                                  $applicationName
      * @param non-empty-string                                  $defaultCommandName
-     * @param ComponentProviderContract[]                        $providers
+     * @param ComponentProviderContract[]                       $providers
      * @param array<callable(ApplicationContract):void>         $callbacks
      * @param class-string<InputReceivedMiddlewareContract>[]   $inputReceivedMiddleware
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware

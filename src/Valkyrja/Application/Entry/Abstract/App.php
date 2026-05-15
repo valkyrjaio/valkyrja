@@ -157,7 +157,7 @@ abstract class App
      */
     public static function defaultExceptionHandler(): void
     {
-        (new WhoopsThrowableHandler())->enable(
+        new WhoopsThrowableHandler()->enable(
             displayErrors: true
         );
     }

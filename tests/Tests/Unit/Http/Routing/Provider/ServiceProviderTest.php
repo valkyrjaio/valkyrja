@@ -62,14 +62,14 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RouterContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteCollectionContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(MatcherContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(UrlContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(RouteCollectorContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(ProcessorContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(RoutingResponseFactoryContract::class, (new HttpRoutingServiceProvider())->publishers());
-        self::assertArrayHasKey(HttpRoutingData::class, (new HttpRoutingServiceProvider())->publishers());
+        self::assertArrayHasKey(RouterContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteCollectionContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(MatcherContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(UrlContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteCollectorContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(ProcessorContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(RoutingResponseFactoryContract::class, new HttpRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(HttpRoutingData::class, new HttpRoutingServiceProvider()->publishers());
     }
 
     public function testPublishRouter(): void
@@ -89,7 +89,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouterContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouterContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouterContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouterContract::class));
@@ -103,7 +103,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(HttpRoutingData::class, new HttpRoutingData());
         $application->method('getDebugMode')->willReturn(false);
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectionContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $this->container->getSingleton(RouteCollectionContract::class));
@@ -135,7 +135,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouteCollectionContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectionContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectionContract::class));
@@ -168,7 +168,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderClass()]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectionContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectionContract::class));
@@ -202,7 +202,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderClass()]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectionContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectionContract::class));
@@ -236,7 +236,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $application->expects($this->once())->method('getHttpProviders')->willReturn([]);
         $processor->expects($this->never())->method('route')->willReturnArgument(0);
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectionContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectionContract::class));
@@ -255,7 +255,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(MatcherContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[MatcherContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[MatcherContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(MatcherContract::class));
@@ -273,7 +273,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(UrlContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[UrlContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[UrlContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(UrlContract::class));
@@ -291,7 +291,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouteCollectorContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectorContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectorContract::class));
@@ -307,7 +307,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouteCollectorContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RouteCollectorContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectorContract::class));
@@ -321,7 +321,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ProcessorContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[ProcessorContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[ProcessorContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ProcessorContract::class));
@@ -338,7 +338,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RoutingResponseFactoryContract::class));
 
-        $callback = (new HttpRoutingServiceProvider())->publishers()[RoutingResponseFactoryContract::class];
+        $callback = new HttpRoutingServiceProvider()->publishers()[RoutingResponseFactoryContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RoutingResponseFactoryContract::class));

@@ -27,34 +27,34 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new FilesystemComponentProvider())->getComponentProviders($app));
+        self::assertEmpty(new FilesystemComponentProvider()->getComponentProviders($app));
     }
 
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertInstanceOf(FilesystemServiceProvider::class, (new FilesystemComponentProvider())->getContainerProviders($app)[0]);
+        self::assertInstanceOf(FilesystemServiceProvider::class, new FilesystemComponentProvider()->getContainerProviders($app)[0]);
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new FilesystemComponentProvider())->getEventProviders($app));
+        self::assertEmpty(new FilesystemComponentProvider()->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new FilesystemComponentProvider())->getCliProviders($app));
+        self::assertEmpty(new FilesystemComponentProvider()->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty((new FilesystemComponentProvider())->getHttpProviders($app));
+        self::assertEmpty(new FilesystemComponentProvider()->getHttpProviders($app));
     }
 }

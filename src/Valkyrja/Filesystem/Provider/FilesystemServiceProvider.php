@@ -32,24 +32,6 @@ use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 class FilesystemServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            FilesystemContract::class       => [self::class, 'publishFilesystem'],
-            FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
-            LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
-            LocalFilesystemAdapter::class   => [self::class, 'publishFlysystemLocalAdapter'],
-            S3FlysystemFilesystem::class    => [self::class, 'publishS3FlysystemFilesystem'],
-            AwsS3V3Adapter::class           => [self::class, 'publishFlysystemAwsS3Adapter'],
-            InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
-            NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
-        ];
-    }
-
-    /**
      * Publish the filesystem service.
      */
     public static function publishFilesystem(ContainerContract $container): void
@@ -197,5 +179,23 @@ class FilesystemServiceProvider implements ServiceProviderContract
             NullFilesystem::class,
             new NullFilesystem(),
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            FilesystemContract::class       => [self::class, 'publishFilesystem'],
+            FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
+            LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
+            LocalFilesystemAdapter::class   => [self::class, 'publishFlysystemLocalAdapter'],
+            S3FlysystemFilesystem::class    => [self::class, 'publishS3FlysystemFilesystem'],
+            AwsS3V3Adapter::class           => [self::class, 'publishFlysystemAwsS3Adapter'],
+            InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
+            NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
+        ];
     }
 }

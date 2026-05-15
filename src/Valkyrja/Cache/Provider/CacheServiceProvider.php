@@ -27,21 +27,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 class CacheServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            CacheContract::class => [self::class, 'publishCache'],
-            RedisCache::class    => [self::class, 'publishRedisCache'],
-            Client::class        => [self::class, 'publishRedisClient'],
-            LogCache::class      => [self::class, 'publishLogCache'],
-            NullCache::class     => [self::class, 'publishNullCache'],
-        ];
-    }
-
-    /**
      * Publish the cache service.
      */
     public static function publishCache(ContainerContract $container): void
@@ -138,5 +123,20 @@ class CacheServiceProvider implements ServiceProviderContract
                 prefix: $prefix
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            CacheContract::class => [self::class, 'publishCache'],
+            RedisCache::class    => [self::class, 'publishRedisCache'],
+            Client::class        => [self::class, 'publishRedisClient'],
+            LogCache::class      => [self::class, 'publishLogCache'],
+            NullCache::class     => [self::class, 'publishNullCache'],
+        ];
     }
 }

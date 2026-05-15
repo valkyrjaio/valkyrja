@@ -41,18 +41,18 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RequestHandlerContract::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(ViewThrowableCaughtMiddleware::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(RequestStructMiddleware::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(ResponseStructMiddleware::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, (new HttpServerServiceProvider())->publishers());
-        self::assertArrayHasKey(CacheResponseMiddleware::class, (new HttpServerServiceProvider())->publishers());
+        self::assertArrayHasKey(RequestHandlerContract::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(ViewThrowableCaughtMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(RequestStructMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(ResponseStructMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(CacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
     }
 
     public function testPublishersArray(): void
     {
-        $publishers = (new HttpServerServiceProvider())->publishers();
+        $publishers = new HttpServerServiceProvider()->publishers();
 
         self::assertArrayHasKey(RequestHandlerContract::class, $publishers);
         self::assertArrayHasKey(LogThrowableCaughtMiddleware::class, $publishers);
@@ -76,7 +76,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[RequestHandlerContract::class];
+        $callback = new HttpServerServiceProvider()->publishers()[RequestHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -91,7 +91,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[LogThrowableCaughtMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[LogThrowableCaughtMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -106,7 +106,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $container->setSingleton(ViewResponseFactoryContract::class, self::createStub(ViewResponseFactoryContract::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[ViewThrowableCaughtMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[ViewThrowableCaughtMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(
@@ -121,7 +121,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RequestStructMiddleware::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[RequestStructMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[RequestStructMiddleware::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RequestStructMiddleware::class));
@@ -135,7 +135,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ResponseStructMiddleware::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[ResponseStructMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[ResponseStructMiddleware::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ResponseStructMiddleware::class));
@@ -151,7 +151,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
 
-        $callback = (new HttpServerServiceProvider())->publishers()[ViewRouteNotMatchedMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[ViewRouteNotMatchedMiddleware::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ViewRouteNotMatchedMiddleware::class));
@@ -161,7 +161,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCacheResponseMiddleware(): void
     {
-        $callback = (new HttpServerServiceProvider())->publishers()[CacheResponseMiddleware::class];
+        $callback = new HttpServerServiceProvider()->publishers()[CacheResponseMiddleware::class];
         $callback($this->container);
 
         self::assertInstanceOf(
