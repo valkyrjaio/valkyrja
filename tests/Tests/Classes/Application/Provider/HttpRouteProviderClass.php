@@ -25,7 +25,7 @@ final class HttpRouteProviderClass implements HttpRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         self::$called = true;
 
@@ -38,7 +38,7 @@ final class HttpRouteProviderClass implements HttpRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
     }

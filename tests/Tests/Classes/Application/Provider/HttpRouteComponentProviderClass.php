@@ -23,7 +23,7 @@ final class HttpRouteComponentProviderClass implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getComponentProviders(ApplicationContract $app): array
+    public function getComponentProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -32,7 +32,7 @@ final class HttpRouteComponentProviderClass implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -41,7 +41,7 @@ final class HttpRouteComponentProviderClass implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -50,7 +50,7 @@ final class HttpRouteComponentProviderClass implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
+    public function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -59,7 +59,7 @@ final class HttpRouteComponentProviderClass implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getHttpProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
         return [
             HttpRouteProviderClass::class,

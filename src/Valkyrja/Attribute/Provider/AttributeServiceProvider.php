@@ -23,17 +23,6 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 class AttributeServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            CollectorContract::class => [self::class, 'publishAttributes'],
-        ];
-    }
-
-    /**
      * Publish the attributes service.
      *
      * @param ContainerContract $container The container
@@ -46,5 +35,16 @@ class AttributeServiceProvider implements ServiceProviderContract
                 $container->getSingleton(ReflectorContract::class),
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            CollectorContract::class => [self::class, 'publishAttributes'],
+        ];
     }
 }

@@ -16,7 +16,7 @@ namespace Valkyrja\Throwable\Exception\Abstract;
 use Override;
 use RuntimeException;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
 abstract class ValkyrjaRuntimeException extends RuntimeException implements ValkyrjaThrowable
 {
@@ -26,6 +26,6 @@ abstract class ValkyrjaRuntimeException extends RuntimeException implements Valk
     #[Override]
     public function getTraceCode(): string
     {
-        return ThrowableHandler::getTraceCode($this);
+        return ThrowableFactory::getTraceCode($this);
     }
 }

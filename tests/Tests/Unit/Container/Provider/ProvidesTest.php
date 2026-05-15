@@ -25,7 +25,7 @@ final class ProvidesTest extends TestCase
 {
     public function testPublishers(): void
     {
-        self::assertEmpty(ProvidesClass::publishers());
+        self::assertEmpty(new ProvidesClass()->publishers());
     }
 
     public function testPublish(): void

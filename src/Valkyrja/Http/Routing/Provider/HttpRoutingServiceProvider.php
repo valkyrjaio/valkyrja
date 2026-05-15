@@ -39,7 +39,6 @@ use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
-use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
@@ -47,24 +46,6 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 class HttpRoutingServiceProvider implements ServiceProviderContract
 {
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            RouterContract::class                 => [self::class, 'publishRouter'],
-            RouteCollectionContract::class        => [self::class, 'publishRouteCollection'],
-            MatcherContract::class                => [self::class, 'publishMatcher'],
-            UrlContract::class                    => [self::class, 'publishUrl'],
-            RouteCollectorContract::class         => [self::class, 'publishAttributesRouteCollector'],
-            ProcessorContract::class              => [self::class, 'publishProcessor'],
-            RoutingResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-            HttpRoutingData::class                => [self::class, 'publishData'],
-        ];
-    }
-
     /**
      * Publish the router service.
      *
@@ -219,16 +200,15 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var HttpRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,
-                ...$provider::getControllerClasses(),
+                ...$provider->getControllerClasses(),
             ];
 
             $routes = [
                 ...$routes,
-                ...$provider::getRoutes(),
+                ...$provider->getRoutes(),
             ];
         }
 
@@ -251,5 +231,23 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         }
 
         $container->setSingleton(HttpRoutingData::class, $collection->getData());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            RouterContract::class                 => [self::class, 'publishRouter'],
+            RouteCollectionContract::class        => [self::class, 'publishRouteCollection'],
+            MatcherContract::class                => [self::class, 'publishMatcher'],
+            UrlContract::class                    => [self::class, 'publishUrl'],
+            RouteCollectorContract::class         => [self::class, 'publishAttributesRouteCollector'],
+            ProcessorContract::class              => [self::class, 'publishProcessor'],
+            RoutingResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+            HttpRoutingData::class                => [self::class, 'publishData'],
+        ];
     }
 }

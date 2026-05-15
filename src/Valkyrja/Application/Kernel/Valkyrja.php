@@ -26,15 +26,15 @@ use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
 class Valkyrja implements ApplicationContract
 {
-    /** @var class-string<ComponentProviderContract>[] */
+    /** @var ComponentProviderContract[] */
     protected array $providers = [];
-    /** @var class-string<ServiceProviderContract>[] */
+    /** @var ServiceProviderContract[] */
     protected array $serviceProviders = [];
-    /** @var class-string<ListenerProviderContract>[] */
+    /** @var ListenerProviderContract[] */
     protected array $eventProviders = [];
-    /** @var class-string<CliRouteProviderContract>[] */
+    /** @var CliRouteProviderContract[] */
     protected array $cliRouteProviders = [];
-    /** @var class-string<HttpRouteProviderContract>[] */
+    /** @var HttpRouteProviderContract[] */
     protected array $httpRouteProviders = [];
 
     public function __construct(
@@ -74,15 +74,9 @@ class Valkyrja implements ApplicationContract
             return $this->providers;
         }
 
-        $providers = [];
-
         foreach ($this->config->providers as $provider) {
-            $providers[] = $provider::getComponentProviders($this);
-            // Ensure that the dependencies are loaded before the provider requiring them
-            $providers[] = [$provider];
+            $this->collectProviders($provider);
         }
-
-        $this->providers = array_unique(array_merge(...$providers));
 
         return $this->providers;
     }
@@ -100,10 +94,12 @@ class Valkyrja implements ApplicationContract
         $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $providers[] = $provider::getContainerProviders($this);
+            $providers[] = $provider->getContainerProviders($this);
         }
 
-        $this->serviceProviders = array_unique(array_merge(...$providers));
+        $this->serviceProviders = $providers !== []
+            ? array_merge(...$providers)
+            : [];
 
         return $this->serviceProviders;
     }
@@ -121,10 +117,12 @@ class Valkyrja implements ApplicationContract
         $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $providers[] = $provider::getEventProviders($this);
+            $providers[] = $provider->getEventProviders($this);
         }
 
-        $this->eventProviders = array_unique(array_merge(...$providers));
+        $this->eventProviders = $providers !== []
+            ? array_merge(...$providers)
+            : [];
 
         return $this->eventProviders;
     }
@@ -142,10 +140,12 @@ class Valkyrja implements ApplicationContract
         $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $providers[] = $provider::getCliProviders($this);
+            $providers[] = $provider->getCliProviders($this);
         }
 
-        $this->cliRouteProviders = array_unique(array_merge(...$providers));
+        $this->cliRouteProviders = $providers !== []
+            ? array_merge(...$providers)
+            : [];
 
         return $this->cliRouteProviders;
     }
@@ -163,10 +163,12 @@ class Valkyrja implements ApplicationContract
         $providers = [];
 
         foreach ($this->getProviders() as $provider) {
-            $providers[] = $provider::getHttpProviders($this);
+            $providers[] = $provider->getHttpProviders($this);
         }
 
-        $this->httpRouteProviders = array_unique(array_merge(...$providers));
+        $this->httpRouteProviders = $providers !== []
+            ? array_merge(...$providers)
+            : [];
 
         return $this->httpRouteProviders;
     }
@@ -196,6 +198,19 @@ class Valkyrja implements ApplicationContract
     public function getVersion(): string
     {
         return $this->config->version;
+    }
+
+    /**
+     * Recursively expand a component provider and its sub-providers depth-first,
+     * ensuring each sub-provider is added before the provider that depends on it.
+     */
+    protected function collectProviders(ComponentProviderContract $provider): void
+    {
+        foreach ($provider->getComponentProviders($this) as $subProvider) {
+            $this->collectProviders($subProvider);
+        }
+
+        $this->providers[] = $provider;
     }
 
     /**

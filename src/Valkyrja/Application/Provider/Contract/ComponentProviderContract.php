@@ -24,35 +24,35 @@ interface ComponentProviderContract
     /**
      * Get the component providers this component depends on.
      *
-     * @return class-string<ComponentProviderContract>[]
+     * @return ComponentProviderContract[]
      */
-    public static function getComponentProviders(ApplicationContract $app): array;
+    public function getComponentProviders(ApplicationContract $app): array;
 
     /**
      * Get the component's container service providers.
      *
-     * @return class-string<ServiceProviderContract>[]
+     * @return ServiceProviderContract[]
      */
-    public static function getContainerProviders(ApplicationContract $app): array;
+    public function getContainerProviders(ApplicationContract $app): array;
 
     /**
      * Get the component's event listener providers.
      *
-     * @return class-string<ListenerProviderContract>[]
+     * @return ListenerProviderContract[]
      */
-    public static function getEventProviders(ApplicationContract $app): array;
+    public function getEventProviders(ApplicationContract $app): array;
 
     /**
      * Get the component's cli route providers.
      *
-     * @return class-string<CliRouteProviderContract>[]
+     * @return CliRouteProviderContract[]
      */
-    public static function getCliProviders(ApplicationContract $app): array;
+    public function getCliProviders(ApplicationContract $app): array;
 
     /**
      * Get the component's http route providers.
      *
-     * @return class-string<HttpRouteProviderContract>[]
+     * @return HttpRouteProviderContract[]
      */
-    public static function getHttpProviders(ApplicationContract $app): array;
+    public function getHttpProviders(ApplicationContract $app): array;
 }

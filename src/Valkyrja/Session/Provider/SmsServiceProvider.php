@@ -46,32 +46,6 @@ use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 class SmsServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            SessionContract::class             => [self::class, 'publishSession'],
-            PhpSession::class                  => [self::class, 'publishPhpSession'],
-            NullSession::class                 => [self::class, 'publishNullSession'],
-            CacheSession::class                => [self::class, 'publishCacheSession'],
-            CookieSession::class               => [self::class, 'publishCookieSession'],
-            EncryptedCookieSession::class      => [self::class, 'publishEncryptedCookieSession'],
-            OptionJwtSession::class            => [self::class, 'publishOptionJwtSession'],
-            EncryptedOptionJwtSession::class   => [self::class, 'publishEncryptedOptionJwtSession'],
-            HeaderJwtSession::class            => [self::class, 'publishHeaderJwtSession'],
-            EncryptedHeaderJwtSession::class   => [self::class, 'publishEncryptedHeaderJwtSession'],
-            OptionTokenSession::class          => [self::class, 'publishOptionTokenSession'],
-            EncryptedOptionTokenSession::class => [self::class, 'publishEncryptedOptionTokenSession'],
-            HeaderTokenSession::class          => [self::class, 'publishHeaderTokenSession'],
-            EncryptedHeaderTokenSession::class => [self::class, 'publishEncryptedHeaderTokenSession'],
-            LogSession::class                  => [self::class, 'publishLogSession'],
-            CookieParams::class                => [self::class, 'publishCookieParams'],
-        ];
-    }
-
-    /**
      * Publish the cookie params service.
      */
     public static function publishCookieParams(ContainerContract $container): void
@@ -448,5 +422,31 @@ class SmsServiceProvider implements ServiceProviderContract
                 sessionName: $sessionName,
             ),
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            SessionContract::class             => [self::class, 'publishSession'],
+            PhpSession::class                  => [self::class, 'publishPhpSession'],
+            NullSession::class                 => [self::class, 'publishNullSession'],
+            CacheSession::class                => [self::class, 'publishCacheSession'],
+            CookieSession::class               => [self::class, 'publishCookieSession'],
+            EncryptedCookieSession::class      => [self::class, 'publishEncryptedCookieSession'],
+            OptionJwtSession::class            => [self::class, 'publishOptionJwtSession'],
+            EncryptedOptionJwtSession::class   => [self::class, 'publishEncryptedOptionJwtSession'],
+            HeaderJwtSession::class            => [self::class, 'publishHeaderJwtSession'],
+            EncryptedHeaderJwtSession::class   => [self::class, 'publishEncryptedHeaderJwtSession'],
+            OptionTokenSession::class          => [self::class, 'publishOptionTokenSession'],
+            EncryptedOptionTokenSession::class => [self::class, 'publishEncryptedOptionTokenSession'],
+            HeaderTokenSession::class          => [self::class, 'publishHeaderTokenSession'],
+            EncryptedHeaderTokenSession::class => [self::class, 'publishEncryptedHeaderTokenSession'],
+            LogSession::class                  => [self::class, 'publishLogSession'],
+            CookieParams::class                => [self::class, 'publishCookieParams'],
+        ];
     }
 }

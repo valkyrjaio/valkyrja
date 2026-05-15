@@ -29,22 +29,6 @@ use Vonage\Client\Credentials\CredentialsInterface;
 class SmsServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            MessengerContract::class    => [self::class, 'publishSms'],
-            VonageMessenger::class      => [self::class, 'publishVonageSms'],
-            Client::class               => [self::class, 'publishVonage'],
-            CredentialsInterface::class => [self::class, 'publishVonageCredentials'],
-            LogMessenger::class         => [self::class, 'publishLogSms'],
-            NullMessenger::class        => [self::class, 'publishNullSms'],
-        ];
-    }
-
-    /**
      * Publish the sms service.
      */
     public static function publishSms(ContainerContract $container): void
@@ -130,5 +114,21 @@ class SmsServiceProvider implements ServiceProviderContract
             NullMessenger::class,
             new NullMessenger(),
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            MessengerContract::class    => [self::class, 'publishSms'],
+            VonageMessenger::class      => [self::class, 'publishVonageSms'],
+            Client::class               => [self::class, 'publishVonage'],
+            CredentialsInterface::class => [self::class, 'publishVonageCredentials'],
+            LogMessenger::class         => [self::class, 'publishLogSms'],
+            NullMessenger::class        => [self::class, 'publishNullSms'],
+        ];
     }
 }

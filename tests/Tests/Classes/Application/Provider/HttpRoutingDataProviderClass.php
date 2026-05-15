@@ -24,17 +24,6 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
     public static bool $published = false;
 
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            HttpRoutingData::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
      * Publish the service.
      */
     public static function publishData(ContainerContract $container): void
@@ -42,5 +31,16 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
         self::$published = true;
 
         $container->setSingleton(HttpRoutingData::class, new HttpTestHttpRoutingDataClass());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            HttpRoutingData::class => [self::class, 'publishData'],
+        ];
     }
 }

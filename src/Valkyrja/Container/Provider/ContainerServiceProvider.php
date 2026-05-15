@@ -22,17 +22,6 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 class ContainerServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ContainerData::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
      * Publish the data service.
      */
     public static function publishData(ContainerContract $container): void
@@ -44,5 +33,16 @@ class ContainerServiceProvider implements ServiceProviderContract
         }
 
         $container->setSingleton(ContainerData::class, $container->getData());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ContainerData::class => [self::class, 'publishData'],
+        ];
     }
 }

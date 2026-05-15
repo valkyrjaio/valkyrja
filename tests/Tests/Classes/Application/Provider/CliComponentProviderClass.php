@@ -16,66 +16,11 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Application\Provider\Contract\PublishableComponentProviderContract;
 
-final class CliComponentProviderClass implements ComponentProviderContract, PublishableComponentProviderContract
+final class CliComponentProviderClass implements ComponentProviderContract
 {
     public static bool $publishedContainerData = false;
 
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getComponentProviders(ApplicationContract $app): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getContainerProviders(ApplicationContract $app): array
-    {
-        return [
-            CliContainerDataProviderClass::class,
-            CliRoutingDataProviderClass::class,
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getEventProviders(ApplicationContract $app): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
-    {
-        return [
-            CliRouteProviderClass::class,
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getHttpProviders(ApplicationContract $app): array
-    {
-        return [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public static function publish(ApplicationContract $app): void
     {
         if ($app->getDebugMode()) {
@@ -83,5 +28,55 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
         }
 
         self::$publishedContainerData = true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getComponentProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getContainerProviders(ApplicationContract $app): array
+    {
+        return [
+            new CliContainerDataProviderClass(),
+            new CliRoutingDataProviderClass(),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getEventProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getCliProviders(ApplicationContract $app): array
+    {
+        return [
+            new CliRouteProviderClass(),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getHttpProviders(ApplicationContract $app): array
+    {
+        return [];
     }
 }

@@ -16,19 +16,11 @@ namespace Valkyrja\Application\Provider;
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
 use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
 
 class CliWithHttpApplicationComponentProvider implements ComponentProviderContract
 {
@@ -36,22 +28,15 @@ class CliWithHttpApplicationComponentProvider implements ComponentProviderContra
      * @inheritDoc
      */
     #[Override]
-    public static function getComponentProviders(ApplicationContract $app): array
+    public function getComponentProviders(ApplicationContract $app): array
     {
         return [
-            ContainerComponentProvider::class,
-            DispatchComponentProvider::class,
-            CliInteractionComponentProvider::class,
-            CliMiddlewareComponentProvider::class,
-            CliRoutingComponentProvider::class,
-            CliServerComponentProvider::class,
-            EventComponentProvider::class,
-            HttpMessageComponentProvider::class,
-            HttpMiddlewareComponentProvider::class,
-            HttpRoutingComponentProvider::class,
-            HttpRoutingCliComponentProvider::class,
-            HttpServerComponentProvider::class,
-            LogComponentProvider::class,
+            new CliApplicationComponentProvider(),
+            new HttpMessageComponentProvider(),
+            new HttpMiddlewareComponentProvider(),
+            new HttpRoutingComponentProvider(),
+            new HttpRoutingCliComponentProvider(),
+            new HttpServerComponentProvider(),
         ];
     }
 
@@ -59,7 +44,7 @@ class CliWithHttpApplicationComponentProvider implements ComponentProviderContra
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -68,7 +53,7 @@ class CliWithHttpApplicationComponentProvider implements ComponentProviderContra
      * @inheritDoc
      */
     #[Override]
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -77,7 +62,7 @@ class CliWithHttpApplicationComponentProvider implements ComponentProviderContra
      * @inheritDoc
      */
     #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
+    public function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -86,7 +71,7 @@ class CliWithHttpApplicationComponentProvider implements ComponentProviderContra
      * @inheritDoc
      */
     #[Override]
-    public static function getHttpProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
         return [];
     }

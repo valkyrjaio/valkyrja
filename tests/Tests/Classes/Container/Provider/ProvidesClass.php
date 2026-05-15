@@ -22,13 +22,13 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
  */
 final class ProvidesClass implements ServiceProviderContract
 {
-    #[Override]
-    public static function publishers(): array
-    {
-        return [];
-    }
-
     public static function publish(ContainerContract $container): void
     {
+    }
+
+    #[Override]
+    public function publishers(): array
+    {
+        return [];
     }
 }

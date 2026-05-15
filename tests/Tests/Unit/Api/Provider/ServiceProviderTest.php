@@ -30,7 +30,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ApiContract::class, ApiServiceProvider::publishers());
+        self::assertArrayHasKey(ApiContract::class, new ApiServiceProvider()->publishers());
     }
 
     /**
@@ -40,7 +40,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
-        $callback = ApiServiceProvider::publishers()[ApiContract::class];
+        $callback = new ApiServiceProvider()->publishers()[ApiContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Api::class, $this->container->getSingleton(ApiContract::class));

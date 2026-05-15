@@ -36,22 +36,6 @@ use Valkyrja\View\Renderer\TwigRenderer;
 class ViewServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            RendererContract::class            => [self::class, 'publishRenderer'],
-            PhpRenderer::class                 => [self::class, 'publishPhpRenderer'],
-            OrkaRenderer::class                => [self::class, 'publishOrkaRenderer'],
-            TwigRenderer::class                => [self::class, 'publishTwigRenderer'],
-            Environment::class                 => [self::class, 'publishTwigEnvironment'],
-            ViewResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
-        ];
-    }
-
-    /**
      * Publish the renderer service.
      */
     public static function publishRenderer(ContainerContract $container): void
@@ -263,5 +247,21 @@ class ViewServiceProvider implements ServiceProviderContract
         }
 
         return $replacementClasses;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            RendererContract::class            => [self::class, 'publishRenderer'],
+            PhpRenderer::class                 => [self::class, 'publishPhpRenderer'],
+            OrkaRenderer::class                => [self::class, 'publishOrkaRenderer'],
+            TwigRenderer::class                => [self::class, 'publishTwigRenderer'],
+            Environment::class                 => [self::class, 'publishTwigEnvironment'],
+            ViewResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
+        ];
     }
 }

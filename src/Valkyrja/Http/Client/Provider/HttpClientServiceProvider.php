@@ -28,21 +28,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 class HttpClientServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ClientContract::class => [self::class, 'publishClient'],
-            GuzzleClient::class   => [self::class, 'publishGuzzleClient'],
-            Client::class         => [self::class, 'publishGuzzle'],
-            LogClient::class      => [self::class, 'publishLogClient'],
-            NullClient::class     => [self::class, 'publishNullClient'],
-        ];
-    }
-
-    /**
      * Publish the client service.
      */
     public static function publishClient(ContainerContract $container): void
@@ -105,5 +90,20 @@ class HttpClientServiceProvider implements ServiceProviderContract
             Client::class,
             new Client()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ClientContract::class => [self::class, 'publishClient'],
+            GuzzleClient::class   => [self::class, 'publishGuzzleClient'],
+            Client::class         => [self::class, 'publishGuzzle'],
+            LogClient::class      => [self::class, 'publishLogClient'],
+            NullClient::class     => [self::class, 'publishNullClient'],
+        ];
     }
 }

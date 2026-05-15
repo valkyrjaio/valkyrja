@@ -22,17 +22,6 @@ use Valkyrja\Reflection\Reflector\Reflector;
 class ReflectionServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ReflectorContract::class => [self::class, 'publishReflection'],
-        ];
-    }
-
-    /**
      * Publish the reflection service.
      *
      * @param ContainerContract $container The container
@@ -43,5 +32,16 @@ class ReflectionServiceProvider implements ServiceProviderContract
             ReflectorContract::class,
             new Reflector()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ReflectorContract::class => [self::class, 'publishReflection'],
+        ];
     }
 }

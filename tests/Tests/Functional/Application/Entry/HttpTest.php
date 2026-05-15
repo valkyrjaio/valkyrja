@@ -80,8 +80,8 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: true,
             providers: [
-                HttpApplicationComponentProvider::class,
-                HttpComponentProviderClass::class,
+                new HttpApplicationComponentProvider(),
+                new HttpComponentProviderClass(),
             ],
         );
 
@@ -117,8 +117,8 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: false,
             providers: [
-                HttpApplicationComponentProvider::class,
-                HttpComponentProviderClass::class,
+                new HttpApplicationComponentProvider(),
+                new HttpComponentProviderClass(),
             ],
             callbacks: [
                 [HttpComponentProviderClass::class, 'publish'],
@@ -153,8 +153,8 @@ final class HttpTest extends TestCase
             dir: $dir,
             debugMode: true,
             providers: [
-                HttpApplicationComponentProvider::class,
-                HttpComponentProviderClass::class,
+                new HttpApplicationComponentProvider(),
+                new HttpComponentProviderClass(),
             ],
             callbacks: [
                 [HttpComponentProviderClass::class, 'publish'],

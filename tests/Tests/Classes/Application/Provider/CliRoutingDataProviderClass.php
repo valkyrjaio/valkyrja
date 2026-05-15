@@ -24,17 +24,6 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
     public static bool $published = false;
 
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            CliRoutingData::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
      * Publish the service.
      */
     public static function publishData(ContainerContract $container): void
@@ -42,5 +31,16 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
         self::$published = true;
 
         $container->setSingleton(CliRoutingData::class, new CliTestCliRoutingDataClass());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            CliRoutingData::class => [self::class, 'publishData'],
+        ];
     }
 }

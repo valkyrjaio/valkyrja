@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Override;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackException;
 use Valkyrja\Tests\Classes\Container\Manager\ProvidersAwareClass;
-use Valkyrja\Tests\Classes\Container\Provider\DeferredProviderClass;
 use Valkyrja\Tests\Classes\Container\Provider\InvalidDeferredProviderClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
 use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
@@ -27,6 +27,13 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class ProvidersAwareTest extends TestCase
 {
+    #[Override]
+    protected function setUp(): void
+    {
+        ProviderClass::$publishCalled          = false;
+        ProviderClass::$publishSecondaryCalled = false;
+    }
+
     public function testRegister(): void
     {
         $providersAware = new ProvidersAwareClass();
@@ -34,35 +41,24 @@ final class ProvidersAwareTest extends TestCase
         self::assertFalse(ProviderClass::$publishCalled);
         self::assertFalse(ProviderClass::$publishSecondaryCalled);
 
-        self::assertFalse($providersAware->isDeferred(ProvidedClass::class));
-        self::assertFalse($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
-        self::assertFalse($providersAware->isRegistered(ProviderClass::class));
 
-        $providersAware->register(ProviderClass::class);
-        // Testing the fact a registered provider isn't registered more than once
-        $providersAware->register(ProviderClass::class);
+        $providersAware->register(new ProviderClass());
+        // Registering the same provider again just overwrites the callbacks
+        $providersAware->register(new ProviderClass());
 
         self::assertFalse(ProviderClass::$publishCalled);
         self::assertFalse(ProviderClass::$publishSecondaryCalled);
 
-        // Since this provider is immediately published
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
-        // Since this provider is immediately published
         self::assertFalse($providersAware->isPublished(ProvidedClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
-
-        self::assertTrue($providersAware->isRegistered(ProviderClass::class));
 
         $providersAware->publish(ProvidedClass::class);
 
         self::assertTrue(ProviderClass::$publishCalled);
         self::assertFalse(ProviderClass::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
 
@@ -71,68 +67,44 @@ final class ProvidersAwareTest extends TestCase
         self::assertTrue(ProviderClass::$publishCalled);
         self::assertTrue(ProviderClass::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedSecondaryClass::class));
     }
 
-    public function testRegisterDeferred(): void
+    public function testPublishBeforeRegisterIsNoOp(): void
     {
         $providersAware = new ProvidersAwareClass();
 
         $providersAware->publish(ProvidedClass::class);
 
-        self::assertFalse(DeferredProviderClass::$publishCalled);
-        self::assertFalse(DeferredProviderClass::$publishSecondaryCalled);
-
-        self::assertFalse($providersAware->isDeferred(ProvidedClass::class));
-        self::assertFalse($providersAware->isDeferred(ProvidedSecondaryClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
-        self::assertFalse($providersAware->isRegistered(DeferredProviderClass::class));
-
-        $providersAware->register(DeferredProviderClass::class);
-
-        self::assertFalse(DeferredProviderClass::$publishCalled);
-        self::assertFalse(DeferredProviderClass::$publishSecondaryCalled);
-
-        // Since this provider is deferred
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
-        // Since this provider is deferred
         self::assertFalse($providersAware->isPublished(ProvidedClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
 
-        self::assertTrue($providersAware->isRegistered(DeferredProviderClass::class));
+        $providersAware->register(new ProviderClass());
 
         $providersAware->publish(ProvidedClass::class);
 
-        self::assertTrue(DeferredProviderClass::$publishCalled);
-        self::assertFalse(DeferredProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderClass::$publishCalled);
+        self::assertFalse(ProviderClass::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedClass::class));
         self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
 
         $providersAware->publish(ProvidedSecondaryClass::class);
 
-        self::assertTrue(DeferredProviderClass::$publishCalled);
-        self::assertTrue(DeferredProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderClass::$publishCalled);
+        self::assertTrue(ProviderClass::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isDeferred(ProvidedClass::class));
-        self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedSecondaryClass::class));
     }
 
-    public function testRegisterDeferredInvalidCallable(): void
+    public function testRegisterInvalidCallable(): void
     {
         $this->expectException(ContainerInvalidPublishCallbackException::class);
 
         $providersAware = new ProvidersAwareClass();
 
-        $providersAware->register(InvalidDeferredProviderClass::class);
+        $providersAware->register(new InvalidDeferredProviderClass());
     }
 }

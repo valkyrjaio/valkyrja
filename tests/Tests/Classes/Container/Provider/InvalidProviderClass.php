@@ -19,7 +19,7 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 final class InvalidProviderClass implements ServiceProviderContract
 {
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [];
     }

@@ -24,17 +24,6 @@ use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 class ApiServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ApiContract::class => [self::class, 'publishApi'],
-        ];
-    }
-
-    /**
      * Publish the api service.
      *
      * @param ContainerContract $container The container
@@ -50,5 +39,16 @@ class ApiServiceProvider implements ServiceProviderContract
                 debug: $app->getDebugMode()
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ApiContract::class => [self::class, 'publishApi'],
+        ];
     }
 }

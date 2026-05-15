@@ -46,10 +46,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RouteCollectorContract::class, CliRoutingServiceProvider::publishers());
-        self::assertArrayHasKey(RouterContract::class, CliRoutingServiceProvider::publishers());
-        self::assertArrayHasKey(RouteCollectionContract::class, CliRoutingServiceProvider::publishers());
-        self::assertArrayHasKey(CliRoutingData::class, CliRoutingServiceProvider::publishers());
+        self::assertArrayHasKey(RouteCollectorContract::class, new CliRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(RouterContract::class, new CliRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(RouteCollectionContract::class, new CliRoutingServiceProvider()->publishers());
+        self::assertArrayHasKey(CliRoutingData::class, new CliRoutingServiceProvider()->publishers());
     }
 
     /**
@@ -60,7 +60,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectorContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(AttributeRouteCollector::class, $this->container->getSingleton(RouteCollectorContract::class));
@@ -71,7 +71,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributeCollectorWithoutAttributesOrReflector(): void
     {
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectorContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(AttributeRouteCollector::class, $this->container->getSingleton(RouteCollectorContract::class));
@@ -91,7 +91,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
-        $callback = CliRoutingServiceProvider::publishers()[RouterContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouterContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Router::class, $this->container->getSingleton(RouterContract::class));
@@ -103,7 +103,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(CliRoutingData::class, new CliRoutingData());
         $application->method('getDebugMode')->willReturn(false);
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectionContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $this->container->getSingleton(RouteCollectionContract::class));
@@ -131,7 +131,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(RouteCollectionContract::class));
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectionContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertTrue($container->has(RouteCollectionContract::class));
@@ -145,7 +145,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCollectionWithoutData(): void
     {
-        $this->container->register(CliRoutingServiceProvider::class);
+        $this->container->register(new CliRoutingServiceProvider());
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
@@ -158,9 +158,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
-        $application->expects($this->once())->method('getCliProviders')->willReturn([RouteProviderClass::class]);
+        $application->expects($this->once())->method('getCliProviders')->willReturn([new RouteProviderClass()]);
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectionContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
@@ -173,7 +173,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCollectionWithoutDataDebugModeTrue(): void
     {
-        $this->container->register(CliRoutingServiceProvider::class);
+        $this->container->register(new CliRoutingServiceProvider());
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
@@ -186,9 +186,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
-        $application->expects($this->once())->method('getCliProviders')->willReturn([RouteProviderClass::class]);
+        $application->expects($this->once())->method('getCliProviders')->willReturn([new RouteProviderClass()]);
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectionContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
@@ -201,7 +201,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCollectionWithoutDataNoRoutes(): void
     {
-        $this->container->register(CliRoutingServiceProvider::class);
+        $this->container->register(new CliRoutingServiceProvider());
 
         $this->container->setSingleton(ApplicationContract::class, $application = $this->createMock(ApplicationContract::class));
         $this->container->setSingleton(RouteCollectorContract::class, $collector = $this->createMock(RouteCollectorContract::class));
@@ -216,7 +216,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $application->expects($this->once())->method('getCliProviders')->willReturn([]);
 
-        $callback = CliRoutingServiceProvider::publishers()[RouteCollectionContract::class];
+        $callback = new CliRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));

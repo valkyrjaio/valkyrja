@@ -30,9 +30,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(CryptContract::class, CryptServiceProvider::publishers());
-        self::assertArrayHasKey(SodiumCrypt::class, CryptServiceProvider::publishers());
-        self::assertArrayHasKey(NullCrypt::class, CryptServiceProvider::publishers());
+        self::assertArrayHasKey(CryptContract::class, new CryptServiceProvider()->publishers());
+        self::assertArrayHasKey(SodiumCrypt::class, new CryptServiceProvider()->publishers());
+        self::assertArrayHasKey(NullCrypt::class, new CryptServiceProvider()->publishers());
     }
 
     /**
@@ -42,7 +42,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(SodiumCrypt::class, self::createStub(SodiumCrypt::class));
 
-        $callback = CryptServiceProvider::publishers()[CryptContract::class];
+        $callback = new CryptServiceProvider()->publishers()[CryptContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(CryptContract::class));
@@ -50,7 +50,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishSodiumCrypt(): void
     {
-        $callback = CryptServiceProvider::publishers()[SodiumCrypt::class];
+        $callback = new CryptServiceProvider()->publishers()[SodiumCrypt::class];
         $callback($this->container);
 
         self::assertInstanceOf(SodiumCrypt::class, $this->container->getSingleton(SodiumCrypt::class));
@@ -58,7 +58,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullCrypt(): void
     {
-        $callback = CryptServiceProvider::publishers()[NullCrypt::class];
+        $callback = new CryptServiceProvider()->publishers()[NullCrypt::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullCrypt::class, $this->container->getSingleton(NullCrypt::class));

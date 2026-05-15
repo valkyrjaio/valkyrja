@@ -33,22 +33,6 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 class CliMiddlewareServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            InputReceivedHandlerContract::class   => [self::class, 'publishInputReceivedHandler'],
-            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
-            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
-            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
-            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
-            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
-        ];
-    }
-
-    /**
      * Publish the RequestReceivedHandler service.
      *
      * @param ContainerContract $container The container
@@ -160,5 +144,21 @@ class CliMiddlewareServiceProvider implements ServiceProviderContract
         );
 
         $handler->add(...$middleware);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            InputReceivedHandlerContract::class   => [self::class, 'publishInputReceivedHandler'],
+            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
+            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
+        ];
     }
 }

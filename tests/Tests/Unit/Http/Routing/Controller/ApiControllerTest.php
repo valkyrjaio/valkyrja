@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -109,7 +109,7 @@ final class ApiControllerTest extends TestCase
         $body = $jsonFromException->getBody()->getContents();
 
         $json = [
-            'traceCode' => ThrowableHandler::getTraceCode($exception),
+            'traceCode' => ThrowableFactory::getTraceCode($exception),
         ];
 
         self::assertStringContainsString(json_encode($json, JSON_THROW_ON_ERROR), $body);
@@ -140,7 +140,7 @@ final class ApiControllerTest extends TestCase
         $body = $jsonFromException->getBody()->getContents();
 
         $json = [
-            'traceCode' => ThrowableHandler::getTraceCode($exception),
+            'traceCode' => ThrowableFactory::getTraceCode($exception),
         ];
 
         self::assertStringContainsString(json_encode($json, JSON_THROW_ON_ERROR), $body);

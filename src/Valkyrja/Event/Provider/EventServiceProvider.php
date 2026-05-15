@@ -26,26 +26,11 @@ use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
-use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 class EventServiceProvider implements ServiceProviderContract
 {
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ListenerCollectorContract::class  => [self::class, 'publishAttributesListenerCollector'],
-            EventDispatcherContract::class    => [self::class, 'publishDispatcher'],
-            ListenerCollectionContract::class => [self::class, 'publishListenerCollection'],
-            EventData::class                  => [self::class, 'publishData'],
-        ];
-    }
-
     /**
      * Publish the attributes service.
      */
@@ -117,16 +102,15 @@ class EventServiceProvider implements ServiceProviderContract
         $listenerClasses = [];
         $listeners       = [];
 
-        /** @var ListenerProviderContract $provider */
         foreach ($providers as $provider) {
             $listenerClasses = [
                 ...$listenerClasses,
-                ...$provider::getListenerClasses(),
+                ...$provider->getListenerClasses(),
             ];
 
             $listeners = [
                 ...$listeners,
-                ...$provider::getListeners(),
+                ...$provider->getListeners(),
             ];
         }
 
@@ -147,5 +131,19 @@ class EventServiceProvider implements ServiceProviderContract
         }
 
         $container->setSingleton(EventData::class, $collection->getData());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ListenerCollectorContract::class  => [self::class, 'publishAttributesListenerCollector'],
+            EventDispatcherContract::class    => [self::class, 'publishDispatcher'],
+            ListenerCollectionContract::class => [self::class, 'publishListenerCollection'],
+            EventData::class                  => [self::class, 'publishData'],
+        ];
     }
 }

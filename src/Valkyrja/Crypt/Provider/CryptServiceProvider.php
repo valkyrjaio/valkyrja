@@ -25,19 +25,6 @@ use Valkyrja\Crypt\Manager\SodiumCrypt;
 class CryptServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            CryptContract::class => [self::class, 'publishCrypt'],
-            SodiumCrypt::class   => [self::class, 'publishSodiumCrypt'],
-            NullCrypt::class     => [self::class, 'publishNullCrypt'],
-        ];
-    }
-
-    /**
      * Publish the crypt service.
      */
     public static function publishCrypt(ContainerContract $container): void
@@ -77,5 +64,18 @@ class CryptServiceProvider implements ServiceProviderContract
             NullCrypt::class,
             new NullCrypt()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            CryptContract::class => [self::class, 'publishCrypt'],
+            SodiumCrypt::class   => [self::class, 'publishSodiumCrypt'],
+            NullCrypt::class     => [self::class, 'publishNullCrypt'],
+        ];
     }
 }

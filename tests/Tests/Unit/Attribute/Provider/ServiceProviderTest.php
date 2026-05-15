@@ -30,7 +30,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(CollectorContract::class, AttributeServiceProvider::publishers());
+        self::assertArrayHasKey(CollectorContract::class, new AttributeServiceProvider()->publishers());
     }
 
     /**
@@ -40,7 +40,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
-        $callback = AttributeServiceProvider::publishers()[CollectorContract::class];
+        $callback = new AttributeServiceProvider()->publishers()[CollectorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Collector::class, $this->container->getSingleton(CollectorContract::class));

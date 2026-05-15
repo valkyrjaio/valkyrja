@@ -29,23 +29,6 @@ use Valkyrja\Orm\Repository\Repository;
 class OrmServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ManagerContract::class => [self::class, 'publishManager'],
-            MysqlManager::class    => [self::class, 'publishMysqlManager'],
-            PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
-            SqliteManager::class   => [self::class, 'publishSqliteManager'],
-            PDO::class             => [self::class, 'publishPdo'],
-            NullManager::class     => [self::class, 'publishNullManager'],
-            Repository::class      => [self::class, 'publishRepository'],
-        ];
-    }
-
-    /**
      * Publish the manager service.
      */
     public static function publishManager(ContainerContract $container): void
@@ -303,5 +286,22 @@ class OrmServiceProvider implements ServiceProviderContract
             manager: $manager,
             entity: $entity
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ManagerContract::class => [self::class, 'publishManager'],
+            MysqlManager::class    => [self::class, 'publishMysqlManager'],
+            PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
+            SqliteManager::class   => [self::class, 'publishSqliteManager'],
+            PDO::class             => [self::class, 'publishPdo'],
+            NullManager::class     => [self::class, 'publishNullManager'],
+            Repository::class      => [self::class, 'publishRepository'],
+        ];
     }
 }

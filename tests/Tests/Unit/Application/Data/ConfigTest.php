@@ -31,12 +31,7 @@ final class ConfigTest extends TestCase
         self::assertSame(ApplicationInfo::VERSION, $data->version);
         self::assertFalse($data->debugMode);
         self::assertNotEmpty($data->providers);
-        self::assertSame(
-            [
-                ApplicationComponentProvider::class,
-            ],
-            $data->providers
-        );
+        self::assertInstanceOf(ApplicationComponentProvider::class, $data->providers[0]);
         self::assertSame('UTC', $data->timezone);
     }
 }

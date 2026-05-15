@@ -16,7 +16,7 @@ namespace Valkyrja\Throwable\Exception\Abstract;
 use InvalidArgumentException;
 use Override;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
 abstract class ValkyrjaInvalidArgumentException extends InvalidArgumentException implements ValkyrjaThrowable
 {
@@ -26,6 +26,6 @@ abstract class ValkyrjaInvalidArgumentException extends InvalidArgumentException
     #[Override]
     public function getTraceCode(): string
     {
-        return ThrowableHandler::getTraceCode($this);
+        return ThrowableFactory::getTraceCode($this);
     }
 }

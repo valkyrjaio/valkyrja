@@ -51,27 +51,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 class CliServerServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            InputHandlerContract::class                    => [self::class, 'publishInputHandler'],
-            HelpCommand::class                             => [self::class, 'publishHelpCommand'],
-            ListBashCommand::class                         => [self::class, 'publishListBashCommand'],
-            ListCommand::class                             => [self::class, 'publishListCommand'],
-            VersionCommand::class                          => [self::class, 'publishVersionCommand'],
-            LogThrowableCaughtMiddleware::class            => [self::class, 'publishLogThrowableCaughtMiddleware'],
-            OutputThrowableCaughtMiddleware::class         => [self::class, 'publishOutputThrowableCaughtMiddleware'],
-            CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
-            CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
-            CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
-            CheckCommandForTypoMiddleware::class           => [self::class, 'publishCheckCommandForTypoMiddleware'],
-        ];
-    }
-
-    /**
      * Publish the input handler service.
      */
     public static function publishInputHandler(ContainerContract $container): void
@@ -288,5 +267,26 @@ class CliServerServiceProvider implements ServiceProviderContract
                 collection: $container->getSingleton(RouteCollectionContract::class),
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            InputHandlerContract::class                    => [self::class, 'publishInputHandler'],
+            HelpCommand::class                             => [self::class, 'publishHelpCommand'],
+            ListBashCommand::class                         => [self::class, 'publishListBashCommand'],
+            ListCommand::class                             => [self::class, 'publishListCommand'],
+            VersionCommand::class                          => [self::class, 'publishVersionCommand'],
+            LogThrowableCaughtMiddleware::class            => [self::class, 'publishLogThrowableCaughtMiddleware'],
+            OutputThrowableCaughtMiddleware::class         => [self::class, 'publishOutputThrowableCaughtMiddleware'],
+            CheckForHelpOptionsMiddleware::class           => [self::class, 'publishCheckForHelpOptionsMiddleware'],
+            CheckForVersionOptionsMiddleware::class        => [self::class, 'publishCheckForVersionOptionsMiddleware'],
+            CheckGlobalInteractionOptionsMiddleware::class => [self::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
+            CheckCommandForTypoMiddleware::class           => [self::class, 'publishCheckCommandForTypoMiddleware'],
+        ];
     }
 }

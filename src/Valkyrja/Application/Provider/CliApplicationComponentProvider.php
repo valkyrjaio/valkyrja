@@ -20,9 +20,6 @@ use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
 use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
 use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
 use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Log\Provider\LogComponentProvider;
 
 class CliApplicationComponentProvider implements ComponentProviderContract
@@ -31,17 +28,15 @@ class CliApplicationComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getComponentProviders(ApplicationContract $app): array
+    public function getComponentProviders(ApplicationContract $app): array
     {
         return [
-            ContainerComponentProvider::class,
-            DispatchComponentProvider::class,
-            CliInteractionComponentProvider::class,
-            CliMiddlewareComponentProvider::class,
-            CliRoutingComponentProvider::class,
-            CliServerComponentProvider::class,
-            EventComponentProvider::class,
-            LogComponentProvider::class,
+            new ApplicationComponentProvider(),
+            new CliInteractionComponentProvider(),
+            new CliMiddlewareComponentProvider(),
+            new CliRoutingComponentProvider(),
+            new CliServerComponentProvider(),
+            new LogComponentProvider(),
         ];
     }
 
@@ -49,7 +44,7 @@ class CliApplicationComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -58,7 +53,7 @@ class CliApplicationComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -67,7 +62,7 @@ class CliApplicationComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
+    public function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -76,7 +71,7 @@ class CliApplicationComponentProvider implements ComponentProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getHttpProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
         return [];
     }

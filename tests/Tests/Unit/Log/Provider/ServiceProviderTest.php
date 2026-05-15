@@ -32,11 +32,11 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(LoggerContract::class, LogServiceProvider::publishers());
-        self::assertArrayHasKey(PsrLogger::class, LogServiceProvider::publishers());
-        self::assertArrayHasKey(NullLogger::class, LogServiceProvider::publishers());
-        self::assertArrayHasKey(LoggerInterface::class, LogServiceProvider::publishers());
-        self::assertArrayHasKey(Logger::class, LogServiceProvider::publishers());
+        self::assertArrayHasKey(LoggerContract::class, new LogServiceProvider()->publishers());
+        self::assertArrayHasKey(PsrLogger::class, new LogServiceProvider()->publishers());
+        self::assertArrayHasKey(NullLogger::class, new LogServiceProvider()->publishers());
+        self::assertArrayHasKey(LoggerInterface::class, new LogServiceProvider()->publishers());
+        self::assertArrayHasKey(Logger::class, new LogServiceProvider()->publishers());
     }
 
     /**
@@ -46,7 +46,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PsrLogger::class, self::createStub(PsrLogger::class));
 
-        $callback = LogServiceProvider::publishers()[LoggerContract::class];
+        $callback = new LogServiceProvider()->publishers()[LoggerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(LoggerContract::class));
@@ -59,7 +59,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(LoggerInterface::class, self::createStub(LoggerInterface::class));
 
-        $callback = LogServiceProvider::publishers()[PsrLogger::class];
+        $callback = new LogServiceProvider()->publishers()[PsrLogger::class];
         $callback($this->container);
 
         self::assertInstanceOf(PsrLogger::class, $this->container->getSingleton(PsrLogger::class));
@@ -72,7 +72,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
-        $callback = LogServiceProvider::publishers()[LoggerInterface::class];
+        $callback = new LogServiceProvider()->publishers()[LoggerInterface::class];
         $callback($this->container);
 
         self::assertInstanceOf(Logger::class, $this->container->getSingleton(LoggerInterface::class));
@@ -80,7 +80,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMonolog(): void
     {
-        $callback = LogServiceProvider::publishers()[Logger::class];
+        $callback = new LogServiceProvider()->publishers()[Logger::class];
         $callback($this->container);
 
         self::assertInstanceOf(Logger::class, $this->container->getSingleton(Logger::class));
@@ -88,7 +88,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullLogger(): void
     {
-        $callback = LogServiceProvider::publishers()[NullLogger::class];
+        $callback = new LogServiceProvider()->publishers()[NullLogger::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullLogger::class, $this->container->getSingleton(NullLogger::class));

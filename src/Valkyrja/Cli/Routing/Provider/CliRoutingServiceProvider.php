@@ -30,7 +30,6 @@ use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
@@ -38,20 +37,6 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 class CliRoutingServiceProvider implements ServiceProviderContract
 {
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            RouteCollectorContract::class  => [self::class, 'publishAttributeRouteCollector'],
-            RouterContract::class          => [self::class, 'publishRouter'],
-            RouteCollectionContract::class => [self::class, 'publishRouteCollection'],
-            CliRoutingData::class          => [self::class, 'publishData'],
-        ];
-    }
-
     /**
      * Publish the attribute collector service.
      */
@@ -136,16 +121,15 @@ class CliRoutingServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var CliRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,
-                ...$provider::getControllerClasses(),
+                ...$provider->getControllerClasses(),
             ];
 
             $routes = [
                 ...$routes,
-                ...$provider::getRoutes(),
+                ...$provider->getRoutes(),
             ];
         }
 
@@ -162,5 +146,19 @@ class CliRoutingServiceProvider implements ServiceProviderContract
         $collection->add(...$routes);
 
         $container->setSingleton(CliRoutingData::class, $collection->getData());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            RouteCollectorContract::class  => [self::class, 'publishAttributeRouteCollector'],
+            RouterContract::class          => [self::class, 'publishRouter'],
+            RouteCollectionContract::class => [self::class, 'publishRouteCollection'],
+            CliRoutingData::class          => [self::class, 'publishData'],
+        ];
     }
 }

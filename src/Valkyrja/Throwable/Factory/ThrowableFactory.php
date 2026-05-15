@@ -11,20 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Throwable\Handler\Abstract;
+namespace Valkyrja\Throwable\Factory;
 
-use Override;
 use Throwable;
-use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 
 use function md5;
 
-abstract class ThrowableHandler implements ThrowableHandlerContract
+class ThrowableFactory
 {
     /**
-     * @inheritDoc
+     * Get the trace code for a throwable.
+     *
+     * @param Throwable $throwable The throwable
      */
-    #[Override]
     public static function getTraceCode(Throwable $throwable): string
     {
         return md5($throwable::class . $throwable->getTraceAsString());

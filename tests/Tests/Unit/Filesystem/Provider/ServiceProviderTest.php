@@ -36,14 +36,14 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(FilesystemContract::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(FlysystemFilesystem::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(LocalFlysystemFilesystem::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(LocalFilesystemAdapter::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(S3FlysystemFilesystem::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(AwsS3V3Adapter::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(InMemoryFilesystem::class, FilesystemServiceProvider::publishers());
-        self::assertArrayHasKey(NullFilesystem::class, FilesystemServiceProvider::publishers());
+        self::assertArrayHasKey(FilesystemContract::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(FlysystemFilesystem::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(LocalFlysystemFilesystem::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(LocalFilesystemAdapter::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(S3FlysystemFilesystem::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(AwsS3V3Adapter::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(InMemoryFilesystem::class, new FilesystemServiceProvider()->publishers());
+        self::assertArrayHasKey(NullFilesystem::class, new FilesystemServiceProvider()->publishers());
     }
 
     /**
@@ -54,7 +54,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(FlysystemFilesystem::class, self::createStub(FlysystemFilesystem::class));
 
-        $callback = FilesystemServiceProvider::publishers()[FilesystemContract::class];
+        $callback = new FilesystemServiceProvider()->publishers()[FilesystemContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(FlysystemFilesystem::class, $this->container->getSingleton(FilesystemContract::class));
@@ -68,7 +68,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(LocalFlysystemFilesystem::class, self::createStub(LocalFlysystemFilesystem::class));
 
-        $callback = FilesystemServiceProvider::publishers()[FlysystemFilesystem::class];
+        $callback = new FilesystemServiceProvider()->publishers()[FlysystemFilesystem::class];
         $callback($this->container);
 
         self::assertInstanceOf(LocalFlysystemFilesystem::class, $this->container->getSingleton(FlysystemFilesystem::class));
@@ -82,7 +82,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(LocalFilesystemAdapter::class, self::createStub(LocalFilesystemAdapter::class));
 
-        $callback = FilesystemServiceProvider::publishers()[LocalFlysystemFilesystem::class];
+        $callback = new FilesystemServiceProvider()->publishers()[LocalFlysystemFilesystem::class];
         $callback($this->container);
 
         self::assertInstanceOf(LocalFlysystemFilesystem::class, $this->container->getSingleton(LocalFlysystemFilesystem::class));
@@ -92,7 +92,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, new Env());
 
-        $callback = FilesystemServiceProvider::publishers()[LocalFilesystemAdapter::class];
+        $callback = new FilesystemServiceProvider()->publishers()[LocalFilesystemAdapter::class];
         $callback($this->container);
 
         self::assertInstanceOf(LocalFilesystemAdapter::class, $this->container->getSingleton(LocalFilesystemAdapter::class));
@@ -106,7 +106,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Env::class, new Env());
         $this->container->setSingleton(AwsS3V3Adapter::class, self::createStub(AwsS3V3Adapter::class));
 
-        $callback = FilesystemServiceProvider::publishers()[S3FlysystemFilesystem::class];
+        $callback = new FilesystemServiceProvider()->publishers()[S3FlysystemFilesystem::class];
         $callback($this->container);
 
         self::assertInstanceOf(S3FlysystemFilesystem::class, $this->container->getSingleton(S3FlysystemFilesystem::class));
@@ -116,7 +116,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, new Env());
 
-        $callback = FilesystemServiceProvider::publishers()[AwsS3V3Adapter::class];
+        $callback = new FilesystemServiceProvider()->publishers()[AwsS3V3Adapter::class];
         $callback($this->container);
 
         self::assertInstanceOf(AwsS3V3Adapter::class, $this->container->getSingleton(AwsS3V3Adapter::class));
@@ -126,7 +126,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, new Env());
 
-        $callback = FilesystemServiceProvider::publishers()[InMemoryFilesystem::class];
+        $callback = new FilesystemServiceProvider()->publishers()[InMemoryFilesystem::class];
         $callback($this->container);
 
         self::assertInstanceOf(InMemoryFilesystem::class, $this->container->getSingleton(InMemoryFilesystem::class));
@@ -136,7 +136,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, new Env());
 
-        $callback = FilesystemServiceProvider::publishers()[NullFilesystem::class];
+        $callback = new FilesystemServiceProvider()->publishers()[NullFilesystem::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullFilesystem::class, $this->container->getSingleton(NullFilesystem::class));

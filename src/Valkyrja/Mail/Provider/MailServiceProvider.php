@@ -32,24 +32,6 @@ use Valkyrja\Mail\Mailer\PhpMailer;
 class MailServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            MailerContract::class         => [self::class, 'publishMailer'],
-            MailgunMailer::class          => [self::class, 'publishMailgunMailer'],
-            Mailgun::class                => [self::class, 'publishMailgun'],
-            HttpClientConfigurator::class => [self::class, 'publishMailgunHttpClientConfigurator'],
-            PhpMailer::class              => [self::class, 'publishPhpMailer'],
-            PHPMailerClient::class        => [self::class, 'publishPhpMailerClient'],
-            LogMailer::class              => [self::class, 'publishLogMailer'],
-            NullMailer::class             => [self::class, 'publishNullMailer'],
-        ];
-    }
-
-    /**
      * Publish the mailer service.
      */
     public static function publishMailer(ContainerContract $container): void
@@ -201,5 +183,23 @@ class MailServiceProvider implements ServiceProviderContract
             NullMailer::class,
             new NullMailer(),
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            MailerContract::class         => [self::class, 'publishMailer'],
+            MailgunMailer::class          => [self::class, 'publishMailgunMailer'],
+            Mailgun::class                => [self::class, 'publishMailgun'],
+            HttpClientConfigurator::class => [self::class, 'publishMailgunHttpClientConfigurator'],
+            PhpMailer::class              => [self::class, 'publishPhpMailer'],
+            PHPMailerClient::class        => [self::class, 'publishPhpMailerClient'],
+            LogMailer::class              => [self::class, 'publishLogMailer'],
+            NullMailer::class             => [self::class, 'publishNullMailer'],
+        ];
     }
 }

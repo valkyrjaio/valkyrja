@@ -25,18 +25,6 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 class CliInteractionServiceProvider implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            CliInteractionConfigContract::class => [self::class, 'publishConfig'],
-            OutputFactoryContract::class        => [self::class, 'publishOutputFactory'],
-        ];
-    }
-
-    /**
      * Publish the output factory.
      */
     public static function publishConfig(ContainerContract $container): void
@@ -68,5 +56,17 @@ class CliInteractionServiceProvider implements ServiceProviderContract
                 config: $config
             )
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            CliInteractionConfigContract::class => [self::class, 'publishConfig'],
+            OutputFactoryContract::class        => [self::class, 'publishOutputFactory'],
+        ];
     }
 }

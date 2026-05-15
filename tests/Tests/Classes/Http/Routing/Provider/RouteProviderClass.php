@@ -23,14 +23,19 @@ use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
 final class RouteProviderClass implements HttpRouteProviderContract
 {
+    public static function handler(ContainerContract $container, RouteContract $route): ResponseContract
+    {
+        return new Response();
+    }
+
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return ['AControllerClass'];
     }
 
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [
             new Route(
@@ -39,10 +44,5 @@ final class RouteProviderClass implements HttpRouteProviderContract
                 handler: static fn (): null => null,
             ),
         ];
-    }
-
-    public static function handler(ContainerContract $container, RouteContract $route): ResponseContract
-    {
-        return new Response();
     }
 }

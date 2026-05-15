@@ -35,35 +35,35 @@ interface ApplicationContract
     /**
      * Get the registered component providers.
      *
-     * @return class-string<ComponentProviderContract>[]
+     * @return ComponentProviderContract[]
      */
     public function getProviders(): array;
 
     /**
      * Get all the registered components' container service providers.
      *
-     * @return class-string<ServiceProviderContract>[]
+     * @return ServiceProviderContract[]
      */
     public function getContainerProviders(): array;
 
     /**
      * Get all the registered components' event providers.
      *
-     * @return class-string<ListenerProviderContract>[]
+     * @return ListenerProviderContract[]
      */
     public function getEventProviders(): array;
 
     /**
      * Get all the registered components' cli providers.
      *
-     * @return class-string<CliRouteProviderContract>[]
+     * @return CliRouteProviderContract[]
      */
     public function getCliProviders(): array;
 
     /**
      * Get all the registered components' http providers.
      *
-     * @return class-string<HttpRouteProviderContract>[]
+     * @return HttpRouteProviderContract[]
      */
     public function getHttpProviders(): array;
 

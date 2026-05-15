@@ -45,7 +45,7 @@ class CliConfig implements CliConfigContract
      * @param non-empty-string                                  $dataNamespace
      * @param non-empty-string                                  $applicationName
      * @param non-empty-string                                  $defaultCommandName
-     * @param class-string<ComponentProviderContract>[]         $providers
+     * @param ComponentProviderContract[]                       $providers
      * @param array<callable(ApplicationContract):void>         $callbacks
      * @param class-string<InputReceivedMiddlewareContract>[]   $inputReceivedMiddleware
      * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware
@@ -67,7 +67,7 @@ class CliConfig implements CliConfigContract
         public readonly string $applicationName = 'valkyrja',
         public readonly string $defaultCommandName = CommandName::LIST,
         public readonly array $providers = [
-            CliWithHttpApplicationComponentProvider::class,
+            new CliWithHttpApplicationComponentProvider(),
         ],
         public readonly array $callbacks = [],
         public readonly array $inputReceivedMiddleware = [

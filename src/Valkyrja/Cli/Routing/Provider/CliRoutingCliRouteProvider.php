@@ -26,29 +26,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 class CliRoutingCliRouteProvider implements CliRouteProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getControllerClasses(): array
-    {
-        return [
-            HelpCommand::class,
-            ListBashCommand::class,
-            ListCommand::class,
-            VersionCommand::class,
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function getRoutes(): array
-    {
-        return [];
-    }
-
-    /**
      * The list command handler.
      */
     public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
@@ -78,5 +55,28 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
     public static function versionHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
         return $container->getSingleton(VersionCommand::class)->run();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getControllerClasses(): array
+    {
+        return [
+            HelpCommand::class,
+            ListBashCommand::class,
+            ListCommand::class,
+            VersionCommand::class,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getRoutes(): array
+    {
+        return [];
     }
 }

@@ -26,10 +26,22 @@ use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 class HttpRoutingCliRouteProvider implements CliRouteProviderContract
 {
     /**
+     * The list command handler.
+     */
+    public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
+    {
+        return $container->getSingleton(ListCommand::class)->run(
+            $container->getSingleton(VersionCommand::class),
+            $container->getSingleton(RouteCollectionContract::class),
+            $container->getSingleton(OutputFactoryContract::class),
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return [
             ListCommand::class,
@@ -40,20 +52,8 @@ class HttpRoutingCliRouteProvider implements CliRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
-    }
-
-    /**
-     * The list command handler.
-     */
-    public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
-    {
-        return $container->getSingleton(ListCommand::class)->run(
-            $container->getSingleton(VersionCommand::class),
-            $container->getSingleton(RouteCollectionContract::class),
-            $container->getSingleton(OutputFactoryContract::class),
-        );
     }
 }

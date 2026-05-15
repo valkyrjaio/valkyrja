@@ -22,21 +22,21 @@ use Valkyrja\Tests\Classes\Application\Data\CliTestContainerDataClass;
 final class CliContainerDataProviderClass implements ServiceProviderContract
 {
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publishers(): array
-    {
-        return [
-            ContainerData::class => [self::class, 'publishData'],
-        ];
-    }
-
-    /**
      * Publish the service.
      */
     public static function publishData(ContainerContract $container): void
     {
         $container->setSingleton(ContainerData::class, new CliTestContainerDataClass());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ContainerData::class => [self::class, 'publishData'],
+        ];
     }
 }

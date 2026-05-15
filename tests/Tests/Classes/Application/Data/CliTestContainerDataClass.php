@@ -62,7 +62,7 @@ final readonly class CliTestContainerDataClass extends ContainerData
     public function __construct()
     {
         parent::__construct(
-            deferredCallback: [
+            callbacks: [
                 ContainerData::class                           => [CliContainerDataProviderClass::class, 'publishData'],
                 DispatcherContract::class                      => [DispatchServiceProvider::class, 'publishDispatcher'],
                 CliInteractionConfigContract::class            => [CliInteractionServiceProvider::class, 'publishConfig'],
