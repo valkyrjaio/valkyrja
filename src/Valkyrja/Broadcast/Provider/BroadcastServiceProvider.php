@@ -36,7 +36,7 @@ class BroadcastServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             BroadcasterContract::class    => [self::class, 'publishBroadcaster'],

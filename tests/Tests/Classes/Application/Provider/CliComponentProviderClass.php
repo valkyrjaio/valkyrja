@@ -16,9 +16,8 @@ namespace Valkyrja\Tests\Classes\Application\Provider;
 use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Application\Provider\Contract\PublishableComponentProviderContract;
 
-final class CliComponentProviderClass implements ComponentProviderContract, PublishableComponentProviderContract
+final class CliComponentProviderClass implements ComponentProviderContract
 {
     public static bool $publishedContainerData = false;
 
@@ -26,7 +25,7 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
      * @inheritDoc
      */
     #[Override]
-    public static function getComponentProviders(ApplicationContract $app): array
+    public function getComponentProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -35,11 +34,11 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            CliContainerDataProviderClass::class,
-            CliRoutingDataProviderClass::class,
+            new CliContainerDataProviderClass(),
+            new CliRoutingDataProviderClass(),
         ];
     }
 
@@ -47,7 +46,7 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
      * @inheritDoc
      */
     #[Override]
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -56,10 +55,10 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
      * @inheritDoc
      */
     #[Override]
-    public static function getCliProviders(ApplicationContract $app): array
+    public function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CliRouteProviderClass::class,
+            new CliRouteProviderClass(),
         ];
     }
 
@@ -67,15 +66,11 @@ final class CliComponentProviderClass implements ComponentProviderContract, Publ
      * @inheritDoc
      */
     #[Override]
-    public static function getHttpProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
         return [];
     }
 
-    /**
-     * @inheritDoc
-     */
-    #[Override]
     public static function publish(ApplicationContract $app): void
     {
         if ($app->getDebugMode()) {

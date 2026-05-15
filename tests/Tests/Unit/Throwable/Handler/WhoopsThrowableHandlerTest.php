@@ -30,7 +30,7 @@ final class WhoopsThrowableHandlerTest extends TestCase
 
         WhoopsThrowableHandler::$enabled = false;
 
-        WhoopsThrowableHandler::enable();
+        (new WhoopsThrowableHandler())->enable();
 
         $whoopsExceptionHandler = set_exception_handler(null);
         $whoopsErrorHandler     = set_error_handler(null);
@@ -42,7 +42,7 @@ final class WhoopsThrowableHandlerTest extends TestCase
         self::assertNotSame($originalErrorHandler, $whoopsErrorHandler);
 
         // Testing calling enable again, shouldn't remake the handler
-        WhoopsThrowableHandler::enable();
+        (new WhoopsThrowableHandler())->enable();
 
         $whoopsExceptionHandler2 = set_exception_handler(null);
         $whoopsErrorHandler2     = set_error_handler(null);
@@ -67,7 +67,7 @@ final class WhoopsThrowableHandlerTest extends TestCase
 
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
 
-        WhoopsThrowableHandler::enable();
+        (new WhoopsThrowableHandler())->enable();
 
         $whoopsExceptionHandler = set_exception_handler(null);
         $whoopsErrorHandler     = set_error_handler(null);
@@ -79,7 +79,7 @@ final class WhoopsThrowableHandlerTest extends TestCase
         self::assertNotSame($originalErrorHandler, $whoopsErrorHandler);
 
         // Testing calling enable again, shouldn't remake the handler
-        WhoopsThrowableHandler::enable();
+        (new WhoopsThrowableHandler())->enable();
 
         $whoopsExceptionHandler2 = set_exception_handler(null);
         $whoopsErrorHandler2     = set_error_handler(null);

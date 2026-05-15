@@ -60,11 +60,9 @@ class Container implements ContainerContract
         protected ContainerData $data = new ContainerData()
     ) {
         $this->aliases          = $data->aliases;
-        $this->deferred         = $data->deferred;
-        $this->deferredCallback = $data->deferredCallback;
+        $this->callbacks = $data->callbacks;
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
-        $this->registered       = [];
     }
 
     /**
@@ -75,11 +73,9 @@ class Container implements ContainerContract
     {
         return new ContainerData(
             aliases: $this->aliases,
-            deferred: $this->deferred,
-            deferredCallback: $this->deferredCallback,
+            callbacks: $this->callbacks,
             services: $this->services,
             singletons: $this->singletons,
-            providers: $this->providers,
         );
     }
 
@@ -90,8 +86,7 @@ class Container implements ContainerContract
     public function setFromData(ContainerData $data): void
     {
         $this->aliases          = array_merge($this->aliases, $data->aliases);
-        $this->deferred         = array_merge($this->deferred, $data->deferred);
-        $this->deferredCallback = array_merge($this->deferredCallback, $data->deferredCallback);
+        $this->callbacks = array_merge($this->callbacks, $data->callbacks);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
     }
@@ -106,7 +101,7 @@ class Container implements ContainerContract
     #[Override]
     public function has(string $id): bool
     {
-        return $this->isDeferred($id)
+        return isset($this->callbacks[$id])
             || $this->isSingleton($id)
             || $this->isService($id)
             || $this->isAlias($id);

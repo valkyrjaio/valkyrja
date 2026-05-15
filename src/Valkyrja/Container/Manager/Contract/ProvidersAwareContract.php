@@ -20,16 +20,9 @@ interface ProvidersAwareContract
     /**
      * Register a provider.
      *
-     * @param class-string<ServiceProviderContract> $provider The provider
+     * @param ServiceProviderContract $provider The provider
      */
-    public function register(string $provider): void;
-
-    /**
-     * Determiner whether a given service is deferred and not yet published.
-     *
-     * @param class-string $id The provided service id
-     */
-    public function isDeferred(string $id): bool;
+    public function register(ServiceProviderContract $provider): void;
 
     /**
      * Determine whether a given service is published.
@@ -37,13 +30,6 @@ interface ProvidersAwareContract
      * @param class-string $id The provided service id
      */
     public function isPublished(string $id): bool;
-
-    /**
-     * Determine whether a provider has been registered.
-     *
-     * @param class-string<ServiceProviderContract> $provider The provider
-     */
-    public function isRegistered(string $provider): bool;
 
     /**
      * Publish a provided service.

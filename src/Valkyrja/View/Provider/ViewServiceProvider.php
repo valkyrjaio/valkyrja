@@ -39,7 +39,7 @@ class ViewServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             RendererContract::class            => [self::class, 'publishRenderer'],

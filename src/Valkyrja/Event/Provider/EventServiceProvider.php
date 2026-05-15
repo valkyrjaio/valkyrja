@@ -36,7 +36,7 @@ class EventServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             ListenerCollectorContract::class  => [self::class, 'publishAttributesListenerCollector'],
@@ -117,16 +117,15 @@ class EventServiceProvider implements ServiceProviderContract
         $listenerClasses = [];
         $listeners       = [];
 
-        /** @var ListenerProviderContract $provider */
         foreach ($providers as $provider) {
             $listenerClasses = [
                 ...$listenerClasses,
-                ...$provider::getListenerClasses(),
+                ...$provider->getListenerClasses(),
             ];
 
             $listeners = [
                 ...$listeners,
-                ...$provider::getListeners(),
+                ...$provider->getListeners(),
             ];
         }
 

@@ -30,7 +30,7 @@ class Config implements ConfigContract
      * @param non-empty-string                          $key
      * @param non-empty-string                          $dataPath
      * @param non-empty-string                          $dataNamespace
-     * @param class-string<ComponentProviderContract>[] $providers
+     * @param ComponentProviderContract[]               $providers
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
@@ -44,7 +44,7 @@ class Config implements ConfigContract
         public readonly string $dataPath = 'App/Provider/Data',
         public readonly string $dataNamespace = 'App\\Provider\\Data',
         public readonly array $providers = [
-            ApplicationComponentProvider::class,
+            new ApplicationComponentProvider(),
         ],
         public readonly array $callbacks = [],
     ) {

@@ -117,22 +117,22 @@ final class NativeChildContainerTest extends TestCase
     }
 
     // -----------------------------------------------------------------------
-    // isDeferred / isPublished / isRegistered
+    // has (registered via provider) / isPublished
     // -----------------------------------------------------------------------
 
-    public function testIsDeferredFromParent(): void
+    public function testHasFromParentWhenRegisteredInParent(): void
     {
-        $this->parent->register(DispatchServiceProvider::class);
+        $this->parent->register(new DispatchServiceProvider());
 
-        self::assertTrue($this->child->isDeferred(DispatcherContract::class));
+        self::assertTrue($this->child->has(DispatcherContract::class));
     }
 
-    public function testIsDeferredFromChild(): void
+    public function testHasFromChildWhenRegisteredInChild(): void
     {
-        $this->child->register(DispatchServiceProvider::class);
+        $this->child->register(new DispatchServiceProvider());
 
-        self::assertTrue($this->child->isDeferred(DispatcherContract::class));
-        self::assertFalse($this->parent->isDeferred(DispatcherContract::class));
+        self::assertTrue($this->child->has(DispatcherContract::class));
+        self::assertFalse($this->parent->has(DispatcherContract::class));
     }
 
     public function testIsPublishedFromParent(): void
@@ -148,21 +148,6 @@ final class NativeChildContainerTest extends TestCase
 
         self::assertTrue($this->child->isPublished(ServiceClass::class));
         self::assertFalse($this->parent->isPublished(ServiceClass::class));
-    }
-
-    public function testIsRegisteredFromParent(): void
-    {
-        $this->parent->register(DispatchServiceProvider::class);
-
-        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
-    }
-
-    public function testIsRegisteredFromChild(): void
-    {
-        $this->child->register(DispatchServiceProvider::class);
-
-        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
-        self::assertFalse($this->parent->isRegistered(DispatchServiceProvider::class));
     }
 
     // -----------------------------------------------------------------------
@@ -264,7 +249,7 @@ final class NativeChildContainerTest extends TestCase
         $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->parent->bindAlias('svcAlias', ServiceClass::class);
         $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
-        $this->parent->register(DispatchServiceProvider::class);
+        $this->parent->register(new DispatchServiceProvider());
 
         // Snapshot parent state before any child interaction
         $dataBefore                = $this->parent->getData();
@@ -276,30 +261,29 @@ final class NativeChildContainerTest extends TestCase
         $this->child->getService(ServiceClass::class);
         $this->child->getAliased('svcAlias');
         $this->child->getSingleton(SingletonClass::class);
-        $this->child->get(DispatcherContract::class); // triggers deferred publish in child
+        $this->child->get(DispatcherContract::class); // triggers publish in child
 
         // Parent data maps must be identical
         $dataAfter = $this->parent->getData();
         self::assertSame($dataBefore->aliases, $dataAfter->aliases);
         self::assertSame($dataBefore->services, $dataAfter->services);
         self::assertSame($dataBefore->singletons, $dataAfter->singletons);
-        self::assertSame($dataBefore->deferred, $dataAfter->deferred);
-        self::assertSame($dataBefore->providers, $dataAfter->providers);
+        self::assertSame($dataBefore->callbacks, $dataAfter->callbacks);
 
         // Singleton resolved in child must not have been cached in parent
         self::assertSame($singletonInstanceBefore, $this->parent->isSingletonInstance(SingletonClass::class));
 
-        // Deferred service published in child must not mark parent as published
+        // Service published in child must not mark parent as published
         self::assertSame($dispatcherPublishedBefore, $this->parent->isPublished(DispatcherContract::class));
     }
 
     // -----------------------------------------------------------------------
-    // Deferred provider — published in child context
+    // Provider — published in child context
     // -----------------------------------------------------------------------
 
-    public function testDeferredFromChildPublishedInChild(): void
+    public function testProviderFromChildPublishedInChild(): void
     {
-        $this->child->register(DispatchServiceProvider::class);
+        $this->child->register(new DispatchServiceProvider());
 
         self::assertTrue($this->child->has(DispatcherContract::class));
 
@@ -309,11 +293,11 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->parent->isPublished(DispatcherContract::class));
     }
 
-    public function testDeferredFromParentPublishedInChild(): void
+    public function testProviderFromParentPublishedInChild(): void
     {
-        $this->parent->register(DispatchServiceProvider::class);
+        $this->parent->register(new DispatchServiceProvider());
 
-        // has() should see the deferred service from parent
+        // has() should see the service from parent
         self::assertTrue($this->child->has(DispatcherContract::class));
 
         // get() should trigger publish in child and return the service

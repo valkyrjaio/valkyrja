@@ -22,18 +22,11 @@ use function is_callable;
 trait ProvidersAware
 {
     /**
-     * The items provided by providers that are deferred.
-     *
-     * @var array<class-string, class-string>
-     */
-    protected array $deferred = [];
-
-    /**
-     * The custom publish handler for items provided by providers that are deferred.
+     * The publish callbacks for items registered via providers.
      *
      * @var array<class-string, callable(ContainerContract):void>
      */
-    protected array $deferredCallback = [];
+    protected array $callbacks = [];
 
     /**
      * The items provided by providers that are published.
@@ -43,47 +36,17 @@ trait ProvidersAware
     protected array $published = [];
 
     /**
-     * The registered providers.
-     *
-     * @var array<class-string<ServiceProviderContract>, bool>
-     */
-    protected array $registered = [];
-
-    /**
-     * The providers.
-     *
-     * @var class-string<ServiceProviderContract>[]
-     */
-    protected array $providers = [];
-
-    /**
      * @inheritDoc
-     *
-     * @param class-string<ServiceProviderContract> $provider The provider
      */
-    public function register(string $provider): void
+    public function register(ServiceProviderContract $provider): void
     {
-        // No need to re-register providers
-        if ($this->isRegistered($provider)) {
-            return;
+        foreach ($provider->publishers() as $provided => $publishCallback) {
+            if (! is_callable($publishCallback)) {
+                throw new ContainerInvalidPublishCallbackException("$provided should have a valid callable");
+            }
+
+            $this->callbacks[$provided] = $publishCallback;
         }
-
-        $this->providers[] = $provider;
-
-        // If the service provider is deferred
-        // and its defined what services it provides
-        $this->registerDeferred($provider);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    public function isDeferred(string $id): bool
-    {
-        return isset($this->deferred[$id])
-            || isset($this->deferredCallback[$id]);
     }
 
     /**
@@ -99,45 +62,31 @@ trait ProvidersAware
     /**
      * @inheritDoc
      *
-     * @param class-string<ServiceProviderContract> $provider The provider
-     */
-    public function isRegistered(string $provider): bool
-    {
-        return isset($this->registered[$provider]);
-    }
-
-    /**
-     * @inheritDoc
-     *
      * @param class-string $id The service id
      */
     public function publish(string $id): void
     {
-        // The publish method for this provided item in the provider
-        $publishCallback = $this->getDeferredCallback($id);
+        $publishCallback = $this->getCallback($id);
 
-        // If there is no callback found then this provided item doesn't exist
         if ($publishCallback === null) {
             return;
         }
 
-        // Publish the service provider
         $publishCallback($this);
 
-        // Set published cache only after the success of a publish (in case of error)
         $this->published[$id] = true;
     }
 
     /**
-     * Get the deferred callback.
+     * Get the publish callback for a given id.
      *
      * @param class-string $id The id
      *
      * @return callable(ContainerContract):void|null
      */
-    protected function getDeferredCallback(string $id): callable|null
+    protected function getCallback(string $id): callable|null
     {
-        return $this->deferredCallback[$id]
+        return $this->callbacks[$id]
             ?? null;
     }
 
@@ -148,36 +97,8 @@ trait ProvidersAware
      */
     protected function publishUnpublishedProvided(string $id): void
     {
-        // Check if the id is provided by a provider and isn't already published
-        if ($this->isDeferred($id) && ! $this->isPublished($id)) {
-            // Publish the provider
+        if (isset($this->callbacks[$id]) && ! $this->isPublished($id)) {
             $this->publish($id);
         }
-    }
-
-    /**
-     * Register a deferred provider.
-     *
-     * @param class-string<ServiceProviderContract> $provider The provider
-     */
-    protected function registerDeferred(string $provider): void
-    {
-        /** @var class-string<ServiceProviderContract> $providerClass */
-        $providerClass    = $provider;
-        $publishCallbacks = $providerClass::publishers();
-
-        // Add the services to the service providers list
-        foreach ($publishCallbacks as $provided => $publishCallback) {
-            $this->deferred[$provided] = $provider;
-
-            if (! is_callable($publishCallback)) {
-                throw new ContainerInvalidPublishCallbackException("$provided should have a valid callable");
-            }
-
-            $this->deferredCallback[$provided] = $publishCallback;
-        }
-
-        // The provider is now registered
-        $this->registered[$provider] = true;
     }
 }

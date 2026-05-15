@@ -98,8 +98,8 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        CliApplicationComponentProvider::class,
-                        CliComponentProviderClass::class,
+                        new CliApplicationComponentProvider(),
+                        new CliComponentProviderClass(),
                     ],
                 );
             }
@@ -140,8 +140,8 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: false,
                     providers: [
-                        CliApplicationComponentProvider::class,
-                        CliComponentProviderClass::class,
+                        new CliApplicationComponentProvider(),
+                        new CliComponentProviderClass(),
                     ],
                     callbacks: [
                         [CliComponentProviderClass::class, 'publish'],
@@ -185,8 +185,8 @@ final class CliTest extends TestCase
                     dir: $dir,
                     debugMode: true,
                     providers: [
-                        CliApplicationComponentProvider::class,
-                        CliComponentProviderClass::class,
+                        new CliApplicationComponentProvider(),
+                        new CliComponentProviderClass(),
                     ],
                     callbacks: [
                         [CliComponentProviderClass::class, 'publish'],

@@ -20,13 +20,13 @@ use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 final class ListenerProviderClass implements ListenerProviderContract
 {
     #[Override]
-    public static function getListenerClasses(): array
+    public function getListenerClasses(): array
     {
         return ['AListenerClass'];
     }
 
     #[Override]
-    public static function getListeners(): array
+    public function getListeners(): array
     {
         return [
             new Listener(

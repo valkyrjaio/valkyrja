@@ -26,7 +26,7 @@ final class ProviderClass implements ServiceProviderContract
     public static bool $publishSecondaryCalled = false;
 
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             ProvidedClass::class          => [self::class, 'publish'],

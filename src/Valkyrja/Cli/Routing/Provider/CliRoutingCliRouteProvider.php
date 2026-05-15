@@ -29,7 +29,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return [
             HelpCommand::class,
@@ -43,7 +43,7 @@ class CliRoutingCliRouteProvider implements CliRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
     }

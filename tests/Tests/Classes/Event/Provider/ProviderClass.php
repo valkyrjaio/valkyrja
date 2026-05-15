@@ -22,7 +22,7 @@ final class ProviderClass implements ListenerProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getListenerClasses(): array
+    public function getListenerClasses(): array
     {
         return [];
     }
@@ -31,7 +31,7 @@ final class ProviderClass implements ListenerProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getListeners(): array
+    public function getListeners(): array
     {
         return [];
     }

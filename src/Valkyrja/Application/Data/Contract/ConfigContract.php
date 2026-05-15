@@ -53,7 +53,7 @@ interface ConfigContract
     public string $dataNamespace {
         get;
     }
-    /** @var class-string<ComponentProviderContract>[] */
+    /** @var ComponentProviderContract[] */
     public array $providers {
         get;
     }

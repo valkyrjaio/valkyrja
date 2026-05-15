@@ -35,7 +35,7 @@ class MailServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             MailerContract::class         => [self::class, 'publishMailer'],

@@ -39,7 +39,7 @@ class AuthServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             AuthenticatorContract::class  => [self::class, 'publishAuthenticator'],

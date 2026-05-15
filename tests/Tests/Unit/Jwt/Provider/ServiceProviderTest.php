@@ -32,9 +32,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(JwtContract::class, JwtServiceProvider::publishers());
-        self::assertArrayHasKey(FirebaseJwt::class, JwtServiceProvider::publishers());
-        self::assertArrayHasKey(NullJwt::class, JwtServiceProvider::publishers());
+        self::assertArrayHasKey(JwtContract::class, (new JwtServiceProvider())->publishers());
+        self::assertArrayHasKey(FirebaseJwt::class, (new JwtServiceProvider())->publishers());
+        self::assertArrayHasKey(NullJwt::class, (new JwtServiceProvider())->publishers());
     }
 
     /**
@@ -44,7 +44,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(FirebaseJwt::class, self::createStub(FirebaseJwt::class));
 
-        $callback = JwtServiceProvider::publishers()[JwtContract::class];
+        $callback = (new JwtServiceProvider())->publishers()[JwtContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(JwtContract::class));
@@ -52,7 +52,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFirebaseJwt(): void
     {
-        $callback = JwtServiceProvider::publishers()[FirebaseJwt::class];
+        $callback = (new JwtServiceProvider())->publishers()[FirebaseJwt::class];
         $callback($this->container);
 
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(FirebaseJwt::class));
@@ -68,7 +68,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             }
         );
 
-        $callback = JwtServiceProvider::publishers()[FirebaseJwt::class];
+        $callback = (new JwtServiceProvider())->publishers()[FirebaseJwt::class];
         $callback($this->container);
 
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(FirebaseJwt::class));
@@ -84,7 +84,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             }
         );
 
-        $callback = JwtServiceProvider::publishers()[FirebaseJwt::class];
+        $callback = (new JwtServiceProvider())->publishers()[FirebaseJwt::class];
         $callback($this->container);
 
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(FirebaseJwt::class));
@@ -100,7 +100,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             }
         );
 
-        $callback = JwtServiceProvider::publishers()[FirebaseJwt::class];
+        $callback = (new JwtServiceProvider())->publishers()[FirebaseJwt::class];
         $callback($this->container);
 
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(FirebaseJwt::class));
@@ -108,7 +108,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullJwt(): void
     {
-        $callback = JwtServiceProvider::publishers()[NullJwt::class];
+        $callback = (new JwtServiceProvider())->publishers()[NullJwt::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullJwt::class, $this->container->getSingleton(NullJwt::class));

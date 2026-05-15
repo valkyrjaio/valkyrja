@@ -11,16 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Throwable\Handler\Abstract;
+namespace Valkyrja\Tests\Unit\Throwable\Factory;
 
 use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
-/**
- * Test the abstract throwable handler.
- */
-final class ThrowableHandlerTest extends TestCase
+final class ThrowableFactoryTest extends TestCase
 {
     public function testGetTraceCode(): void
     {
@@ -28,9 +25,9 @@ final class ThrowableHandlerTest extends TestCase
         $exception2 = new ValkyrjaRuntimeExceptionClass();
         $exception3 = new ValkyrjaRuntimeExceptionClass('Custom message');
 
-        $traceCode  = ThrowableHandler::getTraceCode($exception);
-        $traceCode2 = ThrowableHandler::getTraceCode($exception2);
-        $traceCode3 = ThrowableHandler::getTraceCode($exception3);
+        $traceCode  = ThrowableFactory::getTraceCode($exception);
+        $traceCode2 = ThrowableFactory::getTraceCode($exception2);
+        $traceCode3 = ThrowableFactory::getTraceCode($exception3);
 
         self::assertSame($traceCode, $traceCode2);
         self::assertSame($traceCode, $traceCode3);

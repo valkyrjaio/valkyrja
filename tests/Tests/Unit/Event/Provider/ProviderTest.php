@@ -20,11 +20,11 @@ final class ProviderTest extends TestCase
 {
     public function testGetListenerClasses(): void
     {
-        self::assertEmpty(ProviderClass::getListenerClasses());
+        self::assertEmpty((new ProviderClass())->getListenerClasses());
     }
 
     public function testGetListeners(): void
     {
-        self::assertEmpty(ProviderClass::getListeners());
+        self::assertEmpty((new ProviderClass())->getListeners());
     }
 }

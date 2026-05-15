@@ -27,6 +27,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ContainerData::class, ContainerServiceProvider::publishers());
+        self::assertArrayHasKey(ContainerData::class, (new ContainerServiceProvider())->publishers());
     }
 }

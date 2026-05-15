@@ -14,20 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\CliApplicationComponentProvider;
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
-use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
 use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -39,51 +32,42 @@ final class CliWithHttpApplicationComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertSame(
-            [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                CliInteractionComponentProvider::class,
-                CliMiddlewareComponentProvider::class,
-                CliRoutingComponentProvider::class,
-                CliServerComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpRoutingCliComponentProvider::class,
-                HttpServerComponentProvider::class,
-                LogComponentProvider::class,
-            ],
-            CliWithHttpApplicationComponentProvider::getComponentProviders($app)
-        );
+        $providers = (new CliWithHttpApplicationComponentProvider())->getComponentProviders($app);
+
+        self::assertCount(6, $providers);
+        self::assertInstanceOf(CliApplicationComponentProvider::class, $providers[0]);
+        self::assertInstanceOf(HttpMessageComponentProvider::class, $providers[1]);
+        self::assertInstanceOf(HttpMiddlewareComponentProvider::class, $providers[2]);
+        self::assertInstanceOf(HttpRoutingComponentProvider::class, $providers[3]);
+        self::assertInstanceOf(HttpRoutingCliComponentProvider::class, $providers[4]);
+        self::assertInstanceOf(HttpServerComponentProvider::class, $providers[5]);
     }
 
     public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliWithHttpApplicationComponentProvider::getContainerProviders($app));
+        self::assertEmpty((new CliWithHttpApplicationComponentProvider())->getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliWithHttpApplicationComponentProvider::getEventProviders($app));
+        self::assertEmpty((new CliWithHttpApplicationComponentProvider())->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliWithHttpApplicationComponentProvider::getCliProviders($app));
+        self::assertEmpty((new CliWithHttpApplicationComponentProvider())->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliWithHttpApplicationComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new CliWithHttpApplicationComponentProvider())->getHttpProviders($app));
     }
 }

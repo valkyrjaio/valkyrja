@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Application\Provider\CliApplicationComponentProvider;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
 use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
 use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
 use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Log\Provider\LogComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -34,46 +32,42 @@ final class CliApplicationComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertSame(
-            [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                CliInteractionComponentProvider::class,
-                CliMiddlewareComponentProvider::class,
-                CliRoutingComponentProvider::class,
-                CliServerComponentProvider::class,
-                EventComponentProvider::class,
-                LogComponentProvider::class,
-            ],
-            CliApplicationComponentProvider::getComponentProviders($app)
-        );
+        $providers = (new CliApplicationComponentProvider())->getComponentProviders($app);
+
+        self::assertCount(6, $providers);
+        self::assertInstanceOf(ApplicationComponentProvider::class, $providers[0]);
+        self::assertInstanceOf(CliInteractionComponentProvider::class, $providers[1]);
+        self::assertInstanceOf(CliMiddlewareComponentProvider::class, $providers[2]);
+        self::assertInstanceOf(CliRoutingComponentProvider::class, $providers[3]);
+        self::assertInstanceOf(CliServerComponentProvider::class, $providers[4]);
+        self::assertInstanceOf(LogComponentProvider::class, $providers[5]);
     }
 
     public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliApplicationComponentProvider::getContainerProviders($app));
+        self::assertEmpty((new CliApplicationComponentProvider())->getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliApplicationComponentProvider::getEventProviders($app));
+        self::assertEmpty((new CliApplicationComponentProvider())->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliApplicationComponentProvider::getCliProviders($app));
+        self::assertEmpty((new CliApplicationComponentProvider())->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(CliApplicationComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new CliApplicationComponentProvider())->getHttpProviders($app));
     }
 }

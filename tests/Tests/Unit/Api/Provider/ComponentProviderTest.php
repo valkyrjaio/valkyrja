@@ -27,34 +27,34 @@ final class ComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApiComponentProvider::getComponentProviders($app));
+        self::assertEmpty((new ApiComponentProvider())->getComponentProviders($app));
     }
 
     public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(ApiServiceProvider::class, ApiComponentProvider::getContainerProviders($app));
+        self::assertInstanceOf(ApiServiceProvider::class, (new ApiComponentProvider())->getContainerProviders($app)[0]);
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApiComponentProvider::getEventProviders($app));
+        self::assertEmpty((new ApiComponentProvider())->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApiComponentProvider::getCliProviders($app));
+        self::assertEmpty((new ApiComponentProvider())->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApiComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new ApiComponentProvider())->getHttpProviders($app));
     }
 }

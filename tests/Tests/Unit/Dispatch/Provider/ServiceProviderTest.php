@@ -28,12 +28,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(DispatcherContract::class, DispatchServiceProvider::publishers());
+        self::assertArrayHasKey(DispatcherContract::class, (new DispatchServiceProvider())->publishers());
     }
 
     public function testPublishDispatcher(): void
     {
-        $callback = DispatchServiceProvider::publishers()[DispatcherContract::class];
+        $callback = (new DispatchServiceProvider())->publishers()[DispatcherContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(Dispatcher::class, $this->container->getSingleton(DispatcherContract::class));

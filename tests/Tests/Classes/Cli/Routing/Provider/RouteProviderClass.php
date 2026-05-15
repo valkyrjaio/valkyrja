@@ -20,13 +20,13 @@ use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 final class RouteProviderClass implements CliRouteProviderContract
 {
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return ['AControllerClass'];
     }
 
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [
             new Route(

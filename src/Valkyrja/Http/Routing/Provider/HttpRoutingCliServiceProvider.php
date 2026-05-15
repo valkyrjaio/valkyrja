@@ -24,7 +24,7 @@ class HttpRoutingCliServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             ListCommand::class => [self::class, 'publishListCommand'],

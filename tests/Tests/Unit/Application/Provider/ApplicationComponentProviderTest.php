@@ -15,21 +15,9 @@ namespace Valkyrja\Tests\Unit\Application\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\ApplicationComponentProvider;
-use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
-use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
-use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
-use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
 use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
 use Valkyrja\Event\Provider\EventComponentProvider;
-use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
-use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
-use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
-use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
-use Valkyrja\Log\Provider\LogComponentProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-use Valkyrja\View\Provider\ViewComponentProvider;
 
 /**
  * Test the Component service.
@@ -40,52 +28,38 @@ final class ApplicationComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertSame(
-            [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                CliInteractionComponentProvider::class,
-                CliMiddlewareComponentProvider::class,
-                CliRoutingComponentProvider::class,
-                CliServerComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpRoutingCliComponentProvider::class,
-                HttpServerComponentProvider::class,
-                LogComponentProvider::class,
-                ViewComponentProvider::class,
-            ],
-            ApplicationComponentProvider::getComponentProviders($app)
-        );
+        $providers = (new ApplicationComponentProvider())->getComponentProviders($app);
+
+        self::assertCount(2, $providers);
+        self::assertInstanceOf(ContainerComponentProvider::class, $providers[0]);
+        self::assertInstanceOf(EventComponentProvider::class, $providers[1]);
     }
 
     public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApplicationComponentProvider::getContainerProviders($app));
+        self::assertEmpty((new ApplicationComponentProvider())->getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApplicationComponentProvider::getEventProviders($app));
+        self::assertEmpty((new ApplicationComponentProvider())->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApplicationComponentProvider::getCliProviders($app));
+        self::assertEmpty((new ApplicationComponentProvider())->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(ApplicationComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new ApplicationComponentProvider())->getHttpProviders($app));
     }
 }

@@ -22,12 +22,12 @@ interface ListenerProviderContract
      *
      * @return class-string[]
      */
-    public static function getListenerClasses(): array;
+    public function getListenerClasses(): array;
 
     /**
      * Get a list of listeners.
      *
      * @return ListenerContract[]
      */
-    public static function getListeners(): array;
+    public function getListeners(): array;
 }

@@ -38,7 +38,7 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             RequestReceivedHandlerContract::class => [self::class, 'publishRequestReceivedHandler'],

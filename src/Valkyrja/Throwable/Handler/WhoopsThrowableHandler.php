@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Throwable\Handler;
 
 use Override;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -22,7 +22,7 @@ use Whoops\Util\Misc;
 
 use const E_ALL;
 
-class WhoopsThrowableHandler extends ThrowableHandler
+class WhoopsThrowableHandler implements ThrowableHandlerContract
 {
     /**
      * Whether debug is enabled or not.
@@ -35,7 +35,7 @@ class WhoopsThrowableHandler extends ThrowableHandler
      * @inheritDoc
      */
     #[Override]
-    public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
+    public function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
     {
         // If debug is already enabled
         if (static::$enabled || ! class_exists(Run::class)) {

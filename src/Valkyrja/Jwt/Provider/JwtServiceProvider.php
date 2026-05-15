@@ -31,7 +31,7 @@ class JwtServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             JwtContract::class => [self::class, 'publishJwt'],

@@ -22,7 +22,7 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 final class InvalidDeferredProviderClass implements ServiceProviderContract
 {
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             ProvidedSecondaryClass::class => [self::class, 'publishMethodNonExistent'],

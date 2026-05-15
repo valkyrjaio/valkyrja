@@ -24,13 +24,13 @@ use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 final class RouteProviderClass implements HttpRouteProviderContract
 {
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return ['AControllerClass'];
     }
 
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [
             new Route(

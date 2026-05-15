@@ -22,7 +22,7 @@ final class ProviderClass implements CliRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return [];
     }
@@ -31,7 +31,7 @@ final class ProviderClass implements CliRouteProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
     }

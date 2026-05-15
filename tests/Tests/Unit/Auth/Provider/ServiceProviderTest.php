@@ -37,13 +37,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(AuthenticatorContract::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(SessionAuthenticator::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(StoreContract::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(OrmStore::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(InMemoryStore::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(NullStore::class, AuthServiceProvider::publishers());
-        self::assertArrayHasKey(PasswordHasherContract::class, AuthServiceProvider::publishers());
+        self::assertArrayHasKey(AuthenticatorContract::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(SessionAuthenticator::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(StoreContract::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(OrmStore::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(InMemoryStore::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(NullStore::class, (new AuthServiceProvider())->publishers());
+        self::assertArrayHasKey(PasswordHasherContract::class, (new AuthServiceProvider())->publishers());
     }
 
     /**
@@ -53,7 +53,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(SessionAuthenticator::class, self::createStub(SessionAuthenticator::class));
 
-        $callback = AuthServiceProvider::publishers()[AuthenticatorContract::class];
+        $callback = (new AuthServiceProvider())->publishers()[AuthenticatorContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(SessionAuthenticator::class, $this->container->getSingleton(AuthenticatorContract::class));
@@ -68,7 +68,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(StoreContract::class, self::createStub(StoreContract::class));
         $this->container->setSingleton(PasswordHasherContract::class, self::createStub(PasswordHasherContract::class));
 
-        $callback = AuthServiceProvider::publishers()[SessionAuthenticator::class];
+        $callback = (new AuthServiceProvider())->publishers()[SessionAuthenticator::class];
         $callback($this->container);
 
         self::assertInstanceOf(SessionAuthenticator::class, $this->container->getSingleton(SessionAuthenticator::class));
@@ -81,7 +81,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(OrmStore::class, self::createStub(OrmStore::class));
 
-        $callback = AuthServiceProvider::publishers()[StoreContract::class];
+        $callback = (new AuthServiceProvider())->publishers()[StoreContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(OrmStore::class, $this->container->getSingleton(StoreContract::class));
@@ -94,7 +94,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(ManagerContract::class, self::createStub(ManagerContract::class));
 
-        $callback = AuthServiceProvider::publishers()[OrmStore::class];
+        $callback = (new AuthServiceProvider())->publishers()[OrmStore::class];
         $callback($this->container);
 
         self::assertInstanceOf(OrmStore::class, $this->container->getSingleton(OrmStore::class));
@@ -102,7 +102,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishInMemoryStore(): void
     {
-        $callback = AuthServiceProvider::publishers()[InMemoryStore::class];
+        $callback = (new AuthServiceProvider())->publishers()[InMemoryStore::class];
         $callback($this->container);
 
         self::assertInstanceOf(InMemoryStore::class, $this->container->getSingleton(InMemoryStore::class));
@@ -110,7 +110,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullStore(): void
     {
-        $callback = AuthServiceProvider::publishers()[NullStore::class];
+        $callback = (new AuthServiceProvider())->publishers()[NullStore::class];
         $callback($this->container);
 
         self::assertInstanceOf(NullStore::class, $this->container->getSingleton(NullStore::class));
@@ -118,7 +118,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPasswordHasher(): void
     {
-        $callback = AuthServiceProvider::publishers()[PasswordHasherContract::class];
+        $callback = (new AuthServiceProvider())->publishers()[PasswordHasherContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpPasswordHasher::class, $this->container->getSingleton(PasswordHasherContract::class));

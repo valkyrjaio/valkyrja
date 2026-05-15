@@ -152,7 +152,7 @@ final class ChildApplicationTest extends TestCase
         $parent          = new Valkyrja(container: $parentContainer, config: new Config());
         $data            = $parentContainer->getData();
         $childContainer  = new ChildContainer($parentContainer, new ContainerData(
-            deferredCallback: $data->deferredCallback,
+            callbacks: $data->callbacks,
             singletons: $data->singletons,
         ));
         $child = new ChildApplication($parent, $childContainer);

@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
 use Valkyrja\Log\Logger\Abstract\Logger;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
 class PsrLogger extends Logger
 {
@@ -105,7 +105,7 @@ class PsrLogger extends Logger
     #[Override]
     public function throwable(Throwable $throwable, string|Stringable $message, array $context = []): void
     {
-        $traceCode  = ThrowableHandler::getTraceCode($throwable);
+        $traceCode  = ThrowableFactory::getTraceCode($throwable);
         $logMessage = "\nTrace Code: $traceCode"
             . "\nException Message: {$throwable->getMessage()}"
             . "\nMessage: $message"

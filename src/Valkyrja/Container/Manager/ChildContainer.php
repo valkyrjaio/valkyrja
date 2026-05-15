@@ -16,7 +16,6 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 class ChildContainer extends Container
 {
@@ -26,8 +25,8 @@ class ChildContainer extends Container
     ) {
         parent::__construct();
 
-        $this->singletons       = $data->singletons;
-        $this->deferredCallback = $data->deferredCallback;
+        $this->singletons = $data->singletons;
+        $this->callbacks  = $data->callbacks;
     }
 
     /**
@@ -72,34 +71,10 @@ class ChildContainer extends Container
      * @param class-string $id The provided service id
      */
     #[Override]
-    public function isDeferred(string $id): bool
-    {
-        return parent::isDeferred($id)
-            || $this->parent->isDeferred($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The provided service id
-     */
-    #[Override]
     public function isPublished(string $id): bool
     {
         return parent::isPublished($id)
             || $this->parent->isPublished($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string<ServiceProviderContract> $provider The provider
-     */
-    #[Override]
-    public function isRegistered(string $provider): bool
-    {
-        return parent::isRegistered($provider)
-            || $this->parent->isRegistered($provider);
     }
 
     /**

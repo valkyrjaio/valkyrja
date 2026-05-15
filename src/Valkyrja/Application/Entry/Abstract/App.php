@@ -157,7 +157,7 @@ abstract class App
      */
     public static function defaultExceptionHandler(): void
     {
-        WhoopsThrowableHandler::enable(
+        (new WhoopsThrowableHandler())->enable(
             displayErrors: true
         );
     }
@@ -175,7 +175,7 @@ abstract class App
             $container->setSingleton(ThrowableHandlerContract::class, $errorHandler);
 
             // Enable error handling
-            $errorHandler::enable(
+            $errorHandler->enable(
                 displayErrors: true
             );
         }

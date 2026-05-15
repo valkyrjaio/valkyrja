@@ -27,7 +27,7 @@ final class CliRoutingDataProviderClass implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             CliRoutingData::class => [self::class, 'publishData'],

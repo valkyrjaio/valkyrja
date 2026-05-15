@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
-use Valkyrja\Throwable\Handler\Abstract\ThrowableHandler;
+use Valkyrja\Throwable\Factory\ThrowableFactory;
 
 abstract class ApiController extends Controller
 {
@@ -84,7 +84,7 @@ abstract class ApiController extends Controller
     ): JsonResponseContract {
         return $this->createApiJsonResponse(
             [
-                'traceCode' => ThrowableHandler::getTraceCode($exception),
+                'traceCode' => ThrowableFactory::getTraceCode($exception),
             ],
             $message ?? $exception->getMessage(),
             $status ?? Status::ERROR,

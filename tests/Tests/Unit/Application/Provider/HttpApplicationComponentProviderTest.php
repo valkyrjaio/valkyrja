@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\ApplicationComponentProvider;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
-use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
-use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
@@ -36,48 +34,44 @@ final class HttpApplicationComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertSame(
-            [
-                ContainerComponentProvider::class,
-                DispatchComponentProvider::class,
-                EventComponentProvider::class,
-                HttpMessageComponentProvider::class,
-                HttpMiddlewareComponentProvider::class,
-                HttpRoutingComponentProvider::class,
-                HttpRoutingCliComponentProvider::class,
-                HttpServerComponentProvider::class,
-                LogComponentProvider::class,
-                ViewComponentProvider::class,
-            ],
-            HttpApplicationComponentProvider::getComponentProviders($app)
-        );
+        $providers = (new HttpApplicationComponentProvider())->getComponentProviders($app);
+
+        self::assertCount(8, $providers);
+        self::assertInstanceOf(ApplicationComponentProvider::class, $providers[0]);
+        self::assertInstanceOf(HttpMessageComponentProvider::class, $providers[1]);
+        self::assertInstanceOf(HttpMiddlewareComponentProvider::class, $providers[2]);
+        self::assertInstanceOf(HttpRoutingComponentProvider::class, $providers[3]);
+        self::assertInstanceOf(HttpRoutingCliComponentProvider::class, $providers[4]);
+        self::assertInstanceOf(HttpServerComponentProvider::class, $providers[5]);
+        self::assertInstanceOf(LogComponentProvider::class, $providers[6]);
+        self::assertInstanceOf(ViewComponentProvider::class, $providers[7]);
     }
 
     public function testGetContainerProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpApplicationComponentProvider::getContainerProviders($app));
+        self::assertEmpty((new HttpApplicationComponentProvider())->getContainerProviders($app));
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpApplicationComponentProvider::getEventProviders($app));
+        self::assertEmpty((new HttpApplicationComponentProvider())->getEventProviders($app));
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpApplicationComponentProvider::getCliProviders($app));
+        self::assertEmpty((new HttpApplicationComponentProvider())->getCliProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpApplicationComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new HttpApplicationComponentProvider())->getHttpProviders($app));
     }
 }

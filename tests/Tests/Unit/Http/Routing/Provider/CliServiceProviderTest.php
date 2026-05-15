@@ -28,7 +28,7 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(ListCommand::class, HttpRoutingCliServiceProvider::publishers());
+        self::assertArrayHasKey(ListCommand::class, (new HttpRoutingCliServiceProvider())->publishers());
     }
 
     public function testListCommand(): void
@@ -37,7 +37,7 @@ final class CliServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(ListCommand::class));
 
-        $callback = HttpRoutingCliServiceProvider::publishers()[ListCommand::class];
+        $callback = (new HttpRoutingCliServiceProvider())->publishers()[ListCommand::class];
         $callback($this->container);
 
         self::assertTrue($container->has(ListCommand::class));

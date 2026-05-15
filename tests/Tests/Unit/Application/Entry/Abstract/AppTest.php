@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 use Override;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
@@ -37,9 +38,15 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
+use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
+use Valkyrja\Cli\Middleware\Provider\CliMiddlewareComponentProvider;
+use Valkyrja\Cli\Routing\Provider\CliRoutingComponentProvider;
+use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Provider\ContainerComponentProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
+use Valkyrja\Event\Provider\EventComponentProvider;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
@@ -59,8 +66,13 @@ use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract as HttpRoutingRoute
 use Valkyrja\Http\Routing\Factory\Contract\RoutingResponseFactoryContract;
 use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
+use Valkyrja\Http\Message\Provider\HttpMessageComponentProvider;
+use Valkyrja\Http\Middleware\Provider\HttpMiddlewareComponentProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
+use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
+use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
@@ -176,7 +188,13 @@ final class AppTest extends TestCase
         $env = new class extends EnvClass {
         };
 
-        $config = new Config();
+        $config = new Config(
+            providers: [
+                new EventComponentProvider(),
+                new CliRoutingComponentProvider(),
+                new HttpRoutingComponentProvider(),
+            ]
+        );
 
         $application = App::app($env, $config);
 
@@ -199,7 +217,21 @@ final class AppTest extends TestCase
         $env = new class extends Env {
         };
 
-        $config = new Config();
+        $config = new Config(
+            providers: [
+                new DispatchComponentProvider(),
+                new EventComponentProvider(),
+                new CliInteractionComponentProvider(),
+                new CliMiddlewareComponentProvider(),
+                new CliRoutingComponentProvider(),
+                new CliServerComponentProvider(),
+                new HttpMessageComponentProvider(),
+                new HttpMiddlewareComponentProvider(),
+                new HttpRoutingComponentProvider(),
+                new HttpRoutingCliComponentProvider(),
+                new HttpServerComponentProvider(),
+            ]
+        );
 
         $application = App::app($env, $config);
 
@@ -253,8 +285,9 @@ final class AppTest extends TestCase
 
         $cliProviders = $application->getCliProviders();
 
-        self::assertContains(CliRoutingCliRouteProvider::class, $cliProviders);
-        self::assertContains(HttpRoutingCliRouteProvider::class, $cliProviders);
+        self::assertCount(2, $cliProviders);
+        self::assertInstanceOf(CliRoutingCliRouteProvider::class, $cliProviders[0]);
+        self::assertInstanceOf(HttpRoutingCliRouteProvider::class, $cliProviders[1]);
 
         self::assertEmpty($application->getEventProviders());
         self::assertEmpty($application->getHttpProviders());
@@ -270,7 +303,7 @@ final class AppTest extends TestCase
 
         $config = new Config(
             providers: [
-                ContainerComponentProvider::class,
+                new ContainerComponentProvider(),
             ],
         );
 
@@ -286,8 +319,8 @@ final class AppTest extends TestCase
 
         $config2 = new Config(
             providers: [
-                ContainerComponentProvider::class,
-                ViewComponentProvider::class,
+                new ContainerComponentProvider(),
+                new ViewComponentProvider(),
             ],
         );
 

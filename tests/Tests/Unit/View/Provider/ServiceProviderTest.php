@@ -40,12 +40,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(RendererContract::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(PhpRenderer::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(OrkaRenderer::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(TwigRenderer::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(Environment::class, ViewServiceProvider::publishers());
-        self::assertArrayHasKey(ViewResponseFactoryContract::class, ViewServiceProvider::publishers());
+        self::assertArrayHasKey(RendererContract::class, (new ViewServiceProvider())->publishers());
+        self::assertArrayHasKey(PhpRenderer::class, (new ViewServiceProvider())->publishers());
+        self::assertArrayHasKey(OrkaRenderer::class, (new ViewServiceProvider())->publishers());
+        self::assertArrayHasKey(TwigRenderer::class, (new ViewServiceProvider())->publishers());
+        self::assertArrayHasKey(Environment::class, (new ViewServiceProvider())->publishers());
+        self::assertArrayHasKey(ViewResponseFactoryContract::class, (new ViewServiceProvider())->publishers());
     }
 
     /**
@@ -55,7 +55,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(PhpRenderer::class, self::createStub(PhpRenderer::class));
 
-        $callback = ViewServiceProvider::publishers()[RendererContract::class];
+        $callback = (new ViewServiceProvider())->publishers()[RendererContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(RendererContract::class));
@@ -63,7 +63,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPhpRenderer(): void
     {
-        $callback = ViewServiceProvider::publishers()[PhpRenderer::class];
+        $callback = (new ViewServiceProvider())->publishers()[PhpRenderer::class];
         $callback($this->container);
 
         self::assertInstanceOf(PhpRenderer::class, $this->container->getSingleton(PhpRenderer::class));
@@ -71,7 +71,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOrkaRenderer(): void
     {
-        $callback = ViewServiceProvider::publishers()[OrkaRenderer::class];
+        $callback = (new ViewServiceProvider())->publishers()[OrkaRenderer::class];
         $callback($this->container);
 
         self::assertInstanceOf(OrkaRenderer::class, $this->container->getSingleton(OrkaRenderer::class));
@@ -84,7 +84,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Environment::class, self::createStub(Environment::class));
 
-        $callback = ViewServiceProvider::publishers()[TwigRenderer::class];
+        $callback = (new ViewServiceProvider())->publishers()[TwigRenderer::class];
         $callback($this->container);
 
         self::assertInstanceOf(TwigRenderer::class, $this->container->getSingleton(TwigRenderer::class));
@@ -97,7 +97,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(Env::class, self::createStub(Env::class));
 
-        $callback = ViewServiceProvider::publishers()[Environment::class];
+        $callback = (new ViewServiceProvider())->publishers()[Environment::class];
         $callback($this->container);
 
         self::assertInstanceOf(Environment::class, $this->container->getSingleton(Environment::class));
@@ -122,7 +122,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             }
         );
 
-        $callback = ViewServiceProvider::publishers()[Environment::class];
+        $callback = (new ViewServiceProvider())->publishers()[Environment::class];
         $callback($this->container);
 
         self::assertInstanceOf(Environment::class, $this->container->getSingleton(Environment::class));
@@ -136,7 +136,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
         $this->container->setSingleton(RendererContract::class, self::createStub(RendererContract::class));
 
-        $callback = ViewServiceProvider::publishers()[ViewResponseFactoryContract::class];
+        $callback = (new ViewServiceProvider())->publishers()[ViewResponseFactoryContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(ViewResponseFactory::class, $this->container->getSingleton(ViewResponseFactoryContract::class));

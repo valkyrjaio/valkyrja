@@ -51,7 +51,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             RouterContract::class                 => [self::class, 'publishRouter'],
@@ -219,16 +219,15 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var HttpRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,
-                ...$provider::getControllerClasses(),
+                ...$provider->getControllerClasses(),
             ];
 
             $routes = [
                 ...$routes,
-                ...$provider::getRoutes(),
+                ...$provider->getRoutes(),
             ];
         }
 

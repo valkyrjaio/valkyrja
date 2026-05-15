@@ -35,7 +35,7 @@ class FilesystemServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             FilesystemContract::class       => [self::class, 'publishFilesystem'],

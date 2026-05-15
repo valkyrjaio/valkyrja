@@ -31,12 +31,12 @@ final class CliRouteProviderTest extends TestCase
 {
     public function testGetRoutes(): void
     {
-        self::assertEmpty(HttpRoutingCliRouteProvider::getRoutes());
+        self::assertEmpty((new HttpRoutingCliRouteProvider())->getRoutes());
     }
 
     public function testGetControllerClasses(): void
     {
-        self::assertContains(ListCommand::class, HttpRoutingCliRouteProvider::getControllerClasses());
+        self::assertContains(ListCommand::class, (new HttpRoutingCliRouteProvider())->getControllerClasses());
     }
 
     /**

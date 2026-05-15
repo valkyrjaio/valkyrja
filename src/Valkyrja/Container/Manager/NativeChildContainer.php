@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Manager;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 class NativeChildContainer extends Container
 {
@@ -74,15 +73,18 @@ class NativeChildContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param class-string $id The provided service id
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
-    public function isDeferred(string $id): bool
+    public function has(string $id): bool
     {
-        return isset($this->deferred[$id])
-            || isset($this->deferredCallback[$id])
-            || isset($this->parent->deferred[$id])
-            || isset($this->parent->deferredCallback[$id]);
+        return isset($this->callbacks[$id])
+            || isset($this->parent->callbacks[$id])
+            || $this->isSingleton($id)
+            || $this->isService($id)
+            || $this->isAlias($id);
     }
 
     /**
@@ -100,13 +102,14 @@ class NativeChildContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param class-string<ServiceProviderContract> $provider The provider
+     * @param class-string $id The service id
      */
     #[Override]
-    public function isRegistered(string $provider): bool
+    protected function publishUnpublishedProvided(string $id): void
     {
-        return isset($this->registered[$provider])
-            || isset($this->parent->registered[$provider]);
+        if ((isset($this->callbacks[$id]) || isset($this->parent->callbacks[$id])) && ! $this->isPublished($id)) {
+            $this->publish($id);
+        }
     }
 
     /**
@@ -117,10 +120,10 @@ class NativeChildContainer extends Container
      * @return callable(ContainerContract):void|null
      */
     #[Override]
-    protected function getDeferredCallback(string $id): callable|null
+    protected function getCallback(string $id): callable|null
     {
-        return $this->deferredCallback[$id]
-            ?? $this->parent->deferredCallback[$id]
+        return $this->callbacks[$id]
+            ?? $this->parent->callbacks[$id]
             ?? null;
     }
 

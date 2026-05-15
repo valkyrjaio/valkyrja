@@ -120,22 +120,24 @@ final class ChildContainerTest extends TestCase
     }
 
     // -----------------------------------------------------------------------
-    // isDeferred / isPublished / isRegistered
+    // has (registered via provider) / isPublished
     // -----------------------------------------------------------------------
 
-    public function testIsDeferredFromParent(): void
+    public function testHasFromParentWhenRegisteredInParent(): void
     {
-        $this->parent->register(DispatchServiceProvider::class);
+        $this->parent->register(new DispatchServiceProvider());
+        // Re-create child so callbacks are copied from parent
+        $child = $this->createChild();
 
-        self::assertTrue($this->child->isDeferred(DispatcherContract::class));
+        self::assertTrue($child->has(DispatcherContract::class));
     }
 
-    public function testIsDeferredFromChild(): void
+    public function testHasFromChildWhenRegisteredInChild(): void
     {
-        $this->child->register(DispatchServiceProvider::class);
+        $this->child->register(new DispatchServiceProvider());
 
-        self::assertTrue($this->child->isDeferred(DispatcherContract::class));
-        self::assertFalse($this->parent->isDeferred(DispatcherContract::class));
+        self::assertTrue($this->child->has(DispatcherContract::class));
+        self::assertFalse($this->parent->has(DispatcherContract::class));
     }
 
     public function testIsPublishedFromParent(): void
@@ -151,21 +153,6 @@ final class ChildContainerTest extends TestCase
 
         self::assertTrue($this->child->isPublished(ServiceClass::class));
         self::assertFalse($this->parent->isPublished(ServiceClass::class));
-    }
-
-    public function testIsRegisteredFromParent(): void
-    {
-        $this->parent->register(DispatchServiceProvider::class);
-
-        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
-    }
-
-    public function testIsRegisteredFromChild(): void
-    {
-        $this->child->register(DispatchServiceProvider::class);
-
-        self::assertTrue($this->child->isRegistered(DispatchServiceProvider::class));
-        self::assertFalse($this->parent->isRegistered(DispatchServiceProvider::class));
     }
 
     // -----------------------------------------------------------------------
@@ -280,7 +267,7 @@ final class ChildContainerTest extends TestCase
         $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
         $this->parent->bindAlias('svcAlias', ServiceClass::class);
         $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
-        $this->parent->register(DispatchServiceProvider::class);
+        $this->parent->register(new DispatchServiceProvider());
 
         // Build child from the fully-set-up parent
         $child = $this->createChild();
@@ -295,30 +282,29 @@ final class ChildContainerTest extends TestCase
         $child->getService(ServiceClass::class);
         $child->getAliased('svcAlias');
         $child->getSingleton(SingletonClass::class);
-        $child->get(DispatcherContract::class); // triggers deferred publish in child
+        $child->get(DispatcherContract::class); // triggers publish in child
 
         // Parent data maps must be identical
         $dataAfter = $this->parent->getData();
         self::assertSame($dataBefore->aliases, $dataAfter->aliases);
         self::assertSame($dataBefore->services, $dataAfter->services);
         self::assertSame($dataBefore->singletons, $dataAfter->singletons);
-        self::assertSame($dataBefore->deferred, $dataAfter->deferred);
-        self::assertSame($dataBefore->providers, $dataAfter->providers);
+        self::assertSame($dataBefore->callbacks, $dataAfter->callbacks);
 
         // Singleton resolved in child must not have been cached in parent
         self::assertSame($singletonInstanceBefore, $this->parent->isSingletonInstance(SingletonClass::class));
 
-        // Deferred service published in child must not mark parent as published
+        // Service published in child must not mark parent as published
         self::assertSame($dispatcherPublishedBefore, $this->parent->isPublished(DispatcherContract::class));
     }
 
     // -----------------------------------------------------------------------
-    // Deferred provider — published in child context
+    // Provider — published in child context
     // -----------------------------------------------------------------------
 
-    public function testDeferredFromChildPublishedInChild(): void
+    public function testProviderFromChildPublishedInChild(): void
     {
-        $this->child->register(DispatchServiceProvider::class);
+        $this->child->register(new DispatchServiceProvider());
 
         self::assertTrue($this->child->has(DispatcherContract::class));
 
@@ -328,10 +314,10 @@ final class ChildContainerTest extends TestCase
         self::assertFalse($this->parent->isPublished(DispatcherContract::class));
     }
 
-    public function testDeferredFromParentPublishedInChild(): void
+    public function testProviderFromParentPublishedInChild(): void
     {
-        $this->parent->register(DispatchServiceProvider::class);
-        // Re-create child so deferredCallback is copied from parent
+        $this->parent->register(new DispatchServiceProvider());
+        // Re-create child so callbacks are copied from parent
         $child = $this->createChild();
 
         self::assertTrue($child->has(DispatcherContract::class));
@@ -352,7 +338,7 @@ final class ChildContainerTest extends TestCase
         $data = $this->parent->getData();
 
         return new ChildContainer($this->parent, new ContainerData(
-            deferredCallback: $data->deferredCallback,
+            callbacks: $data->callbacks,
             singletons: $data->singletons,
         ));
     }

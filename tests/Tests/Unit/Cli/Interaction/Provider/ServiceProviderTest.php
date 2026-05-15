@@ -32,13 +32,13 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
-        self::assertArrayHasKey(CliInteractionConfigContract::class, CliInteractionServiceProvider::publishers());
-        self::assertArrayHasKey(OutputFactoryContract::class, CliInteractionServiceProvider::publishers());
+        self::assertArrayHasKey(CliInteractionConfigContract::class, (new CliInteractionServiceProvider())->publishers());
+        self::assertArrayHasKey(OutputFactoryContract::class, (new CliInteractionServiceProvider())->publishers());
     }
 
     public function testPublishConfig(): void
     {
-        $callback = CliInteractionServiceProvider::publishers()[CliInteractionConfigContract::class];
+        $callback = (new CliInteractionServiceProvider())->publishers()[CliInteractionConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(CliInteractionConfigContract::class, $config = $this->container->getSingleton(CliInteractionConfigContract::class));
@@ -55,7 +55,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             isSilent: true,
         ));
 
-        $callback = CliInteractionServiceProvider::publishers()[CliInteractionConfigContract::class];
+        $callback = (new CliInteractionServiceProvider())->publishers()[CliInteractionConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(CliInteractionConfigContract::class, $config = $this->container->getSingleton(CliInteractionConfigContract::class));
@@ -71,7 +71,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(CliInteractionConfigContract::class, self::createStub(CliInteractionConfigContract::class));
 
-        $callback = CliInteractionServiceProvider::publishers()[OutputFactoryContract::class];
+        $callback = (new CliInteractionServiceProvider())->publishers()[OutputFactoryContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(OutputFactory::class, $this->container->getSingleton(OutputFactoryContract::class));

@@ -28,34 +28,34 @@ final class CliComponentProviderTest extends TestCase
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpRoutingCliComponentProvider::getComponentProviders($app));
+        self::assertEmpty((new HttpRoutingCliComponentProvider())->getComponentProviders($app));
     }
 
     public function testGetContainerProvider(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(HttpRoutingCliServiceProvider::class, HttpRoutingCliComponentProvider::getContainerProviders($app));
+        self::assertInstanceOf(HttpRoutingCliServiceProvider::class, (new HttpRoutingCliComponentProvider())->getContainerProviders($app)[0]);
     }
 
     public function testGetCliProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertContains(HttpRoutingCliRouteProvider::class, HttpRoutingCliComponentProvider::getCliProviders($app));
+        self::assertInstanceOf(HttpRoutingCliRouteProvider::class, (new HttpRoutingCliComponentProvider())->getCliProviders($app)[0]);
     }
 
     public function testGetEventProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpRoutingCliComponentProvider::getEventProviders($app));
+        self::assertEmpty((new HttpRoutingCliComponentProvider())->getEventProviders($app));
     }
 
     public function testGetHttpProviders(): void
     {
         $app = self::createStub(ApplicationContract::class);
 
-        self::assertEmpty(HttpRoutingCliComponentProvider::getHttpProviders($app));
+        self::assertEmpty((new HttpRoutingCliComponentProvider())->getHttpProviders($app));
     }
 }

@@ -27,7 +27,7 @@ final class HttpRoutingDataProviderClass implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             HttpRoutingData::class => [self::class, 'publishData'],

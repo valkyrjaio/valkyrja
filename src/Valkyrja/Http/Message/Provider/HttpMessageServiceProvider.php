@@ -25,7 +25,7 @@ class HttpMessageServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],

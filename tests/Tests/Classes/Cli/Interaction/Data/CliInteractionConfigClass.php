@@ -31,7 +31,7 @@ final class CliInteractionConfigClass extends Config implements CliInteractionCo
      * @param non-empty-string                          $key
      * @param non-empty-string                          $dataPath
      * @param non-empty-string                          $dataNamespace
-     * @param class-string<ComponentProviderContract>[] $providers
+     * @param ComponentProviderContract[]               $providers
      * @param array<callable(ApplicationContract):void> $callbacks
      */
     public function __construct(
@@ -45,7 +45,7 @@ final class CliInteractionConfigClass extends Config implements CliInteractionCo
         string $dataPath = 'App/Provider/Data',
         string $dataNamespace = 'App\\Provider\\Data',
         array $providers = [
-            CliWithHttpApplicationComponentProvider::class,
+            new CliWithHttpApplicationComponentProvider(),
         ],
         array $callbacks = [],
         public bool $isQuiet = false,

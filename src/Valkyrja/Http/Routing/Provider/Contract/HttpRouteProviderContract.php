@@ -22,12 +22,12 @@ interface HttpRouteProviderContract
      *
      * @return class-string[]
      */
-    public static function getControllerClasses(): array;
+    public function getControllerClasses(): array;
 
     /**
      * Get a list of routes.
      *
      * @return RouteContract[]
      */
-    public static function getRoutes(): array;
+    public function getRoutes(): array;
 }

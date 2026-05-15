@@ -57,7 +57,6 @@ final class ContainerTest extends TestCase
 
         self::assertFalse($container->isAlias($id));
         self::assertFalse($container->isSingleton($id));
-        self::assertFalse($container->isDeferred($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved
@@ -79,7 +78,6 @@ final class ContainerTest extends TestCase
         self::assertTrue($container->isPublished($id));
         self::assertFalse($container->isService($alias));
         self::assertFalse($container->isSingleton($id));
-        self::assertFalse($container->isDeferred($id));
 
         self::assertInstanceOf($id, $service = $container->get($alias));
         // A bound service should return a new instance each time it is retrieved
@@ -103,7 +101,6 @@ final class ContainerTest extends TestCase
         self::assertTrue($container->isPublished($id));
 
         self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isDeferred($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound singleton should return the same instance each time it is retrieved
@@ -115,7 +112,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(DispatchServiceProvider::class);
+        $container->register(new DispatchServiceProvider());
 
         self::assertTrue($container->has(DispatcherContract::class));
     }
@@ -166,7 +163,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(DispatchServiceProvider::class);
+        $container->register(new DispatchServiceProvider());
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -176,18 +173,10 @@ final class ContainerTest extends TestCase
             [
                 DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
-            $data->deferredCallback
-        );
-
-        self::assertSame(
-            [
-                DispatcherContract::class => DispatchServiceProvider::class,
-            ],
-            $data->deferred
+            $data->callbacks
         );
 
         self::assertEmpty($data->aliases);
-        self::assertSame([DispatchServiceProvider::class], $data->providers);
         self::assertEmpty($data->services);
         self::assertEmpty($data->singletons);
     }
@@ -196,7 +185,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(DispatchServiceProvider::class);
+        $container->register(new DispatchServiceProvider());
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -216,14 +205,7 @@ final class ContainerTest extends TestCase
             [
                 DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
-            $newData->deferredCallback
-        );
-
-        self::assertSame(
-            [
-                DispatcherContract::class => DispatchServiceProvider::class,
-            ],
-            $newData->deferred
+            $newData->callbacks
         );
     }
 
@@ -231,7 +213,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(DispatchServiceProvider::class);
+        $container->register(new DispatchServiceProvider());
 
         self::assertTrue($container->has(DispatcherContract::class));
 
@@ -247,14 +229,7 @@ final class ContainerTest extends TestCase
             [
                 DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
             ],
-            $newData->deferredCallback
-        );
-
-        self::assertSame(
-            [
-                DispatcherContract::class => DispatchServiceProvider::class,
-            ],
-            $newData->deferred
+            $newData->callbacks
         );
     }
 

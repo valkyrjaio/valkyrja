@@ -42,7 +42,7 @@ class CliRoutingServiceProvider implements ServiceProviderContract
      * @inheritDoc
      */
     #[Override]
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             RouteCollectorContract::class  => [self::class, 'publishAttributeRouteCollector'],
@@ -136,16 +136,15 @@ class CliRoutingServiceProvider implements ServiceProviderContract
         $controllers = [];
         $routes      = [];
 
-        /** @var CliRouteProviderContract $provider */
         foreach ($providers as $provider) {
             $controllers = [
                 ...$controllers,
-                ...$provider::getControllerClasses(),
+                ...$provider->getControllerClasses(),
             ];
 
             $routes = [
                 ...$routes,
-                ...$provider::getRoutes(),
+                ...$provider->getRoutes(),
             ];
         }
 
