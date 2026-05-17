@@ -33,7 +33,7 @@
     "phpmailer/phpmailer"        : "^7.1.0",
     "predis/predis"              : "^3.4.2",
     "pusher/pusher-php-server"   : "^7.2.7",
-    "twig/twig"                  : "^3.24.0",
+    "twig/twig"                  : "^3.25.0",
     "vonage/client-core"         : "^4.13.0"
   },
   "conflict"          : {
@@ -47,7 +47,7 @@
     "phpmailer/phpmailer"        : "<7.1.0",
     "predis/predis"              : "<3.4.2",
     "pusher/pusher-php-server"   : "<7.2.7",
-    "twig/twig"                  : "<3.24.0",
+    "twig/twig"                  : "<3.25.0",
     "vonage/client-core"         : "<4.13.0"
   },
   "autoload"          : {
@@ -74,7 +74,7 @@
     "phpmailer/phpmailer"        : "Required to use the default Mail adapter (^7.1.0).",
     "predis/predis"              : "Required to use the Redis Cache store (^3.4.2).",
     "pusher/pusher-php-server"   : "Required to use the Pusher Broadcast adapter (^7.2.7).",
-    "twig/twig"                  : "Required to use the Twig View engine (^3.24.0).",
+    "twig/twig"                  : "Required to use the Twig View engine (^3.25.0).",
     "vonage/client-core"         : "Required to use the default SMS adapter (^4.13.0).",
     "ext-curl"                   : "Required to use the default Client adapter (*)",
     "ext-pdo"                    : "Required to use the default ORM adapter (*)",
