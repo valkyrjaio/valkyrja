@@ -7,7 +7,7 @@ run-name: "Rebase ${{ github.ref_name }} from master"
 
 jobs:
   rebase:
-    uses: valkyrjaio/.github/.github/workflows/_rebase-from-master.yml@396a3e938cf1c222f11e98afe54612d9170c0557
+    uses: valkyrjaio/.github/.github/workflows/_rebase-from-master.yml@9b108a21f1a7161aef43c83046266f2c8de60165
     permissions:
       contents: write
     secrets: inherit
