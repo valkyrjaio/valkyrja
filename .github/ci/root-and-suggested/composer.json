@@ -10,7 +10,7 @@
   "require-dev"       : {
     "filp/whoops"                : "^2.18.4",
     "firebase/php-jwt"           : "^7.0.5",
-    "guzzlehttp/guzzle"          : "^7.10.1",
+    "guzzlehttp/guzzle"          : "^7.10.3",
     "league/flysystem"           : "^3.34.0",
     "league/flysystem-aws-s3-v3" : "^3.34.0",
     "mailgun/mailgun-php"        : "^4.5.0",
