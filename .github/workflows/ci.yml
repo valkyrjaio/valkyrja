@@ -107,7 +107,7 @@ jobs:
 
   phpunit:
     name: PHPUnit
-    uses: valkyrjaio/ci-phpunit-php/.github/workflows/_workflow-call.yml@c289798cf0e0f75d02aa57238ce00e2b42f7e405
+    uses: valkyrjaio/ci-phpunit-php/.github/workflows/_workflow-call.yml@31ceecef3647bb9e4fe941a9a04c1074ea7e0ecf
     with:
       php-versions: '["8.4", "8.5", "8.6"]'
       php-version-bleeding-edge: '8.6'
