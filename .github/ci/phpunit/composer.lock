@@ -1299,16 +1299,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.1.12",
+            "version": "13.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ca98c9f757c0e1e0778ab8ff80c4fb84152facf8"
+                "reference": "ddf7f25d9ee9652b464475d7f3bacde2613e355e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ca98c9f757c0e1e0778ab8ff80c4fb84152facf8",
-                "reference": "ca98c9f757c0e1e0778ab8ff80c4fb84152facf8",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ddf7f25d9ee9652b464475d7f3bacde2613e355e",
+                "reference": "ddf7f25d9ee9652b464475d7f3bacde2613e355e",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.12"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.13"
             },
             "funding": [
                 {
@@ -1386,7 +1386,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-05-25T15:37:19+00:00"
+            "time": "2026-05-27T14:03:08+00:00"
         },
         {
             "name": "psr/container",
@@ -3799,16 +3799,16 @@
         },
         {
             "name": "valkyrja/phpunit",
-            "version": "v26.4.0",
+            "version": "v26.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpunit-php.git",
-                "reference": "c289798cf0e0f75d02aa57238ce00e2b42f7e405"
+                "reference": "31ceecef3647bb9e4fe941a9a04c1074ea7e0ecf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/c289798cf0e0f75d02aa57238ce00e2b42f7e405",
-                "reference": "c289798cf0e0f75d02aa57238ce00e2b42f7e405",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/31ceecef3647bb9e4fe941a9a04c1074ea7e0ecf",
+                "reference": "31ceecef3647bb9e4fe941a9a04c1074ea7e0ecf",
                 "shasum": ""
             },
             "require": {
@@ -3817,7 +3817,7 @@
                 "php": ">=8.4",
                 "php-coveralls/php-coveralls": "^2.9.1",
                 "phpunit/phpcov": "^13.0.1",
-                "phpunit/phpunit": "^13.1.10"
+                "phpunit/phpunit": "^13.1.13"
             },
             "type": "project",
             "autoload": {
@@ -3844,9 +3844,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpunit-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.4.0"
+                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.4.1"
             },
-            "time": "2026-05-15T19:38:23+00:00"
+            "time": "2026-05-27T21:32:24+00:00"
         }
     ],
     "aliases": [],

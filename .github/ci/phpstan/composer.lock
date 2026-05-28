@@ -9,11 +9,11 @@
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.56",
+            "version": "2.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/93a603c9fc3be8c3c93bbc8d22170ad766685537",
-                "reference": "93a603c9fc3be8c3c93bbc8d22170ad766685537",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b4cd98348c809924f62bb9cc8c047f5e73bc9a58",
+                "reference": "b4cd98348c809924f62bb9cc8c047f5e73bc9a58",
                 "shasum": ""
             },
             "require": {
@@ -35,6 +35,17 @@
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Mirtes"
+                },
+                {
+                    "name": "Markus Staab"
+                },
+                {
+                    "name": "Vincent Langlet"
+                }
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
             "keywords": [
@@ -58,25 +69,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-26T17:04:57+00:00"
+            "time": "2026-05-28T08:22:43+00:00"
         },
         {
             "name": "valkyrja/phpstan",
-            "version": "v26.1.5",
+            "version": "v26.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpstan-php.git",
-                "reference": "df642d730e39c80ed85bd02f9d8a50dc880d8b16"
+                "reference": "cb3703553ad58e3da9a74c14a749ee7c6a3536c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpstan-php/zipball/df642d730e39c80ed85bd02f9d8a50dc880d8b16",
-                "reference": "df642d730e39c80ed85bd02f9d8a50dc880d8b16",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpstan-php/zipball/cb3703553ad58e3da9a74c14a749ee7c6a3536c5",
+                "reference": "cb3703553ad58e3da9a74c14a749ee7c6a3536c5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4",
-                "phpstan/phpstan": "^2.1.55"
+                "phpstan/phpstan": "^2.1.56"
             },
             "type": "project",
             "autoload": {
@@ -103,9 +114,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpstan-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpstan-php/tree/v26.1.5"
+                "source": "https://github.com/valkyrjaio/ci-phpstan-php/tree/v26.1.6"
             },
-            "time": "2026-05-18T17:47:32+00:00"
+            "time": "2026-05-27T21:46:58+00:00"
         }
     ],
     "aliases": [],
