@@ -18,7 +18,7 @@
     "phpmailer/phpmailer"        : "^7.1.1",
     "predis/predis"              : "^3.4.2",
     "pusher/pusher-php-server"   : "^7.2.8",
-    "twig/twig"                  : "^3.26.0",
+    "twig/twig"                  : "^3.27.0",
     "vonage/client-core"         : "^4.13.0"
   },
   "minimum-stability" : "dev",
