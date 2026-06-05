@@ -2849,20 +2849,20 @@
         },
         {
             "name": "valkyrja/phpcsfixer",
-            "version": "v26.1.4",
+            "version": "v26.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpcsfixer-php.git",
-                "reference": "a390bfc4f157d13c5ef98aac10a533f6c561114d"
+                "reference": "bbc25baefd2925f1dfc664471b1bc45e64789377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpcsfixer-php/zipball/a390bfc4f157d13c5ef98aac10a533f6c561114d",
-                "reference": "a390bfc4f157d13c5ef98aac10a533f6c561114d",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpcsfixer-php/zipball/bbc25baefd2925f1dfc664471b1bc45e64789377",
+                "reference": "bbc25baefd2925f1dfc664471b1bc45e64789377",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^3.95.3",
+                "friendsofphp/php-cs-fixer": "^3.95.4",
                 "php": ">=8.4"
             },
             "type": "project",
@@ -2890,9 +2890,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpcsfixer-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpcsfixer-php/tree/v26.1.4"
+                "source": "https://github.com/valkyrjaio/ci-phpcsfixer-php/tree/v26.1.5"
             },
-            "time": "2026-05-30T15:48:13+00:00"
+            "time": "2026-06-04T16:47:20+00:00"
         }
     ],
     "aliases": [],
