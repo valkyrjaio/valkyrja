@@ -9,14 +9,14 @@
   },
   "require-dev"       : {
     "filp/whoops"                : "^2.18.4",
-    "firebase/php-jwt"           : "^7.0.5",
+    "firebase/php-jwt"           : "^7.1.0",
     "guzzlehttp/guzzle"          : "^7.11.1",
     "league/flysystem"           : "^3.34.0",
     "league/flysystem-aws-s3-v3" : "^3.34.0",
     "mailgun/mailgun-php"        : "^4.5.0",
     "monolog/monolog"            : "^3.10.0",
     "phpmailer/phpmailer"        : "^7.1.1",
-    "predis/predis"              : "^3.5.0",
+    "predis/predis"              : "^3.5.1",
     "pusher/pusher-php-server"   : "^7.2.8",
     "twig/twig"                  : "^3.27.1",
     "vonage/client-core"         : "^4.13.0"
