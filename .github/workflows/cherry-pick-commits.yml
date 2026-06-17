@@ -16,7 +16,7 @@ run-name: Cherry Pick ${{ inputs.hash }} To ${{ inputs.destination }}
 jobs:
   cherry-pick:
     name: Cherry-pick
-    uses: valkyrjaio/.github/.github/workflows/_cherry-pick-commits.yml@47e8a34a503237c8dfef2af07e7f27c38621de0e
+    uses: valkyrjaio/.github/.github/workflows/_cherry-pick-commits.yml@a15724723b7c6668fb26b8c3bec90ddedea44dcb
     permissions:
       contents: write
     with:
