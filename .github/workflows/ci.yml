@@ -66,7 +66,7 @@ jobs:
 
   phpcsfixer:
     name: PHP CS Fixer
-    uses: valkyrjaio/ci-phpcsfixer-php/.github/workflows/_workflow-call.yml@7b6433d460ad610087d09628c6c3b100bb6f02b5
+    uses: valkyrjaio/ci-phpcsfixer-php/.github/workflows/_workflow-call.yml@1f1a68ca9c3a8c34176840cb1b2f6ed93c9fb57c
     with:
       php-version: '8.4'
       paths: |
