@@ -327,6 +327,21 @@ final class ApplicationTest extends TestCase
     }
 
     /**
+     * Test that the provider getters return empty arrays when there are no providers.
+     */
+    public function testProviderGettersWithNoProviders(): void
+    {
+        $config      = new Config(providers: []);
+        $application = new Valkyrja(container: new Container(), config: $config);
+
+        self::assertSame([], $application->getProviders());
+        self::assertSame([], $application->getContainerProviders());
+        self::assertSame([], $application->getEventProviders());
+        self::assertSame([], $application->getCliProviders());
+        self::assertSame([], $application->getHttpProviders());
+    }
+
+    /**
      * Test that publishProviderCallbacks with no callbacks does nothing.
      */
     public function testPublishProviderCallbacksWithNoCallbacks(): void

@@ -24,6 +24,8 @@ use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
+use Valkyrja\View\Orka\Constant\OrkaReplacement;
+use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -71,6 +73,28 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOrkaRenderer(): void
     {
+        $callback = new ViewServiceProvider()->publishers()[OrkaRenderer::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrkaRenderer::class, $this->container->getSingleton(OrkaRenderer::class));
+    }
+
+    public function testPublishOrkaRendererWithCustomReplacements(): void
+    {
+        $this->container->setSingleton(
+            Env::class,
+            new class extends Env {
+                /** @var class-string<ReplacementContract>[] */
+                public const array|null VIEW_ORKA_CORE_REPLACEMENTS = [
+                    OrkaReplacement::LAYOUT,
+                ];
+                /** @var class-string<ReplacementContract>[] */
+                public const array|null VIEW_ORKA_REPLACEMENTS = [
+                    OrkaReplacement::DEBUG,
+                ];
+            }
+        );
+
         $callback = new ViewServiceProvider()->publishers()[OrkaRenderer::class];
         $callback($this->container);
 
