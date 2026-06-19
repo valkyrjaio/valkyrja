@@ -1,6 +1,15 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.4.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.4.1...26.x)
+
+## [v26.4.1](https://github.com/valkyrjaio/valkyrja/compare/v26.4.0...v26.4.1) - 2026-06-19
+
+* [GitHub] Update .github workflow refs to v26.9.2 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/860
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/861
+* [GitHub] Update .github workflow refs to v26.9.3 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/862
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/863
+* [GitHub] Update ci-phpcsfixer-php workflow refs to v26.1.9 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/864
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/865
 
 ## [v26.4.0](https://github.com/valkyrjaio/valkyrja/compare/v26.3.0...v26.4.0) - 2026-06-17
 
