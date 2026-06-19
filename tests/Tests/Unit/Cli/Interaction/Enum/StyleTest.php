@@ -19,20 +19,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class StyleTest extends TestCase
 {
-    public function testCaseValues(): void
-    {
-        self::assertSame(1, Style::BOLD->value);
-        self::assertSame(4, Style::UNDERSCORE->value);
-        self::assertSame(5, Style::BLINK->value);
-        self::assertSame(7, Style::INVERSE->value);
-        self::assertSame(8, Style::CONCEAL->value);
-    }
-
-    public function testCasesCount(): void
-    {
-        self::assertCount(5, Style::cases());
-    }
-
     /**
      * @return array<string, array{Style, int}>
      */
@@ -45,6 +31,20 @@ final class StyleTest extends TestCase
             'inverse'    => [Style::INVERSE, 27],
             'conceal'    => [Style::CONCEAL, 28],
         ];
+    }
+
+    public function testCaseValues(): void
+    {
+        self::assertSame(1, Style::BOLD->value);
+        self::assertSame(4, Style::UNDERSCORE->value);
+        self::assertSame(5, Style::BLINK->value);
+        self::assertSame(7, Style::INVERSE->value);
+        self::assertSame(8, Style::CONCEAL->value);
+    }
+
+    public function testCasesCount(): void
+    {
+        self::assertCount(5, Style::cases());
     }
 
     #[DataProvider('provideDefaults')]

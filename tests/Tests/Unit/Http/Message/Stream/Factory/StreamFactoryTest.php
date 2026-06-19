@@ -69,7 +69,7 @@ final class StreamFactoryTest extends TestCase
     public function testToStringReturnsEmptyForUnreadableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isReadable')->willReturn(false);
+        $stream->expects($this->once())->method('isReadable')->willReturn(false);
 
         self::assertSame('', StreamFactory::toString($stream));
     }
@@ -77,9 +77,9 @@ final class StreamFactoryTest extends TestCase
     public function testToStringReturnsContentsForReadableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isReadable')->willReturn(true);
-        $stream->expects(self::once())->method('rewind');
-        $stream->expects(self::once())->method('getContents')->willReturn('contents');
+        $stream->expects($this->once())->method('isReadable')->willReturn(true);
+        $stream->expects($this->once())->method('rewind');
+        $stream->expects($this->once())->method('getContents')->willReturn('contents');
 
         self::assertSame('contents', StreamFactory::toString($stream));
     }
@@ -87,8 +87,8 @@ final class StreamFactoryTest extends TestCase
     public function testToStringReturnsEmptyWhenReadingThrows(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isReadable')->willReturn(true);
-        $stream->expects(self::once())->method('rewind')->willThrowException(new RuntimeException('boom'));
+        $stream->expects($this->once())->method('isReadable')->willReturn(true);
+        $stream->expects($this->once())->method('rewind')->willThrowException(new RuntimeException('boom'));
 
         self::assertSame('', StreamFactory::toString($stream));
     }
@@ -96,7 +96,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifyWritablePassesForWritableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isWritable')->willReturn(true);
+        $stream->expects($this->once())->method('isWritable')->willReturn(true);
 
         StreamFactory::verifyWritable($stream);
 
@@ -106,7 +106,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifyWritableThrowsForUnwritableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isWritable')->willReturn(false);
+        $stream->expects($this->once())->method('isWritable')->willReturn(false);
 
         $this->expectException(HttpStreamUnwritableStreamException::class);
 
@@ -130,7 +130,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifySeekablePassesForSeekableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isSeekable')->willReturn(true);
+        $stream->expects($this->once())->method('isSeekable')->willReturn(true);
 
         StreamFactory::verifySeekable($stream);
 
@@ -140,7 +140,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifySeekableThrowsForUnseekableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isSeekable')->willReturn(false);
+        $stream->expects($this->once())->method('isSeekable')->willReturn(false);
 
         $this->expectException(HttpStreamUnseekableStreamException::class);
 
@@ -164,7 +164,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifyReadablePassesForReadableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isReadable')->willReturn(true);
+        $stream->expects($this->once())->method('isReadable')->willReturn(true);
 
         StreamFactory::verifyReadable($stream);
 
@@ -174,7 +174,7 @@ final class StreamFactoryTest extends TestCase
     public function testVerifyReadableThrowsForUnreadableStream(): void
     {
         $stream = $this->createMock(StreamContract::class);
-        $stream->expects(self::once())->method('isReadable')->willReturn(false);
+        $stream->expects($this->once())->method('isReadable')->willReturn(false);
 
         $this->expectException(HttpStreamUnreadableStreamException::class);
 
@@ -211,7 +211,7 @@ final class StreamFactoryTest extends TestCase
 
     public function testValidateStreamPassesForValidResource(): void
     {
-        $resource = fopen('php://temp', 'w+b');
+        $resource = fopen('php://temp', 'w+');
 
         StreamFactory::validateStream($resource);
 

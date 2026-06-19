@@ -21,28 +21,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UserMethodsTest extends TestCase
 {
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function user(array $data = []): object
-    {
-        return new class($data) {
-            use UserMethods;
-
-            /**
-             * @param array<string, mixed> $data
-             */
-            public function __construct(private array $data)
-            {
-            }
-
-            public function __get(string $name): mixed
-            {
-                return $this->data[$name] ?? null;
-            }
-        };
-    }
-
     public function testStaticFieldGetters(): void
     {
         $user = $this->user();
@@ -78,5 +56,27 @@ final class UserMethodsTest extends TestCase
         $this->expectException(AuthUnexpectedPasswordValueException::class);
 
         $this->user()->getPasswordValue();
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function user(array $data = []): object
+    {
+        return new class($data) {
+            use UserMethods;
+
+            /**
+             * @param array<string, mixed> $data
+             */
+            public function __construct(private array $data)
+            {
+            }
+
+            public function __get(string $name): mixed
+            {
+                return $this->data[$name] ?? null;
+            }
+        };
     }
 }

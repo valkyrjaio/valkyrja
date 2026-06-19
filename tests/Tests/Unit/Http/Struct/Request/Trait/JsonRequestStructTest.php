@@ -22,13 +22,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class JsonRequestStructTest extends TestCase
 {
-    private function request(array $json): JsonServerRequest
-    {
-        return new JsonServerRequest(
-            parsedJson: ParsedJsonParamCollection::fromArray($json),
-        );
-    }
-
     public function testGetDataFromRequestReturnsOnlyDefinedJsonParams(): void
     {
         $request = $this->request([
@@ -66,5 +59,12 @@ final class JsonRequestStructTest extends TestCase
         $this->expectException(HttpStructJsonServerRequestExpectedException::class);
 
         JsonRequestStructEnum::getDataFromRequest(new ServerRequest());
+    }
+
+    private function request(array $json): JsonServerRequest
+    {
+        return new JsonServerRequest(
+            parsedJson: ParsedJsonParamCollection::fromArray($json),
+        );
     }
 }

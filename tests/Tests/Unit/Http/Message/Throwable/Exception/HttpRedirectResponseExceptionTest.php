@@ -20,7 +20,6 @@ use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectResponseException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
-
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class HttpRedirectResponseExceptionTest extends TestCase
@@ -46,7 +45,7 @@ final class HttpRedirectResponseExceptionTest extends TestCase
         $uri      = new Uri(path: '/target');
         $headers  = new HeaderCollection();
         $response = $this->createMock(ResponseContract::class);
-        $response->expects(self::once())
+        $response->expects($this->once())
             ->method('withStatusCode')
             ->with(StatusCode::MOVED_PERMANENTLY)
             ->willReturnSelf();

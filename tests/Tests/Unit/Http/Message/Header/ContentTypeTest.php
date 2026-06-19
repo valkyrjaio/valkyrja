@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\ContentType;
+use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\Abstract\TestCase;

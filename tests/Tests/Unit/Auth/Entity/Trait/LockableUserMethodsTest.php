@@ -19,13 +19,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class LockableUserMethodsTest extends TestCase
 {
-    private function user(): object
-    {
-        return new class {
-            use LockableUserMethods;
-        };
-    }
-
     public function testGetMaxLoginAttempts(): void
     {
         self::assertSame(3, $this->user()::getMaxLoginAttempts());
@@ -39,5 +32,12 @@ final class LockableUserMethodsTest extends TestCase
     public function testGetIsLockedField(): void
     {
         self::assertSame(UserField::IS_LOCKED, $this->user()::getIsLockedField());
+    }
+
+    private function user(): object
+    {
+        return new class {
+            use LockableUserMethods;
+        };
     }
 }

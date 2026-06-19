@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
@@ -48,7 +47,7 @@ final class HttpResponseExceptionTest extends TestCase
     {
         $response = $this->createMock(ResponseContract::class);
         $response->method('getStatusCode')->willReturn(StatusCode::FOUND);
-        $response->expects(self::once())
+        $response->expects($this->once())
             ->method('withStatusCode')
             ->with(StatusCode::FOUND)
             ->willReturnSelf();
