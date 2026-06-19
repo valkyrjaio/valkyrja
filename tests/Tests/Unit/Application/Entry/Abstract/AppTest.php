@@ -16,7 +16,11 @@ namespace Valkyrja\Tests\Unit\Application\Entry\Abstract;
 use Override;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\CliConfigContract;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
 use Valkyrja\Application\Env\Env;
@@ -42,6 +46,7 @@ use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
 use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ContainerComponentProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
@@ -84,6 +89,7 @@ use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\Classes\Application\Entry\AppExceptionHandlerClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Valkyrja\View\Provider\ViewComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
@@ -329,5 +335,81 @@ final class AppTest extends TestCase
 
         self::assertSame($container2, $application2->getContainer());
         self::assertTrue($container2->has(RendererContract::class));
+    }
+
+    /**
+     * Test bootstrapServices registers the CliConfigContract when a CLI config is given.
+     */
+    public function testBootstrapServicesRegistersCliConfigContract(): void
+    {
+        App::directory(Directory::$basePath);
+
+        $env    = new class extends EnvClass {
+        };
+        $config = new CliConfig(providers: []);
+
+        $application = App::app($env, $config);
+
+        self::assertTrue($application->getContainer()->has(CliConfigContract::class));
+        self::assertSame($config, $application->getContainer()->getSingleton(CliConfigContract::class));
+    }
+
+    /**
+     * Test bootstrapServices registers the HttpConfigContract when an HTTP config is given.
+     */
+    public function testBootstrapServicesRegistersHttpConfigContract(): void
+    {
+        App::directory(Directory::$basePath);
+
+        $env    = new class extends EnvClass {
+        };
+        $config = new HttpConfig(providers: []);
+
+        $application = App::app($env, $config);
+
+        self::assertTrue($application->getContainer()->has(HttpConfigContract::class));
+        self::assertSame($config, $application->getContainer()->getSingleton(HttpConfigContract::class));
+    }
+
+    /**
+     * Test the default exception handler enables without error.
+     */
+    #[RunInSeparateProcess]
+    public function testDefaultExceptionHandler(): void
+    {
+        App::defaultExceptionHandler();
+
+        self::assertIsCallable(set_exception_handler(null));
+    }
+
+    /**
+     * Test bootstrapThrowableHandler registers and enables the handler when debug is on.
+     */
+    #[RunInSeparateProcess]
+    public function testBootstrapThrowableHandlerEnablesHandlerWhenDebug(): void
+    {
+        $app = $this->createMock(ApplicationContract::class);
+        $app->expects($this->once())->method('getDebugMode')->willReturn(true);
+
+        $container = $this->createMock(ContainerContract::class);
+        $container->expects($this->once())
+            ->method('setSingleton')
+            ->with(ThrowableHandlerContract::class, self::isInstanceOf(ThrowableHandlerContract::class));
+
+        App::bootstrapThrowableHandler($app, $container);
+    }
+
+    /**
+     * Test bootstrapThrowableHandler does nothing when debug is off.
+     */
+    public function testBootstrapThrowableHandlerSkipsWhenNotDebug(): void
+    {
+        $app = $this->createMock(ApplicationContract::class);
+        $app->expects($this->once())->method('getDebugMode')->willReturn(false);
+
+        $container = $this->createMock(ContainerContract::class);
+        $container->expects($this->never())->method('setSingleton');
+
+        App::bootstrapThrowableHandler($app, $container);
     }
 }

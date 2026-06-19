@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Entry;
 
+use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use TypeError;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Entry\Cli;
+use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Classes\Application\Entry\CliClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -32,6 +39,39 @@ final class CliTest extends TestCase
         $this->expectException(TypeError::class);
 
         Cli::run(config: new Config());
+    }
+
+    public function testRunBootstrapsAndDispatchesInputHandler(): void
+    {
+        $_SERVER['argv'] = ['cli'];
+
+        $handler = $this->createMock(InputHandlerContract::class);
+        $handler->expects($this->once())
+            ->method('run')
+            ->with(self::isInstanceOf(InputContract::class));
+
+        $container = $this->createMock(ContainerContract::class);
+        $container->expects($this->once())
+            ->method('getSingleton')
+            ->with(InputHandlerContract::class)
+            ->willReturn($handler);
+
+        $app = $this->createMock(ApplicationContract::class);
+        $app->expects($this->once())->method('getContainer')->willReturn($container);
+        $app->expects($this->once())->method('getDebugMode')->willReturn(false);
+
+        $entry = new class extends Cli {
+            public static ApplicationContract $appMock;
+
+            #[Override]
+            public static function start(Env $env, ConfigContract $config): ApplicationContract
+            {
+                return self::$appMock;
+            }
+        };
+        $entry::$appMock = $app;
+
+        $entry::run(new CliConfig());
     }
 
     public function testGetInputDefaults(): void
