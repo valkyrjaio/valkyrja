@@ -102,4 +102,25 @@ final class JsonResponseTest extends TestCase
         self::assertSame('/**/test(' . self::JSON_AS_TEXT . ');', $response2->getBody()->getContents());
         self::assertSame(self::JSON_AS_TEXT, $response3->getBody()->getContents());
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testCreateFromDataAndGetBodyAsJson(): void
+    {
+        $response = JsonResponse::createFromData(self::JSON);
+
+        self::assertSame(StatusCode::OK, $response->getStatusCode());
+        self::assertSame(self::JSON, $response->getBodyAsJson());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testWithJsonAsBody(): void
+    {
+        $response = JsonResponse::createFromData()->withJsonAsBody(['updated' => true]);
+
+        self::assertSame(['updated' => true], $response->getBodyAsJson());
+    }
 }

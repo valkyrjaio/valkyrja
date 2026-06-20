@@ -107,6 +107,15 @@ final class OutputTest extends TestCase
         self::assertEmpty($output2->getWriters());
     }
 
+    public function testWithMessagesReplacesUnwrittenMessages(): void
+    {
+        $message = new Message('text');
+
+        $output = new Output()->withMessages($message);
+
+        self::assertSame([$message], $output->getUnwrittenMessages());
+    }
+
     public function testMessage(): void
     {
         $text    = 'text';

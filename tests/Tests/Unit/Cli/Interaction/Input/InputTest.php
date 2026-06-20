@@ -130,4 +130,15 @@ final class InputTest extends TestCase
         self::assertNotSame($input, $input5);
         self::assertEmpty($input5->getOptions());
     }
+
+    public function testGetOptionAndHasOption(): void
+    {
+        $option = new Option(name: 'verbose');
+        $input  = new Input(options: [$option]);
+
+        self::assertSame([$option], $input->getOption('verbose'));
+        self::assertSame([], $input->getOption('missing'));
+        self::assertTrue($input->hasOption('verbose'));
+        self::assertFalse($input->hasOption('missing'));
+    }
 }

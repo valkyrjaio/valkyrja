@@ -248,6 +248,20 @@ final class DirectoryTest extends TestCase
     }
 
     /**
+     * Test the logsStoragePath directory helper method.
+     */
+    public function testLogsStoragePath(): void
+    {
+        $expected = $this->basePath
+            . '/'
+            . Directory::$storagePath
+            . '/'
+            . Directory::$logsStoragePath;
+
+        self::assertSame($expected, Directory::logsStoragePath());
+    }
+
+    /**
      * Test the testsPath directory helper method.
      */
     public function testTestsPath(): void

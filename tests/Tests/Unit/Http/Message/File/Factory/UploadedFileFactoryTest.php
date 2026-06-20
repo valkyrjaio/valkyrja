@@ -225,4 +225,10 @@ final class UploadedFileFactoryTest extends TestCase
             ],
         ]);
     }
+
+    public function testIsValidSapiEnvironmentForUploadsReturnsFalseUnderCli(): void
+    {
+        // PHPUnit runs under the CLI SAPI, so uploads are not considered valid.
+        self::assertFalse(UploadedFileFactory::isValidSapiEnvironmentForUploads());
+    }
 }

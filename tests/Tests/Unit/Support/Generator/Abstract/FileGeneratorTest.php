@@ -83,4 +83,27 @@ final class FileGeneratorTest extends TestCase
 
         self::assertSame(GenerateStatus::FAILURE, $results);
     }
+
+    public function testGenerateObjectsContents(): void
+    {
+        $generator = new class('filepath.php') extends FileGenerator {
+            #[Override]
+            public function generateFileContents(): string
+            {
+                return '';
+            }
+
+            /**
+             * @param object|array<object> $subject
+             */
+            public function callGenerateObjectsContents(object|array $subject): string
+            {
+                return $this->generateObjectsContents($subject);
+            }
+        };
+
+        $contents = $generator->callGenerateObjectsContents((object) ['foo' => 'bar']);
+
+        self::assertStringContainsString('foo', $contents);
+    }
 }

@@ -195,4 +195,13 @@ final class ArrayFactoryTest extends TestCase
 
         self::assertSame([], $result);
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFromMixedDecodesStringAndCastsNonString(): void
+    {
+        self::assertSame(['a' => 1], ArrayFactory::fromMixed('{"a":1}'));
+        self::assertSame([1, 2], ArrayFactory::fromMixed([1, 2]));
+    }
 }

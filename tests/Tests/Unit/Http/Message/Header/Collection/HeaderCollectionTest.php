@@ -295,4 +295,24 @@ final class HeaderCollectionTest extends TestCase
         self::assertNotNull($header);
         self::assertSame('second.com', $header->getHeaderLine());
     }
+
+    public function testGetHeaderLineReturnsValueOrEmpty(): void
+    {
+        self::assertSame('example.com', $this->headerData->getHeaderLine(HeaderName::HOST));
+        self::assertSame('', $this->headerData->getHeaderLine('X-Missing'));
+    }
+
+    public function testWithoutHeaderRemovesHeaderAndIgnoresMissing(): void
+    {
+        $without = $this->headerData->withoutHeader(HeaderName::HOST);
+
+        self::assertNotSame($this->headerData, $without);
+        self::assertFalse($without->has(HeaderName::HOST));
+        self::assertTrue($without->has(HeaderName::CONTENT_TYPE));
+
+        $unchanged = $this->headerData->withoutHeader('X-Missing');
+
+        self::assertNotSame($this->headerData, $unchanged);
+        self::assertTrue($unchanged->has(HeaderName::HOST));
+    }
 }

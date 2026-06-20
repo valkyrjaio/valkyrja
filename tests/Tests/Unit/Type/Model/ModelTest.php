@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use ArrayAccess;
+use Closure;
 use Error;
 use JsonException;
 use TypeError;
@@ -23,6 +24,7 @@ use Valkyrja\Tests\Classes\Type\Model\SimpleModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Contract\TypeContract;
+use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_encode;
@@ -471,5 +473,28 @@ final class ModelTest extends TestCase
 
         self::assertSame($value, $model->public);
         self::assertSame($newValue, $modified->public);
+    }
+
+    public function testInternalSetPropertiesAppliesModifyValueClosure(): void
+    {
+        $model = new class extends Model {
+            public string $name = '';
+
+            /**
+             * @param array<string, mixed>               $properties
+             * @param Closure(string, mixed): mixed|null $modifyValue
+             */
+            public function applyWithModifier(array $properties, Closure|null $modifyValue): void
+            {
+                $this->internalSetProperties($properties, $modifyValue);
+            }
+        };
+
+        $model->applyWithModifier(
+            ['name' => 'value'],
+            static fn (string $property, mixed $value): string => strtoupper((string) $value),
+        );
+
+        self::assertSame('VALUE', $model->name);
     }
 }

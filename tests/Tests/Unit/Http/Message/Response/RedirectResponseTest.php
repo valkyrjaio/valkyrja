@@ -209,4 +209,12 @@ final class RedirectResponseTest extends TestCase
         // The Location header should default to '/' when the URI is empty
         self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
     }
+
+    public function testCreateFromUriFactory(): void
+    {
+        $response = RedirectResponse::createFromUri();
+
+        self::assertSame(StatusCode::FOUND, $response->getStatusCode());
+        self::assertSame('/', $response->getHeaders()->getHeaderLine(HeaderName::LOCATION));
+    }
 }
