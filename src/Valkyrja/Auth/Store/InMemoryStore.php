@@ -20,6 +20,8 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 
+use function array_filter;
+
 /**
  * @template U of UserContract
  *

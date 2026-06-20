@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Factory;
 
+use function apache_request_headers;
 use function function_exists;
 
 abstract class ServerFactory

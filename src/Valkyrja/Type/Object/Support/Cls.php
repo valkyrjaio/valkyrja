@@ -17,8 +17,10 @@ use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectPropertyProvidedExcept
 use Valkyrja\Type\Object\Throwable\Exception\InvalidObjectProvidedException;
 use Valkyrja\Type\String\Factory\StringFactory;
 
+use function end;
 use function explode;
 use function is_a;
+use function property_exists;
 
 class Cls
 {

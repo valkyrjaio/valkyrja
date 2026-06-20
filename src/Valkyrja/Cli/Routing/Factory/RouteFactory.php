@@ -20,6 +20,8 @@ use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
+use function str_contains;
+
 class RouteFactory
 {
     public static function fromRoute(RouteContract $route): RouteContract

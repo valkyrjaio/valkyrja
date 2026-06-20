@@ -23,8 +23,10 @@ use Valkyrja\View\Throwable\Exception\ViewRenderFailureException;
 use function explode;
 use function extract;
 use function implode;
+use function is_file;
 use function ob_get_clean;
 use function ob_start;
+use function str_starts_with;
 use function trim;
 
 use const DIRECTORY_SEPARATOR;

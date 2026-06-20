@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
@@ -47,6 +49,16 @@ final class RouteTest extends TestCase
         self::assertNotContains(RequestMethod::OPTIONS, $route->getRequestMethods());
         self::assertNotContains(RequestMethod::DELETE, $route->getRequestMethods());
         self::assertNotContains(RequestMethod::CONNECT, $route->getRequestMethods());
+    }
+
+    public function testDefaultHandlerReturnsResponse(): void
+    {
+        $route = new Route(path: '/', name: 'test');
+
+        $handler  = $route->getHandler();
+        $response = $handler(self::createStub(ContainerContract::class), $route);
+
+        self::assertInstanceOf(ResponseContract::class, $response);
     }
 
     public function testPath(): void

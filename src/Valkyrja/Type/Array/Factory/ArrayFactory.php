@@ -19,7 +19,11 @@ use Stringable;
 use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidEncodedArrayException;
 use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidStringKeysException;
 
+use function array_any;
+use function array_combine;
 use function array_filter;
+use function array_keys;
+use function array_map;
 use function explode;
 use function is_array;
 use function is_string;

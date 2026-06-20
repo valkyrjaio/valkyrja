@@ -24,6 +24,7 @@ use Valkyrja\Orm\Throwable\Exception\OrmFetchException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidColumnNumberException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnsupportedCountException;
 
+use function array_map;
 use function is_array;
 use function is_bool;
 use function is_int;

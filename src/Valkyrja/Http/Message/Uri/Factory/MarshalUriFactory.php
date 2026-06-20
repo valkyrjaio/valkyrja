@@ -27,6 +27,7 @@ use function explode;
 use function ltrim;
 use function preg_match;
 use function preg_replace;
+use function str_contains;
 use function strlen;
 use function strpos;
 use function strrpos;

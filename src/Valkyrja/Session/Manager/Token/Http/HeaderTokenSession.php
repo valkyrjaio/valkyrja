@@ -22,6 +22,8 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
+use function explode;
+
 class HeaderTokenSession extends Session
 {
     /**

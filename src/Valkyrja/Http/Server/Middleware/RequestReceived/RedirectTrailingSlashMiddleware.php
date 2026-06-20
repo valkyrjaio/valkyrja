@@ -23,6 +23,7 @@ use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 
+use function str_ends_with;
 use function trim;
 
 class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContract

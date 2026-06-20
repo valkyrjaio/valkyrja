@@ -22,6 +22,7 @@ use Valkyrja\Container\Manager\Trait\ProvidersAware;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
+use function class_exists;
 use function is_object;
 
 class Container implements ContainerContract
@@ -401,8 +402,8 @@ class Container implements ContainerContract
         InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION
     ): object {
         return match ($mode) {
-            InvalidReferenceMode::THROW_EXCEPTION                 => throw new ContainerInvalidReferenceException($id),
-            InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION => $this->newInstanceOrModeFallback($id, $arguments),
+            InvalidReferenceMode::THROW_EXCEPTION => throw new ContainerInvalidReferenceException($id),
+            default                               => $this->newInstanceOrModeFallback($id, $arguments),
         };
     }
 

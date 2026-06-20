@@ -31,7 +31,7 @@ enum Style: int
             self::UNDERSCORE => 24,
             self::BLINK      => 25,
             self::INVERSE    => 27,
-            self::CONCEAL    => 28,
+            default          => 28,
         };
     }
 }

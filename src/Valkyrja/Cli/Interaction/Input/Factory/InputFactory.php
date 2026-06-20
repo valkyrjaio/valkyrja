@@ -18,6 +18,8 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Option\Factory\OptionFactory;
 
+use function str_starts_with;
+
 abstract class InputFactory
 {
     /**

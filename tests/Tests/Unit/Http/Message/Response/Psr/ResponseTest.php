@@ -61,6 +61,19 @@ final class ResponseTest extends TestCase
         self::assertSame($value, $psrResponse->getHeaderLine('Test'));
     }
 
+    public function testWithArrayHeaderValues(): void
+    {
+        $response    = new Response(headers: new HeaderCollection(new Header('Test', 'test')));
+        $psrResponse = new PsrResponse($response);
+
+        // Passing an array value exercises the is_array() true branch.
+        $withHeader      = $psrResponse->withHeader('Multi', ['a', 'b']);
+        $withAddedHeader = $psrResponse->withAddedHeader('Test', ['x', 'y']);
+
+        self::assertSame(['a', 'b'], $withHeader->getHeader('Multi'));
+        self::assertSame(['test', 'x', 'y'], $withAddedHeader->getHeader('Test'));
+    }
+
     public function testHasHeaderReturnsFalseForEmptyName(): void
     {
         $psrResponse = new PsrResponse();

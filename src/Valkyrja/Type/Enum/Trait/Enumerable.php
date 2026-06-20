@@ -17,6 +17,7 @@ use BackedEnum;
 use Valkyrja\Type\Enum\Throwable\Exception\EnumCannotModifyException;
 use Valkyrja\Type\Enum\Throwable\Exception\EnumInvalidValueException;
 
+use function is_a;
 use function is_int;
 use function is_string;
 

@@ -28,7 +28,9 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoResponseStructExcepti
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
+use function array_merge;
 use function in_array;
+use function trim;
 
 class Route implements RouteContract
 {

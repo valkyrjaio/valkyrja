@@ -29,6 +29,10 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterEx
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
+use function array_any;
+use function array_find;
+use function array_merge;
+
 class DynamicRoute extends Route implements DynamicRouteContract
 {
     /**

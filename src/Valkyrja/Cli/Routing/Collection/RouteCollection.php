@@ -20,6 +20,8 @@ use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
 
+use function array_map;
+
 class RouteCollection implements RouteCollectionContract
 {
     /** @var array<string, Closure():RouteContract> */

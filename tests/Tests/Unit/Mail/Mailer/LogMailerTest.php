@@ -79,6 +79,34 @@ final class LogMailerTest extends TestCase
         self::assertSame($body, $loggedMessages[18]);
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function testSendLogsEmptyFromNameWhenSenderHasNoName(): void
+    {
+        // A sender with no name exercises the hasName() === false ternary arm.
+        $message = new Message(
+            from: new Recipient('sender@example.com'),
+            subject: 'Subject',
+            body: 'Body'
+        );
+
+        $loggedMessages = [];
+
+        $this->logger
+            ->expects($this->exactly(23))
+            ->method('info')
+            ->willReturnCallback(static function (string $logMessage) use (&$loggedMessages): void {
+                $loggedMessages[] = $logMessage;
+            });
+
+        $mailer = new LogMailer($this->logger);
+        $mailer->send($message);
+
+        self::assertSame('From Name:', $loggedMessages[1]);
+        self::assertSame('', $loggedMessages[2]);
+    }
+
     public function testSendLogsHtmlMessage(): void
     {
         $message = new Message(

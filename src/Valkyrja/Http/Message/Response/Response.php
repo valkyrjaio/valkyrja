@@ -26,6 +26,10 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 use Valkyrja\Http\Message\Trait\Message;
 
+use function flush;
+use function header;
+use function ob_flush;
+use function ob_get_level;
 use function sprintf;
 
 class Response implements ResponseContract
@@ -153,7 +157,7 @@ class Response implements ResponseContract
             $this->statusPhrase ?: $this->statusCode->asPhrase()
         );
 
-        header($httpLine, true, $this->statusCode->value);
+        $this->header($httpLine, true, $this->statusCode->value);
 
         return $this;
     }
@@ -165,7 +169,7 @@ class Response implements ResponseContract
     public function sendHeaders(): static
     {
         foreach ($this->headers->getAll() as $header) {
-            header($header->__toString(), false);
+            $this->header($header->__toString(), false);
         }
 
         return $this;
@@ -187,11 +191,11 @@ class Response implements ResponseContract
 
         $stream->rewind();
 
-        if (ob_get_level() > 0) {
-            ob_flush();
+        if ($this->obGetLevel() > 0) {
+            $this->obFlush();
         }
 
-        flush();
+        $this->flush();
 
         return $this;
     }
@@ -207,5 +211,40 @@ class Response implements ResponseContract
         $this->sendBody();
 
         return $this;
+    }
+
+    /**
+     * Send a raw HTTP header.
+     *
+     * Wraps the native header() call in an overridable seam so tests can
+     * intercept it without resorting to namespace function shadowing.
+     */
+    protected function header(string $header, bool $replace = true, int $responseCode = 0): void
+    {
+        header($header, $replace, $responseCode);
+    }
+
+    /**
+     * Get the current output buffering level.
+     */
+    protected function obGetLevel(): int
+    {
+        return ob_get_level();
+    }
+
+    /**
+     * Flush the output buffer.
+     */
+    protected function obFlush(): void
+    {
+        ob_flush();
+    }
+
+    /**
+     * Flush the system output buffer.
+     */
+    protected function flush(): void
+    {
+        flush();
     }
 }

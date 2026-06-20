@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Trait;
 
+use function array_flip;
+use function ksort;
+use function uksort;
+
 trait Indexable
 {
     /**

@@ -19,6 +19,9 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 
+use function array_merge;
+use function implode;
+
 class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilderContract
 {
     /** @var Value[] */

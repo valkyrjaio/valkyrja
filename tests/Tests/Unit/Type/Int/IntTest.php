@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Int;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Int\IntT;
+use Valkyrja\Type\Int\Throwable\Exception\IntInvalidFromValueException;
 
 final class IntTest extends TestCase
 {
@@ -32,6 +33,23 @@ final class IntTest extends TestCase
         $typeFromValue = IntT::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromEmptyArrayValue(): void
+    {
+        self::assertSame(0, IntT::fromValue([])->asValue());
+    }
+
+    public function testFromNonEmptyArrayValue(): void
+    {
+        self::assertSame(1, IntT::fromValue(['x'])->asValue());
+    }
+
+    public function testFromUnsupportedValueThrows(): void
+    {
+        $this->expectException(IntInvalidFromValueException::class);
+
+        IntT::fromValue(null);
     }
 
     public function testAsFlatValue(): void

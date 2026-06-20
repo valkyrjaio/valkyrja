@@ -25,7 +25,9 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterEx
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Type\Data\Cast;
 
+use function array_shift;
 use function preg_match;
+use function trim;
 
 class Matcher implements MatcherContract
 {

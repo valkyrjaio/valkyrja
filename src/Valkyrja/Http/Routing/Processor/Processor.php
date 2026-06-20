@@ -21,6 +21,10 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 
+use function str_contains;
+use function str_replace;
+use function trim;
+
 class Processor implements ProcessorContract
 {
     /**

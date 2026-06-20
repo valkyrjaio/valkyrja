@@ -18,6 +18,8 @@ use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
+use function array_key_first;
+
 class Validator implements ValidatorContract
 {
     /**

@@ -132,6 +132,34 @@ final class UlidFactoryTest extends TestCase
     }
 
     /**
+     * Test that generate hits the else branch (lines 92-95) when the time does not
+     * advance past the stored time and the random bytes are not all at max:
+     * 1. doesTimeMatch() returns false (microtime() <= stored future time, no DateTime)
+     * 2. areAllRandomBytesMax() returns false.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWhenTimeDoesNotAdvanceAndBytesNotMax(): void
+    {
+        // Stored time far in the future so microtime() is smaller -> doesTimeMatch() false.
+        UlidFactoryClass::setTime('9999999999999');
+
+        // Random bytes not at max -> areAllRandomBytesMax() false -> else branch.
+        UlidFactoryClass::setRandomBytes([
+            1 => 100,
+            2 => 200,
+            3 => 300,
+            4 => 400,
+        ]);
+
+        self::assertFalse(UlidFactoryClass::testAreAllRandomBytesMax());
+
+        $ulid = UlidFactoryClass::generate();
+
+        self::assertTrue(UlidFactoryClass::isValid($ulid));
+    }
+
+    /**
      * Test getTime with negative timestamp throws exception (lines 140-144).
      */
     public function testGetTimeWithNegativeTimestamp(): void

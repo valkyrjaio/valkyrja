@@ -29,7 +29,10 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameExceptio
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
+use function array_filter;
+use function array_merge;
 use function is_array;
+use function reset;
 
 class Route implements RouteContract
 {

@@ -64,6 +64,47 @@ final class ListCommandTest extends TestCase
         self::assertStringContainsString($regex, $contents);
     }
 
+    public function testSortsMultipleRoutesByPath(): void
+    {
+        $outputFactory = new OutputFactory();
+        $version       = new VersionCommand($outputFactory, new CliConfig(), self::createStub(RouteContract::class));
+        $collection    = new RouteCollection();
+
+        $collection->add(new DynamicRoute(
+            path: '/zebra',
+            name: 'zebra',
+            regex: 'z',
+            parameters: [],
+            handler: static fn (): null => null,
+        ));
+        $collection->add(new DynamicRoute(
+            path: '/apple',
+            name: 'apple',
+            regex: 'a',
+            parameters: [],
+            handler: static fn (): null => null,
+        ));
+
+        $listCommand = new ListCommand();
+
+        ob_start();
+        $output = $listCommand->run(
+            version: $version,
+            collection: $collection,
+            outputFactory: $outputFactory
+        );
+        $output->writeMessages();
+        $contents = ob_get_clean();
+
+        $applePos = strpos((string) $contents, '/apple');
+        $zebraPos = strpos((string) $contents, '/zebra');
+
+        self::assertIsInt($applePos);
+        self::assertIsInt($zebraPos);
+        // The usort comparator runs with 2 routes; /apple sorts before /zebra.
+        self::assertLessThan($zebraPos, $applePos);
+    }
+
     public function testNoRoutes(): void
     {
         $outputFactory = new OutputFactory();

@@ -19,7 +19,11 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidEmptyValue
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidNonEmptyValueException;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionInvalidOptionNameException;
 
+use function explode;
+use function str_split;
+use function str_starts_with;
 use function strlen;
+use function trim;
 
 abstract class OptionFactory
 {

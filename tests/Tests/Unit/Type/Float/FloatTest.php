@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Float;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Float\FloatT;
+use Valkyrja\Type\Float\Throwable\Exception\FloatInvalidFromValueException;
 
 final class FloatTest extends TestCase
 {
@@ -32,6 +33,23 @@ final class FloatTest extends TestCase
         $typeFromValue = FloatT::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromEmptyArrayValue(): void
+    {
+        self::assertSame(0.0, FloatT::fromValue([])->asValue());
+    }
+
+    public function testFromNonEmptyArrayValue(): void
+    {
+        self::assertSame(1.0, FloatT::fromValue(['x'])->asValue());
+    }
+
+    public function testFromUnsupportedValueThrows(): void
+    {
+        $this->expectException(FloatInvalidFromValueException::class);
+
+        FloatT::fromValue(null);
     }
 
     public function testAsFlatValue(): void

@@ -25,7 +25,9 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameExcepti
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
 
+use function array_any;
 use function array_map;
+use function array_merge;
 use function in_array;
 
 /**

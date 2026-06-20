@@ -17,6 +17,7 @@ use Closure;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 
+use function array_map;
 use function is_array;
 
 trait Castable

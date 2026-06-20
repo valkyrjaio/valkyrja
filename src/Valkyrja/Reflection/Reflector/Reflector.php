@@ -30,6 +30,7 @@ use Valkyrja\Reflection\Throwable\Exception\ReflectionInvalidClassConstantExcept
 
 use function class_exists;
 use function interface_exists;
+use function is_a;
 use function is_string;
 
 class Reflector implements ReflectorContract

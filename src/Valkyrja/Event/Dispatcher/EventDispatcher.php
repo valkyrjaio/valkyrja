@@ -25,6 +25,8 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 
+use function class_exists;
+
 class EventDispatcher implements EventDispatcherContract
 {
     public function __construct(

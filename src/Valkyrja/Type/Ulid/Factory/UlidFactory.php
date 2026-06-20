@@ -22,9 +22,11 @@ use Valkyrja\Type\Uid\Factory\UidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Ulid\Throwable\Exception\UlidRandomBytesFailureException;
 
+use function base_convert;
 use function microtime;
 use function random_bytes;
 use function sprintf;
+use function strtolower;
 use function strtr;
 use function substr;
 use function unpack;

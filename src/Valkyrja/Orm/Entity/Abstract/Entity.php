@@ -26,7 +26,10 @@ use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Trait\Castable;
 use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
+use function array_map;
+use function array_merge;
 use function array_walk;
+use function get_object_vars;
 use function gettype;
 use function is_array;
 use function is_int;

@@ -15,6 +15,8 @@ namespace Valkyrja\Type\Model\Trait;
 
 use Valkyrja\Type\Object\Factory\ObjectFactory;
 
+use function array_merge;
+
 trait ProtectedExposable
 {
     use Exposable;

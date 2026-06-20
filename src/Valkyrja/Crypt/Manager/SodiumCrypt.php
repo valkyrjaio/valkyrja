@@ -30,6 +30,8 @@ use Valkyrja\Type\Object\Factory\ObjectFactory;
 use function bin2hex;
 use function hex2bin;
 use function is_string;
+use function mb_strlen;
+use function mb_substr;
 use function random_bytes;
 use function sodium_crypto_secretbox;
 use function sodium_crypto_secretbox_open;
