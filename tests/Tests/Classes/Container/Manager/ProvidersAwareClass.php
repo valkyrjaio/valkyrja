@@ -40,4 +40,12 @@ final class ProvidersAwareClass
     {
         return array_key_exists($name, $this->objects);
     }
+
+    /**
+     * @param class-string $id The service id
+     */
+    public function callPublishUnpublishedProvided(string $id): void
+    {
+        $this->publishUnpublishedProvided($id);
+    }
 }

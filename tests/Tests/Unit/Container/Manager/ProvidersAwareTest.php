@@ -107,4 +107,25 @@ final class ProvidersAwareTest extends TestCase
 
         $providersAware->register(new InvalidDeferredProviderClass());
     }
+
+    public function testPublishUnpublishedProvidedPublishesDeferredCallback(): void
+    {
+        $providersAware = new ProvidersAwareClass();
+        $providersAware->register(new ProviderClass());
+
+        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
+
+        $providersAware->callPublishUnpublishedProvided(ProvidedClass::class);
+
+        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
+    }
+
+    public function testPublishUnpublishedProvidedSkipsWhenNoCallbackRegistered(): void
+    {
+        $providersAware = new ProvidersAwareClass();
+
+        $providersAware->callPublishUnpublishedProvided(ProvidedClass::class);
+
+        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
+    }
 }

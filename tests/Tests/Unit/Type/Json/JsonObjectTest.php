@@ -88,4 +88,14 @@ final class JsonObjectTest extends TestCase
 
         self::assertSame(json_encode($value), json_encode($type));
     }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFromValueDecodesJsonString(): void
+    {
+        $type = JsonObject::fromValue('{"foo":"bar"}');
+
+        self::assertSame('bar', $type->asValue()->foo);
+    }
 }

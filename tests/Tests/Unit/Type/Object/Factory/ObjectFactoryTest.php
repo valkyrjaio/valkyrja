@@ -286,4 +286,14 @@ final class ObjectFactoryTest extends TestCase
         self::assertNull($propertyName);
         self::assertNull($propertyName2);
     }
+
+    public function testGetPropertiesReturnsPublicObjectVars(): void
+    {
+        $subject = new stdClass();
+
+        $subject->a = 'x';
+        $subject->b = 1;
+
+        self::assertSame(['a' => 'x', 'b' => 1], ObjectFactory::getProperties($subject));
+    }
 }

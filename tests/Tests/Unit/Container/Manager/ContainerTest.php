@@ -108,6 +108,19 @@ final class ContainerTest extends TestCase
         self::assertSame($service, $container->getSingleton($id));
     }
 
+    public function testSetSingleton(): void
+    {
+        $container = $this->container;
+        $id        = SingletonClass::class;
+        $singleton = new SingletonClass();
+
+        $result = $container->setSingleton($id, $singleton);
+
+        self::assertSame($container, $result);
+        self::assertTrue($container->isSingleton($id));
+        self::assertSame($singleton, $container->getSingleton($id));
+    }
+
     public function testProvided(): void
     {
         $container = $this->container;

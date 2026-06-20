@@ -188,6 +188,10 @@ final class MessageTest extends TestCase
         self::assertSame('', $message->getPlainBody());
         self::assertSame($plainBody, $message2->getPlainBody());
         self::assertSame('', $message3->getPlainBody());
+
+        self::assertFalse($message->hasPlainBody());
+        self::assertTrue($message2->hasPlainBody());
+        self::assertFalse($message3->hasPlainBody());
     }
 
     public function testRecipients(): void

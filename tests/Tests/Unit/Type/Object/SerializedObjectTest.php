@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Object;
 
 use JsonException;
+use stdClass;
 use Valkyrja\Tests\Classes\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\SerializedObject;
@@ -79,5 +80,14 @@ final class SerializedObjectTest extends TestCase
         $type  = new SerializedObject($value);
 
         self::assertSame(json_encode($type), json_encode($value));
+    }
+
+    public function testFromValueUnserializesString(): void
+    {
+        $serialized = serialize((object) ['foo' => 'bar']);
+
+        $type = SerializedObject::fromValue($serialized, [stdClass::class]);
+
+        self::assertSame('bar', $type->asValue()->foo);
     }
 }
