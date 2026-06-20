@@ -163,9 +163,24 @@ final class WorkerHttpClass extends WorkerHttp
     {
         self::$handleRequestCallCount++;
 
+        // The request handler sends the response, which echoes the body and
+        // then calls ob_flush()/flush() — that pushes content up and out of a
+        // single buffer. Nest two buffers so the response's own flush lands in
+        // the outer (captured) buffer, then drain everything we opened so no
+        // output leaks to stdout.
+        $baseline = ob_get_level();
+
         ob_start();
+        ob_start();
+
         parent::handleRequest($container, $request);
 
-        self::$requestResponses[] = (string) ob_get_clean();
+        $output = '';
+
+        while (ob_get_level() > $baseline) {
+            $output = ob_get_clean() . $output;
+        }
+
+        self::$requestResponses[] = $output;
     }
 }
