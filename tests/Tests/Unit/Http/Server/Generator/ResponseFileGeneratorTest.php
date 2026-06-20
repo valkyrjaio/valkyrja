@@ -16,7 +16,9 @@ namespace Valkyrja\Tests\Unit\Http\Server\Generator;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Server\Generator\ResponseFileGenerator;
 use Valkyrja\Support\Generator\Enum\GenerateStatus;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -114,5 +116,15 @@ final class ResponseFileGeneratorTest extends TestCase
         self::assertStringContainsString('<?php', $contents);
         self::assertStringContainsString('$stream =', $contents);
         self::assertStringContainsString('$response =', $contents);
+    }
+
+    public function testGenerateFileContentsWithRedirectResponse(): void
+    {
+        $response  = new RedirectResponse(new Uri(path: '/target'));
+        $generator = new ResponseFileGenerator($response, 'response.php');
+        $contents  = $generator->generateFileContents();
+
+        self::assertStringContainsString('withUri', $contents);
+        self::assertStringContainsString('/target', $contents);
     }
 }
