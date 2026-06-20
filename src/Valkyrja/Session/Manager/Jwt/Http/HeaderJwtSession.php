@@ -21,6 +21,8 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Session\Manager\Abstract\Session;
 
+use function explode;
+
 class HeaderJwtSession extends Session
 {
     /**

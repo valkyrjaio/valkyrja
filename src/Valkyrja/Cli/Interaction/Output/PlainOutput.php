@@ -17,6 +17,8 @@ use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract;
 
+use function strip_tags;
+
 class PlainOutput extends Output implements PlainOutputContract
 {
     /**

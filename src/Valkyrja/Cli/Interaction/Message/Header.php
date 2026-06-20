@@ -17,6 +17,11 @@ use Override;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
+use function array_map;
+use function explode;
+use function getcwd;
+use function implode;
+
 use const PHP_VERSION;
 
 class Header extends Message

@@ -40,6 +40,8 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 
+use function str_contains;
+
 class JsonServerRequest extends ServerRequest implements JsonServerRequestContract
 {
     protected bool $hadParsedBody = true;

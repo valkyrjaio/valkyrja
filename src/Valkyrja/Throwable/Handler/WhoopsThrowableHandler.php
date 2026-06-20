@@ -20,6 +20,8 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\Util\Misc;
 
+use function class_exists;
+
 use const E_ALL;
 
 class WhoopsThrowableHandler implements ThrowableHandlerContract

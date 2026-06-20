@@ -27,7 +27,10 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnreadableStreamE
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
 
+use function fopen;
+use function get_resource_type;
 use function is_resource;
+use function str_contains;
 
 abstract class StreamFactory
 {

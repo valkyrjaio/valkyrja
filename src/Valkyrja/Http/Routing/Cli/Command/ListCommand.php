@@ -35,6 +35,8 @@ use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider;
 
+use function usort;
+
 class ListCommand
 {
     /**

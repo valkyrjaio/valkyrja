@@ -21,6 +21,7 @@ use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function array_filter;
 use function array_walk;
+use function get_object_vars;
 use function in_array;
 use function property_exists;
 

@@ -18,6 +18,8 @@ use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
 
 use function explode;
+use function str_contains;
+use function trim;
 
 /**
  * @phpstan-consistent-constructor

@@ -19,6 +19,8 @@ use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidKeyException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidParamException;
 
+use function array_filter;
+use function array_merge;
 use function in_array;
 use function is_array;
 

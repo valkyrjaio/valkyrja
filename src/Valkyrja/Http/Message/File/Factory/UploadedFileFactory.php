@@ -26,6 +26,7 @@ use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumen
 use function array_keys;
 use function is_array;
 use function is_string;
+use function str_starts_with;
 
 use const PHP_SAPI;
 

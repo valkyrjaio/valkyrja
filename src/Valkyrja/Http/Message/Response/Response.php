@@ -26,6 +26,10 @@ use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamInvalidStreamException;
 use Valkyrja\Http\Message\Trait\Message;
 
+use function flush;
+use function header;
+use function ob_flush;
+use function ob_get_level;
 use function sprintf;
 
 class Response implements ResponseContract

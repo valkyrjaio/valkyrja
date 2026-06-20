@@ -16,6 +16,8 @@ namespace Valkyrja\Orm\Data;
 use Override;
 use Stringable;
 
+use function implode;
+
 readonly class WhereGroup implements Stringable
 {
     /** @var Where[] */

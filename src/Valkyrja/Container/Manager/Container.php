@@ -22,6 +22,7 @@ use Valkyrja\Container\Manager\Trait\ProvidersAware;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
+use function class_exists;
 use function is_object;
 
 class Container implements ContainerContract

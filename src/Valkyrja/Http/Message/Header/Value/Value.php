@@ -27,6 +27,8 @@ use function count;
 use function explode;
 use function implode;
 use function is_string;
+use function str_contains;
+use function trim;
 
 class Value implements ValueContract
 {

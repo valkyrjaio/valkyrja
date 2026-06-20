@@ -21,12 +21,15 @@ use Valkyrja\Type\Object\Throwable\Exception\InvalidEncodedObjectException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidSerializedObjectException;
 
 use function count;
+use function end;
 use function explode;
 use function get_object_vars;
 use function is_object;
 use function json_decode;
 use function json_encode;
+use function serialize;
 use function str_contains;
+use function unserialize;
 
 use const JSON_THROW_ON_ERROR;
 

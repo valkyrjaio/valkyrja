@@ -16,6 +16,9 @@ namespace Valkyrja\Auth\Hasher;
 use Override;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 
+use function password_hash;
+use function password_verify;
+
 use const PASSWORD_DEFAULT;
 
 class PhpPasswordHasher implements PasswordHasherContract

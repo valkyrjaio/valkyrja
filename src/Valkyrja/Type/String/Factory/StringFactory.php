@@ -29,12 +29,15 @@ use function is_float;
 use function is_int;
 use function is_object;
 use function is_string;
+use function md5;
 use function random_bytes;
 use function str_contains;
 use function str_ends_with;
 use function str_replace;
 use function str_starts_with;
 use function strlen;
+use function strtolower;
+use function strtoupper;
 use function substr;
 use function trim;
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Time;
 
+use function microtime;
+
 class Microtime
 {
     protected static float|null $frozenTime = null;

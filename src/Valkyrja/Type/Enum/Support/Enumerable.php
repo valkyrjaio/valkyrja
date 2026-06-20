@@ -16,8 +16,11 @@ namespace Valkyrja\Type\Enum\Support;
 use BackedEnum;
 use UnitEnum;
 
+use function array_column;
+use function array_combine;
 use function assert;
 use function in_array;
+use function is_a;
 
 class Enumerable
 {

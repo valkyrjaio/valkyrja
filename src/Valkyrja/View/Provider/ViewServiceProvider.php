@@ -33,6 +33,8 @@ use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
 
+use function array_merge;
+
 class ViewServiceProvider implements ServiceProviderContract
 {
     /**

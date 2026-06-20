@@ -46,6 +46,9 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
+use function implode;
+use function wordwrap;
+
 class HelpCommand
 {
     protected RouteContract $helpRoute;

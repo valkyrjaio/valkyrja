@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use Override;
 use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
 
+use function array_filter;
 use function in_array;
 use function is_array;
 use function is_scalar;

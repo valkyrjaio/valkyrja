@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Format\Contract\FormatContract;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
+use function implode;
 use function sprintf;
 
 class Formatter implements FormatterContract

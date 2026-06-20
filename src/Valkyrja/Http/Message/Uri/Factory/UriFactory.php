@@ -23,7 +23,10 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function ltrim;
+use function parse_url;
 use function preg_replace;
+use function str_contains;
+use function str_starts_with;
 use function strtolower;
 
 abstract class UriFactory

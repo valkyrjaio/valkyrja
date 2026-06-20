@@ -22,6 +22,7 @@ use Valkyrja\Http\Message\Header\Value\Contract\CookieContract;
 use Valkyrja\Support\Time\Time;
 
 use function array_filter;
+use function array_map;
 use function gmdate;
 use function implode;
 use function urlencode;

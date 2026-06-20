@@ -20,6 +20,7 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 
 use function array_keys;
+use function array_map;
 
 class ListenerCollection implements ListenerCollectionContract
 {

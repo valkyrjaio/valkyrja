@@ -22,6 +22,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
 use function fgets;
 use function fopen;
+use function trim;
 
 class Question extends Message implements QuestionContract
 {

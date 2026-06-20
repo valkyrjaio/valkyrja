@@ -19,6 +19,8 @@ use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Enum\CastType;
 
 use function assert;
+use function get_object_vars;
+use function is_a;
 
 class Cast implements JsonSerializable
 {

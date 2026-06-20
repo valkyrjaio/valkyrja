@@ -20,6 +20,9 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Data\WhereGroup;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 
+use function array_merge;
+use function implode;
+
 abstract class SqlQueryBuilder implements QueryBuilderContract
 {
     /** @var string */

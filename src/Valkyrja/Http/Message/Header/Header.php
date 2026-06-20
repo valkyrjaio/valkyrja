@@ -29,6 +29,7 @@ use function implode;
 use function is_string;
 use function str_contains;
 use function strtolower;
+use function trim;
 
 class Header implements HeaderContract
 {

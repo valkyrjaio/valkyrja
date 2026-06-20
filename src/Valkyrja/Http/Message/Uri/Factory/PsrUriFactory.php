@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Uri;
 
 use function explode;
+use function str_contains;
 
 abstract class PsrUriFactory
 {

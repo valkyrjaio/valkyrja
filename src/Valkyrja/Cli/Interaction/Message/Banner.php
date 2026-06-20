@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
 
+use function str_repeat;
 use function strlen;
 
 class Banner extends Message

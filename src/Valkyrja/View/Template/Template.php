@@ -19,8 +19,11 @@ use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Throwable\Exception\ViewEscapeEncodingFailureException;
 
 use function array_merge;
+use function array_pop;
+use function end;
 use function htmlentities;
 use function is_string;
+use function mb_convert_encoding;
 
 use const ENT_QUOTES;
 

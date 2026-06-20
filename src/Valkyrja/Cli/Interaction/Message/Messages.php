@@ -16,6 +16,9 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 
+use function array_map;
+use function implode;
+
 class Messages extends Message
 {
     /** @var MessageContract[] */

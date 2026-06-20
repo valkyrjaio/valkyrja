@@ -25,6 +25,13 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 use Valkyrja\Cli\Server\Constant\CommandName;
 
+use function array_filter;
+use function array_map;
+use function implode;
+use function str_starts_with;
+use function strpos;
+use function substr;
+
 class ListBashCommand
 {
     public function __construct(

@@ -24,6 +24,9 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
+use function array_merge;
+use function date_default_timezone_set;
+
 class Valkyrja implements ApplicationContract
 {
     /** @var ComponentProviderContract[] */

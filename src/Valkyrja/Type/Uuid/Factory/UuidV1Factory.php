@@ -18,12 +18,18 @@ use Random\RandomException;
 use Valkyrja\Type\Uuid\Enum\Version;
 use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV1Exception;
 
+use function bin2hex;
 use function chr;
 use function hexdec;
+use function is_numeric;
 use function md5;
+use function microtime;
 use function ord;
+use function pack;
 use function preg_match;
+use function random_bytes;
 use function sprintf;
+use function str_repeat;
 use function strlen;
 use function substr;
 

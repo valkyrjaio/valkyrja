@@ -23,6 +23,7 @@ use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
 use function sprintf;
+use function substr;
 
 /**
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)

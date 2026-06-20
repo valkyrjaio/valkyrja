@@ -22,8 +22,10 @@ use Valkyrja\Session\Throwable\Exception\SessionNameFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
 
 use function headers_sent;
+use function preg_match;
 use function session_id;
 use function session_name;
+use function session_set_cookie_params;
 use function session_start;
 use function session_status;
 use function session_unset;

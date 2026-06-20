@@ -25,6 +25,7 @@ use Valkyrja\Auth\Throwable\Exception\AuthInvalidUnserializedAuthenticatedUsersE
 use Valkyrja\Session\Manager\Contract\SessionContract;
 
 use function is_string;
+use function unserialize;
 
 /**
  * @template U of UserContract

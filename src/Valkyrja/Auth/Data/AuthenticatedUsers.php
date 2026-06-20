@@ -18,6 +18,7 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Throwable\Exception\AuthNoCurrentUserException;
 use Valkyrja\Auth\Throwable\Exception\AuthNoImpersonatedUserException;
 
+use function array_key_first;
 use function in_array;
 
 class AuthenticatedUsers implements AuthenticatedUsersContract

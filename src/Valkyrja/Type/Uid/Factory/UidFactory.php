@@ -15,6 +15,8 @@ namespace Valkyrja\Type\Uid\Factory;
 
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
+use function preg_match;
+
 class UidFactory
 {
     /** @var string */

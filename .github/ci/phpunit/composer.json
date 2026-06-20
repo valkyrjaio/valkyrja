@@ -7,7 +7,7 @@
   },
   "scripts"           : {
     "check"    : "vendor/bin/phpunit --no-coverage --display-all-issues",
-    "coverage" : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --coverage-text --stderr"
+    "coverage" : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --path-coverage --coverage-text --stderr"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true

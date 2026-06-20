@@ -20,7 +20,9 @@ use Valkyrja\Http\Message\Header\Throwable\Exception\Abstract\HttpHeaderInvalidA
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
 
+use function array_filter;
 use function in_array;
+use function strtolower;
 
 use const ARRAY_FILTER_USE_KEY;
 

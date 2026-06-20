@@ -48,6 +48,7 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
 use function array_column;
+use function array_merge;
 use function is_a;
 
 class AttributeRouteCollector implements RouteCollectorContract

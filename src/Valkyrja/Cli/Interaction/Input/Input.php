@@ -18,6 +18,8 @@ use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
+use function array_filter;
+
 class Input implements InputContract
 {
     /**

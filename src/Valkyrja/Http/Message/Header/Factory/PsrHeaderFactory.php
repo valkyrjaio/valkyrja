@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
+use function array_map;
 use function is_string;
 
 abstract class PsrHeaderFactory
