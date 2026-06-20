@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
  * Records the native I/O seam calls made by Response when sending, so tests
  * can assert on them without shadowing global functions in the namespace.
  */
-class ResponseSendRecorderClass extends Response
+final class ResponseSendRecorderClass extends Response
 {
     /** @var array<int, string|bool> */
     public array $sentHeaders = [];
