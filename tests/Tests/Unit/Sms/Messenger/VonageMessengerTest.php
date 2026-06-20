@@ -81,6 +81,32 @@ final class VonageMessengerTest extends TestCase
 
     /**
      * @throws ClientExceptionInterface
+     * @throws Exception
+     */
+    public function testSendNonUnicodeMessageUsesTextType(): void
+    {
+        $message = new Message(
+            to: '+15551234567',
+            from: '+15559876543',
+            text: 'Test message',
+            isUnicode: false
+        );
+
+        $this->vonageClient
+            ->expects($this->once())
+            ->method('sms')
+            ->willReturn($this->smsClient);
+        $this->smsClient
+            ->expects($this->once())
+            ->method('send')
+            ->with(self::callback(static fn (SMS $sms): bool => $sms->getType() === 'text'));
+
+        $messenger = new VonageMessenger($this->vonageClient);
+        $messenger->send($message);
+    }
+
+    /**
+     * @throws ClientExceptionInterface
      */
     public function testSendThrowsException(): void
     {
