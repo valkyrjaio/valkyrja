@@ -30,7 +30,7 @@ class UploadedFileUploadErrorException extends UploadedFileRuntimeException
             UploadError::NO_TMP_DIR => UploadErrorExceptionMessage::NO_TMP_DIR_MESSAGE,
             UploadError::CANT_WRITE => UploadErrorExceptionMessage::CANT_WRITE_MESSAGE,
             UploadError::EXTENSION  => UploadErrorExceptionMessage::EXTENSION_MESSAGE,
-            UploadError::OK         => throw new UploadedFileInvalidUploadErrorException(UploadErrorExceptionMessage::OK_MESSAGE),
+            default                 => throw new UploadedFileInvalidUploadErrorException(UploadErrorExceptionMessage::OK_MESSAGE),
         };
 
         parent::__construct($message, $code, $previous);

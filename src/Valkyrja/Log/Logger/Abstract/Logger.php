@@ -32,14 +32,14 @@ abstract class Logger implements LoggerContract
         }
 
         match ($level) {
-            LogLevel::ALERT     => $this->alert($message, $context),
-            LogLevel::DEBUG     => $this->debug($message, $context),
-            LogLevel::INFO      => $this->info($message, $context),
-            LogLevel::NOTICE    => $this->notice($message, $context),
-            LogLevel::WARNING   => $this->warning($message, $context),
-            LogLevel::ERROR     => $this->error($message, $context),
-            LogLevel::CRITICAL  => $this->critical($message, $context),
-            LogLevel::EMERGENCY => $this->emergency($message, $context),
+            LogLevel::ALERT    => $this->alert($message, $context),
+            LogLevel::DEBUG    => $this->debug($message, $context),
+            LogLevel::INFO     => $this->info($message, $context),
+            LogLevel::NOTICE   => $this->notice($message, $context),
+            LogLevel::WARNING  => $this->warning($message, $context),
+            LogLevel::ERROR    => $this->error($message, $context),
+            LogLevel::CRITICAL => $this->critical($message, $context),
+            default            => $this->emergency($message, $context),
         };
     }
 }

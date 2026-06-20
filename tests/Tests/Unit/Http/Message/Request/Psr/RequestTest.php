@@ -63,6 +63,19 @@ final class RequestTest extends TestCase
         self::assertSame($value, $psrRequest->getHeaderLine('Test'));
     }
 
+    public function testWithArrayHeaderValues(): void
+    {
+        $request    = new Request(headers: new HeaderCollection(new Header('Test', 'test')));
+        $psrRequest = new PsrRequest($request);
+
+        // Passing an array value exercises the is_array() true branch.
+        $withHeader      = $psrRequest->withHeader('Multi', ['a', 'b']);
+        $withAddedHeader = $psrRequest->withAddedHeader('Test', ['x', 'y']);
+
+        self::assertSame(['a', 'b'], $withHeader->getHeader('Multi'));
+        self::assertSame(['test', 'x', 'y'], $withAddedHeader->getHeader('Test'));
+    }
+
     public function testHasHeaderReturnsFalseForEmptyName(): void
     {
         $request    = new Request();

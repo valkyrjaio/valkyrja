@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Id;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\Id;
+use Valkyrja\Type\Id\Throwable\Exception\IdInvalidFromValueException;
 
 final class IdTest extends TestCase
 {
@@ -48,6 +49,13 @@ final class IdTest extends TestCase
         $typeFromValue = Id::fromValue(self::FLOAT_VALUE);
 
         self::assertSame('1', $typeFromValue->asValue());
+    }
+
+    public function testUnsupportedFromValueThrows(): void
+    {
+        $this->expectException(IdInvalidFromValueException::class);
+
+        Id::fromValue(true);
     }
 
     public function testStringFromValue(): void

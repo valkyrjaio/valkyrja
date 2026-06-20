@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\DynamicRoute;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
@@ -50,6 +52,16 @@ final class DynamicRouteTest extends TestCase
         self::assertNotContains(RequestMethod::OPTIONS, $route->getRequestMethods());
         self::assertNotContains(RequestMethod::DELETE, $route->getRequestMethods());
         self::assertNotContains(RequestMethod::CONNECT, $route->getRequestMethods());
+    }
+
+    public function testDefaultHandlerReturnsResponse(): void
+    {
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: []);
+
+        $handler  = $route->getHandler();
+        $response = $handler(self::createStub(ContainerContract::class), $route);
+
+        self::assertInstanceOf(ResponseContract::class, $response);
     }
 
     public function testPath(): void

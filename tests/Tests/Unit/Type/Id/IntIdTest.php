@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Id;
 
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\IntId;
+use Valkyrja\Type\Id\Throwable\Exception\IdInvalidFromValueException;
 
 final class IntIdTest extends TestCase
 {
@@ -56,6 +57,13 @@ final class IntIdTest extends TestCase
         $typeFromValue = IntId::fromValue(self::BOOL_VALUE);
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testUnsupportedFromValueThrows(): void
+    {
+        $this->expectException(IdInvalidFromValueException::class);
+
+        IntId::fromValue([]);
     }
 
     public function testAsFlatValue(): void

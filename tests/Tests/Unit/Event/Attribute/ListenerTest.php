@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Attribute;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Attribute\Listener;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -61,5 +62,15 @@ final class ListenerTest extends TestCase
         self::assertSame(self::VALUE, $this->class->getEventId());
         self::assertSame($newValue, $new->getEventId());
         self::assertNotSame($new, $this->class);
+    }
+
+    /**
+     * Test the default handler returns null when no handler is provided.
+     */
+    public function testDefaultHandlerReturnsNull(): void
+    {
+        $handler = $this->class->getHandler();
+
+        self::assertNull($handler(self::createStub(ContainerContract::class), []));
     }
 }
