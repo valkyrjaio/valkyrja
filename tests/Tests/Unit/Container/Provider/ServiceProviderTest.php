@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Container\Provider\ContainerServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
 /**
@@ -35,20 +35,20 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishDataRegistersProvidersAndSetsContainerData(): void
     {
-        $provider = $this->createStub(ServiceProviderContract::class);
+        $provider = self::createStub(ServiceProviderContract::class);
         $data     = new ContainerData();
 
         $app = $this->createMock(ApplicationContract::class);
-        $app->expects(self::once())->method('getContainerProviders')->willReturn([$provider]);
+        $app->expects($this->once())->method('getContainerProviders')->willReturn([$provider]);
 
         $container = $this->createMock(ContainerContract::class);
-        $container->expects(self::once())
+        $container->expects($this->once())
             ->method('getSingleton')
             ->with(ApplicationContract::class)
             ->willReturn($app);
-        $container->expects(self::once())->method('register')->with($provider);
-        $container->expects(self::once())->method('getData')->willReturn($data);
-        $container->expects(self::once())->method('setSingleton')->with(ContainerData::class, $data);
+        $container->expects($this->once())->method('register')->with($provider);
+        $container->expects($this->once())->method('getData')->willReturn($data);
+        $container->expects($this->once())->method('setSingleton')->with(ContainerData::class, $data);
 
         ContainerServiceProvider::publishData($container);
     }

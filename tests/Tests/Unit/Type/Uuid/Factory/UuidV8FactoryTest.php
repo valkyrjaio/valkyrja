@@ -50,4 +50,14 @@ final class UuidV8FactoryTest extends UuidTestCase
 
         UuidV8Factory::validate($uuid);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function testGenerateProducesValidV8Uuid(): void
+    {
+        $uuid = UuidV8Factory::generate();
+
+        self::assertTrue(UuidV8Factory::isValid($uuid));
+    }
 }

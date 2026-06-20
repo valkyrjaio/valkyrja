@@ -43,4 +43,13 @@ final class TextResponseTest extends TestCase
 
         self::assertSame(ContentTypeValue::TEXT_PLAIN_UTF8, $response->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
     }
+
+    public function testCreateFactory(): void
+    {
+        $response = TextResponse::create(self::TEXT);
+
+        self::assertSame(self::TEXT, $response->getBody()->getContents());
+        self::assertSame(StatusCode::OK, $response->getStatusCode());
+        self::assertSame(ContentTypeValue::TEXT_PLAIN_UTF8, $response->getHeaders()->getHeaderLine(HeaderName::CONTENT_TYPE));
+    }
 }
