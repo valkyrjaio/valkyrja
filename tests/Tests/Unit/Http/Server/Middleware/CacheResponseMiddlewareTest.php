@@ -515,6 +515,55 @@ final class CacheResponseMiddlewareTest extends TestCase
         @unlink($this->getCachePathForRequest($request));
     }
 
+    public function testEmptyCacheFileReturnsRequest(): void
+    {
+        $middleware    = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler = new RequestReceivedHandler();
+
+        $request = new ServerRequest(uri: new Uri(path: '/empty-cache-file'));
+
+        // An empty cache file should be treated as a miss and removed.
+        file_put_contents($this->getCachePathForRequest($request), '');
+
+        $result = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $result);
+
+        @unlink($this->getCachePathForRequest($request));
+    }
+
+    public function testInvalidJsonStructureReturnsRequest(): void
+    {
+        $middleware    = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler = new RequestReceivedHandler();
+
+        $request = new ServerRequest(uri: new Uri(path: '/invalid-json-structure'));
+
+        // Valid JSON, but missing the required keys — must be rejected and removed.
+        file_put_contents($this->getCachePathForRequest($request), '{}');
+
+        $result = $middleware->requestReceived($request, $beforeHandler);
+
+        self::assertInstanceOf(RequestContract::class, $result);
+
+        @unlink($this->getCachePathForRequest($request));
+    }
+
+    public function testCacheWriteFailureIsIgnored(): void
+    {
+        $middleware        = new CacheResponseMiddleware($this->filePath);
+        $terminatedHandler = new TerminatedHandler();
+
+        $request = new ServerRequest(uri: new Uri(path: '/invalid-utf8-body'));
+        // An invalid UTF-8 body makes JSON serialization throw; the failure must be swallowed.
+        $response = Response::create("\xB1\x31");
+
+        $middleware->terminated($request, $response, $terminatedHandler);
+
+        // The cache write failed silently — no cache file was created.
+        self::assertFalse(is_file($this->getCachePathForRequest($request)));
+    }
+
     /**
      * Get the cache path for a request.
      */

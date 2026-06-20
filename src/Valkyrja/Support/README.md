@@ -38,29 +38,3 @@ Time::freeze(1_700_000_000);
 
 Time::unfreeze();
 ```
-
-## File Generation
-
-`Valkyrja\Support\Generator\Contract\FileGeneratorContract` defines the
-interface for classes that write generated PHP files to disk — used by the
-framework's data cache generation commands and any custom code generators you
-build.
-
-```php
-public function generateFile(): GenerateStatus;
-public function generateFileContents(): string;
-```
-
-`generateFileContents()` returns the string content of the file to be written.
-`generateFile()` writes it to disk and returns a `GenerateStatus` enum case
-indicating the outcome:
-
-| Case      | Meaning                                     |
-|:----------|:--------------------------------------------|
-| `SUCCESS` | File was written successfully               |
-| `FAILURE` | Write failed                                |
-| `SKIPPED` | File already exists and was not overwritten |
-
-Extend `Valkyrja\Support\Generator\Abstract\FileGenerator` to implement your own
-generator. Override `generateFileContents()` to produce your file's content; the
-base class handles the write operation and returns the appropriate status.

@@ -16,16 +16,30 @@ namespace Valkyrja\Http\Server\Middleware;
 use Override;
 use Throwable;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
+use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
-use Valkyrja\Http\Server\Generator\ResponseFileGenerator;
 use Valkyrja\Support\Time\Time;
 
+use function file_get_contents;
+use function file_put_contents;
+use function is_a;
+use function is_array;
+use function is_string;
+use function json_decode;
+use function json_encode;
 use function md5;
+
+use const JSON_THROW_ON_ERROR;
 
 class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
 {
@@ -53,20 +67,11 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
                 return $handler->requestReceived($request);
             }
 
-            try {
-                /** @psalm-suppress UnresolvableInclude */
-                /** @var scalar|object|array<array-key, mixed>|null $response The response */
-                $response = require $filePath;
+            $response = $this->loadCachedResponse($filePath);
 
-                $isValidResponse = $this->isValidCachedResponse($response);
-
-                // Ensure a valid response before returning it
-                if ($isValidResponse) {
-                    /** @var ResponseContract $response */
-                    return $response;
-                }
-            } catch (Throwable) {
-                // Ignore errors and pass through to the next middleware
+            // Ensure a valid response before returning it
+            if ($response !== null && $this->isValidCachedResponse($response)) {
+                return $response;
             }
 
             // Remove the bad cache
@@ -88,10 +93,133 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
         $filePath = $this->getCachePathForRequest($request);
 
-        $responseFileGenerator = new ResponseFileGenerator($response, $filePath);
-        $responseFileGenerator->generateFile();
+        $this->cacheResponse($filePath, $response);
 
         $handler->terminated($request, $response);
+    }
+
+    /**
+     * Cache a response by serializing it to JSON.
+     *
+     * Storing the response as JSON (status code, headers, body — plus the uri for
+     * redirects) keeps the cache language-agnostic and avoids executing a cached
+     * PHP file on load.
+     */
+    protected function cacheResponse(string $filePath, ResponseContract $response): void
+    {
+        try {
+            file_put_contents($filePath, $this->serializeResponse($response));
+        } catch (Throwable) {
+            // Ignore cache write failures and continue
+        }
+    }
+
+    /**
+     * Serialize a response to its JSON cache representation.
+     */
+    protected function serializeResponse(ResponseContract $response): string
+    {
+        $body = $response->getBody();
+        $body->rewind();
+
+        $headers = [];
+
+        foreach ($response->getHeaders()->getAll() as $header) {
+            $headers[] = [
+                'name'  => $header->getName(),
+                'value' => $header->getHeaderLine(),
+            ];
+        }
+
+        $data = [
+            'class'        => $response::class,
+            'statusCode'   => $response->getStatusCode()->value,
+            'reasonPhrase' => $response->getReasonPhrase(),
+            'headers'      => $headers,
+            'body'         => $body->getContents(),
+        ];
+
+        if ($response instanceof RedirectResponseContract) {
+            $data['uri'] = $response->getUri()->__toString();
+        }
+
+        return json_encode($data, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Load and reconstruct a cached response from its JSON file.
+     */
+    protected function loadCachedResponse(string $filePath): ResponseContract|null
+    {
+        try {
+            $json = file_get_contents($filePath);
+
+            if ($json === false || $json === '') {
+                return null;
+            }
+
+            return $this->deserializeResponse($json);
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * Reconstruct a response from its JSON cache representation.
+     *
+     * Mirrors how a response is built generically: instantiate with only the
+     * headers (the one constructor argument shared by every response subclass)
+     * and apply the status code, reason phrase and body via the immutable
+     * `with*` methods.
+     */
+    protected function deserializeResponse(string $json): ResponseContract|null
+    {
+        /** @var mixed $data */
+        $data = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
+
+        if (
+            ! is_array($data)
+            || ! isset($data['class'], $data['statusCode'], $data['reasonPhrase'], $data['headers'], $data['body'])
+            || ! is_string($data['class'])
+            || ! is_array($data['headers'])
+            || ! is_a($data['class'], Response::class, true)
+        ) {
+            return null;
+        }
+
+        /** @var class-string<Response> $class */
+        $class = $data['class'];
+
+        $headers = [];
+
+        /** @var mixed $header */
+        foreach ($data['headers'] as $header) {
+            if (
+                is_array($header)
+                && isset($header['name'], $header['value'])
+                && is_string($header['name'])
+                && $header['name'] !== ''
+                && is_string($header['value'])
+            ) {
+                $headers[] = new Header($header['name'], $header['value']);
+            }
+        }
+
+        $stream = new Stream();
+        $stream->write((string) $data['body']);
+        $stream->rewind();
+
+        /** @psalm-suppress UnsafeInstantiation Every response subclass accepts a headers named argument */
+        $response = new $class(headers: new HeaderCollection(...$headers))
+            ->withStatusCode(StatusCode::from((int) $data['statusCode']))
+            ->withReasonPhrase((string) $data['reasonPhrase'])
+            ->withBody($stream);
+
+        if (isset($data['uri']) && is_string($data['uri']) && $response instanceof RedirectResponseContract) {
+            $response = $response->withUri(UriFactory::fromString($data['uri']));
+        }
+
+        return $response;
     }
 
     /**
