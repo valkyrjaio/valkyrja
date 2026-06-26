@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "396e4cb1fdb6791b1033b1f1497f6f16",
+    "content-hash": "c46d152bd848aff0242fdf039fde21fb",
     "packages": [
         {
             "name": "psr/container",
