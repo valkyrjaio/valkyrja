@@ -25,6 +25,10 @@ use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
 
+use function ob_get_clean;
+use function ob_get_level;
+use function ob_start;
+
 /**
  * Testable WorkerHttp subclass.
  *

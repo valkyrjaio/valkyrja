@@ -38,7 +38,10 @@ use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function file_put_contents;
+use function is_file;
 use function md5;
+use function unlink;
 
 #[RunTestsInSeparateProcesses]
 final class CacheResponseMiddlewareTest extends TestCase

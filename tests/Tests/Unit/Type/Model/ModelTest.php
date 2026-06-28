@@ -29,6 +29,7 @@ use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_encode;
 use function method_exists;
+use function strtoupper;
 
 use const JSON_THROW_ON_ERROR;
 

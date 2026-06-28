@@ -40,6 +40,7 @@ use Valkyrja\Type\String\StringT;
 use function json_decode;
 use function json_encode;
 use function method_exists;
+use function serialize;
 
 use const JSON_THROW_ON_ERROR;
 

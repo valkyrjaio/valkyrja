@@ -23,6 +23,7 @@ use Valkyrja\Type\Object\Factory\ObjectFactory;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidEncodedObjectException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidSerializedObjectException;
 
+use function error_reporting;
 use function serialize;
 
 final class ObjectFactoryTest extends TestCase

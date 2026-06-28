@@ -21,6 +21,9 @@ use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Template\Template;
 use Valkyrja\View\Throwable\Exception\ViewInvalidPathException;
 
+use function ob_end_clean;
+use function ob_get_level;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

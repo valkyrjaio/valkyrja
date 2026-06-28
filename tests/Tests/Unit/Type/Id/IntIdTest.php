@@ -17,6 +17,8 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\IntId;
 use Valkyrja\Type\Id\Throwable\Exception\IdInvalidFromValueException;
 
+use function json_encode;
+
 final class IntIdTest extends TestCase
 {
     protected const int    VALUE        = 1;

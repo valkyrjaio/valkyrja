@@ -34,6 +34,9 @@ use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderClass;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 /**
  * Test the Http service.
  */

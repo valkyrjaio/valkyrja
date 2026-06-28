@@ -19,6 +19,7 @@ use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidEncodedArrayException;
 use Valkyrja\Type\Throwable\Exception\Abstract\TypeInvalidArgumentException;
 
+use function json_encode;
 use function PHPUnit\Framework\assertSame;
 
 final class ArrayFactoryTest extends TestCase

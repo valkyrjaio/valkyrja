@@ -94,7 +94,10 @@ use Valkyrja\View\Provider\ViewComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
+use function date_default_timezone_get;
 use function defined;
+use function set_exception_handler;
+use function unlink;
 
 /**
  * Test the App service.

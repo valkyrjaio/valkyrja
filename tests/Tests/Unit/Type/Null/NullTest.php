@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Null;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Null\NullT;
 
+use function json_encode;
+
 final class NullTest extends TestCase
 {
     protected const null VALUE = null;

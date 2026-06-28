@@ -19,6 +19,8 @@ use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedPasswordValueException;
 use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedUsernameValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**

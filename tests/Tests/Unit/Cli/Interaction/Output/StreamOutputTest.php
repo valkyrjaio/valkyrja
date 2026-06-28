@@ -18,6 +18,10 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function fopen;
+use function ob_get_clean;
+use function ob_start;
+
 /**
  * Test the FileOutput class.
  */

@@ -17,6 +17,8 @@ use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
 use Valkyrja\Tests\Fixtures\Type\Model\ProtectedExposableModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function json_encode;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

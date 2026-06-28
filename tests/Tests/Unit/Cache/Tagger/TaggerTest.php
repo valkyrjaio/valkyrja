@@ -20,6 +20,8 @@ use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function str_contains;
+
 final class TaggerTest extends TestCase
 {
     protected MockObject&CacheContract $cache;

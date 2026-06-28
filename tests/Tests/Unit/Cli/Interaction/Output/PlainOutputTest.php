@@ -17,6 +17,9 @@ use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 /**
  * Test the PlainOutput class.
  */

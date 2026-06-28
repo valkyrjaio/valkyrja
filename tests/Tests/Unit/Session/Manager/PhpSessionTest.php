@@ -31,6 +31,10 @@ use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetNameClass;
 use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingStartClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function session_destroy;
+use function session_status;
+use function str_repeat;
+
 use const PHP_SESSION_ACTIVE;
 
 #[RunTestsInSeparateProcesses]

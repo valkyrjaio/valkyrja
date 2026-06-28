@@ -22,6 +22,10 @@ use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+use function strpos;
+
 /**
  * Test the ListCommand service.
  */

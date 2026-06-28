@@ -21,6 +21,8 @@ use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationInvalidArgumentEx
 use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationRuntimeException;
 use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
+use function is_a;
+
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void

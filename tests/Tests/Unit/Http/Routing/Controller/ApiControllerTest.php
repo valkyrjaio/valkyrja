@@ -25,6 +25,8 @@ use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Factory\ThrowableFactory;
 
+use function json_encode;
+
 use const JSON_THROW_ON_ERROR;
 
 /**
