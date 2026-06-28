@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\RouteMatchedHandlerClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\RouteMatchedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareClass;
 
 /**
  * Test the route matched handler.

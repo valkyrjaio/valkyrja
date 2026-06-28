@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Tests\Classes\Http\Struct\ParsedBodyRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ParsedBodyRequestStructTest extends TestCase

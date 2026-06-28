@@ -19,7 +19,7 @@ use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingClassNameExcept
 use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingMethodNameException;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableNonStringClassNameException;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedCallableException;
-use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

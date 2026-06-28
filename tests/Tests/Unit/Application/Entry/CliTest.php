@@ -25,7 +25,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Classes\Application\Entry\CliClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\CliClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

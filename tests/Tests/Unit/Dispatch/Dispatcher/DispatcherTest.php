@@ -25,9 +25,9 @@ use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedDispatchException;
-use Valkyrja\Tests\Classes\Container\ServiceClass;
-use Valkyrja\Tests\Classes\Dispatch\InvalidDispatchClass;
-use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Container\ServiceClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatchClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function count;

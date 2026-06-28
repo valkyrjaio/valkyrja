@@ -28,7 +28,7 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;

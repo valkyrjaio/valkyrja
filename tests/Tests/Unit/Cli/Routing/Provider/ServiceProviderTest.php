@@ -34,7 +34,7 @@ use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Classes\Cli\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\RouteProviderClass;
 
 /**
  * Test the ServiceProvider.

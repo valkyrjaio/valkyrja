@@ -26,8 +26,8 @@ use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityStringIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RepositoryTest extends TestCase

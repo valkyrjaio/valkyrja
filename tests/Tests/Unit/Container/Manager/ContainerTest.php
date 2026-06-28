@@ -20,8 +20,8 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
-use Valkyrja\Tests\Classes\Container\ServiceClass;
-use Valkyrja\Tests\Classes\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Container\ServiceClass;
+use Valkyrja\Tests\Fixtures\Container\SingletonClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

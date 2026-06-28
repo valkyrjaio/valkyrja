@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
 use RuntimeException;
-use Valkyrja\Tests\Classes\Enum\EnumClass;
-use Valkyrja\Tests\Classes\Enum\IntEnum;
-use Valkyrja\Tests\Classes\Enum\StringEnum;
-use Valkyrja\Tests\Classes\Type\Model\CastableModelClass;
-use Valkyrja\Tests\Classes\Type\Model\EmptyCastableModelClass;
-use Valkyrja\Tests\Classes\Type\Model\ModelClass;
+use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\IntEnum;
+use Valkyrja\Tests\Fixtures\Enum\StringEnum;
+use Valkyrja\Tests\Fixtures\Type\Model\CastableModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\EmptyCastableModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\ArrayT;
 use Valkyrja\Type\Bool\BoolT;

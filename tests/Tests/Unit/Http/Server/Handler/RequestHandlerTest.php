@@ -26,11 +26,11 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\Handler\RequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersRequestHandlerClass;
-use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandlerClass;
-use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandlerClass;
-use Valkyrja\Tests\Classes\Http\Server\LitespeedRequestHandlerClass;
-use Valkyrja\Tests\Classes\Http\Server\SessionCloseRequestHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Server\CloseOutputBuffersRequestHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Server\CloseOutputBuffersWithCleanRequestHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Server\FastCgiRequestHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Server\LitespeedRequestHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Server\SessionCloseRequestHandlerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_start;

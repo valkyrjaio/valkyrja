@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\RouteNotMatchedHandlerClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteNotMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteNotMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\RouteNotMatchedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteNotMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteNotMatchedMiddlewareClass;
 
 /**
  * Test the route not matched handler.

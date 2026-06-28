@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Throwable\Exception;
 
-use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaInvalidArgumentExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaInvalidArgumentExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

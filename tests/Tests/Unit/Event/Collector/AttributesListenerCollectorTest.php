@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Event\Collector;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
-use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
+use Valkyrja\Tests\Fixtures\Event\Attribute\Attributed2Class;
+use Valkyrja\Tests\Fixtures\Event\Attribute\AttributedClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

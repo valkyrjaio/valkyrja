@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Header\Value\Cookie;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Support\Time\Time;
-use Valkyrja\Tests\Classes\Http\Message\Response\ResponseSendRecorderClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Response\ResponseSendRecorderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_get_clean;

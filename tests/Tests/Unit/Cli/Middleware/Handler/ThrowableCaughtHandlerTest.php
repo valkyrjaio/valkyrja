@@ -16,9 +16,9 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 use Exception;
 use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ThrowableCaughtHandlerClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ThrowableCaughtHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 
 /**
  * Test the throwable caught handler.

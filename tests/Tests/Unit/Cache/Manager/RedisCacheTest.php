@@ -18,7 +18,7 @@ use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Tests\Classes\Vendor\Predis\ClientClass;
+use Valkyrja\Tests\Fixtures\Vendor\Predis\ClientClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function is_callable;

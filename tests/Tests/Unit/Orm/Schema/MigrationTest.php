@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Schema;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Contract\MigrationContract;
-use Valkyrja\Tests\Classes\Orm\Schema\MigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\MigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class MigrationTest extends TestCase

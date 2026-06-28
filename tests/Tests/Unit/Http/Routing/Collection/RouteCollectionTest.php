@@ -28,7 +28,7 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidDynamicRouteName
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
-use Valkyrja\Tests\Classes\Http\Routing\Collection\CollectionClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Collection\CollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Object;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Classes\Type\Model\ModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\SerializedObject;
 

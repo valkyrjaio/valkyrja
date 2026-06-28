@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Tests\Classes\Attribute\AttributeClass;
-use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
-use Valkyrja\Tests\Classes\Attribute\AttributedClass;
+use Valkyrja\Tests\Fixtures\Attribute\AttributeClass;
+use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildClass;
+use Valkyrja\Tests\Fixtures\Attribute\AttributedClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

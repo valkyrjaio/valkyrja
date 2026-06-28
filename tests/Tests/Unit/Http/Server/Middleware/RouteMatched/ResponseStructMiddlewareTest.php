@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

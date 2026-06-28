@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Reflection\Throwable\Exception\ReflectionInvalidClassConstantException;
-use Valkyrja\Tests\Classes\Reflection\ReflectableClass;
+use Valkyrja\Tests\Fixtures\Reflection\ReflectableClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

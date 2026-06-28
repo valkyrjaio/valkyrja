@@ -18,9 +18,9 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
-use Valkyrja\Tests\Classes\Event\ArgumentsCapableEventClass;
-use Valkyrja\Tests\Classes\Event\DispatchCollectableEventClass;
-use Valkyrja\Tests\Classes\Event\StoppableEventClass;
+use Valkyrja\Tests\Fixtures\Event\ArgumentsCapableEventClass;
+use Valkyrja\Tests\Fixtures\Event\DispatchCollectableEventClass;
+use Valkyrja\Tests\Fixtures\Event\StoppableEventClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

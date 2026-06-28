@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Abstract;
 
 use JsonSerializable;
-use Valkyrja\Tests\Classes\Type\TypeClass;
+use Valkyrja\Tests\Fixtures\Type\TypeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Contract\TypeContract;
 

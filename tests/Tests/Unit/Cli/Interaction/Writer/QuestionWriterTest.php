@@ -21,7 +21,7 @@ use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionExpectedQuestionOutputException;
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionAskManipulationClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class QuestionWriterTest extends TestCase

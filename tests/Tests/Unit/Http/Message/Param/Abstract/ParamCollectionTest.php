@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param\Abstract;
 use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
-use Valkyrja\Tests\Classes\Http\Message\Param\Abstract\ParamCollectionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract\ParamCollectionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ParamCollectionTest extends TestCase

@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Tests\Fixtures\Container\Provider;
+
+use Override;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
+/**
+ * Class DeferredProviderClass.
+ */
+final class DeferredProviderClass implements ServiceProviderContract
+{
+    public static bool $publishCalled = false;
+
+    public static bool $publishSecondaryCalled = false;
+
+    public static function publish(object $providerAware): void
+    {
+        self::$publishCalled = true;
+    }
+
+    public static function publishSecondary(object $providerAware): void
+    {
+        self::$publishSecondaryCalled = true;
+    }
+
+    #[Override]
+    public function publishers(): array
+    {
+        return [
+            ProvidedClass::class          => [self::class, 'publish'],
+            ProvidedSecondaryClass::class => [self::class, 'publishSecondary'],
+        ];
+    }
+}

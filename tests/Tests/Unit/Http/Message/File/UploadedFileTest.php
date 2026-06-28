@@ -25,11 +25,11 @@ use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorExcept
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
-use Valkyrja\Tests\Classes\Http\Message\File\InvalidDirectoryExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\File\MoveUploadedFileClass;
-use Valkyrja\Tests\Classes\Http\Message\File\UnableToWriteFileExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidDirectoryExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidUploadedFileExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\MoveFailureExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\MoveUploadedFileClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\UnableToWriteFileExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;

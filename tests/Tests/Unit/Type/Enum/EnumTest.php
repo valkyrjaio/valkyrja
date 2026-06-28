@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Enum;
 
 use JsonException;
-use Valkyrja\Tests\Classes\Enum\EnumClass;
-use Valkyrja\Tests\Classes\Enum\IntEnum;
-use Valkyrja\Tests\Classes\Enum\StringEnum;
+use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\IntEnum;
+use Valkyrja\Tests\Fixtures\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\Throwable\Exception\EnumCannotModifyException;
 use Valkyrja\Type\Enum\Throwable\Exception\EnumInvalidValueException;

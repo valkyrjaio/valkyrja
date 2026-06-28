@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Struct\Throwable\Exception\HttpStructJsonServerRequestExpectedException;
-use Valkyrja\Tests\Classes\Http\Struct\JsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\JsonRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class JsonRequestStructTest extends TestCase
