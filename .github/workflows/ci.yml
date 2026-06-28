@@ -28,7 +28,7 @@ jobs:
 
   phparkitect:
     name: PHPArkitect
-    uses: valkyrjaio/ci-phparkitect-php/.github/workflows/_workflow-call.yml@7544c1072fbfbc50496993cae3b78ed3f8faf268
+    uses: valkyrjaio/ci-phparkitect-php/.github/workflows/_workflow-call.yml@2857ce11d5b8ba456d73f8cf0787afb1f991f8fc
     with:
       php-version: '8.4'
       paths: |
