@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid\Factory;
 use DateTime;
 use Exception;
 use Override;
-use Valkyrja\Tests\Classes\Type\Vlid\VlidFactoryClass;
+use Valkyrja\Tests\Fixtures\Type\Vlid\VlidFactoryClass;
 use Valkyrja\Tests\Unit\Type\Vlid\Factory\Abstract\VlidTestCase;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Vlid\Enum\Version;

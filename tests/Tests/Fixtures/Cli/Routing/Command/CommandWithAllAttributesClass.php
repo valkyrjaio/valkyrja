@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Routing\Command;
+namespace Valkyrja\Tests\Fixtures\Cli\Routing\Command;
 
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -29,10 +29,10 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 

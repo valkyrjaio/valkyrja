@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Routing\Command;
+namespace Valkyrja\Tests\Fixtures\Cli\Routing\Command;
 
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -22,7 +22,7 @@ use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\AllMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\AllMiddlewareClass;
 
 final class CommandWithAllMiddlewareClass
 {

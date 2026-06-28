@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Middleware;
+namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;

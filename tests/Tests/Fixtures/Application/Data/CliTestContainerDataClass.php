@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Data;
+namespace Valkyrja\Tests\Fixtures\Application\Data;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -54,8 +54,8 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Log\Provider\LogServiceProvider;
-use Valkyrja\Tests\Classes\Application\Provider\CliContainerDataProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\CliRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliContainerDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderClass;
 
 final readonly class CliTestContainerDataClass extends ContainerData
 {

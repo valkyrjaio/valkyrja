@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Message\File;
+namespace Valkyrja\Tests\Fixtures\Http\Message\File;
 
 use Valkyrja\Http\Message\File\UploadedFile;
 

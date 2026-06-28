@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Middleware;
+namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestThrowableCaughtMiddleware.

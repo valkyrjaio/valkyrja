@@ -25,7 +25,7 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\OrmNoPgsqlLastIdException;
 use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class PgsqlManagerTest extends TestCase

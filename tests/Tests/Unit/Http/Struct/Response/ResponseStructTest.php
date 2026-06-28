@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Response;
 
 use Valkyrja\Http\Struct\Contract\StructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

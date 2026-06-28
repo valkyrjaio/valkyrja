@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Message\Param\Abstract;
+namespace Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract;
 
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 

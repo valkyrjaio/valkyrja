@@ -28,7 +28,7 @@ use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Provider\EventServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Classes\Event\Provider\ListenerProviderClass;
+use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderClass;
 
 /**
  * Test the ServiceProvider.

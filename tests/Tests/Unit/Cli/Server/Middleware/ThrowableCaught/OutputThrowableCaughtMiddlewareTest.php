@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
-use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class OutputThrowableCaughtMiddlewareTest extends TestCase

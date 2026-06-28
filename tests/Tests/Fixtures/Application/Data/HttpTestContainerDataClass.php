@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Data;
+namespace Valkyrja\Tests\Fixtures\Application\Data;
 
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -57,8 +57,8 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Log\Provider\LogServiceProvider;
-use Valkyrja\Tests\Classes\Application\Provider\HttpContainerDataProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpContainerDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;

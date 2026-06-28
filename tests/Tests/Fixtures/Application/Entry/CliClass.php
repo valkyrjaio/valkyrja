@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Entry;
+namespace Valkyrja\Tests\Fixtures\Application\Entry;
 
 use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Entry\Cli;

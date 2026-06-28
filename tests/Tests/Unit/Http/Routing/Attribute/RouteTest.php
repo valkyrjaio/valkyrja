@@ -17,13 +17,13 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\Route;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Struct\QueryRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

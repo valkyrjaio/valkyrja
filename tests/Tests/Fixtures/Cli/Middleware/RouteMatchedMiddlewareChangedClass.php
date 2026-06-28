@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Middleware;
+namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 final class RouteMatchedMiddlewareChangedClass implements RouteMatchedMiddlewareContract
 {

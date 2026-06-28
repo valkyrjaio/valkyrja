@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Type\Object\Support;
+namespace Valkyrja\Tests\Fixtures\Type\Object\Support;
 
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Object\Factory\ObjectFactory;

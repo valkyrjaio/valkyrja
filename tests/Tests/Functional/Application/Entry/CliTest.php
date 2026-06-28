@@ -30,9 +30,9 @@ use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Classes\Application\Provider\CliComponentProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\CliRouteProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\CliRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 

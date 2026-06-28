@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Data;
+namespace Valkyrja\Tests\Fixtures\Application\Data;
 
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;

@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
-use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Factory\ThrowableFactory;
 

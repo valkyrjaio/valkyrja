@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Classes\Http\Middleware\Handler\SendingResponseHandlerClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\SendingResponseHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
 
 /**
  * Test the sending response handler.

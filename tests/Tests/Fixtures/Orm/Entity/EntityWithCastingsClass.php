@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Orm\Entity;
+namespace Valkyrja\Tests\Fixtures\Orm\Entity;
 
 use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;

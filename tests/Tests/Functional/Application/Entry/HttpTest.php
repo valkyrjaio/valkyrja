@@ -28,9 +28,9 @@ use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Tests\Classes\Application\Provider\HttpComponentProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\HttpRouteProviderClass;
-use Valkyrja\Tests\Classes\Application\Provider\HttpRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 

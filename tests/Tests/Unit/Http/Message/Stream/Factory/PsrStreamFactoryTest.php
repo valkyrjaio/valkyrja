@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Factory\PsrStreamFactory;
 use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Tests\Classes\Http\Message\Stream\Psr\StreamEmptyModeClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\Psr\StreamEmptyModeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class PsrStreamFactoryTest extends TestCase

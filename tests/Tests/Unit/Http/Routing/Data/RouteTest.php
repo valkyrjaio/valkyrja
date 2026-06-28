@@ -15,20 +15,20 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedParsedBodyRequestStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedParsedBodyRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

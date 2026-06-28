@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Data;
+namespace Valkyrja\Tests\Fixtures\Application\Data;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;

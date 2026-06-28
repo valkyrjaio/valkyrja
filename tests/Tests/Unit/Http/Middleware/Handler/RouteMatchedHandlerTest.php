@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Classes\Http\Middleware\Handler\RouteMatchedHandlerClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RouteMatchedHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
 
 /**
  * Test the route matched handler.

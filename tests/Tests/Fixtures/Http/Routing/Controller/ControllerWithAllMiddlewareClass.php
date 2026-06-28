@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
+namespace Valkyrja\Tests\Fixtures\Http\Routing\Controller;
 
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
@@ -19,9 +19,9 @@ use Valkyrja\Http\Routing\Attribute\DynamicRoute;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Tests\Classes\Http\Middleware\AllMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Middleware\AllMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 
 /**
  * Controller class to test routes.

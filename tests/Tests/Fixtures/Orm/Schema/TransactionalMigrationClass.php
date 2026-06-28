@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Orm\Schema;
+namespace Valkyrja\Tests\Fixtures\Orm\Schema;
 
 use RuntimeException;
 use Throwable;

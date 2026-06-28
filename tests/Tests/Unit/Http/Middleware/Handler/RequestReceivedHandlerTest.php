@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Classes\Http\Middleware\Handler\RequestReceivedHandlerClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RequestReceivedHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareClass;
 
 /**
  * Test the request received handler.

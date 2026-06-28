@@ -17,7 +17,7 @@ use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Tests\Classes\Event\EventClass;
+use Valkyrja\Tests\Fixtures\Event\EventClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

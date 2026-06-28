@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Event\Provider;
+namespace Valkyrja\Tests\Fixtures\Event\Provider;
 
 use Override;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Vendor\Vonage;
+namespace Valkyrja\Tests\Fixtures\Vendor\Vonage;
 
 use Vonage\Client;
 use Vonage\SMS\Client as SmsClient;

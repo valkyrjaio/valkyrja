@@ -17,10 +17,10 @@ use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionClass;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionEmptyFgetsClass;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFgetsClass;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFopenClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionEmptyFgetsClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFgetsClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFopenClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

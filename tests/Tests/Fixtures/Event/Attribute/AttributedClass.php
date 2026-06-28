@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Event\Attribute;
+namespace Valkyrja\Tests\Fixtures\Event\Attribute;
 
 use Valkyrja\Event\Attribute\Listener;
 use Valkyrja\Event\Attribute\ListenerHandler;

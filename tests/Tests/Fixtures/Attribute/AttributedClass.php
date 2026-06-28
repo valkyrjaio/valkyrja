@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Attribute;
+namespace Valkyrja\Tests\Fixtures\Attribute;
 
 use Valkyrja\Tests\Unit\Attribute\Collector\CollectorTest;
 

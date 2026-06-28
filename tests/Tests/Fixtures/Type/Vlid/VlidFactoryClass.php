@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Type\Vlid;
+namespace Valkyrja\Tests\Fixtures\Type\Vlid;
 
 use DateTimeInterface;
 use Valkyrja\Type\Vlid\Factory\VlidFactory;

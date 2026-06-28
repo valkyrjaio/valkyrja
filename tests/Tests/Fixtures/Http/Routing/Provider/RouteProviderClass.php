@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Routing\Provider;
+namespace Valkyrja\Tests\Fixtures\Http\Routing\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;

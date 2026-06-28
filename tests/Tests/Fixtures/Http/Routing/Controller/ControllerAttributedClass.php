@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
+namespace Valkyrja\Tests\Fixtures\Http\Routing\Controller;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;

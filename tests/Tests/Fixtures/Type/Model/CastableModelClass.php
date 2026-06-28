@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Type\Model;
+namespace Valkyrja\Tests\Fixtures\Type\Model;
 
 use Override;
-use Valkyrja\Tests\Classes\Enum\EnumClass;
-use Valkyrja\Tests\Classes\Enum\IntEnum;
-use Valkyrja\Tests\Classes\Enum\StringEnum;
+use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\IntEnum;
+use Valkyrja\Tests\Fixtures\Enum\StringEnum;
 use Valkyrja\Type\Data\ArrayCast;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Data\OriginalArrayCast;

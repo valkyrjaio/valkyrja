@@ -26,12 +26,12 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamWriteExcept
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
-use Valkyrja\Tests\Classes\Http\Message\Stream\FalseFstatStreamClass;
-use Valkyrja\Tests\Classes\Http\Message\Stream\StreamReadExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\Stream\StreamSeekExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\Stream\StreamTellExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\Stream\StreamWriteExceptionClass;
-use Valkyrja\Tests\Classes\Http\Message\Stream\UnseekableStreamExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\FalseFstatStreamClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamReadExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamSeekExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamTellExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamWriteExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\UnseekableStreamExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Dispatch;
+namespace Valkyrja\Tests\Fixtures\Dispatch;
 
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 

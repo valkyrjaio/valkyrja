@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Factory;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Factory\DateFactory;
 use Valkyrja\Orm\Throwable\Exception\OrmDateException;
-use Valkyrja\Tests\Classes\Orm\Support\DateFactoryWithFailingDateTimeClass;
+use Valkyrja\Tests\Fixtures\Orm\Support\DateFactoryWithFailingDateTimeClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class DateFactoryTest extends TestCase

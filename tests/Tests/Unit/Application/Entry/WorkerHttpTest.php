@@ -20,8 +20,8 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Tests\Classes\Application\Entry\WorkerHttpClass;
-use Valkyrja\Tests\Classes\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\WorkerHttpClass;
+use Valkyrja\Tests\Fixtures\Container\SingletonClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

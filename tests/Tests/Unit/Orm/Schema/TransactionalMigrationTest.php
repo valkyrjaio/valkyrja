@@ -18,7 +18,7 @@ use RuntimeException;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Abstract\Migration;
 use Valkyrja\Orm\Schema\Contract\MigrationContract;
-use Valkyrja\Tests\Classes\Orm\Schema\TransactionalMigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\TransactionalMigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class TransactionalMigrationTest extends TestCase

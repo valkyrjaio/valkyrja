@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Enum;
 
-use Valkyrja\Tests\Classes\Enum\ArrayableEnum;
-use Valkyrja\Tests\Classes\Enum\ArrayableIntEnum;
-use Valkyrja\Tests\Classes\Enum\ArrayableStringEnum;
+use Valkyrja\Tests\Fixtures\Enum\ArrayableEnum;
+use Valkyrja\Tests\Fixtures\Enum\ArrayableIntEnum;
+use Valkyrja\Tests\Fixtures\Enum\ArrayableStringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ArrayableTest extends TestCase

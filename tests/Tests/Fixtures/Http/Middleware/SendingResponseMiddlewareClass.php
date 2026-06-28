@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Middleware;
+namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestSendingResponseMiddleware.

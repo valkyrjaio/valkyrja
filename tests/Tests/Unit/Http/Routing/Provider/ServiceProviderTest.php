@@ -50,7 +50,7 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderClass;
 
 /**
  * Test the ServiceProviderTest.

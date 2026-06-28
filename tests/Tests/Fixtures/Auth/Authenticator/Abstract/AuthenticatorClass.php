@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Auth\Authenticator\Abstract;
+namespace Valkyrja\Tests\Fixtures\Auth\Authenticator\Abstract;
 
 use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Entity\Contract\UserContract;

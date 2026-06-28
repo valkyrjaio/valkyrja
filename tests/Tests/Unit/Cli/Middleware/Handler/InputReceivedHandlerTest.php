@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\InputReceivedHandlerClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\InputReceivedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\InputReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\InputReceivedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareClass;
 
 /**
  * Test the input received handler.

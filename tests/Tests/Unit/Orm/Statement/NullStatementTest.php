@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullStatementTest extends TestCase

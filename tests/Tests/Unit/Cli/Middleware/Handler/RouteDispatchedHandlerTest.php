@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\RouteDispatchedHandlerClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\RouteDispatchedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
 
 /**
  * Test the route dispatched handler.

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Struct;
+namespace Valkyrja\Tests\Fixtures\Http\Struct;
 
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;

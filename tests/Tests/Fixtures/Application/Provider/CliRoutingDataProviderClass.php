@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Provider;
+namespace Valkyrja\Tests\Fixtures\Application\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Tests\Classes\Application\Data\CliTestCliRoutingDataClass;
+use Valkyrja\Tests\Fixtures\Application\Data\CliTestCliRoutingDataClass;
 
 final class CliRoutingDataProviderClass implements ServiceProviderContract
 {

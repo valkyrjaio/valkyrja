@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Throwable\Exception;
+namespace Valkyrja\Tests\Fixtures\Throwable\Exception;
 
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
 

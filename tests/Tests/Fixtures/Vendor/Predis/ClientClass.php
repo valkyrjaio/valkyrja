@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Vendor\Predis;
+namespace Valkyrja\Tests\Fixtures\Vendor\Predis;
 
 use Predis\Client;
 use Predis\Response\Status;

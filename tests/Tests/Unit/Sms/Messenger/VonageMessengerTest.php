@@ -18,7 +18,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Data\Message;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Valkyrja\Tests\Classes\Vendor\Vonage\ClientClass;
+use Valkyrja\Tests\Fixtures\Vendor\Vonage\ClientClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Vonage\Client;
 use Vonage\Client\Exception\Exception;

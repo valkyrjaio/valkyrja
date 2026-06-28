@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Container;
+namespace Valkyrja\Tests\Fixtures\Container;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 

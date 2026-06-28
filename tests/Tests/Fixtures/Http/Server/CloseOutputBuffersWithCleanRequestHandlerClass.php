@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Server;
+namespace Valkyrja\Tests\Fixtures\Http\Server;
 
 use Override;
 use Valkyrja\Http\Server\Handler\RequestHandler;

@@ -21,7 +21,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\NativeChildContainer;
-use Valkyrja\Tests\Classes\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Container\SingletonClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

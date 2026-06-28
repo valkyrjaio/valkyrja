@@ -25,10 +25,10 @@ use Valkyrja\Session\Throwable\Exception\SessionIdFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
 use Valkyrja\Session\Throwable\Exception\SessionNameFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
-use Valkyrja\Tests\Classes\Session\PhpSessionWithAlreadyActiveClass;
-use Valkyrja\Tests\Classes\Session\PhpSessionWithFailingGetIdClass;
-use Valkyrja\Tests\Classes\Session\PhpSessionWithFailingGetNameClass;
-use Valkyrja\Tests\Classes\Session\PhpSessionWithFailingStartClass;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithAlreadyActiveClass;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetIdClass;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetNameClass;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingStartClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PHP_SESSION_ACTIVE;

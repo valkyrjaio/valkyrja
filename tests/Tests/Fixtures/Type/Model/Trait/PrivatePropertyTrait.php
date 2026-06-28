@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Type\Model\Trait;
+namespace Valkyrja\Tests\Fixtures\Type\Model\Trait;
 
 /**
  * Trait PrivateProperty.

@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use Override;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackException;
-use Valkyrja\Tests\Classes\Container\Manager\ProvidersAwareClass;
-use Valkyrja\Tests\Classes\Container\Provider\InvalidDeferredProviderClass;
-use Valkyrja\Tests\Classes\Container\Provider\ProvidedClass;
-use Valkyrja\Tests\Classes\Container\Provider\ProvidedSecondaryClass;
-use Valkyrja\Tests\Classes\Container\Provider\ProviderClass;
+use Valkyrja\Tests\Fixtures\Container\Manager\ProvidersAwareClass;
+use Valkyrja\Tests\Fixtures\Container\Provider\InvalidDeferredProviderClass;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedClass;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedSecondaryClass;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

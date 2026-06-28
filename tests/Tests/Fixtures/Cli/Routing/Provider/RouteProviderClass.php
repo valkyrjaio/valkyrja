@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Cli\Routing\Provider;
+namespace Valkyrja\Tests\Fixtures\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Cli\Routing\Data\Route;

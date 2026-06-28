@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
-use Valkyrja\Tests\Classes\Cli\Routing\Provider\ProviderClass;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\ProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ProviderTest extends TestCase

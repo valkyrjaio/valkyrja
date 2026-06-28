@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
-use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

@@ -23,7 +23,7 @@ use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Auth\Throwable\Exception\AuthNoCurrentUserException;
 use Valkyrja\Auth\Throwable\Exception\AuthNoImpersonatedUserException;
-use Valkyrja\Tests\Classes\Auth\Authenticator\Abstract\AuthenticatorClass;
+use Valkyrja\Tests\Fixtures\Auth\Authenticator\Abstract\AuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use const PASSWORD_DEFAULT;

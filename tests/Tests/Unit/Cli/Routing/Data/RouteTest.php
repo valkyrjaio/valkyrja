@@ -23,14 +23,14 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableEx
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RouteTest extends TestCase

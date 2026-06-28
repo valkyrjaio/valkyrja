@@ -24,7 +24,7 @@ use Valkyrja\Orm\Statement\PdoStatement;
 use Valkyrja\Orm\Throwable\Exception\OrmFetchException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidColumnNumberException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnsupportedCountException;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class PdoStatementTest extends TestCase

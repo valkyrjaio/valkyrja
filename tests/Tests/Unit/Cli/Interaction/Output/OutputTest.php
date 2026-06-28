@@ -20,7 +20,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionAskManipulationClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

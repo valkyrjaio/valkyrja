@@ -86,7 +86,7 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddlewar
 use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Time\Microtime;
-use Valkyrja\Tests\Classes\Application\Entry\AppExceptionHandlerClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\AppExceptionHandlerClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;

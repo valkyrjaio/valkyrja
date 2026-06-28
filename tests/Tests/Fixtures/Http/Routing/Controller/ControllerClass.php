@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
+namespace Valkyrja\Tests\Fixtures\Http\Routing\Controller;
 
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
@@ -27,14 +27,14 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Constant\Regex;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Tests\Classes\Http\Routing\Provider\RouteProviderClass;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
-use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 

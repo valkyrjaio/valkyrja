@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Enum;
+namespace Valkyrja\Tests\Fixtures\Enum;
 
 use Valkyrja\Type\Enum\Contract\EnumContract;
 use Valkyrja\Type\Enum\Trait\Enumerable;

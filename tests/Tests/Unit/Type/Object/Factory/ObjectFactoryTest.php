@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type\Object\Factory;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Classes\Type\Model\ModelClass;
-use Valkyrja\Tests\Classes\Type\Object\Support\ObjectFactoryClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
+use Valkyrja\Tests\Fixtures\Type\Object\Support\ObjectFactoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Object\Factory\ObjectFactory;

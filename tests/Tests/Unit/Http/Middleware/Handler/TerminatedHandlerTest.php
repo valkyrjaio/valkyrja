@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
-use Valkyrja\Tests\Classes\Http\Middleware\Handler\TerminatedHandlerClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\TerminatedHandlerClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
 
 /**
  * Test the terminated handler.

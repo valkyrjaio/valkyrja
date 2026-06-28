@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

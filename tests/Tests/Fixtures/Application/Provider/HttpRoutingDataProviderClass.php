@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Application\Provider;
+namespace Valkyrja\Tests\Fixtures\Application\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
-use Valkyrja\Tests\Classes\Application\Data\HttpTestHttpRoutingDataClass;
+use Valkyrja\Tests\Fixtures\Application\Data\HttpTestHttpRoutingDataClass;
 
 final class HttpRoutingDataProviderClass implements ServiceProviderContract
 {

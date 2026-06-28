@@ -22,7 +22,7 @@ use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmRuntimeException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidMigrationFileException;
 use Valkyrja\Orm\Throwable\Exception\OrmMigrationExecutionException;
-use Valkyrja\Tests\Classes\Orm\Schema\SqlFileMigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\SqlFileMigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function file_put_contents;

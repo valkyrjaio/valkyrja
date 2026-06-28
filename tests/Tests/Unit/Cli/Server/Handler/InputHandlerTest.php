@@ -26,7 +26,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Tests\Classes\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_start;

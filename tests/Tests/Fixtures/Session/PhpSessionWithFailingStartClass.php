@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Session;
+namespace Valkyrja\Tests\Fixtures\Session;
 
 use Override;
 use Valkyrja\Session\Manager\PhpSession;

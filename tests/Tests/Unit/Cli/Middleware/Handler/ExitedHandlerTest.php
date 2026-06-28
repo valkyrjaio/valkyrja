@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
-use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ExitedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ExitedHandlerClass;
 
 /**
  * Test the exited handler.

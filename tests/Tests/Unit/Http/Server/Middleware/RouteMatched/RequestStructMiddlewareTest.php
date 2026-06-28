@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
-use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Http\Message;
+namespace Valkyrja\Tests\Fixtures\Http\Message;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;

@@ -17,12 +17,12 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Throwable\Exception\OrmArrayCastingException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnexpectedIdValueException;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityClass;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityIntIdClass;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityStringIdClass;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityWithAllFeaturesClass;
-use Valkyrja\Tests\Classes\Orm\Entity\EntityWithCastingsClass;
-use Valkyrja\Tests\Classes\Orm\Repository\RepositoryClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithAllFeaturesClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithCastingsClass;
+use Valkyrja\Tests\Fixtures\Orm\Repository\RepositoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Int\IntT;
 

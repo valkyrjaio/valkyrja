@@ -17,7 +17,7 @@ use DateTime;
 use Exception;
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Tests\Classes\Type\Ulid\UlidFactoryClass;
+use Valkyrja\Tests\Fixtures\Type\Ulid\UlidFactoryClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
