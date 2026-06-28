@@ -21,6 +21,8 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function str_contains;
+
 final class PsrLoggerTest extends TestCase
 {
     protected PsrLogger $logger;

@@ -36,6 +36,8 @@ use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderClass;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderClass;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
 use function restore_error_handler;
 use function restore_exception_handler;
 

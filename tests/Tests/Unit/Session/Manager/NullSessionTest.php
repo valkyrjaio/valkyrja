@@ -18,6 +18,7 @@ use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Throwable\Exception\SessionInvalidCsrfTokenException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function str_repeat;
 use function strlen;
 
 final class NullSessionTest extends TestCase

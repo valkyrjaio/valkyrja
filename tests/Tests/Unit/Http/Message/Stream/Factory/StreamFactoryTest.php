@@ -28,6 +28,8 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamE
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function fclose;
+use function fopen;
 use function get_resource_type;
 use function is_resource;
 

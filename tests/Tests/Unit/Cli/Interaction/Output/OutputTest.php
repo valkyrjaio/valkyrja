@@ -23,6 +23,9 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 /**
  * Test the Output class.
  */

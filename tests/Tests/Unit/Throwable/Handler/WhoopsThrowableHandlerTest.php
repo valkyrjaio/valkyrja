@@ -16,6 +16,11 @@ namespace Valkyrja\Tests\Unit\Throwable\Handler;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
+use function restore_error_handler;
+use function restore_exception_handler;
+use function set_error_handler;
+use function set_exception_handler;
+
 /**
  * Test the whoops throwable handler.
  */

@@ -48,6 +48,8 @@ use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
 use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function date_default_timezone_get;
+
 /**
  * Test the Application service.
  */

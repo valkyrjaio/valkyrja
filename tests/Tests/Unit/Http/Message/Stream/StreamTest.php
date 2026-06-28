@@ -35,6 +35,7 @@ use Valkyrja\Tests\Fixtures\Http\Message\Stream\UnseekableStreamExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
+use function str_repeat;
 use function unserialize;
 
 use const SEEK_END;

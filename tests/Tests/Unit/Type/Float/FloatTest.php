@@ -17,6 +17,8 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Float\FloatT;
 use Valkyrja\Type\Float\Throwable\Exception\FloatInvalidFromValueException;
 
+use function json_encode;
+
 final class FloatTest extends TestCase
 {
     protected const float VALUE = 1.25;

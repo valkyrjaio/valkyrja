@@ -17,6 +17,8 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Int\IntT;
 use Valkyrja\Type\Int\Throwable\Exception\IntInvalidFromValueException;
 
+use function json_encode;
+
 final class IntTest extends TestCase
 {
     protected const int VALUE = 1;

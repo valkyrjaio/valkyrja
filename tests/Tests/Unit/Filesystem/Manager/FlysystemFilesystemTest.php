@@ -24,6 +24,7 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function fclose;
 use function fopen;
 
 final class FlysystemFilesystemTest extends TestCase

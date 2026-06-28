@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Support\Time;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function sleep;
+
 /**
  * Test the Time support class.
  */

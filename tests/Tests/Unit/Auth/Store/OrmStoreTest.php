@@ -24,6 +24,8 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**

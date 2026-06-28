@@ -17,6 +17,8 @@ use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Bool\TrueT;
 
+use function json_encode;
+
 use const JSON_THROW_ON_ERROR;
 
 final class TrueTest extends TestCase

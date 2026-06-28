@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Auth\Hasher;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function str_repeat;
+
 /**
  * Test the PhpPasswordHasher class.
  */

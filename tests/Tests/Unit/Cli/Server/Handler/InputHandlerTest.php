@@ -29,6 +29,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
 use function ob_start;
 
 final class InputHandlerTest extends TestCase

@@ -25,6 +25,7 @@ use Valkyrja\Orm\Throwable\Exception\OrmMigrationExecutionException;
 use Valkyrja\Tests\Fixtures\Orm\Schema\SqlFileMigrationClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function file_exists;
 use function file_put_contents;
 use function sys_get_temp_dir;
 use function tempnam;

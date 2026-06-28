@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Support\Time;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function usleep;
+
 /**
  * Test the Microtime support class.
  */

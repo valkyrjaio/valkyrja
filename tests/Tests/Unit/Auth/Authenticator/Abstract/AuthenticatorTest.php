@@ -26,6 +26,8 @@ use Valkyrja\Auth\Throwable\Exception\AuthNoImpersonatedUserException;
 use Valkyrja\Tests\Fixtures\Auth\Authenticator\Abstract\AuthenticatorClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**

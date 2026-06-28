@@ -27,6 +27,8 @@ use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function array_keys;
+
 /**
  * Test the Api manager class.
  */

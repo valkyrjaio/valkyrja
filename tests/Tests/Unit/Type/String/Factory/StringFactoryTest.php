@@ -20,6 +20,8 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\Factory\StringFactory;
 
+use function fopen;
+
 final class StringFactoryTest extends TestCase
 {
     protected const string VALUE = 'Some Words';

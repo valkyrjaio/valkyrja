@@ -22,6 +22,9 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 final class CheckCommandForTypoMiddlewareTest extends TestCase
 {
     public function testRouteNotMatchedDefault(): void

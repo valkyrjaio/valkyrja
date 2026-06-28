@@ -17,6 +17,8 @@ use JsonException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\ArrayT;
 
+use function json_encode;
+
 final class ArrayTest extends TestCase
 {
     /** @var string[] */

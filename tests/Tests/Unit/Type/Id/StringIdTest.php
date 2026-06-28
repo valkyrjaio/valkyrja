@@ -17,6 +17,8 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Id\StringId;
 use Valkyrja\Type\Id\Throwable\Exception\IdInvalidFromValueException;
 
+use function json_encode;
+
 final class StringIdTest extends TestCase
 {
     protected const string VALUE       = 'foo';

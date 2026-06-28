@@ -19,6 +19,8 @@ use Valkyrja\Jwt\Throwable\Exception\Abstract\JwtRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
+use function is_a;
+
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void

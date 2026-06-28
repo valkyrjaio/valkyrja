@@ -19,6 +19,9 @@ use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\SerializedObject;
 
+use function json_encode;
+use function serialize;
+
 final class SerializedObjectTest extends TestCase
 {
     public function testValue(): void

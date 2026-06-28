@@ -23,13 +23,16 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Throwable\Exception\ViewOrkaCacheFailureException;
 
+use function clearstatcache;
 use function file_exists;
 use function file_get_contents;
+use function filemtime;
 use function is_dir;
 use function is_file;
 use function md5;
 use function scandir;
 use function unlink;
+use function usleep;
 
 /**
  * Test the OrkaRenderer class.

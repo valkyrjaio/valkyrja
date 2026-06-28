@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Fixtures\Http\Server;
 use Override;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 
+use function ob_start;
+
 /**
  * Class CloseOutputBuffersRequestHandler.
  */

@@ -17,6 +17,10 @@ use Override;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\PhpUnit\Abstract\ValkyrjaTestCase;
 
+use function is_dir;
+use function scandir;
+use function unlink;
+
 /**
  * Test case for tests.
  */

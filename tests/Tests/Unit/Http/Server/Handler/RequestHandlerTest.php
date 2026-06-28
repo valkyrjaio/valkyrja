@@ -33,6 +33,7 @@ use Valkyrja\Tests\Fixtures\Http\Server\LitespeedRequestHandlerClass;
 use Valkyrja\Tests\Fixtures\Http\Server\SessionCloseRequestHandlerClass;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
 use function ob_start;
 
 /**

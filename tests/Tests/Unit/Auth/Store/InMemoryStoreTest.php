@@ -21,6 +21,8 @@ use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidRetrievableUserException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**
