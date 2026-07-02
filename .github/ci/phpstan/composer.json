@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "valkyrja/phpstan" : "^26.1.8"
+    "valkyrja/phpstan" : "^26.1.9"
   },
   "scripts"           : {
     "check" : "vendor/bin/phpstan --memory-limit=-1"
