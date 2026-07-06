@@ -85,7 +85,7 @@ jobs:
 
   phpstan:
     name: PHPStan
-    uses: valkyrjaio/ci-phpstan-php/.github/workflows/_workflow-call.yml@c7817318071ee1d37464e8575cce2fa5fe50532d
+    uses: valkyrjaio/ci-phpstan-php/.github/workflows/_workflow-call.yml@2f158990fbf002b8b672653f02efa129f6788299
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
