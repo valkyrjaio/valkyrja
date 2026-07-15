@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7637d9558a2d09be4381a007da98ddd4",
+    "content-hash": "0788f64222c2457783c1743def67e69a",
     "packages": [],
     "packages-dev": [
         {
@@ -164,16 +164,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.5.5",
+            "version": "2.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "9718a72e7f1aacacbdcb6eeed07a47147bce802e"
+                "reference": "ba22f8c087848278fed6b4910d4cf1108096d8d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/9718a72e7f1aacacbdcb6eeed07a47147bce802e",
-                "reference": "9718a72e7f1aacacbdcb6eeed07a47147bce802e",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/ba22f8c087848278fed6b4910d4cf1108096d8d3",
+                "reference": "ba22f8c087848278fed6b4910d4cf1108096d8d3",
                 "shasum": ""
             },
             "require": {
@@ -212,7 +212,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.5.5"
+                "source": "https://github.com/rectorphp/rector/tree/2.5.7"
             },
             "funding": [
                 {
@@ -220,26 +220,26 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-09T09:48:44+00:00"
+            "time": "2026-07-13T15:24:18+00:00"
         },
         {
             "name": "valkyrja/rector",
-            "version": "v26.1.8",
+            "version": "v26.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-rector-php.git",
-                "reference": "fd61cead6fb58e1c9b84bdf0299c2934f8494dec"
+                "reference": "e953e4c59db95305de6179f2f562ae9e31e36492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/fd61cead6fb58e1c9b84bdf0299c2934f8494dec",
-                "reference": "fd61cead6fb58e1c9b84bdf0299c2934f8494dec",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/e953e4c59db95305de6179f2f562ae9e31e36492",
+                "reference": "e953e4c59db95305de6179f2f562ae9e31e36492",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^4.1.4",
                 "php": ">=8.4",
-                "rector/rector": "^2.5.4"
+                "rector/rector": "^2.5.5"
             },
             "type": "project",
             "autoload": {
@@ -266,9 +266,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-rector-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.1.8"
+                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.1.9"
             },
-            "time": "2026-07-06T15:21:53+00:00"
+            "time": "2026-07-11T17:38:39+00:00"
         }
     ],
     "aliases": [],
