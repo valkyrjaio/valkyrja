@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Tests\Fixtures\Http\Message\MessageClass;
+use Valkyrja\Tests\Fixtures\Http\Message\MessageFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function implode;
@@ -29,21 +29,21 @@ final class MessageTest extends TestCase
     protected const string HEADER_VALUE  = 'foo';
     protected const string HEADER_VALUE2 = 'bar';
 
-    protected static function assertEmptyHeaders(MessageClass $message): void
+    protected static function assertEmptyHeaders(MessageFixture $message): void
     {
         self::assertEmpty($message->getHeaders()->getAll());
         self::assertFalse($message->getHeaders()->has(self::HEADER_NAME));
         self::assertSame('', $message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
-    protected static function assertNotEmptyHeaders(MessageClass $message): void
+    protected static function assertNotEmptyHeaders(MessageFixture $message): void
     {
         self::assertNotEmpty($message->getHeaders()->getAll());
         self::assertNotEmpty($message->getHeaders()->get(self::HEADER_NAME));
         self::assertNotEmpty($message->getHeaders()->getHeaderLine(self::HEADER_NAME));
     }
 
-    protected static function assertHeaderValues(MessageClass $message, string ...$values): void
+    protected static function assertHeaderValues(MessageFixture $message, string ...$values): void
     {
         self::assertSame(implode(', ', $values), $message->getHeaders()->get(self::HEADER_NAME)->getHeaderLine());
         self::assertSame(implode(', ', $values), $message->getHeaders()->getHeaderLine(self::HEADER_NAME));
@@ -51,7 +51,7 @@ final class MessageTest extends TestCase
 
     public function testProtocolVersion(): void
     {
-        $message = new MessageClass();
+        $message = new MessageFixture();
 
         self::assertSame(ProtocolVersion::V1_1, $message->getProtocolVersion());
 
@@ -69,7 +69,7 @@ final class MessageTest extends TestCase
 
     public function testHeaders(): void
     {
-        $message = new MessageClass();
+        $message = new MessageFixture();
 
         self::assertEmptyHeaders($message);
 
@@ -149,7 +149,7 @@ final class MessageTest extends TestCase
 
     public function testBody(): void
     {
-        $message = new MessageClass();
+        $message = new MessageFixture();
 
         $message2 = $message->withBody(new Stream(PhpWrapper::input));
 
@@ -162,7 +162,7 @@ final class MessageTest extends TestCase
         $testHeader         = 'test-header-override';
         $testHeaderOverride = 'test-header-override-override';
 
-        $message = new MessageClass(
+        $message = new MessageFixture(
             headers: HeaderCollection::fromArray([
                 new Header('Test-Header', 'test-header-original'),
                 new Header('Test-Header-Override', 'test-header-override-original'),

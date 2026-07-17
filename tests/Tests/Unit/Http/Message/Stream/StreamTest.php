@@ -26,12 +26,12 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamStreamWriteExcept
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamException;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\FalseFstatStreamClass;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamReadExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamSeekExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamTellExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamWriteExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\Stream\UnseekableStreamExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\FalseFstatStreamFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamReadExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamSeekExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamTellExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\StreamWriteExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\Stream\UnseekableStreamExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function serialize;
@@ -70,7 +70,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamStreamSeekException::class);
 
-        $stream = new StreamSeekExceptionClass();
+        $stream = new StreamSeekExceptionFixture();
         $stream->seek(1);
     }
 
@@ -78,7 +78,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamUnseekableStreamException::class);
 
-        $stream = new UnseekableStreamExceptionClass();
+        $stream = new UnseekableStreamExceptionFixture();
         $stream->seek(1);
     }
 
@@ -115,7 +115,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamStreamReadException::class);
 
-        $stream = new StreamReadExceptionClass();
+        $stream = new StreamReadExceptionFixture();
         $stream->read(4096);
     }
 
@@ -160,7 +160,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamStreamWriteException::class);
 
-        $stream = new StreamWriteExceptionClass();
+        $stream = new StreamWriteExceptionFixture();
         $stream->write('pie');
     }
 
@@ -211,7 +211,7 @@ final class StreamTest extends TestCase
     {
         $contents = 'pie';
 
-        $stream = new StreamReadExceptionClass();
+        $stream = new StreamReadExceptionFixture();
         $stream->write($contents);
 
         self::assertNotSame($contents, $stream->__toString());
@@ -268,7 +268,7 @@ final class StreamTest extends TestCase
 
         self::assertSame(0, $stream->getSize());
 
-        $stream2 = new FalseFstatStreamClass();
+        $stream2 = new FalseFstatStreamFixture();
 
         self::assertSame(0, $stream2->getSize());
     }
@@ -297,7 +297,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamStreamTellException::class);
 
-        $stream = new StreamTellExceptionClass();
+        $stream = new StreamTellExceptionFixture();
         $stream->tell();
     }
 
@@ -352,7 +352,7 @@ final class StreamTest extends TestCase
     {
         $this->expectException(HttpStreamStreamReadException::class);
 
-        $stream = new StreamReadExceptionClass();
+        $stream = new StreamReadExceptionFixture();
         $stream->getContents();
     }
 

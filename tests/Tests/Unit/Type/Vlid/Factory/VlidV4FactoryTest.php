@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid\Factory;
 
 use Exception;
 use Override;
-use Valkyrja\Tests\Fixtures\Type\Vlid\VlidV4Class;
+use Valkyrja\Tests\Fixtures\Type\Vlid\VlidV4Fixture;
 use Valkyrja\Tests\Unit\Type\Vlid\Factory\Abstract\VlidTestCase;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Vlid\Enum\Version;
@@ -32,13 +32,13 @@ final class VlidV4FactoryTest extends VlidTestCase
     #[Override]
     protected function setUp(): void
     {
-        VlidV4Class::reset();
+        VlidV4Fixture::reset();
     }
 
     #[Override]
     protected function tearDown(): void
     {
-        VlidV4Class::reset();
+        VlidV4Fixture::reset();
         parent::tearDown();
     }
 
@@ -95,18 +95,18 @@ final class VlidV4FactoryTest extends VlidTestCase
     public function testAreAllRandomBytesMax(): void
     {
         // Test with non-max byte
-        VlidV4Class::setRandomBytes([
+        VlidV4Fixture::setRandomBytes([
             1 => 100,
         ]);
 
-        self::assertFalse(VlidV4Class::testAreAllRandomBytesMax());
+        self::assertFalse(VlidV4Fixture::testAreAllRandomBytesMax());
 
         // Test with max byte (VlidV4 uses 1 random byte)
-        VlidV4Class::setRandomBytes([
+        VlidV4Fixture::setRandomBytes([
             1 => UlidFactory::MAX_PART,
         ]);
 
-        self::assertTrue(VlidV4Class::testAreAllRandomBytesMax());
+        self::assertTrue(VlidV4Fixture::testAreAllRandomBytesMax());
     }
 
     /**
@@ -117,23 +117,23 @@ final class VlidV4FactoryTest extends VlidTestCase
     public function testGenerateWithAllRandomBytesAtMax(): void
     {
         // First generate a VLID V4 to initialize the state
-        VlidV4Class::generate();
+        VlidV4Fixture::generate();
 
-        $currentTime = VlidV4Class::getStoredTime();
+        $currentTime = VlidV4Fixture::getStoredTime();
 
         // Set the time to the same value and set all random bytes to max (1 for VlidV4)
-        VlidV4Class::setTime($currentTime);
-        VlidV4Class::setRandomBytes([
+        VlidV4Fixture::setTime($currentTime);
+        VlidV4Fixture::setRandomBytes([
             1 => UlidFactory::MAX_PART,
         ]);
 
         // Generate another VLID V4 - this should trigger the elseif branch
-        $vlid = VlidV4Class::generate();
+        $vlid = VlidV4Fixture::generate();
 
         // The generated VLID V4 should be valid
-        self::assertTrue(VlidV4Class::isValid($vlid));
+        self::assertTrue(VlidV4Fixture::isValid($vlid));
 
         // The time should have been incremented
-        self::assertGreaterThan($currentTime, VlidV4Class::getStoredTime());
+        self::assertGreaterThan($currentTime, VlidV4Fixture::getStoredTime());
     }
 }

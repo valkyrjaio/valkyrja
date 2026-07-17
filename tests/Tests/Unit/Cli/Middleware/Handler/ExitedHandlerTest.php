@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ExitedHandlerClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ExitedHandlerFixture;
 
 /**
  * Test the exited handler.
@@ -27,7 +27,7 @@ final class ExitedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $beforeHandler = new ExitedHandlerClass($this->container);
+        $beforeHandler = new ExitedHandlerFixture($this->container);
 
         $beforeHandler->exited($this->input, $this->output);
 
@@ -39,17 +39,17 @@ final class ExitedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        ExitedMiddlewareChangedClass::resetCounter();
+        ExitedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new ExitedHandlerClass($this->container);
+        $handler = new ExitedHandlerFixture($this->container);
 
-        $handler->add(ExitedMiddlewareChangedClass::class);
+        $handler->add(ExitedMiddlewareChangedFixture::class);
         $handler->exited($this->input, $this->output);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, ExitedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, ExitedMiddlewareChangedFixture::getCounter());
     }
 
     /**
@@ -57,21 +57,21 @@ final class ExitedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        ExitedMiddlewareChangedClass::resetCounter();
-        ExitedMiddlewareClass::resetCounter();
+        ExitedMiddlewareChangedFixture::resetCounter();
+        ExitedMiddlewareFixture::resetCounter();
 
-        $handler = new ExitedHandlerClass(
+        $handler = new ExitedHandlerFixture(
             $this->container,
-            ExitedMiddlewareClass::class
+            ExitedMiddlewareFixture::class
         );
 
-        $handler->add(ExitedMiddlewareChangedClass::class);
+        $handler->add(ExitedMiddlewareChangedFixture::class);
         $handler->exited($this->input, $this->output);
 
         // Only once because the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, ExitedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, ExitedMiddlewareClass::getCounter());
+        self::assertSame(1, ExitedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, ExitedMiddlewareFixture::getCounter());
     }
 
     /**
@@ -79,20 +79,20 @@ final class ExitedHandlerTest extends HandlerTestCase
      */
     public function testBefore(): void
     {
-        ExitedMiddlewareChangedClass::resetCounter();
-        ExitedMiddlewareClass::resetCounter();
+        ExitedMiddlewareChangedFixture::resetCounter();
+        ExitedMiddlewareFixture::resetCounter();
 
-        $handler = new ExitedHandlerClass(
+        $handler = new ExitedHandlerFixture(
             $this->container,
-            ExitedMiddlewareClass::class,
-            ExitedMiddlewareClass::class
+            ExitedMiddlewareFixture::class,
+            ExitedMiddlewareFixture::class
         );
 
         $handler->exited($this->input, $this->output);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, ExitedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, ExitedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, ExitedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, ExitedMiddlewareFixture::getAndResetCounter());
     }
 }

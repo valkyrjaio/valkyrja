@@ -29,9 +29,9 @@ use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 use function ob_get_clean;
@@ -65,9 +65,9 @@ final class HttpTest extends TestCase
 
         self::$runCalled = false;
 
-        HttpComponentProviderClass::$publishedContainerData = false;
+        HttpComponentProviderFixture::$publishedContainerData = false;
 
-        HttpRoutingDataProviderClass::$published = false;
+        HttpRoutingDataProviderFixture::$published = false;
 
         $_SERVER['REQUEST_URI'] = '/version';
 
@@ -84,7 +84,7 @@ final class HttpTest extends TestCase
             debugMode: true,
             providers: [
                 new HttpApplicationComponentProvider(),
-                new HttpComponentProviderClass(),
+                new HttpComponentProviderFixture(),
             ],
         );
 
@@ -100,14 +100,14 @@ final class HttpTest extends TestCase
         self::assertTrue($container->has(ApplicationContract::class));
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(HttpRouteProviderClass::$called);
-        HttpRouteProviderClass::$called = false;
+        self::assertTrue(HttpRouteProviderFixture::$called);
+        HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
-        self::assertFalse(HttpComponentProviderClass::$publishedContainerData);
-        HttpComponentProviderClass::$publishedContainerData = false;
+        self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
+        HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
-        self::assertFalse(HttpRoutingDataProviderClass::$published);
-        HttpRoutingDataProviderClass::$published = false;
+        self::assertFalse(HttpRoutingDataProviderFixture::$published);
+        HttpRoutingDataProviderFixture::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -121,10 +121,10 @@ final class HttpTest extends TestCase
             debugMode: false,
             providers: [
                 new HttpApplicationComponentProvider(),
-                new HttpComponentProviderClass(),
+                new HttpComponentProviderFixture(),
             ],
             callbacks: [
-                [HttpComponentProviderClass::class, 'publish'],
+                [HttpComponentProviderFixture::class, 'publish'],
             ],
         );
 
@@ -136,14 +136,14 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
-        self::assertFalse(HttpRouteProviderClass::$called);
-        HttpRouteProviderClass::$called = false;
+        self::assertFalse(HttpRouteProviderFixture::$called);
+        HttpRouteProviderFixture::$called = false;
         // With debug mode off we expect the component publish method to NOT bypass
-        self::assertTrue(HttpComponentProviderClass::$publishedContainerData);
-        HttpComponentProviderClass::$publishedContainerData = false;
+        self::assertTrue(HttpComponentProviderFixture::$publishedContainerData);
+        HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to NOT bypass
-        self::assertTrue(HttpRoutingDataProviderClass::$published);
-        HttpRoutingDataProviderClass::$published = false;
+        self::assertTrue(HttpRoutingDataProviderFixture::$published);
+        HttpRoutingDataProviderFixture::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -157,10 +157,10 @@ final class HttpTest extends TestCase
             debugMode: true,
             providers: [
                 new HttpApplicationComponentProvider(),
-                new HttpComponentProviderClass(),
+                new HttpComponentProviderFixture(),
             ],
             callbacks: [
-                [HttpComponentProviderClass::class, 'publish'],
+                [HttpComponentProviderFixture::class, 'publish'],
             ],
         );
 
@@ -172,13 +172,13 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(HttpRouteProviderClass::$called);
-        HttpRouteProviderClass::$called = false;
+        self::assertTrue(HttpRouteProviderFixture::$called);
+        HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
-        self::assertFalse(HttpComponentProviderClass::$publishedContainerData);
-        HttpComponentProviderClass::$publishedContainerData = false;
+        self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
+        HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
-        self::assertFalse(HttpRoutingDataProviderClass::$published);
-        HttpRoutingDataProviderClass::$published = false;
+        self::assertFalse(HttpRoutingDataProviderFixture::$published);
+        HttpRoutingDataProviderFixture::$published = false;
     }
 }

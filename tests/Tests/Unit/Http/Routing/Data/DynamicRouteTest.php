@@ -18,16 +18,16 @@ use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteParameterException;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
@@ -75,11 +75,11 @@ final class DynamicRouteTest extends TestCase
         $methods                   = [RequestMethod::HEAD, RequestMethod::POST];
         $regex                     = 'regex';
         $parameters                = [new Parameter(name: 'test', regex: Regex::ALPHA)];
-        $routeMatchedMiddleware    = [RouteMatchedMiddlewareClass::class];
-        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareClass::class];
-        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
-        $sendingResponseMiddleware = [SendingResponseMiddlewareClass::class];
-        $terminatedMiddleware      = [TerminatedMiddlewareClass::class];
+        $routeMatchedMiddleware    = [RouteMatchedMiddlewareFixture::class];
+        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareFixture::class];
+        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareFixture::class];
+        $sendingResponseMiddleware = [SendingResponseMiddlewareFixture::class];
+        $terminatedMiddleware      = [TerminatedMiddlewareFixture::class];
         $requestStruct             = IndexedJsonRequestStructEnum::first;
         $responseStruct            = ResponseStructEnum::first;
 
@@ -358,8 +358,8 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $middleware  = RouteMatchedMiddlewareClass::class;
-        $middleware2 = RouteMatchedMiddlewareChangedClass::class;
+        $middleware  = RouteMatchedMiddlewareFixture::class;
+        $middleware2 = RouteMatchedMiddlewareChangedFixture::class;
 
         $route  = new DynamicRoute(
             path: $path,
@@ -384,8 +384,8 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $middleware  = RouteDispatchedMiddlewareClass::class;
-        $middleware2 = RouteDispatchedMiddlewareChangedClass::class;
+        $middleware  = RouteDispatchedMiddlewareFixture::class;
+        $middleware2 = RouteDispatchedMiddlewareChangedFixture::class;
 
         $route  = new DynamicRoute(
             path: $path,
@@ -410,8 +410,8 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $middleware  = ThrowableCaughtMiddlewareClass::class;
-        $middleware2 = ThrowableCaughtMiddlewareChangedClass::class;
+        $middleware  = ThrowableCaughtMiddlewareFixture::class;
+        $middleware2 = ThrowableCaughtMiddlewareChangedFixture::class;
 
         $route  = new DynamicRoute(
             path: $path,
@@ -436,8 +436,8 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $middleware  = SendingResponseMiddlewareClass::class;
-        $middleware2 = SendingResponseMiddlewareChangedClass::class;
+        $middleware  = SendingResponseMiddlewareFixture::class;
+        $middleware2 = SendingResponseMiddlewareChangedFixture::class;
 
         $route  = new DynamicRoute(
             path: $path,
@@ -462,8 +462,8 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $middleware  = TerminatedMiddlewareClass::class;
-        $middleware2 = TerminatedMiddlewareChangedClass::class;
+        $middleware  = TerminatedMiddlewareFixture::class;
+        $middleware2 = TerminatedMiddlewareChangedFixture::class;
 
         $route  = new DynamicRoute(
             path: $path,

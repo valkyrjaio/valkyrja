@@ -20,7 +20,7 @@ use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Data\CliInteractionConfigClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Data\CliInteractionConfigFixture;
 
 /**
  * Test the ServiceProvider.
@@ -49,7 +49,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishConfigWithApplicationConfig(): void
     {
-        $this->container->setSingleton(ConfigContract::class, new CliInteractionConfigClass(
+        $this->container->setSingleton(ConfigContract::class, new CliInteractionConfigFixture(
             isQuiet: true,
             isInteractive: false,
             isSilent: true,

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Controller;
 
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Tests\Fixtures\Cli\Routing\Controller\ControllerClass;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Controller\ControllerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ControllerTest extends TestCase
@@ -24,7 +24,7 @@ final class ControllerTest extends TestCase
     {
         $input         = new Input();
         $outputFactory = new OutputFactory();
-        $controller    = new ControllerClass(
+        $controller    = new ControllerFixture(
             input: $input,
             outputFactory: $outputFactory,
         );

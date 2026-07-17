@@ -17,7 +17,7 @@ use DateTime;
 use Exception;
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Tests\Fixtures\Type\Ulid\UlidFactoryClass;
+use Valkyrja\Tests\Fixtures\Type\Ulid\UlidFactoryFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
@@ -32,13 +32,13 @@ final class UlidFactoryTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        UlidFactoryClass::reset();
+        UlidFactoryFixture::reset();
     }
 
     #[Override]
     protected function tearDown(): void
     {
-        UlidFactoryClass::reset();
+        UlidFactoryFixture::reset();
         parent::tearDown();
     }
 
@@ -104,10 +104,10 @@ final class UlidFactoryTest extends TestCase
         // Set the stored time to a far future value so that microtime() will return
         // a smaller value, making doesTimeMatch() return false
         $futureTime = '9999999999999';
-        UlidFactoryClass::setTime($futureTime);
+        UlidFactoryFixture::setTime($futureTime);
 
         // Set all random bytes to max - this makes areAllRandomBytesMax() return true
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => UlidFactory::MAX_PART,
             2 => UlidFactory::MAX_PART,
             3 => UlidFactory::MAX_PART,
@@ -115,20 +115,20 @@ final class UlidFactoryTest extends TestCase
         ]);
 
         // Verify the preconditions
-        self::assertTrue(UlidFactoryClass::testAreAllRandomBytesMax());
+        self::assertTrue(UlidFactoryFixture::testAreAllRandomBytesMax());
 
         // Generate a ULID - this should trigger the elseif branch (lines 85-87)
         // because the new time from microtime() will be less than the stored future time
         // and all random bytes are at max
-        $ulid = UlidFactoryClass::generate();
+        $ulid = UlidFactoryFixture::generate();
 
         // The generated ULID should be valid
-        self::assertTrue(UlidFactoryClass::isValid($ulid));
+        self::assertTrue(UlidFactoryFixture::isValid($ulid));
 
         // The stored time should now be incremented from what microtime() returned
         // (not from the future time we set, since the time passed to increaseTime is from getTime)
         // The key point is that new random bytes were generated (randomize was called)
-        self::assertFalse(UlidFactoryClass::testAreAllRandomBytesMax());
+        self::assertFalse(UlidFactoryFixture::testAreAllRandomBytesMax());
     }
 
     /**
@@ -142,21 +142,21 @@ final class UlidFactoryTest extends TestCase
     public function testGenerateWhenTimeDoesNotAdvanceAndBytesNotMax(): void
     {
         // Stored time far in the future so microtime() is smaller -> doesTimeMatch() false.
-        UlidFactoryClass::setTime('9999999999999');
+        UlidFactoryFixture::setTime('9999999999999');
 
         // Random bytes not at max -> areAllRandomBytesMax() false -> else branch.
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => 400,
         ]);
 
-        self::assertFalse(UlidFactoryClass::testAreAllRandomBytesMax());
+        self::assertFalse(UlidFactoryFixture::testAreAllRandomBytesMax());
 
-        $ulid = UlidFactoryClass::generate();
+        $ulid = UlidFactoryFixture::generate();
 
-        self::assertTrue(UlidFactoryClass::isValid($ulid));
+        self::assertTrue(UlidFactoryFixture::isValid($ulid));
     }
 
     /**
@@ -169,7 +169,7 @@ final class UlidFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The timestamp must be positive.');
 
-        UlidFactoryClass::testGetTime($dateTime);
+        UlidFactoryFixture::testGetTime($dateTime);
     }
 
     /**
@@ -179,7 +179,7 @@ final class UlidFactoryTest extends TestCase
     {
         $dateTime = new DateTime('2024-01-15 12:30:45.123456');
 
-        $result = UlidFactoryClass::testGetTimeFromDateTime($dateTime);
+        $result = UlidFactoryFixture::testGetTimeFromDateTime($dateTime);
 
         // Should return Unix timestamp in milliseconds (Uv format)
         self::assertIsString($result);
@@ -192,7 +192,7 @@ final class UlidFactoryTest extends TestCase
     public function testIncreaseTime(): void
     {
         $time   = '1705312800000';
-        $result = UlidFactoryClass::testIncreaseTime($time);
+        $result = UlidFactoryFixture::testIncreaseTime($time);
 
         self::assertSame('1705312800001', $result);
     }
@@ -205,16 +205,16 @@ final class UlidFactoryTest extends TestCase
     public function testUpdateRandomBytesResetsMaxToZero(): void
     {
         // Set random bytes where the last one is at max
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => UlidFactory::MAX_PART,
         ]);
 
-        UlidFactoryClass::testUpdateRandomBytes();
+        UlidFactoryFixture::testUpdateRandomBytes();
 
-        $randomBytes = UlidFactoryClass::getRandomBytes();
+        $randomBytes = UlidFactoryFixture::getRandomBytes();
 
         // The 4th byte should be reset to 0 and 3rd byte incremented
         self::assertSame(0, $randomBytes[4]);
@@ -229,16 +229,16 @@ final class UlidFactoryTest extends TestCase
     public function testUpdateRandomBytesWithMultipleBytesAtMax(): void
     {
         // Set random bytes where multiple are at max
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => 100,
             2 => UlidFactory::MAX_PART,
             3 => UlidFactory::MAX_PART,
             4 => UlidFactory::MAX_PART,
         ]);
 
-        UlidFactoryClass::testUpdateRandomBytes();
+        UlidFactoryFixture::testUpdateRandomBytes();
 
-        $randomBytes = UlidFactoryClass::getRandomBytes();
+        $randomBytes = UlidFactoryFixture::getRandomBytes();
 
         // Bytes 2, 3, 4 should be reset to 0, and byte 1 should be incremented
         self::assertSame(101, $randomBytes[1]);
@@ -254,12 +254,12 @@ final class UlidFactoryTest extends TestCase
      */
     public function testGenerateRandomBytesThrowsOnUnpackFailure(): void
     {
-        UlidFactoryClass::setForceUnpackFail(true);
+        UlidFactoryFixture::setForceUnpackFail(true);
 
         $this->expectException(UlidRandomBytesFailureException::class);
         $this->expectExceptionMessage('Random bytes failed to unpack');
 
-        UlidFactoryClass::generate();
+        UlidFactoryFixture::generate();
     }
 
     /**
@@ -270,16 +270,16 @@ final class UlidFactoryTest extends TestCase
     public function testConvertRandomBytesPart(): void
     {
         // Initialize state by generating a ULID
-        UlidFactoryClass::generate();
+        UlidFactoryFixture::generate();
 
         // Test converting each random byte part
         for ($i = 1; $i <= 4; $i++) {
-            $result = UlidFactoryClass::testConvertRandomBytesPart($i);
+            $result = UlidFactoryFixture::testConvertRandomBytesPart($i);
             self::assertIsString($result);
         }
 
         // Test with index > MAX_RANDOM_BYTES returns empty string
-        $result = UlidFactoryClass::testConvertRandomBytesPart(5);
+        $result = UlidFactoryFixture::testConvertRandomBytesPart(5);
         self::assertSame('', $result);
     }
 
@@ -289,24 +289,24 @@ final class UlidFactoryTest extends TestCase
     public function testAreAllRandomBytesMax(): void
     {
         // Test with non-max bytes
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => 100,
             2 => 200,
             3 => 300,
             4 => 400,
         ]);
 
-        self::assertFalse(UlidFactoryClass::testAreAllRandomBytesMax());
+        self::assertFalse(UlidFactoryFixture::testAreAllRandomBytesMax());
 
         // Test with all max bytes
-        UlidFactoryClass::setRandomBytes([
+        UlidFactoryFixture::setRandomBytes([
             1 => UlidFactory::MAX_PART,
             2 => UlidFactory::MAX_PART,
             3 => UlidFactory::MAX_PART,
             4 => UlidFactory::MAX_PART,
         ]);
 
-        self::assertTrue(UlidFactoryClass::testAreAllRandomBytesMax());
+        self::assertTrue(UlidFactoryFixture::testAreAllRandomBytesMax());
     }
 
     /**
@@ -318,8 +318,8 @@ final class UlidFactoryTest extends TestCase
     {
         $dateTime = new DateTime('2024-06-15 10:30:00');
 
-        $ulid = UlidFactoryClass::generate($dateTime);
+        $ulid = UlidFactoryFixture::generate($dateTime);
 
-        self::assertTrue(UlidFactoryClass::isValid($ulid));
+        self::assertTrue(UlidFactoryFixture::isValid($ulid));
     }
 }

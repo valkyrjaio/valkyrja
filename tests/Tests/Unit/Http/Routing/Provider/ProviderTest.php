@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Tests\Fixtures\Http\Routing\Provider\ProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\ProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ProviderTest extends TestCase
 {
     public function testGetRoutes(): void
     {
-        self::assertEmpty(new ProviderClass()->getRoutes());
+        self::assertEmpty(new ProviderFixture()->getRoutes());
     }
 
     public function testGetControllerClasses(): void
     {
-        self::assertEmpty(new ProviderClass()->getControllerClasses());
+        self::assertEmpty(new ProviderFixture()->getControllerClasses());
     }
 }

@@ -23,14 +23,14 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableEx
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RouteTest extends TestCase
@@ -75,10 +75,10 @@ final class RouteTest extends TestCase
         $handler                   = static fn (): null => null;
         $options                   = [new OptionParameter(name: 'test', description: 'test description')];
         $arguments                 = [new ArgumentParameter(name: 'test', description: 'test description')];
-        $routeMatchedMiddleware    = [RouteMatchedMiddlewareClass::class];
-        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareClass::class];
-        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareClass::class];
-        $exitedMiddleware          = [ExitedMiddlewareClass::class];
+        $routeMatchedMiddleware    = [RouteMatchedMiddlewareFixture::class];
+        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareFixture::class];
+        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareFixture::class];
+        $exitedMiddleware          = [ExitedMiddlewareFixture::class];
 
         $route = new Route(...[
             'name'                      => $name,
@@ -568,8 +568,8 @@ final class RouteTest extends TestCase
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $handler     = static fn (): null => null;
-        $middleware  = RouteMatchedMiddlewareClass::class;
-        $middleware2 = RouteMatchedMiddlewareChangedClass::class;
+        $middleware  = RouteMatchedMiddlewareFixture::class;
+        $middleware2 = RouteMatchedMiddlewareChangedFixture::class;
 
         $route  = new Route(
             name: $name,
@@ -653,8 +653,8 @@ final class RouteTest extends TestCase
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $handler     = static fn (): null => null;
-        $middleware  = RouteDispatchedMiddlewareClass::class;
-        $middleware2 = RouteDispatchedMiddlewareChangedClass::class;
+        $middleware  = RouteDispatchedMiddlewareFixture::class;
+        $middleware2 = RouteDispatchedMiddlewareChangedFixture::class;
 
         $route  = new Route(
             name: $name,
@@ -738,8 +738,8 @@ final class RouteTest extends TestCase
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $handler     = static fn (): null => null;
-        $middleware  = ThrowableCaughtMiddlewareClass::class;
-        $middleware2 = ThrowableCaughtMiddlewareChangedClass::class;
+        $middleware  = ThrowableCaughtMiddlewareFixture::class;
+        $middleware2 = ThrowableCaughtMiddlewareChangedFixture::class;
 
         $route  = new Route(
             name: $name,
@@ -823,8 +823,8 @@ final class RouteTest extends TestCase
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $handler     = static fn (): null => null;
-        $middleware  = ExitedMiddlewareClass::class;
-        $middleware2 = ExitedMiddlewareChangedClass::class;
+        $middleware  = ExitedMiddlewareFixture::class;
+        $middleware2 = ExitedMiddlewareChangedFixture::class;
 
         $route  = new Route(
             name: $name,

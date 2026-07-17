@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use ReflectionClass;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Tests\Fixtures\Container\Provider\ProvidesClass;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidesFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -25,14 +25,14 @@ final class ProvidesTest extends TestCase
 {
     public function testPublishers(): void
     {
-        self::assertEmpty(new ProvidesClass()->publishers());
+        self::assertEmpty(new ProvidesFixture()->publishers());
     }
 
     public function testPublish(): void
     {
         $container = new Container();
 
-        ProvidesClass::publish($container);
+        ProvidesFixture::publish($container);
 
         $reflection = new ReflectionClass($container);
 

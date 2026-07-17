@@ -28,7 +28,7 @@ use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Provider\EventServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderClass;
+use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderFixture;
 
 /**
  * Test the ServiceProvider.
@@ -149,7 +149,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
 
-        $application->expects($this->once())->method('getEventProviders')->willReturn([new ListenerProviderClass()]);
+        $application->expects($this->once())->method('getEventProviders')->willReturn([new ListenerProviderFixture()]);
 
         self::assertTrue($this->container->has(EventData::class));
 
@@ -162,9 +162,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($collection->hasListenerById($listenerName));
         self::assertTrue($collection->hasListener($listener));
         self::assertTrue($collection->hasListenersForEventById($eventId));
-        self::assertContains(ListenerProviderClass::class, $collection->getEvents());
+        self::assertContains(ListenerProviderFixture::class, $collection->getEvents());
         self::assertTrue($collection->hasListenerById('listener-from-provider-name'));
-        self::assertTrue($collection->hasListenersForEventById(ListenerProviderClass::class));
+        self::assertTrue($collection->hasListenersForEventById(ListenerProviderFixture::class));
     }
 
     /**
@@ -188,7 +188,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         $collector->expects($this->once())->method('getListeners')->willReturn([$listener]);
 
-        $application->expects($this->once())->method('getEventProviders')->willReturn([new ListenerProviderClass()]);
+        $application->expects($this->once())->method('getEventProviders')->willReturn([new ListenerProviderFixture()]);
 
         self::assertTrue($this->container->has(EventData::class));
 
@@ -201,9 +201,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($collection->hasListenerById($listenerName));
         self::assertTrue($collection->hasListener($listener));
         self::assertTrue($collection->hasListenersForEventById($eventId));
-        self::assertContains(ListenerProviderClass::class, $collection->getEvents());
+        self::assertContains(ListenerProviderFixture::class, $collection->getEvents());
         self::assertTrue($collection->hasListenerById('listener-from-provider-name'));
-        self::assertTrue($collection->hasListenersForEventById(ListenerProviderClass::class));
+        self::assertTrue($collection->hasListenersForEventById(ListenerProviderFixture::class));
     }
 
     /**
@@ -240,8 +240,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertFalse($collection->hasListenerById($listenerName));
         self::assertFalse($collection->hasListener($listener));
         self::assertFalse($collection->hasListenersForEventById($eventId));
-        self::assertNotContains(ListenerProviderClass::class, $collection->getEvents());
+        self::assertNotContains(ListenerProviderFixture::class, $collection->getEvents());
         self::assertFalse($collection->hasListenerById('listener-from-provider-name'));
-        self::assertFalse($collection->hasListenersForEventById(ListenerProviderClass::class));
+        self::assertFalse($collection->hasListenersForEventById(ListenerProviderFixture::class));
     }
 }

@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Header\Value\Cookie;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Support\Time\Time;
-use Valkyrja\Tests\Fixtures\Http\Message\Response\ResponseSendRecorderClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Response\ResponseSendRecorderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_get_clean;
@@ -107,7 +107,7 @@ final class ResponseTest extends TestCase
 
     public function testSendHttpLine(): void
     {
-        $response = new ResponseSendRecorderClass(new Stream(), StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
+        $response = new ResponseSendRecorderFixture(new Stream(), StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
         $response = $response->withStatusCode(StatusCode::CREATED)->withReasonPhrase('Created Phrase');
 
         $response->sendHttpLine();
@@ -118,7 +118,7 @@ final class ResponseTest extends TestCase
 
     public function testSendHeaders(): void
     {
-        $response = new ResponseSendRecorderClass(new Stream(), StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+        $response = new ResponseSendRecorderFixture(new Stream(), StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
         $response->sendHeaders();
 
@@ -131,7 +131,7 @@ final class ResponseTest extends TestCase
         $stream->write('test');
         $stream->rewind();
 
-        $response = new ResponseSendRecorderClass($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+        $response = new ResponseSendRecorderFixture($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
 
         self::assertSame('test', $stream->getContents());
 
@@ -151,7 +151,7 @@ final class ResponseTest extends TestCase
         $stream->write('test');
         $stream->rewind();
 
-        $response          = new ResponseSendRecorderClass($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
+        $response          = new ResponseSendRecorderFixture($stream, StatusCode::OK, HeaderCollection::fromArray([new ContentType('text/html')]));
         $response->obLevel = 0;
 
         self::assertSame('test', $stream->getContents());
@@ -172,7 +172,7 @@ final class ResponseTest extends TestCase
         $stream->write('test');
         $stream->rewind();
 
-        $response = new ResponseSendRecorderClass($stream, StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
+        $response = new ResponseSendRecorderFixture($stream, StatusCode::CREATED, HeaderCollection::fromArray([new ContentType('text/html')]));
 
         self::assertSame('test', $stream->getContents());
 

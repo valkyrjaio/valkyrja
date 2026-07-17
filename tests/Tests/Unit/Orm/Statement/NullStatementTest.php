@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullStatementTest extends TestCase
@@ -57,7 +57,7 @@ final class NullStatementTest extends TestCase
 
     public function testFetchWithEntityReturnsEmptyArray(): void
     {
-        self::assertInstanceOf(EntityClass::class, $this->statement->fetchEntity(EntityClass::class));
+        self::assertInstanceOf(EntityFixture::class, $this->statement->fetchEntity(EntityFixture::class));
     }
 
     public function testFetchColumnReturnsNull(): void

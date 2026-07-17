@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Provider;
 
-use Valkyrja\Tests\Fixtures\Event\Provider\ProviderClass;
+use Valkyrja\Tests\Fixtures\Event\Provider\ProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ProviderTest extends TestCase
 {
     public function testGetListenerClasses(): void
     {
-        self::assertEmpty(new ProviderClass()->getListenerClasses());
+        self::assertEmpty(new ProviderFixture()->getListenerClasses());
     }
 
     public function testGetListeners(): void
     {
-        self::assertEmpty(new ProviderClass()->getListeners());
+        self::assertEmpty(new ProviderFixture()->getListeners());
     }
 }

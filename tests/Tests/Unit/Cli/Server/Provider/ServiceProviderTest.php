@@ -42,7 +42,7 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddlewa
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Fixtures\Cli\Server\Data\CliCommandCommandConfigClass;
+use Valkyrja\Tests\Fixtures\Cli\Server\Data\CliCommandCommandConfigFixture;
 
 /**
  * Test the ServiceProvider.
@@ -179,7 +179,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(
             ConfigContract::class,
-            $config = new CliCommandCommandConfigClass(
+            $config = new CliCommandCommandConfigFixture(
                 helpCommandName: 'helpTest',
                 helpOptionName: 'helpOptionNameTest',
                 helpOptionShortName: 'helpOptionShortNameTest',
@@ -217,7 +217,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(
             ConfigContract::class,
-            $config = new CliCommandCommandConfigClass(
+            $config = new CliCommandCommandConfigFixture(
                 versionCommandName: 'versionTest',
                 versionOptionName: 'versionOptionNameTest',
                 versionOptionShortName: 'versionOptionShortNameTest',
@@ -257,7 +257,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(
             ConfigContract::class,
-            $config = new CliCommandCommandConfigClass(
+            $config = new CliCommandCommandConfigFixture(
                 noInteractionOptionName: 'noInteractionOptionNameTest',
                 noInteractionOptionShortName: 'noInteractionOptionShortNameTest',
                 quietOptionName: 'quietOptionNameTest',

@@ -18,19 +18,19 @@ use RuntimeException;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Abstract\Migration;
 use Valkyrja\Orm\Schema\Contract\MigrationContract;
-use Valkyrja\Tests\Fixtures\Orm\Schema\TransactionalMigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\TransactionalMigrationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class TransactionalMigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 
-    protected TransactionalMigrationClass $migration;
+    protected TransactionalMigrationFixture $migration;
 
     protected function setUp(): void
     {
         $this->orm       = $this->createMock(ManagerContract::class);
-        $this->migration = new TransactionalMigrationClass($this->orm);
+        $this->migration = new TransactionalMigrationFixture($this->orm);
     }
 
     public function testImplementsMigrationContract(): void

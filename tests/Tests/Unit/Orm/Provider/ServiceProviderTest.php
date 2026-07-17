@@ -25,7 +25,7 @@ use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Provider\OrmServiceProvider;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Fixtures\Orm\PdoClass;
+use Valkyrja\Tests\Fixtures\Orm\PdoFixture;
 
 /**
  * Test the ServiceProvider.
@@ -63,7 +63,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->bind(
             PDO::class,
-            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoFixture('sqlite::memory:')
         );
 
         $callback = new OrmServiceProvider()->publishers()[MysqlManager::class];
@@ -76,7 +76,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->bind(
             PDO::class,
-            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoFixture('sqlite::memory:')
         );
 
         $callback = new OrmServiceProvider()->publishers()[PgsqlManager::class];
@@ -89,7 +89,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->bind(
             PDO::class,
-            static fn (ContainerContract $container, array $arguments): PDO => new PdoClass('sqlite::memory:')
+            static fn (ContainerContract $container, array $arguments): PDO => new PdoFixture('sqlite::memory:')
         );
 
         $callback = new OrmServiceProvider()->publishers()[SqliteManager::class];

@@ -19,11 +19,11 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\DynamicRoute;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -126,7 +126,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testMatchedMiddleware(): void
     {
-        $value = [RouteMatchedMiddlewareClass::class];
+        $value = [RouteMatchedMiddlewareFixture::class];
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], routeMatchedMiddleware: $value);
 
         self::assertSame($value, $route->getRouteMatchedMiddleware());
@@ -134,7 +134,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testDispatchedMiddleware(): void
     {
-        $value = [RouteDispatchedMiddlewareClass::class];
+        $value = [RouteDispatchedMiddlewareFixture::class];
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], routeDispatchedMiddleware: $value);
 
         self::assertSame($value, $route->getRouteDispatchedMiddleware());
@@ -142,7 +142,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testExceptionMiddleware(): void
     {
-        $value = [ThrowableCaughtMiddlewareClass::class];
+        $value = [ThrowableCaughtMiddlewareFixture::class];
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], throwableCaughtMiddleware: $value);
 
         self::assertSame($value, $route->getThrowableCaughtMiddleware());
@@ -150,7 +150,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testSendingMiddleware(): void
     {
-        $value = [SendingResponseMiddlewareClass::class];
+        $value = [SendingResponseMiddlewareFixture::class];
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], sendingResponseMiddleware: $value);
 
         self::assertSame($value, $route->getSendingResponseMiddleware());
@@ -158,7 +158,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testTerminatedMiddleware(): void
     {
-        $value = [TerminatedMiddlewareClass::class];
+        $value = [TerminatedMiddlewareFixture::class];
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], terminatedMiddleware: $value);
 
         self::assertSame($value, $route->getTerminatedMiddleware());

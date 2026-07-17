@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RouteNotMatchedHandlerClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RouteNotMatchedHandlerFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareFixture;
 
 /**
  * Test the route not matched handler.
@@ -28,7 +28,7 @@ final class RouteNotMatchedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $routeNotMatchedHandler = new RouteNotMatchedHandlerClass($this->container);
+        $routeNotMatchedHandler = new RouteNotMatchedHandlerFixture($this->container);
 
         $routeNotMatched = $routeNotMatchedHandler->routeNotMatched($this->request, $this->response);
 
@@ -42,17 +42,17 @@ final class RouteNotMatchedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        RouteNotMatchedMiddlewareChangedClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new RouteNotMatchedHandlerClass($this->container);
+        $handler = new RouteNotMatchedHandlerFixture($this->container);
 
-        $handler->add(RouteNotMatchedMiddlewareChangedClass::class);
+        $handler->add(RouteNotMatchedMiddlewareChangedFixture::class);
         $routeNotMatched = $handler->routeNotMatched($this->request, $this->response);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, RouteNotMatchedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareChangedFixture::getCounter());
         self::assertNotSame($this->response, $routeNotMatched);
         self::assertInstanceOf(Response::class, $routeNotMatched);
     }
@@ -62,22 +62,22 @@ final class RouteNotMatchedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        RouteNotMatchedMiddlewareChangedClass::resetCounter();
-        RouteNotMatchedMiddlewareClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedFixture::resetCounter();
+        RouteNotMatchedMiddlewareFixture::resetCounter();
 
-        $handler = new RouteNotMatchedHandlerClass(
+        $handler = new RouteNotMatchedHandlerFixture(
             $this->container,
-            RouteNotMatchedMiddlewareClass::class
+            RouteNotMatchedMiddlewareFixture::class
         );
 
-        $handler->add(RouteNotMatchedMiddlewareChangedClass::class);
+        $handler->add(RouteNotMatchedMiddlewareChangedFixture::class);
         $routeNotMatched = $handler->routeNotMatched($this->request, $this->response);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, RouteNotMatchedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, RouteNotMatchedMiddlewareClass::getCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareFixture::getCounter());
         self::assertNotSame($this->response, $routeNotMatched);
         self::assertInstanceOf(Response::class, $routeNotMatched);
     }
@@ -87,21 +87,21 @@ final class RouteNotMatchedHandlerTest extends HandlerTestCase
      */
     public function testRouteNotMatched(): void
     {
-        RouteNotMatchedMiddlewareChangedClass::resetCounter();
-        RouteNotMatchedMiddlewareClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedFixture::resetCounter();
+        RouteNotMatchedMiddlewareFixture::resetCounter();
 
-        $handler = new RouteNotMatchedHandlerClass(
+        $handler = new RouteNotMatchedHandlerFixture(
             $this->container,
-            RouteNotMatchedMiddlewareClass::class,
-            RouteNotMatchedMiddlewareClass::class
+            RouteNotMatchedMiddlewareFixture::class,
+            RouteNotMatchedMiddlewareFixture::class
         );
 
         $routeNotMatched = $handler->routeNotMatched($this->request, $this->response);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, RouteNotMatchedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, RouteNotMatchedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, RouteNotMatchedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, RouteNotMatchedMiddlewareFixture::getAndResetCounter());
         self::assertSame($this->response, $routeNotMatched);
     }
 }

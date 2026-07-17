@@ -18,7 +18,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Data\Message;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Valkyrja\Tests\Fixtures\Vendor\Vonage\ClientClass;
+use Valkyrja\Tests\Fixtures\Vendor\Vonage\ClientFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Vonage\Client;
 use Vonage\Client\Exception\Exception;
@@ -33,7 +33,7 @@ final class VonageMessengerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->vonageClient = $this->createMock(ClientClass::class);
+        $this->vonageClient = $this->createMock(ClientFixture::class);
         $this->smsClient    = $this->createMock(SmsClient::class);
     }
 

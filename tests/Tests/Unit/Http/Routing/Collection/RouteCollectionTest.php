@@ -28,7 +28,7 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidDynamicRouteName
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
-use Valkyrja\Tests\Fixtures\Http\Routing\Collection\CollectionClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Collection\CollectionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -493,7 +493,7 @@ final class RouteCollectionTest extends TestCase
         );
 
         // Should not be added to the collection when called with ANY
-        $collection = new CollectionClass();
+        $collection = new CollectionFixture();
         $collection->setRouteToRequestMethodWrapper($route, RequestMethod::ANY);
         $collection->setRouteToRequestMethodWrapper($dynamicRoute, RequestMethod::ANY);
 
@@ -580,7 +580,7 @@ final class RouteCollectionTest extends TestCase
         $this->expectException(HttpRoutingInvalidRouteNameException::class);
         $this->expectExceptionMessage("Invalid name `$name` provided");
 
-        $collection = new CollectionClass();
+        $collection = new CollectionFixture();
         $collection->getRouteFromNameWrapper($name);
     }
 
@@ -589,7 +589,7 @@ final class RouteCollectionTest extends TestCase
         $this->expectException(HttpRoutingInvalidDynamicRouteNameException::class);
         $this->expectExceptionMessage('Invalid dynamic route ' . self::ROUTE_NAME);
 
-        $collection = new CollectionClass();
+        $collection = new CollectionFixture();
         $collection->add($this->route);
 
         $collection->getDynamicRouteFromNameWrapper(self::ROUTE_NAME);

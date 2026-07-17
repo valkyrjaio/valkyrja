@@ -28,7 +28,7 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -285,7 +285,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $repository = $this->createMock(RepositoryContract::class);
         $response   = self::createStub(ResponseContract::class);
 
-        $entityClass = EntityClass::class;
+        $entityClass = EntityFixture::class;
         $cast        = new Cast(type: $entityClass);
 
         $parameter
@@ -350,7 +350,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $parameter = $this->createMock(ParameterContract::class);
         $response  = self::createStub(ResponseContract::class);
 
-        $entityClass = EntityClass::class;
+        $entityClass = EntityFixture::class;
         $cast        = new Cast(type: $entityClass);
 
         $parameter
@@ -404,7 +404,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $repository = $this->createMock(RepositoryContract::class);
         $entity     = self::createStub(EntityContract::class);
 
-        $entityClass = EntityClass::class;
+        $entityClass = EntityFixture::class;
         $cast        = new EntityCast(type: $entityClass, column: 'slug');
 
         $parameter
@@ -475,7 +475,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         $repository = $this->createMock(RepositoryContract::class);
         $entity     = self::createStub(EntityContract::class);
 
-        $entityClass = EntityClass::class;
+        $entityClass = EntityFixture::class;
         $cast        = new Cast(type: $entityClass);
 
         $parameter

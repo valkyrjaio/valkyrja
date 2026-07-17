@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\InputReceivedHandlerClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\InputReceivedHandlerFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareFixture;
 
 /**
  * Test the input received handler.
@@ -28,7 +28,7 @@ final class InputReceivedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $beforeHandler = new InputReceivedHandlerClass($this->container);
+        $beforeHandler = new InputReceivedHandlerFixture($this->container);
 
         $before = $beforeHandler->inputReceived($this->input);
 
@@ -42,17 +42,17 @@ final class InputReceivedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        InputReceivedMiddlewareChangedClass::resetCounter();
+        InputReceivedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new InputReceivedHandlerClass($this->container);
+        $handler = new InputReceivedHandlerFixture($this->container);
 
-        $handler->add(InputReceivedMiddlewareChangedClass::class);
+        $handler->add(InputReceivedMiddlewareChangedFixture::class);
         $before = $handler->inputReceived($this->input);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, InputReceivedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, InputReceivedMiddlewareChangedFixture::getCounter());
         self::assertNotSame($this->input, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -62,22 +62,22 @@ final class InputReceivedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        InputReceivedMiddlewareChangedClass::resetCounter();
-        InputReceivedMiddlewareClass::resetCounter();
+        InputReceivedMiddlewareChangedFixture::resetCounter();
+        InputReceivedMiddlewareFixture::resetCounter();
 
-        $handler = new InputReceivedHandlerClass(
+        $handler = new InputReceivedHandlerFixture(
             $this->container,
-            InputReceivedMiddlewareClass::class
+            InputReceivedMiddlewareFixture::class
         );
 
-        $handler->add(InputReceivedMiddlewareChangedClass::class);
+        $handler->add(InputReceivedMiddlewareChangedFixture::class);
         $before = $handler->inputReceived($this->input);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, InputReceivedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, InputReceivedMiddlewareClass::getCounter());
+        self::assertSame(1, InputReceivedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, InputReceivedMiddlewareFixture::getCounter());
         self::assertNotSame($this->input, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -87,21 +87,21 @@ final class InputReceivedHandlerTest extends HandlerTestCase
      */
     public function testBefore(): void
     {
-        InputReceivedMiddlewareChangedClass::resetCounter();
-        InputReceivedMiddlewareClass::resetCounter();
+        InputReceivedMiddlewareChangedFixture::resetCounter();
+        InputReceivedMiddlewareFixture::resetCounter();
 
-        $handler = new InputReceivedHandlerClass(
+        $handler = new InputReceivedHandlerFixture(
             $this->container,
-            InputReceivedMiddlewareClass::class,
-            InputReceivedMiddlewareClass::class
+            InputReceivedMiddlewareFixture::class,
+            InputReceivedMiddlewareFixture::class
         );
 
         $before = $handler->inputReceived($this->input);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, InputReceivedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, InputReceivedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, InputReceivedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, InputReceivedMiddlewareFixture::getAndResetCounter());
         self::assertSame($this->input, $before);
     }
 }

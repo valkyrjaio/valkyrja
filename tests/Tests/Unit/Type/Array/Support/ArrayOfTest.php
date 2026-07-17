@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Array\Support;
 
 use Throwable;
-use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
 use Valkyrja\Tests\Fixtures\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -309,9 +309,9 @@ final class ArrayOfTest extends TestCase
     protected function getArrayOfEnums(): array
     {
         return [
-            EnumClass::heart,
-            EnumClass::club,
-            EnumClass::diamond,
+            EnumFixture::heart,
+            EnumFixture::club,
+            EnumFixture::diamond,
         ];
     }
 

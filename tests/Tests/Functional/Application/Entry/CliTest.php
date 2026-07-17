@@ -31,9 +31,9 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 use function ob_get_clean;
@@ -73,9 +73,9 @@ final class CliTest extends TestCase
         self::$handlerCalled = false;
         self::$runCalled     = false;
 
-        CliComponentProviderClass::$publishedContainerData = false;
+        CliComponentProviderFixture::$publishedContainerData = false;
 
-        CliRoutingDataProviderClass::$published = false;
+        CliRoutingDataProviderFixture::$published = false;
 
         Exiter::freeze();
 
@@ -101,7 +101,7 @@ final class CliTest extends TestCase
                     debugMode: true,
                     providers: [
                         new CliApplicationComponentProvider(),
-                        new CliComponentProviderClass(),
+                        new CliComponentProviderFixture(),
                     ],
                 );
             }
@@ -118,14 +118,14 @@ final class CliTest extends TestCase
         self::assertTrue($container->has(ApplicationContract::class));
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(CliRouteProviderClass::$called);
-        CliRouteProviderClass::$called = false;
+        self::assertTrue(CliRouteProviderFixture::$called);
+        CliRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
-        self::assertFalse(CliComponentProviderClass::$publishedContainerData);
-        CliComponentProviderClass::$publishedContainerData = false;
+        self::assertFalse(CliComponentProviderFixture::$publishedContainerData);
+        CliComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
-        self::assertFalse(CliRoutingDataProviderClass::$published);
-        CliRoutingDataProviderClass::$published = false;
+        self::assertFalse(CliRoutingDataProviderFixture::$published);
+        CliRoutingDataProviderFixture::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -143,10 +143,10 @@ final class CliTest extends TestCase
                     debugMode: false,
                     providers: [
                         new CliApplicationComponentProvider(),
-                        new CliComponentProviderClass(),
+                        new CliComponentProviderFixture(),
                     ],
                     callbacks: [
-                        [CliComponentProviderClass::class, 'publish'],
+                        [CliComponentProviderFixture::class, 'publish'],
                     ],
                 );
             }
@@ -163,14 +163,14 @@ final class CliTest extends TestCase
         self::$handlerCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
-        self::assertFalse(CliRouteProviderClass::$called);
-        CliRouteProviderClass::$called = false;
+        self::assertFalse(CliRouteProviderFixture::$called);
+        CliRouteProviderFixture::$called = false;
         // With debug mode off we expect the component publish method to NOT bypass
-        self::assertTrue(CliComponentProviderClass::$publishedContainerData);
-        CliComponentProviderClass::$publishedContainerData = false;
+        self::assertTrue(CliComponentProviderFixture::$publishedContainerData);
+        CliComponentProviderFixture::$publishedContainerData = false;
         // With debug mode off we expect the route data publisher publish method to NOT bypass
-        self::assertTrue(CliRoutingDataProviderClass::$published);
-        CliRoutingDataProviderClass::$published = false;
+        self::assertTrue(CliRoutingDataProviderFixture::$published);
+        CliRoutingDataProviderFixture::$published = false;
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
@@ -188,10 +188,10 @@ final class CliTest extends TestCase
                     debugMode: true,
                     providers: [
                         new CliApplicationComponentProvider(),
-                        new CliComponentProviderClass(),
+                        new CliComponentProviderFixture(),
                     ],
                     callbacks: [
-                        [CliComponentProviderClass::class, 'publish'],
+                        [CliComponentProviderFixture::class, 'publish'],
                     ],
                 );
             }
@@ -211,14 +211,14 @@ final class CliTest extends TestCase
         self::$handlerCalled = false;
 
         // With debug mode on we expect the data service providers to NOT provide the data and routes
-        self::assertTrue(CliRouteProviderClass::$called);
-        CliRouteProviderClass::$called = false;
+        self::assertTrue(CliRouteProviderFixture::$called);
+        CliRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
-        self::assertFalse(CliComponentProviderClass::$publishedContainerData);
-        CliComponentProviderClass::$publishedContainerData = false;
+        self::assertFalse(CliComponentProviderFixture::$publishedContainerData);
+        CliComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
-        self::assertFalse(CliRoutingDataProviderClass::$published);
-        CliRoutingDataProviderClass::$published = false;
+        self::assertFalse(CliRoutingDataProviderFixture::$published);
+        CliRoutingDataProviderFixture::$published = false;
 
         Exiter::unfreeze();
     }

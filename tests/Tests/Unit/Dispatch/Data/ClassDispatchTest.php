@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\ClassDispatch;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -28,7 +28,7 @@ final class ClassDispatchTest extends TestCase
      */
     public function testClass(): void
     {
-        $class = InvalidDispatcherClass::class;
+        $class = InvalidDispatcherFixture::class;
 
         $dispatch = new ClassDispatch(class: $class);
 
@@ -44,7 +44,7 @@ final class ClassDispatchTest extends TestCase
 
     public function testConstructor(): void
     {
-        $class        = InvalidDispatcherClass::class;
+        $class        = InvalidDispatcherFixture::class;
         $arguments    = ['arg' => 'value'];
         $dependencies = ['dependency' => self::class];
 
@@ -61,7 +61,7 @@ final class ClassDispatchTest extends TestCase
 
     public function testArguments(): void
     {
-        $class     = InvalidDispatcherClass::class;
+        $class     = InvalidDispatcherFixture::class;
         $arguments = ['test'];
 
         $dispatch = new ClassDispatch(class: $class);
@@ -77,7 +77,7 @@ final class ClassDispatchTest extends TestCase
 
     public function testDependencies(): void
     {
-        $class        = InvalidDispatcherClass::class;
+        $class        = InvalidDispatcherFixture::class;
         $dependencies = ['test'];
 
         $dispatch = new ClassDispatch(class: $class);

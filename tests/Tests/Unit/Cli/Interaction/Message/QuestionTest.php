@@ -17,10 +17,10 @@ use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionClass;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionEmptyFgetsClass;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFgetsClass;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFopenClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionEmptyFgetsFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFgetsFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionFalseFopenFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -87,7 +87,7 @@ final class QuestionTest extends TestCase
     {
         $answer = new Answer('defaultResponse');
 
-        $question = new QuestionClass(
+        $question = new QuestionFixture(
             text: 'text',
             callable: [$this, 'questionCallable'],
             answer: $answer
@@ -105,7 +105,7 @@ final class QuestionTest extends TestCase
 
         $answer = new Answer($defaultResponse);
 
-        $question = new QuestionFalseFopenClass(
+        $question = new QuestionFalseFopenFixture(
             text: 'text',
             callable: [$this, 'questionCallable'],
             answer: $answer
@@ -123,7 +123,7 @@ final class QuestionTest extends TestCase
 
         $answer = new Answer($defaultResponse);
 
-        $question = new QuestionFalseFgetsClass(
+        $question = new QuestionFalseFgetsFixture(
             text: 'text',
             callable: [$this, 'questionCallable'],
             answer: $answer
@@ -141,7 +141,7 @@ final class QuestionTest extends TestCase
 
         $answer = new Answer($defaultResponse);
 
-        $question = new QuestionEmptyFgetsClass(
+        $question = new QuestionEmptyFgetsFixture(
             text: 'text',
             callable: [$this, 'questionCallable'],
             answer: $answer

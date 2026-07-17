@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
-use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -65,7 +65,7 @@ final class MatcherTest extends TestCase
         $route = new Route(
             path: self::STATIC_PATH,
             name: self::STATIC_NAME,
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $dynamicRoute = new DynamicRoute(
@@ -78,7 +78,7 @@ final class MatcherTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $optionalDynamicRoute = new DynamicRoute(
@@ -93,7 +93,7 @@ final class MatcherTest extends TestCase
                     default: 'default'
                 ),
             ],
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $optionalDynamicRouteNullDefault = new DynamicRoute(
@@ -107,7 +107,7 @@ final class MatcherTest extends TestCase
                     isOptional: true
                 ),
             ],
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $castDynamicRoute = new DynamicRoute(
@@ -132,7 +132,7 @@ final class MatcherTest extends TestCase
                     ),
                 ),
             ],
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $invalidDynamicRoute = new DynamicRoute(
@@ -140,7 +140,7 @@ final class MatcherTest extends TestCase
             name: self::INVALID_DYNAMIC_ROUTE_NAME,
             regex: self::INVALID_DYNAMIC_REGEX,
             parameters: [],
-            handler: [RouteProviderClass::class, 'handler']
+            handler: [RouteProviderFixture::class, 'handler']
         );
 
         $collection = new RouteCollection();

@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Reflection\Throwable\Exception\ReflectionInvalidClassConstantException;
-use Valkyrja\Tests\Fixtures\Reflection\ReflectableClass;
+use Valkyrja\Tests\Fixtures\Reflection\ReflectableFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -32,8 +32,8 @@ final class ReflectorTest extends TestCase
     {
         $reflector = new Reflector();
 
-        $reflection  = $reflector->forClass(ReflectableClass::class);
-        $reflection2 = $reflector->forClass(ReflectableClass::class);
+        $reflection  = $reflector->forClass(ReflectableFixture::class);
+        $reflection2 = $reflector->forClass(ReflectableFixture::class);
 
         self::assertSame($reflection, $reflection2);
     }
@@ -45,8 +45,8 @@ final class ReflectorTest extends TestCase
     {
         $reflector = new Reflector();
 
-        $reflection  = $reflector->forClassConstant(ReflectableClass::class, 'STRING');
-        $reflection2 = $reflector->forClassConstant(ReflectableClass::class, 'STRING');
+        $reflection  = $reflector->forClassConstant(ReflectableFixture::class, 'STRING');
+        $reflection2 = $reflector->forClassConstant(ReflectableFixture::class, 'STRING');
 
         self::assertSame($reflection, $reflection2);
     }
@@ -60,7 +60,7 @@ final class ReflectorTest extends TestCase
 
         $reflector = new Reflector();
 
-        $reflector->forClassConstant(ReflectableClass::class, 'STRING2');
+        $reflector->forClassConstant(ReflectableFixture::class, 'STRING2');
     }
 
     /**
@@ -70,11 +70,11 @@ final class ReflectorTest extends TestCase
     {
         $reflector = new Reflector();
 
-        $reflection  = $reflector->forClassProperty(ReflectableClass::class, 'string');
-        $reflection2 = $reflector->forClassProperty(ReflectableClass::class, 'string');
+        $reflection  = $reflector->forClassProperty(ReflectableFixture::class, 'string');
+        $reflection2 = $reflector->forClassProperty(ReflectableFixture::class, 'string');
 
-        $reflection3 = $reflector->forClassProperty(ReflectableClass::class, 'property');
-        $reflection4 = $reflector->forClassProperty(ReflectableClass::class, 'property');
+        $reflection3 = $reflector->forClassProperty(ReflectableFixture::class, 'property');
+        $reflection4 = $reflector->forClassProperty(ReflectableFixture::class, 'property');
 
         self::assertSame($reflection, $reflection2);
         self::assertSame($reflection3, $reflection4);
@@ -87,11 +87,11 @@ final class ReflectorTest extends TestCase
     {
         $reflector = new Reflector();
 
-        $reflection  = $reflector->forClassMethod(ReflectableClass::class, 'testStatic');
-        $reflection2 = $reflector->forClassMethod(ReflectableClass::class, 'testStatic');
+        $reflection  = $reflector->forClassMethod(ReflectableFixture::class, 'testStatic');
+        $reflection2 = $reflector->forClassMethod(ReflectableFixture::class, 'testStatic');
 
-        $reflection3 = $reflector->forClassMethod(ReflectableClass::class, 'test');
-        $reflection4 = $reflector->forClassMethod(ReflectableClass::class, 'test');
+        $reflection3 = $reflector->forClassMethod(ReflectableFixture::class, 'test');
+        $reflection4 = $reflector->forClassMethod(ReflectableFixture::class, 'test');
 
         self::assertSame($reflection, $reflection2);
         self::assertSame($reflection3, $reflection4);
@@ -132,7 +132,7 @@ final class ReflectorTest extends TestCase
     {
         $reflector = new Reflector();
 
-        $reflection   = $reflector->forClassMethod(ReflectableClass::class, 'test');
+        $reflection   = $reflector->forClassMethod(ReflectableFixture::class, 'test');
         $dependencies = $reflector->getDependencies($reflection);
 
         self::assertSame(['container' => ContainerContract::class], $dependencies);

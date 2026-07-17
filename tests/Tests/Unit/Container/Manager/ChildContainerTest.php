@@ -18,8 +18,8 @@ use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
-use Valkyrja\Tests\Fixtures\Container\ServiceClass;
-use Valkyrja\Tests\Fixtures\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
+use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -42,8 +42,8 @@ final class ChildContainerTest extends TestCase
 
     public function testIsAliasFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
-        $this->parent->bindAlias('myAlias', ServiceClass::class);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('myAlias', ServiceFixture::class);
 
         self::assertTrue($this->child->isAlias('myAlias'));
         self::assertFalse($this->child->isAlias('unknown'));
@@ -51,8 +51,8 @@ final class ChildContainerTest extends TestCase
 
     public function testIsAliasFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
-        $this->child->bindAlias('childAlias', ServiceClass::class);
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->child->bindAlias('childAlias', ServiceFixture::class);
 
         self::assertTrue($this->child->isAlias('childAlias'));
         self::assertFalse($this->parent->isAlias('childAlias'));
@@ -64,18 +64,18 @@ final class ChildContainerTest extends TestCase
 
     public function testIsServiceFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        self::assertTrue($this->child->isService(ServiceClass::class));
-        self::assertFalse($this->child->isService(SingletonClass::class));
+        self::assertTrue($this->child->isService(ServiceFixture::class));
+        self::assertFalse($this->child->isService(SingletonFixture::class));
     }
 
     public function testIsServiceFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        self::assertTrue($this->child->isService(ServiceClass::class));
-        self::assertFalse($this->parent->isService(ServiceClass::class));
+        self::assertTrue($this->child->isService(ServiceFixture::class));
+        self::assertFalse($this->parent->isService(ServiceFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -84,39 +84,39 @@ final class ChildContainerTest extends TestCase
 
     public function testIsSingletonBindingFromParent(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
         // Re-create child after parent setup so the copied data includes the binding
         $child = $this->createChild();
 
-        self::assertTrue($child->isSingletonBinding(SingletonClass::class));
-        self::assertTrue($child->isSingleton(SingletonClass::class));
-        self::assertFalse($child->isSingletonInstance(SingletonClass::class));
+        self::assertTrue($child->isSingletonBinding(SingletonFixture::class));
+        self::assertTrue($child->isSingleton(SingletonFixture::class));
+        self::assertFalse($child->isSingletonInstance(SingletonFixture::class));
     }
 
     public function testIsSingletonInstanceFromParent(): void
     {
-        $instance = new SingletonClass();
-        $this->parent->setSingleton(SingletonClass::class, $instance);
+        $instance = new SingletonFixture();
+        $this->parent->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertTrue($this->child->isSingletonInstance(SingletonClass::class));
-        self::assertTrue($this->child->isSingleton(SingletonClass::class));
+        self::assertTrue($this->child->isSingletonInstance(SingletonFixture::class));
+        self::assertTrue($this->child->isSingleton(SingletonFixture::class));
     }
 
     public function testIsSingletonBindingFromChild(): void
     {
-        $this->child->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
+        $this->child->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
 
-        self::assertTrue($this->child->isSingletonBinding(SingletonClass::class));
-        self::assertFalse($this->parent->isSingletonBinding(SingletonClass::class));
+        self::assertTrue($this->child->isSingletonBinding(SingletonFixture::class));
+        self::assertFalse($this->parent->isSingletonBinding(SingletonFixture::class));
     }
 
     public function testIsSingletonInstanceFromChild(): void
     {
-        $instance = new SingletonClass();
-        $this->child->setSingleton(SingletonClass::class, $instance);
+        $instance = new SingletonFixture();
+        $this->child->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertTrue($this->child->isSingletonInstance(SingletonClass::class));
-        self::assertFalse($this->parent->isSingletonInstance(SingletonClass::class));
+        self::assertTrue($this->child->isSingletonInstance(SingletonFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -142,17 +142,17 @@ final class ChildContainerTest extends TestCase
 
     public function testIsPublishedFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        self::assertTrue($this->child->isPublished(ServiceClass::class));
+        self::assertTrue($this->child->isPublished(ServiceFixture::class));
     }
 
     public function testIsPublishedFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        self::assertTrue($this->child->isPublished(ServiceClass::class));
-        self::assertFalse($this->parent->isPublished(ServiceClass::class));
+        self::assertTrue($this->child->isPublished(ServiceFixture::class));
+        self::assertFalse($this->parent->isPublished(ServiceFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -161,50 +161,50 @@ final class ChildContainerTest extends TestCase
 
     public function testGetSingletonFromParentBinding(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
         // Re-create child so the copied data includes the binding
         $child = $this->createChild();
 
-        $instance = $child->getSingleton(SingletonClass::class);
+        $instance = $child->getSingleton(SingletonFixture::class);
 
-        self::assertInstanceOf(SingletonClass::class, $instance);
+        self::assertInstanceOf(SingletonFixture::class, $instance);
         // Resolved instance must be cached in child, NOT in parent
-        self::assertSame($instance, $child->getSingleton(SingletonClass::class));
-        self::assertFalse($this->parent->isSingletonInstance(SingletonClass::class));
+        self::assertSame($instance, $child->getSingleton(SingletonFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
     }
 
     public function testGetSingletonFromParentInstance(): void
     {
-        $parentInstance = new SingletonClass();
-        $this->parent->setSingleton(SingletonClass::class, $parentInstance);
+        $parentInstance = new SingletonFixture();
+        $this->parent->setSingleton(SingletonFixture::class, $parentInstance);
 
-        $childResult = $this->child->getSingleton(SingletonClass::class);
+        $childResult = $this->child->getSingleton(SingletonFixture::class);
 
         self::assertSame($parentInstance, $childResult);
     }
 
     public function testGetSingletonFromChildOverridesParent(): void
     {
-        $parentInstance = new SingletonClass();
-        $this->parent->setSingleton(SingletonClass::class, $parentInstance);
+        $parentInstance = new SingletonFixture();
+        $this->parent->setSingleton(SingletonFixture::class, $parentInstance);
 
-        $childInstance = new SingletonClass();
-        $this->child->setSingleton(SingletonClass::class, $childInstance);
+        $childInstance = new SingletonFixture();
+        $this->child->setSingleton(SingletonFixture::class, $childInstance);
 
-        self::assertSame($childInstance, $this->child->getSingleton(SingletonClass::class));
-        self::assertNotSame($parentInstance, $this->child->getSingleton(SingletonClass::class));
+        self::assertSame($childInstance, $this->child->getSingleton(SingletonFixture::class));
+        self::assertNotSame($parentInstance, $this->child->getSingleton(SingletonFixture::class));
     }
 
     public function testChildSingletonDoesNotPollutesParent(): void
     {
-        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
         // Re-create child so the copied data includes the binding
         $child = $this->createChild();
 
-        $childInstance = $child->getSingleton(SingletonClass::class);
+        $childInstance = $child->getSingleton(SingletonFixture::class);
 
         // Parent must remain unpolluted
-        self::assertFalse($this->parent->isSingletonInstance(SingletonClass::class));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
         self::assertNotNull($childInstance);
     }
 
@@ -214,22 +214,22 @@ final class ChildContainerTest extends TestCase
 
     public function testGetServiceFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        $instance = $this->child->getService(ServiceClass::class);
+        $instance = $this->child->getService(ServiceFixture::class);
 
-        self::assertInstanceOf(ServiceClass::class, $instance);
-        self::assertNotSame($instance, $this->child->getService(ServiceClass::class));
+        self::assertInstanceOf(ServiceFixture::class, $instance);
+        self::assertNotSame($instance, $this->child->getService(ServiceFixture::class));
     }
 
     public function testGetServiceFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        $instance = $this->child->getService(ServiceClass::class);
+        $instance = $this->child->getService(ServiceFixture::class);
 
-        self::assertInstanceOf(ServiceClass::class, $instance);
-        self::assertFalse($this->parent->isService(ServiceClass::class));
+        self::assertInstanceOf(ServiceFixture::class, $instance);
+        self::assertFalse($this->parent->isService(ServiceFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -238,22 +238,22 @@ final class ChildContainerTest extends TestCase
 
     public function testGetAliasedFromParent(): void
     {
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
-        $this->parent->bindAlias('svcAlias', ServiceClass::class);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
 
         $instance = $this->child->getAliased('svcAlias');
 
-        self::assertInstanceOf(ServiceClass::class, $instance);
+        self::assertInstanceOf(ServiceFixture::class, $instance);
     }
 
     public function testGetAliasedFromChild(): void
     {
-        $this->child->bind(ServiceClass::class, [ServiceClass::class, 'make']);
-        $this->child->bindAlias('childAlias', ServiceClass::class);
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->child->bindAlias('childAlias', ServiceFixture::class);
 
         $instance = $this->child->getAliased('childAlias');
 
-        self::assertInstanceOf(ServiceClass::class, $instance);
+        self::assertInstanceOf(ServiceFixture::class, $instance);
         self::assertFalse($this->parent->isAlias('childAlias'));
     }
 
@@ -264,9 +264,9 @@ final class ChildContainerTest extends TestCase
     public function testParentStateUnchangedAfterChildOperations(): void
     {
         // Set up parent with each registration type
-        $this->parent->bind(ServiceClass::class, [ServiceClass::class, 'make']);
-        $this->parent->bindAlias('svcAlias', ServiceClass::class);
-        $this->parent->bindSingleton(SingletonClass::class, [SingletonClass::class, 'make']);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
         $this->parent->register(new DispatchServiceProvider());
 
         // Build child from the fully-set-up parent
@@ -274,14 +274,14 @@ final class ChildContainerTest extends TestCase
 
         // Snapshot parent state before any child interaction
         $dataBefore                = $this->parent->getData();
-        $singletonInstanceBefore   = $this->parent->isSingletonInstance(SingletonClass::class);
+        $singletonInstanceBefore   = $this->parent->isSingletonInstance(SingletonFixture::class);
         $dispatcherPublishedBefore = $this->parent->isPublished(DispatcherContract::class);
 
         // Perform a broad set of child operations
-        $child->get(ServiceClass::class);
-        $child->getService(ServiceClass::class);
+        $child->get(ServiceFixture::class);
+        $child->getService(ServiceFixture::class);
         $child->getAliased('svcAlias');
-        $child->getSingleton(SingletonClass::class);
+        $child->getSingleton(SingletonFixture::class);
         $child->get(DispatcherContract::class); // triggers publish in child
 
         // Parent data maps must be identical
@@ -292,7 +292,7 @@ final class ChildContainerTest extends TestCase
         self::assertSame($dataBefore->callbacks, $dataAfter->callbacks);
 
         // Singleton resolved in child must not have been cached in parent
-        self::assertSame($singletonInstanceBefore, $this->parent->isSingletonInstance(SingletonClass::class));
+        self::assertSame($singletonInstanceBefore, $this->parent->isSingletonInstance(SingletonFixture::class));
 
         // Service published in child must not mark parent as published
         self::assertSame($dispatcherPublishedBefore, $this->parent->isPublished(DispatcherContract::class));

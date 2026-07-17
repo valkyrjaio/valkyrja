@@ -16,16 +16,16 @@ namespace Valkyrja\Tests\Unit\Http\Message\Param\Abstract;
 use InvalidArgumentException;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
-use Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract\ParamCollectionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract\ParamCollectionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class ParamCollectionTest extends TestCase
 {
-    protected ParamCollectionClass $paramData;
+    protected ParamCollectionFixture $paramData;
 
     protected function setUp(): void
     {
-        $this->paramData = new ParamCollectionClass(['foo' => 'bar', 'baz' => 'qux']);
+        $this->paramData = new ParamCollectionFixture(['foo' => 'bar', 'baz' => 'qux']);
     }
 
     public function testInstanceOfContract(): void
@@ -35,14 +35,14 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithNoParams(): void
     {
-        $paramData = new ParamCollectionClass();
+        $paramData = new ParamCollectionFixture();
 
         self::assertEmpty($paramData->getAll());
     }
 
     public function testConstructorWithStringParams(): void
     {
-        $paramData = new ParamCollectionClass(['key' => 'value', 'another' => 'test']);
+        $paramData = new ParamCollectionFixture(['key' => 'value', 'another' => 'test']);
 
         self::assertSame('value', $paramData->get('key'));
         self::assertSame('test', $paramData->get('another'));
@@ -50,7 +50,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithIntParams(): void
     {
-        $paramData = new ParamCollectionClass(['count' => 42, 'total' => 100]);
+        $paramData = new ParamCollectionFixture(['count' => 42, 'total' => 100]);
 
         self::assertSame(42, $paramData->get('count'));
         self::assertSame(100, $paramData->get('total'));
@@ -58,7 +58,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithFloatParams(): void
     {
-        $paramData = new ParamCollectionClass(['price' => 9.99, 'tax' => 0.08]);
+        $paramData = new ParamCollectionFixture(['price' => 9.99, 'tax' => 0.08]);
 
         self::assertSame(9.99, $paramData->get('price'));
         self::assertSame(0.08, $paramData->get('tax'));
@@ -66,7 +66,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithBoolParams(): void
     {
-        $paramData = new ParamCollectionClass(['active' => true, 'deleted' => false]);
+        $paramData = new ParamCollectionFixture(['active' => true, 'deleted' => false]);
 
         self::assertTrue($paramData->get('active'));
         self::assertFalse($paramData->get('deleted'));
@@ -74,7 +74,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithMixedScalarParams(): void
     {
-        $paramData = new ParamCollectionClass(['name' => 'test', 'count' => 5, 'rate' => 3.14, 'active' => true]);
+        $paramData = new ParamCollectionFixture(['name' => 'test', 'count' => 5, 'rate' => 3.14, 'active' => true]);
 
         self::assertSame('test', $paramData->get('name'));
         self::assertSame(5, $paramData->get('count'));
@@ -84,8 +84,8 @@ final class ParamCollectionTest extends TestCase
 
     public function testConstructorWithNestedParamData(): void
     {
-        $nested    = new ParamCollectionClass(['inner' => 'value']);
-        $paramData = new ParamCollectionClass(['nested' => $nested]);
+        $nested    = new ParamCollectionFixture(['inner' => 'value']);
+        $paramData = new ParamCollectionFixture(['nested' => $nested]);
 
         self::assertSame($nested, $paramData->get('nested'));
     }
@@ -123,7 +123,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testOnlyParams(): void
     {
-        $paramData = new ParamCollectionClass(['a' => 'one', 'b' => 'two', 'c' => 'three']);
+        $paramData = new ParamCollectionFixture(['a' => 'one', 'b' => 'two', 'c' => 'three']);
         $only      = $paramData->getOnly('a', 'c');
 
         self::assertCount(2, $only);
@@ -141,7 +141,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testExceptParams(): void
     {
-        $paramData = new ParamCollectionClass(['a' => 'one', 'b' => 'two', 'c' => 'three']);
+        $paramData = new ParamCollectionFixture(['a' => 'one', 'b' => 'two', 'c' => 'three']);
         $except    = $paramData->getAllExcept('b');
 
         self::assertCount(2, $except);
@@ -196,7 +196,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testWithAddedParamsWithNestedParamData(): void
     {
-        $nested = new ParamCollectionClass(['inner' => 'value']);
+        $nested = new ParamCollectionFixture(['inner' => 'value']);
         $new    = $this->paramData->withAdded(['nested' => $nested]);
 
         self::assertSame($nested, $new->get('nested'));
@@ -219,7 +219,7 @@ final class ParamCollectionTest extends TestCase
     public function testFromArray(): void
     {
         $data      = ['key' => 'value', 'num' => 42];
-        $paramData = ParamCollectionClass::fromArray($data);
+        $paramData = ParamCollectionFixture::fromArray($data);
 
         self::assertSame('value', $paramData->get('key'));
         self::assertSame(42, $paramData->get('num'));
@@ -228,11 +228,11 @@ final class ParamCollectionTest extends TestCase
     public function testFromArrayWithNestedArray(): void
     {
         $data      = ['nested' => ['inner' => 'value']];
-        $paramData = ParamCollectionClass::fromArray($data);
+        $paramData = ParamCollectionFixture::fromArray($data);
 
         $nested = $paramData->get('nested');
 
-        self::assertInstanceOf(ParamCollectionClass::class, $nested);
+        self::assertInstanceOf(ParamCollectionFixture::class, $nested);
         self::assertSame('value', $nested->get('inner'));
     }
 
@@ -240,12 +240,12 @@ final class ParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        ParamCollectionClass::fromArray(['invalid' => new stdClass()]);
+        ParamCollectionFixture::fromArray(['invalid' => new stdClass()]);
     }
 
     public function testHasParamWithIntKey(): void
     {
-        $paramData = new ParamCollectionClass(['first', 'second']);
+        $paramData = new ParamCollectionFixture(['first', 'second']);
 
         self::assertTrue($paramData->has(0));
         self::assertTrue($paramData->has(1));
@@ -254,7 +254,7 @@ final class ParamCollectionTest extends TestCase
 
     public function testGetParamWithIntKey(): void
     {
-        $paramData = new ParamCollectionClass([1 => 'first', 2 => 'second']);
+        $paramData = new ParamCollectionFixture([1 => 'first', 2 => 'second']);
 
         self::assertNull($paramData->get(0));
         self::assertSame('first', $paramData->get(1));

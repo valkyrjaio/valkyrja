@@ -50,7 +50,7 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
-use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 
 /**
  * Test the ServiceProviderTest.
@@ -165,7 +165,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
 
-        $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderClass()]);
+        $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderFixture()]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
         $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];
@@ -199,7 +199,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
 
-        $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderClass()]);
+        $application->expects($this->once())->method('getHttpProviders')->willReturn([new RouteProviderFixture()]);
         $processor->expects($this->once())->method('route')->willReturnArgument(0);
 
         $callback = new HttpRoutingServiceProvider()->publishers()[RouteCollectionContract::class];

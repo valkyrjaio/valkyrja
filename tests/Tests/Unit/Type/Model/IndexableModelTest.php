@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Fixtures\Type\Model\IndexableModelClass;
-use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
-use Valkyrja\Tests\Fixtures\Type\Model\SimpleIndexableModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\IndexableModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Model\SimpleIndexableModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
@@ -46,74 +46,74 @@ final class IndexableModelTest extends TestCase
     {
         self::assertSame(
             [
-                ModelClass::PUBLIC    => IndexableModelClass::PUBLIC_INDEX,
-                ModelClass::PROTECTED => IndexableModelClass::PROTECTED_INDEX,
-                ModelClass::PRIVATE   => IndexableModelClass::PRIVATE_INDEX,
-                ModelClass::NULLABLE  => IndexableModelClass::NULLABLE_INDEX,
+                ModelFixture::PUBLIC    => IndexableModelFixture::PUBLIC_INDEX,
+                ModelFixture::PROTECTED => IndexableModelFixture::PROTECTED_INDEX,
+                ModelFixture::PRIVATE   => IndexableModelFixture::PRIVATE_INDEX,
+                ModelFixture::NULLABLE  => IndexableModelFixture::NULLABLE_INDEX,
             ],
-            IndexableModelClass::getIndexes()
+            IndexableModelFixture::getIndexes()
         );
-        self::assertSame([], SimpleIndexableModelClass::getIndexes());
+        self::assertSame([], SimpleIndexableModelFixture::getIndexes());
     }
 
     public function testGetReversedIndexes(): void
     {
         self::assertSame(
             [
-                IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-                IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-                IndexableModelClass::PRIVATE_INDEX   => ModelClass::PRIVATE,
-                IndexableModelClass::NULLABLE_INDEX  => ModelClass::NULLABLE,
+                IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+                IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+                IndexableModelFixture::PRIVATE_INDEX   => ModelFixture::PRIVATE,
+                IndexableModelFixture::NULLABLE_INDEX  => ModelFixture::NULLABLE,
             ],
-            IndexableModelClass::getReversedIndexes()
+            IndexableModelFixture::getReversedIndexes()
         );
-        self::assertSame([], SimpleIndexableModelClass::getReversedIndexes());
+        self::assertSame([], SimpleIndexableModelFixture::getReversedIndexes());
     }
 
     public function testGetMappedArrayFromIndexedArray(): void
     {
         $array    = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::NULLABLE  => null,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::NULLABLE  => null,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
         ];
         $expected = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
-        self::assertSame($expected, IndexableModelClass::getIndexedArrayFromMappedArray($array));
+        self::assertSame($expected, IndexableModelFixture::getIndexedArrayFromMappedArray($array));
     }
 
     public function testGetIndexedArrayFromMappedArray(): void
     {
         $expected = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
-            ModelClass::NULLABLE  => null,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
+            ModelFixture::NULLABLE  => null,
         ];
 
         $array = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
-        self::assertSame($expected, IndexableModelClass::getMappedArrayFromIndexedArray($array));
+        self::assertSame($expected, IndexableModelFixture::getMappedArrayFromIndexedArray($array));
     }
 
     public function testAsIndexedArray(): void
     {
-        $model = IndexableModelClass::fromArray(ModelClass::VALUES);
+        $model = IndexableModelFixture::fromArray(ModelFixture::VALUES);
 
         $expectedAsArray        = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::NULLABLE  => null,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::NULLABLE  => null,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
         ];
         $expectedAsIndexedArray = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
         self::assertSame($expectedAsArray, $model->asArray());
         self::assertSame($expectedAsIndexedArray, $model->asIndexedArray());
@@ -121,14 +121,14 @@ final class IndexableModelTest extends TestCase
 
     public function testAsChangedIndexedArray(): void
     {
-        $model = IndexableModelClass::fromArray(ModelClass::VALUES);
+        $model = IndexableModelFixture::fromArray(ModelFixture::VALUES);
 
         $value                  = 'test';
         $expectedAsArray        = [
-            ModelClass::PROTECTED => $value,
+            ModelFixture::PROTECTED => $value,
         ];
         $expectedAsIndexedArray = [
-            IndexableModelClass::PROTECTED_INDEX => $value,
+            IndexableModelFixture::PROTECTED_INDEX => $value,
         ];
 
         $model->protected = $value;
@@ -142,19 +142,19 @@ final class IndexableModelTest extends TestCase
     public function testAsOriginalIndexedArray(): void
     {
         $value = 'test';
-        $model = IndexableModelClass::fromArray(ModelClass::VALUES);
+        $model = IndexableModelFixture::fromArray(ModelFixture::VALUES);
 
         $expectedAsArray        = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::NULLABLE  => null,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
-            ModelClass::PRIVATE   => ModelClass::PRIVATE,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::NULLABLE  => null,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
+            ModelFixture::PRIVATE   => ModelFixture::PRIVATE,
         ];
         $expectedAsIndexedArray = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::PRIVATE_INDEX   => ModelClass::PRIVATE,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::PRIVATE_INDEX   => ModelFixture::PRIVATE,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
 
         $model->public    = $value;
@@ -169,17 +169,17 @@ final class IndexableModelTest extends TestCase
     public function testFromIndexedArray(): void
     {
         $array = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::PRIVATE_INDEX   => ModelClass::PRIVATE,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::PRIVATE_INDEX   => ModelFixture::PRIVATE,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
 
-        $model    = IndexableModelClass::fromIndexedArray($array);
+        $model    = IndexableModelFixture::fromIndexedArray($array);
         $expected = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::NULLABLE  => null,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::NULLABLE  => null,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
         ];
         self::assertSame($expected, $model->asArray());
     }
@@ -187,18 +187,18 @@ final class IndexableModelTest extends TestCase
     public function testUpdateIndexedProperties(): void
     {
         $value = 'test';
-        $model = IndexableModelClass::fromArray(ModelClass::VALUES);
+        $model = IndexableModelFixture::fromArray(ModelFixture::VALUES);
 
         $array = [
-            IndexableModelClass::PROTECTED_INDEX => $value,
-            IndexableModelClass::PRIVATE_INDEX   => $value,
+            IndexableModelFixture::PROTECTED_INDEX => $value,
+            IndexableModelFixture::PRIVATE_INDEX   => $value,
         ];
 
         $expectedAsArray        = [
-            ModelClass::PROTECTED => $value,
+            ModelFixture::PROTECTED => $value,
         ];
         $expectedAsIndexedArray = [
-            IndexableModelClass::PROTECTED_INDEX => $value,
+            IndexableModelFixture::PROTECTED_INDEX => $value,
         ];
 
         $model->updateIndexedProperties($array);
@@ -210,18 +210,18 @@ final class IndexableModelTest extends TestCase
     public function testWithIndexedProperties(): void
     {
         $array                  = [
-            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
-            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
-            IndexableModelClass::PRIVATE_INDEX   => ModelClass::PRIVATE,
-            IndexableModelClass::NULLABLE_INDEX  => null,
+            IndexableModelFixture::PUBLIC_INDEX    => ModelFixture::PUBLIC,
+            IndexableModelFixture::PROTECTED_INDEX => ModelFixture::PROTECTED,
+            IndexableModelFixture::PRIVATE_INDEX   => ModelFixture::PRIVATE,
+            IndexableModelFixture::NULLABLE_INDEX  => null,
         ];
         $expectedMutatedAsArray = [
-            ModelClass::PUBLIC    => ModelClass::PUBLIC,
-            ModelClass::NULLABLE  => null,
-            ModelClass::PROTECTED => ModelClass::PROTECTED,
+            ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+            ModelFixture::NULLABLE  => null,
+            ModelFixture::PROTECTED => ModelFixture::PROTECTED,
         ];
 
-        $model        = IndexableModelClass::fromArray([]);
+        $model        = IndexableModelFixture::fromArray([]);
         $mutatedModel = $model->withIndexedProperties($array);
 
         self::assertSame([], $model->asArray());

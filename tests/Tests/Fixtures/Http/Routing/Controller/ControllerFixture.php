@@ -1,0 +1,117 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Tests\Fixtures\Http\Routing\Controller;
+
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute;
+use Valkyrja\Http\Routing\Attribute\Parameter;
+use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route\Middleware;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Get;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Head;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Post;
+use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
+use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
+use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
+use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
+use Valkyrja\Type\Contract\TypeContract;
+use Valkyrja\Type\Data\Cast;
+
+/**
+ * Controller class to test routes.
+ */
+final class ControllerFixture
+{
+    /** @var non-empty-string */
+    public const string WELCOME_PATH = '/';
+    /** @var non-empty-string */
+    public const string WELCOME_NAME = 'welcome';
+    /** @var non-empty-string */
+    public const string PARAMETERS_PATH = '/parameters/{name}';
+    /** @var non-empty-string */
+    public const string PARAMETERS_NAME = 'parameters';
+    /** @var non-empty-string */
+    public const string PARAMETERS_PARAMETER_NAME = 'name';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PATH = '/dynamic/{foo}/{bar}';
+    /** @var non-empty-string */
+    public const string DYNAMIC_NAME = 'dynamic';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PARAMETER_NAME = 'foo';
+    /** @var non-empty-string */
+    public const string DYNAMIC_PARAMETER_NAME2 = 'bar';
+
+    #[DynamicRoute(
+        path: self::DYNAMIC_PATH,
+        name: self::DYNAMIC_NAME,
+        parameters: [
+            new Parameter(name: self::DYNAMIC_PARAMETER_NAME, regex: Regex::ALPHA, cast: new Cast(TypeContract::class)),
+        ]
+    )]
+    #[Middleware(RouteDispatchedMiddlewareFixture::class)]
+    #[Middleware(RouteMatchedMiddlewareFixture::class)]
+    #[Middleware(SendingResponseMiddlewareFixture::class)]
+    #[Middleware(TerminatedMiddlewareFixture::class)]
+    #[Middleware(ThrowableCaughtMiddlewareFixture::class)]
+    #[RequestStruct(IndexedJsonRequestStructEnum::first)]
+    #[ResponseStruct(ResponseStructEnum::first)]
+    public static function dynamic(
+        ResponseFactoryContract $responseFactory,
+        string $foo,
+        #[Parameter(name: self::DYNAMIC_PARAMETER_NAME2, regex: Regex::ALPHA, cast: new Cast(TypeContract::class))]
+        string $bar,
+    ): ResponseContract {
+        return $responseFactory->createResponse(
+            content: "dynamic$foo$bar"
+        );
+    }
+
+    #[Route(path: self::WELCOME_PATH, name: self::WELCOME_NAME)]
+    public function welcome(): ResponseContract
+    {
+        return Response::create('welcome');
+    }
+
+    #[Get]
+    #[Head]
+    #[Post]
+    #[Route(path: self::PARAMETERS_PATH, name: self::PARAMETERS_NAME)]
+    #[RouteHandler([RouteProviderFixture::class, 'handler'])]
+    #[Middleware(RouteDispatchedMiddlewareFixture::class)]
+    #[Middleware(RouteMatchedMiddlewareFixture::class)]
+    #[Middleware(SendingResponseMiddlewareFixture::class)]
+    #[Middleware(TerminatedMiddlewareFixture::class)]
+    #[Middleware(ThrowableCaughtMiddlewareFixture::class)]
+    #[RequestStruct(IndexedJsonRequestStructEnum::first)]
+    #[ResponseStruct(ResponseStructEnum::first)]
+    public function parameters(
+        ResponseFactoryContract $responseFactory,
+        #[Parameter(name: self::PARAMETERS_PARAMETER_NAME, regex: Regex::ALPHA, cast: new Cast(TypeContract::class))]
+        string $name,
+    ): ResponseContract {
+        return $responseFactory->createResponse(
+            content: "parameters$name"
+        );
+    }
+}

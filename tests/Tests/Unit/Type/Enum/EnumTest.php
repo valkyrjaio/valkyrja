@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Enum;
 
 use JsonException;
-use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
 use Valkyrja\Tests\Fixtures\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -27,25 +27,25 @@ use const JSON_THROW_ON_ERROR;
 
 final class EnumTest extends TestCase
 {
-    protected const EnumClass VALUE = EnumClass::club;
+    protected const EnumFixture VALUE = EnumFixture::club;
 
     public function testFromValueStatic(): void
     {
-        $type = EnumClass::fromValue(self::VALUE);
+        $type = EnumFixture::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
 
     public function testFromValueBackedEnum(): void
     {
-        $type = EnumClass::fromValue(self::VALUE);
+        $type = EnumFixture::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
 
     public function testFromValueUnitEnum(): void
     {
-        $type = EnumClass::fromValue(self::VALUE->name);
+        $type = EnumFixture::fromValue(self::VALUE->name);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -54,14 +54,14 @@ final class EnumTest extends TestCase
     {
         $this->expectException(EnumInvalidValueException::class);
 
-        EnumClass::fromValue(true);
+        EnumFixture::fromValue(true);
     }
 
     public function testFromValueInvalidValue(): void
     {
         $this->expectException(EnumInvalidValueException::class);
 
-        $type = EnumClass::fromValue('invalid');
+        $type = EnumFixture::fromValue('invalid');
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -93,7 +93,7 @@ final class EnumTest extends TestCase
 
         $type = self::VALUE;
 
-        $type->modify(static fn (EnumClass $subject): EnumClass => EnumClass::heart);
+        $type->modify(static fn (EnumFixture $subject): EnumFixture => EnumFixture::heart);
     }
 
     /**

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 use JsonException;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchNoClassException;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -51,7 +51,7 @@ final class ConstantDispatchTest extends TestCase
     public function testClass(): void
     {
         $constant = 'TEST';
-        $class    = InvalidDispatcherClass::class;
+        $class    = InvalidDispatcherFixture::class;
 
         $dispatch = new ConstantDispatch(constant: $constant);
 

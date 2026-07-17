@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Enum\Trait;
 
-use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
 use Valkyrja\Tests\Fixtures\Enum\StringEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -35,14 +35,14 @@ final class EnumerableTest extends TestCase
 
     public function testFromValueResolvesUnitEnumFromName(): void
     {
-        self::assertSame(EnumClass::spade, EnumClass::fromValue('spade'));
+        self::assertSame(EnumFixture::spade, EnumFixture::fromValue('spade'));
     }
 
     public function testFromValueThrowsForUnknownUnitEnumName(): void
     {
         $this->expectException(EnumInvalidValueException::class);
 
-        EnumClass::fromValue('joker');
+        EnumFixture::fromValue('joker');
     }
 
     public function testFromValueThrowsForNonStringIntValue(): void
@@ -65,7 +65,7 @@ final class EnumerableTest extends TestCase
 
     public function testAsFlatValueReturnsNameForUnitEnum(): void
     {
-        self::assertSame('spade', EnumClass::spade->asFlatValue());
+        self::assertSame('spade', EnumFixture::spade->asFlatValue());
     }
 
     public function testModifyThrows(): void
@@ -78,6 +78,6 @@ final class EnumerableTest extends TestCase
     public function testJsonSerialize(): void
     {
         self::assertSame('bar', StringEnum::foo->jsonSerialize());
-        self::assertSame('spade', EnumClass::spade->jsonSerialize());
+        self::assertSame('spade', EnumFixture::spade->jsonSerialize());
     }
 }

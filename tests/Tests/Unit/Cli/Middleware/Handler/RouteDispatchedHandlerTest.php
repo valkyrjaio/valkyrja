@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\RouteDispatchedHandlerClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\RouteDispatchedHandlerFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
 
 /**
  * Test the route dispatched handler.
@@ -28,7 +28,7 @@ final class RouteDispatchedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $beforeHandler = new RouteDispatchedHandlerClass($this->container);
+        $beforeHandler = new RouteDispatchedHandlerFixture($this->container);
 
         $before = $beforeHandler->routeDispatched($this->input, $this->output, $this->command);
 
@@ -42,17 +42,17 @@ final class RouteDispatchedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        RouteDispatchedMiddlewareChangedClass::resetCounter();
+        RouteDispatchedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new RouteDispatchedHandlerClass($this->container);
+        $handler = new RouteDispatchedHandlerFixture($this->container);
 
-        $handler->add(RouteDispatchedMiddlewareChangedClass::class);
+        $handler->add(RouteDispatchedMiddlewareChangedFixture::class);
         $before = $handler->routeDispatched($this->input, $this->output, $this->command);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, RouteDispatchedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, RouteDispatchedMiddlewareChangedFixture::getCounter());
         self::assertNotSame($this->output, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -62,22 +62,22 @@ final class RouteDispatchedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        RouteDispatchedMiddlewareChangedClass::resetCounter();
-        RouteDispatchedMiddlewareClass::resetCounter();
+        RouteDispatchedMiddlewareChangedFixture::resetCounter();
+        RouteDispatchedMiddlewareFixture::resetCounter();
 
-        $handler = new RouteDispatchedHandlerClass(
+        $handler = new RouteDispatchedHandlerFixture(
             $this->container,
-            RouteDispatchedMiddlewareClass::class
+            RouteDispatchedMiddlewareFixture::class
         );
 
-        $handler->add(RouteDispatchedMiddlewareChangedClass::class);
+        $handler->add(RouteDispatchedMiddlewareChangedFixture::class);
         $before = $handler->routeDispatched($this->input, $this->output, $this->command);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, RouteDispatchedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, RouteDispatchedMiddlewareClass::getCounter());
+        self::assertSame(1, RouteDispatchedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, RouteDispatchedMiddlewareFixture::getCounter());
         self::assertNotSame($this->output, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -87,21 +87,21 @@ final class RouteDispatchedHandlerTest extends HandlerTestCase
      */
     public function testBefore(): void
     {
-        RouteDispatchedMiddlewareChangedClass::resetCounter();
-        RouteDispatchedMiddlewareClass::resetCounter();
+        RouteDispatchedMiddlewareChangedFixture::resetCounter();
+        RouteDispatchedMiddlewareFixture::resetCounter();
 
-        $handler = new RouteDispatchedHandlerClass(
+        $handler = new RouteDispatchedHandlerFixture(
             $this->container,
-            RouteDispatchedMiddlewareClass::class,
-            RouteDispatchedMiddlewareClass::class
+            RouteDispatchedMiddlewareFixture::class,
+            RouteDispatchedMiddlewareFixture::class
         );
 
         $before = $handler->routeDispatched($this->input, $this->output, $this->command);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, RouteDispatchedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, RouteDispatchedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, RouteDispatchedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, RouteDispatchedMiddlewareFixture::getAndResetCounter());
         self::assertSame($this->output, $before);
     }
 }

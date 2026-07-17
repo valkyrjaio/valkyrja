@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
-use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class OutputThrowableCaughtMiddlewareTest extends TestCase
@@ -28,7 +28,7 @@ final class OutputThrowableCaughtMiddlewareTest extends TestCase
     {
         $input       = new Input(commandName: 'test');
         $output      = new Output();
-        $exception   = new ValkyrjaRuntimeExceptionClass();
+        $exception   = new ValkyrjaRuntimeExceptionFixture();
         $commandName = $input->getCommandName();
 
         $handler = $this->createMock(ThrowableCaughtHandler::class);

@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
-use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ApiControllerClass;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ApiControllerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Factory\ThrowableFactory;
 
@@ -34,7 +34,7 @@ use const JSON_THROW_ON_ERROR;
  */
 final class ApiControllerTest extends TestCase
 {
-    protected ApiControllerClass $controller;
+    protected ApiControllerFixture $controller;
 
     #[Override]
     protected function setUp(): void
@@ -43,7 +43,7 @@ final class ApiControllerTest extends TestCase
         $responseFactory = new ResponseFactory();
         $api             = new Api($responseFactory);
 
-        $this->controller = new ApiControllerClass(
+        $this->controller = new ApiControllerFixture(
             api: $api,
             request: $request,
             responseFactory: $responseFactory,
