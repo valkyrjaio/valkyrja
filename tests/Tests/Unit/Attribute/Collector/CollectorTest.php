@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Tests\Fixtures\Attribute\AttributeFixture;
 use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildFixture;
 use Valkyrja\Tests\Fixtures\Attribute\AttributedFixture;
+use Valkyrja\Tests\Fixtures\Attribute\AttributeFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -514,10 +514,10 @@ final class CollectorTest extends TestCase
     /**
      * Test values.
      *
-     * @param int                      $value1     The value in the first attribute
-     * @param int                      $value2     The value in the second attribute
-     * @param int                      $value3     The first value in the third attribute
-     * @param string                   $value4     The second value in the third attribute
+     * @param int                        $value1     The value in the first attribute
+     * @param int                        $value2     The value in the second attribute
+     * @param int                        $value3     The first value in the third attribute
+     * @param string                     $value4     The second value in the third attribute
      * @param AttributeFixture           $attribute1 The first attribute
      * @param AttributeFixture           $attribute2 The second attribute
      * @param AttributeClassChildFixture $attribute3 The third attribute

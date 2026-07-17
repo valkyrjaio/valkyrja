@@ -26,8 +26,8 @@ use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedDispatchException;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatchFixture;
 use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatchFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function count;
