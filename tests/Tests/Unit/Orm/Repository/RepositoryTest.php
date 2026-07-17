@@ -26,8 +26,8 @@ use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RepositoryTest extends TestCase
@@ -49,7 +49,7 @@ final class RepositoryTest extends TestCase
         $this->queryBuilderFactory = $this->createMock(QueryBuilderFactoryContract::class);
         $this->statement           = $this->createMock(StatementContract::class);
 
-        $this->entityClass = EntityIntIdClass::class;
+        $this->entityClass = EntityIntIdFixture::class;
 
         $this->repository = new Repository($this->manager, $this->entityClass);
     }
@@ -332,7 +332,7 @@ final class RepositoryTest extends TestCase
             ->expects($this->never())
             ->method('execute');
 
-        $entity = EntityStringIdClass::fromArray(['name' => 'New Entity']);
+        $entity = EntityStringIdFixture::fromArray(['name' => 'New Entity']);
 
         $this->repository->create($entity);
 

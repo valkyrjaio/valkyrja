@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -24,7 +24,7 @@ final class PropertyDispatchTest extends TestCase
 {
     public function testMethod(): void
     {
-        $class     = InvalidDispatcherClass::class;
+        $class     = InvalidDispatcherFixture::class;
         $property  = 'TEST';
         $property2 = 'TEST2';
 
@@ -43,7 +43,7 @@ final class PropertyDispatchTest extends TestCase
 
     public function testIsStatic(): void
     {
-        $class    = InvalidDispatcherClass::class;
+        $class    = InvalidDispatcherFixture::class;
         $property = 'TEST';
         $dispatch = new PropertyDispatch(class: $class, property: $property);
 

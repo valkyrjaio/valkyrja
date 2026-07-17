@@ -25,10 +25,10 @@ use Valkyrja\Session\Throwable\Exception\SessionIdFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
 use Valkyrja\Session\Throwable\Exception\SessionNameFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailureException;
-use Valkyrja\Tests\Fixtures\Session\PhpSessionWithAlreadyActiveClass;
-use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetIdClass;
-use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetNameClass;
-use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingStartClass;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithAlreadyActiveFixture;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetIdFixture;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingGetNameFixture;
+use Valkyrja\Tests\Fixtures\Session\PhpSessionWithFailingStartFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function session_destroy;
@@ -79,7 +79,7 @@ final class PhpSessionTest extends TestCase
 
     public function testDoesNotStartTwice(): void
     {
-        $session = new PhpSessionWithAlreadyActiveClass($this->cookieParams);
+        $session = new PhpSessionWithAlreadyActiveFixture($this->cookieParams);
 
         self::assertSame(1, $session->sessionStartCount);
 
@@ -177,12 +177,12 @@ final class PhpSessionTest extends TestCase
         $this->expectException(SessionStartFailureException::class);
         $this->expectExceptionMessage('The session failed to start');
 
-        new PhpSessionWithFailingStartClass($this->cookieParams);
+        new PhpSessionWithFailingStartFixture($this->cookieParams);
     }
 
     public function testGetIdThrowsSessionIdFailureOnFailure(): void
     {
-        $session = new PhpSessionWithFailingGetIdClass($this->cookieParams);
+        $session = new PhpSessionWithFailingGetIdFixture($this->cookieParams);
 
         $this->expectException(SessionIdFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');
@@ -192,7 +192,7 @@ final class PhpSessionTest extends TestCase
 
     public function testGetNameThrowsSessionNameFailureOnFailure(): void
     {
-        $session = new PhpSessionWithFailingGetNameClass($this->cookieParams);
+        $session = new PhpSessionWithFailingGetNameFixture($this->cookieParams);
 
         $this->expectException(SessionNameFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');

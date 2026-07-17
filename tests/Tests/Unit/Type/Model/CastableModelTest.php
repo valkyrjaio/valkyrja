@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
 use RuntimeException;
-use Valkyrja\Tests\Fixtures\Enum\EnumClass;
+use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
 use Valkyrja\Tests\Fixtures\Enum\StringEnum;
-use Valkyrja\Tests\Fixtures\Type\Model\CastableModelClass;
-use Valkyrja\Tests\Fixtures\Type\Model\EmptyCastableModelClass;
-use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\CastableModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Model\EmptyCastableModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\ArrayT;
 use Valkyrja\Type\Bool\BoolT;
@@ -63,18 +63,18 @@ final class CastableModelTest extends TestCase
         $value = ['test'];
 
         // Test a normal array
-        $this->propertyTest(CastableModelClass::ARRAY_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::ARRAY_PROPERTY, $value, $value);
         // Test an ArrayT object directly
-        $this->propertyTest(CastableModelClass::ARRAY_PROPERTY, new ArrayT($value), $value);
+        $this->propertyTest(CastableModelFixture::ARRAY_PROPERTY, new ArrayT($value), $value);
         // Test a stringified array
-        $this->propertyTest(CastableModelClass::ARRAY_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
+        $this->propertyTest(CastableModelFixture::ARRAY_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
         // Test an array of arrays
-        $this->propertyTest(CastableModelClass::ARRAY_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::ARRAY_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of ArrayT objects
-        $this->propertyTest(CastableModelClass::ARRAY_ARRAY_PROPERTY, [new ArrayT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::ARRAY_ARRAY_PROPERTY, [new ArrayT($value)], [$value]);
         // Test an array of stringified arrays
         $this->propertyTest(
-            CastableModelClass::ARRAY_ARRAY_PROPERTY,
+            CastableModelFixture::ARRAY_ARRAY_PROPERTY,
             [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value]
         );
@@ -83,25 +83,25 @@ final class CastableModelTest extends TestCase
     public function testBoolCast(): void
     {
         // Test a normal bool
-        $this->propertyTest(CastableModelClass::BOOL_PROPERTY, true, true);
+        $this->propertyTest(CastableModelFixture::BOOL_PROPERTY, true, true);
         // Test a BoolT object directly
-        $this->propertyTest(CastableModelClass::BOOL_PROPERTY, new BoolT(true), true);
+        $this->propertyTest(CastableModelFixture::BOOL_PROPERTY, new BoolT(true), true);
         // Test a string
-        $this->propertyTest(CastableModelClass::BOOL_PROPERTY, '1', true);
+        $this->propertyTest(CastableModelFixture::BOOL_PROPERTY, '1', true);
         // Test an int
-        $this->propertyTest(CastableModelClass::BOOL_PROPERTY, 1, true);
+        $this->propertyTest(CastableModelFixture::BOOL_PROPERTY, 1, true);
         // Test an array
-        $this->propertyTest(CastableModelClass::BOOL_PROPERTY, [true], true);
+        $this->propertyTest(CastableModelFixture::BOOL_PROPERTY, [true], true);
         // Test an array of booleans
-        $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [true], [true]);
+        $this->propertyTest(CastableModelFixture::BOOL_ARRAY_PROPERTY, [true], [true]);
         // Test an array of BoolT objects
-        $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [new BoolT(true)], [true]);
+        $this->propertyTest(CastableModelFixture::BOOL_ARRAY_PROPERTY, [new BoolT(true)], [true]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, ['1'], [true]);
+        $this->propertyTest(CastableModelFixture::BOOL_ARRAY_PROPERTY, ['1'], [true]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [1], [true]);
+        $this->propertyTest(CastableModelFixture::BOOL_ARRAY_PROPERTY, [1], [true]);
         // Test an array of arrays
-        $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [[true]], [true]);
+        $this->propertyTest(CastableModelFixture::BOOL_ARRAY_PROPERTY, [[true]], [true]);
     }
 
     public function testFloatCast(): void
@@ -109,44 +109,44 @@ final class CastableModelTest extends TestCase
         $value = 0.00;
 
         // Test a normal float
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, $value, $value);
         // Test a FloatT object directly
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, new FloatT($value), $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, new FloatT($value), $value);
         // Test a string
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, (string) $value, $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, (string) $value, $value);
         // Test an int
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, (int) $value, $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, (int) $value, $value);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of FloatT objects
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [new FloatT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [new FloatT($value)], [$value]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [(string) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [(string) $value], [$value]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [(int) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [(int) $value], [$value]);
 
         $value = 0.01;
 
         // Test a normal float
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, $value, $value);
         // Test a FloatT object directly
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, new FloatT($value), $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, new FloatT($value), $value);
         // Test a string
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, (string) $value, $value);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, (string) $value, $value);
         // Test an int (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, (int) $value, 0.0);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, (int) $value, 0.0);
         // Test an array (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::FLOAT_PROPERTY, (array) $value, 1.0);
+        $this->propertyTest(CastableModelFixture::FLOAT_PROPERTY, (array) $value, 1.0);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of FloatT objects
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [new FloatT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [new FloatT($value)], [$value]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [(string) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [(string) $value], [$value]);
         // Test an array of ints (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [(int) $value], [0.0]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [(int) $value], [0.0]);
         // Test an array of arrays (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::FLOAT_ARRAY_PROPERTY, [(array) $value], [1.0]);
+        $this->propertyTest(CastableModelFixture::FLOAT_ARRAY_PROPERTY, [(array) $value], [1.0]);
     }
 
     public function testIntCast(): void
@@ -154,29 +154,29 @@ final class CastableModelTest extends TestCase
         $value = 0;
 
         // Test a normal int
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, $value, $value);
         // Test an IntT object directly
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, new IntT($value), $value);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, new IntT($value), $value);
         // Test a string
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, (string) $value, $value);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, (string) $value, $value);
         // Test a bool
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, (bool) $value, $value);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, (bool) $value, $value);
         // Test a float
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, (float) $value, $value);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, (float) $value, $value);
         // Test a array (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::INT_PROPERTY, (array) $value, 1);
+        $this->propertyTest(CastableModelFixture::INT_PROPERTY, (array) $value, 1);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of IntT objects
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [new IntT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [new IntT($value)], [$value]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [(string) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [(string) $value], [$value]);
         // Test an array of booleans
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [(bool) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [(bool) $value], [$value]);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [(float) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [(float) $value], [$value]);
         // Test an array of arrays (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::INT_ARRAY_PROPERTY, [(array) $value], [1]);
+        $this->propertyTest(CastableModelFixture::INT_ARRAY_PROPERTY, [(array) $value], [1]);
     }
 
     public function testStringCast(): void
@@ -184,25 +184,25 @@ final class CastableModelTest extends TestCase
         $value = '0';
 
         // Test a normal int
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::STRING_PROPERTY, $value, $value);
         // Test a StringT object directly
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, new StringT($value), $value);
+        $this->propertyTest(CastableModelFixture::STRING_PROPERTY, new StringT($value), $value);
         // Test a int
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, (int) $value, $value);
+        $this->propertyTest(CastableModelFixture::STRING_PROPERTY, (int) $value, $value);
         // Test a float
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, (float) $value, $value);
+        $this->propertyTest(CastableModelFixture::STRING_PROPERTY, (float) $value, $value);
         // Test a bool
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, (bool) $value, 'false');
+        $this->propertyTest(CastableModelFixture::STRING_PROPERTY, (bool) $value, 'false');
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::STRING_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of StringT objects
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [new StringT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::STRING_ARRAY_PROPERTY, [new StringT($value)], [$value]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(int) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::STRING_ARRAY_PROPERTY, [(int) $value], [$value]);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(float) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::STRING_ARRAY_PROPERTY, [(float) $value], [$value]);
         // Test an array of booleans
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(bool) $value], ['false']);
+        $this->propertyTest(CastableModelFixture::STRING_ARRAY_PROPERTY, [(bool) $value], ['false']);
     }
 
     /**
@@ -215,13 +215,13 @@ final class CastableModelTest extends TestCase
         };
 
         // Test a normal object
-        $this->propertyTest(CastableModelClass::OBJECT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::OBJECT_PROPERTY, $value, $value);
         // Test an ObjectT object directly
-        $this->propertyTest(CastableModelClass::OBJECT_PROPERTY, new ObjectT($value), $value);
+        $this->propertyTest(CastableModelFixture::OBJECT_PROPERTY, new ObjectT($value), $value);
 
         // Test a stringified object
         $model = $this->propertyTest(
-            CastableModelClass::OBJECT_PROPERTY,
+            CastableModelFixture::OBJECT_PROPERTY,
             json_encode($value, JSON_THROW_ON_ERROR),
             $value,
             true
@@ -230,13 +230,13 @@ final class CastableModelTest extends TestCase
         self::assertObjectHasProperty('test', $model->object);
 
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::OBJECT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::OBJECT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of ObjectT objects
-        $this->propertyTest(CastableModelClass::OBJECT_ARRAY_PROPERTY, [new ObjectT($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::OBJECT_ARRAY_PROPERTY, [new ObjectT($value)], [$value]);
 
         // Test an array of stringified objects
         $model = $this->propertyTest(
-            CastableModelClass::OBJECT_ARRAY_PROPERTY,
+            CastableModelFixture::OBJECT_ARRAY_PROPERTY,
             [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
@@ -249,25 +249,25 @@ final class CastableModelTest extends TestCase
 
     public function testSerializedObjectCast(): void
     {
-        $value = new ModelClass();
+        $value = new ModelFixture();
 
         // Test a normal object
-        $this->propertyTest(CastableModelClass::SERIALIZED_OBJECT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_PROPERTY, $value, $value);
         // Test a SerializedObjectT object directly
-        $this->propertyTest(CastableModelClass::SERIALIZED_OBJECT_PROPERTY, new SerializedObject($value), $value);
+        $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_PROPERTY, new SerializedObject($value), $value);
 
         // Test a stringified object
-        $model = $this->propertyTest(CastableModelClass::SERIALIZED_OBJECT_PROPERTY, serialize($value), $value, true);
+        $model = $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_PROPERTY, serialize($value), $value, true);
         self::assertIsObject($model->serializedObject);
 
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::SERIALIZED_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of SerializedObjectT objects
-        $this->propertyTest(CastableModelClass::SERIALIZED_OBJECT_ARRAY_PROPERTY, [new SerializedObject($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_ARRAY_PROPERTY, [new SerializedObject($value)], [$value]);
 
         // Test an array of stringified objects
         $model = $this->propertyTest(
-            CastableModelClass::SERIALIZED_OBJECT_ARRAY_PROPERTY,
+            CastableModelFixture::SERIALIZED_OBJECT_ARRAY_PROPERTY,
             [serialize($value), serialize($value)],
             [$value, $value],
             true
@@ -284,18 +284,18 @@ final class CastableModelTest extends TestCase
         $value = ['test'];
 
         // Test a normal json array
-        $this->propertyTest(CastableModelClass::JSON_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::JSON_PROPERTY, $value, $value);
         // Test a JsonT object directly
-        $this->propertyTest(CastableModelClass::JSON_PROPERTY, new Json($value), $value);
+        $this->propertyTest(CastableModelFixture::JSON_PROPERTY, new Json($value), $value);
         // Test a stringified json array
-        $this->propertyTest(CastableModelClass::JSON_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
+        $this->propertyTest(CastableModelFixture::JSON_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
         // Test an array of json arrays
-        $this->propertyTest(CastableModelClass::JSON_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::JSON_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of JsonT objects
-        $this->propertyTest(CastableModelClass::JSON_ARRAY_PROPERTY, [new Json($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::JSON_ARRAY_PROPERTY, [new Json($value)], [$value]);
         // Test an array of stringified json arrays
         $this->propertyTest(
-            CastableModelClass::JSON_ARRAY_PROPERTY,
+            CastableModelFixture::JSON_ARRAY_PROPERTY,
             [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value]
         );
@@ -311,13 +311,13 @@ final class CastableModelTest extends TestCase
         };
 
         // Test a normal object
-        $this->propertyTest(CastableModelClass::JSON_OBJECT_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::JSON_OBJECT_PROPERTY, $value, $value);
         // Test a JsonObjectT object directly
-        $this->propertyTest(CastableModelClass::JSON_OBJECT_PROPERTY, new JsonObject($value), $value);
+        $this->propertyTest(CastableModelFixture::JSON_OBJECT_PROPERTY, new JsonObject($value), $value);
 
         // Test a stringified object
         $model = $this->propertyTest(
-            CastableModelClass::JSON_OBJECT_PROPERTY,
+            CastableModelFixture::JSON_OBJECT_PROPERTY,
             json_encode($value, JSON_THROW_ON_ERROR),
             $value,
             true
@@ -326,13 +326,13 @@ final class CastableModelTest extends TestCase
         self::assertObjectHasProperty('test', $model->jsonObject);
 
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::JSON_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::JSON_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of JsonObjectT objects
-        $this->propertyTest(CastableModelClass::JSON_OBJECT_ARRAY_PROPERTY, [new JsonObject($value)], [$value]);
+        $this->propertyTest(CastableModelFixture::JSON_OBJECT_ARRAY_PROPERTY, [new JsonObject($value)], [$value]);
 
         // Test an array of stringified objects
         $model = $this->propertyTest(
-            CastableModelClass::JSON_OBJECT_ARRAY_PROPERTY,
+            CastableModelFixture::JSON_OBJECT_ARRAY_PROPERTY,
             [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
@@ -348,42 +348,42 @@ final class CastableModelTest extends TestCase
         // Should not matter what we pass, we should always get true
 
         // Test a normal true
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, true, true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, true, true);
         // Test a TrueT object directly
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, new TrueT(), true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, new TrueT(), true);
         // Test a string
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, '1', true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, '1', true);
         // Test a int
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, 1, true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, 1, true);
         // Test a float
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, 1.0, true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, 1.0, true);
         // Test a false
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, false, true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, false, true);
         // Test an array
-        $this->propertyTest(CastableModelClass::TRUE_PROPERTY, [], true);
+        $this->propertyTest(CastableModelFixture::TRUE_PROPERTY, [], true);
         // Test an object
         $this->propertyTest(
-            CastableModelClass::TRUE_PROPERTY,
+            CastableModelFixture::TRUE_PROPERTY,
             new class {
             },
             true
         );
         // Test an array of true
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [true], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [true], [true]);
         // Test an array of TrueT objects
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [new TrueT()], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [new TrueT()], [true]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, ['1'], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, ['1'], [true]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [1], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [1], [true]);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [1.0], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [1.0], [true]);
         // Test an array of false
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [false], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [false], [true]);
         // Test an array of arrays
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [[]], [true]);
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [[]], [true]);
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [
+        $this->propertyTest(CastableModelFixture::TRUE_ARRAY_PROPERTY, [
             new class {
             },
         ], [true]);
@@ -394,42 +394,42 @@ final class CastableModelTest extends TestCase
         // Should not matter what we pass, we should always get false
 
         // Test a normal false
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, false, false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, false, false);
         // Test a FalseT object directly
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, new FalseT(), false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, new FalseT(), false);
         // Test a string
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, '0', false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, '0', false);
         // Test a int
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, 0, false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, 0, false);
         // Test a float
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, 0.0, false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, 0.0, false);
         // Test a true
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, true, false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, true, false);
         // Test an array
-        $this->propertyTest(CastableModelClass::FALSE_PROPERTY, [], false);
+        $this->propertyTest(CastableModelFixture::FALSE_PROPERTY, [], false);
         // Test an object
         $this->propertyTest(
-            CastableModelClass::FALSE_PROPERTY,
+            CastableModelFixture::FALSE_PROPERTY,
             new class {
             },
             false
         );
         // Test an array of false
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [false], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [false], [false]);
         // Test an array of FalseT objects
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [new FalseT()], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [new FalseT()], [false]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, ['0'], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, ['0'], [false]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [0], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [0], [false]);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [0.0], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [0.0], [false]);
         // Test an array of true
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [true], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [true], [false]);
         // Test an array of arrays
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [[]], [false]);
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [[]], [false]);
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [
+        $this->propertyTest(CastableModelFixture::FALSE_ARRAY_PROPERTY, [
             new class {
             },
         ], [false]);
@@ -441,42 +441,42 @@ final class CastableModelTest extends TestCase
         $value = null;
 
         // Test a normal null
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, $value, $value);
         // Test a NullT object directly
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, new NullT(), $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, new NullT(), $value);
         // Test a string
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, (string) $value, $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, (string) $value, $value);
         // Test a int
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, (int) $value, $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, (int) $value, $value);
         // Test a float
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, (float) $value, $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, (float) $value, $value);
         // Test a true
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, true, $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, true, $value);
         // Test an array
-        $this->propertyTest(CastableModelClass::NULL_PROPERTY, [], $value);
+        $this->propertyTest(CastableModelFixture::NULL_PROPERTY, [], $value);
         // Test an object
         $this->propertyTest(
-            CastableModelClass::NULL_PROPERTY,
+            CastableModelFixture::NULL_PROPERTY,
             new class {
             },
             $value
         );
         // Test an array of null
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of NullT objects
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [new NullT()], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [new NullT()], [$value]);
         // Test an array of strings
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [(string) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [(string) $value], [$value]);
         // Test an array of ints
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [(int) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [(int) $value], [$value]);
         // Test an array of floats
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [(float) $value], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [(float) $value], [$value]);
         // Test an array of true
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [true], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [true], [$value]);
         // Test an array of arrays
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [[]], [$value]);
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [[]], [$value]);
         // Test an array of objects
-        $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [
+        $this->propertyTest(CastableModelFixture::NULL_ARRAY_PROPERTY, [
             new class {
             },
         ], [$value]);
@@ -487,18 +487,18 @@ final class CastableModelTest extends TestCase
      */
     public function testModelCast(): void
     {
-        $value = new ModelClass();
+        $value = new ModelFixture();
 
         // Test a normal model
-        $this->propertyTest(CastableModelClass::MODEL_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::MODEL_PROPERTY, $value, $value);
 
         // Test an array
-        $model = $this->propertyTest(CastableModelClass::MODEL_PROPERTY, $value->asArray(), $value, true);
+        $model = $this->propertyTest(CastableModelFixture::MODEL_PROPERTY, $value->asArray(), $value, true);
         self::assertIsObject($model->model);
 
         // Test a json encoded model
         $model = $this->propertyTest(
-            CastableModelClass::MODEL_PROPERTY,
+            CastableModelFixture::MODEL_PROPERTY,
             json_encode($value, JSON_THROW_ON_ERROR),
             $value,
             true
@@ -506,11 +506,11 @@ final class CastableModelTest extends TestCase
         self::assertIsObject($model->model);
 
         // Test an array of models
-        $this->propertyTest(CastableModelClass::MODEL_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::MODEL_ARRAY_PROPERTY, [$value], [$value]);
 
         // Test an array of arrays
         $model = $this->propertyTest(
-            CastableModelClass::MODEL_ARRAY_PROPERTY,
+            CastableModelFixture::MODEL_ARRAY_PROPERTY,
             [$value->asArray(), $value->asArray()],
             [$value, $value],
             true
@@ -520,7 +520,7 @@ final class CastableModelTest extends TestCase
 
         // Test an array of json encoded models
         $model = $this->propertyTest(
-            CastableModelClass::MODEL_ARRAY_PROPERTY,
+            CastableModelFixture::MODEL_ARRAY_PROPERTY,
             [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
@@ -534,26 +534,26 @@ final class CastableModelTest extends TestCase
      */
     public function testEnumCast(): void
     {
-        $value   = EnumClass::club;
+        $value   = EnumFixture::club;
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
-        $this->propertyTest(CastableModelClass::ENUM_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::ENUM_PROPERTY, $value, $value);
         // Test a enum name
-        $this->propertyTest(CastableModelClass::ENUM_PROPERTY, $value->name, $value);
+        $this->propertyTest(CastableModelFixture::ENUM_PROPERTY, $value->name, $value);
         // Test a stringified enum
-        $this->propertyTest(CastableModelClass::ENUM_PROPERTY, $decoded, $value);
+        $this->propertyTest(CastableModelFixture::ENUM_PROPERTY, $decoded, $value);
         // Test an array of enums
-        $this->propertyTest(CastableModelClass::ENUM_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::ENUM_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of enum names
         $this->propertyTest(
-            CastableModelClass::ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::ENUM_ARRAY_PROPERTY,
             [$value->name, $value->name],
             [$value, $value]
         );
         // Test an array of stringified enums
         $this->propertyTest(
-            CastableModelClass::ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::ENUM_ARRAY_PROPERTY,
             [$decoded, $decoded],
             [$value, $value]
         );
@@ -568,22 +568,22 @@ final class CastableModelTest extends TestCase
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
-        $this->propertyTest(CastableModelClass::STRING_ENUM_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::STRING_ENUM_PROPERTY, $value, $value);
         // Test a enum name
-        $this->propertyTest(CastableModelClass::STRING_ENUM_PROPERTY, $value->value, $value);
+        $this->propertyTest(CastableModelFixture::STRING_ENUM_PROPERTY, $value->value, $value);
         // Test a stringified enum
-        $this->propertyTest(CastableModelClass::STRING_ENUM_PROPERTY, $decoded, $value);
+        $this->propertyTest(CastableModelFixture::STRING_ENUM_PROPERTY, $decoded, $value);
         // Test an array of enums
-        $this->propertyTest(CastableModelClass::STRING_ENUM_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::STRING_ENUM_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of enum names
         $this->propertyTest(
-            CastableModelClass::STRING_ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::STRING_ENUM_ARRAY_PROPERTY,
             [$value->value, $value->value],
             [$value, $value]
         );
         // Test an array of stringified enums
         $this->propertyTest(
-            CastableModelClass::STRING_ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::STRING_ENUM_ARRAY_PROPERTY,
             [$decoded, $decoded],
             [$value, $value]
         );
@@ -598,22 +598,22 @@ final class CastableModelTest extends TestCase
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
-        $this->propertyTest(CastableModelClass::INT_ENUM_PROPERTY, $value, $value);
+        $this->propertyTest(CastableModelFixture::INT_ENUM_PROPERTY, $value, $value);
         // Test a enum name
-        $this->propertyTest(CastableModelClass::INT_ENUM_PROPERTY, $value->value, $value);
+        $this->propertyTest(CastableModelFixture::INT_ENUM_PROPERTY, $value->value, $value);
         // Test a stringified enum
-        $this->propertyTest(CastableModelClass::INT_ENUM_PROPERTY, $decoded, $value);
+        $this->propertyTest(CastableModelFixture::INT_ENUM_PROPERTY, $decoded, $value);
         // Test an array of enums
-        $this->propertyTest(CastableModelClass::INT_ENUM_ARRAY_PROPERTY, [$value], [$value]);
+        $this->propertyTest(CastableModelFixture::INT_ENUM_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of enum names
         $this->propertyTest(
-            CastableModelClass::INT_ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::INT_ENUM_ARRAY_PROPERTY,
             [$value->value, $value->value],
             [$value, $value]
         );
         // Test an array of stringified enums
         $this->propertyTest(
-            CastableModelClass::INT_ENUM_ARRAY_PROPERTY,
+            CastableModelFixture::INT_ENUM_ARRAY_PROPERTY,
             [$decoded, $decoded],
             [$value, $value]
         );
@@ -621,9 +621,9 @@ final class CastableModelTest extends TestCase
 
     public function testDefaultEmptyCastings(): void
     {
-        $model = new EmptyCastableModelClass();
+        $model = new EmptyCastableModelFixture();
 
-        self::assertEmpty(EmptyCastableModelClass::getCastings());
+        self::assertEmpty(EmptyCastableModelFixture::getCastings());
         self::assertEmpty($model::getCastings());
     }
 
@@ -631,7 +631,7 @@ final class CastableModelTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        EmptyCastableModelClass::fromArray(['pie' => 'yes']);
+        EmptyCastableModelFixture::fromArray(['pie' => 'yes']);
     }
 
     /**
@@ -647,8 +647,8 @@ final class CastableModelTest extends TestCase
         mixed $testValue,
         mixed $expectedValue,
         bool $skipTest = false
-    ): CastableModelClass {
-        $model = CastableModelClass::fromArray(
+    ): CastableModelFixture {
+        $model = CastableModelFixture::fromArray(
             [
                 $property => $testValue,
             ]

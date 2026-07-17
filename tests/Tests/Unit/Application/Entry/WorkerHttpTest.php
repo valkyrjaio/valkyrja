@@ -20,8 +20,8 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Tests\Fixtures\Application\Entry\WorkerHttpClass;
-use Valkyrja\Tests\Fixtures\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\WorkerHttpFixture;
+use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -38,9 +38,9 @@ final class WorkerHttpTest extends TestCase
 
     protected function setUp(): void
     {
-        WorkerHttpClass::reset();
+        WorkerHttpFixture::reset();
 
-        $this->app     = WorkerHttpClass::bootstrap(new HttpConfig(dir: Directory::$basePath));
+        $this->app     = WorkerHttpFixture::bootstrap(new HttpConfig(dir: Directory::$basePath));
         $this->data    = $this->app->getContainer()->getData();
         $this->request = new ServerRequest();
     }
@@ -56,13 +56,13 @@ final class WorkerHttpTest extends TestCase
 
     public function testBootstrapCallsBootstrapParentServicesExactlyOnce(): void
     {
-        self::assertSame(1, WorkerHttpClass::$bootstrapParentServicesCallCount);
+        self::assertSame(1, WorkerHttpFixture::$bootstrapParentServicesCallCount);
     }
 
     public function testBootstrapDoesNotCreateAnyChildren(): void
     {
-        self::assertCount(0, WorkerHttpClass::$childContainers);
-        self::assertCount(0, WorkerHttpClass::$childApplications);
+        self::assertCount(0, WorkerHttpFixture::$childContainers);
+        self::assertCount(0, WorkerHttpFixture::$childApplications);
     }
 
     public function testParentContainerIsRegisteredAsSingleton(): void
@@ -85,41 +85,41 @@ final class WorkerHttpTest extends TestCase
 
     public function testHandleCreatesOneChildContainerPerRequest(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        self::assertCount(3, WorkerHttpClass::$childContainers);
+        self::assertCount(3, WorkerHttpFixture::$childContainers);
     }
 
     public function testHandleCreatesOneChildApplicationPerRequest(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        self::assertCount(3, WorkerHttpClass::$childApplications);
+        self::assertCount(3, WorkerHttpFixture::$childApplications);
     }
 
     public function testEachHandleProducesADistinctChildContainer(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
         self::assertNotSame(
-            WorkerHttpClass::$childContainers[0],
-            WorkerHttpClass::$childContainers[1]
+            WorkerHttpFixture::$childContainers[0],
+            WorkerHttpFixture::$childContainers[1]
         );
     }
 
     public function testEachHandleProducesADistinctChildApplication(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
         self::assertNotSame(
-            WorkerHttpClass::$childApplications[0],
-            WorkerHttpClass::$childApplications[1]
+            WorkerHttpFixture::$childApplications[0],
+            WorkerHttpFixture::$childApplications[1]
         );
     }
 
@@ -129,27 +129,27 @@ final class WorkerHttpTest extends TestCase
 
     public function testChildContainerHasApplicationContractSingleton(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child = WorkerHttpClass::$childContainers[0];
+        $child = WorkerHttpFixture::$childContainers[0];
 
         self::assertTrue($child->isSingletonInstance(ApplicationContract::class));
     }
 
     public function testChildContainerHasContainerContractSingleton(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child = WorkerHttpClass::$childContainers[0];
+        $child = WorkerHttpFixture::$childContainers[0];
 
         self::assertTrue($child->isSingletonInstance(ContainerContract::class));
     }
 
     public function testChildApplicationContractIsChildApplication(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child    = WorkerHttpClass::$childContainers[0];
+        $child    = WorkerHttpFixture::$childContainers[0];
         $childApp = $child->getSingleton(ApplicationContract::class);
 
         self::assertInstanceOf(ChildApplication::class, $childApp);
@@ -157,18 +157,18 @@ final class WorkerHttpTest extends TestCase
 
     public function testChildContainerContractIsChildContainer(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child = WorkerHttpClass::$childContainers[0];
+        $child = WorkerHttpFixture::$childContainers[0];
 
         self::assertSame($child, $child->getSingleton(ContainerContract::class));
     }
 
     public function testChildApplicationIsNotParentApplication(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $childApp = WorkerHttpClass::$childApplications[0];
+        $childApp = WorkerHttpFixture::$childApplications[0];
 
         self::assertNotSame($this->app, $childApp);
     }
@@ -182,7 +182,7 @@ final class WorkerHttpTest extends TestCase
         $parentContainer = $this->app->getContainer();
         $before          = $parentContainer->getSingleton(ApplicationContract::class);
 
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
         self::assertSame($before, $parentContainer->getSingleton(ApplicationContract::class));
         self::assertSame($this->app, $parentContainer->getSingleton(ApplicationContract::class));
@@ -193,7 +193,7 @@ final class WorkerHttpTest extends TestCase
         $parentContainer = $this->app->getContainer();
         $before          = $parentContainer->getSingleton(ContainerContract::class);
 
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
         self::assertSame($before, $parentContainer->getSingleton(ContainerContract::class));
         self::assertSame($parentContainer, $parentContainer->getSingleton(ContainerContract::class));
@@ -201,13 +201,13 @@ final class WorkerHttpTest extends TestCase
 
     public function testChildSingletonDoesNotLeakToParent(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child    = WorkerHttpClass::$childContainers[0];
-        $instance = new SingletonClass();
-        $child->setSingleton(SingletonClass::class, $instance);
+        $child    = WorkerHttpFixture::$childContainers[0];
+        $instance = new SingletonFixture();
+        $child->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertFalse($this->app->getContainer()->isSingletonInstance(SingletonClass::class));
+        self::assertFalse($this->app->getContainer()->isSingletonInstance(SingletonFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -216,25 +216,25 @@ final class WorkerHttpTest extends TestCase
 
     public function testChildSingletonDoesNotLeakToSiblingChild(): void
     {
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        $child1   = WorkerHttpClass::$childContainers[0];
-        $child2   = WorkerHttpClass::$childContainers[1];
-        $instance = new SingletonClass();
-        $child1->setSingleton(SingletonClass::class, $instance);
+        $child1   = WorkerHttpFixture::$childContainers[0];
+        $child2   = WorkerHttpFixture::$childContainers[1];
+        $instance = new SingletonFixture();
+        $child1->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertFalse($child2->isSingletonInstance(SingletonClass::class));
+        self::assertFalse($child2->isSingletonInstance(SingletonFixture::class));
     }
 
     public function testBootstrapParentServicesNotCalledAgainOnHandle(): void
     {
-        $countAfterBootstrap = WorkerHttpClass::$bootstrapParentServicesCallCount;
+        $countAfterBootstrap = WorkerHttpFixture::$bootstrapParentServicesCallCount;
 
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
-        WorkerHttpClass::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
+        WorkerHttpFixture::handle($this->app, $this->data, $this->request);
 
-        self::assertSame($countAfterBootstrap, WorkerHttpClass::$bootstrapParentServicesCallCount);
+        self::assertSame($countAfterBootstrap, WorkerHttpFixture::$bootstrapParentServicesCallCount);
     }
 
     // -----------------------------------------------------------------------
@@ -243,14 +243,14 @@ final class WorkerHttpTest extends TestCase
 
     public function testRun(): void
     {
-        WorkerHttpClass::reset();
-        WorkerHttpClass::run(new HttpConfig(dir: Directory::$basePath), requestCount: 3);
+        WorkerHttpFixture::reset();
+        WorkerHttpFixture::run(new HttpConfig(dir: Directory::$basePath), requestCount: 3);
 
-        self::assertCount(3, WorkerHttpClass::$childContainers);
-        self::assertCount(3, WorkerHttpClass::$childApplications);
-        self::assertCount(3, WorkerHttpClass::$requestResponses);
-        self::assertSame(3, WorkerHttpClass::$handleRouteCallCount);
-        self::assertSame(3, WorkerHttpClass::$handleRequestCallCount);
-        self::assertSame(1, WorkerHttpClass::$bootstrapParentServicesCallCount);
+        self::assertCount(3, WorkerHttpFixture::$childContainers);
+        self::assertCount(3, WorkerHttpFixture::$childApplications);
+        self::assertCount(3, WorkerHttpFixture::$requestResponses);
+        self::assertSame(3, WorkerHttpFixture::$handleRouteCallCount);
+        self::assertSame(3, WorkerHttpFixture::$handleRequestCallCount);
+        self::assertSame(1, WorkerHttpFixture::$bootstrapParentServicesCallCount);
     }
 }

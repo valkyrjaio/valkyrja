@@ -25,7 +25,7 @@ use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Factory\DispatchFactory;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -38,7 +38,7 @@ final class DispatchFactoryTest extends TestCase
      */
     public function testFromReflection(): void
     {
-        $class          = InvalidDispatcherClass::class;
+        $class          = InvalidDispatcherFixture::class;
         $constant       = 'TEST';
         $method         = 'method';
         $staticMethod   = 'staticMethod';

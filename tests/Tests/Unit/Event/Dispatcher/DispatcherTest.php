@@ -18,9 +18,9 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
-use Valkyrja\Tests\Fixtures\Event\ArgumentsCapableEventClass;
-use Valkyrja\Tests\Fixtures\Event\DispatchCollectableEventClass;
-use Valkyrja\Tests\Fixtures\Event\StoppableEventClass;
+use Valkyrja\Tests\Fixtures\Event\ArgumentsCapableEventFixture;
+use Valkyrja\Tests\Fixtures\Event\DispatchCollectableEventFixture;
+use Valkyrja\Tests\Fixtures\Event\StoppableEventFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -33,7 +33,7 @@ final class DispatcherTest extends TestCase
     /**
      * Callback test.
      */
-    public static function dispatchCallback(DispatchCollectableEventClass|StoppableEventClass $event): string
+    public static function dispatchCallback(DispatchCollectableEventFixture|StoppableEventFixture $event): string
     {
         self::$dispatched = true;
 
@@ -47,8 +47,8 @@ final class DispatcherTest extends TestCase
     {
         self::$dispatched = false;
 
-        $eventId      = DispatchCollectableEventClass::class;
-        $event        = new DispatchCollectableEventClass();
+        $eventId      = DispatchCollectableEventFixture::class;
+        $event        = new DispatchCollectableEventFixture();
         $listenerName = 'listener';
         $listener     = new Listener(
             eventId: $eventId,
@@ -62,9 +62,9 @@ final class DispatcherTest extends TestCase
 
         $dispatcher = new EventDispatcher(collection: $collection);
 
-        /** @var DispatchCollectableEventClass $eventAfterDispatch */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
-        /** @var DispatchCollectableEventClass $eventAfterDispatchById */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatchById */
         $eventAfterDispatchById = $dispatcher->dispatchById($eventId);
 
         self::assertTrue(self::$dispatched);
@@ -73,14 +73,14 @@ final class DispatcherTest extends TestCase
 
         self::$dispatched = false;
 
-        $event2 = new DispatchCollectableEventClass();
+        $event2 = new DispatchCollectableEventFixture();
 
         $collection->addListener($listener->withName('listener2'));
         $collection->addListener($listener->withName('listener3'));
 
-        /** @var DispatchCollectableEventClass $eventAfterDispatch2 */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatch2 */
         $eventAfterDispatch2 = $dispatcher->dispatch($event2);
-        /** @var DispatchCollectableEventClass $eventAfterDispatchById2 */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchById($eventId);
 
         self::assertTrue(self::$dispatched);
@@ -97,8 +97,8 @@ final class DispatcherTest extends TestCase
     {
         self::$dispatched = false;
 
-        $eventId      = DispatchCollectableEventClass::class;
-        $event        = new DispatchCollectableEventClass();
+        $eventId      = DispatchCollectableEventFixture::class;
+        $event        = new DispatchCollectableEventFixture();
         $listenerName = 'listener';
         $listener     = new Listener(
             eventId: $eventId,
@@ -119,9 +119,9 @@ final class DispatcherTest extends TestCase
 
         $collection->addListener($listener);
 
-        /** @var DispatchCollectableEventClass $eventAfterDispatch2 */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatch2 */
         $eventAfterDispatch2 = $dispatcher->dispatchIfHasListeners($event);
-        /** @var DispatchCollectableEventClass $eventAfterDispatchById2 */
+        /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchByIdIfHasListeners($eventId);
 
         self::assertTrue(self::$dispatched);
@@ -138,8 +138,8 @@ final class DispatcherTest extends TestCase
     {
         self::$dispatched = false;
 
-        $eventId      = StoppableEventClass::class;
-        $event        = new StoppableEventClass();
+        $eventId      = StoppableEventFixture::class;
+        $event        = new StoppableEventFixture();
         $listenerName = 'listener';
         $listener     = new Listener(
             eventId: $eventId,
@@ -155,9 +155,9 @@ final class DispatcherTest extends TestCase
 
         $dispatcher = new EventDispatcher(collection: $collection);
 
-        /** @var StoppableEventClass $eventAfterDispatch */
+        /** @var StoppableEventFixture $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
-        /** @var StoppableEventClass $eventAfterDispatchById */
+        /** @var StoppableEventFixture $eventAfterDispatchById */
         $eventAfterDispatchById = $dispatcher->dispatchById($eventId);
 
         self::assertTrue(self::$dispatched);
@@ -187,8 +187,8 @@ final class DispatcherTest extends TestCase
     {
         $dispatcher = new EventDispatcher();
 
-        $result = $dispatcher->dispatchById(ArgumentsCapableEventClass::class);
+        $result = $dispatcher->dispatchById(ArgumentsCapableEventFixture::class);
 
-        self::assertInstanceOf(ArgumentsCapableEventClass::class, $result);
+        self::assertInstanceOf(ArgumentsCapableEventFixture::class, $result);
     }
 }

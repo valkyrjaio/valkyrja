@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Throwable\Exception;
 
-use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaInvalidArgumentExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaInvalidArgumentExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -23,9 +23,9 @@ final class ValkyrjaInvalidArgumentExceptionTest extends TestCase
 {
     public function testGetTraceCode(): void
     {
-        $exception  = new ValkyrjaInvalidArgumentExceptionClass();
-        $exception2 = new ValkyrjaInvalidArgumentExceptionClass();
-        $exception3 = new ValkyrjaInvalidArgumentExceptionClass('Custom message');
+        $exception  = new ValkyrjaInvalidArgumentExceptionFixture();
+        $exception2 = new ValkyrjaInvalidArgumentExceptionFixture();
+        $exception3 = new ValkyrjaInvalidArgumentExceptionFixture('Custom message');
 
         $traceCode  = $exception->getTraceCode();
         $traceCode2 = $exception2->getTraceCode();

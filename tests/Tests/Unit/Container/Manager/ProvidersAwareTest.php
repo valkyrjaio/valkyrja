@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use Override;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackException;
-use Valkyrja\Tests\Fixtures\Container\Manager\ProvidersAwareClass;
-use Valkyrja\Tests\Fixtures\Container\Provider\InvalidDeferredProviderClass;
-use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedClass;
-use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedSecondaryClass;
-use Valkyrja\Tests\Fixtures\Container\Provider\ProviderClass;
+use Valkyrja\Tests\Fixtures\Container\Manager\ProvidersAwareFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\InvalidDeferredProviderFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedSecondaryFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -30,102 +30,102 @@ final class ProvidersAwareTest extends TestCase
     #[Override]
     protected function setUp(): void
     {
-        ProviderClass::$publishCalled          = false;
-        ProviderClass::$publishSecondaryCalled = false;
+        ProviderFixture::$publishCalled          = false;
+        ProviderFixture::$publishSecondaryCalled = false;
     }
 
     public function testRegister(): void
     {
-        $providersAware = new ProvidersAwareClass();
+        $providersAware = new ProvidersAwareFixture();
 
-        self::assertFalse(ProviderClass::$publishCalled);
-        self::assertFalse(ProviderClass::$publishSecondaryCalled);
+        self::assertFalse(ProviderFixture::$publishCalled);
+        self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
+        self::assertFalse($providersAware->isPublished(ProvidedSecondaryFixture::class));
 
-        $providersAware->register(new ProviderClass());
+        $providersAware->register(new ProviderFixture());
         // Registering the same provider again just overwrites the callbacks
-        $providersAware->register(new ProviderClass());
+        $providersAware->register(new ProviderFixture());
 
-        self::assertFalse(ProviderClass::$publishCalled);
-        self::assertFalse(ProviderClass::$publishSecondaryCalled);
+        self::assertFalse(ProviderFixture::$publishCalled);
+        self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
+        self::assertFalse($providersAware->isPublished(ProvidedSecondaryFixture::class));
 
-        $providersAware->publish(ProvidedClass::class);
+        $providersAware->publish(ProvidedFixture::class);
 
-        self::assertTrue(ProviderClass::$publishCalled);
-        self::assertFalse(ProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderFixture::$publishCalled);
+        self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
+        self::assertFalse($providersAware->isPublished(ProvidedSecondaryFixture::class));
 
-        $providersAware->publish(ProvidedSecondaryClass::class);
+        $providersAware->publish(ProvidedSecondaryFixture::class);
 
-        self::assertTrue(ProviderClass::$publishCalled);
-        self::assertTrue(ProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderFixture::$publishCalled);
+        self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
-        self::assertTrue($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
+        self::assertTrue($providersAware->isPublished(ProvidedSecondaryFixture::class));
     }
 
     public function testPublishBeforeRegisterIsNoOp(): void
     {
-        $providersAware = new ProvidersAwareClass();
+        $providersAware = new ProvidersAwareFixture();
 
-        $providersAware->publish(ProvidedClass::class);
+        $providersAware->publish(ProvidedFixture::class);
 
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
+        self::assertFalse($providersAware->isPublished(ProvidedSecondaryFixture::class));
 
-        $providersAware->register(new ProviderClass());
+        $providersAware->register(new ProviderFixture());
 
-        $providersAware->publish(ProvidedClass::class);
+        $providersAware->publish(ProvidedFixture::class);
 
-        self::assertTrue(ProviderClass::$publishCalled);
-        self::assertFalse(ProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderFixture::$publishCalled);
+        self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
-        self::assertFalse($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
+        self::assertFalse($providersAware->isPublished(ProvidedSecondaryFixture::class));
 
-        $providersAware->publish(ProvidedSecondaryClass::class);
+        $providersAware->publish(ProvidedSecondaryFixture::class);
 
-        self::assertTrue(ProviderClass::$publishCalled);
-        self::assertTrue(ProviderClass::$publishSecondaryCalled);
+        self::assertTrue(ProviderFixture::$publishCalled);
+        self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 
-        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
-        self::assertTrue($providersAware->isPublished(ProvidedSecondaryClass::class));
+        self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
+        self::assertTrue($providersAware->isPublished(ProvidedSecondaryFixture::class));
     }
 
     public function testRegisterInvalidCallable(): void
     {
         $this->expectException(ContainerInvalidPublishCallbackException::class);
 
-        $providersAware = new ProvidersAwareClass();
+        $providersAware = new ProvidersAwareFixture();
 
-        $providersAware->register(new InvalidDeferredProviderClass());
+        $providersAware->register(new InvalidDeferredProviderFixture());
     }
 
     public function testPublishUnpublishedProvidedPublishesDeferredCallback(): void
     {
-        $providersAware = new ProvidersAwareClass();
-        $providersAware->register(new ProviderClass());
+        $providersAware = new ProvidersAwareFixture();
+        $providersAware->register(new ProviderFixture());
 
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
+        self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
 
-        $providersAware->callPublishUnpublishedProvided(ProvidedClass::class);
+        $providersAware->callPublishUnpublishedProvided(ProvidedFixture::class);
 
-        self::assertTrue($providersAware->isPublished(ProvidedClass::class));
+        self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
     }
 
     public function testPublishUnpublishedProvidedSkipsWhenNoCallbackRegistered(): void
     {
-        $providersAware = new ProvidersAwareClass();
+        $providersAware = new ProvidersAwareFixture();
 
-        $providersAware->callPublishUnpublishedProvided(ProvidedClass::class);
+        $providersAware->callPublishUnpublishedProvided(ProvidedFixture::class);
 
-        self::assertFalse($providersAware->isPublished(ProvidedClass::class));
+        self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
     }
 }

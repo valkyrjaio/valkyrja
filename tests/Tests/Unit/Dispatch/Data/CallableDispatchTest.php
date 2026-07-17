@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use JsonException;
 use Valkyrja\Dispatch\Data\CallableDispatch;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function json_encode;
@@ -33,7 +33,7 @@ final class CallableDispatchTest extends TestCase
     public function testClass(): void
     {
         $callable  = 'str_replace';
-        $callable2 = [InvalidDispatcherClass::class, 'staticMethod'];
+        $callable2 = [InvalidDispatcherFixture::class, 'staticMethod'];
 
         $dispatch = new CallableDispatch(callable: $callable);
 
@@ -46,7 +46,7 @@ final class CallableDispatchTest extends TestCase
         self::assertSame($callable2, $newDispatch->getCallable());
         self::assertSame(
             '{"callable":['
-            . json_encode(InvalidDispatcherClass::class, JSON_THROW_ON_ERROR)
+            . json_encode(InvalidDispatcherFixture::class, JSON_THROW_ON_ERROR)
             . ',"staticMethod"],"arguments":[],"dependencies":[]}',
             $newDispatch->__toString()
         );

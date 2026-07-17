@@ -87,7 +87,7 @@ use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\Tests\Fixtures\Application\Entry\AppExceptionHandlerClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\AppExceptionHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
 use Valkyrja\View\Provider\ViewComponentProvider;
@@ -138,19 +138,19 @@ final class AppTest extends TestCase
     #[RunInSeparateProcess]
     public function testStartExceptionHandlerDebugModes(): void
     {
-        AppExceptionHandlerClass::$called = false;
+        AppExceptionHandlerFixture::$called = false;
 
-        AppExceptionHandlerClass::start(new Env(), new Config(debugMode: true));
+        AppExceptionHandlerFixture::start(new Env(), new Config(debugMode: true));
 
-        self::assertTrue(AppExceptionHandlerClass::$called);
+        self::assertTrue(AppExceptionHandlerFixture::$called);
 
-        AppExceptionHandlerClass::$called = false;
+        AppExceptionHandlerFixture::$called = false;
 
-        AppExceptionHandlerClass::start(new Env(), new Config(debugMode: false));
+        AppExceptionHandlerFixture::start(new Env(), new Config(debugMode: false));
 
-        self::assertFalse(AppExceptionHandlerClass::$called);
+        self::assertFalse(AppExceptionHandlerFixture::$called);
 
-        AppExceptionHandlerClass::$called = false;
+        AppExceptionHandlerFixture::$called = false;
     }
 
     /**

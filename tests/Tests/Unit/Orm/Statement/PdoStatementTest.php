@@ -24,7 +24,7 @@ use Valkyrja\Orm\Statement\PdoStatement;
 use Valkyrja\Orm\Throwable\Exception\OrmFetchException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidColumnNumberException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnsupportedCountException;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class PdoStatementTest extends TestCase
@@ -262,10 +262,10 @@ final class PdoStatementTest extends TestCase
             ->with(PDO::FETCH_ASSOC)
             ->willReturn($data);
 
-        $result = $this->statement->fetchEntity(EntityIntIdClass::class);
+        $result = $this->statement->fetchEntity(EntityIntIdFixture::class);
 
         self::assertInstanceOf(EntityContract::class, $result);
-        self::assertInstanceOf(EntityIntIdClass::class, $result);
+        self::assertInstanceOf(EntityIntIdFixture::class, $result);
         self::assertSame(1, $result->id);
         self::assertSame('Test', $result->name);
     }
@@ -314,10 +314,10 @@ final class PdoStatementTest extends TestCase
             ->with(PDO::FETCH_ASSOC)
             ->willReturn($data);
 
-        $result = $this->statement->fetchAllEntities(EntityIntIdClass::class);
+        $result = $this->statement->fetchAllEntities(EntityIntIdFixture::class);
 
         self::assertCount(2, $result);
-        self::assertContainsOnlyInstancesOf(EntityIntIdClass::class, $result);
+        self::assertContainsOnlyInstancesOf(EntityIntIdFixture::class, $result);
         self::assertSame(1, $result[0]->id);
         self::assertSame('Test 1', $result[0]->name);
         self::assertSame(2, $result[1]->id);

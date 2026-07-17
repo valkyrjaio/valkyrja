@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Throwable\Factory;
 
-use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionClass;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Factory\ThrowableFactory;
 
@@ -21,9 +21,9 @@ final class ThrowableFactoryTest extends TestCase
 {
     public function testGetTraceCode(): void
     {
-        $exception  = new ValkyrjaRuntimeExceptionClass();
-        $exception2 = new ValkyrjaRuntimeExceptionClass();
-        $exception3 = new ValkyrjaRuntimeExceptionClass('Custom message');
+        $exception  = new ValkyrjaRuntimeExceptionFixture();
+        $exception2 = new ValkyrjaRuntimeExceptionFixture();
+        $exception3 = new ValkyrjaRuntimeExceptionFixture('Custom message');
 
         $traceCode  = ThrowableFactory::getTraceCode($exception);
         $traceCode2 = ThrowableFactory::getTraceCode($exception2);

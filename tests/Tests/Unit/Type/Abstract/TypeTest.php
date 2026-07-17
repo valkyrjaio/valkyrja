@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Abstract;
 
 use JsonSerializable;
-use Valkyrja\Tests\Fixtures\Type\TypeClass;
+use Valkyrja\Tests\Fixtures\Type\TypeFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Contract\TypeContract;
 
@@ -35,7 +35,7 @@ final class TypeTest extends TestCase
     {
         $value        = 'test';
         $newValue     = 'test2';
-        $type         = TypeClass::fromValue($value);
+        $type         = TypeFixture::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -51,7 +51,7 @@ final class TypeTest extends TestCase
     {
         $value        = 45;
         $newValue     = 43;
-        $type         = TypeClass::fromValue($value);
+        $type         = TypeFixture::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -67,7 +67,7 @@ final class TypeTest extends TestCase
     {
         $value        = 4.75;
         $newValue     = 52.32;
-        $type         = TypeClass::fromValue($value);
+        $type         = TypeFixture::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -83,7 +83,7 @@ final class TypeTest extends TestCase
     {
         $value        = true;
         $newValue     = false;
-        $type         = TypeClass::fromValue($value);
+        $type         = TypeFixture::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -98,7 +98,7 @@ final class TypeTest extends TestCase
     public function testNull(): void
     {
         $value = null;
-        $type  = TypeClass::fromValue($value);
+        $type  = TypeFixture::fromValue($value);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());

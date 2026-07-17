@@ -16,9 +16,9 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 use Exception;
 use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ThrowableCaughtHandlerClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Handler\ThrowableCaughtHandlerFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
 
 /**
  * Test the throwable caught handler.
@@ -43,7 +43,7 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $beforeHandler = new ThrowableCaughtHandlerClass($this->container);
+        $beforeHandler = new ThrowableCaughtHandlerFixture($this->container);
 
         $before = $beforeHandler->throwableCaught($this->input, $this->output, $this->exception);
 
@@ -57,17 +57,17 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        ThrowableCaughtMiddlewareChangedClass::resetCounter();
+        ThrowableCaughtMiddlewareChangedFixture::resetCounter();
 
-        $handler = new ThrowableCaughtHandlerClass($this->container);
+        $handler = new ThrowableCaughtHandlerFixture($this->container);
 
-        $handler->add(ThrowableCaughtMiddlewareChangedClass::class);
+        $handler->add(ThrowableCaughtMiddlewareChangedFixture::class);
         $before = $handler->throwableCaught($this->input, $this->output, $this->exception);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, ThrowableCaughtMiddlewareChangedClass::getCounter());
+        self::assertSame(1, ThrowableCaughtMiddlewareChangedFixture::getCounter());
         self::assertNotSame($this->output, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -77,22 +77,22 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        ThrowableCaughtMiddlewareChangedClass::resetCounter();
-        ThrowableCaughtMiddlewareClass::resetCounter();
+        ThrowableCaughtMiddlewareChangedFixture::resetCounter();
+        ThrowableCaughtMiddlewareFixture::resetCounter();
 
-        $handler = new ThrowableCaughtHandlerClass(
+        $handler = new ThrowableCaughtHandlerFixture(
             $this->container,
-            ThrowableCaughtMiddlewareClass::class
+            ThrowableCaughtMiddlewareFixture::class
         );
 
-        $handler->add(ThrowableCaughtMiddlewareChangedClass::class);
+        $handler->add(ThrowableCaughtMiddlewareChangedFixture::class);
         $before = $handler->throwableCaught($this->input, $this->output, $this->exception);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, ThrowableCaughtMiddlewareChangedClass::getCounter());
-        self::assertSame(1, ThrowableCaughtMiddlewareClass::getCounter());
+        self::assertSame(1, ThrowableCaughtMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, ThrowableCaughtMiddlewareFixture::getCounter());
         self::assertNotSame($this->output, $before);
         self::assertInstanceOf(OutputContract::class, $before);
     }
@@ -102,21 +102,21 @@ final class ThrowableCaughtHandlerTest extends HandlerTestCase
      */
     public function testBefore(): void
     {
-        ThrowableCaughtMiddlewareChangedClass::resetCounter();
-        ThrowableCaughtMiddlewareClass::resetCounter();
+        ThrowableCaughtMiddlewareChangedFixture::resetCounter();
+        ThrowableCaughtMiddlewareFixture::resetCounter();
 
-        $handler = new ThrowableCaughtHandlerClass(
+        $handler = new ThrowableCaughtHandlerFixture(
             $this->container,
-            ThrowableCaughtMiddlewareClass::class,
-            ThrowableCaughtMiddlewareClass::class
+            ThrowableCaughtMiddlewareFixture::class,
+            ThrowableCaughtMiddlewareFixture::class
         );
 
         $before = $handler->throwableCaught($this->input, $this->output, $this->exception);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, ThrowableCaughtMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, ThrowableCaughtMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, ThrowableCaughtMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, ThrowableCaughtMiddlewareFixture::getAndResetCounter());
         self::assertSame($this->output, $before);
     }
 }

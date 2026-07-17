@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
-use Valkyrja\Tests\Fixtures\Type\Model\ProtectedExposableModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Model\ProtectedExposableModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function json_encode;
@@ -28,67 +28,67 @@ final class ProtectedExposableModelTest extends TestCase
 {
     public function testGetExposable(): void
     {
-        self::assertSame([ModelClass::PROTECTED, ModelClass::PRIVATE], ProtectedExposableModelClass::getExposable());
+        self::assertSame([ModelFixture::PROTECTED, ModelFixture::PRIVATE], ProtectedExposableModelFixture::getExposable());
     }
 
     public function testAsExposed(): void
     {
-        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
+        $model = ProtectedExposableModelFixture::fromArray(ModelFixture::VALUES);
 
-        $expected = [ModelClass::PUBLIC => ModelClass::PUBLIC, ModelClass::NULLABLE => null];
+        $expected = [ModelFixture::PUBLIC => ModelFixture::PUBLIC, ModelFixture::NULLABLE => null];
         self::assertSame($expected, $model->asArray());
-        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
+        self::assertSame(ModelFixture::VALUES, $model->asExposedArray());
 
         $model->private  = 'test';
-        $expectedExposed = [ModelClass::PRIVATE => 'test'];
+        $expectedExposed = [ModelFixture::PRIVATE => 'test'];
         self::assertSame([], $model->asChangedArray());
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testExpose(): void
     {
-        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
+        $model = ProtectedExposableModelFixture::fromArray(ModelFixture::VALUES);
 
-        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
-        self::assertSame(ModelClass::VALUES, $model->asArray());
-        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
+        $model->expose(ModelFixture::PROTECTED, ModelFixture::PRIVATE);
+        self::assertSame(ModelFixture::VALUES, $model->asArray());
+        self::assertSame(ModelFixture::VALUES, $model->asExposedArray());
 
         // asExposed methods call unexpose and so remove the exposable properties if that array is set
-        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
+        $model->expose(ModelFixture::PROTECTED, ModelFixture::PRIVATE);
         $model->protected = 'test';
         $model->private   = 'test2';
-        $expected         = [ModelClass::PROTECTED => 'test', ModelClass::PRIVATE => 'test2'];
+        $expected         = [ModelFixture::PROTECTED => 'test', ModelFixture::PRIVATE => 'test2'];
         self::assertSame($expected, $model->asChangedArray());
         self::assertSame($expected, $model->asExposedChangedArray());
 
-        $model->protected = ModelClass::PROTECTED;
-        $model->private   = ModelClass::PRIVATE;
+        $model->protected = ModelFixture::PROTECTED;
+        $model->private   = ModelFixture::PRIVATE;
 
-        $expected = [ModelClass::PUBLIC => ModelClass::PUBLIC, ModelClass::NULLABLE => null];
+        $expected = [ModelFixture::PUBLIC => ModelFixture::PUBLIC, ModelFixture::NULLABLE => null];
         self::assertSame($expected, $model->asArray());
-        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
+        self::assertSame(ModelFixture::VALUES, $model->asExposedArray());
 
         $model->protected = 'test';
         $model->private   = 'test2';
-        $expectedExposed  = [ModelClass::PROTECTED => 'test', ModelClass::PRIVATE => 'test2'];
+        $expectedExposed  = [ModelFixture::PROTECTED => 'test', ModelFixture::PRIVATE => 'test2'];
         self::assertSame([], $model->asChangedArray());
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testJsonSerialize(): void
     {
-        $model = ProtectedExposableModelClass::fromArray([]);
+        $model = ProtectedExposableModelFixture::fromArray([]);
 
         $expected = '[]';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
 
-        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
+        $model = ProtectedExposableModelFixture::fromArray(ModelFixture::VALUES);
 
         $expected = '{"public":"public","nullable":null}';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
-        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
+        $model->expose(ModelFixture::PROTECTED, ModelFixture::PRIVATE);
         $expectedExposed = '{"public":"public","nullable":null,"protected":"protected","private":"private"}';
         self::assertSame($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expectedExposed, (string) $model);

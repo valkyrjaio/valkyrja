@@ -22,7 +22,7 @@ use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmRuntimeException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidMigrationFileException;
 use Valkyrja\Orm\Throwable\Exception\OrmMigrationExecutionException;
-use Valkyrja\Tests\Fixtures\Orm\Schema\SqlFileMigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\SqlFileMigrationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function file_exists;
@@ -35,7 +35,7 @@ final class SqlFileMigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 
-    protected SqlFileMigrationClass $migration;
+    protected SqlFileMigrationFixture $migration;
 
     protected string $runSqlFile;
 
@@ -44,7 +44,7 @@ final class SqlFileMigrationTest extends TestCase
     protected function setUp(): void
     {
         $this->orm       = $this->createMock(ManagerContract::class);
-        $this->migration = new SqlFileMigrationClass($this->orm);
+        $this->migration = new SqlFileMigrationFixture($this->orm);
 
         // Create temporary SQL files
         $this->runSqlFile      = tempnam(sys_get_temp_dir(), 'run_migration_') . '.sql';

@@ -16,19 +16,19 @@ namespace Valkyrja\Tests\Unit\Orm\Schema;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Contract\MigrationContract;
-use Valkyrja\Tests\Fixtures\Orm\Schema\MigrationClass;
+use Valkyrja\Tests\Fixtures\Orm\Schema\MigrationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class MigrationTest extends TestCase
 {
     protected ManagerContract&MockObject $orm;
 
-    protected MigrationClass $migration;
+    protected MigrationFixture $migration;
 
     protected function setUp(): void
     {
         $this->orm       = $this->createMock(ManagerContract::class);
-        $this->migration = new MigrationClass($this->orm);
+        $this->migration = new MigrationFixture($this->orm);
     }
 
     public function testImplementsMigrationContract(): void

@@ -33,19 +33,19 @@ use Valkyrja\Http\Routing\Provider\HttpRoutingCliComponentProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingComponentProvider;
 use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Log\Provider\LogComponentProvider;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliContainerDataProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\ComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\EventComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpContainerDataProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteComponentProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderClass;
-use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderClass;
-use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderClass;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliContainerDataProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\ComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\EventComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpContainerDataProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteComponentProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderFixture;
+use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderFixture;
+use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function date_default_timezone_get;
@@ -89,7 +89,7 @@ final class ApplicationTest extends TestCase
         $config    = new Config(
             providers: [
                 new CliWithHttpApplicationComponentProvider(),
-                new CliComponentProviderClass(),
+                new CliComponentProviderFixture(),
             ],
         );
         $container = new Container();
@@ -122,7 +122,7 @@ final class ApplicationTest extends TestCase
         self::assertInstanceOf(HttpRoutingCliComponentProvider::class, $providers[12]);
         self::assertInstanceOf(HttpServerComponentProvider::class, $providers[13]);
         self::assertInstanceOf(CliWithHttpApplicationComponentProvider::class, $providers[14]);
-        self::assertInstanceOf(CliComponentProviderClass::class, $providers[15]);
+        self::assertInstanceOf(CliComponentProviderFixture::class, $providers[15]);
     }
 
     /**
@@ -130,14 +130,14 @@ final class ApplicationTest extends TestCase
      */
     public function testGetProvidersExpandsComponentProviders(): void
     {
-        $config      = new Config(providers: [new ComponentProviderClass()]);
+        $config      = new Config(providers: [new ComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
         $providers = $application->getProviders();
         self::assertCount(3, $providers);
-        self::assertInstanceOf(CliComponentProviderClass::class, $providers[0]);
-        self::assertInstanceOf(HttpComponentProviderClass::class, $providers[1]);
-        self::assertInstanceOf(ComponentProviderClass::class, $providers[2]);
+        self::assertInstanceOf(CliComponentProviderFixture::class, $providers[0]);
+        self::assertInstanceOf(HttpComponentProviderFixture::class, $providers[1]);
+        self::assertInstanceOf(ComponentProviderFixture::class, $providers[2]);
     }
 
     /**
@@ -145,7 +145,7 @@ final class ApplicationTest extends TestCase
      */
     public function testGetProvidersIsCached(): void
     {
-        $config      = new Config(providers: [new ComponentProviderClass()]);
+        $config      = new Config(providers: [new ComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
         $reflection  = new ReflectionClass($application);
         $property    = $reflection->getProperty('providers');
@@ -155,9 +155,9 @@ final class ApplicationTest extends TestCase
         $result = $application->getProviders();
 
         self::assertCount(3, $result);
-        self::assertInstanceOf(CliComponentProviderClass::class, $result[0]);
-        self::assertInstanceOf(HttpComponentProviderClass::class, $result[1]);
-        self::assertInstanceOf(ComponentProviderClass::class, $result[2]);
+        self::assertInstanceOf(CliComponentProviderFixture::class, $result[0]);
+        self::assertInstanceOf(HttpComponentProviderFixture::class, $result[1]);
+        self::assertInstanceOf(ComponentProviderFixture::class, $result[2]);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getProviders());
     }
@@ -167,16 +167,16 @@ final class ApplicationTest extends TestCase
      */
     public function testGetContainerProviders(): void
     {
-        $config      = new Config(providers: [new ComponentProviderClass()]);
+        $config      = new Config(providers: [new ComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
         $result = $application->getContainerProviders();
 
         self::assertCount(4, $result);
-        self::assertInstanceOf(CliContainerDataProviderClass::class, $result[0]);
-        self::assertInstanceOf(CliRoutingDataProviderClass::class, $result[1]);
-        self::assertInstanceOf(HttpContainerDataProviderClass::class, $result[2]);
-        self::assertInstanceOf(HttpRoutingDataProviderClass::class, $result[3]);
+        self::assertInstanceOf(CliContainerDataProviderFixture::class, $result[0]);
+        self::assertInstanceOf(CliRoutingDataProviderFixture::class, $result[1]);
+        self::assertInstanceOf(HttpContainerDataProviderFixture::class, $result[2]);
+        self::assertInstanceOf(HttpRoutingDataProviderFixture::class, $result[3]);
     }
 
     /**
@@ -184,7 +184,7 @@ final class ApplicationTest extends TestCase
      */
     public function testGetContainerProvidersIsCached(): void
     {
-        $config      = new Config(providers: [new ComponentProviderClass()]);
+        $config      = new Config(providers: [new ComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
         $reflection  = new ReflectionClass($application);
         $property    = $reflection->getProperty('serviceProviders');
@@ -194,10 +194,10 @@ final class ApplicationTest extends TestCase
         $result = $application->getContainerProviders();
 
         self::assertCount(4, $result);
-        self::assertInstanceOf(CliContainerDataProviderClass::class, $result[0]);
-        self::assertInstanceOf(CliRoutingDataProviderClass::class, $result[1]);
-        self::assertInstanceOf(HttpContainerDataProviderClass::class, $result[2]);
-        self::assertInstanceOf(HttpRoutingDataProviderClass::class, $result[3]);
+        self::assertInstanceOf(CliContainerDataProviderFixture::class, $result[0]);
+        self::assertInstanceOf(CliRoutingDataProviderFixture::class, $result[1]);
+        self::assertInstanceOf(HttpContainerDataProviderFixture::class, $result[2]);
+        self::assertInstanceOf(HttpRoutingDataProviderFixture::class, $result[3]);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getContainerProviders());
     }
@@ -207,11 +207,11 @@ final class ApplicationTest extends TestCase
      */
     public function testGetEventProviders(): void
     {
-        $config      = new Config(providers: [new EventComponentProviderClass()]);
+        $config      = new Config(providers: [new EventComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
         self::assertSame(
-            [ListenerProviderClass::class],
+            [ListenerProviderFixture::class],
             $application->getEventProviders(),
         );
     }
@@ -221,7 +221,7 @@ final class ApplicationTest extends TestCase
      */
     public function testGetEventProvidersIsCached(): void
     {
-        $config      = new Config(providers: [new EventComponentProviderClass()]);
+        $config      = new Config(providers: [new EventComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
         $reflection  = new ReflectionClass($application);
         $property    = $reflection->getProperty('eventProviders');
@@ -230,7 +230,7 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getEventProviders();
 
-        self::assertSame([ListenerProviderClass::class], $result);
+        self::assertSame([ListenerProviderFixture::class], $result);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getEventProviders());
     }
@@ -240,11 +240,11 @@ final class ApplicationTest extends TestCase
      */
     public function testGetCliProviders(): void
     {
-        $config      = new Config(providers: [new CliRouteComponentProviderClass()]);
+        $config      = new Config(providers: [new CliRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
         self::assertSame(
-            [CliRouteProviderClass::class],
+            [CliRouteProviderFixture::class],
             $application->getCliProviders(),
         );
     }
@@ -254,7 +254,7 @@ final class ApplicationTest extends TestCase
      */
     public function testGetCliProvidersIsCached(): void
     {
-        $config      = new Config(providers: [new CliRouteComponentProviderClass()]);
+        $config      = new Config(providers: [new CliRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
         $reflection  = new ReflectionClass($application);
         $property    = $reflection->getProperty('cliRouteProviders');
@@ -263,7 +263,7 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getCliProviders();
 
-        self::assertSame([CliRouteProviderClass::class], $result);
+        self::assertSame([CliRouteProviderFixture::class], $result);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getCliProviders());
     }
@@ -273,11 +273,11 @@ final class ApplicationTest extends TestCase
      */
     public function testGetHttpProviders(): void
     {
-        $config      = new Config(providers: [new HttpRouteComponentProviderClass()]);
+        $config      = new Config(providers: [new HttpRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
         self::assertSame(
-            [HttpRouteProviderClass::class],
+            [HttpRouteProviderFixture::class],
             $application->getHttpProviders(),
         );
     }
@@ -287,7 +287,7 @@ final class ApplicationTest extends TestCase
      */
     public function testGetHttpProvidersIsCached(): void
     {
-        $config      = new Config(providers: [new HttpRouteComponentProviderClass()]);
+        $config      = new Config(providers: [new HttpRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
         $reflection  = new ReflectionClass($application);
         $property    = $reflection->getProperty('httpRouteProviders');
@@ -296,7 +296,7 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getHttpProviders();
 
-        self::assertSame([HttpRouteProviderClass::class], $result);
+        self::assertSame([HttpRouteProviderFixture::class], $result);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getHttpProviders());
     }

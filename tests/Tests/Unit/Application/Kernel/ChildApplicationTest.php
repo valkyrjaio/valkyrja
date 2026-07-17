@@ -21,7 +21,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\NativeChildContainer;
-use Valkyrja\Tests\Fixtures\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -128,18 +128,18 @@ final class ChildApplicationTest extends TestCase
 
     public function testChildContainerWriteDoesNotAffectParentContainer(): void
     {
-        $instance = new SingletonClass();
-        $this->child->getContainer()->setSingleton(SingletonClass::class, $instance);
+        $instance = new SingletonFixture();
+        $this->child->getContainer()->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertFalse($this->parent->getContainer()->isSingletonInstance(SingletonClass::class));
+        self::assertFalse($this->parent->getContainer()->isSingletonInstance(SingletonFixture::class));
     }
 
     public function testChildContainerServesItsOwnRegistrations(): void
     {
-        $instance = new SingletonClass();
-        $this->child->getContainer()->setSingleton(SingletonClass::class, $instance);
+        $instance = new SingletonFixture();
+        $this->child->getContainer()->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertSame($instance, $this->child->getContainer()->getSingleton(SingletonClass::class));
+        self::assertSame($instance, $this->child->getContainer()->getSingleton(SingletonFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -182,9 +182,9 @@ final class ChildApplicationTest extends TestCase
         $child2Container = new NativeChildContainer($parentContainer);
         $child2          = new ChildApplication($this->parent, $child2Container);
 
-        $instance = new SingletonClass();
-        $this->child->getContainer()->setSingleton(SingletonClass::class, $instance);
+        $instance = new SingletonFixture();
+        $this->child->getContainer()->setSingleton(SingletonFixture::class, $instance);
 
-        self::assertFalse($child2->getContainer()->isSingletonInstance(SingletonClass::class));
+        self::assertFalse($child2->getContainer()->isSingletonInstance(SingletonFixture::class));
     }
 }

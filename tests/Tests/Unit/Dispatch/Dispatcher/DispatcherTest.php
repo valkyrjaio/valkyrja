@@ -25,9 +25,9 @@ use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedDispatchException;
-use Valkyrja\Tests\Fixtures\Container\ServiceClass;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatchClass;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatchFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function count;
@@ -235,12 +235,12 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchClassWithArgs(): void
     {
-        $dispatch = new ClassDispatch(class: InvalidDispatcherClass::class);
+        $dispatch = new ClassDispatch(class: InvalidDispatcherFixture::class);
 
         $app = self::createStub(ApplicationContract::class);
 
         self::assertInstanceOf(
-            InvalidDispatcherClass::class,
+            InvalidDispatcherFixture::class,
             $this->dispatcher->dispatch(
                 $dispatch,
                 [
@@ -339,7 +339,7 @@ final class DispatcherTest extends TestCase
     {
         $this->expectException(DispatchUnsupportedDispatchException::class);
 
-        $dispatch = new InvalidDispatchClass();
+        $dispatch = new InvalidDispatchFixture();
 
         $this->dispatcher->dispatch($dispatch);
     }
@@ -350,47 +350,47 @@ final class DispatcherTest extends TestCase
         $container2 = new Container();
         $dispatcher = new Dispatcher($container);
 
-        $container->bind(ServiceClass::class, [ServiceClass::class, 'make']);
+        $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
         $container->setSingleton(Container::class, $container);
 
-        $dispatch = new ClassDispatch(class: ServiceClass::class, dependencies: [Container::class]);
+        $dispatch = new ClassDispatch(class: ServiceFixture::class, dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(ServiceClass::class, $result);
+        self::assertInstanceOf(ServiceFixture::class, $result);
 
-        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'make', isStatic: true, dependencies: [Container::class]);
-
-        $result = $dispatcher->dispatch($dispatch);
-
-        self::assertInstanceOf(ServiceClass::class, $result);
-
-        $dispatch = new CallableDispatch(callable: [ServiceClass::class, 'make'], dependencies: [Container::class]);
+        $dispatch = new MethodDispatch(class: ServiceFixture::class, method: 'make', isStatic: true, dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(ServiceClass::class, $result);
+        self::assertInstanceOf(ServiceFixture::class, $result);
 
-        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'getContainer', dependencies: [Container::class]);
+        $dispatch = new CallableDispatch(callable: [ServiceFixture::class, 'make'], dependencies: [Container::class]);
+
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertInstanceOf(ServiceFixture::class, $result);
+
+        $dispatch = new MethodDispatch(class: ServiceFixture::class, method: 'getContainer', dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container, $result);
 
         $container
-            // ->withContext(ServiceClass::class, 'make')
+            // ->withContext(ServiceFixture::class, 'make')
             ->setSingleton(Container::class, $container2);
 
-        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'make', isStatic: true, dependencies: [Container::class]);
+        $dispatch = new MethodDispatch(class: ServiceFixture::class, method: 'make', isStatic: true, dependencies: [Container::class]);
 
-        /** @var ServiceClass $result */
+        /** @var ServiceFixture $result */
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container2, $result->getContainer());
 
-        $dispatch = new CallableDispatch(callable: [ServiceClass::class, 'make'], dependencies: [Container::class]);
+        $dispatch = new CallableDispatch(callable: [ServiceFixture::class, 'make'], dependencies: [Container::class]);
 
-        /** @var ServiceClass $result */
+        /** @var ServiceFixture $result */
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container2, $result->getContainer());

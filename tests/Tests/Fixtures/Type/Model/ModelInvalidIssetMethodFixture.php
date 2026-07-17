@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Tests\Fixtures\Type\Model;
+
+use Override;
+use Valkyrja\Type\Model\Abstract\Model;
+
+/**
+ * Model class to test an invalid isset method.
+ */
+final class ModelInvalidIssetMethodFixture extends Model
+{
+    public string $test = 'test';
+
+    public function issetTest(): string
+    {
+        return $this->test;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function internalIssetCallables(): array
+    {
+        return [
+            'test' => [$this, 'issetTest'],
+        ];
+    }
+}

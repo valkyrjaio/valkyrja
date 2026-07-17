@@ -19,7 +19,7 @@ use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingClassNameExcept
 use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableMissingMethodNameException;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchCallableNonStringClassNameException;
 use Valkyrja\Dispatch\Throwable\Exception\DispatchUnsupportedCallableException;
-use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherClass;
+use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -29,7 +29,7 @@ final class MethodDispatchTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $class        = InvalidDispatcherClass::class;
+        $class        = InvalidDispatcherFixture::class;
         $method       = 'method';
         $arguments    = ['arg' => 'value'];
         $dependencies = ['dependency' => self::class];
@@ -49,14 +49,14 @@ final class MethodDispatchTest extends TestCase
 
     public function testFromCallableOrArray(): void
     {
-        $dispatch  = MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'method']);
-        $dispatch2 = MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'staticMethod']);
+        $dispatch  = MethodDispatch::fromCallableOrArray([InvalidDispatcherFixture::class, 'method']);
+        $dispatch2 = MethodDispatch::fromCallableOrArray([InvalidDispatcherFixture::class, 'staticMethod']);
 
         self::assertSame('method', $dispatch->getMethod());
-        self::assertSame(InvalidDispatcherClass::class, $dispatch->getClass());
+        self::assertSame(InvalidDispatcherFixture::class, $dispatch->getClass());
         self::assertTrue($dispatch->isStatic());
         self::assertSame('staticMethod', $dispatch2->getMethod());
-        self::assertSame(InvalidDispatcherClass::class, $dispatch2->getClass());
+        self::assertSame(InvalidDispatcherFixture::class, $dispatch2->getClass());
         self::assertTrue($dispatch2->isStatic());
     }
 
@@ -85,12 +85,12 @@ final class MethodDispatchTest extends TestCase
     {
         $this->expectException(DispatchCallableMissingMethodNameException::class);
 
-        MethodDispatch::fromCallableOrArray([InvalidDispatcherClass::class]);
+        MethodDispatch::fromCallableOrArray([InvalidDispatcherFixture::class]);
     }
 
     public function testMethod(): void
     {
-        $class   = InvalidDispatcherClass::class;
+        $class   = InvalidDispatcherFixture::class;
         $method  = 'TEST';
         $method2 = 'TEST2';
 
@@ -109,7 +109,7 @@ final class MethodDispatchTest extends TestCase
 
     public function testIsStatic(): void
     {
-        $class    = InvalidDispatcherClass::class;
+        $class    = InvalidDispatcherFixture::class;
         $method   = 'TEST';
         $dispatch = new MethodDispatch(class: $class, method: $method);
 

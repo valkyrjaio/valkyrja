@@ -20,8 +20,8 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
-use Valkyrja\Tests\Fixtures\Container\ServiceClass;
-use Valkyrja\Tests\Fixtures\Container\SingletonClass;
+use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
+use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -47,9 +47,9 @@ final class ContainerTest extends TestCase
     public function testBind(): void
     {
         $container = new Container();
-        $id        = ServiceClass::class;
+        $id        = ServiceFixture::class;
 
-        $container->bind($id, [ServiceClass::class, 'make']);
+        $container->bind($id, [ServiceFixture::class, 'make']);
 
         self::assertTrue($container->has($id));
         self::assertTrue($container->isService($id));
@@ -67,10 +67,10 @@ final class ContainerTest extends TestCase
     public function testBindAlias(): void
     {
         $container = $this->container;
-        $id        = ServiceClass::class;
+        $id        = ServiceFixture::class;
         $alias     = 'alias';
 
-        $container->bind($id, [ServiceClass::class, 'make']);
+        $container->bind($id, [ServiceFixture::class, 'make']);
         $container->bindAlias($alias, $id);
 
         self::assertTrue($container->has($alias));
@@ -90,9 +90,9 @@ final class ContainerTest extends TestCase
     public function testBindSingleton(): void
     {
         $container = $this->container;
-        $id        = SingletonClass::class;
+        $id        = SingletonFixture::class;
 
-        $container->bindSingleton($id, [SingletonClass::class, 'make']);
+        $container->bindSingleton($id, [SingletonFixture::class, 'make']);
 
         self::assertTrue($container->has($id));
         self::assertTrue($container->isSingleton($id));
@@ -111,8 +111,8 @@ final class ContainerTest extends TestCase
     public function testSetSingleton(): void
     {
         $container = $this->container;
-        $id        = SingletonClass::class;
-        $singleton = new SingletonClass();
+        $id        = SingletonFixture::class;
+        $singleton = new SingletonFixture();
 
         $result = $container->setSingleton($id, $singleton);
 
@@ -141,7 +141,7 @@ final class ContainerTest extends TestCase
     {
         $this->expectException(ContainerInvalidArgumentException::class);
 
-        $this->container->getSingleton(ServiceClass::class);
+        $this->container->getSingleton(ServiceFixture::class);
     }
 
     public function testGetNonExistentInvalidSingleton(): void
@@ -162,7 +162,7 @@ final class ContainerTest extends TestCase
     {
         $this->expectException(ContainerInvalidArgumentException::class);
 
-        $this->container->getService(ServiceClass::class);
+        $this->container->getService(ServiceFixture::class);
     }
 
     public function testGetNonExistentInvalidService(): void
@@ -250,9 +250,9 @@ final class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $object = $container->get(SingletonClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+        $object = $container->get(SingletonFixture::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
 
-        self::assertInstanceOf(SingletonClass::class, $object);
+        self::assertInstanceOf(SingletonFixture::class, $object);
     }
 
     public function testNewInstanceOrThrowInvalidReferenceModeWithCaughtThrowable(): void
@@ -262,7 +262,7 @@ final class ContainerTest extends TestCase
         $container = new Container();
 
         // Will fail because this requires the container as the first argument, but no arguments passed
-        $container->get(ServiceClass::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+        $container->get(ServiceFixture::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
     }
 
     /**
@@ -274,7 +274,7 @@ final class ContainerTest extends TestCase
 
         $container = new Container();
 
-        $container->get(ServiceClass::class, mode: InvalidReferenceMode::THROW_EXCEPTION);
+        $container->get(ServiceFixture::class, mode: InvalidReferenceMode::THROW_EXCEPTION);
     }
 
     public function testNewInstanceThrowInvalidReferenceMode(): void

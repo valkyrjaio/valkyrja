@@ -21,7 +21,7 @@ use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionExpectedQuestionOutputException;
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class QuestionWriterTest extends TestCase
@@ -78,7 +78,7 @@ final class QuestionWriterTest extends TestCase
 
             return $output;
         };
-        $question = new QuestionAskManipulationClass(
+        $question = new QuestionAskManipulationFixture(
             text: 'text',
             callable: $callable,
             answer: new Answer(defaultResponse: 'defaultResponse', allowedResponses: ['defaultResponse']),

@@ -19,7 +19,7 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Validation\Constant\ErrorMessage;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
@@ -42,7 +42,7 @@ final class EntityExistsTest extends TestCase
     {
         $this->orm->expects($this->never())->method('createRepository');
         $this->repository->expects($this->never())->method('findBy');
-        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         self::assertInstanceOf(RuleContract::class, $rule);
     }
@@ -51,7 +51,7 @@ final class EntityExistsTest extends TestCase
     {
         $this->orm->expects($this->never())->method('createRepository');
         $this->repository->expects($this->never())->method('findBy');
-        $rule = new EntityExists($this->orm, subject: 42, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 42, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         self::assertSame(42, $rule->getSubject());
     }
@@ -69,7 +69,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn($entity);
 
-        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         self::assertTrue($rule->isValid());
     }
@@ -85,7 +85,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn(null);
 
-        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         self::assertFalse($rule->isValid());
     }
@@ -103,7 +103,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn($entity);
 
-        $rule = new EntityExists($this->orm, subject: 'string-id', errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 'string-id', errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         self::assertTrue($rule->isValid());
     }
@@ -121,7 +121,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn($entity);
 
-        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 1, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         // Should not throw
         $rule->validate();
@@ -140,7 +140,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn(null);
 
-        $rule = new EntityExists($this->orm, subject: 999, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 999, errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class);
 
         $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage(ErrorMessage::ENTITY_EXISTS);
@@ -159,7 +159,7 @@ final class EntityExistsTest extends TestCase
             ->method('findBy')
             ->willReturn(null);
 
-        $rule = new EntityExists($this->orm, subject: 999, errorMessage: 'User not found', entity: EntityClass::class);
+        $rule = new EntityExists($this->orm, subject: 999, errorMessage: 'User not found', entity: EntityFixture::class);
 
         $this->expectException(ValidationRuleFailureException::class);
         $this->expectExceptionMessage('User not found');
@@ -187,7 +187,7 @@ final class EntityExistsTest extends TestCase
             }))
             ->willReturn($entity);
 
-        $rule = new EntityExists($this->orm, subject: 'test@example.com', errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityClass::class, field: 'email');
+        $rule = new EntityExists($this->orm, subject: 'test@example.com', errorMessage: ErrorMessage::ENTITY_EXISTS, entity: EntityFixture::class, field: 'email');
 
         self::assertTrue($rule->isValid());
     }

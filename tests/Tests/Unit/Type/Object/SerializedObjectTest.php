@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Object;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\SerializedObject;
 
@@ -26,7 +26,7 @@ final class SerializedObjectTest extends TestCase
 {
     public function testValue(): void
     {
-        $value = new ModelClass();
+        $value = new ModelFixture();
         $type  = new SerializedObject($value);
 
         self::assertSame($type->asValue(), $value);
@@ -37,7 +37,7 @@ final class SerializedObjectTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $value         = new ModelClass();
+        $value         = new ModelFixture();
         $typeFromValue = SerializedObject::fromValue($value);
 
         self::assertSame($typeFromValue->asValue(), $value);
@@ -48,7 +48,7 @@ final class SerializedObjectTest extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $value = new ModelClass();
+        $value = new ModelFixture();
         $type  = new SerializedObject($value);
 
         self::assertSame($type->asFlatValue(), serialize($value));
@@ -59,12 +59,12 @@ final class SerializedObjectTest extends TestCase
      */
     public function testModify(): void
     {
-        $value = ModelClass::fromArray(['public' => 'test']);
+        $value = ModelFixture::fromArray(['public' => 'test']);
         $type  = new SerializedObject($value);
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(static function (ModelClass $subject) use ($newValue): ModelClass {
+        $modified = $type->modify(static function (ModelFixture $subject) use ($newValue): ModelFixture {
             $subject->public = $newValue;
 
             return $subject;
@@ -79,7 +79,7 @@ final class SerializedObjectTest extends TestCase
 
     public function testJsonSerialize(): void
     {
-        $value = new ModelClass();
+        $value = new ModelFixture();
         $type  = new SerializedObject($value);
 
         self::assertSame(json_encode($type), json_encode($value));

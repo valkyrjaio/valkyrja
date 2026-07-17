@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Fixtures\Type\Model\UnpackForNewInstanceModelClass;
+use Valkyrja\Tests\Fixtures\Type\Model\UnpackForNewInstanceModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -26,7 +26,7 @@ final class UnpackForNewInstanceModelTest extends TestCase
         $public    = 'test';
         $protected = 'test2';
 
-        $model = UnpackForNewInstanceModelClass::fromArray([
+        $model = UnpackForNewInstanceModelFixture::fromArray([
             'public'    => $public,
             'protected' => $protected,
         ]);

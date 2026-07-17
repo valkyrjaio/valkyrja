@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -24,7 +24,7 @@ final class MiddlewareTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = RequestReceivedMiddlewareClass::class;
+        $value = RequestReceivedMiddlewareFixture::class;
 
         $attribute = new Middleware($value);
 

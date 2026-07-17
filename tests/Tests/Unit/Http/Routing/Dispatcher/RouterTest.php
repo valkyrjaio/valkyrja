@@ -25,8 +25,8 @@ use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -59,10 +59,10 @@ final class RouterTest extends TestCase
 
     public function testNotFoundWithRouteNotMatchedMiddleware(): void
     {
-        RouteNotMatchedMiddlewareChangedClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedFixture::resetCounter();
 
         $routeNotMatchedHandler = new RouteNotMatchedHandler();
-        $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedClass::class);
+        $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedFixture::class);
 
         $router  = new Router(routeNotMatchedHandler: $routeNotMatchedHandler);
         $request = new ServerRequest(
@@ -72,7 +72,7 @@ final class RouterTest extends TestCase
 
         $router->dispatch(request: $request);
 
-        self::assertSame(1, RouteNotMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareChangedFixture::getAndResetCounter());
     }
 
     public function testMethodNotAllowed(): void
@@ -99,10 +99,10 @@ final class RouterTest extends TestCase
 
     public function testMethodNotAllowedRouteNotMatchedMiddleware(): void
     {
-        RouteNotMatchedMiddlewareChangedClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedFixture::resetCounter();
 
         $routeNotMatchedHandler = new RouteNotMatchedHandler();
-        $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedClass::class);
+        $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedFixture::class);
 
         $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
@@ -121,15 +121,15 @@ final class RouterTest extends TestCase
 
         $router->dispatch(request: $request);
 
-        self::assertSame(1, RouteNotMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareChangedFixture::getAndResetCounter());
     }
 
     public function testResponseAfterRouteMatchedMiddleware(): void
     {
-        RouteMatchedMiddlewareChangedClass::resetCounter();
+        RouteMatchedMiddlewareChangedFixture::resetCounter();
 
         $routeNotMatchedHandler = new RouteMatchedHandler();
-        $routeNotMatchedHandler->add(RouteMatchedMiddlewareChangedClass::class);
+        $routeNotMatchedHandler->add(RouteMatchedMiddlewareChangedFixture::class);
 
         $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
@@ -148,12 +148,12 @@ final class RouterTest extends TestCase
 
         $router->dispatch(request: $request);
 
-        self::assertSame(1, RouteMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteMatchedMiddlewareChangedFixture::getAndResetCounter());
     }
 
     public function testResponseAfterRouteMatchedMiddlewareFromRoute(): void
     {
-        RouteMatchedMiddlewareChangedClass::resetCounter();
+        RouteMatchedMiddlewareChangedFixture::resetCounter();
 
         $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
@@ -167,13 +167,13 @@ final class RouterTest extends TestCase
             path: '/',
             name: 'route',
             handler: [self::class, 'dispatch'],
-            routeMatchedMiddleware: [RouteMatchedMiddlewareChangedClass::class]
+            routeMatchedMiddleware: [RouteMatchedMiddlewareChangedFixture::class]
         );
         $collection->add($route);
 
         $router->dispatch(request: $request);
 
-        self::assertSame(1, RouteMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteMatchedMiddlewareChangedFixture::getAndResetCounter());
     }
 
     public function testResponseAfterRouteDispatched(): void

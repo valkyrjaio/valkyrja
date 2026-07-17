@@ -23,7 +23,7 @@ use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Auth\Throwable\Exception\AuthNoCurrentUserException;
 use Valkyrja\Auth\Throwable\Exception\AuthNoImpersonatedUserException;
-use Valkyrja\Tests\Fixtures\Auth\Authenticator\Abstract\AuthenticatorClass;
+use Valkyrja\Tests\Fixtures\Auth\Authenticator\Abstract\AuthenticatorFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function password_hash;
@@ -43,7 +43,7 @@ final class AuthenticatorTest extends TestCase
 
     protected StoreContract&MockObject $store;
     protected PasswordHasherContract&MockObject $hasher;
-    protected AuthenticatorClass $authenticator;
+    protected AuthenticatorFixture $authenticator;
     protected User $user;
 
     protected function setUp(): void
@@ -51,7 +51,7 @@ final class AuthenticatorTest extends TestCase
         $this->store  = $this->createMock(StoreContract::class);
         $this->hasher = $this->createMock(PasswordHasherContract::class);
 
-        $this->authenticator = new AuthenticatorClass(
+        $this->authenticator = new AuthenticatorFixture(
             store: $this->store,
             hasher: $this->hasher,
             entity: User::class,

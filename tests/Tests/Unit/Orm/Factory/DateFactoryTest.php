@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Orm\Factory;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Factory\DateFactory;
 use Valkyrja\Orm\Throwable\Exception\OrmDateException;
-use Valkyrja\Tests\Fixtures\Orm\Support\DateFactoryWithFailingDateTimeClass;
+use Valkyrja\Tests\Fixtures\Orm\Support\DateFactoryWithFailingDateTimeFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class DateFactoryTest extends TestCase
@@ -69,6 +69,6 @@ final class DateFactoryTest extends TestCase
         $this->expectException(OrmDateException::class);
         $this->expectExceptionMessage('Failure occurred when creating a new DateTime object for current microtime.');
 
-        DateFactoryWithFailingDateTimeClass::getFormattedDate();
+        DateFactoryWithFailingDateTimeFixture::getFormattedDate();
     }
 }

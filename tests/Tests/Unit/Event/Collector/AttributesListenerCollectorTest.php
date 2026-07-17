@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Event\Collector;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Tests\Fixtures\Event\Attribute\Attributed2Class;
-use Valkyrja\Tests\Fixtures\Event\Attribute\AttributedClass;
+use Valkyrja\Tests\Fixtures\Event\Attribute\Attributed2Fixture;
+use Valkyrja\Tests\Fixtures\Event\Attribute\AttributedFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -56,7 +56,7 @@ final class AttributesListenerCollectorTest extends TestCase
 
     public function testGetListeners(): void
     {
-        $attributes = $this->class->getListeners(AttributedClass::class);
+        $attributes = $this->class->getListeners(AttributedFixture::class);
 
         self::assertCount(6, $attributes);
 
@@ -69,18 +69,18 @@ final class AttributesListenerCollectorTest extends TestCase
 
         self::assertSame(self::VALUE1, $attributes[2]->getEventId());
         self::assertSame(self::VALUE2, $attributes[3]->getEventId());
-        self::assertSame([AttributedClass::class, 'handler'], $attributes[2]->getHandler());
-        self::assertSame([AttributedClass::class, 'handler'], $attributes[3]->getHandler());
+        self::assertSame([AttributedFixture::class, 'handler'], $attributes[2]->getHandler());
+        self::assertSame([AttributedFixture::class, 'handler'], $attributes[3]->getHandler());
 
         self::assertSame(self::VALUE1, $attributes[4]->getEventId());
         self::assertSame(self::VALUE2, $attributes[5]->getEventId());
-        self::assertSame([AttributedClass::class, 'handler2'], $attributes[4]->getHandler());
-        self::assertSame([AttributedClass::class, 'handler2'], $attributes[5]->getHandler());
+        self::assertSame([AttributedFixture::class, 'handler2'], $attributes[4]->getHandler());
+        self::assertSame([AttributedFixture::class, 'handler2'], $attributes[5]->getHandler());
     }
 
     public function testGetListeners2(): void
     {
-        $attributes = $this->class->getListeners(Attributed2Class::class);
+        $attributes = $this->class->getListeners(Attributed2Fixture::class);
 
         self::assertCount(6, $attributes);
 

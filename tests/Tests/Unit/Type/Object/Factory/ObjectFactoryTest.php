@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type\Object\Factory;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Fixtures\Type\Model\ModelClass;
-use Valkyrja\Tests\Fixtures\Type\Object\Support\ObjectFactoryClass;
+use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
+use Valkyrja\Tests\Fixtures\Type\Object\Support\ObjectFactoryFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
 use Valkyrja\Type\Object\Factory\ObjectFactory;
@@ -62,7 +62,7 @@ final class ObjectFactoryTest extends TestCase
 
     public function testToSerializedString(): void
     {
-        $value = ModelClass::fromArray(['public' => 'test']);
+        $value = ModelFixture::fromArray(['public' => 'test']);
 
         self::assertSame(serialize($value), ObjectFactory::toSerializedString($value));
     }
@@ -92,7 +92,7 @@ final class ObjectFactoryTest extends TestCase
     {
         error_reporting(1);
 
-        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
+        $serialized = serialize(ModelFixture::fromArray(['public' => 'test']));
         $value      = ObjectFactory::fromSerializedString($serialized);
 
         // No values should be accessible and should all be null
@@ -101,7 +101,7 @@ final class ObjectFactoryTest extends TestCase
 
     public function testFromSerializedStringWithNullAllowedClasses(): void
     {
-        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
+        $serialized = serialize(ModelFixture::fromArray(['public' => 'test']));
         $value      = ObjectFactory::fromSerializedString($serialized, null);
 
         self::assertSame('test', $value->public);
@@ -109,16 +109,16 @@ final class ObjectFactoryTest extends TestCase
 
     public function testFromSerializedStringWithAllowedClasses(): void
     {
-        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
-        $value      = ObjectFactory::fromSerializedString($serialized, [ModelClass::class]);
+        $serialized = serialize(ModelFixture::fromArray(['public' => 'test']));
+        $value      = ObjectFactory::fromSerializedString($serialized, [ModelFixture::class]);
 
-        self::assertInstanceOf(ModelClass::class, $value);
+        self::assertInstanceOf(ModelFixture::class, $value);
         self::assertSame('test', $value->public);
     }
 
     public function testGetAllProperties(): void
     {
-        $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
+        $value = ModelFixture::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
 
         // All public, protected, and private
         $allProperties = ObjectFactory::getAllProperties($value, PropertyVisibilityFilter::ALL);
@@ -281,8 +281,8 @@ final class ObjectFactoryTest extends TestCase
 
     public function testGetAllPropertiesSkipsEmptyKeyAfterSanitization(): void
     {
-        $propertyName  = ObjectFactoryClass::exposeSanitizePropertyName("\0test\0", PropertyVisibilityFilter::ALL);
-        $propertyName2 = ObjectFactoryClass::exposeSanitizePropertyName('', PropertyVisibilityFilter::ALL);
+        $propertyName  = ObjectFactoryFixture::exposeSanitizePropertyName("\0test\0", PropertyVisibilityFilter::ALL);
+        $propertyName2 = ObjectFactoryFixture::exposeSanitizePropertyName('', PropertyVisibilityFilter::ALL);
 
         self::assertNull($propertyName);
         self::assertNull($propertyName2);

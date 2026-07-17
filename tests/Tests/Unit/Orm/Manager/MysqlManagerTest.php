@@ -25,7 +25,7 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\OrmNoLastIdException;
 use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class MysqlManagerTest extends TestCase
@@ -113,7 +113,7 @@ final class MysqlManagerTest extends TestCase
             ->method('get')
             ->willReturn($repository);
 
-        $result = $this->manager->createRepository(EntityIntIdClass::class);
+        $result = $this->manager->createRepository(EntityIntIdFixture::class);
 
         self::assertInstanceOf(RepositoryContract::class, $result);
     }

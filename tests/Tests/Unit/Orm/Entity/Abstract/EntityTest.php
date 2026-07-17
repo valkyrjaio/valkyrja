@@ -17,12 +17,12 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Throwable\Exception\OrmArrayCastingException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnexpectedIdValueException;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityClass;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdClass;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdClass;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithAllFeaturesClass;
-use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithCastingsClass;
-use Valkyrja\Tests\Fixtures\Orm\Repository\RepositoryClass;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithAllFeaturesFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityWithCastingsFixture;
+use Valkyrja\Tests\Fixtures\Orm\Repository\RepositoryFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Int\IntT;
 
@@ -30,65 +30,65 @@ final class EntityTest extends TestCase
 {
     public function testImplementsEntityContract(): void
     {
-        $entity = new EntityIntIdClass();
+        $entity = new EntityIntIdFixture();
 
         self::assertInstanceOf(EntityContract::class, $entity);
     }
 
     public function testGetTableName(): void
     {
-        self::assertSame('test', EntityIntIdClass::getTableName());
-        self::assertSame('entities_with_features', EntityWithAllFeaturesClass::getTableName());
+        self::assertSame('test', EntityIntIdFixture::getTableName());
+        self::assertSame('entities_with_features', EntityWithAllFeaturesFixture::getTableName());
     }
 
     public function testExposable(): void
     {
-        self::assertSame([], EntityClass::getExposable());
+        self::assertSame([], EntityFixture::getExposable());
     }
 
     public function testGetIdFieldReturnsDefaultId(): void
     {
-        self::assertSame('id', EntityIntIdClass::getIdField());
+        self::assertSame('id', EntityIntIdFixture::getIdField());
     }
 
     public function testGetIdFieldReturnsCustomId(): void
     {
-        self::assertSame('entity_id', EntityWithAllFeaturesClass::getIdField());
+        self::assertSame('entity_id', EntityWithAllFeaturesFixture::getIdField());
     }
 
     public function testGetRepositoryReturnsRepositoryByDefault(): void
     {
-        self::assertSame(Repository::class, EntityIntIdClass::getRepository());
+        self::assertSame(Repository::class, EntityIntIdFixture::getRepository());
     }
 
     public function testGetRepositoryReturnsCustomRepository(): void
     {
-        self::assertSame(RepositoryClass::class, EntityWithAllFeaturesClass::getRepository());
+        self::assertSame(RepositoryFixture::class, EntityWithAllFeaturesFixture::getRepository());
     }
 
     public function testGetRelationshipPropertiesReturnsEmptyArrayByDefault(): void
     {
-        self::assertSame([], EntityIntIdClass::getRelationshipProperties());
+        self::assertSame([], EntityIntIdFixture::getRelationshipProperties());
     }
 
     public function testGetRelationshipPropertiesReturnsConfiguredProperties(): void
     {
-        self::assertSame(['relatedEntity'], EntityWithAllFeaturesClass::getRelationshipProperties());
+        self::assertSame(['relatedEntity'], EntityWithAllFeaturesFixture::getRelationshipProperties());
     }
 
     public function testGetUnStorableFieldsReturnsEmptyArrayByDefault(): void
     {
-        self::assertSame([], EntityIntIdClass::getUnStorableFields());
+        self::assertSame([], EntityIntIdFixture::getUnStorableFields());
     }
 
     public function testGetUnStorableFieldsReturnsConfiguredFields(): void
     {
-        self::assertSame(['tempField'], EntityWithAllFeaturesClass::getUnStorableFields());
+        self::assertSame(['tempField'], EntityWithAllFeaturesFixture::getUnStorableFields());
     }
 
     public function testGetIdValueWithIntId(): void
     {
-        $entity     = EntityIntIdClass::fromArray(['id' => 42, 'name' => 'Test']);
+        $entity     = EntityIntIdFixture::fromArray(['id' => 42, 'name' => 'Test']);
         $entity->id = 42;
 
         self::assertSame(42, $entity->getIdValue());
@@ -96,7 +96,7 @@ final class EntityTest extends TestCase
 
     public function testGetIdValueWithStringId(): void
     {
-        $entity     = EntityStringIdClass::fromArray(['id' => 'uuid-123', 'name' => 'Test']);
+        $entity     = EntityStringIdFixture::fromArray(['id' => 'uuid-123', 'name' => 'Test']);
         $entity->id = 'uuid-123';
 
         self::assertSame('uuid-123', $entity->getIdValue());
@@ -104,7 +104,7 @@ final class EntityTest extends TestCase
 
     public function testGetIdValueWithCustomIdField(): void
     {
-        $entity            = EntityWithAllFeaturesClass::fromArray(['entity_id' => 99, 'name' => 'Test']);
+        $entity            = EntityWithAllFeaturesFixture::fromArray(['entity_id' => 99, 'name' => 'Test']);
         $entity->entity_id = 99;
 
         self::assertSame(99, $entity->getIdValue());
@@ -112,7 +112,7 @@ final class EntityTest extends TestCase
 
     public function testGetIdValueThrowsExceptionForEmptyStringId(): void
     {
-        $entity     = EntityStringIdClass::fromArray(['id' => '', 'name' => 'Test']);
+        $entity     = EntityStringIdFixture::fromArray(['id' => '', 'name' => 'Test']);
         $entity->id = '';
 
         $this->expectException(OrmUnexpectedIdValueException::class);
@@ -123,16 +123,16 @@ final class EntityTest extends TestCase
 
     public function testFromArrayCreatesEntity(): void
     {
-        $entity = EntityIntIdClass::fromArray(['id' => 1, 'name' => 'Test Entity']);
+        $entity = EntityIntIdFixture::fromArray(['id' => 1, 'name' => 'Test Entity']);
 
-        self::assertInstanceOf(EntityIntIdClass::class, $entity);
+        self::assertInstanceOf(EntityIntIdFixture::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('Test Entity', $entity->name);
     }
 
     public function testAsStorableArrayReturnsAllPublicProperties(): void
     {
-        $entity       = EntityIntIdClass::fromArray(['id' => 1, 'name' => 'Test']);
+        $entity       = EntityIntIdFixture::fromArray(['id' => 1, 'name' => 'Test']);
         $entity->id   = 1;
         $entity->name = 'Test';
 
@@ -146,7 +146,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayExcludesUnStorableFields(): void
     {
-        $entity            = EntityWithAllFeaturesClass::fromArray(['entity_id' => 1, 'name' => 'Test']);
+        $entity            = EntityWithAllFeaturesFixture::fromArray(['entity_id' => 1, 'name' => 'Test']);
         $entity->entity_id = 1;
         $entity->name      = 'Test';
         $entity->tempField = 'should be excluded';
@@ -160,7 +160,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayExcludesRelationshipProperties(): void
     {
-        $entity                = EntityWithAllFeaturesClass::fromArray(['entity_id' => 1, 'name' => 'Test']);
+        $entity                = EntityWithAllFeaturesFixture::fromArray(['entity_id' => 1, 'name' => 'Test']);
         $entity->entity_id     = 1;
         $entity->name          = 'Test';
         $entity->relatedEntity = ['some' => 'data'];
@@ -174,7 +174,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithSpecificProperties(): void
     {
-        $entity       = EntityIntIdClass::fromArray(['id' => 1, 'name' => 'Test']);
+        $entity       = EntityIntIdFixture::fromArray(['id' => 1, 'name' => 'Test']);
         $entity->id   = 1;
         $entity->name = 'Test';
 
@@ -187,7 +187,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableChangedArrayReturnsOnlyChangedProperties(): void
     {
-        $entity       = EntityIntIdClass::fromArray(['id' => 1, 'name' => 'Original']);
+        $entity       = EntityIntIdFixture::fromArray(['id' => 1, 'name' => 'Original']);
         $entity->name = 'Changed';
 
         $changed = $entity->asStorableChangedArray();
@@ -198,7 +198,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableChangedArrayExcludesUnchangedProperties(): void
     {
-        $entity = EntityIntIdClass::fromArray(['id' => 1, 'name' => 'Original']);
+        $entity = EntityIntIdFixture::fromArray(['id' => 1, 'name' => 'Original']);
         // Not changing name
 
         $changed = $entity->asStorableChangedArray();
@@ -208,7 +208,7 @@ final class EntityTest extends TestCase
 
     public function testEntityWithNullableProperty(): void
     {
-        $entity           = EntityClass::fromArray(['id' => 1]);
+        $entity           = EntityFixture::fromArray(['id' => 1]);
         $entity->id       = 1;
         $entity->property = null;
 
@@ -220,7 +220,7 @@ final class EntityTest extends TestCase
 
     public function testEntitySetterMethod(): void
     {
-        $entity = new EntityIntIdClass();
+        $entity = new EntityIntIdFixture();
         $entity->setId('123');
 
         self::assertSame(123, $entity->id);
@@ -228,14 +228,14 @@ final class EntityTest extends TestCase
 
     public function testEntityWithProtectedPropertyViaGetter(): void
     {
-        $entity = EntityClass::fromArray(['id' => 1, 'prop' => 'test value']);
+        $entity = EntityFixture::fromArray(['id' => 1, 'prop' => 'test value']);
 
         self::assertSame('test value', $entity->getProp());
     }
 
     public function testEntityWithProtectedPropertyViaSetter(): void
     {
-        $entity = new EntityClass();
+        $entity = new EntityFixture();
         $entity->setProp('new value');
 
         self::assertSame('new value', $entity->getProp());
@@ -243,7 +243,7 @@ final class EntityTest extends TestCase
 
     public function testEntityIssetProp(): void
     {
-        $entity = new EntityClass();
+        $entity = new EntityFixture();
 
         self::assertFalse($entity->issetProp());
 
@@ -254,7 +254,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithTypeCastReturnsScalarValue(): void
     {
-        $entity        = EntityWithCastingsClass::fromArray(['id' => 1, 'name' => 'Test', 'score' => 100]);
+        $entity        = EntityWithCastingsFixture::fromArray(['id' => 1, 'name' => 'Test', 'score' => 100]);
         $entity->id    = 1;
         $entity->name  = 'Test';
         $entity->score = 100;
@@ -267,7 +267,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithTypeContractInstanceReturnsScalarValue(): void
     {
-        $entity        = EntityWithCastingsClass::fromArray(['id' => 1, 'name' => 'Test']);
+        $entity        = EntityWithCastingsFixture::fromArray(['id' => 1, 'name' => 'Test']);
         $entity->id    = 1;
         $entity->name  = 'Test';
         $entity->score = IntT::fromValue(75);
@@ -280,7 +280,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithArrayCastReturnsSerializedArray(): void
     {
-        $entity         = EntityWithCastingsClass::fromArray(['id' => 1, 'name' => 'Test', 'scores' => [10, 20, 30]]);
+        $entity         = EntityWithCastingsFixture::fromArray(['id' => 1, 'name' => 'Test', 'scores' => [10, 20, 30]]);
         $entity->id     = 1;
         $entity->name   = 'Test';
         $entity->scores = [10, 20, 30];
@@ -296,7 +296,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithArrayCastAndTypeContractInstances(): void
     {
-        $entity         = EntityWithCastingsClass::fromArray(['id' => 1, 'name' => 'Test']);
+        $entity         = EntityWithCastingsFixture::fromArray(['id' => 1, 'name' => 'Test']);
         $entity->id     = 1;
         $entity->name   = 'Test';
         $entity->scores = [IntT::fromValue(5), IntT::fromValue(15)];
@@ -311,7 +311,7 @@ final class EntityTest extends TestCase
 
     public function testAsStorableArrayWithArrayCastThrowsExceptionForNonArrayValue(): void
     {
-        $entity         = EntityWithCastingsClass::fromArray(['id' => 1, 'name' => 'Test']);
+        $entity         = EntityWithCastingsFixture::fromArray(['id' => 1, 'name' => 'Test']);
         $entity->id     = 1;
         $entity->name   = 'Test';
         $entity->scores = 'not an array';

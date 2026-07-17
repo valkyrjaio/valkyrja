@@ -20,7 +20,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationClass;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function ob_get_clean;
@@ -226,7 +226,7 @@ final class OutputTest extends TestCase
 
             return $output;
         };
-        $question       = new QuestionAskManipulationClass(
+        $question       = new QuestionAskManipulationFixture(
             text: 'text',
             callable: $callable,
             answer: new Answer(

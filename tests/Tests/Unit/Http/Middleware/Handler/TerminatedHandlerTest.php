@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
-use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\TerminatedHandlerClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\TerminatedHandlerFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
 
 /**
  * Test the terminated handler.
@@ -27,7 +27,7 @@ final class TerminatedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $terminatedHandler = new TerminatedHandlerClass($this->container);
+        $terminatedHandler = new TerminatedHandlerFixture($this->container);
 
         $terminatedHandler->terminated($this->request, $this->response);
 
@@ -39,17 +39,17 @@ final class TerminatedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        TerminatedMiddlewareChangedClass::resetCounter();
+        TerminatedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new TerminatedHandlerClass($this->container);
+        $handler = new TerminatedHandlerFixture($this->container);
 
-        $handler->add(TerminatedMiddlewareChangedClass::class);
+        $handler->add(TerminatedMiddlewareChangedFixture::class);
         $handler->terminated($this->request, $this->response);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, TerminatedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, TerminatedMiddlewareChangedFixture::getCounter());
     }
 
     /**
@@ -57,22 +57,22 @@ final class TerminatedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        TerminatedMiddlewareChangedClass::resetCounter();
-        TerminatedMiddlewareClass::resetCounter();
+        TerminatedMiddlewareChangedFixture::resetCounter();
+        TerminatedMiddlewareFixture::resetCounter();
 
-        $handler = new TerminatedHandlerClass(
+        $handler = new TerminatedHandlerFixture(
             $this->container,
-            TerminatedMiddlewareClass::class
+            TerminatedMiddlewareFixture::class
         );
 
-        $handler->add(TerminatedMiddlewareChangedClass::class);
+        $handler->add(TerminatedMiddlewareChangedFixture::class);
         $handler->terminated($this->request, $this->response);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, TerminatedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, TerminatedMiddlewareClass::getCounter());
+        self::assertSame(1, TerminatedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, TerminatedMiddlewareFixture::getCounter());
     }
 
     /**
@@ -80,20 +80,20 @@ final class TerminatedHandlerTest extends HandlerTestCase
      */
     public function testTerminated(): void
     {
-        TerminatedMiddlewareChangedClass::resetCounter();
-        TerminatedMiddlewareClass::resetCounter();
+        TerminatedMiddlewareChangedFixture::resetCounter();
+        TerminatedMiddlewareFixture::resetCounter();
 
-        $handler = new TerminatedHandlerClass(
+        $handler = new TerminatedHandlerFixture(
             $this->container,
-            TerminatedMiddlewareClass::class,
-            TerminatedMiddlewareClass::class
+            TerminatedMiddlewareFixture::class,
+            TerminatedMiddlewareFixture::class
         );
 
         $handler->terminated($this->request, $this->response);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, TerminatedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, TerminatedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, TerminatedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, TerminatedMiddlewareFixture::getAndResetCounter());
     }
 }

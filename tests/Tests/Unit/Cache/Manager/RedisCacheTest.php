@@ -18,7 +18,7 @@ use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
-use Valkyrja\Tests\Fixtures\Vendor\Predis\ClientClass;
+use Valkyrja\Tests\Fixtures\Vendor\Predis\ClientFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function is_callable;
@@ -33,7 +33,7 @@ final class RedisCacheTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(ClientClass::class);
+        $this->client = $this->createMock(ClientFixture::class);
         $this->cache  = new RedisCache($this->client, $this->prefix);
     }
 

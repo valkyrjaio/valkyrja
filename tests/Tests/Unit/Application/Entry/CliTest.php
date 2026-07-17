@@ -25,7 +25,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Fixtures\Application\Entry\CliClass;
+use Valkyrja\Tests\Fixtures\Application\Entry\CliFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -78,7 +78,7 @@ final class CliTest extends TestCase
     {
         $_SERVER['argv'] = [];
 
-        $input = CliClass::getInputExposed(new CliConfig());
+        $input = CliFixture::getInputExposed(new CliConfig());
 
         self::assertSame('valkyrja', $input->getCaller());
         self::assertSame('list', $input->getCommandName());
@@ -90,7 +90,7 @@ final class CliTest extends TestCase
     {
         $_SERVER['argv'] = [];
 
-        $input = CliClass::getInputExposed(new CliConfig(applicationName: 'test'));
+        $input = CliFixture::getInputExposed(new CliConfig(applicationName: 'test'));
 
         self::assertSame('test', $input->getCaller());
         self::assertSame('list', $input->getCommandName());
@@ -102,7 +102,7 @@ final class CliTest extends TestCase
     {
         $_SERVER['argv'] = [];
 
-        $input = CliClass::getInputExposed(new CliConfig(defaultCommandName: 'test'));
+        $input = CliFixture::getInputExposed(new CliConfig(defaultCommandName: 'test'));
 
         self::assertSame('valkyrja', $input->getCaller());
         self::assertSame('test', $input->getCommandName());
@@ -123,7 +123,7 @@ final class CliTest extends TestCase
             'argument2',
         ];
 
-        $input = CliClass::getInputExposed(new CliConfig());
+        $input = CliFixture::getInputExposed(new CliConfig());
 
         self::assertSame('cli', $input->getCaller());
         self::assertSame('command', $input->getCommandName());

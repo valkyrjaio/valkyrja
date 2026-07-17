@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Tests\Fixtures\Attribute\AttributeClass;
-use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildClass;
-use Valkyrja\Tests\Fixtures\Attribute\AttributedClass;
+use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildFixture;
+use Valkyrja\Tests\Fixtures\Attribute\AttributedFixture;
+use Valkyrja\Tests\Fixtures\Attribute\AttributeFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -73,9 +73,9 @@ final class CollectorTest extends TestCase
     /**
      * The class  to test with.
      *
-     * @var AttributedClass
+     * @var AttributedFixture
      */
-    protected AttributedClass $class;
+    protected AttributedFixture $class;
 
     /**
      * Setup the test.
@@ -83,7 +83,7 @@ final class CollectorTest extends TestCase
     protected function setUp(): void
     {
         $this->attributes = new Collector();
-        $this->class      = new AttributedClass();
+        $this->class      = new AttributedFixture();
     }
 
     /**
@@ -93,7 +93,7 @@ final class CollectorTest extends TestCase
      */
     public function testForClass(): void
     {
-        $attributes = $this->attributes->forClass(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forClass(AttributedFixture::class, AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -112,7 +112,7 @@ final class CollectorTest extends TestCase
      */
     public function testForClassMembers(): void
     {
-        $attributes = $this->attributes->forClassMembers(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forClassMembers(AttributedFixture::class, AttributeFixture::class);
 
         self::assertCount(21, $attributes);
         $this->testsForConst($attributes[0], $attributes[1], $attributes[2]);
@@ -131,7 +131,7 @@ final class CollectorTest extends TestCase
      */
     public function testForClassAndMembers(): void
     {
-        $attributes = $this->attributes->forClassAndMembers(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forClassAndMembers(AttributedFixture::class, AttributeFixture::class);
 
         self::assertCount(24, $attributes);
         $this->baseTests($attributes[0], $attributes[1], $attributes[2]);
@@ -152,17 +152,17 @@ final class CollectorTest extends TestCase
     public function testForConstant(): void
     {
         $attributes = $this->attributes->forConstant(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::CONST_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForConst(...$attributes);
 
         $attributes = $this->attributes->forConstant(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::PROTECTED_CONST_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForProtectedConst(...$attributes);
@@ -175,7 +175,7 @@ final class CollectorTest extends TestCase
      */
     public function testForConstants(): void
     {
-        $attributes = $this->attributes->forConstants(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forConstants(AttributedFixture::class, AttributeFixture::class);
 
         self::assertCount(6, $attributes);
         $this->testsForConst($attributes[0], $attributes[1], $attributes[2]);
@@ -190,17 +190,17 @@ final class CollectorTest extends TestCase
     public function testForProperty(): void
     {
         $attributes = $this->attributes->forProperty(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::STATIC_PROPERTY_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForStaticProperty(...$attributes);
 
         $attributes = $this->attributes->forProperty(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::PROPERTY_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForProperty(...$attributes);
@@ -213,7 +213,7 @@ final class CollectorTest extends TestCase
      */
     public function testForProperties(): void
     {
-        $attributes = $this->attributes->forProperties(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forProperties(AttributedFixture::class, AttributeFixture::class);
 
         self::assertCount(6, $attributes);
         $this->testsForStaticProperty($attributes[0], $attributes[1], $attributes[2]);
@@ -228,43 +228,43 @@ final class CollectorTest extends TestCase
     public function testForMethod(): void
     {
         $attributes = $this->attributes->forMethod(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::STATIC_METHOD_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForStaticMethod(...$attributes);
 
         $attributes = $this->attributes->forMethod(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::METHOD_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForMethod(...$attributes);
 
         $attributes = $this->attributes->forMethodParameters(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::METHOD_WITH_PARAMETERS_NAME,
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForMethod(...$attributes);
 
         $attributes = $this->attributes->forMethodParameter(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::METHOD_WITH_PARAMETERS_NAME,
             'parameter',
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->testsForMethod(...$attributes);
 
         $attributesEmpty = $this->attributes->forMethodParameter(
-            AttributedClass::class,
+            AttributedFixture::class,
             self::METHOD_WITH_PARAMETERS_NAME,
             'nonExistent',
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         self::assertEmpty($attributesEmpty);
@@ -277,7 +277,7 @@ final class CollectorTest extends TestCase
      */
     public function testForMethods(): void
     {
-        $attributes = $this->attributes->forMethods(AttributedClass::class, AttributeClass::class);
+        $attributes = $this->attributes->forMethods(AttributedFixture::class, AttributeFixture::class);
 
         self::assertCount(9, $attributes);
         $this->testsForStaticMethod($attributes[0], $attributes[1], $attributes[2]);
@@ -292,18 +292,18 @@ final class CollectorTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[AttributeClass(1)]
-        #[AttributeClass(2)]
-        #[AttributeClassChildClass(3, 'three')]
+        #[AttributeFixture(1)]
+        #[AttributeFixture(2)]
+        #[AttributeClassChildFixture(3, 'three')]
         function testFunction(
-            #[AttributeClass(1)]
-            #[AttributeClass(2)]
-            #[AttributeClassChildClass(3, 'three')]
+            #[AttributeFixture(1)]
+            #[AttributeFixture(2)]
+            #[AttributeClassChildFixture(3, 'three')]
             string $param
         ): void {
         }
 
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeClass::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -314,7 +314,7 @@ final class CollectorTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeClass::class);
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -334,12 +334,12 @@ final class CollectorTest extends TestCase
     public function testForClosure(): void
     {
         $attributes = $this->attributes->forClosure(
-            #[AttributeClass(self::VALUE4)]
-            #[AttributeClass(self::VALUE5)]
-            #[AttributeClassChildClass(self::VALUE6, self::SIX)]
+            #[AttributeFixture(self::VALUE4)]
+            #[AttributeFixture(self::VALUE5)]
+            #[AttributeClassChildFixture(self::VALUE6, self::SIX)]
             static function (): void {
             },
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->baseTests(...$attributes);
@@ -352,12 +352,12 @@ final class CollectorTest extends TestCase
         );
 
         $attributes = $this->attributes->forClosure(
-            #[AttributeClass(self::VALUE7)]
-            #[AttributeClass(self::VALUE8)]
-            #[AttributeClassChildClass(self::VALUE9, self::NINE)]
+            #[AttributeFixture(self::VALUE7)]
+            #[AttributeFixture(self::VALUE8)]
+            #[AttributeClassChildFixture(self::VALUE9, self::NINE)]
             static function (): void {
             },
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->baseTests(...$attributes);
@@ -370,17 +370,17 @@ final class CollectorTest extends TestCase
         );
 
         $attributes = $this->attributes->forClosureParameters(
-            #[AttributeClass(self::VALUE4)]
-            #[AttributeClass(self::VALUE5)]
-            #[AttributeClassChildClass(self::VALUE6, self::SIX)]
+            #[AttributeFixture(self::VALUE4)]
+            #[AttributeFixture(self::VALUE5)]
+            #[AttributeClassChildFixture(self::VALUE6, self::SIX)]
             static function (
-                #[AttributeClass(CollectorTest::VALUE1)]
-                #[AttributeClass(CollectorTest::VALUE2)]
-                #[AttributeClassChildClass(CollectorTest::VALUE3, CollectorTest::THREE)]
+                #[AttributeFixture(CollectorTest::VALUE1)]
+                #[AttributeFixture(CollectorTest::VALUE2)]
+                #[AttributeClassChildFixture(CollectorTest::VALUE3, CollectorTest::THREE)]
                 string $param
             ): void {
             },
-            AttributeClass::class
+            AttributeFixture::class
         );
 
         $this->baseTests(...$attributes);
@@ -396,9 +396,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the const member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForConst(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForConst(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -413,9 +413,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the protectedConst member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForProtectedConst(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForProtectedConst(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -430,9 +430,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the staticProperty member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForStaticProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForStaticProperty(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -447,9 +447,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the property member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForProperty(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -464,9 +464,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the staticMember() member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForStaticMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForStaticMethod(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -481,9 +481,9 @@ final class CollectorTest extends TestCase
     /**
      * Tests for the method() member.
      *
-     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
+     * @param AttributeFixture|AttributeClassChildFixture ...$attributes The attributes
      */
-    protected function testsForMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
+    protected function testsForMethod(AttributeFixture|AttributeClassChildFixture ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -498,14 +498,14 @@ final class CollectorTest extends TestCase
     /**
      * Base tests for all items.
      *
-     * @param AttributeClass ...$attributes The attributes
+     * @param AttributeFixture ...$attributes The attributes
      */
-    protected function baseTests(AttributeClass ...$attributes): void
+    protected function baseTests(AttributeFixture ...$attributes): void
     {
         self::assertCount(3, $attributes);
-        self::assertInstanceOf(AttributeClass::class, $attributes[0]);
-        self::assertInstanceOf(AttributeClass::class, $attributes[1]);
-        self::assertInstanceOf(AttributeClassChildClass::class, $attributes[2]);
+        self::assertInstanceOf(AttributeFixture::class, $attributes[0]);
+        self::assertInstanceOf(AttributeFixture::class, $attributes[1]);
+        self::assertInstanceOf(AttributeClassChildFixture::class, $attributes[2]);
         self::assertNotNull($attributes[0]->getReflection());
         self::assertNotNull($attributes[1]->getReflection());
         self::assertNotNull($attributes[2]->getReflection());
@@ -514,22 +514,22 @@ final class CollectorTest extends TestCase
     /**
      * Test values.
      *
-     * @param int                      $value1     The value in the first attribute
-     * @param int                      $value2     The value in the second attribute
-     * @param int                      $value3     The first value in the third attribute
-     * @param string                   $value4     The second value in the third attribute
-     * @param AttributeClass           $attribute1 The first attribute
-     * @param AttributeClass           $attribute2 The second attribute
-     * @param AttributeClassChildClass $attribute3 The third attribute
+     * @param int                        $value1     The value in the first attribute
+     * @param int                        $value2     The value in the second attribute
+     * @param int                        $value3     The first value in the third attribute
+     * @param string                     $value4     The second value in the third attribute
+     * @param AttributeFixture           $attribute1 The first attribute
+     * @param AttributeFixture           $attribute2 The second attribute
+     * @param AttributeClassChildFixture $attribute3 The third attribute
      */
     protected function valueTests(
         int $value1,
         int $value2,
         int $value3,
         string $value4,
-        AttributeClass $attribute1,
-        AttributeClass $attribute2,
-        AttributeClassChildClass $attribute3
+        AttributeFixture $attribute1,
+        AttributeFixture $attribute2,
+        AttributeClassChildFixture $attribute3
     ): void {
         self::assertSame($value1, $attribute1->counter);
         self::assertSame($value2, $attribute2->counter);

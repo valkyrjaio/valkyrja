@@ -16,16 +16,16 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Collector;
 use ReflectionException;
 use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
-use Valkyrja\Tests\Fixtures\Http\Middleware\AllMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerAttributedClass;
-use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerClass;
-use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerWithAllMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\AllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerAttributedFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerWithAllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -40,51 +40,51 @@ final class AttributeRouteCollectorTest extends TestCase
      */
     public function testGetRoutes(): void
     {
-        $routes = new AttributeRouteCollector()->getRoutes(ControllerClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerFixture::class);
 
         self::assertCount(3, $routes);
 
         $welcomeRoute = $routes[0];
 
-        self::assertSame(ControllerClass::WELCOME_PATH, $welcomeRoute->getPath());
-        self::assertSame(ControllerClass::WELCOME_NAME, $welcomeRoute->getName());
+        self::assertSame(ControllerFixture::WELCOME_PATH, $welcomeRoute->getPath());
+        self::assertSame(ControllerFixture::WELCOME_NAME, $welcomeRoute->getName());
 
         $parametersRoute = $routes[1];
 
         self::assertInstanceOf(DynamicRouteContract::class, $parametersRoute);
-        self::assertSame(ControllerClass::PARAMETERS_PATH, $parametersRoute->getPath());
-        self::assertSame(ControllerClass::PARAMETERS_NAME, $parametersRoute->getName());
-        self::assertSame([RouteProviderClass::class, 'handler'], $parametersRoute->getHandler());
+        self::assertSame(ControllerFixture::PARAMETERS_PATH, $parametersRoute->getPath());
+        self::assertSame(ControllerFixture::PARAMETERS_NAME, $parametersRoute->getName());
+        self::assertSame([RouteProviderFixture::class, 'handler'], $parametersRoute->getHandler());
         self::assertSame('/^\/parameters\/(?<name>[a-zA-Z]+)$/', $parametersRoute->getRegex());
-        self::assertSame([RouteDispatchedMiddlewareClass::class], $parametersRoute->getRouteDispatchedMiddleware());
-        self::assertSame([RouteMatchedMiddlewareClass::class], $parametersRoute->getRouteMatchedMiddleware());
-        self::assertSame([SendingResponseMiddlewareClass::class], $parametersRoute->getSendingResponseMiddleware());
-        self::assertSame([TerminatedMiddlewareClass::class], $parametersRoute->getTerminatedMiddleware());
-        self::assertSame([ThrowableCaughtMiddlewareClass::class], $parametersRoute->getThrowableCaughtMiddleware());
+        self::assertSame([RouteDispatchedMiddlewareFixture::class], $parametersRoute->getRouteDispatchedMiddleware());
+        self::assertSame([RouteMatchedMiddlewareFixture::class], $parametersRoute->getRouteMatchedMiddleware());
+        self::assertSame([SendingResponseMiddlewareFixture::class], $parametersRoute->getSendingResponseMiddleware());
+        self::assertSame([TerminatedMiddlewareFixture::class], $parametersRoute->getTerminatedMiddleware());
+        self::assertSame([ThrowableCaughtMiddlewareFixture::class], $parametersRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $parametersRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $parametersRoute->getResponseStruct());
         self::assertCount(1, $parametersRoute->getParameters());
         self::assertTrue($parametersRoute->getParameters()[0]->hasCast());
-        self::assertSame(ControllerClass::PARAMETERS_PARAMETER_NAME, $parametersRoute->getParameters()[0]->getName());
+        self::assertSame(ControllerFixture::PARAMETERS_PARAMETER_NAME, $parametersRoute->getParameters()[0]->getName());
 
         $dynamicRoute = $routes[2];
 
         self::assertInstanceOf(DynamicRouteContract::class, $dynamicRoute);
-        self::assertSame(ControllerClass::DYNAMIC_PATH, $dynamicRoute->getPath());
-        self::assertSame(ControllerClass::DYNAMIC_NAME, $dynamicRoute->getName());
+        self::assertSame(ControllerFixture::DYNAMIC_PATH, $dynamicRoute->getPath());
+        self::assertSame(ControllerFixture::DYNAMIC_NAME, $dynamicRoute->getName());
         self::assertSame('/^\/dynamic\/(?<foo>[a-zA-Z]+)\/(?<bar>[a-zA-Z]+)$/', $dynamicRoute->getRegex());
-        self::assertSame([RouteDispatchedMiddlewareClass::class], $dynamicRoute->getRouteDispatchedMiddleware());
-        self::assertSame([RouteMatchedMiddlewareClass::class], $dynamicRoute->getRouteMatchedMiddleware());
-        self::assertSame([SendingResponseMiddlewareClass::class], $dynamicRoute->getSendingResponseMiddleware());
-        self::assertSame([TerminatedMiddlewareClass::class], $dynamicRoute->getTerminatedMiddleware());
-        self::assertSame([ThrowableCaughtMiddlewareClass::class], $dynamicRoute->getThrowableCaughtMiddleware());
+        self::assertSame([RouteDispatchedMiddlewareFixture::class], $dynamicRoute->getRouteDispatchedMiddleware());
+        self::assertSame([RouteMatchedMiddlewareFixture::class], $dynamicRoute->getRouteMatchedMiddleware());
+        self::assertSame([SendingResponseMiddlewareFixture::class], $dynamicRoute->getSendingResponseMiddleware());
+        self::assertSame([TerminatedMiddlewareFixture::class], $dynamicRoute->getTerminatedMiddleware());
+        self::assertSame([ThrowableCaughtMiddlewareFixture::class], $dynamicRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $dynamicRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $dynamicRoute->getResponseStruct());
         self::assertCount(2, $dynamicRoute->getParameters());
         self::assertTrue($dynamicRoute->getParameters()[0]->hasCast());
         self::assertTrue($dynamicRoute->getParameters()[1]->hasCast());
-        self::assertSame(ControllerClass::DYNAMIC_PARAMETER_NAME, $dynamicRoute->getParameters()[0]->getName());
-        self::assertSame(ControllerClass::DYNAMIC_PARAMETER_NAME2, $dynamicRoute->getParameters()[1]->getName());
+        self::assertSame(ControllerFixture::DYNAMIC_PARAMETER_NAME, $dynamicRoute->getParameters()[0]->getName());
+        self::assertSame(ControllerFixture::DYNAMIC_PARAMETER_NAME2, $dynamicRoute->getParameters()[1]->getName());
     }
 
     /**
@@ -92,15 +92,15 @@ final class AttributeRouteCollectorTest extends TestCase
      */
     public function testGetRoutesWithControllerAttributes(): void
     {
-        $routes = new AttributeRouteCollector()->getRoutes(ControllerAttributedClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerAttributedFixture::class);
 
         self::assertCount(1, $routes);
 
         $welcomeRoute = $routes[0];
 
         self::assertSame('/controller/welcome/path', $welcomeRoute->getPath());
-        self::assertSame('controller.' . ControllerAttributedClass::WELCOME_NAME . '.name', $welcomeRoute->getName());
-        self::assertSame([ControllerAttributedClass::class, 'welcomeHandler'], $welcomeRoute->getHandler());
+        self::assertSame('controller.' . ControllerAttributedFixture::WELCOME_NAME . '.name', $welcomeRoute->getName());
+        self::assertSame([ControllerAttributedFixture::class, 'welcomeHandler'], $welcomeRoute->getHandler());
     }
 
     /**
@@ -108,31 +108,31 @@ final class AttributeRouteCollectorTest extends TestCase
      */
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
     {
-        $routes = new AttributeRouteCollector()->getRoutes(ControllerWithAllMiddlewareClass::class);
+        $routes = new AttributeRouteCollector()->getRoutes(ControllerWithAllMiddlewareFixture::class);
 
         self::assertCount(2, $routes);
 
         $route = $routes[0];
 
-        self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_PATH, $route->getPath());
-        self::assertSame(ControllerWithAllMiddlewareClass::WELCOME_NAME, $route->getName());
-        self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getSendingResponseMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getTerminatedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getThrowableCaughtMiddleware());
+        self::assertSame(ControllerWithAllMiddlewareFixture::WELCOME_PATH, $route->getPath());
+        self::assertSame(ControllerWithAllMiddlewareFixture::WELCOME_NAME, $route->getName());
+        self::assertSame([AllMiddlewareFixture::class], $route->getRouteDispatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getRouteMatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getSendingResponseMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getTerminatedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $route->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $route->getResponseStruct());
 
         $dynamicRoute = $routes[1];
 
-        self::assertSame(ControllerWithAllMiddlewareClass::DYNAMIC_PATH, $dynamicRoute->getPath());
-        self::assertSame(ControllerWithAllMiddlewareClass::DYNAMIC_NAME, $dynamicRoute->getName());
-        self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getRouteDispatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getRouteMatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getSendingResponseMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getTerminatedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $dynamicRoute->getThrowableCaughtMiddleware());
+        self::assertSame(ControllerWithAllMiddlewareFixture::DYNAMIC_PATH, $dynamicRoute->getPath());
+        self::assertSame(ControllerWithAllMiddlewareFixture::DYNAMIC_NAME, $dynamicRoute->getName());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getRouteDispatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getRouteMatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getSendingResponseMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getTerminatedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $dynamicRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $dynamicRoute->getResponseStruct());
     }

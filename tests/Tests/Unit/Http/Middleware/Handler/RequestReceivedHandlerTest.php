@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RequestReceivedHandlerClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareChangedClass;
-use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Http\Middleware\Handler\RequestReceivedHandlerFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareFixture;
 
 /**
  * Test the request received handler.
@@ -28,7 +28,7 @@ final class RequestReceivedHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $beforeHandler = new RequestReceivedHandlerClass($this->container);
+        $beforeHandler = new RequestReceivedHandlerFixture($this->container);
 
         $before = $beforeHandler->requestReceived($this->request);
 
@@ -42,17 +42,17 @@ final class RequestReceivedHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        RequestReceivedMiddlewareChangedClass::resetCounter();
+        RequestReceivedMiddlewareChangedFixture::resetCounter();
 
-        $handler = new RequestReceivedHandlerClass($this->container);
+        $handler = new RequestReceivedHandlerFixture($this->container);
 
-        $handler->add(RequestReceivedMiddlewareChangedClass::class);
+        $handler->add(RequestReceivedMiddlewareChangedFixture::class);
         $before = $handler->requestReceived($this->request);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, RequestReceivedMiddlewareChangedClass::getCounter());
+        self::assertSame(1, RequestReceivedMiddlewareChangedFixture::getCounter());
         self::assertNotSame($this->request, $before);
         self::assertInstanceOf(Response::class, $before);
     }
@@ -62,22 +62,22 @@ final class RequestReceivedHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        RequestReceivedMiddlewareChangedClass::resetCounter();
-        RequestReceivedMiddlewareClass::resetCounter();
+        RequestReceivedMiddlewareChangedFixture::resetCounter();
+        RequestReceivedMiddlewareFixture::resetCounter();
 
-        $handler = new RequestReceivedHandlerClass(
+        $handler = new RequestReceivedHandlerFixture(
             $this->container,
-            RequestReceivedMiddlewareClass::class
+            RequestReceivedMiddlewareFixture::class
         );
 
-        $handler->add(RequestReceivedMiddlewareChangedClass::class);
+        $handler->add(RequestReceivedMiddlewareChangedFixture::class);
         $before = $handler->requestReceived($this->request);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, RequestReceivedMiddlewareChangedClass::getCounter());
-        self::assertSame(1, RequestReceivedMiddlewareClass::getCounter());
+        self::assertSame(1, RequestReceivedMiddlewareChangedFixture::getCounter());
+        self::assertSame(1, RequestReceivedMiddlewareFixture::getCounter());
         self::assertNotSame($this->request, $before);
         self::assertInstanceOf(Response::class, $before);
     }
@@ -87,21 +87,21 @@ final class RequestReceivedHandlerTest extends HandlerTestCase
      */
     public function testBefore(): void
     {
-        RequestReceivedMiddlewareChangedClass::resetCounter();
-        RequestReceivedMiddlewareClass::resetCounter();
+        RequestReceivedMiddlewareChangedFixture::resetCounter();
+        RequestReceivedMiddlewareFixture::resetCounter();
 
-        $handler = new RequestReceivedHandlerClass(
+        $handler = new RequestReceivedHandlerFixture(
             $this->container,
-            RequestReceivedMiddlewareClass::class,
-            RequestReceivedMiddlewareClass::class
+            RequestReceivedMiddlewareFixture::class,
+            RequestReceivedMiddlewareFixture::class
         );
 
         $before = $handler->requestReceived($this->request);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, RequestReceivedMiddlewareChangedClass::getAndResetCounter());
-        self::assertSame(2, RequestReceivedMiddlewareClass::getAndResetCounter());
+        self::assertSame(0, RequestReceivedMiddlewareChangedFixture::getAndResetCounter());
+        self::assertSame(2, RequestReceivedMiddlewareFixture::getAndResetCounter());
         self::assertSame($this->request, $before);
     }
 }

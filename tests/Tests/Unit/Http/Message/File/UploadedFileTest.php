@@ -25,11 +25,11 @@ use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileUploadErrorExcept
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
-use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidDirectoryExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidUploadedFileExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\File\MoveFailureExceptionClass;
-use Valkyrja\Tests\Fixtures\Http\Message\File\MoveUploadedFileClass;
-use Valkyrja\Tests\Fixtures\Http\Message\File\UnableToWriteFileExceptionClass;
+use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidDirectoryExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\File\InvalidUploadedFileExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\File\MoveFailureExceptionFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\File\MoveUploadedFileFixture;
+use Valkyrja\Tests\Fixtures\Http\Message\File\UnableToWriteFileExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function unlink;
@@ -110,7 +110,7 @@ final class UploadedFileTest extends TestCase
     {
         $this->expectException(UploadedFileInvalidUploadedFileException::class);
 
-        $uploadedFile = new InvalidUploadedFileExceptionClass();
+        $uploadedFile = new InvalidUploadedFileExceptionFixture();
         $uploadedFile->getStream();
     }
 
@@ -170,7 +170,7 @@ final class UploadedFileTest extends TestCase
         // Ensure new file was created
         self::assertFileExists($file2);
 
-        $uploadedFile3 = new MoveUploadedFileClass(file: $file2);
+        $uploadedFile3 = new MoveUploadedFileFixture(file: $file2);
         $uploadedFile3->moveTo($file3);
 
         // Ensure previous file was deleted
@@ -195,7 +195,7 @@ final class UploadedFileTest extends TestCase
         $uploadedFile->moveTo($file);
 
         // Should fail since this is not a valid uploaded file
-        $uploadedFile2 = new MoveFailureExceptionClass(file: $file);
+        $uploadedFile2 = new MoveFailureExceptionFixture(file: $file);
         $uploadedFile2->moveTo(Directory::storagePath('/uploadedFileTest-testMoveFailureException2.txt'));
     }
 
@@ -204,7 +204,7 @@ final class UploadedFileTest extends TestCase
         $this->expectException(UploadedFileInvalidDirectoryException::class);
 
         // Should fail since this is not a valid uploaded file
-        $uploadedFile2 = new InvalidDirectoryExceptionClass(file: 'test');
+        $uploadedFile2 = new InvalidDirectoryExceptionFixture(file: 'test');
         $uploadedFile2->moveTo('test2');
     }
 
@@ -213,7 +213,7 @@ final class UploadedFileTest extends TestCase
         $this->expectException(UploadedFileUnableToWriteFileException::class);
 
         // Should fail since this is not a valid uploaded file
-        $uploadedFile2 = new UnableToWriteFileExceptionClass(file: 'test');
+        $uploadedFile2 = new UnableToWriteFileExceptionFixture(file: 'test');
         $uploadedFile2->moveTo('test2');
     }
 

@@ -24,14 +24,14 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Reflection\Reflector\Reflector;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\AllMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareClass;
-use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandClass;
-use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllAttributesClass;
-use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllMiddlewareClass;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\AllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllAttributesFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllMiddlewareFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\CastType;
 
@@ -60,15 +60,15 @@ final class AttributeRouteCollectorTest extends TestCase
             reflection: new Reflector()
         );
 
-        $commands = $collector->getRoutes(CommandClass::class);
+        $commands = $collector->getRoutes(CommandFixture::class);
 
         self::assertNotEmpty($commands);
         self::assertCount(1, $commands);
         self::assertInstanceOf(Route::class, $command = $commands[0]);
-        self::assertSame(CommandClass::NAME, $command->getName());
-        self::assertSame(CommandClass::DESCRIPTION, $command->getDescription());
-        self::assertSame(CommandClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
-        self::assertSame([CommandClass::class, 'handler'], $command->getHandler());
+        self::assertSame(CommandFixture::NAME, $command->getName());
+        self::assertSame(CommandFixture::DESCRIPTION, $command->getDescription());
+        self::assertSame(CommandFixture::HELP_TEXT, $command->getHelpTextMessage()->getText());
+        self::assertSame([CommandFixture::class, 'handler'], $command->getHandler());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertFalse($option->hasCast());
@@ -84,15 +84,15 @@ final class AttributeRouteCollectorTest extends TestCase
             reflection: new Reflector()
         );
 
-        $commands = $collector->getRoutes(CommandWithAllAttributesClass::class);
+        $commands = $collector->getRoutes(CommandWithAllAttributesFixture::class);
 
         self::assertNotEmpty($commands);
         self::assertCount(1, $commands);
         self::assertInstanceOf(Route::class, $command = $commands[0]);
         self::assertSame('className.test2.actionName', $command->getName());
-        self::assertSame(CommandWithAllAttributesClass::DESCRIPTION, $command->getDescription());
-        self::assertSame(CommandWithAllAttributesClass::HELP_TEXT, $command->getHelpTextMessage()->getText());
-        self::assertSame([CommandWithAllAttributesClass::class, 'handler'], $command->getHandler());
+        self::assertSame(CommandWithAllAttributesFixture::DESCRIPTION, $command->getDescription());
+        self::assertSame(CommandWithAllAttributesFixture::HELP_TEXT, $command->getHelpTextMessage()->getText());
+        self::assertSame([CommandWithAllAttributesFixture::class, 'handler'], $command->getHandler());
         self::assertNotEmpty($command->getOptions());
         self::assertInstanceOf(OptionParameter::class, $option = $command->getOptions()[0]);
         self::assertNotEmpty($command->getArguments());
@@ -111,10 +111,10 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame(ArgumentMode::REQUIRED, $argument->getMode());
         self::assertSame(ArgumentValueMode::ARRAY, $argument->getValueMode());
         self::assertSame(CastType::string->value, $argument->getCast()->type);
-        self::assertSame([RouteDispatchedMiddlewareClass::class], $command->getRouteDispatchedMiddleware());
-        self::assertSame([RouteMatchedMiddlewareClass::class], $command->getRouteMatchedMiddleware());
-        self::assertSame([ThrowableCaughtMiddlewareClass::class], $command->getThrowableCaughtMiddleware());
-        self::assertSame([ExitedMiddlewareClass::class], $command->getExitedMiddleware());
+        self::assertSame([RouteDispatchedMiddlewareFixture::class], $command->getRouteDispatchedMiddleware());
+        self::assertSame([RouteMatchedMiddlewareFixture::class], $command->getRouteMatchedMiddleware());
+        self::assertSame([ThrowableCaughtMiddlewareFixture::class], $command->getThrowableCaughtMiddleware());
+        self::assertSame([ExitedMiddlewareFixture::class], $command->getExitedMiddleware());
     }
 
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
@@ -123,18 +123,18 @@ final class AttributeRouteCollectorTest extends TestCase
             attributes: new Collector(),
             reflection: new Reflector()
         );
-        $routes = $collector->getRoutes(CommandWithAllMiddlewareClass::class);
+        $routes = $collector->getRoutes(CommandWithAllMiddlewareFixture::class);
 
         self::assertCount(1, $routes);
 
         $route = $routes[0];
 
-        self::assertSame(CommandWithAllMiddlewareClass::NAME, $route->getName());
-        self::assertSame(CommandWithAllMiddlewareClass::DESCRIPTION, $route->getDescription());
-        self::assertSame(CommandWithAllMiddlewareClass::HELP_TEXT, $route->getHelpTextMessage()->getText());
-        self::assertSame([AllMiddlewareClass::class], $route->getRouteDispatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getRouteMatchedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getExitedMiddleware());
-        self::assertSame([AllMiddlewareClass::class], $route->getThrowableCaughtMiddleware());
+        self::assertSame(CommandWithAllMiddlewareFixture::NAME, $route->getName());
+        self::assertSame(CommandWithAllMiddlewareFixture::DESCRIPTION, $route->getDescription());
+        self::assertSame(CommandWithAllMiddlewareFixture::HELP_TEXT, $route->getHelpTextMessage()->getText());
+        self::assertSame([AllMiddlewareFixture::class], $route->getRouteDispatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getRouteMatchedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getExitedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getThrowableCaughtMiddleware());
     }
 }
