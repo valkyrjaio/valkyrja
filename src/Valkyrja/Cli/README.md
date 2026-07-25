@@ -616,7 +616,7 @@ Declared per-route via `processExitingMiddleware` in `#[Route]`, or globally in
 | `RouteNotMatched` | When no command matches                       | No                | Global    |
 | `RouteDispatched` | After dispatch                                | No                | Per-route |
 | `ThrowableCaught` | When a throwable is caught                    | No                | Per-route |
-| `ProcessExiting`          | After output is written, before process exits | No                | Per-route |
+| `ProcessExiting`  | After output is written, before process exits | No                | Per-route |
 
 ## Built-In Commands
 

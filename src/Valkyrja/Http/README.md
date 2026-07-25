@@ -783,7 +783,7 @@ requests.
 | `RouteDispatched` | After dispatch, before sending    | No                | Per-route |
 | `ThrowableCaught` | When a throwable is caught        | No                | Per-route |
 | `SendingResponse` | Before writing response to output | No                | Per-route |
-| `ResponseSent`      | After response is sent            | No                | Per-route |
+| `ResponseSent`    | After response is sent            | No                | Per-route |
 
 ## Response Caching
 
