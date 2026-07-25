@@ -5,3 +5,5 @@
 !composer.lock
 !psalm-baseline.xml
 !psalm.xml
+!stubs/
+!stubs/**

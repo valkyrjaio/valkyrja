@@ -76,7 +76,10 @@
     "pusher/pusher-php-server"   : "Required to use the Pusher Broadcast adapter (^7.2.8).",
     "twig/twig"                  : "Required to use the Twig View engine (^3.28.0).",
     "vonage/client-core"         : "Required to use the default SMS adapter (^4.14.0).",
+    "openswoole/core"            : "Required to use the OpenSwoole worker entry point (^26.2.0).",
+    "spiral/roadrunner-http"     : "Required to use the RoadRunner worker entry point (^4.1.0).",
     "ext-curl"                   : "Required to use the default Client adapter (*)",
+    "ext-openswoole"             : "Required to use the OpenSwoole worker entry point (>=26.2.0).",
     "ext-pdo"                    : "Required to use the default ORM adapter (*)",
     "ext-redis"                  : "Required to use the default Cache store (^4.0|^5.0).",
     "ext-sodium"                 : "Required to use the default Crypt adapters and/or JWT EdDSA Algorithm (*)"
