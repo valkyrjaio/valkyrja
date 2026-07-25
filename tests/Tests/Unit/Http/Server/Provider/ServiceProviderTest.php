@@ -72,7 +72,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         HttpMiddlewareServiceProvider::publishRequestReceivedHandler($container);
         HttpMiddlewareServiceProvider::publishThrowableCaughtHandler($container);
         HttpMiddlewareServiceProvider::publishSendingResponseHandler($container);
-        HttpMiddlewareServiceProvider::publishTerminatedHandler($container);
+        HttpMiddlewareServiceProvider::publishResponseSentHandler($container);
 
         $container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
 

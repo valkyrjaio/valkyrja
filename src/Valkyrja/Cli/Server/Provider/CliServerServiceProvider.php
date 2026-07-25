@@ -18,8 +18,8 @@ use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Constant\OptionName;
@@ -64,7 +64,7 @@ class CliServerServiceProvider implements ServiceProviderContract
                 router: $container->getSingleton(RouterContract::class),
                 inputReceivedHandler: $container->getSingleton(InputReceivedHandlerContract::class),
                 throwableCaughtHandler: $container->getSingleton(ThrowableCaughtHandlerContract::class),
-                exitedHandler: $container->getSingleton(ExitedHandlerContract::class),
+                processExitingHandler: $container->getSingleton(ProcessExitingHandlerContract::class),
                 interactionConfig: $config
             ),
         );

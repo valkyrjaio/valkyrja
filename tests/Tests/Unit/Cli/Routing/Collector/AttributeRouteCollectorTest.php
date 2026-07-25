@@ -25,7 +25,7 @@ use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\AllMiddlewareFixture;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
@@ -114,7 +114,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([RouteDispatchedMiddlewareFixture::class], $command->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareFixture::class], $command->getRouteMatchedMiddleware());
         self::assertSame([ThrowableCaughtMiddlewareFixture::class], $command->getThrowableCaughtMiddleware());
-        self::assertSame([ExitedMiddlewareFixture::class], $command->getExitedMiddleware());
+        self::assertSame([ProcessExitingMiddlewareFixture::class], $command->getProcessExitingMiddleware());
     }
 
     public function testGetRoutesWithSingleMiddlewareThatHasAllTypes(): void
@@ -134,7 +134,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame(CommandWithAllMiddlewareFixture::HELP_TEXT, $route->getHelpTextMessage()->getText());
         self::assertSame([AllMiddlewareFixture::class], $route->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getRouteMatchedMiddleware());
-        self::assertSame([AllMiddlewareFixture::class], $route->getExitedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getProcessExitingMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getThrowableCaughtMiddleware());
     }
 }

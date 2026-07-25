@@ -16,14 +16,14 @@ namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 use ReflectionProperty;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ProcessExitingHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
@@ -46,7 +46,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouteMatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
         self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
         self::assertArrayHasKey(RouteDispatchedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
-        self::assertArrayHasKey(ExitedHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(ProcessExitingHandlerContract::class, new CliMiddlewareServiceProvider()->publishers());
     }
 
     public function testPublishInputReceivedHandler(): void
@@ -204,29 +204,29 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertSame(['test'], $middleware);
     }
 
-    public function testPublishExitedHandler(): void
+    public function testPublishProcessExitingHandler(): void
     {
         $this->container->setSingleton(CliConfigContract::class, new CliConfig());
 
-        $callback = new CliMiddlewareServiceProvider()->publishers()[ExitedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ProcessExitingHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
-            ExitedHandler::class,
-            $this->container->getSingleton(ExitedHandlerContract::class)
+            ProcessExitingHandler::class,
+            $this->container->getSingleton(ProcessExitingHandlerContract::class)
         );
     }
 
-    public function testPublishExitedHandlerWithCustomConfig(): void
+    public function testPublishProcessExitingHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(exitedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(processExitingMiddleware: ['test']));
 
-        $callback = new CliMiddlewareServiceProvider()->publishers()[ExitedHandlerContract::class];
+        $callback = new CliMiddlewareServiceProvider()->publishers()[ProcessExitingHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
-            ExitedHandler::class,
-            $handler = $this->container->getSingleton(ExitedHandlerContract::class)
+            ProcessExitingHandler::class,
+            $handler = $this->container->getSingleton(ProcessExitingHandlerContract::class)
         );
 
         $reflection = new ReflectionProperty($handler, 'middleware');

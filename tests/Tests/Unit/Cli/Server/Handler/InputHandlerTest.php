@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -249,10 +249,10 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
-        $exitHandler = $this->createMock(ExitedHandlerContract::class);
+        $exitHandler = $this->createMock(ProcessExitingHandlerContract::class);
         $exitHandler
             ->expects($this->once())
-            ->method('exited')
+            ->method('processExiting')
             ->with($input, $output);
 
         $container = new Container();
@@ -260,7 +260,7 @@ final class InputHandlerTest extends TestCase
         $inputHandler = new InputHandler(
             container: $container,
             router: $router,
-            exitedHandler: $exitHandler,
+            processExitingHandler: $exitHandler,
         );
 
         Exiter::freeze();

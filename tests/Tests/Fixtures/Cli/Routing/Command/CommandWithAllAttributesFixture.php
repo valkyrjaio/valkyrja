@@ -29,7 +29,7 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
@@ -97,7 +97,7 @@ final class CommandWithAllAttributesFixture
     #[Middleware(RouteDispatchedMiddlewareFixture::class)]
     #[Middleware(RouteMatchedMiddlewareFixture::class)]
     #[Middleware(ThrowableCaughtMiddlewareFixture::class)]
-    #[Middleware(ExitedMiddlewareFixture::class)]
+    #[Middleware(ProcessExitingMiddlewareFixture::class)]
     public function run(OutputFactoryContract $outputFactory): OutputContract
     {
         return $outputFactory->createOutput()->withMessages(new Message(self::NAME));

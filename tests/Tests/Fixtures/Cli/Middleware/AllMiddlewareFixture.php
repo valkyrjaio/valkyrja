@@ -16,21 +16,21 @@ namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-final class AllMiddlewareFixture implements InputReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, ThrowableCaughtMiddlewareContract, ExitedMiddlewareContract
+final class AllMiddlewareFixture implements InputReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, ThrowableCaughtMiddlewareContract, ProcessExitingMiddlewareContract
 {
-    public function exited(InputContract $input, OutputContract $output, ExitedHandlerContract $handler): void
+    public function processExiting(InputContract $input, OutputContract $output, ProcessExitingHandlerContract $handler): void
     {
     }
 

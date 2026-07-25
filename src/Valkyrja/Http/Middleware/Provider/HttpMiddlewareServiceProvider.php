@@ -18,18 +18,18 @@ use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
 class HttpMiddlewareServiceProvider implements ServiceProviderContract
@@ -149,19 +149,19 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * Publish the TerminatedHandler service.
+     * Publish the ResponseSentHandler service.
      *
      * @param ContainerContract $container The container
      */
-    public static function publishTerminatedHandler(ContainerContract $container): void
+    public static function publishResponseSentHandler(ContainerContract $container): void
     {
         $config = $container->getSingleton(HttpConfigContract::class);
 
-        $middleware = $config->terminatedMiddleware;
+        $middleware = $config->responseSentMiddleware;
 
         $container->setSingleton(
-            TerminatedHandlerContract::class,
-            $handler = new TerminatedHandler($container)
+            ResponseSentHandlerContract::class,
+            $handler = new ResponseSentHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -180,7 +180,7 @@ class HttpMiddlewareServiceProvider implements ServiceProviderContract
             RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
             RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
             SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
-            TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
+            ResponseSentHandlerContract::class    => [self::class, 'publishResponseSentHandler'],
         ];
     }
 }

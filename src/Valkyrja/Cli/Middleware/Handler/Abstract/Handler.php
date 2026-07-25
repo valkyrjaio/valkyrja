@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler\Abstract;
 
 use Override;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
@@ -30,7 +30,7 @@ use function array_merge;
  * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
  * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though.
  *
- * @template Middleware of InputReceivedMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
+ * @template Middleware of InputReceivedMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ProcessExitingMiddlewareContract
  *
  * @implements HandlerContract<Middleware>
  */

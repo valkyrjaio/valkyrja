@@ -21,12 +21,12 @@ use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\ProcessExitingHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
@@ -51,7 +51,7 @@ class Router implements RouterContract
         protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),
         protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),
         protected RouteDispatchedHandlerContract $routeDispatchedHandler = new RouteDispatchedHandler(),
-        protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
+        protected ProcessExitingHandlerContract $processExitingHandler = new ProcessExitingHandler(),
     ) {
     }
 
@@ -217,7 +217,7 @@ class Router implements RouterContract
         $this->routeMatchedHandler->add(...$route->getRouteMatchedMiddleware());
         $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
         $this->throwableCaughtHandler->add(...$route->getThrowableCaughtMiddleware());
-        $this->exitedHandler->add(...$route->getExitedMiddleware());
+        $this->processExitingHandler->add(...$route->getProcessExitingMiddleware());
 
         // Set the found command in the service container
         $this->container->setSingleton(RouteContract::class, $route);

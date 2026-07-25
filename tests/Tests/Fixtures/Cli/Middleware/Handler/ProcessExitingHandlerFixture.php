@@ -16,12 +16,12 @@ namespace Valkyrja\Tests\Fixtures\Cli\Middleware\Handler;
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\ProcessExitingHandler;
 
 /**
- * Class TestExitedHandler.
+ * Class TestProcessExitingHandler.
  */
-final class ExitedHandlerFixture extends ExitedHandler
+final class ProcessExitingHandlerFixture extends ProcessExitingHandler
 {
     protected int $count = 0;
 
@@ -37,10 +37,10 @@ final class ExitedHandlerFixture extends ExitedHandler
      * @inheritDoc
      */
     #[Override]
-    public function exited(InputContract $input, OutputContract $output): void
+    public function processExiting(InputContract $input, OutputContract $output): void
     {
         $this->count++;
 
-        parent::exited($input, $output);
+        parent::processExiting($input, $output);
     }
 }

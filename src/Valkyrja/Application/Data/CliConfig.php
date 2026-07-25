@@ -18,8 +18,8 @@ use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
@@ -52,7 +52,7 @@ class CliConfig implements CliConfigContract
      * @param class-string<RouteNotMatchedMiddlewareContract>[] $routeNotMatchedMiddleware
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware
-     * @param class-string<ExitedMiddlewareContract>[]          $exitedMiddleware
+     * @param class-string<ProcessExitingMiddlewareContract>[]  $processExitingMiddleware
      */
     public function __construct(
         public readonly string $namespace = 'App',
@@ -84,7 +84,7 @@ class CliConfig implements CliConfigContract
             LogThrowableCaughtMiddleware::class,
             OutputThrowableCaughtMiddleware::class,
         ],
-        public readonly array $exitedMiddleware = [],
+        public readonly array $processExitingMiddleware = [],
     ) {
     }
 }

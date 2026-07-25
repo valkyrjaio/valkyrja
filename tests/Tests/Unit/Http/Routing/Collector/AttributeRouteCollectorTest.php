@@ -17,10 +17,10 @@ use ReflectionException;
 use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Tests\Fixtures\Http\Middleware\AllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerAttributedFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerFixture;
@@ -59,7 +59,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([RouteDispatchedMiddlewareFixture::class], $parametersRoute->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareFixture::class], $parametersRoute->getRouteMatchedMiddleware());
         self::assertSame([SendingResponseMiddlewareFixture::class], $parametersRoute->getSendingResponseMiddleware());
-        self::assertSame([TerminatedMiddlewareFixture::class], $parametersRoute->getTerminatedMiddleware());
+        self::assertSame([ResponseSentMiddlewareFixture::class], $parametersRoute->getResponseSentMiddleware());
         self::assertSame([ThrowableCaughtMiddlewareFixture::class], $parametersRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $parametersRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $parametersRoute->getResponseStruct());
@@ -76,7 +76,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([RouteDispatchedMiddlewareFixture::class], $dynamicRoute->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareFixture::class], $dynamicRoute->getRouteMatchedMiddleware());
         self::assertSame([SendingResponseMiddlewareFixture::class], $dynamicRoute->getSendingResponseMiddleware());
-        self::assertSame([TerminatedMiddlewareFixture::class], $dynamicRoute->getTerminatedMiddleware());
+        self::assertSame([ResponseSentMiddlewareFixture::class], $dynamicRoute->getResponseSentMiddleware());
         self::assertSame([ThrowableCaughtMiddlewareFixture::class], $dynamicRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $dynamicRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $dynamicRoute->getResponseStruct());
@@ -119,7 +119,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([AllMiddlewareFixture::class], $route->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getSendingResponseMiddleware());
-        self::assertSame([AllMiddlewareFixture::class], $route->getTerminatedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $route->getResponseSentMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $route->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $route->getResponseStruct());
@@ -131,7 +131,7 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getRouteDispatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getSendingResponseMiddleware());
-        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getTerminatedMiddleware());
+        self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getResponseSentMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $dynamicRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $dynamicRoute->getResponseStruct());

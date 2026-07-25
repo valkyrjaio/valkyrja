@@ -27,10 +27,10 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
@@ -72,7 +72,7 @@ final class ControllerFixture
     #[Middleware(RouteDispatchedMiddlewareFixture::class)]
     #[Middleware(RouteMatchedMiddlewareFixture::class)]
     #[Middleware(SendingResponseMiddlewareFixture::class)]
-    #[Middleware(TerminatedMiddlewareFixture::class)]
+    #[Middleware(ResponseSentMiddlewareFixture::class)]
     #[Middleware(ThrowableCaughtMiddlewareFixture::class)]
     #[RequestStruct(IndexedJsonRequestStructEnum::first)]
     #[ResponseStruct(ResponseStructEnum::first)]
@@ -101,7 +101,7 @@ final class ControllerFixture
     #[Middleware(RouteDispatchedMiddlewareFixture::class)]
     #[Middleware(RouteMatchedMiddlewareFixture::class)]
     #[Middleware(SendingResponseMiddlewareFixture::class)]
-    #[Middleware(TerminatedMiddlewareFixture::class)]
+    #[Middleware(ResponseSentMiddlewareFixture::class)]
     #[Middleware(ThrowableCaughtMiddlewareFixture::class)]
     #[RequestStruct(IndexedJsonRequestStructEnum::first)]
     #[ResponseStruct(ResponseStructEnum::first)]

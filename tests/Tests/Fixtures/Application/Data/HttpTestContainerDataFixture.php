@@ -27,11 +27,11 @@ use Valkyrja\Event\Provider\EventServiceProvider;
 use Valkyrja\Http\Message\Provider\HttpMessageServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
@@ -85,7 +85,7 @@ final readonly class HttpTestContainerDataFixture extends ContainerData
                 RouteNotMatchedHandlerContract::class => [HttpMiddlewareServiceProvider::class, 'publishRouteNotMatchedHandler'],
                 RouteDispatchedHandlerContract::class => [HttpMiddlewareServiceProvider::class, 'publishRouteDispatchedHandler'],
                 SendingResponseHandlerContract::class => [HttpMiddlewareServiceProvider::class, 'publishSendingResponseHandler'],
-                TerminatedHandlerContract::class      => [HttpMiddlewareServiceProvider::class, 'publishTerminatedHandler'],
+                ResponseSentHandlerContract::class    => [HttpMiddlewareServiceProvider::class, 'publishResponseSentHandler'],
                 RouterContract::class                 => [HttpRoutingServiceProvider::class, 'publishRouter'],
                 RouteCollectionContract::class        => [HttpRoutingServiceProvider::class, 'publishRouteCollection'],
                 MatcherContract::class                => [HttpRoutingServiceProvider::class, 'publishMatcher'],

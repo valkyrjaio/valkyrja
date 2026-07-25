@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -86,7 +86,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(RouteMatchedHandlerContract::class, self::createStub(RouteMatchedHandlerContract::class));
         $this->container->setSingleton(RouteNotMatchedHandlerContract::class, self::createStub(RouteNotMatchedHandlerContract::class));
         $this->container->setSingleton(RouteDispatchedHandlerContract::class, self::createStub(RouteDispatchedHandlerContract::class));
-        $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
+        $this->container->setSingleton(ProcessExitingHandlerContract::class, self::createStub(ProcessExitingHandlerContract::class));
         $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));

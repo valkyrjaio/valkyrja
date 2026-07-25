@@ -26,11 +26,11 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ProcessExitingHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -46,7 +46,7 @@ class InputHandler implements InputHandlerContract
         protected RouterContract $router = new Router(),
         protected InputReceivedHandlerContract $inputReceivedHandler = new InputReceivedHandler(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
-        protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
+        protected ProcessExitingHandlerContract $processExitingHandler = new ProcessExitingHandler(),
         protected CliInteractionConfigContract $interactionConfig = new CliInteractionConfig(),
         protected OutputFactoryContract $outputFactory = new OutputFactory(),
     ) {
@@ -82,8 +82,8 @@ class InputHandler implements InputHandlerContract
     #[Override]
     public function exit(InputContract $input, OutputContract $output): void
     {
-        // Dispatch the exited middleware
-        $this->exitedHandler->exited($input, $output);
+        // Dispatch the process exiting middleware
+        $this->processExitingHandler->processExiting($input, $output);
     }
 
     /**

@@ -17,11 +17,11 @@ use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\HandlerContract;
 
@@ -31,7 +31,7 @@ use function array_merge;
  * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
  * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though.
  *
- * @template Middleware of RequestReceivedMiddlewareContract|SendingResponseMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|TerminatedMiddlewareContract
+ * @template Middleware of RequestReceivedMiddlewareContract|SendingResponseMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ResponseSentMiddlewareContract
  *
  * @implements HandlerContract<Middleware>
  */

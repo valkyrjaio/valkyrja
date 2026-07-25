@@ -17,20 +17,20 @@ use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-final class AllMiddlewareFixture implements RequestReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, SendingResponseMiddlewareContract, ThrowableCaughtMiddlewareContract, TerminatedMiddlewareContract
+final class AllMiddlewareFixture implements RequestReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, SendingResponseMiddlewareContract, ThrowableCaughtMiddlewareContract, ResponseSentMiddlewareContract
 {
     public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {
@@ -56,7 +56,7 @@ final class AllMiddlewareFixture implements RequestReceivedMiddlewareContract, R
         return $response;
     }
 
-    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
+    public function responseSent(ServerRequestContract $request, ResponseContract $response, ResponseSentHandlerContract $handler): void
     {
     }
 

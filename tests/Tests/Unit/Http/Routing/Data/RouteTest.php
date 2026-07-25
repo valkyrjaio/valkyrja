@@ -15,14 +15,14 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareChangedFixture;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
@@ -54,24 +54,24 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
         self::assertEmpty($route->getSendingResponseMiddleware());
-        self::assertEmpty($route->getTerminatedMiddleware());
+        self::assertEmpty($route->getResponseSentMiddleware());
         self::assertFalse($route->hasRequestStruct());
         self::assertFalse($route->hasResponseStruct());
     }
 
     public function testConstructor(): void
     {
-        $path                      = '/';
-        $name                      = 'route';
-        $handler                   = static fn (): null => null;
-        $methods                   = [RequestMethod::HEAD, RequestMethod::POST];
-        $routeMatchedMiddleware    = [RouteMatchedMiddlewareFixture::class];
-        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareFixture::class];
-        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareFixture::class];
-        $sendingResponseMiddleware = [SendingResponseMiddlewareFixture::class];
-        $terminatedMiddleware      = [TerminatedMiddlewareFixture::class];
-        $requestStruct             = IndexedJsonRequestStructEnum::first;
-        $responseStruct            = ResponseStructEnum::first;
+        $path                        = '/';
+        $name                        = 'route';
+        $handler                     = static fn (): null => null;
+        $methods                     = [RequestMethod::HEAD, RequestMethod::POST];
+        $routeMatchedMiddleware      = [RouteMatchedMiddlewareFixture::class];
+        $routeDispatchedMiddleware   = [RouteDispatchedMiddlewareFixture::class];
+        $throwableCaughtMiddleware   = [ThrowableCaughtMiddlewareFixture::class];
+        $sendingResponseMiddleware   = [SendingResponseMiddlewareFixture::class];
+        $responseSentMiddleware      = [ResponseSentMiddlewareFixture::class];
+        $requestStruct               = IndexedJsonRequestStructEnum::first;
+        $responseStruct              = ResponseStructEnum::first;
 
         $route = new Route(
             path: $path,
@@ -82,7 +82,7 @@ final class RouteTest extends TestCase
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
             sendingResponseMiddleware: $sendingResponseMiddleware,
-            terminatedMiddleware: $terminatedMiddleware,
+            responseSentMiddleware: $responseSentMiddleware,
             requestStruct: $requestStruct,
             responseStruct: $responseStruct,
         );
@@ -95,7 +95,7 @@ final class RouteTest extends TestCase
         self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
         self::assertSame($throwableCaughtMiddleware, $route->getThrowableCaughtMiddleware());
         self::assertSame($sendingResponseMiddleware, $route->getSendingResponseMiddleware());
-        self::assertSame($terminatedMiddleware, $route->getTerminatedMiddleware());
+        self::assertSame($responseSentMiddleware, $route->getResponseSentMiddleware());
         self::assertSame($requestStruct, $route->getRequestStruct());
         self::assertSame($responseStruct, $route->getResponseStruct());
     }
@@ -323,28 +323,28 @@ final class RouteTest extends TestCase
         self::assertSame([$middleware, $middleware2], $route3->getSendingResponseMiddleware());
     }
 
-    public function testTerminatedMiddleware(): void
+    public function testResponseSentMiddleware(): void
     {
         $path = '/';
         $name = 'route';
 
-        $middleware  = TerminatedMiddlewareFixture::class;
-        $middleware2 = TerminatedMiddlewareChangedFixture::class;
+        $middleware  = ResponseSentMiddlewareFixture::class;
+        $middleware2 = ResponseSentMiddlewareChangedFixture::class;
 
         $route  = new Route(
             path: $path,
             name: $name,
             handler: static fn (): null => null,
-            terminatedMiddleware: [$middleware]
+            responseSentMiddleware: [$middleware]
         );
-        $route2 = $route->withTerminatedMiddleware($middleware2);
-        $route3 = $route->withAddedTerminatedMiddleware($middleware2);
+        $route2 = $route->withResponseSentMiddleware($middleware2);
+        $route3 = $route->withAddedResponseSentMiddleware($middleware2);
 
         self::assertNotSame($route, $route2);
         self::assertNotSame($route, $route3);
-        self::assertSame([$middleware], $route->getTerminatedMiddleware());
-        self::assertSame([$middleware2], $route2->getTerminatedMiddleware());
-        self::assertSame([$middleware, $middleware2], $route3->getTerminatedMiddleware());
+        self::assertSame([$middleware], $route->getResponseSentMiddleware());
+        self::assertSame([$middleware2], $route2->getResponseSentMiddleware());
+        self::assertSame([$middleware, $middleware2], $route3->getResponseSentMiddleware());
     }
 
     public function testRequestStruct(): void

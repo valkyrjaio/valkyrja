@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
@@ -217,25 +217,25 @@ interface RouteContract
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static;
 
     /**
-     * Get the exited middleware.
+     * Get the process exiting middleware.
      *
-     * @return class-string<ExitedMiddlewareContract>[]
+     * @return class-string<ProcessExitingMiddlewareContract>[]
      */
-    public function getExitedMiddleware(): array;
+    public function getProcessExitingMiddleware(): array;
 
     /**
-     * Create a new route with the specified exited middleware.
+     * Create a new route with the specified process exiting middleware.
      *
-     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ProcessExitingMiddlewareContract> ...$middleware The middleware
      */
-    public function withExitedMiddleware(string ...$middleware): static;
+    public function withProcessExitingMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new route with added exited middleware.
+     * Create a new route with added process exiting middleware.
      *
-     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ProcessExitingMiddlewareContract> ...$middleware The middleware
      */
-    public function withAddedExitedMiddleware(string ...$middleware): static;
+    public function withAddedProcessExitingMiddleware(string ...$middleware): static;
 
     /**
      * Get the handler.

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Data\Contract;
 
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
@@ -50,8 +50,8 @@ interface CliConfigContract extends ConfigContract
     public array $throwableCaughtMiddleware {
         get;
     }
-    /** @var class-string<ExitedMiddlewareContract>[] */
-    public array $exitedMiddleware {
+    /** @var class-string<ProcessExitingMiddlewareContract>[] */
+    public array $processExitingMiddleware {
         get;
     }
 }

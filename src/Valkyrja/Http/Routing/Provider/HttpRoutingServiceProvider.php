@@ -20,11 +20,11 @@ use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
@@ -53,12 +53,12 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
      */
     public static function publishRouter(ContainerContract $container): void
     {
-        $exception       = $container->getSingleton(ThrowableCaughtHandlerContract::class);
-        $routeMatched    = $container->getSingleton(RouteMatchedHandlerContract::class);
-        $routeNotMatched = $container->getSingleton(RouteNotMatchedHandlerContract::class);
-        $routeDispatched = $container->getSingleton(RouteDispatchedHandlerContract::class);
-        $sendingResponse = $container->getSingleton(SendingResponseHandlerContract::class);
-        $terminated      = $container->getSingleton(TerminatedHandlerContract::class);
+        $exception         = $container->getSingleton(ThrowableCaughtHandlerContract::class);
+        $routeMatched      = $container->getSingleton(RouteMatchedHandlerContract::class);
+        $routeNotMatched   = $container->getSingleton(RouteNotMatchedHandlerContract::class);
+        $routeDispatched   = $container->getSingleton(RouteDispatchedHandlerContract::class);
+        $sendingResponse   = $container->getSingleton(SendingResponseHandlerContract::class);
+        $responseSent      = $container->getSingleton(ResponseSentHandlerContract::class);
 
         $container->setSingleton(
             RouterContract::class,
@@ -71,7 +71,7 @@ class HttpRoutingServiceProvider implements ServiceProviderContract
                 routeNotMatchedHandler: $routeNotMatched,
                 routeDispatchedHandler: $routeDispatched,
                 sendingResponseHandler: $sendingResponse,
-                terminatedHandler: $terminated
+                responseSentHandler: $responseSent
             )
         );
     }

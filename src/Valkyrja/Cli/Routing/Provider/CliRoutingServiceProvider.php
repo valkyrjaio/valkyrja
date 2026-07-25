@@ -18,7 +18,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -64,11 +64,11 @@ class CliRoutingServiceProvider implements ServiceProviderContract
      */
     public static function publishRouter(ContainerContract $container): void
     {
-        $throwableCaughtHandler   = $container->getSingleton(ThrowableCaughtHandlerContract::class);
-        $commandMatchedHandler    = $container->getSingleton(RouteMatchedHandlerContract::class);
-        $commandNotMatchedHandler = $container->getSingleton(RouteNotMatchedHandlerContract::class);
-        $commandDispatchedHandler = $container->getSingleton(RouteDispatchedHandlerContract::class);
-        $exitedHandler            = $container->getSingleton(ExitedHandlerContract::class);
+        $throwableCaughtHandler           = $container->getSingleton(ThrowableCaughtHandlerContract::class);
+        $commandMatchedHandler            = $container->getSingleton(RouteMatchedHandlerContract::class);
+        $commandNotMatchedHandler         = $container->getSingleton(RouteNotMatchedHandlerContract::class);
+        $commandDispatchedHandler         = $container->getSingleton(RouteDispatchedHandlerContract::class);
+        $processExitingHandler            = $container->getSingleton(ProcessExitingHandlerContract::class);
 
         $container->setSingleton(
             RouterContract::class,
@@ -80,7 +80,7 @@ class CliRoutingServiceProvider implements ServiceProviderContract
                 routeMatchedHandler: $commandMatchedHandler,
                 routeNotMatchedHandler: $commandNotMatchedHandler,
                 routeDispatchedHandler: $commandDispatchedHandler,
-                exitedHandler: $exitedHandler
+                processExitingHandler: $processExitingHandler
             )
         );
     }

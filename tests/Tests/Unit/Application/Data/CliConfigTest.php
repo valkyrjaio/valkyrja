@@ -42,7 +42,7 @@ final class CliConfigTest extends TestCase
         self::assertSame([], $config->callbacks);
         self::assertSame([], $config->routeMatchedMiddleware);
         self::assertSame([], $config->routeDispatchedMiddleware);
-        self::assertSame([], $config->exitedMiddleware);
+        self::assertSame([], $config->processExitingMiddleware);
     }
 
     public function testCustomValuesAreStored(): void

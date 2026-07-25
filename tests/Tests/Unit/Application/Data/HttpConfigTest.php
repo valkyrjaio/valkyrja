@@ -42,7 +42,7 @@ final class HttpConfigTest extends TestCase
         self::assertSame([], $config->routeMatchedMiddleware);
         self::assertSame([], $config->routeDispatchedMiddleware);
         self::assertSame([], $config->sendingResponseMiddleware);
-        self::assertSame([], $config->terminatedMiddleware);
+        self::assertSame([], $config->responseSentMiddleware);
     }
 
     public function testCustomValuesAreStored(): void

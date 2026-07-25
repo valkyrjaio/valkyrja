@@ -16,10 +16,10 @@ namespace Valkyrja\Http\Routing\Data\Contract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
@@ -195,25 +195,25 @@ interface RouteContract
     public function withAddedSendingResponseMiddleware(string ...$middleware): static;
 
     /**
-     * Get the terminated middleware.
+     * Get the response sent middleware.
      *
-     * @return class-string<TerminatedMiddlewareContract>[]
+     * @return class-string<ResponseSentMiddlewareContract>[]
      */
-    public function getTerminatedMiddleware(): array;
+    public function getResponseSentMiddleware(): array;
 
     /**
-     * Create a new route with terminated middleware.
+     * Create a new route with response sent middleware.
      *
-     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ResponseSentMiddlewareContract> ...$middleware The middleware
      */
-    public function withTerminatedMiddleware(string ...$middleware): static;
+    public function withResponseSentMiddleware(string ...$middleware): static;
 
     /**
-     * Create a new route with added terminated middleware.
+     * Create a new route with added response sent middleware.
      *
-     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ResponseSentMiddlewareContract> ...$middleware The middleware
      */
-    public function withAddedTerminatedMiddleware(string ...$middleware): static;
+    public function withAddedResponseSentMiddleware(string ...$middleware): static;
 
     /**
      * Determine if there is a request struct.

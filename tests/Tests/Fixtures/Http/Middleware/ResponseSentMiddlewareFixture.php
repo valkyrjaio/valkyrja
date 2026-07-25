@@ -15,19 +15,21 @@ namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Tests\Fixtures\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
- * Class TestTerminatedMiddlewareChanged.
+ * Class TestResponseSentMiddleware.
  */
-final class TerminatedMiddlewareChangedFixture implements TerminatedMiddlewareContract
+final class ResponseSentMiddlewareFixture implements ResponseSentMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
+    public function responseSent(ServerRequestContract $request, ResponseContract $response, ResponseSentHandlerContract $handler): void
     {
         $this->updateCounter();
+
+        $handler->responseSent($request, $response);
     }
 }

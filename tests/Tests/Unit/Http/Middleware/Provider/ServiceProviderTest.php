@@ -17,18 +17,18 @@ use ReflectionProperty;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
@@ -49,7 +49,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(RouteNotMatchedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
         self::assertArrayHasKey(RouteDispatchedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
         self::assertArrayHasKey(SendingResponseHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
-        self::assertArrayHasKey(TerminatedHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
+        self::assertArrayHasKey(ResponseSentHandlerContract::class, new HttpMiddlewareServiceProvider()->publishers());
     }
 
     public function testPublishRequestReceivedHandler(): void
@@ -238,34 +238,34 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertSame($config->sendingResponseMiddleware, $middleware);
     }
 
-    public function testPublishTerminatedHandler(): void
+    public function testPublishResponseSentHandler(): void
     {
         $this->container->setSingleton(HttpConfigContract::class, new HttpConfig());
 
-        $callback = new HttpMiddlewareServiceProvider()->publishers()[TerminatedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[ResponseSentHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
-            TerminatedHandler::class,
-            $this->container->getSingleton(TerminatedHandlerContract::class)
+            ResponseSentHandler::class,
+            $this->container->getSingleton(ResponseSentHandlerContract::class)
         );
     }
 
-    public function testPublishTerminatedHandlerWithConfig(): void
+    public function testPublishResponseSentHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(terminatedMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(responseSentMiddleware: ['test']));
 
-        $callback = new HttpMiddlewareServiceProvider()->publishers()[TerminatedHandlerContract::class];
+        $callback = new HttpMiddlewareServiceProvider()->publishers()[ResponseSentHandlerContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(
-            TerminatedHandler::class,
-            $handler = $this->container->getSingleton(TerminatedHandlerContract::class)
+            ResponseSentHandler::class,
+            $handler = $this->container->getSingleton(ResponseSentHandlerContract::class)
         );
 
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame($config->terminatedMiddleware, $middleware);
+        self::assertSame($config->responseSentMiddleware, $middleware);
     }
 }
