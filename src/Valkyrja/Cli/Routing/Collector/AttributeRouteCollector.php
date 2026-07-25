@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Collector;
 use Override;
 use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
@@ -158,7 +158,7 @@ class AttributeRouteCollector implements RouteCollectorContract
             $route = $this->updateRouteMatchedMiddleware($route, $middlewareClass);
             $route = $this->updateRouteDispatchedMiddleware($route, $middlewareClass);
             $route = $this->updateThrowableCaughtMiddleware($route, $middlewareClass);
-            $route = $this->updateExitedMiddleware($route, $middlewareClass);
+            $route = $this->updateProcessExitingMiddleware($route, $middlewareClass);
         }
 
         return $route;
@@ -203,10 +203,10 @@ class AttributeRouteCollector implements RouteCollectorContract
     /**
      * @param class-string $middleware The middleware
      */
-    protected function updateExitedMiddleware(Route $route, string $middleware): Route
+    protected function updateProcessExitingMiddleware(Route $route, string $middleware): Route
     {
-        if (is_a($middleware, ExitedMiddlewareContract::class, true)) {
-            $route = $route->withAddedExitedMiddleware($middleware);
+        if (is_a($middleware, ProcessExitingMiddlewareContract::class, true)) {
+            $route = $route->withAddedProcessExitingMiddleware($middleware);
         }
 
         return $route;
@@ -272,7 +272,7 @@ class AttributeRouteCollector implements RouteCollectorContract
             routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
-            exitedMiddleware: $route->getExitedMiddleware(),
+            processExitingMiddleware: $route->getProcessExitingMiddleware(),
             arguments: $route->getArguments(),
             options: $route->getOptions(),
         );

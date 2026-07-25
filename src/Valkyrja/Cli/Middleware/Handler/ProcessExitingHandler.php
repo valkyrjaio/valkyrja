@@ -16,25 +16,25 @@ namespace Valkyrja\Cli\Middleware\Handler;
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 
 /**
- * @extends Handler<ExitedMiddlewareContract>
+ * @extends Handler<ProcessExitingMiddlewareContract>
  */
-class ExitedHandler extends Handler implements ExitedHandlerContract
+class ProcessExitingHandler extends Handler implements ProcessExitingHandlerContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function exited(InputContract $input, OutputContract $output): void
+    public function processExiting(InputContract $input, OutputContract $output): void
     {
         $next = $this->next;
 
         if ($next !== null) {
-            $this->getMiddleware($next)->exited($input, $output, $this);
+            $this->getMiddleware($next)->processExiting($input, $output, $this);
         }
     }
 }

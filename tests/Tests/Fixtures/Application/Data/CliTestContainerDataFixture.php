@@ -18,8 +18,8 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -72,7 +72,7 @@ final readonly class CliTestContainerDataFixture extends ContainerData
                 RouteMatchedHandlerContract::class             => [CliMiddlewareServiceProvider::class, 'publishRouteMatchedHandler'],
                 RouteNotMatchedHandlerContract::class          => [CliMiddlewareServiceProvider::class, 'publishRouteNotMatchedHandler'],
                 RouteDispatchedHandlerContract::class          => [CliMiddlewareServiceProvider::class, 'publishRouteDispatchedHandler'],
-                ExitedHandlerContract::class                   => [CliMiddlewareServiceProvider::class, 'publishExitedHandler'],
+                ProcessExitingHandlerContract::class           => [CliMiddlewareServiceProvider::class, 'publishProcessExitingHandler'],
                 RouteCollectorContract::class                  => [CliRoutingServiceProvider::class, 'publishAttributeRouteCollector'],
                 RouterContract::class                          => [CliRoutingServiceProvider::class, 'publishRouter'],
                 RouteCollectionContract::class                 => [CliRoutingServiceProvider::class, 'publishRouteCollection'],

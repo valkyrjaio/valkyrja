@@ -11,19 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Middleware\Handler\Contract;
+namespace Valkyrja\Cli\Middleware\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 
-/**
- * @extends HandlerContract<ExitedMiddlewareContract>
- */
-interface ExitedHandlerContract extends HandlerContract
+interface ProcessExitingMiddlewareContract
 {
     /**
-     * Middleware handler ran when the application has exited.
+     * Middleware handler ran when the process is exiting.
      */
-    public function exited(InputContract $input, OutputContract $output): void;
+    public function processExiting(InputContract $input, OutputContract $output, ProcessExitingHandlerContract $handler): void;
 }

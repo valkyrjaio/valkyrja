@@ -19,7 +19,7 @@ use Valkyrja\Attribute\Trait\ReflectionAwareAttribute;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
@@ -42,7 +42,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
      * @param class-string<RouteMatchedMiddlewareContract>[]                   $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[]                $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[]                $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]                         $exitedMiddleware          The exited middleware
+     * @param class-string<ProcessExitingMiddlewareContract>[]                 $processExitingMiddleware  The process exiting middleware
      * @param ArgumentParameterContract[]                                      $arguments                 The arguments
      * @param OptionParameterContract[]                                        $options                   The options
      */
@@ -54,7 +54,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
-        protected array $exitedMiddleware = [],
+        protected array $processExitingMiddleware = [],
         protected array $arguments = [],
         protected array $options = [],
     ) {
@@ -66,7 +66,7 @@ class Route extends Model implements ReflectionAwareAttributeContract
             routeMatchedMiddleware: $routeMatchedMiddleware,
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
-            exitedMiddleware: $exitedMiddleware,
+            processExitingMiddleware: $processExitingMiddleware,
             arguments: $arguments,
             options: $options,
         );

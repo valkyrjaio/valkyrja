@@ -11,7 +11,7 @@ and the middleware pipeline follows the same chain-of-responsibility pattern.
 This design means that concepts you already understand from the HTTP layer —
 route providers, attribute-based registration, per-route middleware — carry over
 directly. The terminology shifts slightly: `Request` becomes `Input`, `Response`
-becomes `Output`, and `Terminated` becomes `Exited`. Everything else is
+becomes `Output`, and `ResponseSent` becomes `ProcessExiting`. Everything else is
 structurally equivalent.
 
 ## Configuration
@@ -393,7 +393,7 @@ The output message system is composable. Common message types:
 ### Exit Codes
 
 `OutputContract` carries an `ExitCode` enum value. `InputHandler::run()` calls
-`Exiter::exit()` with the integer value of that code after the `Exited`
+`Exiter::exit()` with the integer value of that code after the `ProcessExiting`
 middleware has run. Valkyrja's exit codes follow the BSD SysExits convention:
 
 | Case             | Value | Meaning                           |
@@ -578,33 +578,33 @@ If no `ThrowableCaught` middleware is registered, the `InputHandler` falls back
 to a default error output that displays the command name and the exception
 message in a styled banner.
 
-### Stage 6 — Exited
+### Stage 6 — ProcessExiting
 
-`ExitedMiddlewareContract` fires after the output has been written and just
+`ProcessExitingMiddlewareContract` fires after the output has been written and just
 before `Exiter::exit()` is called with the exit code. It is the appropriate
 stage for deferred cleanup: closing database connections, flushing queued
 events, writing metrics:
 
 ```php
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 
-class CleanupMiddleware implements ExitedMiddlewareContract
+class CleanupMiddleware implements ProcessExitingMiddlewareContract
 {
-    public function exited(
+    public function processExiting(
         InputContract $input,
         OutputContract $output,
-        ExitedHandlerContract $handler
+        ProcessExitingHandlerContract $handler
     ): void {
         $this->flushPendingEvents();
         $this->closeConnections();
 
-        $handler->exited($input, $output);
+        $handler->processExiting($input, $output);
     }
 }
 ```
 
-Declared per-route via `exitedMiddleware` in `#[Route]`, or globally in
+Declared per-route via `processExitingMiddleware` in `#[Route]`, or globally in
 `InputHandler`.
 
 ### Pipeline Summary
@@ -616,7 +616,7 @@ Declared per-route via `exitedMiddleware` in `#[Route]`, or globally in
 | `RouteNotMatched` | When no command matches                       | No                | Global    |
 | `RouteDispatched` | After dispatch                                | No                | Per-route |
 | `ThrowableCaught` | When a throwable is caught                    | No                | Per-route |
-| `Exited`          | After output is written, before process exits | No                | Per-route |
+| `ProcessExiting`          | After output is written, before process exits | No                | Per-route |
 
 ## Built-In Commands
 
@@ -655,7 +655,7 @@ From `Cli::run()` to process exit, the lifecycle is:
 12. **If a throwable is caught** at any point: `ThrowableCaught` middleware
     runs.
 13. The output's messages are written to stdout.
-14. `Exited` middleware runs (deferred cleanup).
+14. `ProcessExiting` middleware runs (deferred cleanup).
 15. `Exiter::exit()` is called with the `ExitCode` integer value from the
     output.
 
@@ -679,7 +679,7 @@ flowchart TD
     I -->|throwable| J
     I --> H
     J --> H
-    H --> K[Stage 6 - Exited]
+    H --> K[Stage 6 - ProcessExiting]
     K --> L["Exiter::exit(ExitCode)"]
     L --> M([Process ends])
 ```

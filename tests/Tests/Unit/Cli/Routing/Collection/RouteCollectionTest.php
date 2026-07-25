@@ -106,7 +106,7 @@ final class RouteCollectionTest extends TestCase
         self::assertSame($route->getRouteDispatchedMiddleware(), $routeFromCollection->getRouteDispatchedMiddleware());
         self::assertSame($route->getRouteMatchedMiddleware(), $routeFromCollection->getRouteMatchedMiddleware());
         self::assertSame($route->getThrowableCaughtMiddleware(), $routeFromCollection->getThrowableCaughtMiddleware());
-        self::assertSame($route->getExitedMiddleware(), $routeFromCollection->getExitedMiddleware());
+        self::assertSame($route->getProcessExitingMiddleware(), $routeFromCollection->getProcessExitingMiddleware());
         self::assertSame($route->getHandler(), $routeFromCollection->getHandler());
         self::assertTrue($collection->has($route->getName()));
     }

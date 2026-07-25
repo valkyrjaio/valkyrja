@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing\Data;
 use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
@@ -53,7 +53,7 @@ class Route implements RouteContract
      * @param class-string<RouteMatchedMiddlewareContract>[]            $routeMatchedMiddleware    The command matched middleware
      * @param class-string<RouteDispatchedMiddlewareContract>[]         $routeDispatchedMiddleware The command dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[]         $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<ExitedMiddlewareContract>[]                  $exitedMiddleware          The exited middleware
+     * @param class-string<ProcessExitingMiddlewareContract>[]          $processExitingMiddleware  The process exiting middleware
      * @param ArgumentParameterContract[]                               $arguments                 The arguments
      * @param OptionParameterContract[]                                 $options                   The options
      */
@@ -65,7 +65,7 @@ class Route implements RouteContract
         protected array $routeMatchedMiddleware = [],
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
-        protected array $exitedMiddleware = [],
+        protected array $processExitingMiddleware = [],
         protected array $arguments = [],
         protected array $options = [],
     ) {
@@ -424,42 +424,42 @@ class Route implements RouteContract
     }
 
     /**
-     * Get the exited middleware.
+     * Get the process exiting middleware.
      *
-     * @return class-string<ExitedMiddlewareContract>[]
+     * @return class-string<ProcessExitingMiddlewareContract>[]
      */
     #[Override]
-    public function getExitedMiddleware(): array
+    public function getProcessExitingMiddleware(): array
     {
-        return $this->exitedMiddleware;
+        return $this->processExitingMiddleware;
     }
 
     /**
-     * Create a new command with the specified exited middleware.
+     * Create a new command with the specified process exiting middleware.
      *
-     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ProcessExitingMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withExitedMiddleware(string ...$middleware): static
+    public function withProcessExitingMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->exitedMiddleware = $middleware;
+        $new->processExitingMiddleware = $middleware;
 
         return $new;
     }
 
     /**
-     * Create a new command with added exited middleware.
+     * Create a new command with added process exiting middleware.
      *
-     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ProcessExitingMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withAddedExitedMiddleware(string ...$middleware): static
+    public function withAddedProcessExitingMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->exitedMiddleware = array_merge($this->exitedMiddleware, $middleware);
+        $new->processExitingMiddleware = array_merge($this->processExitingMiddleware, $middleware);
 
         return $new;
     }

@@ -15,14 +15,14 @@ namespace Valkyrja\Cli\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ProcessExitingHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
@@ -128,19 +128,19 @@ class CliMiddlewareServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * Publish the TerminatedHandler service.
+     * Publish the ResponseSentHandler service.
      *
      * @param ContainerContract $container The container
      */
-    public static function publishExitedHandler(ContainerContract $container): void
+    public static function publishProcessExitingHandler(ContainerContract $container): void
     {
         $config = $container->getSingleton(CliConfigContract::class);
 
-        $middleware = $config->exitedMiddleware;
+        $middleware = $config->processExitingMiddleware;
 
         $container->setSingleton(
-            ExitedHandlerContract::class,
-            $handler = new ExitedHandler($container)
+            ProcessExitingHandlerContract::class,
+            $handler = new ProcessExitingHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -158,7 +158,7 @@ class CliMiddlewareServiceProvider implements ServiceProviderContract
             RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
             RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
             RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
-            ExitedHandlerContract::class          => [self::class, 'publishExitedHandler'],
+            ProcessExitingHandlerContract::class  => [self::class, 'publishProcessExitingHandler'],
         ];
     }
 }

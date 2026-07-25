@@ -30,7 +30,7 @@ use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionComponentProvider;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
@@ -258,7 +258,7 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(RouteMatchedHandlerContract::class));
         self::assertTrue($container->has(RouteNotMatchedHandlerContract::class));
         self::assertTrue($container->has(RouteDispatchedHandlerContract::class));
-        self::assertTrue($container->has(ExitedHandlerContract::class));
+        self::assertTrue($container->has(ProcessExitingHandlerContract::class));
         self::assertTrue($container->has(CliRoutingCollector::class));
         self::assertTrue($container->has(RouterContract::class));
         self::assertTrue($container->has(RouteCollectionContract::class));

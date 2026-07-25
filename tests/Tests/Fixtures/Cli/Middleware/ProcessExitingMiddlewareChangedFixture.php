@@ -15,21 +15,20 @@ namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
- * Class TestExitedMiddleware.
+ * Class TestProcessExitingMiddlewareChanged.
  */
-final class ExitedMiddlewareFixture implements ExitedMiddlewareContract
+final class ProcessExitingMiddlewareChangedFixture implements ProcessExitingMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function exited(InputContract $input, OutputContract $output, ExitedHandlerContract $handler): void
+    public function processExiting(InputContract $input, OutputContract $output, ProcessExitingHandlerContract $handler): void
     {
         $this->updateCounter();
-
-        $handler->exited($input, $output);
+        // Don't call the handler to simulate early exit
     }
 }

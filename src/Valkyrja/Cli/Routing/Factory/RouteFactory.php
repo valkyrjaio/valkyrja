@@ -44,7 +44,7 @@ class RouteFactory
                 routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
                 throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
                 sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
-                terminatedMiddleware: $route->getTerminatedMiddleware(),
+                responseSentMiddleware: $route->getResponseSentMiddleware(),
                 requestStruct: static::getRequestStructFromRoute($route),
                 responseStruct: static::getResponseStructFromRoute($route),
             );
@@ -59,7 +59,7 @@ class RouteFactory
             routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
             throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
             sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
-            terminatedMiddleware: $route->getTerminatedMiddleware(),
+            responseSentMiddleware: $route->getResponseSentMiddleware(),
             requestStruct: static::getRequestStructFromRoute($route),
             responseStruct: static::getResponseStructFromRoute($route),
         );

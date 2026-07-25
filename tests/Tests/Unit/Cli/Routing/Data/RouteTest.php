@@ -23,8 +23,8 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableEx
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareChangedFixture;
-use Valkyrja\Tests\Fixtures\Cli\Middleware\ExitedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedFixture;
@@ -64,21 +64,21 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
     }
 
     public function testConstructor(): void
     {
-        $name                      = self::NAME;
-        $description               = self::DESCRIPTION;
-        $helpText                  = [$this, 'getHelpText'];
-        $handler                   = static fn (): null => null;
-        $options                   = [new OptionParameter(name: 'test', description: 'test description')];
-        $arguments                 = [new ArgumentParameter(name: 'test', description: 'test description')];
-        $routeMatchedMiddleware    = [RouteMatchedMiddlewareFixture::class];
-        $routeDispatchedMiddleware = [RouteDispatchedMiddlewareFixture::class];
-        $throwableCaughtMiddleware = [ThrowableCaughtMiddlewareFixture::class];
-        $exitedMiddleware          = [ExitedMiddlewareFixture::class];
+        $name                              = self::NAME;
+        $description                       = self::DESCRIPTION;
+        $helpText                          = [$this, 'getHelpText'];
+        $handler                           = static fn (): null => null;
+        $options                           = [new OptionParameter(name: 'test', description: 'test description')];
+        $arguments                         = [new ArgumentParameter(name: 'test', description: 'test description')];
+        $routeMatchedMiddleware            = [RouteMatchedMiddlewareFixture::class];
+        $routeDispatchedMiddleware         = [RouteDispatchedMiddlewareFixture::class];
+        $throwableCaughtMiddleware         = [ThrowableCaughtMiddlewareFixture::class];
+        $processExitingMiddleware          = [ProcessExitingMiddlewareFixture::class];
 
         $route = new Route(...[
             'name'                      => $name,
@@ -88,7 +88,7 @@ final class RouteTest extends TestCase
             'routeMatchedMiddleware'    => $routeMatchedMiddleware,
             'routeDispatchedMiddleware' => $routeDispatchedMiddleware,
             'throwableCaughtMiddleware' => $throwableCaughtMiddleware,
-            'exitedMiddleware'          => $exitedMiddleware,
+            'processExitingMiddleware'  => $processExitingMiddleware,
             'arguments'                 => $arguments,
             'options'                   => $options,
         ]);
@@ -107,7 +107,7 @@ final class RouteTest extends TestCase
         self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
         self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());
         self::assertSame($throwableCaughtMiddleware, $route->getThrowableCaughtMiddleware());
-        self::assertSame($exitedMiddleware, $route->getExitedMiddleware());
+        self::assertSame($processExitingMiddleware, $route->getProcessExitingMiddleware());
     }
 
     public function testName(): void
@@ -140,7 +140,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name2, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -154,7 +154,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
     }
 
     public function testDescription(): void
@@ -187,7 +187,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description2, $route2->getDescription());
@@ -201,7 +201,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
     }
 
     public function testHelpText(): void
@@ -234,7 +234,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -248,7 +248,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
     }
 
     public function testHelpTextThrowsWhenNotExists(): void
@@ -317,7 +317,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -331,7 +331,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
     }
 
     public function testArguments(): void
@@ -377,7 +377,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -393,7 +393,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -411,7 +411,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getRouteMatchedMiddleware());
         self::assertEmpty($route3->getRouteDispatchedMiddleware());
         self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
+        self::assertEmpty($route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -427,7 +427,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
-        self::assertEmpty($route4->getExitedMiddleware());
+        self::assertEmpty($route4->getProcessExitingMiddleware());
     }
 
     public function testGetArgumentThrowsWhenNonExistent(): void
@@ -491,7 +491,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -507,7 +507,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -525,7 +525,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getRouteMatchedMiddleware());
         self::assertEmpty($route3->getRouteDispatchedMiddleware());
         self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
+        self::assertEmpty($route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -541,7 +541,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
-        self::assertEmpty($route4->getExitedMiddleware());
+        self::assertEmpty($route4->getProcessExitingMiddleware());
     }
 
     public function testGetOptionThrowsWhenNonExistent(): void
@@ -602,7 +602,7 @@ final class RouteTest extends TestCase
         self::assertSame([$middleware], $route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -616,7 +616,7 @@ final class RouteTest extends TestCase
         self::assertSame([$middleware2], $route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -630,7 +630,7 @@ final class RouteTest extends TestCase
         self::assertSame([$middleware, $middleware2], $route3->getRouteMatchedMiddleware());
         self::assertEmpty($route3->getRouteDispatchedMiddleware());
         self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
+        self::assertEmpty($route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -644,7 +644,7 @@ final class RouteTest extends TestCase
         self::assertSame([$middleware], $route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
-        self::assertEmpty($route4->getExitedMiddleware());
+        self::assertEmpty($route4->getProcessExitingMiddleware());
     }
 
     public function testRouteDispatchedMiddleware(): void
@@ -687,7 +687,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertSame([$middleware], $route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -701,7 +701,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertSame([$middleware2], $route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -715,7 +715,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getRouteMatchedMiddleware());
         self::assertSame([$middleware, $middleware2], $route3->getRouteDispatchedMiddleware());
         self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
+        self::assertEmpty($route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -729,7 +729,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertSame([$middleware], $route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
-        self::assertEmpty($route4->getExitedMiddleware());
+        self::assertEmpty($route4->getProcessExitingMiddleware());
     }
 
     public function testThrowableCaughtMiddleware(): void
@@ -772,7 +772,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertSame([$middleware], $route->getThrowableCaughtMiddleware());
-        self::assertEmpty($route->getExitedMiddleware());
+        self::assertEmpty($route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -786,7 +786,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertSame([$middleware2], $route2->getThrowableCaughtMiddleware());
-        self::assertEmpty($route2->getExitedMiddleware());
+        self::assertEmpty($route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -800,7 +800,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getRouteMatchedMiddleware());
         self::assertEmpty($route3->getRouteDispatchedMiddleware());
         self::assertSame([$middleware, $middleware2], $route3->getThrowableCaughtMiddleware());
-        self::assertEmpty($route3->getExitedMiddleware());
+        self::assertEmpty($route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -814,33 +814,33 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertSame([$middleware], $route4->getThrowableCaughtMiddleware());
-        self::assertEmpty($route4->getExitedMiddleware());
+        self::assertEmpty($route4->getProcessExitingMiddleware());
     }
 
-    public function testExitedMiddleware(): void
+    public function testProcessExitingMiddleware(): void
     {
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $handler     = static fn (): null => null;
-        $middleware  = ExitedMiddlewareFixture::class;
-        $middleware2 = ExitedMiddlewareChangedFixture::class;
+        $middleware  = ProcessExitingMiddlewareFixture::class;
+        $middleware2 = ProcessExitingMiddlewareChangedFixture::class;
 
         $route  = new Route(
             name: $name,
             description: $description,
             handler: $handler,
             helpText: $helpText,
-            exitedMiddleware: [$middleware]
+            processExitingMiddleware: [$middleware]
         );
-        $route2 = $route->withExitedMiddleware($middleware2);
-        $route3 = $route->withAddedExitedMiddleware($middleware2);
+        $route2 = $route->withProcessExitingMiddleware($middleware2);
+        $route3 = $route->withAddedProcessExitingMiddleware($middleware2);
         $route4 = new Route(
             name: $name,
             description: $description,
             handler: $handler,
             helpText: $helpText,
-        )->withAddedExitedMiddleware($middleware);
+        )->withAddedProcessExitingMiddleware($middleware);
 
         self::assertNotSame($route, $route2);
         self::assertNotSame($route2, $route3);
@@ -857,7 +857,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route->getRouteMatchedMiddleware());
         self::assertEmpty($route->getRouteDispatchedMiddleware());
         self::assertEmpty($route->getThrowableCaughtMiddleware());
-        self::assertSame([$middleware], $route->getExitedMiddleware());
+        self::assertSame([$middleware], $route->getProcessExitingMiddleware());
 
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
@@ -871,7 +871,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route2->getRouteMatchedMiddleware());
         self::assertEmpty($route2->getRouteDispatchedMiddleware());
         self::assertEmpty($route2->getThrowableCaughtMiddleware());
-        self::assertSame([$middleware2], $route2->getExitedMiddleware());
+        self::assertSame([$middleware2], $route2->getProcessExitingMiddleware());
 
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
@@ -885,7 +885,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route3->getRouteMatchedMiddleware());
         self::assertEmpty($route3->getRouteDispatchedMiddleware());
         self::assertEmpty($route3->getThrowableCaughtMiddleware());
-        self::assertSame([$middleware, $middleware2], $route3->getExitedMiddleware());
+        self::assertSame([$middleware, $middleware2], $route3->getProcessExitingMiddleware());
 
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
@@ -899,7 +899,7 @@ final class RouteTest extends TestCase
         self::assertEmpty($route4->getRouteMatchedMiddleware());
         self::assertEmpty($route4->getRouteDispatchedMiddleware());
         self::assertEmpty($route4->getThrowableCaughtMiddleware());
-        self::assertSame([$middleware], $route4->getExitedMiddleware());
+        self::assertSame([$middleware], $route4->getProcessExitingMiddleware());
     }
 
     /**

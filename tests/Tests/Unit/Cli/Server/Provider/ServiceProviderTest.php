@@ -21,8 +21,8 @@ use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
@@ -76,7 +76,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
         $this->container->setSingleton(InputReceivedHandlerContract::class, self::createStub(InputReceivedHandlerContract::class));
         $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
-        $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
+        $this->container->setSingleton(ProcessExitingHandlerContract::class, self::createStub(ProcessExitingHandlerContract::class));
 
         $callback = new CliServerServiceProvider()->publishers()[InputHandlerContract::class];
         $callback($this->container);
