@@ -24,12 +24,12 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
@@ -60,7 +60,7 @@ class RequestHandler implements RequestHandlerContract
         protected RequestReceivedHandlerContract $requestReceivedHandler = new RequestReceivedHandler(),
         protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
         protected SendingResponseHandlerContract $sendingResponseHandler = new SendingResponseHandler(),
-        protected TerminatedHandlerContract $terminatedHandler = new TerminatedHandler(),
+        protected ResponseSentHandlerContract $responseSentHandler = new ResponseSentHandler(),
         protected bool $debug = false
     ) {
     }
@@ -107,7 +107,7 @@ class RequestHandler implements RequestHandlerContract
     public function terminate(ServerRequestContract $request, ResponseContract $response): void
     {
         // Dispatch the terminable middleware
-        $this->terminatedHandler->terminated($request, $response);
+        $this->responseSentHandler->responseSent($request, $response);
     }
 
     /**

@@ -19,10 +19,10 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Attribute\DynamicRoute;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
-use Valkyrja\Tests\Fixtures\Http\Middleware\TerminatedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
@@ -156,11 +156,11 @@ final class DynamicRouteTest extends TestCase
         self::assertSame($value, $route->getSendingResponseMiddleware());
     }
 
-    public function testTerminatedMiddleware(): void
+    public function testResponseSentMiddleware(): void
     {
-        $value = [TerminatedMiddlewareFixture::class];
-        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], terminatedMiddleware: $value);
+        $value = [ResponseSentMiddlewareFixture::class];
+        $route = new DynamicRoute(path: '/', name: 'test', parameters: [], responseSentMiddleware: $value);
 
-        self::assertSame($value, $route->getTerminatedMiddleware());
+        self::assertSame($value, $route->getResponseSentMiddleware());
     }
 }

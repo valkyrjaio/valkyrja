@@ -16,12 +16,12 @@ namespace Valkyrja\Tests\Fixtures\Http\Middleware\Handler;
 use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 
 /**
- * Class TestTerminatedHandler.
+ * Class TestResponseSentHandler.
  */
-final class TerminatedHandlerFixture extends TerminatedHandler
+final class ResponseSentHandlerFixture extends ResponseSentHandler
 {
     protected int $count = 0;
 
@@ -37,10 +37,10 @@ final class TerminatedHandlerFixture extends TerminatedHandler
      * @inheritDoc
      */
     #[Override]
-    public function terminated(ServerRequestContract $request, ResponseContract $response): void
+    public function responseSent(ServerRequestContract $request, ResponseContract $response): void
     {
         $this->count++;
 
-        parent::terminated($request, $response);
+        parent::responseSent($request, $response);
     }
 }

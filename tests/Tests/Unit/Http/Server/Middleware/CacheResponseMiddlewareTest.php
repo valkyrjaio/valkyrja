@@ -33,7 +33,7 @@ use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Response\XmlResponse;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -64,15 +64,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
-        $terminatedHandler = new TerminatedHandler($container);
-        $terminatedHandler->add(CacheResponseMiddleware::class);
+        $responseSentHandler = new ResponseSentHandler($container);
+        $responseSentHandler->add(CacheResponseMiddleware::class);
 
         $request  = new ServerRequest();
         $response = new EmptyResponse();
 
         $beforeResponse = $beforeHandler->requestReceived($request);
 
-        $terminatedHandler->terminated($request, $response);
+        $responseSentHandler->responseSent($request, $response);
 
         // Ensure the initial request doesn't get any cached response
         self::assertInstanceOf(RequestContract::class, $beforeResponse);
@@ -80,10 +80,10 @@ final class CacheResponseMiddlewareTest extends TestCase
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
 
-        $beforeResponseAfterTerminated = $beforeHandler->requestReceived($request);
+        $beforeResponseAfterResponseSent = $beforeHandler->requestReceived($request);
 
         // Test that a subsequent request gets a response from cache
-        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterResponseSent);
 
         // Write a bad cache
         file_put_contents($this->getCachePathForRequest($request), '<?php return new \stdClass();');
@@ -96,18 +96,18 @@ final class CacheResponseMiddlewareTest extends TestCase
         // Test that a subsequent request gets a request when the cached response is not valid
         self::assertInstanceOf(RequestContract::class, $beforeResponseWithBadCache);
 
-        $terminatedHandler = new TerminatedHandler($container);
-        $terminatedHandler->add(CacheResponseMiddleware::class);
+        $responseSentHandler = new ResponseSentHandler($container);
+        $responseSentHandler->add(CacheResponseMiddleware::class);
 
-        $terminatedHandler->terminated($request, $response);
+        $responseSentHandler->responseSent($request, $response);
 
         $beforeHandler = new RequestReceivedHandler($container);
         $beforeHandler->add(CacheResponseMiddleware::class);
 
-        $beforeResponseAfterTerminatedAfterBadCache = $beforeHandler->requestReceived($request);
+        $beforeResponseAfterResponseSentAfterBadCache = $beforeHandler->requestReceived($request);
 
         // Test that cache got reset successfully
-        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminatedAfterBadCache);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterResponseSentAfterBadCache);
 
         // Freeze time to a time much later than ttl
         Time::freeze(Time::get() + 1801);
@@ -128,26 +128,26 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testDirectly(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest();
         $response = new EmptyResponse();
 
         $beforeResponse = $middleware->requestReceived($request, $beforeHandler);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         // Ensure the initial request doesn't get any cached response
         self::assertInstanceOf(RequestContract::class, $beforeResponse);
 
         $beforeHandler = new RequestReceivedHandler();
 
-        $beforeResponseAfterTerminated = $middleware->requestReceived($request, $beforeHandler);
+        $beforeResponseAfterResponseSent = $middleware->requestReceived($request, $beforeHandler);
 
         // Test that a subsequent request gets a response from cache
-        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminated);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterResponseSent);
 
         // Write a bad cache
         file_put_contents($this->getCachePathForRequest($request), '<?php return new \stdClass();');
@@ -159,12 +159,12 @@ final class CacheResponseMiddlewareTest extends TestCase
         // Test that a subsequent request gets a request when the cached response is not valid
         self::assertInstanceOf(RequestContract::class, $beforeResponseWithBadCache);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
-        $beforeResponseAfterTerminatedAfterBadCache = $middleware->requestReceived($request, $beforeHandler);
+        $beforeResponseAfterResponseSentAfterBadCache = $middleware->requestReceived($request, $beforeHandler);
 
         // Test that cache got reset successfully
-        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterTerminatedAfterBadCache);
+        self::assertInstanceOf(ResponseContract::class, $beforeResponseAfterResponseSentAfterBadCache);
 
         // Freeze time to a time much later than ttl
         Time::freeze(Time::get() + 1801);
@@ -182,14 +182,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/response-test'));
         $response = Response::create('Test content', StatusCode::OK);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -202,14 +202,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testEmptyResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/empty-response-test'));
         $response = new EmptyResponse();
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -221,15 +221,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testHtmlResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $htmlContent = '<html lang="en"><body><h1>Test</h1></body></html>';
         $request     = new ServerRequest(uri: new Uri(path: '/html-response-test'));
         $response    = new HtmlResponse($htmlContent, StatusCode::OK);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -245,15 +245,15 @@ final class CacheResponseMiddlewareTest extends TestCase
      */
     public function testJsonResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $jsonData = ['key' => 'value', 'nested' => ['foo' => 'bar']];
         $request  = new ServerRequest(uri: new Uri(path: '/json-response-test'));
         $response = new JsonResponse($jsonData, StatusCode::OK);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -266,15 +266,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testRedirectResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $redirectUri = new Uri(path: '/redirect-destination');
         $request     = new ServerRequest(uri: new Uri(path: '/redirect-response-test'));
         $response    = new RedirectResponse($redirectUri, StatusCode::FOUND);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -288,15 +288,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testTextResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $textContent = 'Plain text content';
         $request     = new ServerRequest(uri: new Uri(path: '/text-response-test'));
         $response    = new TextResponse($textContent, StatusCode::OK);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -309,15 +309,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testXmlResponseClassWorks(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $xmlContent = '<?xml version="1.0"?><root><item>Test</item></root>';
         $request    = new ServerRequest(uri: new Uri(path: '/xml-response-test'));
         $response   = new XmlResponse($xmlContent, StatusCode::OK);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -330,15 +330,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testResponseWithHeaders(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $headers  = HeaderCollection::fromArray([new Header('X-Custom-Header', 'custom-value')]);
         $request  = new ServerRequest(uri: new Uri(path: '/headers-response-test'));
         $response = Response::create('Content with headers', StatusCode::OK, $headers);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -350,14 +350,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testServerErrorResponseIsNotCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/error-response-test'));
         $response = Response::create('Server Error', StatusCode::INTERNAL_SERVER_ERROR);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -369,14 +369,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testBadGatewayResponseIsNotCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/bad-gateway-test'));
         $response = Response::create('Bad Gateway', StatusCode::BAD_GATEWAY);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -387,14 +387,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testServiceUnavailableResponseIsNotCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/service-unavailable-test'));
         $response = Response::create('Service Unavailable', StatusCode::SERVICE_UNAVAILABLE);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -405,14 +405,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testGatewayTimeoutResponseIsNotCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/gateway-timeout-test'));
         $response = Response::create('Gateway Timeout', StatusCode::GATEWAY_TIMEOUT);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -423,14 +423,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testNotImplementedResponseIsNotCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/not-implemented-test'));
         $response = Response::create('Not Implemented', StatusCode::NOT_IMPLEMENTED);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -441,14 +441,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function test4xxResponsesAreCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/not-found-test'));
         $response = Response::create('Not Found', StatusCode::NOT_FOUND);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -461,14 +461,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function test2xxResponsesAreCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $request  = new ServerRequest(uri: new Uri(path: '/created-test'));
         $response = Response::create('Created', StatusCode::CREATED);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -481,15 +481,15 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function test3xxResponsesAreCached(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $beforeHandler     = new RequestReceivedHandler();
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $beforeHandler       = new RequestReceivedHandler();
+        $responseSentHandler = new ResponseSentHandler();
 
         $redirectUri = new Uri(path: '/destination');
         $request     = new ServerRequest(uri: new Uri(path: '/redirect-cached-test'));
         $response    = new RedirectResponse($redirectUri, StatusCode::MOVED_PERMANENTLY);
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         $cachedResponse = $middleware->requestReceived($request, $beforeHandler);
 
@@ -554,14 +554,14 @@ final class CacheResponseMiddlewareTest extends TestCase
 
     public function testCacheWriteFailureIsIgnored(): void
     {
-        $middleware        = new CacheResponseMiddleware($this->filePath);
-        $terminatedHandler = new TerminatedHandler();
+        $middleware          = new CacheResponseMiddleware($this->filePath);
+        $responseSentHandler = new ResponseSentHandler();
 
         $request = new ServerRequest(uri: new Uri(path: '/invalid-utf8-body'));
         // An invalid UTF-8 body makes JSON serialization throw; the failure must be swallowed.
         $response = Response::create("\xB1\x31");
 
-        $middleware->terminated($request, $response, $terminatedHandler);
+        $middleware->responseSent($request, $response, $responseSentHandler);
 
         // The cache write failed silently — no cache file was created.
         self::assertFalse(is_file($this->getCachePathForRequest($request)));

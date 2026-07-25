@@ -19,11 +19,11 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
@@ -48,7 +48,7 @@ class HttpConfig implements HttpConfigContract
      * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware
      * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware
-     * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware
+     * @param class-string<ResponseSentMiddlewareContract>[]    $responseSentMiddleware
      */
     public function __construct(
         public readonly string $namespace = 'App',
@@ -75,7 +75,7 @@ class HttpConfig implements HttpConfigContract
             ViewThrowableCaughtMiddleware::class,
         ],
         public readonly array $sendingResponseMiddleware = [],
-        public readonly array $terminatedMiddleware = [],
+        public readonly array $responseSentMiddleware = [],
     ) {
     }
 }

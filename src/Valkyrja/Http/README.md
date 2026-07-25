@@ -741,32 +741,32 @@ The built-in `NoCacheResponseMiddleware` operates at this stage — it adds
 `Cache-Control: no-cache, no-store`, `Pragma: no-cache`, and a past `Expires`
 header to prevent client-side caching of sensitive responses for example.
 
-### Stage 7 — Terminated
+### Stage 7 — ResponseSent
 
-`TerminatedMiddlewareContract` fires after the response has been sent to the
+`ResponseSentMiddlewareContract` fires after the response has been sent to the
 client. At this point the user has already received the response; work done here
 does not affect what they see. It is the appropriate stage for deferred side
 effects: writing logs, dispatching queued events, clearing caches:
 
 ```php
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 
-class ActivityLogMiddleware implements TerminatedMiddlewareContract
+class ActivityLogMiddleware implements ResponseSentMiddlewareContract
 {
-    public function terminated(
+    public function responseSent(
         ServerRequestContract $request,
         ResponseContract $response,
-        TerminatedHandlerContract $handler
+        ResponseSentHandlerContract $handler
     ): void {
         $this->activityLog->record($request, $response);
 
-        $handler->terminated($request, $response);
+        $handler->responseSent($request, $response);
     }
 }
 ```
 
-Can be declared globally or per-route via `terminatedMiddleware`.
+Can be declared globally or per-route via `responseSentMiddleware`.
 
 The `CacheResponseMiddleware` also hooks into this stage: if the response was a
 success (not a 5xx) and has not yet been cached, it serializes the response to a
@@ -783,7 +783,7 @@ requests.
 | `RouteDispatched` | After dispatch, before sending    | No                | Per-route |
 | `ThrowableCaught` | When a throwable is caught        | No                | Per-route |
 | `SendingResponse` | Before writing response to output | No                | Per-route |
-| `Terminated`      | After response is sent            | No                | Per-route |
+| `ResponseSent`      | After response is sent            | No                | Per-route |
 
 ## Response Caching
 
@@ -791,7 +791,7 @@ Valkyrja ships a full-response cache middleware — `CacheResponseMiddleware` �
 that stores serialized response objects on the filesystem and replays them on
 subsequent identical requests. Because it operates at the `RequestReceived`
 stage, a cache hit bypasses route matching, dispatch, and goes straight to the
-sending and terminated middleware stages.
+sending and response-sent middleware stages.
 
 Enable it by registering it as global `RequestReceived` middleware and pointing
 it at a writable directory:
@@ -845,7 +845,7 @@ throw new HttpException(StatusCode::NOT_FOUND, 'Resource not found.');
 `ThrowableCaught` middleware sees the exception before the handler's default
 behavior takes effect, so you can override the response further at that stage.
 
-> Note: Sending and terminated middleware still run after the throwable is caught.
+> Note: Sending and response-sent middleware still run after the throwable is caught.
 
 ## Full Request Lifecycle
 
@@ -873,7 +873,7 @@ From `Http::run()` to process exit, the lifecycle is:
 13. `SendingResponse` middleware runs (final header injection, compression).
 14. The response is written to the output buffer; the session is closed; FastCGI
     or Litespeed finish-request is called if available.
-15. `Terminated` middleware runs (deferred work, cache writes, analytics).
+15. `ResponseSent` middleware runs (deferred work, cache writes, analytics).
 
 <p align="center"><a href="https://valkyrja.io" target="_blank">
     <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/http-lifecycle.svg" width="100%">
@@ -897,6 +897,6 @@ flowchart TD
     I --> G
     J --> G
     G --> K[Write response to output buffer]
-    K --> L[Stage 7 - Terminated]
+    K --> L[Stage 7 - ResponseSent]
     L --> M([Process ends])
 ```

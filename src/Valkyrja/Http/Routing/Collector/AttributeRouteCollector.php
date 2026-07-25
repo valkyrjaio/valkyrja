@@ -19,10 +19,10 @@ use ReflectionMethod;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Routing\Factory\RouteFactory;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Attribute\DynamicRoute as DynamicAttribute;
 use Valkyrja\Http\Routing\Attribute\Parameter;
@@ -212,7 +212,7 @@ class AttributeRouteCollector implements RouteCollectorContract
             $route = $this->updateRouteDispatchedMiddleware($route, $middlewareClass);
             $route = $this->updateThrowableCaughtMiddleware($route, $middlewareClass);
             $route = $this->updateSendingResponseMiddleware($route, $middlewareClass);
-            $route = $this->updateTerminatedMiddleware($route, $middlewareClass);
+            $route = $this->updateResponseSentMiddleware($route, $middlewareClass);
         }
 
         return $route;
@@ -269,10 +269,10 @@ class AttributeRouteCollector implements RouteCollectorContract
     /**
      * @param class-string $middleware The middleware
      */
-    protected function updateTerminatedMiddleware(Route $route, string $middleware): Route
+    protected function updateResponseSentMiddleware(Route $route, string $middleware): Route
     {
-        if (is_a($middleware, TerminatedMiddlewareContract::class, true)) {
-            $route = $route->withAddedTerminatedMiddleware($middleware);
+        if (is_a($middleware, ResponseSentMiddlewareContract::class, true)) {
+            $route = $route->withAddedResponseSentMiddleware($middleware);
         }
 
         return $route;

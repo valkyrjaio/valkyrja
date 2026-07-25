@@ -17,10 +17,10 @@ use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingNoRequestStructException;
@@ -46,7 +46,7 @@ class Route implements RouteContract
      * @param class-string<RouteDispatchedMiddlewareContract>[]           $routeDispatchedMiddleware The route dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[]           $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<SendingResponseMiddlewareContract>[]           $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]                $terminatedMiddleware      The terminated middleware
+     * @param class-string<ResponseSentMiddlewareContract>[]              $responseSentMiddleware    The response sent middleware
      */
     public function __construct(
         protected string $path,
@@ -57,7 +57,7 @@ class Route implements RouteContract
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $sendingResponseMiddleware = [],
-        protected array $terminatedMiddleware = [],
+        protected array $responseSentMiddleware = [],
         protected RequestStructContract|null $requestStruct = null,
         protected ResponseStructContract|null $responseStruct = null,
     ) {
@@ -376,25 +376,25 @@ class Route implements RouteContract
     /**
      * @inheritDoc
      *
-     * @return class-string<TerminatedMiddlewareContract>[]
+     * @return class-string<ResponseSentMiddlewareContract>[]
      */
     #[Override]
-    public function getTerminatedMiddleware(): array
+    public function getResponseSentMiddleware(): array
     {
-        return $this->terminatedMiddleware;
+        return $this->responseSentMiddleware;
     }
 
     /**
      * @inheritDoc
      *
-     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ResponseSentMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withTerminatedMiddleware(string ...$middleware): static
+    public function withResponseSentMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->terminatedMiddleware = $middleware;
+        $new->responseSentMiddleware = $middleware;
 
         return $new;
     }
@@ -402,14 +402,14 @@ class Route implements RouteContract
     /**
      * @inheritDoc
      *
-     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
+     * @param class-string<ResponseSentMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
-    public function withAddedTerminatedMiddleware(string ...$middleware): static
+    public function withAddedResponseSentMiddleware(string ...$middleware): static
     {
         $new = clone $this;
 
-        $new->terminatedMiddleware = array_merge($this->terminatedMiddleware, $middleware);
+        $new->responseSentMiddleware = array_merge($this->responseSentMiddleware, $middleware);
 
         return $new;
     }

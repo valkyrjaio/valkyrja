@@ -11,16 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Middleware\Contract;
+namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 
-interface TerminatedMiddlewareContract
+/**
+ * @extends HandlerContract<ResponseSentMiddlewareContract>
+ */
+interface ResponseSentHandlerContract extends HandlerContract
 {
     /**
-     * Middleware handler ran when the application has terminated.
+     * Middleware handler ran after a response has been sent.
      */
-    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void;
+    public function responseSent(ServerRequestContract $request, ResponseContract $response): void;
 }

@@ -23,17 +23,17 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\ResponseSentHandler;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
@@ -53,7 +53,7 @@ class Router implements RouterContract
         protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),
         protected RouteDispatchedHandlerContract $routeDispatchedHandler = new RouteDispatchedHandler(),
         protected SendingResponseHandlerContract $sendingResponseHandler = new SendingResponseHandler(),
-        protected TerminatedHandlerContract $terminatedHandler = new TerminatedHandler()
+        protected ResponseSentHandlerContract $responseSentHandler = new ResponseSentHandler()
     ) {
     }
 
@@ -164,7 +164,7 @@ class Router implements RouterContract
         $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
         $this->throwableCaughtHandler->add(...$route->getThrowableCaughtMiddleware());
         $this->sendingResponseHandler->add(...$route->getSendingResponseMiddleware());
-        $this->terminatedHandler->add(...$route->getTerminatedMiddleware());
+        $this->responseSentHandler->add(...$route->getResponseSentMiddleware());
 
         // Set the found route in the service container
         $this->container->setSingleton(RouteContract::class, $route);

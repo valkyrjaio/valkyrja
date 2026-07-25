@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
@@ -512,10 +512,10 @@ final class RequestHandlerTest extends TestCase
             ->with($request)
             ->willReturn($response);
 
-        $terminatedHandler = $this->createMock(TerminatedHandlerContract::class);
-        $terminatedHandler
+        $responseSentHandler = $this->createMock(ResponseSentHandlerContract::class);
+        $responseSentHandler
             ->expects($this->once())
-            ->method('terminated')
+            ->method('responseSent')
             ->with($request, $response);
 
         $container = new Container();
@@ -523,7 +523,7 @@ final class RequestHandlerTest extends TestCase
         $requestHandler = new RequestHandler(
             container: $container,
             router: $router,
-            terminatedHandler: $terminatedHandler,
+            responseSentHandler: $responseSentHandler,
         );
 
         ob_start();

@@ -20,10 +20,10 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route as ParentRoute;
@@ -44,7 +44,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
      * @param class-string<RouteDispatchedMiddlewareContract>[]                  $routeDispatchedMiddleware The route dispatched middleware
      * @param class-string<ThrowableCaughtMiddlewareContract>[]                  $throwableCaughtMiddleware The throwable caught middleware
      * @param class-string<SendingResponseMiddlewareContract>[]                  $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddlewareContract>[]                       $terminatedMiddleware      The terminated middleware
+     * @param class-string<ResponseSentMiddlewareContract>[]                     $responseSentMiddleware    The response sent middleware
      */
     public function __construct(
         protected string $path,
@@ -55,7 +55,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
         protected array $routeDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
         protected array $sendingResponseMiddleware = [],
-        protected array $terminatedMiddleware = [],
+        protected array $responseSentMiddleware = [],
         protected RequestStructContract|null $requestStruct = null,
         protected ResponseStructContract|null $responseStruct = null,
     ) {
@@ -68,7 +68,7 @@ class Route extends ParentRoute implements ReflectionAwareAttributeContract
             routeDispatchedMiddleware: $routeDispatchedMiddleware,
             throwableCaughtMiddleware: $throwableCaughtMiddleware,
             sendingResponseMiddleware: $sendingResponseMiddleware,
-            terminatedMiddleware: $terminatedMiddleware,
+            responseSentMiddleware: $responseSentMiddleware,
             requestStruct: $requestStruct,
             responseStruct: $responseStruct,
         );

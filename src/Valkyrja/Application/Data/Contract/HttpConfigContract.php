@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Data\Contract;
 
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 interface HttpConfigContract extends ConfigContract
@@ -47,8 +47,8 @@ interface HttpConfigContract extends ConfigContract
     public array $sendingResponseMiddleware {
         get;
     }
-    /** @var class-string<TerminatedMiddlewareContract>[] */
-    public array $terminatedMiddleware {
+    /** @var class-string<ResponseSentMiddlewareContract>[] */
+    public array $responseSentMiddleware {
         get;
     }
 }

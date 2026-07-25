@@ -20,8 +20,8 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
@@ -45,10 +45,10 @@ class HttpServerServiceProvider implements ServiceProviderContract
     {
         $app = $container->getSingleton(ApplicationContract::class);
 
-        $requestReceived = $container->getSingleton(RequestReceivedHandlerContract::class);
-        $exception       = $container->getSingleton(ThrowableCaughtHandlerContract::class);
-        $sendingResponse = $container->getSingleton(SendingResponseHandlerContract::class);
-        $terminated      = $container->getSingleton(TerminatedHandlerContract::class);
+        $requestReceived   = $container->getSingleton(RequestReceivedHandlerContract::class);
+        $exception         = $container->getSingleton(ThrowableCaughtHandlerContract::class);
+        $sendingResponse   = $container->getSingleton(SendingResponseHandlerContract::class);
+        $responseSent      = $container->getSingleton(ResponseSentHandlerContract::class);
 
         $exception->add(LogThrowableCaughtMiddleware::class, ViewThrowableCaughtMiddleware::class);
 
@@ -60,7 +60,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
                 requestReceivedHandler: $requestReceived,
                 throwableCaughtHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
-                terminatedHandler: $terminated,
+                responseSentHandler: $responseSent,
                 debug: $app->getDebugMode()
             )
         );

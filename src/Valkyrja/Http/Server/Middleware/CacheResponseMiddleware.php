@@ -25,9 +25,9 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Support\Time\Time;
 
 use function file_get_contents;
@@ -45,7 +45,7 @@ use function unlink;
 
 use const JSON_THROW_ON_ERROR;
 
-class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
+class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, ResponseSentMiddlewareContract
 {
     /**
      * @param non-empty-string $filePath The file path
@@ -89,7 +89,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
      * @inheritDoc
      */
     #[Override]
-    public function terminated(ServerRequestContract $request, ResponseContract $response, TerminatedHandlerContract $handler): void
+    public function responseSent(ServerRequestContract $request, ResponseContract $response, ResponseSentHandlerContract $handler): void
     {
         if ($this->shouldNotCache($request, $response)) {
             return;
@@ -99,7 +99,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, Term
 
         $this->cacheResponse($filePath, $response);
 
-        $handler->terminated($request, $response);
+        $handler->responseSent($request, $response);
     }
 
     /**
