@@ -1,6 +1,15 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.5.1...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.5.2...26.x)
+
+## [v26.5.2](https://github.com/valkyrjaio/valkyrja/compare/v26.5.1...v26.5.2) - 2026-07-26
+
+* [Documentation] Move stable release badge before PHP version badge in README by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/918
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/917
+* [Http] Replace stale terminable-middleware comment on RequestHandler::terminate by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/921
+* [Application] Write the framework response back to the RoadRunner worker by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/920
+* [Application] Bridge the OpenSwoole request/response in the worker HTTP entry by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/919
+* [Application] Add end-to-end smoke tests for the worker HTTP entries by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/922
 
 ## [v26.5.1](https://github.com/valkyrjaio/valkyrja/compare/v26.5.0...v26.5.1) - 2026-07-25
 
