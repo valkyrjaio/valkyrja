@@ -106,7 +106,7 @@ class RequestHandler implements RequestHandlerContract
     #[Override]
     public function terminate(ServerRequestContract $request, ResponseContract $response): void
     {
-        // Dispatch the terminable middleware
+        // Dispatch the response sent middleware
         $this->responseSentHandler->responseSent($request, $response);
     }
 
