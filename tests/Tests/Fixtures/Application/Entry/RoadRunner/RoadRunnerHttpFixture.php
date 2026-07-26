@@ -23,6 +23,8 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
 
 /**
  * Testable RoadRunnerHttp subclass.
@@ -30,8 +32,10 @@ use Valkyrja\Http\Message\Request\ServerRequest;
  * Overrides the runtime seams so run()'s worker loop can be driven without the
  * RoadRunner relay: bootstrap() returns an injected application, getWorker()
  * returns an injected worker, waitForRequest() returns queued requests (null
- * ends the loop), getRequestFromRoadRunnerRequest() returns a stub request, and
- * handle() records calls.
+ * ends the loop), getRequestFromRoadRunnerRequest() returns a stub request,
+ * handleRoadRunnerRequest() returns an injected framework response, and
+ * sendRoadRunnerResponse() records the emitted status/body/headers instead of
+ * writing back to a non-live worker.
  */
 final class RoadRunnerHttpFixture extends RoadRunnerHttp
 {
@@ -39,7 +43,9 @@ final class RoadRunnerHttpFixture extends RoadRunnerHttp
 
     public static HttpWorker $worker;
 
-    public static int $handleCallCount = 0;
+    public static int $handleRoadRunnerRequestCallCount = 0;
+
+    public static ResponseContract $frameworkResponse;
 
     /** @var list<Request|null> */
     public static array $requests = [];
@@ -48,15 +54,26 @@ final class RoadRunnerHttpFixture extends RoadRunnerHttp
 
     public static int $getRequestFromRoadRunnerRequestCallCount = 0;
 
+    public static int|null $sentStatus = null;
+
+    public static string|null $sentBody = null;
+
+    /** @var array<string, list<string>> */
+    public static array $sentHeaders = [];
+
     /**
      * Reset all recorded state between tests.
      */
     public static function reset(): void
     {
-        self::$handleCallCount                          = 0;
+        self::$handleRoadRunnerRequestCallCount         = 0;
+        self::$frameworkResponse                        = new Response();
         self::$requests                                 = [];
         self::$waitForRequestCallCount                  = 0;
         self::$getRequestFromRoadRunnerRequestCallCount = 0;
+        self::$sentStatus                               = null;
+        self::$sentBody                                 = null;
+        self::$sentHeaders                              = [];
     }
 
     #[Override]
@@ -66,9 +83,11 @@ final class RoadRunnerHttpFixture extends RoadRunnerHttp
     }
 
     #[Override]
-    public static function handle(ApplicationContract $app, ContainerData $data, ServerRequestContract $request): void
+    public static function handleRoadRunnerRequest(ApplicationContract $app, ContainerData $data, ServerRequestContract $request): ResponseContract
     {
-        self::$handleCallCount++;
+        self::$handleRoadRunnerRequestCallCount++;
+
+        return self::$frameworkResponse;
     }
 
     #[Override]
@@ -91,5 +110,16 @@ final class RoadRunnerHttpFixture extends RoadRunnerHttp
         self::$getRequestFromRoadRunnerRequestCallCount++;
 
         return new ServerRequest();
+    }
+
+    /**
+     * @param array<string, list<string>> $headers
+     */
+    #[Override]
+    protected static function sendRoadRunnerResponse(HttpWorker $worker, int $statusCode, string $body, array $headers): void
+    {
+        self::$sentStatus  = $statusCode;
+        self::$sentBody    = $body;
+        self::$sentHeaders = $headers;
     }
 }
