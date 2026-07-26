@@ -15,15 +15,20 @@ namespace Valkyrja\Tests\Functional\Application\Entry\RoadRunner;
 
 use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Spiral\RoadRunner\Http\HttpWorker;
+use Spiral\RoadRunner\Http\Request;
+use Spiral\RoadRunner\WorkerInterface;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Tests\Fixtures\Application\Entry\RoadRunner\RoadRunnerHttpSmokeFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
 /**
@@ -73,5 +78,22 @@ final class RoadRunnerHttpTest extends TestCase
 
         self::assertInstanceOf(ResponseContract::class, $response);
         self::assertSame('RoadRunner route', (string) $response->getBody());
+    }
+
+    public function testRunLoopServesRequestAndRespondsToWorker(): void
+    {
+        RoadRunnerHttpSmokeFixture::reset();
+
+        RoadRunnerHttpSmokeFixture::$app      = $this->workerApp;
+        RoadRunnerHttpSmokeFixture::$worker   = new HttpWorker(self::createStub(WorkerInterface::class));
+        RoadRunnerHttpSmokeFixture::$requests = [
+            new Request(method: 'GET', uri: 'http://localhost/roadrunner'),
+            null,
+        ];
+
+        RoadRunnerHttpSmokeFixture::run(new HttpConfig());
+
+        self::assertSame(StatusCode::OK->value, RoadRunnerHttpSmokeFixture::$sentStatus);
+        self::assertSame('RoadRunner route', RoadRunnerHttpSmokeFixture::$sentBody);
     }
 }
