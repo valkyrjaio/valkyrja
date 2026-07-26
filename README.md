@@ -80,8 +80,8 @@ projects in the Valkyrjaio organization:
 
 - [**Sindri**][sindri url] — build tool and application creator
 - [**Starter (App)**][starter url] — starter template for new applications
-- **Worker runtimes** — [OpenSwoole][openswoole url],
-  [FrankenPHP][frankenphp url], [RoadRunner][roadrunner url]
+- **Worker runtimes** — OpenSwoole, FrankenPHP, and RoadRunner worker entry
+  points are built in, under `Valkyrja\Application\Entry`
 - [**Docker**][docker url] — ready-made Docker configurations
 
 See the [Valkyrjaio organization page][org url] for the complete listing.
@@ -138,12 +138,6 @@ Valkyrja is open-source software licensed under the
 [sindri url]: https://github.com/valkyrjaio/sindri-php
 
 [starter url]: https://github.com/valkyrjaio/valkyrja-starter-app-php
-
-[openswoole url]: https://github.com/valkyrjaio/valkyrja-openswoole-php
-
-[frankenphp url]: https://github.com/valkyrjaio/valkyrja-frankenphp-php
-
-[roadrunner url]: https://github.com/valkyrjaio/valkyrja-roadrunner-php
 
 [docker url]: https://github.com/valkyrjaio/valkyrja-docker-php
 
