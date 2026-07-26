@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Application\Entry\OpenSwoole;
 
+use OpenSwoole\Http\Request;
+use OpenSwoole\Http\Response;
 use OpenSwoole\Http\Server;
 use Override;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
@@ -21,31 +23,51 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
-use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response as FrameworkResponse;
 
 /**
  * Testable OpenSwooleHttp subclass.
  *
- * Overrides the runtime seams so run() can be driven without the OpenSwoole
- * event loop: bootstrap() returns an injected application, handle() records
- * calls, and startServer() records that the (blocking) start was reached
- * instead of actually starting the server.
+ * Overrides the runtime seams so the entry can be driven without the OpenSwoole
+ * event loop or a live connection: bootstrap() returns an injected application,
+ * startServer() records that the (blocking) start was reached, handleSwooleRequest()
+ * returns an injected framework response, and the request/response I/O seams
+ * (rawContent()/status()/header()/end()) record their arguments instead of
+ * touching a non-live OpenSwoole request or response.
  */
 final class OpenSwooleHttpFixture extends OpenSwooleHttp
 {
     public static ApplicationContract $app;
 
-    public static int $handleCallCount = 0;
-
     public static bool $serverStarted = false;
+
+    public static int $handleSwooleRequestCallCount = 0;
+
+    public static ResponseContract $frameworkResponse;
+
+    public static string $rawContent = '';
+
+    /** @var array{statusCode: int, reasonPhrase: string}|null */
+    public static array|null $sentStatus = null;
+
+    /** @var list<array{name: string, value: string}> */
+    public static array $sentHeaders = [];
+
+    public static string|null $sentBody = null;
 
     /**
      * Reset all recorded state between tests.
      */
     public static function reset(): void
     {
-        self::$handleCallCount = 0;
-        self::$serverStarted   = false;
+        self::$serverStarted                = false;
+        self::$handleSwooleRequestCallCount = 0;
+        self::$frameworkResponse            = new FrameworkResponse();
+        self::$rawContent                   = '';
+        self::$sentStatus                   = null;
+        self::$sentHeaders                  = [];
+        self::$sentBody                     = null;
     }
 
     #[Override]
@@ -55,20 +77,46 @@ final class OpenSwooleHttpFixture extends OpenSwooleHttp
     }
 
     #[Override]
-    public static function handle(ApplicationContract $app, ContainerData $data, ServerRequestContract $request): void
+    public static function handleSwooleRequest(ApplicationContract $app, ContainerData $data, ServerRequestContract $request): ResponseContract
     {
-        self::$handleCallCount++;
-    }
+        self::$handleSwooleRequestCallCount++;
 
-    #[Override]
-    public static function getRequest(): ServerRequestContract
-    {
-        return new ServerRequest();
+        return self::$frameworkResponse;
     }
 
     #[Override]
     public static function startServer(Server $server): void
     {
         self::$serverStarted = true;
+    }
+
+    #[Override]
+    protected static function getContentFromSwooleRequest(Request $request): string
+    {
+        return self::$rawContent;
+    }
+
+    #[Override]
+    protected static function sendSwooleStatus(Response $response, int $statusCode, string $reasonPhrase): void
+    {
+        self::$sentStatus = [
+            'statusCode'   => $statusCode,
+            'reasonPhrase' => $reasonPhrase,
+        ];
+    }
+
+    #[Override]
+    protected static function sendSwooleHeader(Response $response, string $name, string $value): void
+    {
+        self::$sentHeaders[] = [
+            'name'  => $name,
+            'value' => $value,
+        ];
+    }
+
+    #[Override]
+    protected static function sendSwooleBody(Response $response, string $body): void
+    {
+        self::$sentBody = $body;
     }
 }
