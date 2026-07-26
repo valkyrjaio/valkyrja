@@ -1,6 +1,14 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.5.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.5.1...26.x)
+
+## [v26.5.1](https://github.com/valkyrjaio/valkyrja/compare/v26.5.0...v26.5.1) - 2026-07-25
+
+* [GitHub] Update .github workflow refs to v26.11.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/912
+* [GitHub] Update ci-phpcsfixer-php workflow refs to v26.1.14 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/913
+* [Application] Fold FrankenPHP, OpenSwoole, and RoadRunner worker entry points into the framework by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/914
+* [CI] Override ext-openswoole platform in root-and-suggested so dependency updates run without the extension by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/915
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/916
 
 ## [v26.5.0](https://github.com/valkyrjaio/valkyrja/compare/v26.4.1...v26.5.0) - 2026-07-25
 
