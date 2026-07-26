@@ -25,6 +25,7 @@ use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerAttributedFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerWithAllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\RoutingCombinationsControllerFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
@@ -135,5 +136,42 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([AllMiddlewareFixture::class], $dynamicRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::first, $dynamicRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::first, $dynamicRoute->getResponseStruct());
+    }
+
+    /**
+     * The attribute construction path must produce the same regex, across a matrix of
+     * parameter types and modifiers, as direct construction does through the Processor.
+     *
+     * @throws ReflectionException
+     */
+    public function testGetRoutesProducesExpectedRegexForCombinations(): void
+    {
+        $routes = new AttributeRouteCollector()->getRoutes(RoutingCombinationsControllerFixture::class);
+
+        $byName = [];
+
+        foreach ($routes as $route) {
+            $byName[$route->getName()] = $route;
+        }
+
+        $expected = [
+            RoutingCombinationsControllerFixture::NUM_NAME         => [RoutingCombinationsControllerFixture::NUM_PATH, RoutingCombinationsControllerFixture::NUM_REGEX],
+            RoutingCombinationsControllerFixture::SLUG_NAME        => [RoutingCombinationsControllerFixture::SLUG_PATH, RoutingCombinationsControllerFixture::SLUG_REGEX],
+            RoutingCombinationsControllerFixture::OPTIONAL_NAME    => [RoutingCombinationsControllerFixture::OPTIONAL_PATH, RoutingCombinationsControllerFixture::OPTIONAL_REGEX],
+            RoutingCombinationsControllerFixture::NON_CAPTURE_NAME => [RoutingCombinationsControllerFixture::NON_CAPTURE_PATH, RoutingCombinationsControllerFixture::NON_CAPTURE_REGEX],
+            RoutingCombinationsControllerFixture::MULTI_NAME       => [RoutingCombinationsControllerFixture::MULTI_PATH, RoutingCombinationsControllerFixture::MULTI_REGEX],
+        ];
+
+        self::assertCount(5, $routes);
+
+        foreach ($expected as $name => [$path, $regex]) {
+            self::assertArrayHasKey($name, $byName);
+
+            $route = $byName[$name];
+
+            self::assertInstanceOf(DynamicRouteContract::class, $route);
+            self::assertSame($path, $route->getPath());
+            self::assertSame($regex, $route->getRegex());
+        }
     }
 }
