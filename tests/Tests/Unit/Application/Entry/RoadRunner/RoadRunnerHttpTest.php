@@ -21,7 +21,9 @@ use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Tests\Fixtures\Application\Entry\RoadRunner\RoadRunnerHttpFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -50,9 +52,10 @@ final class RoadRunnerHttpTest extends TestCase
 
         RoadRunnerHttpFixture::run(new HttpConfig());
 
-        self::assertSame(2, RoadRunnerHttpFixture::$handleCallCount);
+        self::assertSame(2, RoadRunnerHttpFixture::$handleRoadRunnerRequestCallCount);
         self::assertSame(2, RoadRunnerHttpFixture::$getRequestFromRoadRunnerRequestCallCount);
         self::assertSame(3, RoadRunnerHttpFixture::$waitForRequestCallCount);
+        self::assertSame(StatusCode::OK->value, RoadRunnerHttpFixture::$sentStatus);
     }
 
     public function testRunStopsImmediatelyWhenFirstRequestIsNull(): void
@@ -61,8 +64,9 @@ final class RoadRunnerHttpTest extends TestCase
 
         RoadRunnerHttpFixture::run(new HttpConfig());
 
-        self::assertSame(0, RoadRunnerHttpFixture::$handleCallCount);
+        self::assertSame(0, RoadRunnerHttpFixture::$handleRoadRunnerRequestCallCount);
         self::assertSame(1, RoadRunnerHttpFixture::$waitForRequestCallCount);
+        self::assertNull(RoadRunnerHttpFixture::$sentStatus);
     }
 
     public function testGetRequestFromRoadRunnerRequestBuildsServerRequest(): void
@@ -77,5 +81,20 @@ final class RoadRunnerHttpTest extends TestCase
 
         self::assertInstanceOf(ServerRequestContract::class, $request);
         self::assertSame('payload', (string) $request->getBody());
+    }
+
+    public function testRespondToWorkerWritesStatusHeadersAndBody(): void
+    {
+        $response = new TextResponse('RR body', StatusCode::ACCEPTED);
+
+        RoadRunnerHttpFixture::respondToWorker(RoadRunnerHttpFixture::$worker, $response);
+
+        self::assertSame(StatusCode::ACCEPTED->value, RoadRunnerHttpFixture::$sentStatus);
+        self::assertSame('RR body', RoadRunnerHttpFixture::$sentBody);
+        self::assertArrayHasKey('Content-Type', RoadRunnerHttpFixture::$sentHeaders);
+        self::assertSame(
+            [$response->getHeaders()->getHeaderLine('Content-Type')],
+            RoadRunnerHttpFixture::$sentHeaders['Content-Type']
+        );
     }
 }

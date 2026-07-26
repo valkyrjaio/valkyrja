@@ -20,9 +20,14 @@ use Spiral\RoadRunner\Worker;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
 use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 class RoadRunnerHttp extends WorkerHttp
 {
@@ -52,7 +57,9 @@ class RoadRunnerHttp extends WorkerHttp
 
             $request = static::getRequestFromRoadRunnerRequest($roadRunnerRequest);
 
-            static::handle($app, $data, $request);
+            $response = static::handleRoadRunnerRequest($app, $data, $request);
+
+            static::respondToWorker($worker, $response);
         }
     }
 
@@ -102,5 +109,81 @@ class RoadRunnerHttp extends WorkerHttp
 
         return $request
             ->withBody($stream);
+    }
+
+    /**
+     * Handle a framework request through an isolated child application and
+     * return the resulting framework response.
+     *
+     * Mirrors the request handler's run() pipeline (handle, then the sending
+     * response middleware) but returns the response for the worker to emit
+     * instead of sending it through the PHP SAPI.
+     */
+    public static function handleRoadRunnerRequest(ApplicationContract $app, ContainerData $data, ServerRequestContract $request): ResponseContract
+    {
+        $childContainer = static::getChildContainer($app, $data);
+        $childApp       = static::getChildApplication($app, $childContainer);
+
+        static::bootstrapChildContainer($childApp, $childContainer);
+
+        $handler  = $childContainer->getSingleton(RequestHandlerContract::class);
+        $response = $handler->handle($request);
+
+        $sendingResponseHandler = $childContainer->getSingleton(SendingResponseHandlerContract::class);
+        $response               = $sendingResponseHandler->sendingResponse($request, $response);
+
+        $childContainer->setSingleton(ResponseContract::class, $response);
+
+        $handler->terminate($request, $response);
+
+        return $response;
+    }
+
+    /**
+     * Write a framework response back out through the RoadRunner worker.
+     */
+    public static function respondToWorker(HttpWorker $worker, ResponseContract $response): void
+    {
+        $body = $response->getBody();
+        $body->rewind();
+
+        static::sendRoadRunnerResponse(
+            $worker,
+            $response->getStatusCode()->value,
+            $body->getContents(),
+            static::getHeadersForRoadRunnerResponse($response)
+        );
+    }
+
+    /**
+     * Marshal the RoadRunner header map from a framework response.
+     *
+     * RoadRunner expects each header name mapped to a list of its values; each
+     * framework header (including a distinct Set-Cookie per cookie) contributes
+     * one value line under its name.
+     *
+     * @return array<string, list<string>>
+     */
+    protected static function getHeadersForRoadRunnerResponse(ResponseContract $response): array
+    {
+        $headers = [];
+
+        foreach ($response->getHeaders()->getAll() as $header) {
+            $headers[$header->getName()][] = $header->getHeaderLine();
+        }
+
+        return $headers;
+    }
+
+    /**
+     * Send the framework response through the RoadRunner worker.
+     *
+     * @param array<string, list<string>> $headers
+     *
+     * @codeCoverageIgnore Requires the RoadRunner worker runtime and relay.
+     */
+    protected static function sendRoadRunnerResponse(HttpWorker $worker, int $statusCode, string $body, array $headers): void
+    {
+        $worker->respond($statusCode, $body, $headers);
     }
 }
