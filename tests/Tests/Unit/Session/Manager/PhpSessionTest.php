@@ -88,6 +88,22 @@ final class PhpSessionTest extends TestCase
         self::assertSame(1, $session->sessionStartCount);
     }
 
+    public function testStartWithNonNullDomain(): void
+    {
+        $cookieParams = new CookieParams(
+            path: '/',
+            domain: 'example.com',
+            lifetime: 0,
+            secure: false,
+            httpOnly: false,
+            sameSite: SameSite::NONE,
+        );
+
+        $session = new PhpSession($cookieParams);
+
+        self::assertSame(PHP_SESSION_ACTIVE, session_status());
+    }
+
     public function testConstructorWithSessionIdAndName(): void
     {
         $session = new PhpSession($this->cookieParams, 'test-session-id', 'MY_SESSION');
