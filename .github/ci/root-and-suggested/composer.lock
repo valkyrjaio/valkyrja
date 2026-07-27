@@ -729,16 +729,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.15.1",
+            "version": "7.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "61443dfb33c62f308ee8add20f45b4d6e4bf8d2f"
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/61443dfb33c62f308ee8add20f45b4d6e4bf8d2f",
-                "reference": "61443dfb33c62f308ee8add20f45b4d6e4bf8d2f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/744101956d78b7c1384d0cbf379db13e859167bf",
+                "reference": "744101956d78b7c1384d0cbf379db13e859167bf",
                 "shasum": ""
             },
             "require": {
@@ -837,7 +837,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.15.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.15.2"
             },
             "funding": [
                 {
@@ -853,7 +853,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-18T11:23:11+00:00"
+            "time": "2026-07-26T23:23:20+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1698,16 +1698,16 @@
         },
         {
             "name": "openswoole/core",
-            "version": "26.2.0",
+            "version": "26.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openswoole/core.git",
-                "reference": "8bb110ec7ba6ca8b0d9d40bf8d8aa0b790d1bf22"
+                "reference": "cc83e3d9b769380555bb7a4508368a8edc3a7ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openswoole/core/zipball/8bb110ec7ba6ca8b0d9d40bf8d8aa0b790d1bf22",
-                "reference": "8bb110ec7ba6ca8b0d9d40bf8d8aa0b790d1bf22",
+                "url": "https://api.github.com/repos/openswoole/core/zipball/cc83e3d9b769380555bb7a4508368a8edc3a7ab1",
+                "reference": "cc83e3d9b769380555bb7a4508368a8edc3a7ab1",
                 "shasum": ""
             },
             "require": {
@@ -1765,7 +1765,7 @@
                 "pull-request": "https://github.com/openswoole/openswoole/pulls",
                 "source": "https://github.com/openswoole/openswoole"
             },
-            "time": "2026-02-28T15:02:48+00:00"
+            "time": "2026-07-27T11:48:01+00:00"
         },
         {
             "name": "php-http/client-common",
