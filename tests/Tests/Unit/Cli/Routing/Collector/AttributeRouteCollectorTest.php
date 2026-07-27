@@ -32,6 +32,7 @@ use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllAttributesFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithParameterCombinationsFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithParameterPermutationsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\CastType;
@@ -182,5 +183,63 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertInstanceOf(OptionParameter::class, $flag);
         self::assertSame(OptionMode::OPTIONAL, $flag->getMode());
         self::assertSame(OptionValueMode::NONE, $flag->getValueMode());
+    }
+
+    /**
+     * The attribute path converts a full matrix of argument and option modes/value-modes
+     * (mirroring the Java CliRoutingCombinationsController) into data-class parameters with
+     * the expected modes, value modes, short names, valid values, default, and display name.
+     *
+     * @throws ReflectionException
+     */
+    public function testGetCommandsWithParameterCombinations(): void
+    {
+        $collector = new AttributeRouteCollector(
+            attributes: new Collector(),
+            reflection: new Reflector()
+        );
+
+        $commands = $collector->getRoutes(CommandWithParameterCombinationsFixture::class);
+
+        self::assertCount(1, $commands);
+        self::assertInstanceOf(Route::class, $command = $commands[0]);
+
+        // Required, single-value argument.
+        $required = $command->getArgument('required');
+
+        self::assertInstanceOf(ArgumentParameter::class, $required);
+        self::assertSame(ArgumentMode::REQUIRED, $required->getMode());
+        self::assertSame(ArgumentValueMode::DEFAULT, $required->getValueMode());
+
+        // Optional, array argument.
+        $rest = $command->getArgument('rest');
+
+        self::assertInstanceOf(ArgumentParameter::class, $rest);
+        self::assertSame(ArgumentMode::OPTIONAL, $rest->getMode());
+        self::assertSame(ArgumentValueMode::ARRAY, $rest->getValueMode());
+
+        // Required, single-value option carrying short names, valid values, default, display name.
+        $format = $command->getOption('format');
+
+        self::assertInstanceOf(OptionParameter::class, $format);
+        self::assertSame(OptionMode::REQUIRED, $format->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $format->getValueMode());
+        self::assertSame(['f'], $format->getShortNames());
+        self::assertSame(['json', 'xml'], $format->getValidValues());
+        self::assertSame('json', $format->getDefaultValue());
+        self::assertSame('fmt', $format->getValueDisplayName());
+
+        // Valueless (NONE) flag option.
+        $flag = $command->getOption('flag');
+
+        self::assertInstanceOf(OptionParameter::class, $flag);
+        self::assertSame(OptionMode::OPTIONAL, $flag->getMode());
+        self::assertSame(OptionValueMode::NONE, $flag->getValueMode());
+
+        // Repeatable (ARRAY) option.
+        $tags = $command->getOption('tags');
+
+        self::assertInstanceOf(OptionParameter::class, $tags);
+        self::assertSame(OptionValueMode::ARRAY, $tags->getValueMode());
     }
 }
