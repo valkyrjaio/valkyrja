@@ -336,6 +336,14 @@ class OptionParameter extends Parameter implements OptionParameterContract
             $valid = $valid && count($this->options) <= 1;
         }
 
+        if ($this->validValues !== []) {
+            foreach ($this->options as $option) {
+                if (! in_array($option->getValue(), $this->validValues, true)) {
+                    return false;
+                }
+            }
+        }
+
         return $valid;
     }
 
