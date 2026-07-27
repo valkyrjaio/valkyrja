@@ -32,6 +32,7 @@ use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllAttributesFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithAllMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Command\CommandWithParameterPermutationsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Enum\CastType;
 
@@ -136,5 +137,50 @@ final class AttributeRouteCollectorTest extends TestCase
         self::assertSame([AllMiddlewareFixture::class], $route->getRouteMatchedMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getProcessExitingMiddleware());
         self::assertSame([AllMiddlewareFixture::class], $route->getThrowableCaughtMiddleware());
+    }
+
+    /**
+     * The attribute path converts the complementary argument/option permutations
+     * (optional single-value argument, optional long-only option, and a NONE flag) into
+     * data-class parameters with the expected modes and value modes.
+     *
+     * @throws ReflectionException
+     */
+    public function testGetCommandsWithParameterPermutations(): void
+    {
+        $collector = new AttributeRouteCollector(
+            attributes: new Collector(),
+            reflection: new Reflector()
+        );
+
+        $commands = $collector->getRoutes(CommandWithParameterPermutationsFixture::class);
+
+        self::assertCount(1, $commands);
+        self::assertInstanceOf(Route::class, $command = $commands[0]);
+
+        // Optional, single-value argument.
+        $argument = $command->getArgument('optionalArgument');
+
+        self::assertInstanceOf(ArgumentParameter::class, $argument);
+        self::assertSame(ArgumentMode::OPTIONAL, $argument->getMode());
+        self::assertSame(ArgumentValueMode::DEFAULT, $argument->getValueMode());
+        self::assertFalse($argument->hasCast());
+
+        // Optional, single-value, long-only option (no short names, no valid values).
+        $option = $command->getOption('optionalOption');
+
+        self::assertInstanceOf(OptionParameter::class, $option);
+        self::assertSame(OptionMode::OPTIONAL, $option->getMode());
+        self::assertSame(OptionValueMode::DEFAULT, $option->getValueMode());
+        self::assertSame([], $option->getShortNames());
+        self::assertSame([], $option->getValidValues());
+        self::assertFalse($option->hasCast());
+
+        // Valueless (NONE) flag option.
+        $flag = $command->getOption('flag');
+
+        self::assertInstanceOf(OptionParameter::class, $flag);
+        self::assertSame(OptionMode::OPTIONAL, $flag->getMode());
+        self::assertSame(OptionValueMode::NONE, $flag->getValueMode());
     }
 }
