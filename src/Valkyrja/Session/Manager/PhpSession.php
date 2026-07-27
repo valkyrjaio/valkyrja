@@ -64,7 +64,7 @@ class PhpSession extends Session
         // Set the session cookie parameters
         session_set_cookie_params([
             'path'     => $this->cookieParams->path,
-            'domain'   => $this->cookieParams->domain,
+            'domain'   => $this->cookieParams->domain ?? '',
             'lifetime' => $this->cookieParams->lifetime,
             'secure'   => $this->cookieParams->secure,
             'httponly' => $this->cookieParams->httpOnly,
