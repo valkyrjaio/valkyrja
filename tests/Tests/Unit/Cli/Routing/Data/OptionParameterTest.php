@@ -894,4 +894,88 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($parameter, $parameter->validateValues());
     }
+
+    public function testAreValuesValidWithValidValues(): void
+    {
+        $name         = self::NAME;
+        $description  = self::DESCRIPTION;
+        $validValue   = new Option('option', 'a');
+        $validValue2  = new Option('option2', 'b');
+        $invalidValue = new Option('option3', 'c');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            validValues: ['a', 'b'],
+        );
+
+        // Empty valid values impose no constraint on the bound value
+        $unconstrained = new OptionParameter(name: $name, description: $description)
+            ->withOptions($invalidValue);
+        // A provided value that is a member of the valid values passes
+        $valid = $parameter->withOptions($validValue);
+        // A provided value that is not a member of the valid values fails
+        $invalid = $parameter->withOptions($invalidValue);
+        // ARRAY: every provided value must be a member of the valid values
+        $arrayAllValid = $parameter
+            ->withValueMode(OptionValueMode::ARRAY)
+            ->withOptions($validValue, $validValue2);
+        // ARRAY: a single invalid value among several fails
+        $arrayOneInvalid = $parameter
+            ->withValueMode(OptionValueMode::ARRAY)
+            ->withOptions($validValue, $validValue2, $invalidValue);
+        // Non-empty valid values with no bound options impose no failure
+        $noOptions = $parameter;
+        // Interaction with REQUIRED: a required, member value passes
+        $requiredValid = $parameter
+            ->withMode(OptionMode::REQUIRED)
+            ->withOptions($validValue);
+        // Interaction with REQUIRED: a required, non-member value fails
+        $requiredInvalid = $parameter
+            ->withMode(OptionMode::REQUIRED)
+            ->withOptions($invalidValue);
+
+        self::assertTrue($unconstrained->areValuesValid());
+        self::assertTrue($valid->areValuesValid());
+        self::assertFalse($invalid->areValuesValid());
+        self::assertTrue($arrayAllValid->areValuesValid());
+        self::assertFalse($arrayOneInvalid->areValuesValid());
+        self::assertTrue($noOptions->areValuesValid());
+        self::assertTrue($requiredValid->areValuesValid());
+        self::assertFalse($requiredInvalid->areValuesValid());
+    }
+
+    public function testValidateValuesThrowsOnInvalidValue(): void
+    {
+        $this->expectException(CliRoutingOptionValuesValidationException::class);
+
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('option', 'c');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            validValues: ['a', 'b'],
+        );
+
+        $parameter->withOptions($option)->validateValues();
+    }
+
+    public function testValidateValuesPassesWithValidValue(): void
+    {
+        $name        = self::NAME;
+        $description = self::DESCRIPTION;
+        $option      = new Option('option', 'a');
+
+        $parameter = new OptionParameter(
+            name: $name,
+            description: $description,
+            validValues: ['a', 'b'],
+        );
+
+        $valid = $parameter->withOptions($option);
+
+        self::assertSame($valid, $valid->validateValues());
+    }
 }
