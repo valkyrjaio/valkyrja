@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Matcher;
 
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Matcher\Matcher;
+use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -58,6 +61,27 @@ final class MatcherTest extends TestCase
     protected const string INVALID_DYNAMIC_REGEX      = '/^\/invalid\/(?<invalid>[a-zA-Z]+)$/';
 
     protected Matcher $matcher;
+
+    /**
+     * @return array<non-empty-string, array{non-empty-string, non-empty-string, non-empty-string|null}>
+     */
+    public static function matchingTypeProvider(): array
+    {
+        return [
+            'num'                  => [Regex::NUM, '123', 'abc'],
+            'alpha'                => [Regex::ALPHA, 'abc', 'abc1'],
+            'alpha lowercase'      => [Regex::ALPHA_LOWERCASE, 'abc', 'Abc'],
+            'alpha uppercase'      => [Regex::ALPHA_UPPERCASE, 'ABC', 'abc'],
+            'alpha num'            => [Regex::ALPHA_NUM, 'abc123', 'abc-1'],
+            'alpha num underscore' => [Regex::ALPHA_NUM_UNDERSCORE, 'abc_123', 'abc-1'],
+            'slug'                 => [Regex::SLUG, 'My-slug-1', 'has_underscore'],
+            'any'                  => [Regex::ANY, 'anything-1.x', null],
+            'uuid'                 => [Regex::UUID, '66a39476-b630-4b95-8bfb-355f3d4843c5', 'not-a-uuid'],
+            'uuid v4'              => [Regex::UUID_V4, '78cbd961-d07b-4ef9-89a7-b4ec9d1a70f0', '11111111-1111-1111-1111-111111111111'],
+            'ulid'                 => [Regex::ULID, '01KYGBV64MKWPK63CC1QH0VGF7', 'notaulid'],
+            'vlid v4'              => [Regex::VLID_V4, '04YHJMN6F5XHM497ZW', 'notavlid'],
+        ];
+    }
 
     #[Override]
     protected function setUp(): void
@@ -285,5 +309,200 @@ final class MatcherTest extends TestCase
         $matcher = $this->matcher;
 
         $matcher->match($dynamicPath, RequestMethod::ANY);
+    }
+
+    /**
+     * Each parameter regex type matches a valid value (and binds it) and rejects an invalid one.
+     *
+     * @param non-empty-string      $typeRegex
+     * @param non-empty-string      $validValue
+     * @param non-empty-string|null $invalidValue null when the type matches anything (ANY)
+     */
+    #[DataProvider('matchingTypeProvider')]
+    public function testDynamicRouteTypeMatchesValidAndRejectsInvalid(string $typeRegex, string $validValue, string|null $invalidValue): void
+    {
+        $matcher = $this->matcherFor(
+            $this->processedDynamicRoute('/{value}', 'typed', [new Parameter(name: 'value', regex: $typeRegex)])
+        );
+
+        $matched = $matcher->match("/$validValue", RequestMethod::ANY);
+
+        self::assertInstanceOf(DynamicRouteContract::class, $matched);
+        self::assertSame($validValue, $matched->getParameter('value')->getValue());
+
+        if ($invalidValue !== null) {
+            self::assertNull($matcher->match("/$invalidValue", RequestMethod::ANY));
+        }
+    }
+
+    /**
+     * A dynamic route restricted to GET is matched under GET and ANY, but not POST.
+     */
+    public function testRequestMethodFilteringForDynamicRoute(): void
+    {
+        $matcher = $this->matcherFor(
+            $this->processedDynamicRoute(
+                '/{name}',
+                'get-only-dynamic',
+                [new Parameter(name: 'name', regex: Regex::ALPHA)],
+                [RequestMethod::GET]
+            )
+        );
+
+        self::assertInstanceOf(DynamicRouteContract::class, $matcher->match('/foo', RequestMethod::GET));
+        self::assertInstanceOf(DynamicRouteContract::class, $matcher->match('/foo', RequestMethod::ANY));
+        self::assertNull($matcher->match('/foo', RequestMethod::POST));
+    }
+
+    /**
+     * A static route restricted to GET is matched under GET but not POST.
+     */
+    public function testRequestMethodFilteringForStaticRoute(): void
+    {
+        $matcher = $this->matcherFor(
+            new Route(
+                path: '/only-get',
+                name: 'get-only-static',
+                handler: [RouteProviderFixture::class, 'handler'],
+                requestMethods: [RequestMethod::GET]
+            )
+        );
+
+        $matched = $matcher->match('/only-get', RequestMethod::GET);
+
+        self::assertNotNull($matched);
+        self::assertNotInstanceOf(DynamicRouteContract::class, $matched);
+        self::assertNull($matcher->match('/only-get', RequestMethod::POST));
+    }
+
+    /**
+     * A trailing slash on the request path is normalized before matching.
+     */
+    public function testTrailingSlashIsNormalizedForMatching(): void
+    {
+        $matcher = $this->matcherFor(
+            new Route(
+                path: '/foo',
+                name: 'foo-static',
+                handler: [RouteProviderFixture::class, 'handler'],
+                requestMethods: [RequestMethod::ANY]
+            ),
+            $this->processedDynamicRoute('/bar/{x}', 'bar-dynamic', [new Parameter(name: 'x', regex: Regex::ALPHA)])
+        );
+
+        self::assertNotNull($matcher->match('/foo/', RequestMethod::ANY));
+        self::assertInstanceOf(DynamicRouteContract::class, $matcher->match('/bar/abc/', RequestMethod::ANY));
+    }
+
+    /**
+     * A static route wins over a dynamic route that would also match the same path.
+     */
+    public function testStaticRouteTakesPrecedenceOverDynamic(): void
+    {
+        $matcher = $this->matcherFor(
+            new Route(
+                path: '/users',
+                name: 'static-users',
+                handler: [RouteProviderFixture::class, 'handler'],
+                requestMethods: [RequestMethod::ANY]
+            ),
+            $this->processedDynamicRoute('/{name}', 'any-name', [new Parameter(name: 'name', regex: Regex::ALPHA)])
+        );
+
+        $static = $matcher->match('/users', RequestMethod::ANY);
+
+        self::assertNotNull($static);
+        self::assertNotInstanceOf(DynamicRouteContract::class, $static);
+
+        // A path with no static route still falls through to the dynamic route.
+        self::assertInstanceOf(DynamicRouteContract::class, $matcher->match('/other', RequestMethod::ANY));
+    }
+
+    /**
+     * Multiple parameters are each extracted and bound to their own values.
+     */
+    public function testMultipleParametersAreExtracted(): void
+    {
+        $matcher = $this->matcherFor(
+            $this->processedDynamicRoute(
+                '/a/{x}/b/{y}',
+                'multi',
+                [
+                    new Parameter(name: 'x', regex: Regex::NUM),
+                    new Parameter(name: 'y', regex: Regex::ALPHA),
+                ]
+            )
+        );
+
+        $matched = $matcher->match('/a/12/b/two', RequestMethod::ANY);
+
+        self::assertInstanceOf(DynamicRouteContract::class, $matched);
+        self::assertSame('12', $matched->getParameter('x')->getValue());
+        self::assertSame('two', $matched->getParameter('y')->getValue());
+    }
+
+    /**
+     * A non-capturing parameter still matches but is not bound to a value.
+     */
+    public function testNonCaptureParameterIsNotBound(): void
+    {
+        $matcher = $this->matcherFor(
+            $this->processedDynamicRoute(
+                '/{nc}',
+                'non-capture',
+                [new Parameter(name: 'nc', regex: Regex::ALPHA, shouldCapture: false)]
+            )
+        );
+
+        $matched = $matcher->match('/abc', RequestMethod::ANY);
+
+        self::assertInstanceOf(DynamicRouteContract::class, $matched);
+        self::assertNull($matched->getParameter('nc')->getValue());
+    }
+
+    /**
+     * Build a dynamic route with its regex produced by the Processor (the real pipeline).
+     *
+     * @param non-empty-string $path
+     * @param non-empty-string $name
+     * @param array<Parameter> $parameters
+     * @param RequestMethod[]  $requestMethods
+     *
+     * @throws HttpRoutingInvalidRoutePathException
+     */
+    private function processedDynamicRoute(
+        string $path,
+        string $name,
+        array $parameters,
+        array $requestMethods = [RequestMethod::ANY]
+    ): DynamicRouteContract {
+        $route = new DynamicRoute(
+            path: $path,
+            name: $name,
+            regex: '',
+            parameters: $parameters,
+            handler: [RouteProviderFixture::class, 'handler'],
+            requestMethods: $requestMethods
+        );
+
+        $processed = new Processor()->route($route);
+
+        self::assertInstanceOf(DynamicRouteContract::class, $processed);
+
+        return $processed;
+    }
+
+    /**
+     * Build a matcher backed by a collection of the given routes.
+     */
+    private function matcherFor(RouteContract ...$routes): Matcher
+    {
+        $collection = new RouteCollection();
+
+        foreach ($routes as $route) {
+            $collection->add($route);
+        }
+
+        return new Matcher(collection: $collection);
     }
 }
