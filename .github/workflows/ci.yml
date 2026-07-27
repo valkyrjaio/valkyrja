@@ -159,7 +159,7 @@ jobs:
 
   rector:
     name: Rector
-    uses: valkyrjaio/ci-rector-php/.github/workflows/_workflow-call.yml@0dafdcf499d607c2471faef2a2c3ca06507cb97e
+    uses: valkyrjaio/ci-rector-php/.github/workflows/_workflow-call.yml@c104cba4c458c87eb63e1e70307eba81cb9532ca
     with:
       php-version: '8.4'
       paths: |
