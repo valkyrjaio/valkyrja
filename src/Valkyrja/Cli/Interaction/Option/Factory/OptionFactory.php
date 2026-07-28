@@ -38,7 +38,9 @@ abstract class OptionFactory
 
         $type = self::getOptionType($arg);
 
-        $parts = explode('=', $arg);
+        // Split on the first `=` only, so a value that itself contains one survives intact
+        // (`--expr=a=b` yields `a=b`, not `a`).
+        $parts = explode('=', $arg, 2);
         $name  = trim($parts[0], '- ');
         $value = $parts[1] ?? '';
 

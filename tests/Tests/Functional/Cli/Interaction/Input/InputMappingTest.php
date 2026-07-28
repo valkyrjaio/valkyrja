@@ -93,7 +93,7 @@ final class InputMappingTest extends TestCase
             ],
             'value containing equals' => [
                 ['valkyrja', 'cmd', '--expr=a=b'],
-                [['expr', 'a', OptionType::LONG]],
+                [['expr', 'a=b', OptionType::LONG]],
             ],
         ];
     }
