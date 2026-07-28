@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Path/branch coverage sharding config.
+
+    This is a sibling of phpunit.xml.dist used ONLY by the parallel path-coverage
+    harness (see the composer scripts path-coverage-shard / path-coverage-parallel).
+    It differs from the main config in exactly two ways:
+
+      1. One testsuite per top-level component (mirroring src/Valkyrja/<Component>),
+         plus Functional. The suites are disjoint and together cover the whole
+         tests/ tree, so a plain run with no testsuite filter still executes every
+         test exactly once, while selecting a single testsuite runs one shard.
+      2. No coverage report block. Each shard writes only its own serialized
+         coverage via the CLI coverage-php flag, so parallel shards never race on a
+         shared clover.xml or coverage-html path. Reports are produced once, after
+         merging, by phpcov.
+
+    The source filter is identical to the main config, so every shard shares the
+    same coverage denominator (all of src) and no shard can drop classes from it.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         backupGlobals="false"
+         bootstrap="./bootstrap.php"
+         colors="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         cacheResult="false"
+         backupStaticProperties="false"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerErrors="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         executionOrder="default"
+         resolveDependencies="true"
+>
+    <testsuites>
+        <testsuite name="Api">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Api</directory>
+        </testsuite>
+        <testsuite name="Application">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Application</directory>
+        </testsuite>
+        <testsuite name="Attribute">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Attribute</directory>
+        </testsuite>
+        <testsuite name="Auth">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Auth</directory>
+        </testsuite>
+        <testsuite name="Broadcast">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Broadcast</directory>
+        </testsuite>
+        <testsuite name="Cache">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Cache</directory>
+        </testsuite>
+        <testsuite name="Cli">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Cli</directory>
+        </testsuite>
+        <testsuite name="Container">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Container</directory>
+        </testsuite>
+        <testsuite name="Crypt">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Crypt</directory>
+        </testsuite>
+        <testsuite name="Dispatch">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Dispatch</directory>
+        </testsuite>
+        <testsuite name="Event">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Event</directory>
+        </testsuite>
+        <testsuite name="Filesystem">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Filesystem</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory suffix="Test.php">../../../tests/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="Http">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Http</directory>
+        </testsuite>
+        <testsuite name="Jwt">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Jwt</directory>
+        </testsuite>
+        <testsuite name="Log">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Log</directory>
+        </testsuite>
+        <testsuite name="Mail">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Mail</directory>
+        </testsuite>
+        <testsuite name="Orm">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Orm</directory>
+        </testsuite>
+        <testsuite name="Reflection">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Reflection</directory>
+        </testsuite>
+        <testsuite name="Session">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Session</directory>
+        </testsuite>
+        <testsuite name="Sms">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Sms</directory>
+        </testsuite>
+        <testsuite name="Support">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Support</directory>
+        </testsuite>
+        <testsuite name="Throwable">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Throwable</directory>
+        </testsuite>
+        <testsuite name="Type">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Type</directory>
+        </testsuite>
+        <testsuite name="Validation">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/Validation</directory>
+        </testsuite>
+        <testsuite name="View">
+            <directory suffix="Test.php">../../../tests/Tests/Unit/View</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging/>
+
+    <source>
+        <include>
+            <directory>../../../src</directory>
+        </include>
+    </source>
+</phpunit>
