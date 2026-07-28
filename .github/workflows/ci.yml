@@ -14,13 +14,13 @@ jobs:
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@716065aae4466b95f0f80c9c5a5e2a92de620af6
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@983fb2adea0987861f9ec402e6e7a13638119f2c
     secrets: inherit
 
   trailing-newline-check:
     name: Trailing Newline Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@716065aae4466b95f0f80c9c5a5e2a92de620af6
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@983fb2adea0987861f9ec402e6e7a13638119f2c
     permissions:
       pull-requests: write
       contents: read
