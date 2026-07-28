@@ -19,6 +19,7 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionNoValidationCalla
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function str_contains;
+use function str_starts_with;
 
 /**
  * Test the ErrorMessage class.
@@ -171,5 +172,25 @@ final class AnswerTest extends TestCase
         self::assertFalse($message2->withUserResponse('text3')->isValidResponse());
         self::assertTrue($message2->withUserResponse('text4')->isValidResponse());
         self::assertTrue($message2->withUserResponse('text5')->isValidResponse());
+    }
+
+    /**
+     * With both an allowed-response list and a validation callable, a response outside the
+     * list is still valid when the callable accepts it.
+     */
+    public function testValidResponseFromCallableWhenNotInAllowedResponses(): void
+    {
+        $message = new Answer(
+            defaultResponse: 'yes',
+            validationCallable: static fn (string $response): bool => str_starts_with($response, 'maybe'),
+            allowedResponses: ['yes', 'no']
+        );
+
+        // In the allowed list.
+        self::assertTrue($message->withUserResponse('no')->isValidResponse());
+        // Not in the allowed list, but the callable accepts it.
+        self::assertTrue($message->withUserResponse('maybe so')->isValidResponse());
+        // Neither in the allowed list nor accepted by the callable.
+        self::assertFalse($message->withUserResponse('nope')->isValidResponse());
     }
 }
