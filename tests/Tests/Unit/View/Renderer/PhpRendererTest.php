@@ -134,6 +134,29 @@ final class PhpRendererTest extends TestCase
         self::assertTrue($exceptionThrown, 'Expected RuntimeException was not thrown');
     }
 
+    /**
+     * An empty template name appends nothing to the templates directory, so the resolved
+     * path is the directory itself and is reported as a missing template.
+     */
+    public function testRenderFileWithEmptyTemplateResolvesToDirectory(): void
+    {
+        $renderer        = new PhpRenderer(self::TEMPLATES_DIR);
+        $exceptionThrown = false;
+
+        try {
+            $renderer->renderFile('');
+        } catch (ViewInvalidPathException $e) {
+            $exceptionThrown = true;
+            self::assertStringContainsString('Path does not exist at', $e->getMessage());
+        } finally {
+            while (ob_get_level() > 1) {
+                ob_end_clean();
+            }
+        }
+
+        self::assertTrue($exceptionThrown, 'Expected ViewInvalidPathException was not thrown');
+    }
+
     public function testRenderFileWithConfiguredPath(): void
     {
         $renderer = new PhpRenderer(
