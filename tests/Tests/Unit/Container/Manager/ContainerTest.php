@@ -18,6 +18,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
@@ -106,6 +107,29 @@ final class ContainerTest extends TestCase
         // A bound singleton should return the same instance each time it is retrieved
         self::assertSame($service, $container->get($id));
         self::assertSame($service, $container->getSingleton($id));
+    }
+
+    /**
+     * A singleton binding whose callable does not produce an object must not be cached as
+     * an instance; the resolution yields null and getSingleton() reports the service as
+     * not found. Reaching this defensive guard needs a synthetic factory, since a
+     * well-behaved one always returns an object.
+     */
+    public function testGetSingletonWithNonObjectFromBindingThrows(): void
+    {
+        $container = $this->container;
+        $id        = SingletonFixture::class;
+
+        /** @psalm-suppress InvalidArgument, MixedArgumentTypeCoercion */
+        $container->bindSingleton($id, static fn (): null => null);
+
+        self::assertTrue($container->isSingletonBinding($id));
+        // Nothing was cached as an instance, so the singleton is still unresolved.
+        self::assertFalse($container->isSingletonInstance($id));
+
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $container->getSingleton($id);
     }
 
     public function testSetSingleton(): void
