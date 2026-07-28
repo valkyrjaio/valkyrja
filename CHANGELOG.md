@@ -1,6 +1,28 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.5.2...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.6.0...26.x)
+
+## [v26.6.0](https://github.com/valkyrjaio/valkyrja/compare/v26.5.2...v26.6.0) - 2026-07-27
+
+* [Cli] Add routing argument/option combination tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/924
+* [Http] Add routing path/regex/parameter combination tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/923
+* [Cli] Enforce option valid values in areValuesValid by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/925
+* [Session] Coerce null cookie domain to empty string in PhpSession by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/926
+* [Http] Move misfiled RouteFactory from Cli to Http namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/927
+* [Cli] Add routing attribute parameter combination tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/928
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/929
+* [Http] Add request, response, and CLI input message-mapping fidelity tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/932
+* [CI] Run branch and path coverage as parallel shards by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/933
+* [Documentation] Document parallel branch and path coverage in a PHPUnit README by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/934
+* [GitHub] Update ci-phpstan-php workflow refs to v26.1.11 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/930
+* [GitHub] Update ci-rector-php workflow refs to v26.1.11 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/931
+* [Cli] Split an option arg on the first equals only so values keep theirs by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/935
+* [CI] Close reachable branch coverage gaps found by path coverage by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/936
+* [Documentation] Correct the merged branch coverage claim in the PHPUnit README by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/937
+* [Cli] Treat a bare double dash as the end-of-options marker and a lone dash as an operand by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/938
+* [CI] Close the remaining reachable branch coverage gaps by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/939
+* [GitHub] Update .github workflow refs to v26.12.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/940
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/941
 
 ## [v26.5.2](https://github.com/valkyrjaio/valkyrja/compare/v26.5.1...v26.5.2) - 2026-07-26
 
