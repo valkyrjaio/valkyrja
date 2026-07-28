@@ -4,3 +4,6 @@
 !composer.json
 !composer.lock
 !phpunit.xml.dist
+!phpunit.path-coverage.xml.dist
+!path-coverage-shards.sh
+!path-coverage-report.php
