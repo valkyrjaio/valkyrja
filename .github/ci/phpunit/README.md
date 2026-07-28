@@ -86,19 +86,29 @@ Everything is written under `build/path-coverage/` (git-ignored): `cov/` holds
 the per-shard results, `logs/` the per-shard PHPUnit output, and `merged.cov`
 the combined set.
 
-### Two things to know
+### Three things to know
 
-**Merged totals differ slightly from a serial run.** Merged output reports a
-handful more executable lines and branches than the serial run does. This is an
-Xdebug artifact, not a regression: when a shard *executes* a `match`, Xdebug
-does not report the `match (` line as executable, but a shard that merely
-autoloads the file without ever calling the method reports it as executable via
-dead-code analysis. Merging unions the two, so the line ends up
-executable-but-uncovered.
+**Merged totals overstate the gap — badly, for branches.** Merged output reports
+more executable lines and branches than the serial run does. This is an Xdebug
+artifact, not a regression: Xdebug builds a different map for a function
+depending on whether it actually ran. A shard that *executes* a `match` does not
+report the `match (` line as executable, while a shard that merely autoloads the
+file reports it as executable via dead-code analysis. Merging unions the two, so
+the entry ends up executable-but-uncovered.
 
-The consequence is that a merged **line** coverage 100% assertion will fail at
-99.97% on this artifact alone, which is why the enforced line gate stays on the
-serial `phpunit-coverage` run. The merged data is sound for finding branch gaps.
+For lines this is small — a merged 100% line assertion fails at 99.97% on the
+artifact alone, which is why the enforced line gate stays on the serial
+`phpunit-coverage` run. **For branches it is large enough to be misleading**, and
+merged branch counts must not be read as a worklist. `Processor.php` is the
+worst case: merged claims 52 executable branches and 9 missing, while every
+individual shard counts 43 and hits all of them.
+
+Always confirm a branch gap against the file's own shard before writing a test
+for it:
+
+```bash
+composer phpunit-path-coverage-shard Http
+```
 
 **Shards need isolated storage.** `Valkyrja\Tests\Abstract\TestCase::tearDown()`
 wipes `Directory::storagePath()` after every test. Running shards concurrently
@@ -107,8 +117,27 @@ in one working copy would let one shard delete another's fixtures mid-assertion.
 sets per shard. It is unset everywhere else, so normal runs — and CI, where each
 matrix shard is its own checkout — behave exactly as before.
 
-### Path coverage is a diagnostic, not a target
+**Some branches can never be executed.** Even within a single process, a handful
+of reported branches are unreachable by any test:
 
-Branch coverage is a realistic 100% goal. Path coverage is not: it counts every
-distinct route through a function, which grows combinatorially, and the suite
-sits around 42%. Treat the path number as information, not a gate.
+- **Process-terminating arms** — `Exiter::exit()` calls `exit($code)`, which ends
+  the run, so that arm cannot be recorded.
+- **Exhaustive `match` fall-through** — a `match (true)` whose arms already cover
+  the parameter's whole union type still carries an implicit `UnhandledMatchError`
+  branch that nothing can reach (see `DispatchFactory::fromReflection()`).
+- **Traits used by several classes** — a trait is compiled into each using class
+  and the copies are conflated into one file entry.
+  `Type\Enum\Trait\JsonSerializable` reports 3/3 run alone but 2/3 with the full
+  `Type` suite, because a backed enum never runs `return $this->name` and a pure
+  enum never runs `return $this->value`. Adding tests *lowers* this number.
+
+### Neither branch nor path coverage is a 100% target
+
+Path coverage counts every distinct route through a function, which grows
+combinatorially; the suite sits around 42%. Treat it as information only.
+
+Branch coverage is far closer to complete and worth driving up, but 100% is not
+attainable either, for the reasons above — `REQUIRE_BRANCH=100` can never go
+green. Gate it at a threshold below 100 if you want regression protection, and
+prefer per-shard numbers over merged ones when deciding what is genuinely
+missing.
