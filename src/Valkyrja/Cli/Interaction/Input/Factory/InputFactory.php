@@ -23,20 +23,6 @@ use function str_starts_with;
 abstract class InputFactory
 {
     /**
-     * The POSIX end-of-options marker. Every arg after it is an operand.
-     *
-     * @var non-empty-string
-     */
-    public const string END_OF_OPTIONS = '--';
-
-    /**
-     * A lone dash, which names standard input by convention and is an operand, not an option.
-     *
-     * @var non-empty-string
-     */
-    public const string STDIN = '-';
-
-    /**
      * Create an input from given global variables.
      *
      * @param non-empty-string[] $args            The arguments
@@ -67,12 +53,12 @@ abstract class InputFactory
         foreach ($args as $key => $arg) {
             if ($key === 0) {
                 $applicationName = $arg;
-            } elseif (! $endOfOptions && $arg === self::END_OF_OPTIONS) {
+            } elseif (! $endOfOptions && $arg === '--') {
                 // POSIX end-of-options marker: the `--` itself is consumed, and every arg after
                 // it is an operand — never an option, however many dashes it starts with. A
                 // second `--` is therefore an ordinary operand.
                 $endOfOptions = true;
-            } elseif (! $endOfOptions && $arg !== self::STDIN && str_starts_with($arg, '-')) {
+            } elseif (! $endOfOptions && $arg !== '-' && str_starts_with($arg, '-')) {
                 // A lone `-` is an operand by convention (it names standard input), not an option.
                 $options = [
                     ...$options,
