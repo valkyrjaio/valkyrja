@@ -17,6 +17,7 @@ use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
@@ -108,7 +109,32 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback = new MailServiceProvider()->publishers()[PHPMailerClient::class];
         $callback($this->container);
 
-        self::assertInstanceOf(PHPMailerClient::class, $this->container->getSingleton(PHPMailerClient::class));
+        $mailer = $this->container->getSingleton(PHPMailerClient::class);
+
+        self::assertInstanceOf(PHPMailerClient::class, $mailer);
+        // Debug mode is off by default, so verbose SMTP output stays disabled.
+        self::assertSame(0, $mailer->SMTPDebug);
+    }
+
+    /**
+     * With the application in debug mode the mailer is given verbose SMTP output.
+     *
+     * @throws Exception
+     */
+    public function testPublishPhpMailerClientInDebugMode(): void
+    {
+        $app = self::createStub(ApplicationContract::class);
+        $app->method('getDebugMode')->willReturn(true);
+
+        $this->container->setSingleton(ApplicationContract::class, $app);
+
+        $callback = new MailServiceProvider()->publishers()[PHPMailerClient::class];
+        $callback($this->container);
+
+        $mailer = $this->container->getSingleton(PHPMailerClient::class);
+
+        self::assertInstanceOf(PHPMailerClient::class, $mailer);
+        self::assertSame(2, $mailer->SMTPDebug);
     }
 
     /**

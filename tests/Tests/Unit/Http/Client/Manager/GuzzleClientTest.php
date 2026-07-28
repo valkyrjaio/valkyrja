@@ -25,6 +25,8 @@ use Valkyrja\Http\Message\Header\Factory\PsrHeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Param\CookieParamCollection;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
+use Valkyrja\Http\Message\Param\ParsedJsonParamCollection;
+use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Response\Response;
@@ -95,6 +97,53 @@ final class GuzzleClientTest extends TestCase
         self::assertInstanceOf(Response::class, $response);
         self::assertSame($contents, $response->getBody()->getContents());
         self::assertSame('value', $response->getHeaders()->getHeaderLine('header'));
+        self::assertSame(StatusCode::OK, $response->getStatusCode());
+    }
+
+    /**
+     * A JSON request that carries parsed JSON is sent as JSON, so its parsed body must not
+     * also be attached as form params.
+     */
+    public function testSendJsonRequestWithParsedJsonOmitsFormParams(): void
+    {
+        $contents  = 'test';
+        $stringUri = 'https://example.com/';
+
+        $guzzle       = $this->createMock(Client::class);
+        $psr7Response = $this->createMock(ResponseInterface::class);
+        $psr7Body     = $this->createMock(StreamInterface::class);
+
+        $body = new Stream();
+        $body->write($contents);
+        $body->rewind();
+
+        $client  = new GuzzleClient(
+            client: $guzzle,
+            responseFactory: new ResponseFactory()
+        );
+        $request = new JsonServerRequest(
+            uri: UriFactory::fromString($stringUri),
+            body: $body,
+            parsedBody: ParsedBodyParamCollection::fromArray(['param' => 'value']),
+            parsedJson: ParsedJsonParamCollection::fromArray(['json' => 'value']),
+        );
+
+        $psr7Response->expects($this->once())->method('getHeaders')->willReturn([]);
+        $psr7Response->expects($this->once())->method('getStatusCode')->willReturn(200);
+        $psr7Response->expects($this->once())->method('getBody')->willReturn($psr7Body);
+        $psr7Body->expects($this->once())->method('getContents')->willReturn($contents);
+        $guzzle->expects($this->once())
+            ->method('request')
+            ->with(
+                'GET',
+                $stringUri,
+                self::logicalNot(self::arrayHasKey('form_params'))
+            )
+            ->willReturn($psr7Response);
+
+        $response = $client->sendRequest($request);
+
+        self::assertInstanceOf(Response::class, $response);
         self::assertSame(StatusCode::OK, $response->getStatusCode());
     }
 }

@@ -107,6 +107,22 @@ final class ServerRequestTest extends TestCase
         self::assertSame($parsedBody2, $psrRequest2->getParsedBody());
     }
 
+    /**
+     * A null parsed body is normalized to an empty collection rather than cast, which is
+     * how PSR-7 signals the body has no parsed representation.
+     */
+    public function testParsedBodyWithNull(): void
+    {
+        $request    = new ServerRequest(parsedBody: ParsedBodyParamCollection::fromArray(['test' => 'value']));
+        $psrRequest = new PsrServerRequest($request);
+
+        $psrRequest2 = $psrRequest->withParsedBody(null);
+
+        self::assertNotSame($psrRequest, $psrRequest2);
+        self::assertSame(['test' => 'value'], $psrRequest->getParsedBody());
+        self::assertSame([], $psrRequest2->getParsedBody());
+    }
+
     public function testAttributes(): void
     {
         $attributes = ['test' => 'value'];
