@@ -160,6 +160,35 @@ final class UlidFactoryTest extends TestCase
     }
 
     /**
+     * Test doesTimeMatch() when a date time is passed in and the time it produces is
+     * exactly the previously stored time. Neither `$time > static::$time` nor
+     * `$time !== static::$time` holds, so the whole condition is false even though a
+     * date time was given — the remaining branch of the `$dateTime !== null && ...`
+     * half of the condition.
+     *
+     * @throws Exception
+     */
+    public function testGenerateWithDateTimeMatchingStoredTime(): void
+    {
+        $dateTime = new DateTime('2024-01-15 12:30:45.123456');
+
+        // Store exactly the time this date time produces.
+        UlidFactoryFixture::setTime($dateTime->format('Uv'));
+
+        // Random bytes not at max -> areAllRandomBytesMax() false -> else branch.
+        UlidFactoryFixture::setRandomBytes([
+            1 => 100,
+            2 => 200,
+            3 => 300,
+            4 => 400,
+        ]);
+
+        $ulid = UlidFactoryFixture::generate($dateTime);
+
+        self::assertTrue(UlidFactoryFixture::isValid($ulid));
+    }
+
+    /**
      * Test getTime with negative timestamp throws exception (lines 140-144).
      */
     public function testGetTimeWithNegativeTimestamp(): void
