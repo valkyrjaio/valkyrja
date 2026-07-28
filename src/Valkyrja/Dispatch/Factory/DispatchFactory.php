@@ -53,7 +53,11 @@ class DispatchFactory
             $reflection instanceof ReflectionClass         => new ClassDispatch(
                 class: $reflection->getName(),
             ),
-            $reflection instanceof ReflectionFunction      => new CallableDispatch(
+            // The parameter's union type makes ReflectionFunction the only
+            // remaining possibility, so this is `default` rather than a fifth
+            // `instanceof` arm -- an exhaustive match compiles in an
+            // UnhandledMatchError throw that no input can reach.
+            default                                        => new CallableDispatch(
                 callable: is_callable($name)
                     ? $name
                     : throw new DispatchInvalidReflectionFunctionException('ReflectionFunction has no valid callable'),
