@@ -25,8 +25,11 @@ use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Factory\DispatchFactory;
+use Valkyrja\Dispatch\Throwable\Exception\DispatchInvalidReflectionFunctionException;
 use Valkyrja\Tests\Fixtures\Dispatch\InvalidDispatcherFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+
+use function is_callable;
 
 /**
  * Test the DispatchFactory.
@@ -92,5 +95,20 @@ final class DispatchFactoryTest extends TestCase
         self::assertSame($class, $classDispatch->getClass());
 
         self::assertSame($callable, $callableDispatch->getCallable());
+    }
+
+    /**
+     * A closure's reflection name is a synthetic `{closure:...}` label rather than a
+     * callable string, so it cannot be turned into a CallableDispatch.
+     */
+    public function testFromReflectionThrowsForNonCallableFunctionName(): void
+    {
+        $reflection = new ReflectionFunction(static fn (): null => null);
+
+        self::assertFalse(is_callable($reflection->getName()));
+
+        $this->expectException(DispatchInvalidReflectionFunctionException::class);
+
+        DispatchFactory::fromReflection($reflection);
     }
 }

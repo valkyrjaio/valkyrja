@@ -218,6 +218,31 @@ final class OutputTest extends TestCase
         self::assertEmpty($outputContents);
     }
 
+    /**
+     * Quiet mode only suppresses output on a successful exit code. With a failing exit
+     * code the message is still written, so the operator sees why the run failed.
+     */
+    public function testQuietOutputStillWritesMessagesOnFailureExitCode(): void
+    {
+        $message = new Message('text');
+
+        $quietSuccess = new Output(isQuiet: true, exitCode: ExitCode::SUCCESS)
+            ->withAddedMessage($message);
+        $quietFailure = new Output(isQuiet: true, exitCode: ExitCode::ERROR)
+            ->withAddedMessage($message);
+
+        ob_start();
+        $quietSuccess->writeMessages();
+        $quietSuccessContents = ob_get_clean();
+
+        ob_start();
+        $quietFailure->writeMessages();
+        $quietFailureContents = ob_get_clean();
+
+        self::assertEmpty($quietSuccessContents);
+        self::assertStringContainsString('text', (string) $quietFailureContents);
+    }
+
     public function testReAskQuestionOnInvalidAnswer(): void
     {
         $callableCalled = false;

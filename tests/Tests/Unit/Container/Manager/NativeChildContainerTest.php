@@ -135,6 +135,16 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->parent->has(DispatcherContract::class));
     }
 
+    /**
+     * With the service registered in neither the child nor the parent, every arm of the
+     * short-circuit chain in has() is evaluated: the child and parent callbacks, then
+     * the singleton, service, and alias lookups.
+     */
+    public function testHasReturnsFalseWhenRegisteredInNeitherChildNorParent(): void
+    {
+        self::assertFalse($this->child->has(DispatcherContract::class));
+    }
+
     public function testIsPublishedFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);

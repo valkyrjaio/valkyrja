@@ -30,6 +30,13 @@ final class ClsTest extends TestCase
         Cls::validateInherits(self::class, stdClass::class);
     }
 
+    public function testValidateInheritsDoesNotThrowForInheritedClass(): void
+    {
+        Cls::validateInherits(self::class, TestCase::class);
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
     public function testInherits(): void
     {
         self::assertFalse(Cls::inherits(self::class, stdClass::class));
@@ -41,6 +48,13 @@ final class ClsTest extends TestCase
         $this->expectException(InvalidObjectPropertyProvidedException::class);
 
         Cls::validateHasProperty(self::class, 'test');
+    }
+
+    public function testValidateHasPropertyDoesNotThrowForExistingProperty(): void
+    {
+        Cls::validateHasProperty(self::class, 'validProperty');
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
     }
 
     public function testHasProperty(): void
