@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Orm\Provider;
 
 use PDO;
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -25,6 +26,7 @@ use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Provider\OrmServiceProvider;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
+use Valkyrja\Tests\Fixtures\Env\OrmMysqlStrictEngineEnvFixture;
 use Valkyrja\Tests\Fixtures\Orm\PdoFixture;
 
 /**
@@ -70,6 +72,34 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(MysqlManager::class));
+    }
+
+    /**
+     * The optional strict mode and storage engine default to null and are then left out of
+     * the DSN entirely; when set they are appended to it.
+     */
+    public function testPublishMysqlManagerWithStrictAndEngine(): void
+    {
+        $this->container->setSingleton(Env::class, new OrmMysqlStrictEngineEnvFixture());
+
+        $dsn = null;
+
+        $this->container->bind(
+            PDO::class,
+            static function (ContainerContract $container, array $arguments) use (&$dsn): PDO {
+                $dsn = $arguments[0] ?? null;
+
+                return new PdoFixture('sqlite::memory:');
+            }
+        );
+
+        $callback = new OrmServiceProvider()->publishers()[MysqlManager::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(MysqlManager::class, $this->container->getSingleton(MysqlManager::class));
+        self::assertIsString($dsn);
+        self::assertStringContainsString(';strict=1', $dsn);
+        self::assertStringContainsString(';engine=InnoDB', $dsn);
     }
 
     public function testPublishPgsqlManager(): void
