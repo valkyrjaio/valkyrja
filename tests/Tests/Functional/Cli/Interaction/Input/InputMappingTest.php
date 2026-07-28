@@ -106,12 +106,8 @@ final class InputMappingTest extends TestCase
     public static function provideRejectedSpellings(): array
     {
         return [
-            'double dash terminator'   => [
-                ['valkyrja', 'cmd', '--'],
-                CliInteractionInvalidNonEmptyValueException::class,
-            ],
-            'single dash'              => [
-                ['valkyrja', 'cmd', '-'],
+            'empty long option name'   => [
+                ['valkyrja', 'cmd', '--=value'],
                 CliInteractionInvalidNonEmptyValueException::class,
             ],
             'bundled short with value' => [
@@ -329,5 +325,89 @@ final class InputMappingTest extends TestCase
             expected: [['name', '', OptionType::LONG]],
             actual: self::optionTuples($input->getOptions())
         );
+    }
+
+    /**
+     * A bare `--` ends option parsing: it is consumed, and everything after it is an
+     * operand no matter how many dashes it starts with.
+     */
+    public function testDoubleDashEndsOptionParsing(): void
+    {
+        $input = InputFactory::fromGlobals(
+            ['valkyrja', 'cmd', '--real', '--', '--not-an-option', '-x', 'plain'],
+            self::DEFAULT_CALLER,
+            self::DEFAULT_COMMAND
+        );
+
+        self::assertSame(expected: 'cmd', actual: $input->getCommandName());
+        self::assertSame(
+            expected: ['--not-an-option', '-x', 'plain'],
+            actual: self::argumentValues($input->getArguments())
+        );
+        self::assertSame(
+            expected: [['real', '', OptionType::LONG]],
+            actual: self::optionTuples($input->getOptions())
+        );
+    }
+
+    /**
+     * The `--` itself never becomes an operand, but a second one does.
+     */
+    public function testSecondDoubleDashIsAnOperand(): void
+    {
+        $input = InputFactory::fromGlobals(
+            ['valkyrja', 'cmd', '--', '--', 'tail'],
+            self::DEFAULT_CALLER,
+            self::DEFAULT_COMMAND
+        );
+
+        self::assertSame(expected: ['--', 'tail'], actual: self::argumentValues($input->getArguments()));
+        self::assertSame(expected: [], actual: $input->getOptions());
+    }
+
+    /**
+     * A lone `-` names standard input by convention, so it is an operand rather than an
+     * option — both before and after an end-of-options marker.
+     */
+    public function testLoneDashIsAnOperand(): void
+    {
+        $input = InputFactory::fromGlobals(
+            ['valkyrja', 'cmd', '-', '--verbose', '--', '-'],
+            self::DEFAULT_CALLER,
+            self::DEFAULT_COMMAND
+        );
+
+        self::assertSame(expected: ['-', '-'], actual: self::argumentValues($input->getArguments()));
+        self::assertSame(
+            expected: [['verbose', '', OptionType::LONG]],
+            actual: self::optionTuples($input->getOptions())
+        );
+    }
+
+    /**
+     * A `--` spelled in the command-name slot is still consumed, so the default command
+     * name stands and the following token becomes an operand.
+     */
+    public function testDoubleDashInTheCommandNameSlot(): void
+    {
+        $input = InputFactory::fromGlobals(
+            ['valkyrja', '--', 'app:version'],
+            self::DEFAULT_CALLER,
+            self::DEFAULT_COMMAND
+        );
+
+        self::assertSame(expected: self::DEFAULT_COMMAND, actual: $input->getCommandName());
+        self::assertSame(expected: ['app:version'], actual: self::argumentValues($input->getArguments()));
+    }
+
+    /**
+     * A lone `-` in the command-name slot fills it, since it is an operand.
+     */
+    public function testLoneDashInTheCommandNameSlot(): void
+    {
+        $input = InputFactory::fromGlobals(['valkyrja', '-'], self::DEFAULT_CALLER, self::DEFAULT_COMMAND);
+
+        self::assertSame(expected: '-', actual: $input->getCommandName());
+        self::assertSame(expected: [], actual: $input->getArguments());
     }
 }

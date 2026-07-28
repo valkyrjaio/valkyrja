@@ -45,14 +45,21 @@ abstract class InputFactory
      */
     protected static function inputWithProperties(InputContract $input, array $args, string $applicationName, string $commandName): InputContract
     {
-        $arguments = [];
-        $options   = [];
+        $arguments    = [];
+        $options      = [];
+        $endOfOptions = false;
 
         /** @var non-empty-string $arg */
         foreach ($args as $key => $arg) {
             if ($key === 0) {
                 $applicationName = $arg;
-            } elseif (str_starts_with($arg, '-')) {
+            } elseif (! $endOfOptions && $arg === '--') {
+                // POSIX end-of-options marker: the `--` itself is consumed, and every arg after
+                // it is an operand — never an option, however many dashes it starts with. A
+                // second `--` is therefore an ordinary operand.
+                $endOfOptions = true;
+            } elseif (! $endOfOptions && $arg !== '-' && str_starts_with($arg, '-')) {
+                // A lone `-` is an operand by convention (it names standard input), not an option.
                 $options = [
                     ...$options,
                     ...OptionFactory::fromArg($arg),
