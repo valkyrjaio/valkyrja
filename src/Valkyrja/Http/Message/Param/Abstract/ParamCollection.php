@@ -144,8 +144,6 @@ abstract class ParamCollection implements ParamCollectionContract
 
     /**
      * @inheritDoc
-     *
-     * @param array<K, T> $params The params
      */
     #[Override]
     public function withAdded(array $params): static
@@ -165,7 +163,7 @@ abstract class ParamCollection implements ParamCollectionContract
     /**
      * Validate params.
      *
-     * @param array<K, mixed> $params The params to validate
+     * @param array<array-key, mixed> $params The params to validate
      *
      * @psalm-assert array<K, T> $params
      *

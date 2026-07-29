@@ -85,6 +85,9 @@ final class CliTest extends TestCase
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
@@ -135,6 +138,9 @@ final class CliTest extends TestCase
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
@@ -182,6 +188,9 @@ final class CliTest extends TestCase
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
