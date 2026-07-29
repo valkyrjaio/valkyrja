@@ -95,7 +95,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertTrue($route->hasArguments());
         self::assertSame($arguments, $route->getArguments());
@@ -128,7 +128,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -142,7 +142,7 @@ final class RouteTest extends TestCase
         self::assertSame($name2, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -175,7 +175,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -189,7 +189,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description2, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -222,7 +222,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -305,7 +305,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -319,7 +319,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler2, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -363,7 +363,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertTrue($route->hasArguments());
         self::assertSame([$argument], $route->getArguments());
@@ -379,7 +379,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertTrue($route2->hasArguments());
         self::assertSame([$argument2], $route2->getArguments());
@@ -395,7 +395,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertTrue($route3->hasArguments());
         self::assertSame([$argument, $argument2], $route3->getArguments());
@@ -413,7 +413,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertTrue($route4->hasArguments());
         self::assertSame([$argument3], $route4->getArguments());
@@ -477,7 +477,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -493,7 +493,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -509,7 +509,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertFalse($route3->hasArguments());
         self::assertEmpty($route3->getArguments());
@@ -527,7 +527,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertFalse($route4->hasArguments());
         self::assertEmpty($route4->getArguments());
@@ -590,7 +590,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -604,7 +604,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -618,7 +618,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertFalse($route3->hasArguments());
         self::assertEmpty($route3->getArguments());
@@ -632,7 +632,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertFalse($route4->hasArguments());
         self::assertEmpty($route4->getArguments());
@@ -675,7 +675,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -689,7 +689,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -703,7 +703,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertFalse($route3->hasArguments());
         self::assertEmpty($route3->getArguments());
@@ -717,7 +717,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertFalse($route4->hasArguments());
         self::assertEmpty($route4->getArguments());
@@ -760,7 +760,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -774,7 +774,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -788,7 +788,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertFalse($route3->hasArguments());
         self::assertEmpty($route3->getArguments());
@@ -802,7 +802,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertFalse($route4->hasArguments());
         self::assertEmpty($route4->getArguments());
@@ -845,7 +845,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route->getName());
         self::assertSame($description, $route->getDescription());
         self::assertSame($helpText, $route->getHelpText());
-        self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertFalse($route->hasArguments());
         self::assertEmpty($route->getArguments());
@@ -859,7 +859,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText, $route2->getHelpText());
-        self::assertSame($helpText()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());
@@ -873,7 +873,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route3->getName());
         self::assertSame($description, $route3->getDescription());
         self::assertSame($helpText, $route3->getHelpText());
-        self::assertSame($helpText()->getText(), $route3->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route3->getHelpTextMessage()->getText());
         self::assertSame($handler, $route3->getHandler());
         self::assertFalse($route3->hasArguments());
         self::assertEmpty($route3->getArguments());
@@ -887,7 +887,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route4->getName());
         self::assertSame($description, $route4->getDescription());
         self::assertSame($helpText, $route4->getHelpText());
-        self::assertSame($helpText()->getText(), $route4->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText()->getText(), $route4->getHelpTextMessage()->getText());
         self::assertSame($handler, $route4->getHandler());
         self::assertFalse($route4->hasArguments());
         self::assertEmpty($route4->getArguments());
