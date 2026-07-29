@@ -38,7 +38,7 @@ class Exiter
      */
     public static function exit(int $code = 0): void
     {
-        static::$exit ? exit($code) : static::frozenCallback($code);
+        static::$exit ? static::exitCallback($code) : static::frozenCallback($code);
     }
 
     /**
@@ -47,5 +47,19 @@ class Exiter
     public static function frozenCallback(int $code = 0): void
     {
         echo $code;
+    }
+
+    /**
+     * Callback for when exiter is not frozen.
+     *
+     * A seam: exit() terminates the process, so no test can call this and go on
+     * to assert anything. A Tests\Fixtures subclass overrides it to record the
+     * call, which is what covers the unfrozen arm of exit().
+     *
+     * @codeCoverageIgnore
+     */
+    protected static function exitCallback(int $code = 0): void
+    {
+        exit($code);
     }
 }
