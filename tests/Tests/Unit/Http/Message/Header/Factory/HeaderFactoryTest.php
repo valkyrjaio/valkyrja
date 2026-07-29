@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use Throwable;
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
@@ -21,6 +23,20 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class HeaderFactoryTest extends TestCase
 {
+    /**
+     * @return array<string, array{string, class-string<Throwable>|null}>
+     */
+    public static function headerNameProvider(): array
+    {
+        return [
+            'simple'      => ['Content-Type', null],
+            'custom'      => ['X-Custom-Header', null],
+            'every token' => ["a-zA-Z0-9'`#$%&*+.^_|~!-", null],
+            'space'       => [' ', HttpHeaderInvalidNameException::class],
+            'empty'       => ['', HttpHeaderInvalidNameException::class],
+        ];
+    }
+
     public function testMarshalHeaders(): void
     {
         $server = [
@@ -91,11 +107,19 @@ final class HeaderFactoryTest extends TestCase
         self::assertTrue(HeaderFactory::isValidValue("\x7E"));
     }
 
-    public function testInvalidHeaderName(): void
+    /**
+     * @param class-string<Throwable>|null $expectedException
+     */
+    #[DataProvider('headerNameProvider')]
+    public function testAssertValidName(string $name, string|null $expectedException): void
     {
-        $this->expectException(HttpHeaderInvalidNameException::class);
+        if ($expectedException !== null) {
+            $this->expectException($expectedException);
+        } else {
+            $this->expectNotToPerformAssertions();
+        }
 
-        HeaderFactory::assertValidName(' ');
+        HeaderFactory::assertValidName($name);
     }
 
     public function testIsValidName(): void
@@ -178,15 +202,6 @@ final class HeaderFactoryTest extends TestCase
     {
         HeaderFactory::assertValidValue('valid-value');
         HeaderFactory::assertValidValue("value\r\n with continuation");
-
-        $this->expectNotToPerformAssertions();
-    }
-
-    public function testAssertValidNameDoesNotThrowForValidName(): void
-    {
-        HeaderFactory::assertValidName('Content-Type');
-        HeaderFactory::assertValidName('X-Custom-Header');
-        HeaderFactory::assertValidName("a-zA-Z0-9'`#\$%&*+.^_|~!-");
 
         $this->expectNotToPerformAssertions();
     }
