@@ -37,7 +37,7 @@ class ClientFixture extends Client
         return [];
     }
 
-    public function setex(string $key, $seconds, $value): Status
+    public function setex(string $key, int $seconds, mixed $value): Status
     {
         return new Status('OK');
     }
@@ -54,7 +54,7 @@ class ClientFixture extends Client
 
     public function set(
         string $key,
-        $value,
+        mixed $value,
         null $expireResolution = null,
         null $expireTTL = null,
         null $flag = null,

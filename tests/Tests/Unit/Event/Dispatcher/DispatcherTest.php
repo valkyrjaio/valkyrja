@@ -16,6 +16,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Collection\ListenerCollection;
+use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
@@ -34,9 +35,14 @@ final class DispatcherTest extends TestCase
 
     /**
      * Callback test.
+     *
+     * The handler receives its arguments as a mixed-valued map, so check what came
+     * through rather than declaring a type the dispatcher cannot guarantee.
      */
-    public static function dispatchCallback(DispatchCollectableEventFixture|StoppableEventFixture $event): string
+    public static function dispatchCallback(mixed $event): string
     {
+        self::assertInstanceOf(DispatchCollectableEventContract::class, $event);
+
         self::$dispatched = true;
 
         return 'test';
