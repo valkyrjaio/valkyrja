@@ -116,4 +116,11 @@ final class EnumTest extends TestCase
         self::assertTrue(Enumerable::isValidValue(ArrayableIntEnum::class, 2));
         self::assertFalse(Enumerable::isValidValue(ArrayableIntEnum::class, 3));
     }
+
+    public function testJsonSerialize(): void
+    {
+        self::assertSame('heart', Enumerable::jsonSerialize(ArrayableEnum::heart));
+        self::assertSame('bar', Enumerable::jsonSerialize(ArrayableStringEnum::foo));
+        self::assertSame(1, Enumerable::jsonSerialize(ArrayableIntEnum::first));
+    }
 }

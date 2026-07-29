@@ -110,6 +110,20 @@ class Enumerable
     }
 
     /**
+     * Get the json serializable representation of an enum case.
+     *
+     * @param UnitEnum $enum The enum case
+     */
+    public static function jsonSerialize(UnitEnum $enum): string|int
+    {
+        if ($enum instanceof BackedEnum) {
+            return $enum->value;
+        }
+
+        return $enum->name;
+    }
+
+    /**
      * Determine whether a name is valid for a given enum.
      *
      * @param class-string<UnitEnum> $enum The enum class name
