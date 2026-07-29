@@ -1,6 +1,19 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.6.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.6.1...26.x)
+
+## [v26.6.1](https://github.com/valkyrjaio/valkyrja/compare/v26.6.0...v26.6.1) - 2026-07-28
+
+* [Cli] Remove the unreachable empty allowed responses clause from Answer::isValidResponse by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/945
+* [Http] Remove the dead HHVM output handler flag fallback by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/944
+* [Dispatch] Fold the exhaustive match's last arm into default by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/943
+* [Http] Add an overridable SAPI seam to UploadedFileFactory by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/946
+* [Cli] Add an overridable exit seam to Exiter by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/947
+* [Cli] Remove the always-true allowed responses check from QuestionWriter::writeQuestion by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/948
+* [Type] Move the enum json serialization branch out of the trait by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/949
+* [GitHub] Update .github workflow refs to v26.12.1 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/950
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/942
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/951
 
 ## [v26.6.0](https://github.com/valkyrjaio/valkyrja/compare/v26.5.2...v26.6.0) - 2026-07-27
 
