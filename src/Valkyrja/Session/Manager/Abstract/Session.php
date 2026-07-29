@@ -249,8 +249,6 @@ abstract class Session implements SessionContract
 
     /**
      * Validate an id.
-     *
-     * @param non-empty-string $id The id
      */
     protected function validateId(string $id): void
     {
