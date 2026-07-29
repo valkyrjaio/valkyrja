@@ -69,6 +69,8 @@ interface ParamCollectionContract
      * accepted and every value is validated here, throwing on one that does not fit.
      *
      * @param array<array-key, mixed> $params The params
+     *
+     * @return static
      */
     public function with(array $params): static;
 
@@ -76,6 +78,8 @@ interface ParamCollectionContract
      * Get a new instance with the added params.
      *
      * @param array<array-key, mixed> $params The params
+     *
+     * @return static
      */
     public function withAdded(array $params): static;
 }
