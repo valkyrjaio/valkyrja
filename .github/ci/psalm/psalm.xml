@@ -39,5 +39,19 @@
 
         <!-- Up to the developers to ensure params for child classes match, not us -->
         <UnsafeInstantiation errorLevel="suppress" />
+
+        <!--
+            Middleware handler constructors resolve their template to the first option
+            in the union rather than the one the subclass declares via @extends. That
+            upstream bug is already noted in Cli\Middleware\Handler\Abstract\Handler
+            (https://psalm.dev/r/e76d278bf9). PHPStan checks these same call sites and
+            reports nothing, so the constructors are correct.
+        -->
+        <InvalidArgument>
+            <errorLevel type="suppress">
+                <directory name="../../../tests/Tests/Unit/Cli/Middleware/Handler" />
+                <directory name="../../../tests/Tests/Unit/Http/Middleware/Handler" />
+            </errorLevel>
+        </InvalidArgument>
     </issueHandlers>
 </psalm>
