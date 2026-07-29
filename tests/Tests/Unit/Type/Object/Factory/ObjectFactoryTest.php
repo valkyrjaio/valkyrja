@@ -46,7 +46,7 @@ final class ObjectFactoryTest extends TestCase
     {
         $value = ObjectFactory::fromString('{"foo":"bar"}');
 
-        self::assertSame((object) ['foo' => 'bar'], $value);
+        self::assertSame(['foo' => 'bar'], (array) $value);
     }
 
     /**

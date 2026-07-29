@@ -94,6 +94,6 @@ final class JsonObjectTest extends TestCase
     {
         $type = JsonObject::fromValue('{"foo":"bar"}');
 
-        self::assertSame((object) ['foo' => 'bar'], $type->asValue());
+        self::assertSame(['foo' => 'bar'], (array) $type->asValue());
     }
 }

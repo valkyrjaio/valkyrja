@@ -90,6 +90,6 @@ final class SerializedObjectTest extends TestCase
 
         $type = SerializedObject::fromValue($serialized, [stdClass::class]);
 
-        self::assertSame((object) ['foo' => 'bar'], $type->asValue());
+        self::assertSame(['foo' => 'bar'], (array) $type->asValue());
     }
 }
