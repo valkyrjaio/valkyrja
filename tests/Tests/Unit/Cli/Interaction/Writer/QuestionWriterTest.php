@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Writer;
 
 use Valkyrja\Cli\Interaction\Message\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -30,7 +31,7 @@ final class QuestionWriterTest extends TestCase
         $writer   = new QuestionWriter();
         $question = new Question(
             text: 'text',
-            callable: static fn (OutputContract $output, Answer $answer): OutputContract => $output,
+            callable: static fn (OutputContract $output, AnswerContract $answer): OutputContract => $output,
             answer: new Answer('default'),
         );
 
@@ -50,7 +51,7 @@ final class QuestionWriterTest extends TestCase
     public function testWritesQuestionAndInvokesCallableForNonInteractiveOutput(): void
     {
         $called   = false;
-        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+        $callable = static function (OutputContract $output, AnswerContract $answer) use (&$called): OutputContract {
             $called = true;
 
             return $output;
@@ -72,7 +73,7 @@ final class QuestionWriterTest extends TestCase
     public function testReAsksQuestionUntilValidResponse(): void
     {
         $called   = false;
-        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+        $callable = static function (OutputContract $output, AnswerContract $answer) use (&$called): OutputContract {
             $called = true;
 
             return $output;

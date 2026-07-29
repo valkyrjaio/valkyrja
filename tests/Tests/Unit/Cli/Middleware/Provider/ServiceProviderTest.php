@@ -29,6 +29,12 @@ use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\Provider\CliMiddlewareServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\InputReceivedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteNotMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
 
 /**
  * Test the ServiceProvider.
@@ -63,7 +69,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishInputReceivedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(inputReceivedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(inputReceivedMiddleware: [InputReceivedMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[InputReceivedHandlerContract::class];
         $callback($this->container);
@@ -76,7 +82,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([InputReceivedMiddlewareFixture::class], $middleware);
     }
 
     public function testPublishRouteDispatchedHandler(): void
@@ -94,7 +100,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteDispatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeDispatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeDispatchedMiddleware: [RouteDispatchedMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
@@ -107,7 +113,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([RouteDispatchedMiddlewareFixture::class], $middleware);
     }
 
     public function testPublishThrowableCaughtHandler(): void
@@ -125,7 +131,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(throwableCaughtMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(throwableCaughtMiddleware: [ThrowableCaughtMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
@@ -138,7 +144,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([ThrowableCaughtMiddlewareFixture::class], $middleware);
     }
 
     public function testPublishRouteMatchedHandler(): void
@@ -156,7 +162,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteMatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeMatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeMatchedMiddleware: [RouteMatchedMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
@@ -169,7 +175,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([RouteMatchedMiddlewareFixture::class], $middleware);
     }
 
     public function testPublishRouteNotMatchedHandler(): void
@@ -187,7 +193,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteNotMatchedHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeNotMatchedMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(routeNotMatchedMiddleware: [RouteNotMatchedMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
@@ -200,7 +206,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([RouteNotMatchedMiddlewareFixture::class], $middleware);
     }
 
     public function testPublishProcessExitingHandler(): void
@@ -218,7 +224,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishProcessExitingHandlerWithCustomConfig(): void
     {
-        $this->container->setSingleton(CliConfigContract::class, new CliConfig(processExitingMiddleware: ['test']));
+        $this->container->setSingleton(CliConfigContract::class, new CliConfig(processExitingMiddleware: [ProcessExitingMiddlewareFixture::class]));
 
         $callback = new CliMiddlewareServiceProvider()->publishers()[ProcessExitingHandlerContract::class];
         $callback($this->container);
@@ -231,6 +237,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $reflection = new ReflectionProperty($handler, 'middleware');
         $middleware = $reflection->getValue($handler);
 
-        self::assertSame(['test'], $middleware);
+        self::assertSame([ProcessExitingMiddlewareFixture::class], $middleware);
     }
 }

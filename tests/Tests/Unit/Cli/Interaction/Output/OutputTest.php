@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -185,7 +186,7 @@ final class OutputTest extends TestCase
     public function testQuestion(): void
     {
         $callableCalled = false;
-        $callable       = static function (OutputContract $output, Answer $answer) use (&$callableCalled): OutputContract {
+        $callable       = static function (OutputContract $output, AnswerContract $answer) use (&$callableCalled): OutputContract {
             $callableCalled = true;
 
             return $output;
@@ -244,7 +245,7 @@ final class OutputTest extends TestCase
     public function testReAskQuestionOnInvalidAnswer(): void
     {
         $callableCalled = false;
-        $callable       = static function (OutputContract $output, Answer $answer) use (&$callableCalled): OutputContract {
+        $callable       = static function (OutputContract $output, AnswerContract $answer) use (&$callableCalled): OutputContract {
             $callableCalled = true;
 
             return $output;

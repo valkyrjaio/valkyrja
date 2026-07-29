@@ -31,6 +31,13 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RequestReceivedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ResponseSentMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
 
 /**
  * Test the ServiceProvider.
@@ -66,7 +73,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRequestReceivedHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(requestReceivedMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(requestReceivedMiddleware: [RequestReceivedMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[RequestReceivedHandlerContract::class];
         $callback($this->container);
@@ -97,7 +104,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteDispatchedHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeDispatchedMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeDispatchedMiddleware: [RouteDispatchedMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteDispatchedHandlerContract::class];
         $callback($this->container);
@@ -128,7 +135,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(throwableCaughtMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(throwableCaughtMiddleware: [ThrowableCaughtMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[ThrowableCaughtHandlerContract::class];
         $callback($this->container);
@@ -159,7 +166,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteMatchedHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeMatchedMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeMatchedMiddleware: [RouteMatchedMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteMatchedHandlerContract::class];
         $callback($this->container);
@@ -190,7 +197,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouteNotMatchedHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeNotMatchedMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(routeNotMatchedMiddleware: [RouteNotMatchedMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[RouteNotMatchedHandlerContract::class];
         $callback($this->container);
@@ -221,7 +228,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishSendingResponseHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(sendingResponseMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(sendingResponseMiddleware: [SendingResponseMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[SendingResponseHandlerContract::class];
         $callback($this->container);
@@ -252,7 +259,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishResponseSentHandlerWithConfig(): void
     {
-        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(responseSentMiddleware: ['test']));
+        $this->container->setSingleton(HttpConfigContract::class, $config = new HttpConfig(responseSentMiddleware: [ResponseSentMiddlewareFixture::class]));
 
         $callback = new HttpMiddlewareServiceProvider()->publishers()[ResponseSentHandlerContract::class];
         $callback($this->container);
