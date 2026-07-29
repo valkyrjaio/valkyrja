@@ -168,11 +168,23 @@ abstract class UploadedFileFactory
      */
     public static function isValidSapiEnvironmentForUploads(): bool
     {
-        $sapi = PHP_SAPI;
+        $sapi = static::getSapi();
 
         // If the PHP_SAPI value is not set to a CLI environment
         // and not a PHP debugger environment
         return ! str_starts_with($sapi, 'cli')
             && ! str_starts_with($sapi, 'phpdbg');
+    }
+
+    /**
+     * Get the SAPI name the current process is running under.
+     *
+     * A seam: PHP_SAPI is fixed for the lifetime of the process, so a test can
+     * only reach the non-CLI arms of isValidSapiEnvironmentForUploads() by
+     * overriding this.
+     */
+    protected static function getSapi(): string
+    {
+        return PHP_SAPI;
     }
 }
