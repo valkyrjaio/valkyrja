@@ -47,7 +47,21 @@ final class ProvidersAwareTest extends TestCase
         // Registering the same provider again just overwrites the callbacks
         $providersAware->register(new ProviderFixture());
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(ProviderFixture::$publishCalled);
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
         self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
@@ -56,6 +70,13 @@ final class ProvidersAwareTest extends TestCase
         $providersAware->publish(ProvidedFixture::class);
 
         self::assertTrue(ProviderFixture::$publishCalled);
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
         self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
@@ -63,6 +84,13 @@ final class ProvidersAwareTest extends TestCase
 
         $providersAware->publish(ProvidedSecondaryFixture::class);
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertTrue(ProviderFixture::$publishCalled);
         self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 
@@ -91,6 +119,13 @@ final class ProvidersAwareTest extends TestCase
 
         $providersAware->publish(ProvidedSecondaryFixture::class);
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertTrue(ProviderFixture::$publishCalled);
         self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 

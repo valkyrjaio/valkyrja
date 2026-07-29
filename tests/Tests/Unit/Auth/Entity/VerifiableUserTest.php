@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Entity;
 
+use ReflectionProperty;
 use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Entity\VerifiableUser;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -49,9 +50,12 @@ final class VerifiableUserTest extends TestCase
         $user           = new VerifiableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        $user->verified = true;
+        // A property declaration has no behavior to exercise; assert the shape the
+        // test name claims instead of reading back what was just assigned.
+        $property = new ReflectionProperty(VerifiableUser::class, 'verified');
 
-        self::assertTrue($user->verified);
+        self::assertTrue($property->isPublic());
+        self::assertSame('bool', (string) $property->getType());
     }
 
     public function testEmailField(): void
@@ -59,9 +63,12 @@ final class VerifiableUserTest extends TestCase
         $user           = new VerifiableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        $user->email    = self::EMAIL;
+        // A property declaration has no behavior to exercise; assert the shape the
+        // test name claims instead of reading back what was just assigned.
+        $property = new ReflectionProperty(VerifiableUser::class, 'email');
 
-        self::assertSame(self::EMAIL, $user->email);
+        self::assertTrue($property->isPublic());
+        self::assertSame('string', (string) $property->getType());
     }
 
     public function testInheritsUserMethods(): void

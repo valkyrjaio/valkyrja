@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Entity;
 
+use ReflectionProperty;
 use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Entity\LockableUser;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -54,11 +55,12 @@ final class LockableUserTest extends TestCase
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
 
-        $user->login_attempts = 1;
-        self::assertSame(1, $user->login_attempts);
+        // A property declaration has no behavior to exercise; assert the shape the
+        // test name claims instead of reading back what was just assigned.
+        $property = new ReflectionProperty(LockableUser::class, 'login_attempts');
 
-        $user->login_attempts = 2;
-        self::assertSame(2, $user->login_attempts);
+        self::assertTrue($property->isPublic());
+        self::assertSame('int', (string) $property->getType());
     }
 
     public function testLockedFieldDefaultsToFalse(): void
@@ -75,9 +77,12 @@ final class LockableUserTest extends TestCase
         $user           = new LockableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        $user->locked   = true;
+        // A property declaration has no behavior to exercise; assert the shape the
+        // test name claims instead of reading back what was just assigned.
+        $property = new ReflectionProperty(LockableUser::class, 'locked');
 
-        self::assertTrue($user->locked);
+        self::assertTrue($property->isPublic());
+        self::assertSame('bool', (string) $property->getType());
     }
 
     public function testInheritsUserMethods(): void

@@ -85,6 +85,13 @@ final class PhpSessionTest extends TestCase
 
         $session->start();
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertSame(1, $session->sessionStartCount);
     }
 

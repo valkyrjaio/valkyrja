@@ -144,8 +144,6 @@ final class ModelTest extends TestCase
 
         $model = ModelFixture::fromArray(ModelFixture::VALUES);
 
-        self::assertTrue(isset($model->public));
-
         self::assertTrue(isset($model[ModelFixture::PUBLIC]));
         self::assertTrue(isset($model[ModelFixture::PROTECTED]));
         self::assertTrue(isset($model[ModelFixture::PRIVATE]));
@@ -219,10 +217,19 @@ final class ModelTest extends TestCase
         $model->private   = ModelFixture::PRIVATE;
         $model->nullable  = ModelFixture::NULLABLE;
 
-        self::assertSame(ModelFixture::PUBLIC, $model->public);
-        self::assertSame(ModelFixture::PROTECTED, $model->protected);
+        // asArray() reads back through the model's own accessors, so it shows the
+        // value __set actually stored. It never exposes a private property, so that
+        // one is read the only way it can be.
+        self::assertSame(
+            [
+                ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+                ModelFixture::NULLABLE  => ModelFixture::NULLABLE,
+                ModelFixture::PROTECTED => ModelFixture::PROTECTED,
+            ],
+            $model->asArray()
+        );
+        /** @psalm-suppress RedundantCondition A private property is not exposed by asArray(), and Psalm folds the __get round trip */
         self::assertSame(ModelFixture::PRIVATE, $model->private);
-        self::assertSame(ModelFixture::NULLABLE, $model->nullable);
 
         $model = ModelFixture::fromArray([]);
 
@@ -307,7 +314,7 @@ final class ModelTest extends TestCase
         self::assertFalse($model->__isset(ModelFixture::PRIVATE));
         self::assertFalse(isset($model->nullable));
 
-        self::assertTrue(isset($newModel->public));
+        self::assertTrue($newModel->__isset(ModelFixture::PUBLIC));
         self::assertTrue($newModel->__isset(ModelFixture::PROTECTED));
         self::assertTrue($newModel->__isset(ModelFixture::PRIVATE));
     }

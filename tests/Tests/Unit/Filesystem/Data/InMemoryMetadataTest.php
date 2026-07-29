@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Data;
 
+use ReflectionProperty;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -64,14 +65,21 @@ final class InMemoryMetadataTest extends TestCase
 
     public function testPropertiesAreMutable(): void
     {
-        $metadata = new InMemoryMetadata();
+        // Assigning a public property and reading it back only exercises PHP. What
+        // this pins is the design decision: these stay mutable value holders.
+        $property = new ReflectionProperty(InMemoryMetadata::class, 'mimetype');
 
-        $metadata->mimetype   = 'image/png';
-        $metadata->size       = 2048;
-        $metadata->visibility = Visibility::PUBLIC;
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
 
-        self::assertSame('image/png', $metadata->mimetype);
-        self::assertSame(2048, $metadata->size);
-        self::assertSame(Visibility::PUBLIC, $metadata->visibility);
+        $property = new ReflectionProperty(InMemoryMetadata::class, 'size');
+
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
+
+        $property = new ReflectionProperty(InMemoryMetadata::class, 'visibility');
+
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
     }
 }

@@ -254,6 +254,13 @@ final class StreamFactoryTest extends TestCase
     {
         $resource = self::openStream('php://temp', 'w+');
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * The guard is being called with a value already known to satisfy it,
+         * which is the case under test: it must accept a valid resource
+         * without throwing.
+         */
         StreamFactory::validateStream($resource);
 
         $this->expectNotToPerformAssertions();

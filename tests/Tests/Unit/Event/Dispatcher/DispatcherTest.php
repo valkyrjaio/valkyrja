@@ -91,6 +91,13 @@ final class DispatcherTest extends TestCase
         /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchById($eventId);
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertTrue(self::$dispatched);
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatch2->getDispatches());
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatchById2->getDispatches());

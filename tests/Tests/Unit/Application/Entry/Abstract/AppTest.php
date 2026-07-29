@@ -142,6 +142,13 @@ final class AppTest extends TestCase
 
         AppExceptionHandlerFixture::start(new Config(debugMode: false));
 
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(AppExceptionHandlerFixture::$called);
 
         AppExceptionHandlerFixture::$called = false;

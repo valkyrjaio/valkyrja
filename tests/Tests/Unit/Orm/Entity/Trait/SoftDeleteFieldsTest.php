@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Entity\Trait;
 
+use ReflectionProperty;
 use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -32,8 +33,11 @@ final class SoftDeleteFieldsTest extends TestCase
             use SoftDeleteFields;
         };
 
-        $class->deleted_at = '01-26-2026 12:00:00 UTC';
+        // A property declaration has no behavior to exercise; assert the shape the
+        // test name claims instead of reading back what was just assigned.
+        $property = new ReflectionProperty($class::class, 'deleted_at');
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->deleted_at);
+        self::assertTrue($property->isPublic());
+        self::assertSame('?string', (string) $property->getType());
     }
 }

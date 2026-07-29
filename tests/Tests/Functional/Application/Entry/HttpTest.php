@@ -92,9 +92,23 @@ final class HttpTest extends TestCase
         self::assertTrue(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
         HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
 
@@ -118,6 +132,13 @@ final class HttpTest extends TestCase
         self::$runCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode off we expect the component publish method to NOT bypass
@@ -143,6 +164,13 @@ final class HttpTest extends TestCase
         Http::run(config: $config, env: $env);
         self::cleanOutputBuffer();
 
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
 
@@ -150,9 +178,23 @@ final class HttpTest extends TestCase
         self::assertTrue(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
         HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /**
+         * @psalm-suppress RedundantCondition
+         *
+         * Psalm follows the fixture flag through the call chain and reads it
+         * as already known. The assertion is what proves the framework itself
+         * set it at runtime.
+         */
         self::assertFalse(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
     }

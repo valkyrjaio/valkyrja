@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Data;
 
+use ReflectionProperty;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -35,12 +36,16 @@ final class HostPortAccumulatorTest extends TestCase
 
     public function testPropertiesAreMutable(): void
     {
-        $accumulator = new HostPortAccumulator();
+        // Assigning a public property and reading it back only exercises PHP. What
+        // this pins is the design decision: these stay mutable value holders.
+        $property = new ReflectionProperty(HostPortAccumulator::class, 'host');
 
-        $accumulator->host = 'localhost';
-        $accumulator->port = 443;
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
 
-        self::assertSame('localhost', $accumulator->host);
-        self::assertSame(443, $accumulator->port);
+        $property = new ReflectionProperty(HostPortAccumulator::class, 'port');
+
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
     }
 }

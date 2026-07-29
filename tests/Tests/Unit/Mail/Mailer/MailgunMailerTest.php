@@ -103,6 +103,15 @@ final class MailgunMailerTest extends TestCase
             ->with(
                 self::callback(
                     static function (string $param) use ($body, $plainBody, &$count): bool {
+                        /**
+                         * @psalm-suppress RedundantCondition
+                         *
+                         * Psalm does not model PHPUnit invoking this callback
+                         * more than once, so it narrows the by-reference
+                         * counter to the value it was initialized with. The
+                         * branch is what tells the first invocation from the
+                         * second at runtime.
+                         */
                         if ($count === 0) {
                             $count++;
 
