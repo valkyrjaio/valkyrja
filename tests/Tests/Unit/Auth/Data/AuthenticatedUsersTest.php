@@ -156,7 +156,7 @@ final class AuthenticatedUsersTest extends TestCase
         $this->expectException(AuthNoCurrentUserException::class);
         $this->expectExceptionMessage('No current user');
 
-        self::assertNull($users->getCurrent());
+        $users->getCurrent();
     }
 
     public function testRemoveImpersonatedUser(): void
@@ -173,7 +173,7 @@ final class AuthenticatedUsersTest extends TestCase
         $this->expectException(AuthNoImpersonatedUserException::class);
         $this->expectExceptionMessage('No impersonated user');
 
-        self::assertNull($users->getImpersonated());
+        $users->getImpersonated();
     }
 
     public function testIsUserAuthenticatedWithCurrentId(): void

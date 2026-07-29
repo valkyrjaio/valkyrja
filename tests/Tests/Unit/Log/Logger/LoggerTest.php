@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Log\Logger;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Throwable\Exception\LogInvalidLogLevelException;
@@ -19,25 +20,30 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class LoggerTest extends TestCase
 {
-    public function testLogWithInvalidLevelThrowsException(): void
+    /**
+     * The PSR-3 signature leaves the level untyped, so anything can reach the guard.
+     *
+     * @return array<string, array{mixed}>
+     */
+    public static function invalidLogLevelProvider(): array
+    {
+        return [
+            'unknown string' => ['invalid'],
+            'level name'     => ['debug'],
+            'int'            => [1],
+            'null'           => [null],
+        ];
+    }
+
+    #[DataProvider('invalidLogLevelProvider')]
+    public function testLogWithInvalidLevelThrowsException(mixed $level): void
     {
         $this->expectException(LogInvalidLogLevelException::class);
         $this->expectExceptionMessage('Invalid log level passed');
 
         $logger = new NullLogger();
 
-        // Pass a string instead of LogLevel enum
-        $logger->log('invalid', 'Test message');
-    }
-
-    public function testLogWithStringLevelThrowsException(): void
-    {
-        $this->expectException(LogInvalidLogLevelException::class);
-
-        $logger = new NullLogger();
-
-        // Pass the string value instead of the enum
-        $logger->log('debug', 'Test message');
+        $logger->log($level, 'Test message');
     }
 
     public function testLogRoutesToCorrectMethod(): void

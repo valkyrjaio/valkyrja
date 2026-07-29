@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Uuid\Enum;
 
-use Error;
+use ReflectionEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Uuid\Enum\Version;
 
@@ -34,11 +34,8 @@ final class VersionTest extends TestCase
 
     public function testV2(): void
     {
-        $this->expectException(Error::class);
-        $this->expectExceptionMessage('Undefined constant ' . Version::class . '::V2');
-
         // Ensure we do not define V2
-        Version::V2;
+        self::assertFalse(new ReflectionEnum(Version::class)->hasCase('V2'));
     }
 
     public function testV3(): void

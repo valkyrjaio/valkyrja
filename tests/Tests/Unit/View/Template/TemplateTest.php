@@ -478,6 +478,8 @@ final class TemplateTest extends TestCase
                     }
 
                     if ($path === 'layouts/first') {
+                        self::assertInstanceOf(Template::class, $template);
+
                         $template->setLayout('layouts/final');
 
                         return $firstLayoutContent;

@@ -86,7 +86,7 @@ final class IdTest extends TestCase
         // The new value
         $newValue = 2;
 
-        $modified = $type->modify(static fn (int $subject): int => $newValue);
+        $modified = $type->modify(static fn (int|string $subject): int => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::INT_VALUE, $type->asValue());
@@ -100,7 +100,7 @@ final class IdTest extends TestCase
         // The new value
         $newValue = 'id2';
 
-        $modified = $type->modify(static fn (string $subject): string => $newValue);
+        $modified = $type->modify(static fn (int|string $subject): string => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::STRING_VALUE, $type->asValue());
