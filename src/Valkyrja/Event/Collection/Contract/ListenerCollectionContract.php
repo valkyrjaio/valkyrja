@@ -62,7 +62,7 @@ interface ListenerCollectionContract extends ListenerProviderInterface
     /**
      * Determine if listeners exist for a given event id.
      *
-     * @param class-string $eventId The event class name
+     * @param string $eventId The event class name
      */
     public function hasListenersForEventById(string $eventId): bool;
 
@@ -77,7 +77,7 @@ interface ListenerCollectionContract extends ListenerProviderInterface
     /**
      * Get all listeners for a given event id.
      *
-     * @param class-string $eventId The event class name
+     * @param string $eventId The event class name
      *
      * @return ListenerContract[]
      */
@@ -103,7 +103,7 @@ interface ListenerCollectionContract extends ListenerProviderInterface
     /**
      * Remove all listeners for a given event id.
      *
-     * @param class-string $eventId The event class name
+     * @param string $eventId The event class name
      */
     public function removeListenersForEventById(string $eventId): void;
 

@@ -65,14 +65,17 @@ interface ParamCollectionContract
     /**
      * Get a new instance with the specified params.
      *
-     * @param array<K, T> $params The params
+     * Params usually arrive unvalidated -- straight off a request -- so any array is
+     * accepted and every value is validated here, throwing on one that does not fit.
+     *
+     * @param array<array-key, mixed> $params The params
      */
     public function with(array $params): static;
 
     /**
      * Get a new instance with the added params.
      *
-     * @param array<K, T> $params The params
+     * @param array<array-key, mixed> $params The params
      */
     public function withAdded(array $params): static;
 }
