@@ -21,6 +21,7 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullManagerTest extends TestCase
@@ -40,7 +41,7 @@ final class NullManagerTest extends TestCase
 
     public function testCreateRepositoryReturnsRepository(): void
     {
-        $repository = $this->manager->createRepository('SomeEntity');
+        $repository = $this->manager->createRepository(EntityIntIdFixture::class);
 
         self::assertInstanceOf(RepositoryContract::class, $repository);
         self::assertInstanceOf(Repository::class, $repository);

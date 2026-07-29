@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -22,7 +23,7 @@ final class RouteHandlerTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = static fn () => null;
+        $value = RouteHandlerFixture::handle(...);
 
         $attribute = new RouteHandler($value);
 

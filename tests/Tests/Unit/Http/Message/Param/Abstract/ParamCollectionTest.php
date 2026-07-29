@@ -207,14 +207,14 @@ final class ParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->with(['invalid' => new stdClass()]);
+        $this->paramData->with(self::invalidInput(['invalid' => new stdClass()]));
     }
 
     public function testWithParamsThrowsForArrayParam(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->with(['invalid' => ['nested' => 'array']]);
+        $this->paramData->with(self::invalidInput(['invalid' => ['nested' => 'array']]));
     }
 
     public function testFromArray(): void

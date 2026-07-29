@@ -152,7 +152,7 @@ final class ServerParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paramData->with(['invalid' => new stdClass()]);
+        $this->paramData->with(self::invalidInput(['invalid' => new stdClass()]));
     }
 
     public function testFromArray(): void
