@@ -47,7 +47,7 @@ final class OrkaRendererTest extends TestCase
         $viewsDir = Directory::storagePath('views');
 
         if (is_dir($viewsDir)) {
-            $files = scandir($viewsDir);
+            $files = scandir($viewsDir) ?: [];
 
             foreach ($files as $file) {
                 if ($file === '.gitignore') {

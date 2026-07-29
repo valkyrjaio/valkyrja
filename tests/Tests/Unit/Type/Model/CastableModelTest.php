@@ -529,6 +529,7 @@ final class CastableModelTest extends TestCase
     public function testEnumCast(): void
     {
         $value   = EnumFixture::club;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
@@ -559,6 +560,7 @@ final class CastableModelTest extends TestCase
     public function testStringEnumCast(): void
     {
         $value   = StringEnum::foo;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
@@ -589,6 +591,7 @@ final class CastableModelTest extends TestCase
     public function testIntEnumCast(): void
     {
         $value   = IntEnum::first;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum

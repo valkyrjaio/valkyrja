@@ -54,6 +54,7 @@ final class LogMessengerTest extends TestCase
             ->expects($this->exactly(7))
             ->method('info')
             ->willReturnCallback(static function (string $logMessage) use ($from, $to, $text): void {
+                /** @var int $callIndex */
                 static $callIndex = 0;
 
                 $expectedMessages = [

@@ -23,41 +23,38 @@ trait PrivatePropertyTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(): mixed>
      */
     protected function internalGetCallables(): array
     {
-        /** @var array<non-empty-string, callable(): mixed> $callables */
-        $callables = [
+        return [
             'private' => [$this, 'getPrivate'],
         ];
-
-        return $callables;
     }
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(mixed): void>
      */
     protected function internalSetCallables(): array
     {
-        /** @var array<non-empty-string, callable(mixed): void> $callables */
-        $callables = [
+        return [
             'private' => [$this, 'setPrivate'],
         ];
-
-        return $callables;
     }
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(): bool>
      */
     protected function internalIssetCallables(): array
     {
-        /** @var array<non-empty-string, callable(): bool> $callables */
-        $callables = [
+        return [
             'private' => [$this, 'issetPrivate'],
         ];
-
-        return $callables;
     }
 
     protected function getPrivate(): string
