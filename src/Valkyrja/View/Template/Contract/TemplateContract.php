@@ -69,7 +69,8 @@ interface TemplateContract extends Stringable
     /**
      * Set the layout for the view template.
      *
-     * @param non-empty-string $layout [optional] The layout
+     * An empty layout is the same "no layout" sentinel withoutLayout() sets, so it
+     * is accepted here too.
      */
     public function setLayout(string $layout): static;
 
