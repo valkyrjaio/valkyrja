@@ -20,6 +20,7 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
  */
 final class StoppableEventFixture implements DispatchCollectableEventContract, StoppableEventInterface
 {
+    /** @var array<int, mixed> */
     private array $dispatches = [];
 
     public function addDispatch(mixed $dispatch): void

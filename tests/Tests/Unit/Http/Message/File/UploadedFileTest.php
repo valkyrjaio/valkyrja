@@ -35,6 +35,9 @@ use function unlink;
 
 final class UploadedFileTest extends TestCase
 {
+    /**
+     * @return array<int, array{UploadError}>
+     */
     public static function invalidUploadErrorsProvider(): array
     {
         return [

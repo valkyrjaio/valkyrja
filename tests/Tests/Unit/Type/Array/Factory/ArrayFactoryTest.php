@@ -23,7 +23,7 @@ use function PHPUnit\Framework\assertSame;
 
 final class ArrayFactoryTest extends TestCase
 {
-    /** @var array[] */
+    /** @var array<string, array<string, array<string, string>>|string> */
     protected const array VALUE = [
         'one'      => [
             'two' => [

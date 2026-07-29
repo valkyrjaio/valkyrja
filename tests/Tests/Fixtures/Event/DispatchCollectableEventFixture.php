@@ -19,6 +19,7 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
  */
 final class DispatchCollectableEventFixture implements DispatchCollectableEventContract
 {
+    /** @var array<int, mixed> */
     private array $dispatches = [];
 
     public function addDispatch(mixed $dispatch): void

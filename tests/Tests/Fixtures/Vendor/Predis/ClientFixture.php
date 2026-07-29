@@ -27,6 +27,11 @@ class ClientFixture extends Client
         return 'test';
     }
 
+    /**
+     * @param string[]|string $keyOrKeys
+     *
+     * @return array<int, string|null>
+     */
     public function mget(array|string $keyOrKeys, string ...$keys): array
     {
         return [];
@@ -58,6 +63,9 @@ class ClientFixture extends Client
         return new Status('OK');
     }
 
+    /**
+     * @param string[]|string $keyOrKeys
+     */
     public function del(array|string $keyOrKeys, string ...$keys): int
     {
         return 1;

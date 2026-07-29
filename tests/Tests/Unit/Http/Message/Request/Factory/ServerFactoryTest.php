@@ -61,6 +61,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request\Factory
 namespace {
     use Valkyrja\Tests\Unit\Http\Message\Request\Factory\ServerFactoryTest;
 
+    /**
+     * @return array<string, string>
+     */
     function apache_request_headers(): array
     {
         if (ServerFactoryTest::$defaultAuthorizationTest) {

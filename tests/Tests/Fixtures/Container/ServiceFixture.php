@@ -24,6 +24,9 @@ final class ServiceFixture
     ) {
     }
 
+    /**
+     * @param array<array-key, mixed> $arguments [optional] The arguments
+     */
     public static function make(ContainerContract $container, array $arguments = []): static
     {
         return new self($container);

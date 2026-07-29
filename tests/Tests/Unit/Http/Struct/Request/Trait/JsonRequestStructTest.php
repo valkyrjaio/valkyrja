@@ -60,6 +60,9 @@ final class JsonRequestStructTest extends TestCase
         JsonRequestStructEnum::getDataFromRequest(new ServerRequest());
     }
 
+    /**
+     * @param array<array-key, mixed> $json
+     */
     private function request(array $json): JsonServerRequest
     {
         return new JsonServerRequest(

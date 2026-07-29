@@ -23,6 +23,7 @@ final class ProvidersAwareFixture
 {
     use ProvidersAware;
 
+    /** @var array<string, mixed> */
     private array $objects = [];
 
     public function __get(string $name)

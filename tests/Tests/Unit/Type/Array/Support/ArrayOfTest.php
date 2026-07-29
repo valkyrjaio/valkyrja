@@ -225,6 +225,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of strings.
+     *
+     * @return string[]
      */
     protected function getArrayOfStrings(): array
     {
@@ -233,6 +235,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of integers.
+     *
+     * @return int[]
      */
     protected function getArrayOfInts(): array
     {
@@ -241,6 +245,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of floats.
+     *
+     * @return float[]
      */
     protected function getArrayOfFloats(): array
     {
@@ -249,6 +255,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of booleans.
+     *
+     * @return bool[]
      */
     protected function getArrayOfBooleans(): array
     {
@@ -257,6 +265,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of true.
+     *
+     * @return true[]
      */
     protected function getArrayOfTrue(): array
     {
@@ -265,6 +275,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of false.
+     *
+     * @return false[]
      */
     protected function getArrayOfFalse(): array
     {
@@ -273,6 +285,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of null.
+     *
+     * @return null[]
      */
     protected function getArrayOfNull(): array
     {
@@ -281,6 +295,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of arrays.
+     *
+     * @return array<int, array<array-key, mixed>>
      */
     protected function getArrayOfArrays(): array
     {
@@ -289,6 +305,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of objects.
+     *
+     * @return object[]
      */
     protected function getArrayOfObjects(): array
     {
@@ -304,6 +322,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of enums.
+     *
+     * @return EnumFixture[]
      */
     protected function getArrayOfEnums(): array
     {
@@ -316,6 +336,8 @@ final class ArrayOfTest extends TestCase
 
     /**
      * Get an array of backed enums.
+     *
+     * @return array<int, IntEnum|StringEnum>
      */
     protected function getArrayOfBackedEnums(): array
     {

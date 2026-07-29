@@ -36,14 +36,14 @@ final class CollectionTest extends TestCase
     /**
      * The value to test with.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $value = ['foo' => 'bar'];
 
     /**
      * The value to test with.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $valueAlt = ['bar' => 'foo'];
 

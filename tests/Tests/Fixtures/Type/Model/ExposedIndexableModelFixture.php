@@ -43,6 +43,8 @@ final class ExposedIndexableModelFixture extends Model implements ExposableIndex
 
     /**
      * @inheritDoc
+     *
+     * @return string[]
      */
     public static function getExposable(): array
     {
