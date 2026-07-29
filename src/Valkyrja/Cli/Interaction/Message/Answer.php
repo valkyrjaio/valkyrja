@@ -226,8 +226,7 @@ class Answer extends Message implements AnswerContract
         $validationCallable = $this->validationCallable;
         $userResponse       = $this->userResponse;
 
-        return ($this->allowedResponses === [] && $validationCallable === null)
-            || in_array($userResponse, $this->allowedResponses, true)
+        return in_array($userResponse, $this->allowedResponses, true)
             || (
                 $validationCallable !== null
                 && $validationCallable($userResponse)

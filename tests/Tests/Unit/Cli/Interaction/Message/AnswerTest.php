@@ -175,6 +175,24 @@ final class AnswerTest extends TestCase
     }
 
     /**
+     * The allowed responses are never empty: the default response is always added to them, so an
+     * Answer given neither an allowed-response list nor a validation callable accepts only the
+     * default response.
+     */
+    public function testOnlyDefaultResponseIsValidWithoutAllowedResponsesOrCallable(): void
+    {
+        $message = new Answer(defaultResponse: 'yes');
+
+        self::assertSame(['yes'], $message->getAllowedResponses());
+        self::assertFalse($message->hasValidationCallable());
+        self::assertTrue($message->isValidResponse());
+        self::assertFalse($message->withUserResponse('no')->isValidResponse());
+
+        // Emptying the allowed responses is not possible; the default response is re-added.
+        self::assertSame(['yes'], $message->withAllowedResponses()->getAllowedResponses());
+    }
+
+    /**
      * With both an allowed-response list and a validation callable, a response outside the
      * list is still valid when the callable accepts it.
      */
