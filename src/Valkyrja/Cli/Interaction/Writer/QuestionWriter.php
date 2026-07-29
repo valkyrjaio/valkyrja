@@ -112,12 +112,12 @@ class QuestionWriter implements WriterContract
 
         $validResponses = $answer->getAllowedResponses();
 
-        if ($validResponses !== []) {
-            // (`valid` or `also valid` or `another valid value`)
-            $output = $output->writeMessage(new Message(' ('));
-            $output = $output->writeMessage(new Message(implode(' or ', array_map(static fn (string $value) => "`$value`", $validResponses))));
-            $output = $output->writeMessage(new Message(')'));
-        }
+        // An answer always carries at least its default response, so there is always at least one
+        // valid response to render.
+        // (`valid` or `also valid` or `another valid value`)
+        $output = $output->writeMessage(new Message(' ('));
+        $output = $output->writeMessage(new Message(implode(' or ', array_map(static fn (string $value) => "`$value`", $validResponses))));
+        $output = $output->writeMessage(new Message(')'));
 
         // [default: "defaultResponse"]
         $output = $output->writeMessage(new Message(' [default: "'));
