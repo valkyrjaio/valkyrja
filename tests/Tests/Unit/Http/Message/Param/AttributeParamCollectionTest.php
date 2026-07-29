@@ -150,7 +150,7 @@ final class AttributeParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->attributes->with(self::invalidInput(['invalid' => new stdClass()]));
+        $this->attributes->with(['invalid' => new stdClass()]);
     }
 
     public function testFromArray(): void
