@@ -503,13 +503,13 @@ final class CollectorTest extends TestCase
     /**
      * Test values.
      *
-     * @param int                        $value1     The value in the first attribute
-     * @param int                        $value2     The value in the second attribute
-     * @param int                        $value3     The first value in the third attribute
-     * @param string                     $value4     The second value in the third attribute
-     * @param AttributeFixture           $attribute1 The first attribute
-     * @param AttributeFixture           $attribute2 The second attribute
-     * @param AttributeClassChildFixture $attribute3 The third attribute
+     * @param int              $value1     The value in the first attribute
+     * @param int              $value2     The value in the second attribute
+     * @param int              $value3     The first value in the third attribute
+     * @param string           $value4     The second value in the third attribute
+     * @param AttributeFixture $attribute1 The first attribute
+     * @param AttributeFixture $attribute2 The second attribute
+     * @param AttributeFixture $attribute3 The third attribute, a child attribute
      */
     protected function valueTests(
         int $value1,
@@ -518,11 +518,14 @@ final class CollectorTest extends TestCase
         string $value4,
         AttributeFixture $attribute1,
         AttributeFixture $attribute2,
-        AttributeClassChildFixture $attribute3
+        AttributeFixture $attribute3
     ): void {
         self::assertSame($value1, $attribute1->counter);
         self::assertSame($value2, $attribute2->counter);
         self::assertSame($value3, $attribute3->counter);
+
+        // The collector hands back the declared attribute type; the third is the child
+        self::assertInstanceOf(AttributeClassChildFixture::class, $attribute3);
         self::assertSame($value4, $attribute3->test);
     }
 }
