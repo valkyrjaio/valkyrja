@@ -32,7 +32,6 @@ use Valkyrja\Tests\Fixtures\Http\Server\LitespeedRequestHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Server\SessionCloseRequestHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -527,6 +526,6 @@ final class RequestHandlerTest extends TestCase
 
         ob_start();
         $requestHandler->run($request);
-        ob_get_clean();
+        self::cleanOutputBuffer();
     }
 }

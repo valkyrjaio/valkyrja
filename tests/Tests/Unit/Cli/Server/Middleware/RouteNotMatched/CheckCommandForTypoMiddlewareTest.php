@@ -107,7 +107,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
 
         ob_start();
         $outputFromMiddleware = $middleware->routeNotMatched($input, $output, $handler);
-        $outputFromOutput     = ob_get_clean();
+        $outputFromOutput     = self::cleanOutputBuffer();
 
         self::assertSame($output2, $outputFromMiddleware);
         self::assertStringContainsString('Did you mean to run one of the following commands?', $outputFromOutput);
@@ -152,7 +152,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
 
         ob_start();
         $outputFromMiddleware = $middleware->routeNotMatched($input, $output, $handler);
-        $outputFromOutput     = ob_get_clean();
+        $outputFromOutput     = self::cleanOutputBuffer();
 
         self::assertSame($output, $outputFromMiddleware);
         self::assertStringContainsString('Did you mean to run one of the following commands?', $outputFromOutput);

@@ -22,7 +22,6 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -151,15 +150,15 @@ final class OutputTest extends TestCase
 
         ob_start();
         $outputWritten  = $output->writeMessages();
-        $outputContents = ob_get_clean();
+        $outputContents = self::cleanOutputBuffer();
 
         ob_start();
         $output2Written  = $output2->writeMessages();
-        $output2Contents = ob_get_clean();
+        $output2Contents = self::cleanOutputBuffer();
 
         ob_start();
         $output3Written  = $output3->writeMessages();
-        $output3Contents = ob_get_clean();
+        $output3Contents = self::cleanOutputBuffer();
 
         self::assertEmpty($outputWritten->getMessages());
         self::assertEmpty($outputWritten->getWrittenMessages());
@@ -208,7 +207,7 @@ final class OutputTest extends TestCase
 
         ob_start();
         $outputWritten  = $output->writeMessages();
-        $outputContents = ob_get_clean();
+        $outputContents = self::cleanOutputBuffer();
 
         self::assertTrue($callableCalled);
         self::assertNotEmpty($outputWritten->getWrittenMessages());
@@ -232,11 +231,11 @@ final class OutputTest extends TestCase
 
         ob_start();
         $quietSuccess->writeMessages();
-        $quietSuccessContents = ob_get_clean();
+        $quietSuccessContents = self::cleanOutputBuffer();
 
         ob_start();
         $quietFailure->writeMessages();
-        $quietFailureContents = ob_get_clean();
+        $quietFailureContents = self::cleanOutputBuffer();
 
         self::assertEmpty($quietSuccessContents);
         self::assertStringContainsString('text', (string) $quietFailureContents);

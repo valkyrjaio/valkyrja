@@ -18,7 +18,6 @@ use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -36,7 +35,7 @@ final class StreamOutputTest extends TestCase
 
         ob_start();
         $outputWritten = $output->writeMessages();
-        $contents      = ob_get_clean();
+        $contents      = self::cleanOutputBuffer();
 
         self::assertSame([$message], $outputWritten->getMessages());
         self::assertCount(1, $outputWritten->getWrittenMessages());

@@ -31,7 +31,6 @@ use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -112,8 +111,8 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config);
-        ob_get_clean();
+        Http::run(config: $config, env: $env);
+        self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
@@ -141,8 +140,8 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config);
-        ob_get_clean();
+        Http::run(config: $config, env: $env);
+        self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;

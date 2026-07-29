@@ -33,7 +33,6 @@ use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 use function restore_error_handler;
 use function restore_exception_handler;
@@ -140,8 +139,8 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config);
-        ob_get_clean();
+        Cli::run(config: $config, env: $env);
+        self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
@@ -180,8 +179,8 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config);
-        ob_get_clean();
+        Cli::run(config: $config, env: $env);
+        self::cleanOutputBuffer();
 
         restore_error_handler();
         restore_exception_handler();

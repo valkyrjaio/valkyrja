@@ -66,7 +66,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::ERROR, $outputFromRun->getExitCode());
         self::assertStringContainsString("Command `$commandName` was not found.", $obOutput);
@@ -156,7 +156,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
@@ -234,7 +234,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);

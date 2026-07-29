@@ -59,7 +59,7 @@ final class ListCommandTest extends TestCase
             outputFactory: $outputFactory
         );
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         self::assertIsString($contents);
         self::assertStringContainsString($path, $contents);
@@ -97,7 +97,7 @@ final class ListCommandTest extends TestCase
             outputFactory: $outputFactory
         );
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         $applePos = strpos((string) $contents, '/apple');
         $zebraPos = strpos((string) $contents, '/zebra');
@@ -124,7 +124,7 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         self::assertIsString($contents);
         self::assertStringContainsString('No routes were found', $contents);

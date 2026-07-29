@@ -17,6 +17,7 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\PhpUnit\Abstract\ValkyrjaTestCase;
 
 use function is_dir;
+use function ob_get_clean;
 use function scandir;
 use function unlink;
 
@@ -25,6 +26,22 @@ use function unlink;
  */
 abstract class TestCase extends ValkyrjaTestCase
 {
+    /**
+     * Get and delete the current output buffer.
+     *
+     * `ob_get_clean()` is typed `string|false` because it fails when no buffer is
+     * active; every caller here opens one first, so normalize the type away rather
+     * than have each assertion carry a `false` it can never receive.
+     */
+    protected static function cleanOutputBuffer(): string
+    {
+        $contents = ob_get_clean();
+
+        return $contents === false
+            ? ''
+            : $contents;
+    }
+
     /**
      * @inheritDoc
      */

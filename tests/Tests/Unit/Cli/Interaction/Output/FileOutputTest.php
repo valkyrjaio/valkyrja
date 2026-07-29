@@ -16,7 +16,6 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -34,7 +33,7 @@ final class FileOutputTest extends TestCase
 
         ob_start();
         $outputWritten = $output->writeMessages();
-        $contents      = ob_get_clean();
+        $contents      = self::cleanOutputBuffer();
 
         self::assertSame([$message], $outputWritten->getMessages());
         self::assertCount(1, $outputWritten->getWrittenMessages());
