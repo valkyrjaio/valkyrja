@@ -16,6 +16,7 @@ use Monolog\Logger;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Data\Contract\LogConfigContract;
 use Valkyrja\Log\Data\LogConfig;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -30,7 +31,11 @@ use Valkyrja\Tests\Fixtures\Log\Data\LogConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = LogServiceProvider::class;
 
     public function testExpectedPublishers(): void

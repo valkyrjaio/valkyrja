@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Jwt\Data\Contract\JwtConfigContract;
 use Valkyrja\Jwt\Data\Contract\JwtEdDsaConfigContract;
 use Valkyrja\Jwt\Data\Contract\JwtHsConfigContract;
@@ -35,7 +36,11 @@ use Valkyrja\Tests\Fixtures\Jwt\Data\JwtConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = JwtServiceProvider::class;
 
     public function testExpectedPublishers(): void

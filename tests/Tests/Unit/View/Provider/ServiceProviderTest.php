@@ -17,6 +17,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\DebugExtension;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Constant\TestPath;
@@ -43,7 +44,11 @@ use Valkyrja\View\Renderer\TwigRenderer;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = ViewServiceProvider::class;
 
     public function testExpectedPublishers(): void

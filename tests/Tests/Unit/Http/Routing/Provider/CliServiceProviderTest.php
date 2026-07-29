@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Provider\HttpRoutingCliServiceProvider;
 use Valkyrja\Http\Routing\Provider\HttpRoutingServiceProvider;
@@ -23,6 +24,7 @@ use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 final class CliServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
+    /** @var class-string<ServiceProviderContract> */
     protected static string $provider = HttpRoutingServiceProvider::class;
 
     public function testExpectedPublishers(): void

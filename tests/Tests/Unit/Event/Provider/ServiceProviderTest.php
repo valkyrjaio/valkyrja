@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
@@ -35,7 +36,11 @@ use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderFixture;
 #[RunTestsInSeparateProcesses]
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = EventServiceProvider::class;
 
     public function testExpectedPublishers(): void

@@ -18,6 +18,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Orm\Data\Contract\OrmConfigContract;
 use Valkyrja\Orm\Data\Contract\OrmMysqlConfigContract;
 use Valkyrja\Orm\Data\Contract\OrmPgsqlConfigContract;
@@ -45,7 +46,11 @@ use Valkyrja\Tests\Fixtures\Orm\PdoFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = OrmServiceProvider::class;
 
     /**

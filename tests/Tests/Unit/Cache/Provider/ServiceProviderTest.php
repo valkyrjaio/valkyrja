@@ -28,6 +28,7 @@ use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Provider\CacheServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Fixtures\Cache\Data\CacheConfigFixture;
@@ -37,7 +38,11 @@ use Valkyrja\Tests\Fixtures\Cache\Data\CacheConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = CacheServiceProvider::class;
 
     public function testExpectedPublishers(): void

@@ -18,6 +18,7 @@ use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Provider\CliInteractionServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Data\CliInteractionConfigFixture;
 
@@ -26,7 +27,11 @@ use Valkyrja\Tests\Fixtures\Cli\Interaction\Data\CliInteractionConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = CliInteractionServiceProvider::class;
 
     public function testExpectedPublishers(): void

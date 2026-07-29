@@ -16,6 +16,7 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Filesystem\Data\Contract\FilesystemConfigContract;
 use Valkyrja\Filesystem\Data\Contract\FilesystemFlysystemConfigContract;
 use Valkyrja\Filesystem\Data\Contract\FilesystemFlysystemLocalConfigContract;
@@ -39,7 +40,11 @@ use Valkyrja\Tests\Fixtures\Filesystem\Data\FilesystemConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = FilesystemServiceProvider::class;
 
     public function testExpectedPublishers(): void

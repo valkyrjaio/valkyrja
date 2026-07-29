@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Api\Manager\Api;
 use Valkyrja\Api\Manager\Contract\ApiContract;
 use Valkyrja\Api\Provider\ApiServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 
@@ -24,7 +25,11 @@ use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = ApiServiceProvider::class;
 
     public function testExpectedPublishers(): void

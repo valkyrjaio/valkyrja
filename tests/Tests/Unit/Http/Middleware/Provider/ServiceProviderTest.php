@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Provider;
 use ReflectionProperty;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
@@ -44,7 +45,11 @@ use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = HttpMiddlewareServiceProvider::class;
 
     public function testExpectedPublishers(): void

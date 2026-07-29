@@ -26,6 +26,7 @@ use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -36,7 +37,11 @@ use Valkyrja\Tests\Fixtures\Auth\Data\AuthConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = AuthServiceProvider::class;
 
     public function testExpectedPublishers(): void
