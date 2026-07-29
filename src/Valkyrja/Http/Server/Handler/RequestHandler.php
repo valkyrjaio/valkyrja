@@ -36,7 +36,6 @@ use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 use function count;
-use function defined;
 use function fastcgi_finish_request;
 use function function_exists;
 use function in_array;
@@ -337,8 +336,7 @@ class RequestHandler implements RequestHandlerContract
     {
         $flushOrCleanFlag = $flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE;
 
-        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
-        return defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | $flushOrCleanFlag : -1;
+        return PHP_OUTPUT_HANDLER_REMOVABLE | $flushOrCleanFlag;
     }
 
     /**
