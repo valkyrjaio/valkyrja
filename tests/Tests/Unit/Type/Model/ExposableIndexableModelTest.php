@@ -12,14 +12,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
+use ReflectionClass;
 use Valkyrja\Tests\Fixtures\Type\Model\ExposedIndexableModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\IndexableModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Model\Contract\ExposableIndexedModelContract;
 use Valkyrja\Type\Model\Contract\IndexedModelContract;
-
-use function method_exists;
 
 /**
  * Test the ExposableIndexableModel model.
@@ -28,8 +27,8 @@ final class ExposableIndexableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(ExposableIndexedModelContract::class, 'asExposedIndexedArray'));
-        self::assertTrue(method_exists(ExposableIndexedModelContract::class, 'asExposedChangedIndexedArray'));
+        self::assertTrue(new ReflectionClass(ExposableIndexedModelContract::class)->hasMethod('asExposedIndexedArray'));
+        self::assertTrue(new ReflectionClass(ExposableIndexedModelContract::class)->hasMethod('asExposedChangedIndexedArray'));
         self::isA(IndexedModelContract::class, ExposableIndexedModelContract::class);
     }
 

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Filesystem\Throwable\Contract\FilesystemThrowable;
 use Valkyrja\Filesystem\Throwable\Exception\Abstract\FilesystemInvalidArgumentException;
 use Valkyrja\Filesystem\Throwable\Exception\Abstract\FilesystemRuntimeException;
@@ -19,13 +20,11 @@ use Valkyrja\Filesystem\Throwable\Exception\FilesystemUnableToReadContentsExcept
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(FilesystemThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(FilesystemThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testUnableToReadContentsExceptionExtendsRuntimeException(): void
@@ -54,8 +53,8 @@ final class ExceptionsTest extends TestCase
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(FilesystemRuntimeException::class, FilesystemThrowable::class, true));
-        self::assertTrue(is_a(FilesystemInvalidArgumentException::class, FilesystemThrowable::class, true));
-        self::assertTrue(is_a(FilesystemUnableToReadContentsException::class, FilesystemRuntimeException::class, true));
+        self::assertTrue(new ReflectionClass(FilesystemRuntimeException::class)->isSubclassOf(FilesystemThrowable::class));
+        self::assertTrue(new ReflectionClass(FilesystemInvalidArgumentException::class)->isSubclassOf(FilesystemThrowable::class));
+        self::assertTrue(new ReflectionClass(FilesystemUnableToReadContentsException::class)->isSubclassOf(FilesystemRuntimeException::class));
     }
 }

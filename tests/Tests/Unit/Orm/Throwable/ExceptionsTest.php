@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmInvalidArgumentException;
 use Valkyrja\Orm\Throwable\Exception\Abstract\OrmRuntimeException;
@@ -24,13 +25,11 @@ use Valkyrja\Orm\Throwable\Exception\OrmWhereException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(OrmThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(OrmThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testNotFoundExceptionExtendsRuntimeException(): void
@@ -133,15 +132,15 @@ final class ExceptionsTest extends TestCase
     public function testExceptionHierarchy(): void
     {
         // RuntimeException hierarchy
-        self::assertTrue(is_a(OrmRuntimeException::class, OrmThrowable::class, true));
-        self::assertTrue(is_a(OrmNotFoundException::class, OrmRuntimeException::class, true));
-        self::assertTrue(is_a(OrmEntityNotFoundException::class, OrmNotFoundException::class, true));
-        self::assertTrue(is_a(OrmExecuteException::class, OrmRuntimeException::class, true));
-        self::assertTrue(is_a(OrmWhereException::class, OrmRuntimeException::class, true));
+        self::assertTrue(new ReflectionClass(OrmRuntimeException::class)->isSubclassOf(OrmThrowable::class));
+        self::assertTrue(new ReflectionClass(OrmNotFoundException::class)->isSubclassOf(OrmRuntimeException::class));
+        self::assertTrue(new ReflectionClass(OrmEntityNotFoundException::class)->isSubclassOf(OrmNotFoundException::class));
+        self::assertTrue(new ReflectionClass(OrmExecuteException::class)->isSubclassOf(OrmRuntimeException::class));
+        self::assertTrue(new ReflectionClass(OrmWhereException::class)->isSubclassOf(OrmRuntimeException::class));
 
         // InvalidArgumentException hierarchy
-        self::assertTrue(is_a(OrmInvalidArgumentException::class, OrmThrowable::class, true));
-        self::assertTrue(is_a(OrmInvalidEntityException::class, OrmInvalidArgumentException::class, true));
-        self::assertTrue(is_a(OrmUnregisteredEntityException::class, OrmInvalidArgumentException::class, true));
+        self::assertTrue(new ReflectionClass(OrmInvalidArgumentException::class)->isSubclassOf(OrmThrowable::class));
+        self::assertTrue(new ReflectionClass(OrmInvalidEntityException::class)->isSubclassOf(OrmInvalidArgumentException::class));
+        self::assertTrue(new ReflectionClass(OrmUnregisteredEntityException::class)->isSubclassOf(OrmInvalidArgumentException::class));
     }
 }

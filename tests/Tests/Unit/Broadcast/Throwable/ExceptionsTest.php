@@ -12,25 +12,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Broadcast\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Broadcast\Throwable\Contract\BroadcastThrowable;
 use Valkyrja\Broadcast\Throwable\Exception\Abstract\BroadcastInvalidArgumentException;
 use Valkyrja\Broadcast\Throwable\Exception\Abstract\BroadcastRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(BroadcastThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(BroadcastThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
         // Both implement Throwable
-        self::assertTrue(is_a(BroadcastRuntimeException::class, BroadcastThrowable::class, true));
-        self::assertTrue(is_a(BroadcastInvalidArgumentException::class, BroadcastThrowable::class, true));
+        self::assertTrue(new ReflectionClass(BroadcastRuntimeException::class)->isSubclassOf(BroadcastThrowable::class));
+        self::assertTrue(new ReflectionClass(BroadcastInvalidArgumentException::class)->isSubclassOf(BroadcastThrowable::class));
     }
 }

@@ -12,25 +12,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Sms\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Sms\Throwable\Contract\SmsThrowable;
 use Valkyrja\Sms\Throwable\Exception\Abstract\SmsInvalidArgumentException;
 use Valkyrja\Sms\Throwable\Exception\Abstract\SmsRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(SmsThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(SmsThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
         // Both implement Throwable
-        self::assertTrue(is_a(SmsRuntimeException::class, SmsThrowable::class, true));
-        self::assertTrue(is_a(SmsInvalidArgumentException::class, SmsThrowable::class, true));
+        self::assertTrue(new ReflectionClass(SmsRuntimeException::class)->isSubclassOf(SmsThrowable::class));
+        self::assertTrue(new ReflectionClass(SmsInvalidArgumentException::class)->isSubclassOf(SmsThrowable::class));
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
+use ReflectionClass;
 use RuntimeException;
 use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
@@ -38,7 +39,6 @@ use Valkyrja\Type\String\StringT;
 
 use function json_decode;
 use function json_encode;
-use function method_exists;
 use function serialize;
 
 use const JSON_THROW_ON_ERROR;
@@ -50,7 +50,7 @@ final class CastableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(CastableModelContract::class, 'getCastings'));
+        self::assertTrue(new ReflectionClass(CastableModelContract::class)->hasMethod('getCastings'));
         self::isA(ModelContract::class, CastableModelContract::class);
     }
 

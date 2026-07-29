@@ -16,6 +16,7 @@ use ArrayAccess;
 use Closure;
 use Error;
 use JsonException;
+use ReflectionClass;
 use TypeError;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelInvalidIssetMethodFixture;
@@ -27,7 +28,6 @@ use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_encode;
-use function method_exists;
 use function strtoupper;
 
 use const JSON_THROW_ON_ERROR;
@@ -47,21 +47,23 @@ final class ModelTest extends TestCase
 
     public function testContract(): void
     {
-        self::assertTrue(method_exists(ModelContract::class, 'fromArray'));
-        self::assertTrue(method_exists(ModelContract::class, '__get'));
-        self::assertTrue(method_exists(ModelContract::class, '__set'));
-        self::assertTrue(method_exists(ModelContract::class, '__isset'));
-        self::assertTrue(method_exists(ModelContract::class, 'hasProperty'));
-        self::assertTrue(method_exists(ModelContract::class, 'updateProperties'));
-        self::assertTrue(method_exists(ModelContract::class, 'withProperties'));
-        self::assertTrue(method_exists(ModelContract::class, 'asValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asFlatValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'asChangedArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'getOriginalPropertyValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asOriginalArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'jsonSerialize'));
-        self::assertTrue(method_exists(ModelContract::class, '__toString'));
+        $reflection = new ReflectionClass(ModelContract::class);
+
+        self::assertTrue($reflection->hasMethod('fromArray'));
+        self::assertTrue($reflection->hasMethod('__get'));
+        self::assertTrue($reflection->hasMethod('__set'));
+        self::assertTrue($reflection->hasMethod('__isset'));
+        self::assertTrue($reflection->hasMethod('hasProperty'));
+        self::assertTrue($reflection->hasMethod('updateProperties'));
+        self::assertTrue($reflection->hasMethod('withProperties'));
+        self::assertTrue($reflection->hasMethod('asValue'));
+        self::assertTrue($reflection->hasMethod('asFlatValue'));
+        self::assertTrue($reflection->hasMethod('asArray'));
+        self::assertTrue($reflection->hasMethod('asChangedArray'));
+        self::assertTrue($reflection->hasMethod('getOriginalPropertyValue'));
+        self::assertTrue($reflection->hasMethod('asOriginalArray'));
+        self::assertTrue($reflection->hasMethod('jsonSerialize'));
+        self::assertTrue($reflection->hasMethod('__toString'));
         self::isA(ArrayAccess::class, ModelContract::class);
         self::isA(TypeContract::class, ModelContract::class);
     }

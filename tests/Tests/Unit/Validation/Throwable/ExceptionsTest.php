@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Validation\Throwable;
 
+use ReflectionClass;
 use RuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
@@ -20,13 +21,11 @@ use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationInvalidArgumentEx
 use Valkyrja\Validation\Throwable\Exception\Abstract\ValidationRuntimeException;
 use Valkyrja\Validation\Throwable\Exception\ValidationRuleFailureException;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(ValidationThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(ValidationThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testValidationExceptionImplementsThrowable(): void
@@ -56,12 +55,12 @@ final class ExceptionsTest extends TestCase
     public function testExceptionHierarchy(): void
     {
         // ValidationException extends RuntimeException
-        self::assertTrue(is_a(ValidationRuleFailureException::class, ValidationRuntimeException::class, true));
+        self::assertTrue(new ReflectionClass(ValidationRuleFailureException::class)->isSubclassOf(ValidationRuntimeException::class));
 
         // Both implement Throwable
-        self::assertTrue(is_a(ValidationRuleFailureException::class, ValidationThrowable::class, true));
-        self::assertTrue(is_a(ValidationRuntimeException::class, ValidationThrowable::class, true));
-        self::assertTrue(is_a(ValidationInvalidArgumentException::class, ValidationThrowable::class, true));
+        self::assertTrue(new ReflectionClass(ValidationRuleFailureException::class)->isSubclassOf(ValidationThrowable::class));
+        self::assertTrue(new ReflectionClass(ValidationRuntimeException::class)->isSubclassOf(ValidationThrowable::class));
+        self::assertTrue(new ReflectionClass(ValidationInvalidArgumentException::class)->isSubclassOf(ValidationThrowable::class));
     }
 
     public function testExceptionWithPreviousException(): void

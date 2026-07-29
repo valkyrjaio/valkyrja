@@ -12,24 +12,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Jwt\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Jwt\Throwable\Contract\JwtThrowable;
 use Valkyrja\Jwt\Throwable\Exception\Abstract\JwtInvalidArgumentException;
 use Valkyrja\Jwt\Throwable\Exception\Abstract\JwtRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(JwtThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(JwtThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(JwtRuntimeException::class, JwtThrowable::class, true));
-        self::assertTrue(is_a(JwtInvalidArgumentException::class, JwtThrowable::class, true));
+        self::assertTrue(new ReflectionClass(JwtRuntimeException::class)->isSubclassOf(JwtThrowable::class));
+        self::assertTrue(new ReflectionClass(JwtInvalidArgumentException::class)->isSubclassOf(JwtThrowable::class));
     }
 }
