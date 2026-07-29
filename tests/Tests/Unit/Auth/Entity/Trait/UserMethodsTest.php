@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
-use Valkyrja\Auth\Entity\Trait\UserMethods;
 use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedPasswordValueException;
 use Valkyrja\Auth\Throwable\Exception\AuthUnexpectedUsernameValueException;
+use Valkyrja\Tests\Fixtures\Auth\Entity\UserMethodsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UserMethodsTest extends TestCase
@@ -60,22 +60,8 @@ final class UserMethodsTest extends TestCase
     /**
      * @param array<string, mixed> $data
      */
-    private function user(array $data = []): object
+    private function user(array $data = []): UserMethodsFixture
     {
-        return new class($data) {
-            use UserMethods;
-
-            /**
-             * @param array<string, mixed> $data
-             */
-            public function __construct(private array $data)
-            {
-            }
-
-            public function __get(string $name): mixed
-            {
-                return $this->data[$name] ?? null;
-            }
-        };
+        return new UserMethodsFixture($data);
     }
 }
