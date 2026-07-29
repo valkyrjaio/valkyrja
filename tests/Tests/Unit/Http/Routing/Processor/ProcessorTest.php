@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Processor;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
@@ -205,6 +206,7 @@ final class ProcessorTest extends TestCase
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^\/(?<value>[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
     }
 
@@ -252,6 +254,7 @@ final class ProcessorTest extends TestCase
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
         // Shouldn't change, even if it's wrong
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame($route->getRegex(), $routeAfterProcessing->getRegex());
     }
 
@@ -277,6 +280,7 @@ final class ProcessorTest extends TestCase
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^(?:\/)?(?<optional>[a-zA-Z]+)?$/', $routeAfterProcessing->getRegex());
     }
 
@@ -302,6 +306,7 @@ final class ProcessorTest extends TestCase
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^\/(?:[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
     }
 
@@ -396,6 +401,7 @@ final class ProcessorTest extends TestCase
 
         self::assertInstanceOf(DynamicRoute::class, $routeAfterProcessing);
         self::assertSame('/static/path', $routeAfterProcessing->getPath());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('', $routeAfterProcessing->getRegex());
     }
 

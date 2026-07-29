@@ -54,6 +54,7 @@ final class RepositoryTest extends TestCase
     protected EntityMetadataRegistry $registry;
 
     /** @var class-string<EntityContract> */
+    /** @var class-string<EntityIntIdFixture> */
     protected string $entityClass;
 
     #[Override]
@@ -126,7 +127,7 @@ final class RepositoryTest extends TestCase
 
         $result = $this->repository->find(1);
 
-        self::assertInstanceOf(EntityContract::class, $result);
+        self::assertInstanceOf(EntityIntIdFixture::class, $result);
         self::assertSame(1, $result->id);
     }
 
