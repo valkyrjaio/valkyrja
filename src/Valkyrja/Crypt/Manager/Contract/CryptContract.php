@@ -19,7 +19,8 @@ interface CryptContract
     /**
      * Determine if an encrypted message is valid.
      *
-     * @param non-empty-string $encrypted The encrypted message
+     * Any string may be checked, including an empty one -- answering for invalid
+     * input is the point of the method.
      */
     public function isValidEncryptedMessage(string $encrypted): bool;
 
