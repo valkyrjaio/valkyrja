@@ -45,7 +45,9 @@ interface RendererContract
     /**
      * Render a template file.
      *
-     * @param non-empty-string               $name      The file name
+     * An empty name resolves to the templates directory itself, which is then
+     * reported as a missing template rather than rejected up front.
+     *
      * @param array<non-empty-string, mixed> $variables [optional] The variables
      */
     public function renderFile(string $name, array $variables = []): string;
