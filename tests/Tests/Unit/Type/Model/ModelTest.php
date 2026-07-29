@@ -128,8 +128,6 @@ final class ModelTest extends TestCase
         $model = ModelFixture::fromArray([]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
 
         self::assertFalse(isset($model[ModelFixture::PUBLIC]));
         self::assertFalse(isset($model[ModelFixture::PROTECTED]));
@@ -146,8 +144,6 @@ final class ModelTest extends TestCase
         $model = ModelFixture::fromArray(ModelFixture::VALUES);
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
 
         self::assertTrue(isset($model[ModelFixture::PUBLIC]));
         self::assertTrue(isset($model[ModelFixture::PROTECTED]));
@@ -178,39 +174,39 @@ final class ModelTest extends TestCase
         $model = ModelFixture::fromValue([]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(ModelFixture::VALUES);
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue((object) ModelFixture::VALUES);
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(json_encode(ModelFixture::VALUES));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(ModelFixture::fromValue(ModelFixture::VALUES));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(json_encode(ModelFixture::fromValue(ModelFixture::VALUES)));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
         // Since private fields are not exposed
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
     }
 
     public function testSet(): void
@@ -271,7 +267,7 @@ final class ModelTest extends TestCase
         unset($model[ModelFixture::PUBLIC], $model[ModelFixture::PROTECTED]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
 
         $model = ModelFixture::fromArray(ModelFixture::VALUES);
 
@@ -279,7 +275,7 @@ final class ModelTest extends TestCase
         $model->offsetUnset(ModelFixture::PROTECTED);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
     }
 
     public function testUnsetPrivateErrors(): void
@@ -306,13 +302,13 @@ final class ModelTest extends TestCase
         $newModel = $model->withProperties(ModelFixture::VALUES);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
         self::assertFalse(isset($model->nullable));
 
         self::assertTrue(isset($newModel->public));
-        self::assertTrue(isset($newModel->protected));
-        self::assertTrue(isset($newModel->private));
+        self::assertTrue($newModel->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($newModel->__isset(ModelFixture::PRIVATE));
     }
 
     public function testOriginal(): void
