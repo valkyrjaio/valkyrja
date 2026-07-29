@@ -236,18 +236,18 @@ final class ServerRequestTest extends TestCase
         self::assertSame(
             array_filter(
                 $queryParams,
-                static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
+                static fn (string|int $name): bool => $name === 'test2' || $name === 'int',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getQueryParams()->getOnly('test2', 'null')
+            $request2->getQueryParams()->getOnly('test2', 'int')
         );
         self::assertSameCount(
             array_filter(
                 $queryParams,
-                static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
+                static fn (string|int $name): bool => $name !== 'test2' && $name !== 'int',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getQueryParams()->getAllExcept('test2', 'null')
+            $request2->getQueryParams()->getAllExcept('test2', 'int')
         );
 
         self::assertTrue($request2->getQueryParams()->has('test'));
@@ -395,18 +395,18 @@ final class ServerRequestTest extends TestCase
         self::assertSame(
             array_filter(
                 $bodyParams,
-                static fn (string|int $name): bool => $name === 'test2' || $name === 'null',
+                static fn (string|int $name): bool => $name === 'test2' || $name === 'int',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getParsedBody()->getOnly('test2', 'null')
+            $request2->getParsedBody()->getOnly('test2', 'int')
         );
         self::assertSameCount(
             array_filter(
                 $bodyParams,
-                static fn (string|int $name): bool => $name !== 'test2' && $name !== 'null',
+                static fn (string|int $name): bool => $name !== 'test2' && $name !== 'int',
                 ARRAY_FILTER_USE_KEY
             ),
-            $request2->getParsedBody()->getAllExcept('test2', 'null')
+            $request2->getParsedBody()->getAllExcept('test2', 'int')
         );
 
         self::assertTrue($request2->getParsedBody()->has('test'));

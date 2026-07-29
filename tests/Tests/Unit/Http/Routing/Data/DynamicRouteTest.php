@@ -209,8 +209,8 @@ final class DynamicRouteTest extends TestCase
         $name = 'route';
 
         $handler  = RouteHandlerFixture::handle(...);
-        $handler2 = static fn (): string => 'test2';
-        $handler3 = static fn (): string => 'test3';
+        $handler2 = RouteHandlerFixture::handle(...);
+        $handler3 = RouteHandlerFixture::handle(...);
 
         $route  = new DynamicRoute(
             path: $path,

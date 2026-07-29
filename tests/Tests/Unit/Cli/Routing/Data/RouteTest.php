@@ -21,7 +21,6 @@ use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidArgumentNameExcept
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidHelpTextCallableException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidOptionNameException;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingNoHelpTextException;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ProcessExitingMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteDispatchedMiddlewareChangedFixture;
@@ -290,8 +289,8 @@ final class RouteTest extends TestCase
         $name         = self::NAME;
         $description  = self::DESCRIPTION;
         $helpText     = [$this, 'getHelpText'];
-        $handler      = static fn (ContainerContract $container): string => 'pie';
-        $handler2     = static fn (ContainerContract $container): string => 'pie2';
+        $handler      = RouteHandlerFixture::handle(...);
+        $handler2     = RouteHandlerFixture::handle(...);
 
         $route  = new Route(
             name: $name,
