@@ -67,7 +67,7 @@ final class NullManagerTest extends TestCase
         // Should not throw any exception
         $this->manager->ensureTransaction();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testPrepareReturnsNullStatement(): void

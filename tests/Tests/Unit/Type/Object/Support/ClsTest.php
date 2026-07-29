@@ -33,7 +33,7 @@ final class ClsTest extends TestCase
     {
         Cls::validateInherits(self::class, TestCase::class);
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testInherits(): void
@@ -53,7 +53,7 @@ final class ClsTest extends TestCase
     {
         Cls::validateHasProperty(self::class, 'validProperty');
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testHasProperty(): void

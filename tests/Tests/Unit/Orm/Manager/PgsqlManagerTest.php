@@ -149,8 +149,6 @@ final class PgsqlManagerTest extends TestCase
             ->willReturn('1');
 
         $this->manager->lastInsertId('orders', 'order_id');
-
-        self::assertTrue(true);
     }
 
     public function testCreateRepository(): void
@@ -236,8 +234,6 @@ final class PgsqlManagerTest extends TestCase
             ->willReturn(true);
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testEnsureTransactionDoesNotStartWhenAlreadyInTransaction(): void
@@ -255,8 +251,6 @@ final class PgsqlManagerTest extends TestCase
             ->method('beginTransaction');
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testPrepare(): void

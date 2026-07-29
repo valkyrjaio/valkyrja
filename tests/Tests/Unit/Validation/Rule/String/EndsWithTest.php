@@ -104,7 +104,7 @@ final class EndsWithTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithWrongSuffix(): void

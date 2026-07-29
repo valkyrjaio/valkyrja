@@ -179,7 +179,7 @@ final class HeaderFactoryTest extends TestCase
         HeaderFactory::assertValidValue('valid-value');
         HeaderFactory::assertValidValue("value\r\n with continuation");
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testAssertValidNameDoesNotThrowForValidName(): void
@@ -188,7 +188,7 @@ final class HeaderFactoryTest extends TestCase
         HeaderFactory::assertValidName('X-Custom-Header');
         HeaderFactory::assertValidName("a-zA-Z0-9'`#\$%&*+.^_|~!-");
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testMarshalHeadersWithRedirectThatHasOriginal(): void

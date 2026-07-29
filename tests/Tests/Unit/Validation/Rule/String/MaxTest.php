@@ -83,7 +83,7 @@ final class MaxTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithInvalidLength(): void
@@ -92,7 +92,7 @@ final class MaxTest extends TestCase
 
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testCustomErrorMessage(): void

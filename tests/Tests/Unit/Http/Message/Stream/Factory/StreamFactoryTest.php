@@ -100,8 +100,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isWritable')->willReturn(true);
 
         StreamFactory::verifyWritable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifyWritableThrowsForUnwritableStream(): void
@@ -118,7 +116,7 @@ final class StreamFactoryTest extends TestCase
     {
         StreamFactory::verifyWriteResult(5);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testVerifyWriteResultThrowsForFalse(): void
@@ -134,8 +132,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isSeekable')->willReturn(true);
 
         StreamFactory::verifySeekable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifySeekableThrowsForUnseekableStream(): void
@@ -152,7 +148,7 @@ final class StreamFactoryTest extends TestCase
     {
         StreamFactory::verifySeekResult(0);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testVerifySeekResultThrowsForNonZero(): void
@@ -168,8 +164,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isReadable')->willReturn(true);
 
         StreamFactory::verifyReadable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifyReadableThrowsForUnreadableStream(): void
@@ -186,7 +180,7 @@ final class StreamFactoryTest extends TestCase
     {
         StreamFactory::verifyReadResult('data');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testVerifyReadResultThrowsForFalse(): void
@@ -200,7 +194,7 @@ final class StreamFactoryTest extends TestCase
     {
         StreamFactory::verifyTellResult(10);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testVerifyTellResultThrowsForFalse(): void
@@ -216,7 +210,7 @@ final class StreamFactoryTest extends TestCase
 
         StreamFactory::validateStream($resource);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
 
         if (is_resource($resource)) {
             fclose($resource);

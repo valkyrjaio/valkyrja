@@ -54,7 +54,7 @@ final class LoggerTest extends TestCase
         $logger->log(LogLevel::ALERT, 'Alert');
         $logger->log(LogLevel::EMERGENCY, 'Emergency');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithContext(): void
@@ -65,6 +65,6 @@ final class LoggerTest extends TestCase
         // Should work without throwing exceptions
         $logger->log(LogLevel::INFO, 'User action', $context);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

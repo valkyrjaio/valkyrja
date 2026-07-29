@@ -452,8 +452,6 @@ final class RepositoryTest extends TestCase
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Updated Entity']);
 
         $this->repository->update($entity);
-
-        self::assertTrue(true);
     }
 
     public function testUpdateWithChangedProperties(): void
@@ -504,8 +502,6 @@ final class RepositoryTest extends TestCase
         $entity->name = 'Changed Name';
 
         $this->repository->update($entity);
-
-        self::assertTrue(true);
     }
 
     public function testDeleteRemovesEntity(): void
@@ -541,8 +537,6 @@ final class RepositoryTest extends TestCase
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
 
         $this->repository->delete($entity);
-
-        self::assertTrue(true);
     }
 
     public function testForceDeleteRemovesEntity(): void

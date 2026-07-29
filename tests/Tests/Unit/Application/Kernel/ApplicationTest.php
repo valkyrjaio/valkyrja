@@ -353,6 +353,6 @@ final class ApplicationTest extends TestCase
         // No exception should be thrown
         $application->publishProviderCallbacks();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

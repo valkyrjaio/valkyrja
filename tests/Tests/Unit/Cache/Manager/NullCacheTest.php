@@ -52,7 +52,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->put('key', 'value', 10);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testPutManyDoesNothing(): void
@@ -60,7 +60,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->putMany(['key1' => 'value1', 'key2' => 'value2'], 10);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testIncrementReturnsValue(): void
@@ -80,7 +80,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->forever('key', 'value');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testForgetReturnsTrue(): void

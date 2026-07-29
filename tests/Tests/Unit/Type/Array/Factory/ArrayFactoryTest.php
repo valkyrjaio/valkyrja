@@ -146,7 +146,7 @@ final class ArrayFactoryTest extends TestCase
     {
         ArrayFactory::validateKeysAreStrings(['key' => 'a', 'key2' => 'b']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testDetermineIfKeysAreStringsWithEmptyArray(): void

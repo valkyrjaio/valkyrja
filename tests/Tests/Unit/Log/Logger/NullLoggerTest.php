@@ -39,112 +39,112 @@ final class NullLoggerTest extends TestCase
         // Should not throw any exception
         $this->logger->debug('Debug message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testInfoDoesNothing(): void
     {
         $this->logger->info('Info message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testNoticeDoesNothing(): void
     {
         $this->logger->notice('Notice message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testWarningDoesNothing(): void
     {
         $this->logger->warning('Warning message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testErrorDoesNothing(): void
     {
         $this->logger->error('Error message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testCriticalDoesNothing(): void
     {
         $this->logger->critical('Critical message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testAlertDoesNothing(): void
     {
         $this->logger->alert('Alert message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testEmergencyDoesNothing(): void
     {
         $this->logger->emergency('Emergency message', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithDebugLevel(): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Debug message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithInfoLevel(): void
     {
         $this->logger->log(LogLevel::INFO, 'Info message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithNoticeLevel(): void
     {
         $this->logger->log(LogLevel::NOTICE, 'Notice message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithWarningLevel(): void
     {
         $this->logger->log(LogLevel::WARNING, 'Warning message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithErrorLevel(): void
     {
         $this->logger->log(LogLevel::ERROR, 'Error message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithCriticalLevel(): void
     {
         $this->logger->log(LogLevel::CRITICAL, 'Critical message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithAlertLevel(): void
     {
         $this->logger->log(LogLevel::ALERT, 'Alert message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testLogWithEmergencyLevel(): void
     {
         $this->logger->log(LogLevel::EMERGENCY, 'Emergency message');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testThrowableDoesNothing(): void
@@ -153,6 +153,6 @@ final class NullLoggerTest extends TestCase
 
         $this->logger->throwable($exception, 'An error occurred', ['key' => 'value']);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

@@ -124,8 +124,6 @@ final class EntityExistsTest extends TestCase
 
         // Should not throw
         $rule->validate();
-
-        self::assertTrue(true);
     }
 
     public function testValidateThrowsWhenEntityDoesNotExist(): void

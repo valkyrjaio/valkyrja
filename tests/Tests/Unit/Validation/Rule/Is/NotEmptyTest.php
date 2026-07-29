@@ -104,7 +104,7 @@ final class NotEmptyTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithEmptyValue(): void

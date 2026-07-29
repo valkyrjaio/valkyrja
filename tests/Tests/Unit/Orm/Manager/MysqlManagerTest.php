@@ -188,8 +188,6 @@ final class MysqlManagerTest extends TestCase
             ->willReturn(true);
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testEnsureTransactionDoesNotStartWhenAlreadyInTransaction(): void
@@ -207,8 +205,6 @@ final class MysqlManagerTest extends TestCase
             ->method('beginTransaction');
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testPrepare(): void
