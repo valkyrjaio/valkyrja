@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Authenticator\Abstract;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Data\Attempt\AuthenticationAttempt;
 use Valkyrja\Auth\Data\AuthenticatedUsers;
@@ -45,6 +46,7 @@ final class AuthenticatorTest extends TestCase
     protected AuthenticatorFixture $authenticator;
     protected User $user;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->store  = $this->createMock(StoreContract::class);

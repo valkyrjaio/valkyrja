@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Manager;
 
+use Override;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,6 +40,7 @@ final class PgsqlManagerTest extends TestCase
 
     protected PgsqlManager $manager;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->pdo       = $this->createMock(PDO::class);

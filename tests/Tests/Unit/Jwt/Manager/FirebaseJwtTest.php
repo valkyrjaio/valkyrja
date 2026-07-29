@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Jwt\Manager;
 
+use Override;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
@@ -23,6 +24,7 @@ final class FirebaseJwtTest extends TestCase
 
     protected string $secretKey = 'test-secret-key-for-hs256-algorithm';
 
+    #[Override]
     protected function setUp(): void
     {
         $this->jwt = new FirebaseJwt(

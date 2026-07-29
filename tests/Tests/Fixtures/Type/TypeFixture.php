@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Type;
 
+use Override;
 use Valkyrja\Type\Abstract\Type;
 
 /**
@@ -27,11 +28,13 @@ final class TypeFixture extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return new static($value);
     }
 
+    #[Override]
     public function asFlatValue(): string|int|float|bool|null
     {
         return $this->asValue();

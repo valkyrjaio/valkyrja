@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
+use Override;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
 use Valkyrja\Http\Message\Param\ParsedBodyParamCollection;
@@ -22,6 +23,7 @@ final class ParsedBodyParamCollectionTest extends TestCase
 {
     protected ParsedBodyParamCollection $paramData;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->paramData = new ParsedBodyParamCollection(['name' => 'John', 'email' => 'john@example.com']);

@@ -17,6 +17,7 @@ use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\UnableToReadFile;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
@@ -31,6 +32,7 @@ final class FlysystemFilesystemTest extends TestCase
 
     protected FlysystemFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flysystem  = $this->createMock(FilesystemOperator::class);

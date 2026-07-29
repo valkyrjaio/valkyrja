@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cache\Tagger;
 
 use JsonException;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
@@ -25,6 +26,7 @@ final class TaggerTest extends TestCase
 {
     protected MockObject&CacheContract $cache;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cache = $this->createMock(CacheContract::class);

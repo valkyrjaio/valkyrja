@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Application\Entry\OpenSwoole;
 use OpenSwoole\Http\Request;
 use OpenSwoole\Http\Response;
 use OpenSwoole\Http\Server;
+use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp;
@@ -40,6 +41,7 @@ use function extension_loaded;
 #[RunTestsInSeparateProcesses]
 final class OpenSwooleHttpTest extends TestCase
 {
+    #[Override]
     protected function setUp(): void
     {
         if (! extension_loaded('openswoole')) {

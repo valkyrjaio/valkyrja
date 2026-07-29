@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Type\Model;
 
+use Override;
 use Valkyrja\Tests\Fixtures\Type\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ExposableIndexedModelContract;
@@ -36,6 +37,7 @@ final class ExposedIndexableModelFixture extends Model implements ExposableIndex
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getIndexes(): array
     {
         return IndexableModelFixture::getIndexes();
@@ -46,6 +48,7 @@ final class ExposedIndexableModelFixture extends Model implements ExposableIndex
      *
      * @return string[]
      */
+    #[Override]
     public static function getExposable(): array
     {
         return ExposableModelFixture::getExposable();

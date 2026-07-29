@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Collection;
 
+use Override;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Collection\Collection;
 
@@ -50,6 +51,7 @@ final class CollectionTest extends TestCase
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->class = new Collection($this->value);

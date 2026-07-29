@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Log\Logger;
 
 use Exception;
+use Override;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -23,6 +24,7 @@ final class NullLoggerTest extends TestCase
 {
     protected NullLogger $logger;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->logger = new NullLogger();

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Manager;
 
+use Override;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
@@ -29,6 +30,7 @@ final class InMemoryFilesystemTest extends TestCase
 {
     protected InMemoryFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->filesystem = new InMemoryFilesystem();
@@ -101,6 +103,7 @@ final class InMemoryFilesystemTest extends TestCase
     public function testWriteStreamThrowsExceptionOnReadFailure(): void
     {
         $filesystem = new class extends InMemoryFilesystem {
+            #[Override]
             protected function readFromResource($resource, int $length): string|false
             {
                 return false;

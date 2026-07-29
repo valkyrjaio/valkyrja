@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Event;
 
+use Override;
 use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 
 /**
@@ -25,6 +26,7 @@ final class ArgumentsCapableEventFixture implements ArgumentsCapableEventContrac
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setArguments(array $arguments): static
     {
         $this->arguments = $arguments;

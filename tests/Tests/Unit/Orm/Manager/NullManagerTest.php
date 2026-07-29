@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Manager;
 
+use Override;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
@@ -26,6 +27,7 @@ final class NullManagerTest extends TestCase
 {
     protected NullManager $manager;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->manager = new NullManager();

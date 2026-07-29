@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Mail\Mailer;
 
+use Override;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,6 +27,7 @@ final class PhpMailerTest extends TestCase
 {
     protected MockObject&PHPMailerClient $phpMailerClient;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->phpMailerClient = $this->createMock(PHPMailerClient::class);

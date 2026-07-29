@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Hasher;
 
+use Override;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -28,6 +29,7 @@ final class PhpPasswordHasherTest extends TestCase
 
     protected PhpPasswordHasher $hasher;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->hasher = new PhpPasswordHasher();

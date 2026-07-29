@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
+use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildFixture;
@@ -79,6 +80,7 @@ final class CollectorTest extends TestCase
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->attributes = new Collector();

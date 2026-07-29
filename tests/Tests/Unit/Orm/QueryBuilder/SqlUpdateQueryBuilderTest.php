@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\QueryBuilder;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\Value;
@@ -29,6 +30,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 {
     protected SqlUpdateQueryBuilder $builder;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->builder = new SqlUpdateQueryBuilder('users');

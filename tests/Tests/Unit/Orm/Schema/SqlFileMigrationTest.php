@@ -40,6 +40,7 @@ final class SqlFileMigrationTest extends TestCase
 
     protected string $rollbackSqlFile;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->orm       = $this->createMock(ManagerContract::class);

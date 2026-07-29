@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -26,6 +27,7 @@ final class ThrowableCaughtMiddlewareFixture implements ThrowableCaughtMiddlewar
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $this->updateCounter();

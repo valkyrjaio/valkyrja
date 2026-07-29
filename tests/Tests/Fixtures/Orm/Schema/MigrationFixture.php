@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Orm\Schema;
 
+use Override;
 use Valkyrja\Orm\Schema\Abstract\Migration;
 
 /**
@@ -25,6 +26,7 @@ final class MigrationFixture extends Migration
     /**
      * @inheritDoc
      */
+    #[Override]
     public function run(): void
     {
         $this->runCalled = true;
@@ -33,6 +35,7 @@ final class MigrationFixture extends Migration
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rollback(): void
     {
         $this->rollbackCalled = true;

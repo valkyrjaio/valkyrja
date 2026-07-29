@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Cookie;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
@@ -29,6 +30,7 @@ final class EncryptedCookieSessionTest extends TestCase
 
     protected EncryptedCookieSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crypt   = $this->createMock(CryptContract::class);

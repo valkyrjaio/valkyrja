@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Event;
 
+use Override;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
 /**
@@ -22,11 +23,13 @@ final class DispatchCollectableEventFixture implements DispatchCollectableEventC
     /** @var array<int, mixed> */
     private array $dispatches = [];
 
+    #[Override]
     public function addDispatch(mixed $dispatch): void
     {
         $this->dispatches[] = $dispatch;
     }
 
+    #[Override]
     public function getDispatches(): array
     {
         return $this->dispatches;

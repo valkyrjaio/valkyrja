@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Repository;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Data\DatedMetadata;
@@ -55,6 +56,7 @@ final class RepositoryTest extends TestCase
     /** @var class-string<EntityContract> */
     protected string $entityClass;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->manager             = $this->createMock(ManagerContract::class);

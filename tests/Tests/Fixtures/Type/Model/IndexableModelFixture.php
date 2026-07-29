@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Type\Model;
 
+use Override;
 use Valkyrja\Tests\Fixtures\Type\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\IndexedModelContract;
@@ -41,6 +42,7 @@ final class IndexableModelFixture extends Model implements IndexedModelContract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getIndexes(): array
     {
         return [

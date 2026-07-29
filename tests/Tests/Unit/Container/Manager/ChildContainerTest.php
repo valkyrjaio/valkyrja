@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
@@ -31,6 +32,7 @@ final class ChildContainerTest extends TestCase
     private Container $parent;
     private ChildContainer $child;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->parent = new Container();

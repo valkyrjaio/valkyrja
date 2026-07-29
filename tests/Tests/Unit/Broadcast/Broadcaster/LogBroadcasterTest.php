@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Broadcast\Broadcaster;
 
 use JsonException;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
@@ -24,6 +25,7 @@ final class LogBroadcasterTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerContract::class);

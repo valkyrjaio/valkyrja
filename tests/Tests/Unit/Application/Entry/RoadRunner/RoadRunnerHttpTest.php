@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Entry\RoadRunner;
 
+use Override;
 use Spiral\RoadRunner\Http\HttpWorker;
 use Spiral\RoadRunner\Http\Request;
 use Spiral\RoadRunner\WorkerInterface;
@@ -31,6 +32,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class RoadRunnerHttpTest extends TestCase
 {
+    #[Override]
     protected function setUp(): void
     {
         RoadRunnerHttpFixture::reset();

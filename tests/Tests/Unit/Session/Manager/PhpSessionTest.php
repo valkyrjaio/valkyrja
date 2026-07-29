@@ -42,6 +42,7 @@ final class PhpSessionTest extends TestCase
 {
     protected SessionCookieConfig $cookieConfig;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cookieConfig = new SessionCookieConfig(

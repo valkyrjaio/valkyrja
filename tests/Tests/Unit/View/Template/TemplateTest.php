@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\View\Template;
 
+use Override;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
@@ -499,6 +500,7 @@ final class TemplateTest extends TestCase
     {
         $renderer = self::createStub(RendererContract::class);
         $template = new class($renderer, 'test') extends Template {
+            #[Override]
             protected function convertEncoding(string $value): string|false
             {
                 return false;

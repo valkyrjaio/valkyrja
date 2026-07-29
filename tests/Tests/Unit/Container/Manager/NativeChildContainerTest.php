@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\NativeChildContainer;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
@@ -30,6 +31,7 @@ final class NativeChildContainerTest extends TestCase
     private Container $parent;
     private NativeChildContainer $child;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->parent = new Container();

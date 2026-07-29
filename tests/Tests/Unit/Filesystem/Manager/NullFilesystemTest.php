@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Manager;
 
+use Override;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
@@ -23,6 +24,7 @@ final class NullFilesystemTest extends TestCase
 {
     protected NullFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->filesystem = new NullFilesystem();

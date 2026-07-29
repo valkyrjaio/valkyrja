@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
@@ -35,6 +36,7 @@ abstract class HandlerTestCase extends TestCase
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->container = new Container();

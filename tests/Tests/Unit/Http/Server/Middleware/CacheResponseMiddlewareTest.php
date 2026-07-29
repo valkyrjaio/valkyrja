@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
 use JsonException;
+use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Container\Manager\Container;
@@ -50,6 +51,7 @@ final class CacheResponseMiddlewareTest extends TestCase
      */
     protected string $filePath;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->filePath = Directory::storagePath('app');

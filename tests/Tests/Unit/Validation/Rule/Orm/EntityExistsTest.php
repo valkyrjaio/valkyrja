@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Validation\Rule\Orm;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
@@ -31,6 +32,7 @@ final class EntityExistsTest extends TestCase
 
     protected MockObject&RepositoryContract $repository;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->orm        = $this->createMock(ManagerContract::class);

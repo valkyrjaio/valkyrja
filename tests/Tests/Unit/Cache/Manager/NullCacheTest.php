@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cache\Manager;
 
+use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
@@ -21,6 +22,7 @@ final class NullCacheTest extends TestCase
 {
     protected NullCache $cache;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cache = new NullCache();

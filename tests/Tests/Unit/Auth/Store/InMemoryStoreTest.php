@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Override;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -37,6 +38,7 @@ final class InMemoryStoreTest extends TestCase
     protected InMemoryStore $store;
     protected User $user;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->store = new InMemoryStore([]);

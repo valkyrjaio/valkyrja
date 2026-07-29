@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cache\Manager;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
@@ -30,6 +31,7 @@ final class RedisCacheTest extends TestCase
 
     protected string $prefix = 'test:';
 
+    #[Override]
     protected function setUp(): void
     {
         $this->client = $this->createMock(ClientFixture::class);

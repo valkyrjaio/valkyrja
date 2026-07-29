@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Api\Manager;
 
 use Exception;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Valkyrja\Api\Constant\Status;
@@ -38,6 +39,7 @@ final class ApiTest extends TestCase
     protected Api $api;
     protected Api $apiDebug;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->responseFactory = $this->createMock(ResponseFactoryContract::class);

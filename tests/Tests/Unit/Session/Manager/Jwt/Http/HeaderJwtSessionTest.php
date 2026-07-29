@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Http;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Http\Message\Constant\HeaderName;
@@ -30,6 +31,7 @@ final class HeaderJwtSessionTest extends TestCase
 
     protected HeaderJwtSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->jwt     = $this->createMock(JwtContract::class);

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Cookie;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -25,6 +26,7 @@ final class CookieSessionTest extends TestCase
 
     protected CookieSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->request = $this->createMock(ServerRequestContract::class);

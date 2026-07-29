@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Collection;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
@@ -30,6 +31,7 @@ final class HeaderCollectionTest extends TestCase
 
     protected Header $contentTypeHeader;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->hostHeader        = new Header(HeaderName::HOST, 'example.com');

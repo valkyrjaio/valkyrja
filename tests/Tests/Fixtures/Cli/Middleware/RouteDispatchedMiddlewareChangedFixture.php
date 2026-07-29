@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
@@ -24,6 +25,7 @@ final class RouteDispatchedMiddlewareChangedFixture implements RouteDispatchedMi
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function routeDispatched(
         InputContract $input,
         OutputContract $output,

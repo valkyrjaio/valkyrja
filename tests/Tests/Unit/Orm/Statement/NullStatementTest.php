@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Statement;
 
+use Override;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
@@ -22,6 +23,7 @@ final class NullStatementTest extends TestCase
 {
     protected NullStatement $statement;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->statement = new NullStatement();

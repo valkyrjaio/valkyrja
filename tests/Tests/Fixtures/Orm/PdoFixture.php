@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Orm;
 
+use Override;
 use PDO;
 use PDOStatement;
 
@@ -20,6 +21,7 @@ use PDOStatement;
  */
 final class PdoFixture extends PDO
 {
+    #[Override]
     public function query(string $query, int|null $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
     {
         return false;

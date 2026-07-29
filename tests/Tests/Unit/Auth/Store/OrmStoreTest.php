@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
@@ -41,6 +42,7 @@ final class OrmStoreTest extends TestCase
     protected OrmStore $store;
     protected User $user;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->repository = $this->createMock(RepositoryContract::class);

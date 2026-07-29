@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Collector;
 
+use Override;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
 use Valkyrja\Event\Data\Contract\ListenerContract;
@@ -46,6 +47,7 @@ final class AttributesListenerCollectorTest extends TestCase
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->class = new AttributeListenerCollector(

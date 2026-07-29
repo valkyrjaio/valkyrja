@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -29,25 +30,30 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 final class AllMiddlewareFixture implements InputReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, ThrowableCaughtMiddlewareContract, ProcessExitingMiddlewareContract
 {
+    #[Override]
     public function processExiting(InputContract $input, OutputContract $output, ProcessExitingHandlerContract $handler): void
     {
     }
 
+    #[Override]
     public function inputReceived(InputContract $input, InputReceivedHandlerContract $handler): InputContract|OutputContract
     {
         return $input;
     }
 
+    #[Override]
     public function routeDispatched(InputContract $input, OutputContract $output, RouteContract $route, RouteDispatchedHandlerContract $handler): OutputContract
     {
         return $output;
     }
 
+    #[Override]
     public function routeMatched(InputContract $input, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|OutputContract
     {
         return $route;
     }
 
+    #[Override]
     public function throwableCaught(InputContract $input, OutputContract $output, Throwable $throwable, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         return $output;

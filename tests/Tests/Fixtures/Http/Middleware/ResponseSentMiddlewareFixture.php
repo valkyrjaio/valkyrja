@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
@@ -25,6 +26,7 @@ final class ResponseSentMiddlewareFixture implements ResponseSentMiddlewareContr
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function responseSent(ServerRequestContract $request, ResponseContract $response, ResponseSentHandlerContract $handler): void
     {
         $this->updateCounter();

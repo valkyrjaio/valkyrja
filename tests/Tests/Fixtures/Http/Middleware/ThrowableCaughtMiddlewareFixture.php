@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -26,6 +27,7 @@ final class ThrowableCaughtMiddlewareFixture implements ThrowableCaughtMiddlewar
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,

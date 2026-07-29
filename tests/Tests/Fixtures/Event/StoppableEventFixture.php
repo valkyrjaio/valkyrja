@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Event;
 
+use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
@@ -23,16 +24,19 @@ final class StoppableEventFixture implements DispatchCollectableEventContract, S
     /** @var array<int, mixed> */
     private array $dispatches = [];
 
+    #[Override]
     public function addDispatch(mixed $dispatch): void
     {
         $this->dispatches[] = $dispatch;
     }
 
+    #[Override]
     public function getDispatches(): array
     {
         return $this->dispatches;
     }
 
+    #[Override]
     public function isPropagationStopped(): bool
     {
         return true;

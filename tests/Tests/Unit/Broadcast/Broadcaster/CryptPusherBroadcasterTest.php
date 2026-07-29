@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Broadcast\Broadcaster;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
@@ -31,6 +32,7 @@ final class CryptPusherBroadcasterTest extends TestCase
 
     protected MockObject&CryptContract $crypt;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->pusher = $this->createMock(Pusher::class);

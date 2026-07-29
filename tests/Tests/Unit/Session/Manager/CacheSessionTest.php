@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Session\Manager\CacheSession;
@@ -24,6 +25,7 @@ final class CacheSessionTest extends TestCase
 
     protected CacheSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cache = $this->createMock(CacheContract::class);

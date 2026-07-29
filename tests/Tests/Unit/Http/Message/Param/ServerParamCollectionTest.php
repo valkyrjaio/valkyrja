@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
+use Override;
 use stdClass;
 use Valkyrja\Http\Message\Param\Contract\ServerParamCollectionContract;
 use Valkyrja\Http\Message\Param\ServerParamCollection;
@@ -22,6 +23,7 @@ final class ServerParamCollectionTest extends TestCase
 {
     protected ServerParamCollection $paramData;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->paramData = new ServerParamCollection(['method' => 'GET', 'port' => 443, 'secure' => true]);
