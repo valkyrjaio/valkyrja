@@ -18,7 +18,7 @@ use Valkyrja\Type\Enum\CastType;
 class ArrayCast extends Cast
 {
     /**
-     * @param CastType|class-string<TypeContract> $type The type
+     * @param CastType|class-string<TypeContract<mixed>> $type The type
      */
     public function __construct(CastType|string $type, bool $convert = true)
     {

@@ -114,7 +114,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     /**
      * Get a parameter's cast type.
      *
-     * @return class-string<TypeContract>|null
+     * @return class-string<TypeContract<mixed>>|null
      */
     protected function getParameterCastType(ParameterContract $parameter): string|null
     {
@@ -126,7 +126,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
     /**
      * Determine if a parameter should be skipped.
      *
-     * @param class-string<TypeContract>|null $type The type
+     * @param class-string<TypeContract<mixed>>|null $type The type
      *
      * @psalm-assert class-string<EntityContract> $type
      *
