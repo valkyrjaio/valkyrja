@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Auth\Authenticator\Abstract;
 
 use Override;
 use PHPUnit\Framework\MockObject\MockObject;
+use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Data\Attempt\AuthenticationAttempt;
 use Valkyrja\Auth\Data\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
@@ -58,10 +59,10 @@ final class AuthenticatorTest extends TestCase
             entity: User::class,
         );
 
-        $this->user           = new User();
-        $this->user->id       = self::USER_ID;
-        $this->user->username = self::USERNAME;
-        $this->user->password = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
+        $this->user                      = new User();
+        $this->user->id                  = self::USER_ID;
+        $this->user->username            = self::USERNAME;
+        $this->user[UserField::PASSWORD] = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
     }
 
     public function testIsAuthenticatedReturnsFalseWhenNoUserAuthenticated(): void
@@ -140,10 +141,10 @@ final class AuthenticatorTest extends TestCase
 
     public function testGetImpersonatedReturnsUserWhenImpersonating(): void
     {
-        $impersonatedUser           = new User();
-        $impersonatedUser->id       = self::USER_ID_2;
-        $impersonatedUser->username = 'impersonated';
-        $impersonatedUser->password = 'password';
+        $impersonatedUser                      = new User();
+        $impersonatedUser->id                  = self::USER_ID_2;
+        $impersonatedUser->username            = 'impersonated';
+        $impersonatedUser[UserField::PASSWORD] = 'password';
 
         // Set up an authenticated users container with impersonation
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, self::USER_ID_2);
@@ -285,10 +286,10 @@ final class AuthenticatorTest extends TestCase
 
     public function testUnauthenticateImpersonatedUser(): void
     {
-        $impersonatedUser           = new User();
-        $impersonatedUser->id       = self::USER_ID_2;
-        $impersonatedUser->username = 'impersonated';
-        $impersonatedUser->password = 'password';
+        $impersonatedUser                      = new User();
+        $impersonatedUser->id                  = self::USER_ID_2;
+        $impersonatedUser->username            = 'impersonated';
+        $impersonatedUser[UserField::PASSWORD] = 'password';
 
         // Set up with impersonation
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, self::USER_ID_2, self::USER_ID, self::USER_ID_2);
@@ -351,10 +352,10 @@ final class AuthenticatorTest extends TestCase
 
     public function testGetImpersonatedCachesUser(): void
     {
-        $impersonatedUser           = new User();
-        $impersonatedUser->id       = self::USER_ID_2;
-        $impersonatedUser->username = 'impersonated';
-        $impersonatedUser->password = 'password';
+        $impersonatedUser                      = new User();
+        $impersonatedUser->id                  = self::USER_ID_2;
+        $impersonatedUser->username            = 'impersonated';
+        $impersonatedUser[UserField::PASSWORD] = 'password';
 
         // Set up authenticated users with impersonation
         $authenticatedUsers = new AuthenticatedUsers(self::USER_ID, self::USER_ID_2);
