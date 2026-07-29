@@ -23,8 +23,6 @@ use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function fopen;
-
 /**
  * Test the OutputFactory class.
  */
@@ -150,8 +148,8 @@ final class OutputFactoryTest extends TestCase
 
     public function testCreateStreamOutput(): void
     {
-        $stream  = fopen(filename: 'php://input', mode: 'rb');
-        $stream2 = fopen(filename: 'php://memory', mode: 'rb');
+        $stream  = self::openStream(filename: 'php://input', mode: 'rb');
+        $stream2 = self::openStream(filename: 'php://memory', mode: 'rb');
 
         $config  = new CliInteractionConfig(
             isQuiet: true,

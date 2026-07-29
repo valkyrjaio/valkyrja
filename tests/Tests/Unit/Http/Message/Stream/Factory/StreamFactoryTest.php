@@ -28,7 +28,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamE
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 use function get_resource_type;
 use function is_resource;
 
@@ -206,7 +205,7 @@ final class StreamFactoryTest extends TestCase
 
     public function testValidateStreamPassesForValidResource(): void
     {
-        $resource = fopen('php://temp', 'w+');
+        $resource = self::openStream('php://temp', 'w+');
 
         StreamFactory::validateStream($resource);
 

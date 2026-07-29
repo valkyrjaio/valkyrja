@@ -16,6 +16,7 @@ use Override;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\PhpUnit\Abstract\ValkyrjaTestCase;
 
+use function fopen;
 use function is_dir;
 use function ob_get_clean;
 use function scandir;
@@ -26,6 +27,26 @@ use function unlink;
  */
 abstract class TestCase extends ValkyrjaTestCase
 {
+    /**
+     * Open a stream for a test.
+     *
+     * `fopen()` is typed `resource|false`, and every caller here opens a stream it
+     * expects to exist; fail the test outright rather than hand each one a `false`
+     * it has no meaningful way to handle.
+     *
+     * @return resource
+     */
+    protected static function openStream(string $filename, string $mode)
+    {
+        $stream = fopen($filename, $mode);
+
+        if ($stream === false) {
+            self::fail("Unable to open the $filename stream.");
+        }
+
+        return $stream;
+    }
+
     /**
      * Get and delete the current output buffer.
      *

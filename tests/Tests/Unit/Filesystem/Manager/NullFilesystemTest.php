@@ -18,7 +18,6 @@ use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 
 final class NullFilesystemTest extends TestCase
 {
@@ -52,7 +51,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testWriteStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->writeStream('path', $resource));
 
@@ -66,7 +65,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testUpdateStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->updateStream('path', $resource));
 
@@ -80,7 +79,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testPutStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->putStream('path', $resource));
 

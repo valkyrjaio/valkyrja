@@ -22,7 +22,6 @@ use Valkyrja\Filesystem\Throwable\Exception\FilesystemUnableToReadContentsExcept
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 use function fwrite;
 use function rewind;
 
@@ -86,7 +85,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testWriteStreamCreatesFile(): void
     {
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'stream contents');
         rewind($resource);
 
@@ -108,7 +107,7 @@ final class InMemoryFilesystemTest extends TestCase
             }
         };
 
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
 
         $this->expectException(FilesystemResourceReadException::class);
         $this->expectExceptionMessage('Failed to read provided resource');
@@ -133,7 +132,7 @@ final class InMemoryFilesystemTest extends TestCase
     {
         $this->filesystem->write('test.txt', 'original');
 
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'updated stream');
         rewind($resource);
 
@@ -160,7 +159,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testPutStreamCreatesOrUpdatesFile(): void
     {
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'stream contents');
         rewind($resource);
 

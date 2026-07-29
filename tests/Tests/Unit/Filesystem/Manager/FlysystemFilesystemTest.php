@@ -24,7 +24,6 @@ use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 
 final class FlysystemFilesystemTest extends TestCase
 {
@@ -128,7 +127,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testWriteStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())
@@ -158,7 +157,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testUpdateStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())
@@ -188,7 +187,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testPutStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())
