@@ -63,7 +63,12 @@ interface UploadedFileCollectionContract
     /**
      * Get a new instance with the specified collection of files.
      *
-     * @param array<array-key, T> $collection The collection
+     * Files usually arrive unvalidated -- straight off a request -- so any array is
+     * accepted and every value is validated here, throwing on one that does not fit.
+     *
+     * @param array<array-key, mixed> $collection The collection
+     *
+     * @return static
      */
     public function with(array $collection): static;
 

@@ -176,7 +176,6 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $this->expectException(UploadedFileInvalidArgumentException::class);
 
-        /* @phpstan-ignore-next-line */
         $this->fileData->with(['invalid' => 'not-a-file']);
     }
 

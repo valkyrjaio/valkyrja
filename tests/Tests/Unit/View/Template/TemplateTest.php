@@ -365,7 +365,7 @@ final class TemplateTest extends TestCase
             ->method('renderFile')
             ->with(
                 'partials/greeting',
-                self::callback(static fn ($variables) => $variables['name'] === 'John' && isset($variables['template']))
+                self::callback(static fn (array $variables): bool => $variables['name'] === 'John' && isset($variables['template']))
             )
             ->willReturn($partialContent);
 
@@ -461,6 +461,7 @@ final class TemplateTest extends TestCase
         $firstLayoutContent = '<div>First layout</div>';
         $finalLayoutContent = '<html lang="en"><body>Final layout</body></html>';
 
+        /** @var Template|null $template */
         $template = null;
 
         $renderer = $this->createMock(RendererContract::class);
