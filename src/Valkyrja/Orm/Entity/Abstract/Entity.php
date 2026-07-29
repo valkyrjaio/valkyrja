@@ -250,7 +250,7 @@ abstract class Entity extends Model implements EntityContract
      */
     protected function internalGetTypeValueForDataStore(Cast $cast, mixed $value): mixed
     {
-        /** @var class-string $type */
+        /** @var class-string<TypeContract> $type */
         $type = $cast->type;
 
         if ($value instanceof TypeContract) {
