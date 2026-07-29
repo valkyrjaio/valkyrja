@@ -27,8 +27,8 @@ final class UnpackForNewInstanceModelFixture extends Model
     use UnpackForNewInstance;
 
     public function __construct(
-        public string $public,
-        protected string $protected,
+        public string $public = '',
+        protected string $protected = '',
     ) {
     }
 }
