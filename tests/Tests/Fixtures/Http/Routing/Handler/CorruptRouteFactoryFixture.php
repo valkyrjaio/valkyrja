@@ -34,7 +34,7 @@ final class CorruptRouteFactoryFixture
     public static function create(): Closure
     {
         /** @var Closure(): RouteContract $factory */
-        $factory = static fn (): object => new stdClass();
+        $factory = Closure::fromCallable(static fn (): object => new stdClass());
 
         return $factory;
     }

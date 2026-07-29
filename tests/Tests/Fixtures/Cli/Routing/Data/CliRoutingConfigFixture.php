@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Cli\Routing\Data;
 
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 
 final class CliRoutingConfigFixture extends Config implements CliRoutingConfigContract
@@ -21,7 +22,7 @@ final class CliRoutingConfigFixture extends Config implements CliRoutingConfigCo
      * @param non-empty-string $dataClassName
      */
     public function __construct(
-        public string $dataClassName = '',
+        public string $dataClassName = CliRoutingData::class,
     ) {
         parent::__construct();
     }

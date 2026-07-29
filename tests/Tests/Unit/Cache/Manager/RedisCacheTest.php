@@ -127,9 +127,13 @@ final class RedisCacheTest extends TestCase
             ->with(
                 self::callback(
                     static function (mixed $callback) use ($client): bool {
+                        if (! is_callable($callback)) {
+                            return false;
+                        }
+
                         $callback($client);
 
-                        return is_callable($callback);
+                        return true;
                     }
                 )
             );

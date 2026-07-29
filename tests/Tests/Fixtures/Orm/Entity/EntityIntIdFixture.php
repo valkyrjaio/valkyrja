@@ -15,6 +15,8 @@ namespace Valkyrja\Tests\Fixtures\Orm\Entity;
 use Override;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
+use function is_scalar;
+
 /**
  * Model class to use to test abstract model.
  */
@@ -32,9 +34,9 @@ final class EntityIntIdFixture extends Entity
         return 'test';
     }
 
-    public function setId(string|int $id): void
+    public function setId(mixed $id): void
     {
-        $this->id = (int) $id;
+        $this->id = (int) (is_scalar($id) ? $id : 0);
     }
 
     /**

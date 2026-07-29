@@ -197,7 +197,11 @@ final class ApiTest extends TestCase
         $data = $result->getData();
         self::assertIsArray($data);
         self::assertArrayHasKey('stdclasss', $data);
-        self::assertCount(2, $data['stdclasss']);
+
+        $objects = $data['stdclasss'];
+
+        self::assertIsArray($objects);
+        self::assertCount(2, $objects);
     }
 
     public function testJsonFromObjectsWithEmptyArray(): void
@@ -274,7 +278,15 @@ final class ApiTest extends TestCase
 
         $data = $result->getData();
         self::assertIsArray($data);
-        self::assertSame('nested', $data['level1']['level2']['value']);
+
+        $level1 = $data['level1'];
+
+        self::assertIsArray($level1);
+
+        $level2 = $level1['level2'];
+
+        self::assertIsArray($level2);
+        self::assertSame('nested', $level2['value']);
     }
 
     public function testJsonResponseFromArray(): void
