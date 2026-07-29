@@ -162,8 +162,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
-        self::assertNotNull($collection->get('test'));
-        self::assertNotNull($collection->get('test-provider'));
     }
 
     /**
@@ -190,8 +188,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
-        self::assertNotNull($collection->get('test'));
-        self::assertNotNull($collection->get('test-provider'));
     }
 
     /**

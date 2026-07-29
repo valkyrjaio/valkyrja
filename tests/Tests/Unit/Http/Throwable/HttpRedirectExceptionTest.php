@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectResponseException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -32,7 +33,8 @@ final class HttpRedirectExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertTrue($this->getException() instanceof HttpRedirectResponseException);
+        self::assertSame(StatusCode::FOUND, $this->getException()->getStatusCode());
+        self::assertSame('Redirect', $this->getException()->getMessage());
     }
 
     /**

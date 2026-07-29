@@ -225,7 +225,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->object);
         self::assertObjectHasProperty('test', $model->object);
 
         // Test an array of objects
@@ -257,7 +256,6 @@ final class CastableModelTest extends TestCase
 
         // Test a stringified object
         $model = $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_PROPERTY, serialize($value), $value, true);
-        self::assertIsObject($model->serializedObject);
 
         // Test an array of objects
         $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
@@ -321,7 +319,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->jsonObject);
         self::assertObjectHasProperty('test', $model->jsonObject);
 
         // Test an array of objects
@@ -493,7 +490,6 @@ final class CastableModelTest extends TestCase
 
         // Test an array
         $model = $this->propertyTest(CastableModelFixture::MODEL_PROPERTY, $value->asArray(), $value, true);
-        self::assertIsObject($model->model);
 
         // Test a json encoded model
         $model = $this->propertyTest(
@@ -502,7 +498,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->model);
 
         // Test an array of models
         $this->propertyTest(CastableModelFixture::MODEL_ARRAY_PROPERTY, [$value], [$value]);

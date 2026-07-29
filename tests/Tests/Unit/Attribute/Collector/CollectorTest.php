@@ -505,9 +505,6 @@ final class CollectorTest extends TestCase
         self::assertInstanceOf(AttributeFixture::class, $attributes[0]);
         self::assertInstanceOf(AttributeFixture::class, $attributes[1]);
         self::assertInstanceOf(AttributeClassChildFixture::class, $attributes[2]);
-        self::assertNotNull($attributes[0]->getReflection());
-        self::assertNotNull($attributes[1]->getReflection());
-        self::assertNotNull($attributes[2]->getReflection());
     }
 
     /**

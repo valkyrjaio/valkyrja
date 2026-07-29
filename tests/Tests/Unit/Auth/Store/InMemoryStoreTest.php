@@ -59,7 +59,6 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->retrieveUser();
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
         self::assertSame($this->user->username, $user->username);
         self::assertSame($this->user->password, $user->password);
         self::assertSame($this->user->reset_token, $user->reset_token);
@@ -75,7 +74,6 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->retrieveUser();
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
         self::assertNull($user->reset_token);
 
         $updateUser              = clone $this->user;
@@ -85,7 +83,6 @@ final class InMemoryStoreTest extends TestCase
 
         $updatedUser = $this->retrieveUser();
 
-        self::assertNotNull($updatedUser);
         self::assertSame(self::RESET_TOKEN, $updatedUser->reset_token);
     }
 
@@ -119,7 +116,6 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
         self::assertSame(self::USERNAME, $user->username);
         self::assertSame(self::RESET_TOKEN, $user->reset_token);
     }
@@ -147,7 +143,6 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->store->retrieve($retrieval, User::class);
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
         self::assertSame('test', $user->id);
         self::assertSame(self::USERNAME, $user->username);
     }

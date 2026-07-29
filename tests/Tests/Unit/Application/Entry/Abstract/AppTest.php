@@ -90,7 +90,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
 use function date_default_timezone_get;
-use function defined;
 use function set_exception_handler;
 use function unlink;
 
@@ -121,7 +120,6 @@ final class AppTest extends TestCase
 
         App::appStart();
 
-        self::assertTrue(defined('APP_START'));
         self::assertSame(APP_START, $time);
 
         Microtime::unfreeze();

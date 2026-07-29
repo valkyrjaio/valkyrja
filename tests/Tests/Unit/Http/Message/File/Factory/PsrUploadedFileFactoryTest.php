@@ -135,7 +135,6 @@ final class PsrUploadedFileFactoryTest extends TestCase
 
         $result = PsrUploadedFileFactory::toPsrArray($outerCollection);
 
-        self::assertIsArray($result);
         self::assertCount(1, $result);
         self::assertIsArray($result[0]);
         self::assertCount(1, $result[0]);

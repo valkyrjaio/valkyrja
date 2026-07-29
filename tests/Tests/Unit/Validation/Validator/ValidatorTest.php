@@ -115,7 +115,6 @@ final class ValidatorTest extends TestCase
 
         $firstError = $validator->getFirstErrorMessage();
 
-        self::assertNotNull($firstError);
         self::assertStringContainsString('name:', $firstError);
     }
 

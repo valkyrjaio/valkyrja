@@ -49,7 +49,6 @@ final class CookieParamCollectionTest extends TestCase
     {
         $result = $this->paramData->get('session');
 
-        self::assertIsString($result);
         self::assertSame('abc123', $result);
     }
 

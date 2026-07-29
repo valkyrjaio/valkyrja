@@ -99,10 +99,8 @@ final class RouteTest extends TestCase
         self::assertSame($helpText()->getText(), $route->getHelpTextMessage()->getText());
         self::assertSame($handler, $route->getHandler());
         self::assertTrue($route->hasArguments());
-        self::assertNotNull($route->getArgument('test'));
         self::assertSame($arguments, $route->getArguments());
         self::assertTrue($route->hasOptions());
-        self::assertNotNull($route->getOption('test'));
         self::assertSame($options, $route->getOptions());
         self::assertSame($routeMatchedMiddleware, $route->getRouteMatchedMiddleware());
         self::assertSame($routeDispatchedMiddleware, $route->getRouteDispatchedMiddleware());

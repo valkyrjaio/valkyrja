@@ -61,7 +61,6 @@ final class ListCommandTest extends TestCase
         $output->writeMessages();
         $contents = self::cleanOutputBuffer();
 
-        self::assertIsString($contents);
         self::assertStringContainsString($path, $contents);
         self::assertStringContainsString($name, $contents);
         self::assertStringContainsString($regex, $contents);
@@ -126,7 +125,6 @@ final class ListCommandTest extends TestCase
         $output->writeMessages();
         $contents = self::cleanOutputBuffer();
 
-        self::assertIsString($contents);
         self::assertStringContainsString('No routes were found', $contents);
     }
 

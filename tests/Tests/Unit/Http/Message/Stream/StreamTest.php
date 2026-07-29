@@ -368,7 +368,6 @@ final class StreamTest extends TestCase
     {
         $stream = new Stream();
 
-        self::assertIsArray($stream->getMetadata());
         self::assertTrue($stream->getMetadataItem('seekable'));
         self::assertNull($stream->getMetadataItem('nonexistent'));
 

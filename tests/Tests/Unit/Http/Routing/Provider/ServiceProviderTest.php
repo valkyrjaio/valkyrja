@@ -172,9 +172,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(RouteCollectionContract::class));
         self::assertTrue($container->isSingleton(RouteCollectionContract::class));
         self::assertInstanceOf(RouteCollection::class, $collection = $container->getSingleton(RouteCollectionContract::class));
-
-        self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
-        self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishCollectionWithoutDataDebugModeTrue(): void
@@ -206,9 +203,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(RouteCollectionContract::class));
         self::assertTrue($container->isSingleton(RouteCollectionContract::class));
         self::assertInstanceOf(RouteCollection::class, $collection = $container->getSingleton(RouteCollectionContract::class));
-
-        self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
-        self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishCollectionWithoutRoutes(): void

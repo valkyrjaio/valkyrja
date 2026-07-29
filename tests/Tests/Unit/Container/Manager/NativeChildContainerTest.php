@@ -205,7 +205,6 @@ final class NativeChildContainerTest extends TestCase
 
         // Parent must remain unpolluted
         self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
-        self::assertNotNull($childInstance);
     }
 
     // -----------------------------------------------------------------------

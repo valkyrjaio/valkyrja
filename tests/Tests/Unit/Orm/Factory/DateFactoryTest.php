@@ -27,7 +27,6 @@ final class DateFactoryTest extends TestCase
     {
         $result = DateFactory::getFormattedDate();
 
-        self::assertIsString($result);
         self::assertNotEmpty($result);
     }
 
