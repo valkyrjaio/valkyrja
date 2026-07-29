@@ -40,6 +40,20 @@ final class SqlFileMigrationTest extends TestCase
 
     protected string $rollbackSqlFile;
 
+    /**
+     * Make a temporary sql file path, failing the test when one cannot be reserved.
+     */
+    private static function tempFile(string $prefix): string
+    {
+        $path = tempnam(sys_get_temp_dir(), $prefix);
+
+        if ($path === false) {
+            self::fail("Unable to reserve a temporary file for $prefix.");
+        }
+
+        return $path . '.sql';
+    }
+
     #[Override]
     protected function setUp(): void
     {
@@ -47,8 +61,8 @@ final class SqlFileMigrationTest extends TestCase
         $this->migration = new SqlFileMigrationFixture($this->orm);
 
         // Create temporary SQL files
-        $this->runSqlFile      = tempnam(sys_get_temp_dir(), 'run_migration_') . '.sql';
-        $this->rollbackSqlFile = tempnam(sys_get_temp_dir(), 'rollback_migration_') . '.sql';
+        $this->runSqlFile      = self::tempFile('run_migration_');
+        $this->rollbackSqlFile = self::tempFile('rollback_migration_');
 
         $this->migration->runFilePath      = $this->runSqlFile;
         $this->migration->rollbackFilePath = $this->rollbackSqlFile;

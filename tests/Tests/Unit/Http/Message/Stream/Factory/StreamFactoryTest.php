@@ -31,7 +31,6 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
 use function get_resource_type;
-use function is_resource;
 
 final class StreamFactoryTest extends TestCase
 {
@@ -99,7 +98,6 @@ final class StreamFactoryTest extends TestCase
     {
         $resource = StreamFactory::getResourceStream(PhpWrapper::temp, Mode::WRITE_READ);
 
-        self::assertTrue(is_resource($resource));
         self::assertSame('stream', get_resource_type($resource));
     }
 
@@ -107,7 +105,6 @@ final class StreamFactoryTest extends TestCase
     {
         $resource = StreamFactory::getResourceStream('php://temp', Mode::WRITE_READ);
 
-        self::assertTrue(is_resource($resource));
         self::assertSame('stream', get_resource_type($resource));
     }
 
@@ -261,9 +258,7 @@ final class StreamFactoryTest extends TestCase
 
         $this->expectNotToPerformAssertions();
 
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
     #[DataProvider('invalidStreamProvider')]

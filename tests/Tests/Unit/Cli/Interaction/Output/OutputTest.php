@@ -239,7 +239,7 @@ final class OutputTest extends TestCase
         $quietFailureContents = self::cleanOutputBuffer();
 
         self::assertEmpty($quietSuccessContents);
-        self::assertStringContainsString('text', (string) $quietFailureContents);
+        self::assertStringContainsString('text', $quietFailureContents);
     }
 
     public function testReAskQuestionOnInvalidAnswer(): void

@@ -180,7 +180,7 @@ final class WorkerHttpFixture extends WorkerHttp
         $output = '';
 
         while (ob_get_level() > $baseline) {
-            $output = ob_get_clean() . $output;
+            $output = ((string) ob_get_clean()) . $output;
         }
 
         self::$requestResponses[] = $output;

@@ -98,8 +98,8 @@ final class ListCommandTest extends TestCase
         $output->writeMessages();
         $contents = self::cleanOutputBuffer();
 
-        $applePos = strpos((string) $contents, '/apple');
-        $zebraPos = strpos((string) $contents, '/zebra');
+        $applePos = strpos($contents, '/apple');
+        $zebraPos = strpos($contents, '/zebra');
 
         self::assertIsInt($applePos);
         self::assertIsInt($zebraPos);
