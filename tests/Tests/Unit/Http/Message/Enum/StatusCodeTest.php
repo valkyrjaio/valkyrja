@@ -76,6 +76,9 @@ final class StatusCodeTest extends TestCase
     #[DataProvider('casesProvider')]
     public function testText(StatusCode $status): void
     {
-        self::assertSame($status->asPhrase(), StatusText::{$status->name}->value);
+        $text = StatusText::{$status->name};
+
+        self::assertInstanceOf(StatusText::class, $text);
+        self::assertSame($status->asPhrase(), $text->value);
     }
 }
