@@ -58,6 +58,8 @@ trait RequestStruct
      *
      * @param ServerRequestContract $request   The request
      * @param string|int            ...$values The values
+     *
+     * @return array<array-key, mixed>
      */
     abstract protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 
@@ -66,6 +68,8 @@ trait RequestStruct
      *
      * @param ServerRequestContract $request   The request
      * @param string|int            ...$values The values
+     *
+     * @return array<array-key, mixed>
      */
     abstract protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 }
