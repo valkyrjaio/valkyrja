@@ -44,7 +44,10 @@ interface ParamCollectionContract
     /**
      * Get only the specified params.
      *
-     * @param K ...$keys The param keys
+     * A key outside the collection's key type simply matches nothing, so the
+     * lookups below accept any key rather than only a storable one.
+     *
+     * @param string|int ...$keys The param keys
      *
      * @return array<K, T>
      */
@@ -53,7 +56,7 @@ interface ParamCollectionContract
     /**
      * Get all the params except the specified ones.
      *
-     * @param K ...$keys The param names
+     * @param string|int ...$keys The param names
      *
      * @return array<K, T>
      */
