@@ -19,10 +19,13 @@ use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Trait\InputReceivedResultTrait;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CheckForHelpOptionsMiddlewareTest extends TestCase
 {
+    use InputReceivedResultTrait;
+
     public function testWithoutHelpOptions(): void
     {
         $input   = new Input();
@@ -39,7 +42,7 @@ final class CheckForHelpOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::HELP,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertSame($input, $inputAfterMiddleware);
     }
@@ -59,7 +62,7 @@ final class CheckForHelpOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::HELP,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertNotSame($input, $inputAfterMiddleware);
         self::assertSame(CommandName::HELP, $inputAfterMiddleware->getCommandName());
@@ -83,7 +86,7 @@ final class CheckForHelpOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::HELP,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertNotSame($input, $inputAfterMiddleware);
         self::assertSame(CommandName::HELP, $inputAfterMiddleware->getCommandName());

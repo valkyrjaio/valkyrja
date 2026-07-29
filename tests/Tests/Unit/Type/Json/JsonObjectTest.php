@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Json;
 
 use JsonException;
+use Valkyrja\Tests\Fixtures\Type\Object\ObjectFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Json\JsonObject;
 
@@ -58,14 +59,12 @@ final class JsonObjectTest extends TestCase
      */
     public function testModify(): void
     {
-        $value = new class {
-            public string $foo = 'test';
-        };
+        $value = new ObjectFixture();
         $type  = new JsonObject($value);
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(static function (object $subject) use ($newValue): object {
+        $modified = $type->modify(static function (ObjectFixture $subject) use ($newValue): ObjectFixture {
             $subject->foo = $newValue;
 
             return $subject;
@@ -95,6 +94,6 @@ final class JsonObjectTest extends TestCase
     {
         $type = JsonObject::fromValue('{"foo":"bar"}');
 
-        self::assertSame('bar', $type->asValue()->foo);
+        self::assertSame((object) ['foo' => 'bar'], $type->asValue());
     }
 }

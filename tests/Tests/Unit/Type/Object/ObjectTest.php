@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Object;
 
 use JsonException;
+use Valkyrja\Tests\Fixtures\Type\Object\ObjectFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Object\ObjectT;
 
@@ -55,14 +56,12 @@ final class ObjectTest extends TestCase
 
     public function testModify(): void
     {
-        $value = new class {
-            public string $foo = 'test';
-        };
+        $value = new ObjectFixture();
         $type  = new ObjectT($value);
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(static function (object $subject) use ($newValue): object {
+        $modified = $type->modify(static function (ObjectFixture $subject) use ($newValue): ObjectFixture {
             $subject->foo = $newValue;
 
             return $subject;
