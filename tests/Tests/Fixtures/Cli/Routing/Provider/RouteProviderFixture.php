@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Fixtures\Cli\Routing\Provider;
 use Override;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 
 final class RouteProviderFixture implements CliRouteProviderContract
 {
@@ -31,7 +32,7 @@ final class RouteProviderFixture implements CliRouteProviderContract
             new Route(
                 name: 'test-provider',
                 description: 'test',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
         ];
     }

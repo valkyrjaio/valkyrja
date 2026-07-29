@@ -32,6 +32,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\RouteProviderFixture;
 
 /**
@@ -116,7 +117,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
                 $name => new Route(
                     $name,
                     'description',
-                    handler: static fn (): null => null,
+                    handler: RouteHandlerFixture::handle(...),
                 ),
             ]
         );
@@ -151,7 +152,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
@@ -179,7 +180,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
@@ -207,7 +208,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$command]);
 

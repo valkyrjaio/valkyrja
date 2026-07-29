@@ -22,6 +22,7 @@ use Valkyrja\Cli\Routing\Data\CliRoutingData;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\CliRoutingInvalidRouteNameException;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -55,7 +56,7 @@ final class RouteCollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $collection = new RouteCollection();
@@ -73,7 +74,7 @@ final class RouteCollectionTest extends TestCase
         $route = new Route(
             name: 'test',
             description: 'description test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(name: 'test', description: 'test'),

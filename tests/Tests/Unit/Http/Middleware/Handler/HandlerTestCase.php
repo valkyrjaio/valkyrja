@@ -16,6 +16,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -43,7 +44,7 @@ abstract class HandlerTestCase extends TestCase
         $this->route    = new Route(
             '/',
             'name',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
     }
 }

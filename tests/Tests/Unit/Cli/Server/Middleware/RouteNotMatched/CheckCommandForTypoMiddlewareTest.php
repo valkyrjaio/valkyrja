@@ -19,9 +19,9 @@ use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 final class CheckCommandForTypoMiddlewareTest extends TestCase
@@ -46,12 +46,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             )
         );
 
@@ -62,7 +62,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
 
         ob_start();
         $outputFromMiddleware = $middleware->routeNotMatched($input, $output, $handler);
-        $outputFromOutput     = ob_get_clean();
+        $outputFromOutput     = self::cleanOutputBuffer();
 
         self::assertSame($output, $outputFromMiddleware);
         self::assertStringContainsString('Did you mean to run one of the following commands?', $outputFromOutput);
@@ -90,12 +90,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             )
         );
 
@@ -135,12 +135,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'command',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
             new Route(
                 name: 'command2',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             )
         );
 
@@ -180,12 +180,12 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
             new Route(
                 name: 'nomatch',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
             new Route(
                 name: 'nomatch2',
                 description: 'description',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             )
         );
 
@@ -196,7 +196,7 @@ final class CheckCommandForTypoMiddlewareTest extends TestCase
 
         ob_start();
         $outputFromMiddleware = $middleware->routeNotMatched($input, $output, $handler);
-        $outputFromOutput     = ob_get_clean();
+        $outputFromOutput     = self::cleanOutputBuffer();
 
         self::assertSame($output, $outputFromMiddleware);
         self::assertEmpty($outputFromOutput);

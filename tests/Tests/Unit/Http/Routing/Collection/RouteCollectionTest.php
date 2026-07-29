@@ -28,6 +28,7 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameExcepti
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
 use Valkyrja\Tests\Fixtures\Http\Routing\Collection\CollectionFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -52,7 +53,7 @@ final class RouteCollectionTest extends TestCase
         $this->route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $this->dynamicRoute = new DynamicRoute(
@@ -62,7 +63,7 @@ final class RouteCollectionTest extends TestCase
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $this->collection = new RouteCollection();
@@ -77,7 +78,7 @@ final class RouteCollectionTest extends TestCase
         $route = new Route(
             path: "/$routeName",
             name: $routeName,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $data = new HttpRoutingData(
@@ -418,7 +419,7 @@ final class RouteCollectionTest extends TestCase
         $route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestMethods: [RequestMethod::ANY],
         );
 
@@ -429,7 +430,7 @@ final class RouteCollectionTest extends TestCase
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestMethods: [RequestMethod::ANY]
         );
 
@@ -476,7 +477,7 @@ final class RouteCollectionTest extends TestCase
         $route = new Route(
             path: self::ROUTE_PATH,
             name: self::ROUTE_NAME,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestMethods: [RequestMethod::ANY],
         );
 
@@ -487,7 +488,7 @@ final class RouteCollectionTest extends TestCase
             parameters: [
                 new Parameter(name: 'value', regex: Regex::ALPHA),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestMethods: [RequestMethod::ANY]
         );
 

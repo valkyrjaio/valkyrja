@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 
 final class RouteProviderFixture implements HttpRouteProviderContract
 {
@@ -40,7 +41,7 @@ final class RouteProviderFixture implements HttpRouteProviderContract
             new Route(
                 path: '/from-provider',
                 name: 'route-from-provider',
-                handler: static fn (): null => null,
+                handler: RouteHandlerFixture::handle(...),
             ),
         ];
     }

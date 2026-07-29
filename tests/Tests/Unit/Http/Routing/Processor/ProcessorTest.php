@@ -19,6 +19,7 @@ use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function preg_match;
@@ -158,7 +159,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -174,7 +175,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: 'some/path',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -197,7 +198,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -223,7 +224,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $processor->route($route);
@@ -243,7 +244,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -269,7 +270,7 @@ final class ProcessorTest extends TestCase
                     isOptional: true
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -294,7 +295,7 @@ final class ProcessorTest extends TestCase
                     shouldCapture: false
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -388,7 +389,7 @@ final class ProcessorTest extends TestCase
             name: 'route',
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -408,7 +409,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{notDynamic}',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -432,7 +433,7 @@ final class ProcessorTest extends TestCase
             name: 'route',
             regex: '',
             parameters: $parameters,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $processed = new Processor()->route($route);

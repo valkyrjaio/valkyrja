@@ -22,6 +22,7 @@ use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Factory\RoutingResponseFactory;
 use Valkyrja\Http\Routing\Url\Url;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -39,7 +40,7 @@ final class ResponseFactoryTest extends TestCase
         $route           = new Route(
             path: '/',
             name: self::ROUTE_NAME,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collection      = new RouteCollection();
         $responseFactory = new ResponseFactory();

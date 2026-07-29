@@ -26,6 +26,7 @@ use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -87,7 +88,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collection->add($route);
 

@@ -16,6 +16,7 @@ use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -43,7 +44,7 @@ abstract class HandlerTestCase extends TestCase
         $this->command = new Route(
             name: 'test',
             description: 'Test Command',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
     }
 }

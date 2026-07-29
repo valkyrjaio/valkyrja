@@ -27,6 +27,7 @@ use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedFixt
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
@@ -48,7 +49,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: $handler = static fn (): null => null,
+            handler: $handler = RouteHandlerFixture::handle(...),
         );
 
         self::assertSame($path, $route->getPath());
@@ -70,7 +71,7 @@ final class DynamicRouteTest extends TestCase
     {
         $path                        = '/';
         $name                        = 'route';
-        $handler                     = static fn (): null => null;
+        $handler                     = RouteHandlerFixture::handle(...);
         $methods                     = [RequestMethod::HEAD, RequestMethod::POST];
         $regex                       = 'regex';
         $parameters                  = [new Parameter(name: 'test', regex: Regex::ALPHA)];
@@ -124,7 +125,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withPath($path2);
         $route3 = $route->withAddedPath('version');
@@ -154,7 +155,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withName($name2);
         $route3 = $route->withAddedName('.version');
@@ -185,7 +186,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: $regex,
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withRegex($regex2);
         $route3 = $route->withRegex($regex2);
@@ -207,7 +208,7 @@ final class DynamicRouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $handler  = static fn (): null => null;
+        $handler  = RouteHandlerFixture::handle(...);
         $handler2 = static fn (): string => 'test2';
         $handler3 = static fn (): string => 'test3';
 
@@ -242,7 +243,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
@@ -296,7 +297,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [$parameter],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withParameters($parameter2);
         $route3 = $route->withParameters($parameter3);
@@ -327,7 +328,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [$parameter, $parameter2],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         self::assertTrue($route->hasParameter('test1'));
@@ -346,7 +347,7 @@ final class DynamicRouteTest extends TestCase
             name: 'route',
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $route->getParameter('nonexistent');
@@ -365,7 +366,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             routeMatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteMatchedMiddleware($middleware2);
@@ -391,7 +392,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             routeDispatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteDispatchedMiddleware($middleware2);
@@ -417,7 +418,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             throwableCaughtMiddleware: [$middleware]
         );
         $route2 = $route->withThrowableCaughtMiddleware($middleware2);
@@ -443,7 +444,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             sendingResponseMiddleware: [$middleware]
         );
         $route2 = $route->withSendingResponseMiddleware($middleware2);
@@ -469,7 +470,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseSentMiddleware: [$middleware]
         );
         $route2 = $route->withResponseSentMiddleware($middleware2);
@@ -495,7 +496,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: $requestStruct
         );
         $route2 = $route->withRequestStruct($requestStruct2);
@@ -518,7 +519,7 @@ final class DynamicRouteTest extends TestCase
             name: $name,
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseStruct: $responseStruct
         );
         $route2 = $route->withResponseStruct($responseStruct2);

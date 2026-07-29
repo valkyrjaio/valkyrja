@@ -30,6 +30,7 @@ use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Cli\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RouteTest extends TestCase
@@ -43,7 +44,7 @@ final class RouteTest extends TestCase
     {
         $name        = self::NAME;
         $description = self::DESCRIPTION;
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route = new Route(
             name: $name,
@@ -71,7 +72,7 @@ final class RouteTest extends TestCase
         $name                              = self::NAME;
         $description                       = self::DESCRIPTION;
         $helpText                          = [$this, 'getHelpText'];
-        $handler                           = static fn (): null => null;
+        $handler                           = RouteHandlerFixture::handle(...);
         $options                           = [new OptionParameter(name: 'test', description: 'test description')];
         $arguments                         = [new ArgumentParameter(name: 'test', description: 'test description')];
         $routeMatchedMiddleware            = [RouteMatchedMiddlewareFixture::class];
@@ -115,7 +116,7 @@ final class RouteTest extends TestCase
         $name2                     = 'name2';
         $description               = self::DESCRIPTION;
         $helpText                  = [$this, 'getHelpText'];
-        $handler                   = static fn (): null => null;
+        $handler                   = RouteHandlerFixture::handle(...);
 
         $route  = new Route(
             name: $name,
@@ -162,7 +163,7 @@ final class RouteTest extends TestCase
         $description  = self::DESCRIPTION;
         $description2 = 'description2';
         $helpText     = [$this, 'getHelpText'];
-        $handler      = static fn (): null => null;
+        $handler      = RouteHandlerFixture::handle(...);
 
         $route  = new Route(
             name: $name,
@@ -209,7 +210,7 @@ final class RouteTest extends TestCase
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
         $helpText2   = [$this, 'getHelpText2'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route  = new Route(
             name: $name,
@@ -257,7 +258,7 @@ final class RouteTest extends TestCase
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route = new Route(
             name: $name,
@@ -275,7 +276,7 @@ final class RouteTest extends TestCase
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route = new Route(
             name: $name,
@@ -338,7 +339,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $argument    = new ArgumentParameter(name: 'name', description: 'description');
         $argument2   = new ArgumentParameter(name: 'name2', description: 'description');
         $argument3   = new ArgumentParameter(name: 'name3', description: 'description');
@@ -436,7 +437,7 @@ final class RouteTest extends TestCase
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route = new Route(
             name: $name,
@@ -452,7 +453,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $option      = new OptionParameter(name: 'name', description: 'description');
         $option2     = new OptionParameter(name: 'name2', description: 'description');
         $option3     = new OptionParameter(name: 'name3', description: 'description');
@@ -550,7 +551,7 @@ final class RouteTest extends TestCase
 
         $name        = self::NAME;
         $description = self::DESCRIPTION;
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
 
         $route = new Route(
             name: $name,
@@ -566,7 +567,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $middleware  = RouteMatchedMiddlewareFixture::class;
         $middleware2 = RouteMatchedMiddlewareChangedFixture::class;
 
@@ -651,7 +652,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $middleware  = RouteDispatchedMiddlewareFixture::class;
         $middleware2 = RouteDispatchedMiddlewareChangedFixture::class;
 
@@ -736,7 +737,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $middleware  = ThrowableCaughtMiddlewareFixture::class;
         $middleware2 = ThrowableCaughtMiddlewareChangedFixture::class;
 
@@ -821,7 +822,7 @@ final class RouteTest extends TestCase
         $name        = self::NAME;
         $description = self::DESCRIPTION;
         $helpText    = [$this, 'getHelpText'];
-        $handler     = static fn (): null => null;
+        $handler     = RouteHandlerFixture::handle(...);
         $middleware  = ProcessExitingMiddlewareFixture::class;
         $middleware2 = ProcessExitingMiddlewareChangedFixture::class;
 
@@ -925,7 +926,7 @@ final class RouteTest extends TestCase
         new Route(
             name: self::NAME,
             description: self::DESCRIPTION,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             helpText: static fn (): MessageContract => new Message('closure help text')
         );
     }
