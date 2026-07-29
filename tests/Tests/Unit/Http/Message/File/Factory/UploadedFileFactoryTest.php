@@ -13,15 +13,31 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\File\Factory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidFilesArrayStructureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidTmpNameException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidValueException;
 use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Tests\Fixtures\Http\Message\File\UploadedFileFactorySapiFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class UploadedFileFactoryTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: non-empty-string, 1: bool}>
+     */
+    public static function sapiProvider(): array
+    {
+        return [
+            'cli'            => ['cli', false],
+            'cli-server'     => ['cli-server', false],
+            'phpdbg'         => ['phpdbg', false],
+            'apache2handler' => ['apache2handler', true],
+            'fpm-fcgi'       => ['fpm-fcgi', true],
+        ];
+    }
+
     public function testNormalizeFilesSingleUpload(): void
     {
         $files         = [
@@ -229,6 +245,21 @@ final class UploadedFileFactoryTest extends TestCase
     public function testIsValidSapiEnvironmentForUploadsReturnsFalseUnderCli(): void
     {
         // PHPUnit runs under the CLI SAPI, so uploads are not considered valid.
+        // This also covers the real PHP_SAPI lookup in the getSapi() seam.
         self::assertFalse(UploadedFileFactory::isValidSapiEnvironmentForUploads());
+    }
+
+    /**
+     * PHP_SAPI cannot be changed at runtime, so the non-CLI arms are reached
+     * through the getSapi() seam.
+     *
+     * @param non-empty-string $sapi
+     */
+    #[DataProvider('sapiProvider')]
+    public function testIsValidSapiEnvironmentForUploadsBySapi(string $sapi, bool $expected): void
+    {
+        UploadedFileFactorySapiFixture::$sapi = $sapi;
+
+        self::assertSame($expected, UploadedFileFactorySapiFixture::isValidSapiEnvironmentForUploads());
     }
 }
