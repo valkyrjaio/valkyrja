@@ -33,6 +33,7 @@ use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
@@ -115,7 +116,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'route';
         $data = new HttpRoutingData(
             routes: [
-                $name => new Route(
+                $name => static fn (): RouteContract => new Route(
                     $path,
                     $name,
                     handler: RouteHandlerFixture::handle(...),

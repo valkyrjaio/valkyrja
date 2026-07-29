@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Unit\Validation\Rule\Orm;
 
 use Override;
 use PHPUnit\Framework\MockObject\MockObject;
-use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -162,8 +161,7 @@ final class EntityNotExistsTest extends TestCase
             ->with(self::callback(static function (Where $where): bool {
                 $value = $where->value;
 
-                return $value instanceof Value
-                    && $value->name === 'username'
+                return $value->name === 'username'
                     && $value->value === 'newuser';
             }))
             ->willReturn(null);

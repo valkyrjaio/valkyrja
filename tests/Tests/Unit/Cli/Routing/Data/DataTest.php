@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
-use stdClass;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Data\Route;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
-
-use function serialize;
 
 /**
  * Test the Data service.
@@ -33,8 +33,8 @@ final class DataTest extends TestCase
     public function testWithCommands(): void
     {
         $commands = [
-            'command1' => serialize(new stdClass()),
-            'command2' => serialize(new stdClass()),
+            'command1' => static fn (): RouteContract => new Route('command1', 'description', handler: RouteHandlerFixture::handle(...)),
+            'command2' => static fn (): RouteContract => new Route('command2', 'description', handler: RouteHandlerFixture::handle(...)),
         ];
 
         $data = new CliRoutingData($commands);

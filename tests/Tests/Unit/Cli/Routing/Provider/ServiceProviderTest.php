@@ -26,6 +26,7 @@ use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
@@ -114,7 +115,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'version';
         $data = new CliRoutingData(
             routes: [
-                $name => new Route(
+                $name => static fn (): RouteContract => new Route(
                     $name,
                     'description',
                     handler: RouteHandlerFixture::handle(...),

@@ -20,6 +20,7 @@ use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\EventData;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
@@ -101,10 +102,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $data         = new EventData(
             events: [$eventId => [$listenerName]],
             listeners: [
-                $listenerName => new Listener(
+                $listenerName => static fn (): ListenerContract => new Listener(
                     eventId: $eventId,
                     name: $listenerName,
-                    handler: static fn () => null
+                    handler: static fn (): null => null
                 ),
             ]
         );

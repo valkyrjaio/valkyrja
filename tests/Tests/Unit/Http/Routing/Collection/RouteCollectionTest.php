@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Collection;
 
 use Override;
-use stdClass;
 use TypeError;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
@@ -28,6 +27,7 @@ use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteNameExcepti
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRouteRegexException;
 use Valkyrja\Tests\Fixtures\Http\Routing\Collection\CollectionFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\CorruptRouteFactoryFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -121,7 +121,7 @@ final class RouteCollectionTest extends TestCase
 
         $data = new HttpRoutingData(
             routes: [
-                'test' => static fn () => new stdClass(),
+                'test' => CorruptRouteFactoryFixture::create(),
             ],
             paths: [
                 RequestMethod::GET->value => [
