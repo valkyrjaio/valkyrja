@@ -26,12 +26,12 @@ final class ProvidersAwareFixture
     /** @var array<string, mixed> */
     private array $objects = [];
 
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->objects[$name] ?? null;
     }
 
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this->objects[$name] = $value;
     }

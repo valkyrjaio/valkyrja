@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
+use Valkyrja\Tests\Fixtures\Http\Routing\Controller\ControllerFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 
 final class RouteProviderFixture implements HttpRouteProviderContract
@@ -31,7 +32,7 @@ final class RouteProviderFixture implements HttpRouteProviderContract
     #[Override]
     public function getControllerClasses(): array
     {
-        return ['AControllerClass'];
+        return [ControllerFixture::class];
     }
 
     #[Override]

@@ -15,13 +15,14 @@ namespace Valkyrja\Tests\Fixtures\Event\Provider;
 use Override;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
+use Valkyrja\Tests\Fixtures\Event\EventFixture;
 
 final class ListenerProviderFixture implements ListenerProviderContract
 {
     #[Override]
     public function getListenerClasses(): array
     {
-        return ['AListenerClass'];
+        return [EventFixture::class];
     }
 
     #[Override]

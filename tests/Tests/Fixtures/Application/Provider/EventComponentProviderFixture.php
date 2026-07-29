@@ -44,7 +44,7 @@ final class EventComponentProviderFixture implements ComponentProviderContract
     public function getEventProviders(ApplicationContract $app): array
     {
         return [
-            ListenerProviderFixture::class,
+            new ListenerProviderFixture(),
         ];
     }
 
