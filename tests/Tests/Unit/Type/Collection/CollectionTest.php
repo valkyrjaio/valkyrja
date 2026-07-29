@@ -222,7 +222,7 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertSame($this->valueAlt['bar'], $this->class->__get('bar'));
+        self::assertSame($this->valueAlt['bar'], $this->class->get('bar'));
     }
 
     /**
@@ -244,7 +244,7 @@ final class CollectionTest extends TestCase
 
         $this->class->__set('foo', 'test');
 
-        self::assertSame('test', $this->class->__get('foo'));
+        self::assertSame('test', $this->class->get('foo'));
     }
 
     /**

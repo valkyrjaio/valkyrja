@@ -26,9 +26,12 @@ trait PrivatePropertyTrait
      */
     protected function internalGetCallables(): array
     {
-        return [
+        /** @var array<non-empty-string, callable(): mixed> $callables */
+        $callables = [
             'private' => [$this, 'getPrivate'],
         ];
+
+        return $callables;
     }
 
     /**
@@ -36,9 +39,12 @@ trait PrivatePropertyTrait
      */
     protected function internalSetCallables(): array
     {
-        return [
+        /** @var array<non-empty-string, callable(mixed): void> $callables */
+        $callables = [
             'private' => [$this, 'setPrivate'],
         ];
+
+        return $callables;
     }
 
     /**
@@ -46,9 +52,12 @@ trait PrivatePropertyTrait
      */
     protected function internalIssetCallables(): array
     {
-        return [
+        /** @var array<non-empty-string, callable(): bool> $callables */
+        $callables = [
             'private' => [$this, 'issetPrivate'],
         ];
+
+        return $callables;
     }
 
     protected function getPrivate(): string
