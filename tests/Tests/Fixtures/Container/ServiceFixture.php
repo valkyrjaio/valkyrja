@@ -13,11 +13,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Container;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Tests\Fixtures\Container\Contract\ChildServiceFixtureContract;
+use Valkyrja\Tests\Fixtures\Container\Contract\ServiceFixtureContract;
 
 /**
  * Testable Service class.
  */
-final class ServiceFixture
+final class ServiceFixture implements ChildServiceFixtureContract, ServiceFixtureContract
 {
     public function __construct(
         public ContainerContract $container,

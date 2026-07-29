@@ -20,6 +20,7 @@ use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentExce
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
+use Valkyrja\Tests\Fixtures\Container\Contract\ServiceFixtureContract;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
 use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -68,7 +69,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
         $id        = ServiceFixture::class;
-        $alias     = 'alias';
+        $alias     = ServiceFixtureContract::class;
 
         $container->bind($id, [ServiceFixture::class, 'make']);
         $container->bindAlias($alias, $id);
