@@ -28,19 +28,6 @@ use function unlink;
 abstract class TestCase extends ValkyrjaTestCase
 {
     /**
-     * Pass a value that is deliberately outside a parameter's declared type.
-     *
-     * A guard that rejects bad input can only be reached with input the declared
-     * type forbids, and the declared type is worth keeping for every honest caller.
-     * Funnel the bad value through here so the intent is explicit and greppable at
-     * the call site, rather than suppressed.
-     */
-    protected static function invalidInput(mixed $value): mixed
-    {
-        return $value;
-    }
-
-    /**
      * Open a stream for a test.
      *
      * `fopen()` is typed `resource|false`, and every caller here opens a stream it

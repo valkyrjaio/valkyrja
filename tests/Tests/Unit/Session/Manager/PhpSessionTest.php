@@ -249,6 +249,6 @@ final class PhpSessionTest extends TestCase
 
         $this->expectException(SessionInvalidSessionIdException::class);
 
-        $session->setId(self::invalidInput(''));
+        $session->setId('');
     }
 }

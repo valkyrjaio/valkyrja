@@ -145,7 +145,7 @@ final class PhpRendererTest extends TestCase
         $exceptionThrown = false;
 
         try {
-            $renderer->renderFile(self::invalidInput(''));
+            $renderer->renderFile('');
         } catch (ViewInvalidPathException $e) {
             $exceptionThrown = true;
             self::assertStringContainsString('Path does not exist at', $e->getMessage());

@@ -64,7 +64,6 @@ final class BackgroundColorFormatTest extends TestCase
             BackgroundColor::WHITE,
         ];
 
-        /** @var BackgroundColor $color */
         foreach ($colors as $color) {
             $format = new BackgroundColorFormat($color);
 

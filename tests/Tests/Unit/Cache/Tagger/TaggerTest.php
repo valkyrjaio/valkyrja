@@ -171,7 +171,7 @@ final class TaggerTest extends TestCase
             ->expects($this->exactly(3))
             ->method('get')
             ->willReturnCallback(
-                static function (string $key): string|null {
+                static function (string $key): string {
                     if ($key === 'tag1') {
                         return '{"key1":"key1","key2":"key2"}';
                     }

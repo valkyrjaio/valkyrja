@@ -61,7 +61,6 @@ final class StyleFormatTest extends TestCase
             Style::CONCEAL,
         ];
 
-        /** @var Style $style */
         foreach ($styles as $style) {
             $format = new StyleFormat($style);
 

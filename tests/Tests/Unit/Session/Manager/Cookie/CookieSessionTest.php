@@ -195,7 +195,7 @@ final class CookieSessionTest extends TestCase
         $session = new CookieSession($request, 'session-id');
 
         // Set id to empty to trigger the early return on line 51
-        $session->setId(self::invalidInput(''));
+        $session->setId('');
         $session->start();
 
         // getCookieParams was only called once (during constructor), not during the second start()
