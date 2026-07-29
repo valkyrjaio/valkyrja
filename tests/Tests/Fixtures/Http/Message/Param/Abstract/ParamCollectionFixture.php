@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract;
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
 
 /**
- * @extends ParamCollection<scalar|self>
+ * @extends ParamCollection<non-empty-string|int, scalar|self|null>
  */
 final class ParamCollectionFixture extends ParamCollection
 {

@@ -50,6 +50,14 @@ final class AttributedFixture
         return 'Static Method';
     }
 
+    /**
+     * The private constant's value, so a test can check what the collector reflects over.
+     */
+    public static function getProtectedConst(): string
+    {
+        return self::PROTECTED_CONST;
+    }
+
     #[AttributeFixture(CollectorTest::VALUE19)]
     #[AttributeFixture(CollectorTest::VALUE20)]
     #[AttributeClassChildFixture(CollectorTest::VALUE21, CollectorTest::TWENTY_ONE)]

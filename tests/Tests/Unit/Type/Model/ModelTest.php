@@ -27,6 +27,7 @@ use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
+use function is_scalar;
 use function json_encode;
 use function strtoupper;
 
@@ -490,7 +491,7 @@ final class ModelTest extends TestCase
 
         $model->applyWithModifier(
             ['name' => 'value'],
-            static fn (string $property, mixed $value): string => strtoupper((string) $value),
+            static fn (string $property, mixed $value): string => strtoupper(is_scalar($value) ? (string) $value : ''),
         );
 
         self::assertSame('VALUE', $model->name);

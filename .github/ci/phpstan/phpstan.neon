@@ -12,8 +12,6 @@ parameters:
         - '#^Unsafe usage of new static\(\).$#'
         -
             identifier: missingType.generics
-        -
-            identifier: trait.unused
         # PHPUnit marks its assertions @no-named-arguments, but the suite calls them as
         # assertSame(expected: ..., actual: ...) so the argument order is unambiguous at
         # every call site. Readability wins here; revisit if PHPUnit ever renames a

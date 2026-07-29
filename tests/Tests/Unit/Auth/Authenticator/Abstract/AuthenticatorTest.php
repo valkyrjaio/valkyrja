@@ -281,7 +281,7 @@ final class AuthenticatorTest extends TestCase
         $this->expectException(AuthNoCurrentUserException::class);
         $this->expectExceptionMessage('No current user');
 
-        self::assertNull($this->authenticator->getAuthenticated());
+        $this->authenticator->getAuthenticated();
     }
 
     public function testUnauthenticateImpersonatedUser(): void

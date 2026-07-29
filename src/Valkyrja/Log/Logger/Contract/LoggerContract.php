@@ -87,7 +87,7 @@ interface LoggerContract extends LoggerInterface
     /**
      * Log a message.
      *
-     * @param LogLevel                $level   The log level
+     * @param mixed                   $level   The log level, enforced as a LogLevel at runtime
      * @param array<array-key, mixed> $context [optional] The context
      *
      * @psalm-suppress MoreSpecificImplementedParamType This is fine, we want the type hinting here

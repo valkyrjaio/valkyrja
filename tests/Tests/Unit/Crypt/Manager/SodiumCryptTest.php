@@ -181,7 +181,7 @@ final class SodiumCryptTest extends TestCase
             }
 
             #[Override]
-            protected function hex2bin(string $key): string|false
+            protected function hex2bin(string $key): string
             {
                 return 'keyasbytes';
             }
@@ -201,7 +201,7 @@ final class SodiumCryptTest extends TestCase
 
         $crypt = new class($key) extends SodiumCrypt {
             #[Override]
-            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string
             {
                 return 'decrypted';
             }

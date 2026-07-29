@@ -15,12 +15,16 @@ namespace Valkyrja\Tests\Fixtures\Type;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 
+use function is_scalar;
+
 /**
  * Type class to use to test abstract type.
+ *
+ * @extends Type<scalar|null>
  */
 final class TypeFixture extends Type
 {
-    public function __construct(mixed $subject)
+    public function __construct(string|int|float|bool|null $subject)
     {
         $this->subject = $subject;
     }
@@ -31,7 +35,7 @@ final class TypeFixture extends Type
     #[Override]
     public static function fromValue(mixed $value): static
     {
-        return new static($value);
+        return new static(is_scalar($value) ? $value : null);
     }
 
     #[Override]

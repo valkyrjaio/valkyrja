@@ -160,6 +160,8 @@ final class CollectorTest extends TestCase
 
         $this->testsForConst(...$attributes);
 
+        self::assertSame('Protected Const', AttributedFixture::getProtectedConst());
+
         $attributes = $this->attributes->forConstant(
             AttributedFixture::class,
             self::PROTECTED_CONST_NAME,
@@ -293,18 +295,7 @@ final class CollectorTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[AttributeFixture(1)]
-        #[AttributeFixture(2)]
-        #[AttributeClassChildFixture(3, 'three')]
-        function testFunction(
-            #[AttributeFixture(1)]
-            #[AttributeFixture(2)]
-            #[AttributeClassChildFixture(3, 'three')]
-            string $param
-        ): void {
-        }
-
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Fixtures\Attribute\attributedFixtureFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -315,7 +306,7 @@ final class CollectorTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Fixtures\Attribute\attributedFixtureFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(

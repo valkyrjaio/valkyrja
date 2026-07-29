@@ -60,7 +60,8 @@
       "Valkyrja\\Tests\\" : "tests/Tests"
     },
     "files" : [
-      "functions/helpers.php"
+      "functions/helpers.php",
+      "tests/Tests/Fixtures/Attribute/functions.php"
     ]
   },
   "suggest"           : {

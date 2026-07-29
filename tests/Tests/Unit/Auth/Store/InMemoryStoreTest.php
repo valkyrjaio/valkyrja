@@ -146,6 +146,7 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->store->retrieve($retrieval, User::class);
 
         self::assertTrue($this->hasRetrieveUser());
+        self::assertInstanceOf(User::class, $user);
         self::assertSame('test', $user->id);
         self::assertSame(self::USERNAME, $user[UserField::USERNAME]);
     }

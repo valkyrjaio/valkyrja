@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Array\Factory;
 
 use JsonException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Array\Factory\ArrayFactory;
 use Valkyrja\Type\Array\Throwable\Exception\ArrayInvalidEncodedArrayException;
@@ -32,6 +33,18 @@ final class ArrayFactoryTest extends TestCase
         ],
         'notarray' => 'notarrayvalue',
     ];
+
+    /**
+     * @return array<string, array{array<array-key, mixed>, bool}>
+     */
+    public static function keysAreStringsProvider(): array
+    {
+        return [
+            'all string keys'   => [['key' => 'a', 'key2' => 'b'], false],
+            'a leading int key' => [[1 => 'a', 'key2' => 'b'], true],
+            'all int keys'      => [[1 => 'a', 2 => 'b'], true],
+        ];
+    }
 
     public function testGetValueDotNotation(): void
     {
@@ -66,8 +79,8 @@ final class ArrayFactoryTest extends TestCase
     public function testFromString(): void
     {
         $arrEmpty    = [];
-        $result      = ArrayFactory::fromString(json_encode(self::VALUE));
-        $resultEmpty = ArrayFactory::fromString(json_encode($arrEmpty));
+        $result      = ArrayFactory::fromString(ArrayFactory::toString(self::VALUE));
+        $resultEmpty = ArrayFactory::fromString(ArrayFactory::toString($arrEmpty));
 
         self::assertSame(self::VALUE, $result);
         self::assertSame($arrEmpty, $resultEmpty);
@@ -135,18 +148,19 @@ final class ArrayFactoryTest extends TestCase
         self::assertFalse(ArrayFactory::determineIfKeysAreStrings(['key' => 'a', 0 => 'b']));
     }
 
-    public function testValidateKeysAreStringsDoesNotThrowForIntKeys(): void
+    /**
+     * @param array<array-key, mixed> $array
+     */
+    #[DataProvider('keysAreStringsProvider')]
+    public function testValidateKeysAreStrings(array $array, bool $throws): void
     {
-        $this->expectException(TypeInvalidArgumentException::class);
+        if ($throws) {
+            $this->expectException(TypeInvalidArgumentException::class);
+        } else {
+            $this->expectNotToPerformAssertions();
+        }
 
-        ArrayFactory::validateKeysAreStrings([1 => 'a', 'key2' => 'b']);
-    }
-
-    public function testValidateKeysAreStringsThrowsForStringKeys(): void
-    {
-        ArrayFactory::validateKeysAreStrings(['key' => 'a', 'key2' => 'b']);
-
-        $this->expectNotToPerformAssertions();
+        ArrayFactory::validateKeysAreStrings($array);
     }
 
     public function testDetermineIfKeysAreStringsWithEmptyArray(): void
