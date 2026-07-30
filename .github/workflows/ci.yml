@@ -26,13 +26,13 @@ jobs:
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@e3e801bdc0d696988d6fc331b6cf0d806b653abd
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     secrets: inherit
 
   trailing-newline-check:
     name: Trailing Newline Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@e3e801bdc0d696988d6fc331b6cf0d806b653abd
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     permissions:
       pull-requests: write
       contents: read
@@ -40,7 +40,7 @@ jobs:
 
   phparkitect:
     name: PHPArkitect
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'phparkitect'
       php-version: '8.4'
@@ -60,7 +60,7 @@ jobs:
 
   phpcodesniffer:
     name: PHP Code Sniffer
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'phpcodesniffer'
       php-version: '8.4'
@@ -80,7 +80,7 @@ jobs:
 
   phpcsfixer:
     name: PHP CS Fixer
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'phpcsfixer'
       php-version: '8.4'
@@ -100,7 +100,7 @@ jobs:
 
   phpstan:
     name: PHPStan
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'phpstan'
       php-version: '8.4'
@@ -150,7 +150,7 @@ jobs:
 
   psalm:
     name: Psalm
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'psalm'
       php-version: '8.4'
@@ -176,7 +176,7 @@ jobs:
 
   rector:
     name: Rector
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
     with:
       tool: 'rector'
       php-version: '8.4'
