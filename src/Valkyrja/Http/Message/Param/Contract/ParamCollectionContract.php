@@ -70,7 +70,7 @@ interface ParamCollectionContract
      *
      * @param array<array-key, mixed> $params The params
      *
-     * @return static
+     * @return static The collection, as the implementing subtype rather than this template
      */
     public function with(array $params): static;
 
@@ -79,7 +79,7 @@ interface ParamCollectionContract
      *
      * @param array<array-key, mixed> $params The params
      *
-     * @return static
+     * @return static The collection, as the implementing subtype rather than this template
      */
     public function withAdded(array $params): static;
 }

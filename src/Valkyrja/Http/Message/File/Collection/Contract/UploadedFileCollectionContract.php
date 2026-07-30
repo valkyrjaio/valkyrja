@@ -67,8 +67,6 @@ interface UploadedFileCollectionContract
      * accepted and every value is validated here, throwing on one that does not fit.
      *
      * @param array<array-key, mixed> $collection The collection
-     *
-     * @return static
      */
     public function with(array $collection): static;
 
