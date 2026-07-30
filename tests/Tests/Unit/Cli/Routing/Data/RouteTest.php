@@ -236,7 +236,7 @@ final class RouteTest extends TestCase
         self::assertSame($name, $route2->getName());
         self::assertSame($description, $route2->getDescription());
         self::assertSame($helpText2, $route2->getHelpText());
-        self::assertSame($helpText2()->getText(), $route2->getHelpTextMessage()->getText());
+        self::assertSame($this->getHelpText2()->getText(), $route2->getHelpTextMessage()->getText());
         self::assertSame($handler, $route2->getHandler());
         self::assertFalse($route2->hasArguments());
         self::assertEmpty($route2->getArguments());

@@ -225,6 +225,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->bind(
             PDO::class,
             static function (ContainerContract $container, array $arguments) use (&$dsn): PDO {
+                /** @var string|null $dsn */
                 $dsn = $arguments[0] ?? null;
 
                 return new PdoFixture('sqlite::memory:');

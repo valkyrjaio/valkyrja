@@ -407,7 +407,7 @@ final class TemplateTest extends TestCase
             ->method('renderFile')
             ->with(
                 'greeting',
-                self::callback(static fn ($variables) => $variables['name'] === 'World' && isset($variables['template']))
+                self::callback(static fn (array $variables): bool => $variables['name'] === 'World' && isset($variables['template']))
             )
             ->willReturn($renderedContent);
 

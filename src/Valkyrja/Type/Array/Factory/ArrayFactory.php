@@ -199,9 +199,13 @@ class ArrayFactory
     /**
      * Ensure an array's keys are strings.
      *
+     * A numeric string is not a valid array key in PHP -- it is normalized back to an
+     * int the moment it becomes one -- so a numeric key survives this as an int and the
+     * return cannot promise otherwise.
+     *
      * @param array<array-key, mixed> $array The array
      *
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
     public static function ensureKeysAreStrings(array $array): array
     {

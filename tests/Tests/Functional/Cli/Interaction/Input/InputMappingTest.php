@@ -260,7 +260,9 @@ final class InputMappingTest extends TestCase
             self::DEFAULT_COMMAND
         );
 
-        [$with, $without] = array_values($input->getOptions());
+        $options = array_values($input->getOptions());
+        $with    = $options[0] ?? self::fail('Expected a --with option.');
+        $without = $options[1] ?? self::fail('Expected a --without option.');
 
         self::assertTrue($with->hasValue());
         self::assertSame(expected: 'value', actual: $with->getValue());
