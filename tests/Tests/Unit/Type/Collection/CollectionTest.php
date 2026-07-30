@@ -222,7 +222,13 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertSame($this->valueAlt['bar'], $this->class->get('bar'));
+        /**
+         * @psalm-suppress UndefinedThisPropertyFetch
+         *
+         * A collection is a dynamic bag: its magic accessors take any name, so there
+         * is no property for Psalm to find. The call is the code under test.
+         */
+        self::assertSame($this->valueAlt['bar'], $this->class->__get('bar'));
     }
 
     /**
