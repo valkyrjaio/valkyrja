@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "valkyrja/rector" : "^26.1.11"
+    "valkyrja/rector" : "^26.2.0"
   },
   "scripts"           : {
     "fix"   : "vendor/bin/rector",
