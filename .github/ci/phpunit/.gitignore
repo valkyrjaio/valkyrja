@@ -8,3 +8,4 @@
 !phpunit.path-coverage.xml.dist
 !path-coverage-shards.sh
 !path-coverage-report.php
+!coverage-check.php

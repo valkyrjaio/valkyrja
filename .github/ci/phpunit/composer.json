@@ -7,7 +7,11 @@
   },
   "scripts"           : {
     "check"                  : "vendor/bin/phpunit --no-coverage --display-all-issues",
-    "coverage"               : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --coverage-text --stderr",
+    "coverage"               : [
+      "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --coverage-text --stderr",
+      "@coverage-check"
+    ],
+    "coverage-check"         : "php coverage-check.php",
     "path-coverage"          : "php -d xdebug.mode=coverage -d memory_limit=-1 vendor/bin/phpunit --path-coverage --coverage-text --stderr",
     "path-coverage-parallel" : "bash path-coverage-shards.sh",
     "path-coverage-shard"    : "bash path-coverage-shards.sh shard",
