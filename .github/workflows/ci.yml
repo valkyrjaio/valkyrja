@@ -40,8 +40,9 @@ jobs:
 
   phparkitect:
     name: PHPArkitect
-    uses: valkyrjaio/ci-phparkitect-php/.github/workflows/_workflow-call.yml@2ec6d1cb187ce2242270c0a3f4572b76de3b8db3
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'phparkitect'
       php-version: '8.4'
       paths: |
         ci:
@@ -59,8 +60,9 @@ jobs:
 
   phpcodesniffer:
     name: PHP Code Sniffer
-    uses: valkyrjaio/ci-phpcodesniffer-php/.github/workflows/_workflow-call.yml@71d50ad10a9cc2e9ef6b15f1d299bddff72b0027
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'phpcodesniffer'
       php-version: '8.4'
       paths: |
         ci:
@@ -78,8 +80,9 @@ jobs:
 
   phpcsfixer:
     name: PHP CS Fixer
-    uses: valkyrjaio/ci-phpcsfixer-php/.github/workflows/_workflow-call.yml@c787357a29476f7264e5c8a64057bf9d5c1f86f7
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'phpcsfixer'
       php-version: '8.4'
       paths: |
         ci:
@@ -97,8 +100,9 @@ jobs:
 
   phpstan:
     name: PHPStan
-    uses: valkyrjaio/ci-phpstan-php/.github/workflows/_workflow-call.yml@766dcf38e0d178e198c5dcbb1ec6bc55f4732599
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'phpstan'
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
       extensions: 'openswoole'
@@ -146,8 +150,9 @@ jobs:
 
   psalm:
     name: Psalm
-    uses: valkyrjaio/ci-psalm-php/.github/workflows/_workflow-call.yml@1f216925b5ff78a88c1728d734cab165071b11c2
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'psalm'
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
       extensions: 'openswoole'
@@ -171,8 +176,9 @@ jobs:
 
   rector:
     name: Rector
-    uses: valkyrjaio/ci-rector-php/.github/workflows/_workflow-call.yml@c104cba4c458c87eb63e1e70307eba81cb9532ca
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@1fdc1ccfcbd2305908853fa401ee04135be8e184
     with:
+      tool: 'rector'
       php-version: '8.4'
       paths: |
         ci:
