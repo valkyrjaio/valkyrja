@@ -75,6 +75,12 @@ final class ModelTest extends TestCase
 
         self::assertSame([], $model->asArray());
         self::assertFalse($model->__isset('test'));
+        /**
+         * @psalm-suppress UndefinedThisPropertyFetch
+         *
+         * The model's magic accessor takes any name, so there is no property for
+         * Psalm to find. Answering for an unknown one is the case under test.
+         */
         self::assertNull($model->__get('test'));
 
         $model->__set('protected', 'value');
