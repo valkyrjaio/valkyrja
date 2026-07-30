@@ -4,13 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       bump:
-        description: 'Version component to bump'
+        description: 'Version component to bump (auto, patch, feature, yearly, or rc)'
         required: true
         type: choice
+        default: auto
         options:
+          - auto
           - patch
-          - minor
-          - major
+          - feature
+          - yearly
           - rc
 
 run-name: "Release ${{ inputs.bump }} bump on ${{ github.ref_name }}"
