@@ -16,7 +16,6 @@ use Override;
 use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
-use Valkyrja\Log\Enum\LogLevel;
 
 interface LoggerContract extends LoggerInterface
 {
