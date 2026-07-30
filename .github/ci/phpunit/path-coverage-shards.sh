@@ -16,9 +16,12 @@
 # concurrently, each writing its own serialized coverage, then merges them with
 # phpcov. Wall-clock collapses to roughly the slowest single shard.
 #
-# Because every shard shares the same <source> denominator (all of src) and the
-# merged report is the union of all shards, the merged line/branch/path numbers
-# are identical to a serial full run -- no shard can drop classes from the total.
+# Because every shard shares the same <source> denominator (all of src), the merged
+# line numbers are identical to a serial full run -- no shard can drop classes from
+# the total. Branch coverage is NOT taken from phpcov's merge: Xdebug's block ids
+# are per-process, so merging on them invents branches. The report recomputes
+# branches from the shard files, re-keyed by line range. Path coverage cannot be
+# merged at all -- read it from a single shard.
 #
 # Usage:
 #   ./path-coverage-shards.sh              Run every shard in parallel, then merge + report.
@@ -27,9 +30,8 @@
 #
 # Environment:
 #   JOBS=<n>          Max concurrent shards (default: CPU count).
-#   REQUIRE_LINE=<n>  Fail if merged line coverage % is below n     (default: 100).
-#   REQUIRE_BRANCH=<n> Fail if merged branch coverage % is below n  (default: unset = report only).
-#   REQUIRE_PATH=<n>  Fail if merged path coverage % is below n     (default: unset = report only).
+#   REQUIRE_LINE=<n>  Fail if line coverage % is below n     (default: 100).
+#   REQUIRE_BRANCH=<n> Fail if branch coverage % is below n  (default: 100).
 #   GAPS=1            After reporting, list every file whose branch coverage < 100%.
 set -euo pipefail
 
@@ -108,11 +110,12 @@ run_merge() {
         --php "$MERGED_COV" \
         --clover "$LOG_DIR/path-coverage-clover.xml" \
         "$COV_DIR/" >/dev/null
+    # The report reads the shard files directly for branch coverage: Xdebug's block ids are not
+    # stable across processes, so phpcov's merged branch data is wrong (see path-coverage-report.php).
     REQUIRE_LINE="${REQUIRE_LINE:-100}" \
-    REQUIRE_BRANCH="${REQUIRE_BRANCH:-}" \
-    REQUIRE_PATH="${REQUIRE_PATH:-}" \
+    REQUIRE_BRANCH="${REQUIRE_BRANCH:-100}" \
     GAPS="${GAPS:-}" \
-        "$PHP_BIN" -d memory_limit=-1 path-coverage-report.php "$MERGED_COV"
+        "$PHP_BIN" -d memory_limit=-1 path-coverage-report.php "$MERGED_COV" "$COV_DIR"
 }
 
 run_all() {
