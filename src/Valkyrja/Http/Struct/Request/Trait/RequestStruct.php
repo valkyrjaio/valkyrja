@@ -14,6 +14,7 @@ namespace Valkyrja\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Type\Enum\Trait\Arrayable;
+use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
@@ -39,6 +40,8 @@ trait RequestStruct
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, RuleContract[]>
      */
     public static function getValidationRules(ServerRequestContract $request): array
     {
