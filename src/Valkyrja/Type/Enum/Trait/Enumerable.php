@@ -42,7 +42,7 @@ trait Enumerable
      *
      * @psalm-assert string|int  $value
      *
-     * @phpstan-assert string|int $value
+     * @phpstan-param string|int $value
      */
     protected static function validateValue(mixed $value): void
     {
@@ -53,22 +53,13 @@ trait Enumerable
 
     /**
      * Get an enum from all cases by a given value.
-     *
-     * The guard rules out a pure enum, which is the only kind without from(); neither
-     * analyzer follows that through to the call, and they disagree on which spelling
-     * to complain about, so PHPStan reads the guarded class string and Psalm is told
-     * to trust the guard.
-     *
-     * @psalm-suppress UndefinedMethod
      */
     protected static function fromBackedEnum(string|int $value): static|null
     {
-        $enum = static::class;
-
         // Need to check BackedEnum first because all Enums are UnitEnum
-        if (is_a($enum, BackedEnum::class, true)) {
+        if (is_a(static::class, BackedEnum::class, true)) {
             /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
-            $case = $enum::from($value);
+            $case = static::from($value);
 
             return $case;
         }
@@ -84,6 +75,7 @@ trait Enumerable
         // Fallback to iterating over all the cases and find a match
         foreach (static::cases() as $case) {
             if ($case->name === $value) {
+                /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
                 return $case;
             }
         }

@@ -31,7 +31,7 @@ interface RequestStructContract extends StructContract
      *      ]
      * </code>
      *
-     * @return array<non-empty-string, RuleContract[]>
+     * @return array<string, RuleContract[]>
      */
     public static function getValidationRules(ServerRequestContract $request): array;
 

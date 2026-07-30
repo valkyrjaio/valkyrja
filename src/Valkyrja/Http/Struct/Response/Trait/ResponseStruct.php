@@ -33,10 +33,7 @@ trait ResponseStruct
                 continue;
             }
 
-            /** @var scalar|object|array<array-key, mixed>|null $item */
-            $item = $data[$key] ?? null;
-
-            $structured[$value] = $item;
+            $structured[$value] = $data[$key] ?? null;
         }
 
         return $structured;

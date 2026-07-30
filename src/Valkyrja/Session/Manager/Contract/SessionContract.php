@@ -29,7 +29,7 @@ interface SessionContract
     /**
      * Set the session id.
      *
-     * Any string may be given; validateId() rejects one the driver cannot use.
+     * @param non-empty-string $id The session id
      */
     public function setId(string $id): void;
 

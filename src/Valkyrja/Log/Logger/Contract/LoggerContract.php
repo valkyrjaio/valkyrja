@@ -16,6 +16,7 @@ use Override;
 use Psr\Log\LoggerInterface;
 use Stringable;
 use Throwable;
+use Valkyrja\Log\Enum\LogLevel;
 
 interface LoggerContract extends LoggerInterface
 {
@@ -86,7 +87,7 @@ interface LoggerContract extends LoggerInterface
     /**
      * Log a message.
      *
-     * @param mixed                   $level   The log level, enforced as a LogLevel at runtime
+     * @param LogLevel                $level   The log level
      * @param array<array-key, mixed> $context [optional] The context
      *
      * @psalm-suppress MoreSpecificImplementedParamType This is fine, we want the type hinting here

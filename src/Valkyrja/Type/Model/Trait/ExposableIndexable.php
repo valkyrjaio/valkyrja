@@ -21,8 +21,6 @@ trait ExposableIndexable
      * @inheritDoc
      *
      * @param string ...$properties [optional] An array of properties to return
-     *
-     * @return array<int, mixed>
      */
     public function asExposedIndexedArray(string ...$properties): array
     {
@@ -31,8 +29,6 @@ trait ExposableIndexable
 
     /**
      * @inheritDoc
-     *
-     * @return array<int, mixed>
      */
     public function asExposedChangedIndexedArray(): array
     {

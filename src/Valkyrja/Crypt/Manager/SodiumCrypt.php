@@ -158,7 +158,7 @@ class SodiumCrypt implements CryptContract
     /**
      * Get a decoded encrypted message.
      *
-     * Any string may be decoded; validateDecoded() rejects what does not decode.
+     * @param non-empty-string $encrypted The encrypted message
      *
      * @throws CryptDecodeFailureException
      */
@@ -307,6 +307,8 @@ class SodiumCrypt implements CryptContract
     }
 
     /**
+     * @param non-empty-string $key The key
+     *
      * @return string|false
      */
     protected function hex2bin(string $key): string|false

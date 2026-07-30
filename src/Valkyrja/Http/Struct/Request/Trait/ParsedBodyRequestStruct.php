@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Request\Trait;
 
-use Valkyrja\Http\Message\Param\Contract\ParsedBodyParamCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 trait ParsedBodyRequestStruct
@@ -21,8 +20,6 @@ trait ParsedBodyRequestStruct
 
     /**
      * @inheritDoc
-     *
-     * @return array<non-empty-string|int, string|ParsedBodyParamCollectionContract>
      */
     protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {
@@ -31,8 +28,6 @@ trait ParsedBodyRequestStruct
 
     /**
      * @inheritDoc
-     *
-     * @return array<non-empty-string|int, string|ParsedBodyParamCollectionContract>
      */
     protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array
     {

@@ -127,7 +127,7 @@ class EventDispatcher implements EventDispatcherContract
     /**
      * Get an event from a given id.
      *
-     * @param string                  $eventId   The event class name, which need not resolve to a loaded class
+     * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id

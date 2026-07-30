@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Struct\Request\Trait;
 
-use Valkyrja\Http\Message\Param\Contract\ParsedJsonParamCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Struct\Throwable\Exception\HttpStructJsonServerRequestExpectedException;
@@ -25,8 +24,6 @@ trait JsonRequestStruct
 
     /**
      * @inheritDoc
-     *
-     * @return array<non-empty-string|int, scalar|ParsedJsonParamCollectionContract|null>
      */
     protected static function getOnlyParamsFromRequest(
         JsonServerRequestContract|ServerRequestContract $request,
@@ -39,8 +36,6 @@ trait JsonRequestStruct
 
     /**
      * @inheritDoc
-     *
-     * @return array<non-empty-string|int, scalar|ParsedJsonParamCollectionContract|null>
      */
     protected static function getExceptParamsFromRequest(
         JsonServerRequestContract|ServerRequestContract $request,

@@ -44,10 +44,7 @@ interface ParamCollectionContract
     /**
      * Get only the specified params.
      *
-     * A key outside the collection's key type simply matches nothing, so the
-     * lookups below accept any key rather than only a storable one.
-     *
-     * @param string|int ...$keys The param keys
+     * @param K ...$keys The param keys
      *
      * @return array<K, T>
      */
@@ -56,7 +53,7 @@ interface ParamCollectionContract
     /**
      * Get all the params except the specified ones.
      *
-     * @param string|int ...$keys The param names
+     * @param K ...$keys The param names
      *
      * @return array<K, T>
      */
@@ -65,21 +62,14 @@ interface ParamCollectionContract
     /**
      * Get a new instance with the specified params.
      *
-     * Params usually arrive unvalidated -- straight off a request -- so any array is
-     * accepted and every value is validated here, throwing on one that does not fit.
-     *
-     * @param array<array-key, mixed> $params The params
-     *
-     * @return static The collection, as the implementing subtype rather than this template
+     * @param array<K, T> $params The params
      */
     public function with(array $params): static;
 
     /**
      * Get a new instance with the added params.
      *
-     * @param array<array-key, mixed> $params The params
-     *
-     * @return static The collection, as the implementing subtype rather than this template
+     * @param array<K, T> $params The params
      */
     public function withAdded(array $params): static;
 }

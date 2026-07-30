@@ -18,13 +18,6 @@ use Valkyrja\Container\Throwable\Exception\ContainerInvalidPublishCallbackExcept
 
 use function is_callable;
 
-/**
- * Publisher callbacks are handed $this, so only a container may carry this trait.
- *
- * @phpstan-require-implements ContainerContract
- *
- * @psalm-require-implements ContainerContract
- */
 trait ProvidersAware
 {
     /**

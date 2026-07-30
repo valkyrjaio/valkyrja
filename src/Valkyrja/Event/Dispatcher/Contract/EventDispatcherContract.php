@@ -36,7 +36,7 @@ interface EventDispatcherContract extends EventDispatcherInterface
     /**
      * Dispatch an event by its id.
      *
-     * @param string                  $eventId   The event class name, which need not resolve to a loaded class
+     * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id
@@ -47,7 +47,7 @@ interface EventDispatcherContract extends EventDispatcherInterface
     /**
      * Dispatch an event by its id if it has listeners.
      *
-     * @param string                  $eventId   The event class name, which need not resolve to a loaded class
+     * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id

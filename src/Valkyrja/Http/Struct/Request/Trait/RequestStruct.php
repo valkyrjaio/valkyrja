@@ -14,7 +14,6 @@ namespace Valkyrja\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Type\Enum\Trait\Arrayable;
-use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
@@ -40,8 +39,6 @@ trait RequestStruct
 
     /**
      * @inheritDoc
-     *
-     * @return array<non-empty-string, RuleContract[]>
      */
     public static function getValidationRules(ServerRequestContract $request): array
     {
@@ -61,8 +58,6 @@ trait RequestStruct
      *
      * @param ServerRequestContract $request   The request
      * @param string|int            ...$values The values
-     *
-     * @return array<array-key, mixed>
      */
     abstract protected static function getOnlyParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 
@@ -71,8 +66,6 @@ trait RequestStruct
      *
      * @param ServerRequestContract $request   The request
      * @param string|int            ...$values The values
-     *
-     * @return array<array-key, mixed>
      */
     abstract protected static function getExceptParamsFromRequest(ServerRequestContract $request, string|int ...$values): array;
 }
