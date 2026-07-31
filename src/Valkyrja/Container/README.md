@@ -55,13 +55,50 @@ an alias resolves the underlying service transparently.
 
 ## Binding Services
 
-Both `bind()` and `bindSingleton()` accept any `callable` with the signature
-`(ContainerContract $container, array $arguments): object`. The recommended
-convention is a static `make()` factory method passed as an array callable:
+A **service provider** registers a service. This is the convention the framework
+follows everywhere. The provider holds the registration logic: a `publishers()`
+map, plus one static `publishX(ContainerContract $container): void` callback for
+each service it provides. The callback constructs the service and hands it to the
+container:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
+class UserServiceProvider implements ServiceProviderContract
+{
+    public function publishers(): array
+    {
+        return [
+            UserRepositoryContract::class => [self::class, 'publishUserRepository'],
+        ];
+    }
+
+    public static function publishUserRepository(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            UserRepositoryContract::class,
+            new UserRepository(
+                $container->getSingleton(DatabaseContract::class)
+            )
+        );
+    }
+}
+```
+
+This splits the work in two. The provider owns registration. The service class
+owns only its own behavior — it implements its contract and carries no
+registration code. `UserRepository` above is a plain class with a constructor.
+
+[Service Providers](#service-providers) describes the full pattern.
+
+### The Callable Signature
+
+`bind()` and `bindSingleton()` accept any `callable` with the signature
+`(ContainerContract $container, array $arguments): object`. A static factory
+method on the service class satisfies that signature, so you can pass one as an
+array callable:
+
+```php
 class UserRepository implements UserRepositoryContract
 {
     public static function make(ContainerContract $container, array $arguments = []): static
@@ -75,17 +112,20 @@ class UserRepository implements UserRepositoryContract
 $container->bind(UserRepositoryContract::class, [UserRepository::class, 'make']);
 ```
 
-This design gives each class explicit ownership of its own instantiation, rather
-than relying on reflection-based autowiring. There is no magic — every
-dependency is declared in code.
+This is a valid alternative, not the default. It moves registration into the
+service class, which otherwise has none. Prefer a service provider unless a
+class genuinely owns a construction step that callers must reuse.
+
+Neither approach uses reflection-based autowiring. Every dependency is declared
+in code.
 
 ### Binding Methods
 
 **`bind(string $id, callable $callable)`** — Binds a service ID to a callable
 factory. The callable receives the container and an optional arguments array and
 must return an object. Every call to `getService($id)` invokes the callable and
-returns a fresh instance. The recommended convention is to pass an array callable
-pointing to a static `make()` factory: `[MyClass::class, 'make']`.
+returns a fresh instance. Any callable works — a closure, an invokable object, or
+an array callable that points to a static factory method.
 
 **`bindSingleton(string $id, callable $callable)`** — Same as `bind()`, but
 singleton-scoped. The callable is invoked once on first resolution and the result
@@ -153,7 +193,7 @@ register them. The keys are the service IDs the provider is responsible for;
 the container uses this map to defer loading until a service is first requested:
 
 ```php
-public static function publishers(): array
+public function publishers(): array
 {
     return [
         CacheContract::class => [self::class, 'publishCache'],
@@ -296,6 +336,9 @@ Both methods check the child's own state first, then fall back to the parent.
 
 ### Using a Service Provider
 
+This is the default. The provider registers the service. Each implementation is
+a plain class with a constructor and no registration code.
+
 ```php
 // 1. The contract
 interface NotifierContract
@@ -303,17 +346,10 @@ interface NotifierContract
     public function notify(string $message): void;
 }
 
-// 2. One possible implementation with a static make factory
+// 2. One possible implementation
 class SlackNotifier implements NotifierContract
 {
     public function __construct(private string $webhookUrl) {}
-
-    public static function make(ContainerContract $container, array $arguments = []): static
-    {
-        $config = $container->getSingleton(HttpConfig::class);
-
-        return new static($config->key); // illustrative
-    }
 
     public function notify(string $message): void
     {
@@ -321,7 +357,7 @@ class SlackNotifier implements NotifierContract
     }
 }
 
-// 2. Another possible implementation
+// 3. Another possible implementation
 class TeamsNotifier implements NotifierContract
 {
     public function __construct() {}
@@ -332,10 +368,10 @@ class TeamsNotifier implements NotifierContract
     }
 }
 
-// 3. Using a service provider
+// 4. The service provider — it owns the registration
 class NotifierServiceProvider implements ServiceProviderContract
 {
-    public static function publishers(): array
+    public function publishers(): array
     {
         return [
             NotifierContract::class => [self::class, 'publishNotifier'],
@@ -346,22 +382,28 @@ class NotifierServiceProvider implements ServiceProviderContract
     {
         $container->setSingleton(
             NotifierContract::class,
-            TeamsNotifier::make($container)
+            new TeamsNotifier()
         );
     }
 }
 
-// 4. The component provider
+// 5. The component provider
 class AppComponentProvider implements ComponentProviderContract
 {
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
-        return [NotifierServiceProvider::class];
+        return [new NotifierServiceProvider()];
     }
 }
 ```
 
+To swap the implementation, change the publish callback. The contract, the
+callers, and the two notifier classes stay as they are.
+
 ### Binding without a Service Provider
+
+This is the alternative. Here the service class supplies a static factory, and
+the component provider binds it directly.
 
 ```php
 // 1. The contract
@@ -370,7 +412,7 @@ interface NotifierContract
     public function notify(string $message): void;
 }
 
-// 2 The implementation with a custom make method
+// 2. The implementation with a static make factory
 class SlackNotifier implements NotifierContract
 {
     public function __construct(private string $webhookUrl) {}
@@ -391,7 +433,7 @@ class SlackNotifier implements NotifierContract
 // 3. The component provider
 class AppComponentProvider implements ComponentProviderContract
 {
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         $app->getContainer()->bindSingleton(
             NotifierContract::class,
