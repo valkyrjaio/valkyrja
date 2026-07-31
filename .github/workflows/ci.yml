@@ -28,13 +28,13 @@ jobs:
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@3812be12684beea1fbb95888e437a220f0813342
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@d8c49368481b9270bc9e089b61731dc9b9561be8
     secrets: inherit
 
   trailing-newline-check:
     name: Trailing Newline Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@3812be12684beea1fbb95888e437a220f0813342
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@d8c49368481b9270bc9e089b61731dc9b9561be8
     permissions:
       pull-requests: write
       contents: read
@@ -44,7 +44,7 @@ jobs:
   # as `CI / Tools / <Tool> / …`.
   tools:
     name: Tools
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@3812be12684beea1fbb95888e437a220f0813342
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@d8c49368481b9270bc9e089b61731dc9b9561be8
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
