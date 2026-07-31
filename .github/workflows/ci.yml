@@ -44,7 +44,7 @@ jobs:
   # as `CI / Tools / <Tool> / …`.
   tools:
     name: Tools
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@1478335023fb7789f393f598134e00b43907f3f2
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@5a363c084b79ead7d38cd99413e8ab701d5ccbeb
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
