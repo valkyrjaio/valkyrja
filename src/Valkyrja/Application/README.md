@@ -318,36 +318,36 @@ class AppComponentProvider implements ComponentProviderContract
     // This component's own registrations are processed first, then the
     // sub-components load after — so this component's bindings take
     // precedence and can override anything a dependency declares.
-    public static function getComponentProviders(ApplicationContract $app): array
+    public function getComponentProviders(ApplicationContract $app): array
     {
         return [
-            SomeDependencyComponentProvider::class,
+            new SomeDependencyComponentProvider(),
         ];
     }
 
-    public static function getContainerProviders(ApplicationContract $app): array
+    public function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            CacheServiceProvider::class,
-            MailServiceProvider::class,
+            new CacheServiceProvider(),
+            new MailServiceProvider(),
         ];
     }
 
-    public static function getHttpProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
         return [
-            AppRouteProvider::class,
+            new AppRouteProvider(),
         ];
     }
 
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [
-            AppEventProvider::class,
+            new AppEventProvider(),
         ];
     }
 
-    public static function getCliProviders(ApplicationContract $app): array
+    public function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
@@ -411,8 +411,8 @@ base `Config`.
 use Valkyrja\Application\Provider\ApplicationComponentProvider;
 
 new Config(providers: [
-    ApplicationComponentProvider::class,
-    AppComponentProvider::class,
+    new ApplicationComponentProvider(),
+    new AppComponentProvider(),
 ]);
 ```
 
@@ -429,8 +429,8 @@ does not need to generate or serve HTTP routes.
 use Valkyrja\Application\Provider\CliApplicationComponentProvider;
 
 new CliConfig(providers: [
-    CliApplicationComponentProvider::class,
-    AppComponentProvider::class,
+    new CliApplicationComponentProvider(),
+    new AppComponentProvider(),
 ]);
 ```
 
@@ -449,8 +449,8 @@ actually serves HTTP responses.
 use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
 
 new CliConfig(providers: [
-    CliWithHttpApplicationComponentProvider::class,
-    AppComponentProvider::class,
+    new CliWithHttpApplicationComponentProvider(),
+    new AppComponentProvider(),
 ]);
 ```
 
@@ -468,8 +468,8 @@ the web process itself.
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 
 new HttpConfig(providers: [
-    HttpApplicationComponentProvider::class,
-    AppComponentProvider::class,
+    new HttpApplicationComponentProvider(),
+    new AppComponentProvider(),
 ]);
 ```
 

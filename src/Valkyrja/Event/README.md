@@ -346,10 +346,10 @@ use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
 class AppComponentProvider implements ComponentProviderContract
 {
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
         return [
-            AppEventProvider::class,
+            new AppEventProvider(),
         ];
     }
 }
@@ -425,9 +425,9 @@ class AppEventProvider implements ListenerProviderContract
 // 4. The component provider
 class AppComponentProvider implements ComponentProviderContract
 {
-    public static function getEventProviders(ApplicationContract $app): array
+    public function getEventProviders(ApplicationContract $app): array
     {
-        return [AppEventProvider::class];
+        return [new AppEventProvider()];
     }
 }
 
