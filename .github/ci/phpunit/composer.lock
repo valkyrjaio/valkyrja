@@ -855,16 +855,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.2.3",
+            "version": "14.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "82f6e49ff224e2cde923d74425e583a883910783"
+                "reference": "048a5c12bdb4580f4767ce2761793a16b170fbe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/82f6e49ff224e2cde923d74425e583a883910783",
-                "reference": "82f6e49ff224e2cde923d74425e583a883910783",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/048a5c12bdb4580f4767ce2761793a16b170fbe4",
+                "reference": "048a5c12bdb4580f4767ce2761793a16b170fbe4",
                 "shasum": ""
             },
             "require": {
@@ -921,7 +921,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.3"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.4"
             },
             "funding": [
                 {
@@ -941,7 +941,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-06T15:04:02+00:00"
+            "time": "2026-07-30T17:01:07+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3978,16 +3978,16 @@
         },
         {
             "name": "valkyrja/phpunit",
-            "version": "v26.4.2",
+            "version": "v26.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpunit-php.git",
-                "reference": "ca27f8c28932012e8ec6e25c9c949bc410e68b02"
+                "reference": "51c862c78021a4b747f2e60e4ccac6b0983c8ad5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/ca27f8c28932012e8ec6e25c9c949bc410e68b02",
-                "reference": "ca27f8c28932012e8ec6e25c9c949bc410e68b02",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/51c862c78021a4b747f2e60e4ccac6b0983c8ad5",
+                "reference": "51c862c78021a4b747f2e60e4ccac6b0983c8ad5",
                 "shasum": ""
             },
             "require": {
@@ -4023,9 +4023,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpunit-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.4.2"
+                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.5.0"
             },
-            "time": "2026-06-04T16:47:14+00:00"
+            "time": "2026-07-31T08:49:24+00:00"
         }
     ],
     "aliases": [],
