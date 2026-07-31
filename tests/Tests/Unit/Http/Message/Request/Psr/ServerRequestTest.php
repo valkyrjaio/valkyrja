@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
@@ -72,16 +73,18 @@ final class ServerRequestTest extends TestCase
 
     public function testUploadedFiles(): void
     {
+        $file = Directory::storagePath('/serverRequestTest-testUploadedFiles.txt');
+
         $uploadedFiles = [
-            new UploadedFile(file: 'test'),
-            new UploadedFile(file: 'test'),
+            new UploadedFile(file: $file),
+            new UploadedFile(file: $file),
         ];
         $request       = new ServerRequest()->withUploadedFiles(UploadedFileCollection::fromArray($uploadedFiles));
         $psrRequest    = new PsrServerRequest($request);
 
         $uploadedFiles2 = [
-            new PsrUploadedFile(new UploadedFile(file: 'test')),
-            new PsrUploadedFile(new UploadedFile(file: 'test')),
+            new PsrUploadedFile(new UploadedFile(file: $file)),
+            new PsrUploadedFile(new UploadedFile(file: $file)),
         ];
 
         $psrRequest2 = $psrRequest->withUploadedFiles($uploadedFiles2);
