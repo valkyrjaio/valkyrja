@@ -1,6 +1,30 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.6.1...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.7.0...26.x)
+
+## [v26.7.0](https://github.com/valkyrjaio/valkyrja/compare/v26.6.1...v26.7.0) - 2026-07-31
+
+* [GitHub] Update .github workflow refs to v26.12.2 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/952
+* [Composer] Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/953
+* [CI] Recompute merged coverage from the shard files by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/955
+* [Workflow] ci: Rerun checks when a pull request is edited or retargeted by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/956
+* [Workflow] ci: Run the full suite on pull request edits by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/957
+* [Workflow] ci: Migrate the CI tool jobs to the consolidated reusable workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/959
+* [Workflow] ci: Update the release bump input to the conventional options by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/958
+* [Process] docs: Align the versioning and release process doc with the current scheme by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/962
+* [Workflow] ci: Update .github workflow refs to v26.13.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/963
+* [Container] docs: Document the service provider as the registration convention by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/966
+* [Validation] docs: Correct the parsed body accessor in the example by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/968
+* [Provider] docs: Register providers as instances on instance methods by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/967
+* [Application] fix!: Require the config in the application kernel by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/969
+* [Workflow] ci: Adopt the aggregate CI tools workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/964
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/965
+* [Workflow] ci: Update .github workflow refs to v26.14.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/984
+* [Workflow] ci: Update .github workflow refs to v26.14.1 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/985
+* [Workflow] ci: Update .github workflow refs to v26.15.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/986
+* [Workflow] ci: Update .github workflow refs to v26.16.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/987
+* [Workflow] ci: Ensure required workflow files by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/988
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/989
 
 ## [v26.6.1](https://github.com/valkyrjaio/valkyrja/compare/v26.6.0...v26.6.1) - 2026-07-28
 
