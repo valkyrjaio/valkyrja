@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [ 'master', '*.x' ]
+
   pull_request:
     # `edited` is included so a pull request that GitHub auto-retargets — which happens to a stacked
     # pull request the moment its parent merges — re-runs its checks against the new base. A
@@ -23,6 +24,7 @@ permissions:
   contents: read
 
 jobs:
+
   commit-message-check:
     name: Commit Message Check
     if: github.event_name == 'pull_request'
@@ -38,158 +40,24 @@ jobs:
       contents: read
     secrets: inherit
 
-  phparkitect:
-    name: PHPArkitect
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
+  # A check's name is built from every job name down the call chain, so this composes
+  # as `CI / Tools / <Tool> / …`.
+  tools:
+    name: Tools
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@5a363c084b79ead7d38cd99413e8ab701d5ccbeb
     with:
-      tool: 'phparkitect'
-      php-version: '8.4'
-      paths: |
-        ci:
-          - '.github/ci/phparkitect/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/phparkitect/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  phpcodesniffer:
-    name: PHP Code Sniffer
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
-    with:
-      tool: 'phpcodesniffer'
-      php-version: '8.4'
-      paths: |
-        ci:
-          - '.github/ci/phpcodesniffer/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/phpcodesniffer/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  phpcsfixer:
-    name: PHP CS Fixer
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
-    with:
-      tool: 'phpcsfixer'
-      php-version: '8.4'
-      paths: |
-        ci:
-          - '.github/ci/phpcsfixer/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/phpcsfixer/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  phpstan:
-    name: PHPStan
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
-    with:
-      tool: 'phpstan'
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
       extensions: 'openswoole'
       composer-options: '--ignore-platform-req=ext-openswoole'
-      paths: |
-        ci:
-          - '.github/ci/phpstan/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/phpstan/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  phpunit:
-    name: PHPUnit
-    uses: valkyrjaio/ci-phpunit-php/.github/workflows/_workflow-call.yml@ca27f8c28932012e8ec6e25c9c949bc410e68b02
-    with:
       php-versions: '["8.4", "8.5", "8.6"]'
       php-version-bleeding-edge: '8.6'
-      additional-directory: '.github/ci/root-and-suggested'
-      extensions: 'mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql, openswoole, xdebug'
-      composer-options: '--ignore-platform-req=ext-openswoole'
-      paths: |
-        ci:
-          - '.github/ci/phpunit/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/phpunit/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  psalm:
-    name: Psalm
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
-    with:
-      tool: 'psalm'
-      php-version: '8.4'
-      additional-directory: '.github/ci/root-and-suggested'
-      extensions: 'openswoole'
-      composer-options: '--ignore-platform-req=ext-openswoole'
-      run-script: 'psalm-shepherd-with-stats'
-      paths: |
-        ci:
-          - '.github/ci/psalm/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/psalm/**'
-          - '.github/ci/root-and-suggested/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
-    secrets: inherit
-
-  rector:
-    name: Rector
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tool.yml@ddea291816127b905f6e00006e998f4a6851c1e8
-    with:
-      tool: 'rector'
-      php-version: '8.4'
-      paths: |
-        ci:
-          - '.github/ci/rector/**'
-          - '.github/workflows/ci.yml'
-        files:
-          - '.github/ci/rector/**'
-          - '.github/workflows/ci.yml'
-          - 'bin/valkyrja'
-          - 'functions/**/*.php'
-          - 'src/**/*.php'
-          - 'tests/**/*.php'
-          - 'composer.json'
+      phpunit-extensions: 'mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql, openswoole, xdebug'
+      psalm-run-script: 'psalm-shepherd-with-stats'
+      source-paths: |
+        bin/valkyrja
+        functions/**/*.php
+        src/**/*.php
+        tests/**/*.php
+        composer.json
     secrets: inherit
