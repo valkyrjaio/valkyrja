@@ -115,8 +115,8 @@ use Valkyrja\Validation\Rule\String\Min;
 use Valkyrja\Validation\Rule\String\Max;
 use Valkyrja\Validation\Validator\Validator;
 
-$email = $request->getParsedBodyParam('email');
-$name  = $request->getParsedBodyParam('name');
+$email = $request->getParsedBody()->get('email');
+$name  = $request->getParsedBody()->get('name');
 
 $validator = new Validator();
 $validator->setRules([
