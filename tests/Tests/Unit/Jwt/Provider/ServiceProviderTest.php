@@ -14,13 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtEdDsaConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtHsConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtRsConfigContract;
+use Valkyrja\Jwt\Data\JwtConfig;
+use Valkyrja\Jwt\Data\JwtEdDsaConfig;
+use Valkyrja\Jwt\Data\JwtHsConfig;
+use Valkyrja\Jwt\Data\JwtRsConfig;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Jwt\Provider\JwtServiceProvider;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
+use Valkyrja\Tests\Fixtures\Jwt\Data\JwtConfigFixture;
 
 /**
  * Test the ServiceProvider.
@@ -32,9 +41,95 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
+        self::assertArrayHasKey(JwtConfigContract::class, new JwtServiceProvider()->publishers());
+        self::assertArrayHasKey(JwtHsConfigContract::class, new JwtServiceProvider()->publishers());
+        self::assertArrayHasKey(JwtRsConfigContract::class, new JwtServiceProvider()->publishers());
+        self::assertArrayHasKey(JwtEdDsaConfigContract::class, new JwtServiceProvider()->publishers());
         self::assertArrayHasKey(JwtContract::class, new JwtServiceProvider()->publishers());
         self::assertArrayHasKey(FirebaseJwt::class, new JwtServiceProvider()->publishers());
         self::assertArrayHasKey(NullJwt::class, new JwtServiceProvider()->publishers());
+    }
+
+    public function testPublishConfig(): void
+    {
+        $callback = new JwtServiceProvider()->publishers()[JwtConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtConfigContract::class, $config = $this->container->getSingleton(JwtConfigContract::class));
+        self::assertSame(FirebaseJwt::class, $config->defaultJwt);
+        self::assertSame(Algorithm::HS256, $config->algorithm);
+    }
+
+    public function testPublishConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new JwtConfigFixture(algorithm: Algorithm::RS256));
+
+        $callback = new JwtServiceProvider()->publishers()[JwtConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtConfigContract::class, $config = $this->container->getSingleton(JwtConfigContract::class));
+        self::assertSame(NullJwt::class, $config->defaultJwt);
+        self::assertSame(Algorithm::RS256, $config->algorithm);
+    }
+
+    public function testPublishHsConfig(): void
+    {
+        $callback = new JwtServiceProvider()->publishers()[JwtHsConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtHsConfigContract::class, $config = $this->container->getSingleton(JwtHsConfigContract::class));
+        self::assertSame('key', $config->hsKey);
+    }
+
+    public function testPublishHsConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new JwtConfigFixture());
+
+        $callback = new JwtServiceProvider()->publishers()[JwtHsConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtHsConfigContract::class, $config = $this->container->getSingleton(JwtHsConfigContract::class));
+        self::assertSame('test-key', $config->hsKey);
+    }
+
+    public function testPublishRsConfig(): void
+    {
+        $callback = new JwtServiceProvider()->publishers()[JwtRsConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtRsConfigContract::class, $config = $this->container->getSingleton(JwtRsConfigContract::class));
+        self::assertSame('private-key', $config->rsPrivateKey);
+    }
+
+    public function testPublishRsConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new JwtConfigFixture());
+
+        $callback = new JwtServiceProvider()->publishers()[JwtRsConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtRsConfigContract::class, $config = $this->container->getSingleton(JwtRsConfigContract::class));
+        self::assertSame('test-rs-private', $config->rsPrivateKey);
+    }
+
+    public function testPublishEdDsaConfig(): void
+    {
+        $callback = new JwtServiceProvider()->publishers()[JwtEdDsaConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtEdDsaConfigContract::class, $config = $this->container->getSingleton(JwtEdDsaConfigContract::class));
+        self::assertSame('private-key', $config->edDsaPrivateKey);
+    }
+
+    public function testPublishEdDsaConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new JwtConfigFixture());
+
+        $callback = new JwtServiceProvider()->publishers()[JwtEdDsaConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(JwtEdDsaConfigContract::class, $config = $this->container->getSingleton(JwtEdDsaConfigContract::class));
+        self::assertSame('test-eddsa-private', $config->edDsaPrivateKey);
     }
 
     /**
@@ -42,6 +137,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishJwt(): void
     {
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig());
         $this->container->setSingleton(FirebaseJwt::class, self::createStub(FirebaseJwt::class));
 
         $callback = new JwtServiceProvider()->publishers()[JwtContract::class];
@@ -50,8 +146,25 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(FirebaseJwt::class, $this->container->getSingleton(JwtContract::class));
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testPublishJwtWithConfiguredDefault(): void
+    {
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig(defaultJwt: NullJwt::class));
+        $this->container->setSingleton(NullJwt::class, self::createStub(NullJwt::class));
+
+        $callback = new JwtServiceProvider()->publishers()[JwtContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(NullJwt::class, $this->container->getSingleton(JwtContract::class));
+    }
+
     public function testPublishFirebaseJwt(): void
     {
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig());
+        $this->container->setSingleton(JwtHsConfigContract::class, new JwtHsConfig());
+
         $callback = new JwtServiceProvider()->publishers()[FirebaseJwt::class];
         $callback($this->container);
 
@@ -60,13 +173,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFirebaseJwtRsAlgorithm(): void
     {
-        $this->container->setSingleton(
-            Env::class,
-            new class extends Env {
-                /** @var Algorithm */
-                public const Algorithm JWT_ALGORITHM = Algorithm::RS256;
-            }
-        );
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig(algorithm: Algorithm::RS256));
+        $this->container->setSingleton(JwtRsConfigContract::class, new JwtRsConfig());
 
         $callback = new JwtServiceProvider()->publishers()[FirebaseJwt::class];
         $callback($this->container);
@@ -76,13 +184,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFirebaseJwtEdDSAAlgorithm(): void
     {
-        $this->container->setSingleton(
-            Env::class,
-            new class extends Env {
-                /** @var Algorithm */
-                public const Algorithm JWT_ALGORITHM = Algorithm::EdDSA;
-            }
-        );
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig(algorithm: Algorithm::EdDSA));
+        $this->container->setSingleton(JwtEdDsaConfigContract::class, new JwtEdDsaConfig());
 
         $callback = new JwtServiceProvider()->publishers()[FirebaseJwt::class];
         $callback($this->container);
@@ -92,13 +195,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFirebaseJwtDefault(): void
     {
-        $this->container->setSingleton(
-            Env::class,
-            new class extends Env {
-                /** @var Algorithm */
-                public const Algorithm JWT_ALGORITHM = Algorithm::PS256;
-            }
-        );
+        $this->container->setSingleton(JwtConfigContract::class, new JwtConfig(algorithm: Algorithm::PS256));
 
         $callback = new JwtServiceProvider()->publishers()[FirebaseJwt::class];
         $callback($this->container);

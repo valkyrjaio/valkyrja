@@ -17,9 +17,16 @@ use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
 use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Jwt\Data\Contract\JwtConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtEdDsaConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtHsConfigContract;
+use Valkyrja\Jwt\Data\Contract\JwtRsConfigContract;
+use Valkyrja\Jwt\Data\JwtConfig;
+use Valkyrja\Jwt\Data\JwtEdDsaConfig;
+use Valkyrja\Jwt\Data\JwtHsConfig;
+use Valkyrja\Jwt\Data\JwtRsConfig;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
@@ -28,46 +35,128 @@ use Valkyrja\Jwt\Manager\NullJwt;
 class JwtServiceProvider implements ServiceProviderContract
 {
     /**
-     * Publish the jwt service.
+     * Publish the jwt config service.
      */
-    public static function publishJwt(ContainerContract $container): void
+    public static function publishConfig(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<JwtContract> $default */
-        $default = $env::JWT_DEFAULT
-            ?? FirebaseJwt::class;
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof JwtConfigContract) {
+            $container->setSingleton(JwtConfigContract::class, $config);
+
+            return;
+        }
 
         $container->setSingleton(
-            JwtContract::class,
-            $container->getSingleton($default),
+            JwtConfigContract::class,
+            new JwtConfig()
+        );
+    }
+
+    /**
+     * Publish the HMAC jwt config service.
+     */
+    public static function publishHsConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof JwtHsConfigContract) {
+            $container->setSingleton(JwtHsConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            JwtHsConfigContract::class,
+            new JwtHsConfig()
+        );
+    }
+
+    /**
+     * Publish the RSA jwt config service.
+     */
+    public static function publishRsConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof JwtRsConfigContract) {
+            $container->setSingleton(JwtRsConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            JwtRsConfigContract::class,
+            new JwtRsConfig()
+        );
+    }
+
+    /**
+     * Publish the EdDSA jwt config service.
+     */
+    public static function publishEdDsaConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof JwtEdDsaConfigContract) {
+            $container->setSingleton(JwtEdDsaConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            JwtEdDsaConfigContract::class,
+            new JwtEdDsaConfig()
         );
     }
 
     /**
      * Publish the jwt service.
      */
+    public static function publishJwt(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(JwtConfigContract::class);
+
+        $container->setSingleton(
+            JwtContract::class,
+            $container->getSingleton($config->defaultJwt),
+        );
+    }
+
+    /**
+     * Publish the jwt service.
+     *
+     * The algorithm decides which key config the container resolves. An
+     * application that signs with one algorithm never constructs the key config
+     * for the other algorithms.
+     *
+     * Each `match` arm calls `getSingleton()` itself, and the encode `match` and
+     * the decode `match` repeat that call. The repetition is deliberate. A local
+     * variable would have to resolve every key config before the `match` chooses
+     * one. That would construct a config for an algorithm the application does
+     * not sign with, and the application may never define one. Keep the call
+     * inside the arm. Do not lift it into a variable.
+     */
     public static function publishFirebaseJwt(ContainerContract $container): void
     {
-        $config = $container->getSingleton(ConfigContract::class);
-        $env    = $container->getSingleton(Env::class);
-        /** @var Algorithm $algorithm */
-        $algorithm = $env::JWT_ALGORITHM
-            ?? Algorithm::HS256;
+        $appConfig = $container->getSingleton(ConfigContract::class);
+        $config    = $container->getSingleton(JwtConfigContract::class);
+        $algorithm = $config->algorithm;
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $encodeKey */
         $encodeKey = match ($algorithm) {
-            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
-            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PRIVATE_KEY ?? 'private-key',
-            Algorithm::EdDSA                                     => $env::JWT_EDDSA_PRIVATE_KEY ?? 'private-key',
-            default                                              => $config->key,
+            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $container->getSingleton(JwtHsConfigContract::class)->hsKey,
+            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $container->getSingleton(JwtRsConfigContract::class)->rsPrivateKey,
+            Algorithm::EdDSA                                     => $container->getSingleton(JwtEdDsaConfigContract::class)->edDsaPrivateKey,
+            default                                              => $appConfig->key,
         };
 
         /** @var OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey */
         $decodeKey = match ($algorithm) {
-            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $env::JWT_HS_KEY ?? 'key',
-            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $env::JWT_RS_PUBLIC_KEY ?? 'public-key',
-            Algorithm::EdDSA                                     => $env::JWT_EDDSA_PUBLIC_KEY ?? 'public-key',
-            default                                              => $config->key,
+            Algorithm::HS256, Algorithm::HS384, Algorithm::HS512 => $container->getSingleton(JwtHsConfigContract::class)->hsKey,
+            Algorithm::RS256, Algorithm::RS384, Algorithm::RS512 => $container->getSingleton(JwtRsConfigContract::class)->rsPublicKey,
+            Algorithm::EdDSA                                     => $container->getSingleton(JwtEdDsaConfigContract::class)->edDsaPublicKey,
+            default                                              => $appConfig->key,
         };
 
         $container->setSingleton(
@@ -98,9 +187,13 @@ class JwtServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            JwtContract::class => [self::class, 'publishJwt'],
-            FirebaseJwt::class => [self::class, 'publishFirebaseJwt'],
-            NullJwt::class     => [self::class, 'publishNullJwt'],
+            JwtConfigContract::class      => [self::class, 'publishConfig'],
+            JwtHsConfigContract::class    => [self::class, 'publishHsConfig'],
+            JwtRsConfigContract::class    => [self::class, 'publishRsConfig'],
+            JwtEdDsaConfigContract::class => [self::class, 'publishEdDsaConfig'],
+            JwtContract::class            => [self::class, 'publishJwt'],
+            FirebaseJwt::class            => [self::class, 'publishFirebaseJwt'],
+            NullJwt::class                => [self::class, 'publishNullJwt'],
         ];
     }
 }
