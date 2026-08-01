@@ -43,7 +43,7 @@ use Valkyrja\Session\Manager\Token\Cli\OptionTokenSession;
 use Valkyrja\Session\Manager\Token\Http\EncryptedHeaderTokenSession;
 use Valkyrja\Session\Manager\Token\Http\HeaderTokenSession;
 
-class SmsServiceProvider implements ServiceProviderContract
+class SessionServiceProvider implements ServiceProviderContract
 {
     /**
      * Publish the cookie params service.
