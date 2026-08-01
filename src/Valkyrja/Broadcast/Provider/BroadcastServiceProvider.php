@@ -16,16 +16,17 @@ namespace Valkyrja\Broadcast\Provider;
 use Override;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
+use Valkyrja\Broadcast\Data\BroadcastConfig;
+use Valkyrja\Broadcast\Data\Contract\BroadcastConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
-use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 use const CURL_IPRESOLVE_V4;
 use const CURLOPT_IPRESOLVE;
@@ -33,18 +34,34 @@ use const CURLOPT_IPRESOLVE;
 class BroadcastServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the broadcast config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof BroadcastConfigContract) {
+            $container->setSingleton(BroadcastConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            BroadcastConfigContract::class,
+            new BroadcastConfig()
+        );
+    }
+
+    /**
      * Publish the broadcaster service.
      */
     public static function publishBroadcaster(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<BroadcasterContract> $default */
-        $default = $env::BROADCAST_DEFAULT_BROADCASTER
-            ?? PusherBroadcaster::class;
+        $config = $container->getSingleton(BroadcastConfigContract::class);
 
         $container->setSingleton(
             BroadcasterContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultBroadcaster),
         );
     }
 
@@ -82,32 +99,18 @@ class BroadcastServiceProvider implements ServiceProviderContract
      */
     public static function publishPusher(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $key */
-        $key = $env::BROADCAST_PUSHER_KEY
-            ?? 'pusher-key';
-        /** @var non-empty-string $secret */
-        $secret = $env::BROADCAST_PUSHER_SECRET
-            ?? 'pusher-secret';
-        /** @var non-empty-string $id */
-        $id = $env::BROADCAST_PUSHER_ID
-            ?? 'pusher-id';
-        /** @var non-empty-string $cluster */
-        $cluster = $env::BROADCAST_PUSHER_CLUSTER
-            ?? 'us1';
-        /** @var bool $useTls */
-        $useTls = $env::BROADCAST_PUSHER_USE_TLS
-            ?? true;
+        $config = $container->getSingleton(BroadcastConfigContract::class);
+        $pusher = $config->pusher;
 
         $container->setSingleton(
             Pusher::class,
             new Pusher(
-                $key,
-                $secret,
-                $id,
+                $pusher->key,
+                $pusher->secret,
+                $pusher->id,
                 [
-                    'cluster'      => $cluster,
-                    'useTLS'       => $useTls,
+                    'cluster'      => $pusher->cluster,
+                    'useTLS'       => $pusher->useTls,
                     'curl_options' => [
                         CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
                     ],
@@ -121,15 +124,12 @@ class BroadcastServiceProvider implements ServiceProviderContract
      */
     public static function publishLogBroadcaster(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<LoggerContract> $logger */
-        $logger = $env::BROADCAST_LOG_LOGGER
-            ?? LoggerContract::class;
+        $config = $container->getSingleton(BroadcastConfigContract::class);
 
         $container->setSingleton(
             LogBroadcaster::class,
             new LogBroadcaster(
-                $container->getSingleton($logger),
+                $container->getSingleton($config->log->logger),
             )
         );
     }
@@ -152,12 +152,13 @@ class BroadcastServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            BroadcasterContract::class    => [self::class, 'publishBroadcaster'],
-            PusherBroadcaster::class      => [self::class, 'publishPusherBroadcaster'],
-            CryptPusherBroadcaster::class => [self::class, 'publishCryptPusherBroadcaster'],
-            Pusher::class                 => [self::class, 'publishPusher'],
-            LogBroadcaster::class         => [self::class, 'publishLogBroadcaster'],
-            NullBroadcaster::class        => [self::class, 'publishNullBroadcaster'],
+            BroadcastConfigContract::class => [self::class, 'publishConfig'],
+            BroadcasterContract::class     => [self::class, 'publishBroadcaster'],
+            PusherBroadcaster::class       => [self::class, 'publishPusherBroadcaster'],
+            CryptPusherBroadcaster::class  => [self::class, 'publishCryptPusherBroadcaster'],
+            Pusher::class                  => [self::class, 'publishPusher'],
+            LogBroadcaster::class          => [self::class, 'publishLogBroadcaster'],
+            NullBroadcaster::class         => [self::class, 'publishNullBroadcaster'],
         ];
     }
 }
