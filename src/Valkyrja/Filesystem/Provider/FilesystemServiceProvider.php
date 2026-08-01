@@ -18,10 +18,18 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Override;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Filesystem\Data\Contract\FilesystemConfigContract;
+use Valkyrja\Filesystem\Data\Contract\FilesystemFlysystemConfigContract;
+use Valkyrja\Filesystem\Data\Contract\FilesystemFlysystemLocalConfigContract;
+use Valkyrja\Filesystem\Data\Contract\FilesystemFlysystemS3ConfigContract;
+use Valkyrja\Filesystem\Data\FilesystemConfig;
+use Valkyrja\Filesystem\Data\FilesystemFlysystemConfig;
+use Valkyrja\Filesystem\Data\FilesystemFlysystemLocalConfig;
+use Valkyrja\Filesystem\Data\FilesystemFlysystemS3Config;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
@@ -32,18 +40,91 @@ use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 class FilesystemServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the filesystem config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof FilesystemConfigContract) {
+            $container->setSingleton(FilesystemConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            FilesystemConfigContract::class,
+            new FilesystemConfig()
+        );
+    }
+
+    /**
+     * Publish the flysystem filesystem config service.
+     */
+    public static function publishFlysystemConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof FilesystemFlysystemConfigContract) {
+            $container->setSingleton(FilesystemFlysystemConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            FilesystemFlysystemConfigContract::class,
+            new FilesystemFlysystemConfig()
+        );
+    }
+
+    /**
+     * Publish the local flysystem filesystem config service.
+     */
+    public static function publishFlysystemLocalConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof FilesystemFlysystemLocalConfigContract) {
+            $container->setSingleton(FilesystemFlysystemLocalConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            FilesystemFlysystemLocalConfigContract::class,
+            new FilesystemFlysystemLocalConfig()
+        );
+    }
+
+    /**
+     * Publish the s3 flysystem filesystem config service.
+     */
+    public static function publishFlysystemS3Config(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof FilesystemFlysystemS3ConfigContract) {
+            $container->setSingleton(FilesystemFlysystemS3ConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            FilesystemFlysystemS3ConfigContract::class,
+            new FilesystemFlysystemS3Config()
+        );
+    }
+
+    /**
      * Publish the filesystem service.
      */
     public static function publishFilesystem(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<FilesystemContract> $default */
-        $default = $env::FILESYSTEM_DEFAULT
-            ?? FlysystemFilesystem::class;
+        $config = $container->getSingleton(FilesystemConfigContract::class);
 
         $container->setSingleton(
             FilesystemContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultFilesystem),
         );
     }
 
@@ -52,14 +133,11 @@ class FilesystemServiceProvider implements ServiceProviderContract
      */
     public static function publishFlysystemFilesystem(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<FilesystemContract> $default */
-        $default = $env::FLYSYSTEM_FILESYSTEM_DEFAULT
-            ?? LocalFlysystemFilesystem::class;
+        $config = $container->getSingleton(FilesystemFlysystemConfigContract::class);
 
         $container->setSingleton(
             FlysystemFilesystem::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultFlysystemFilesystem),
         );
     }
 
@@ -83,15 +161,12 @@ class FilesystemServiceProvider implements ServiceProviderContract
      */
     public static function publishFlysystemLocalAdapter(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $path */
-        $path = $env::FILESYSTEM_FLYSYSTEM_LOCAL_PATH
-            ?? '/storage/app';
+        $config = $container->getSingleton(FilesystemFlysystemLocalConfigContract::class);
 
         $container->setSingleton(
             LocalFilesystemAdapter::class,
             new LocalFilesystemAdapter(
-                location: Directory::basePath(path: $path)
+                location: Directory::basePath(path: $config->flysystemLocalPath)
             )
         );
     }
@@ -116,36 +191,19 @@ class FilesystemServiceProvider implements ServiceProviderContract
      */
     public static function publishFlysystemAwsS3Adapter(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $key */
-        $key = $env::FILESYSTEM_FLYSYSTEM_S3_KEY
-            ?? 's3-key';
-        /** @var non-empty-string $secret */
-        $secret = $env::FILESYSTEM_FLYSYSTEM_S3_SECRET
-            ?? 's3-secret';
-        /** @var non-empty-string $region */
-        $region = $env::FILESYSTEM_FLYSYSTEM_S3_REGION
-            ?? 'us-east-1';
-        /** @var non-empty-string $version */
-        $version = $env::FILESYSTEM_FLYSYSTEM_S3_VERSION
-            ?? 'latest';
-        /** @var non-empty-string $bucket */
-        $bucket = $env::FILESYSTEM_FLYSYSTEM_S3_BUCKET
-            ?? 's3-bucket';
-        /** @var string $prefix */
-        $prefix = $env::FILESYSTEM_FLYSYSTEM_S3_PREFIX
-            ?? '';
-        /** @var array<array-key, mixed> $options */
-        $options = $env::FILESYSTEM_FLYSYSTEM_S3_OPTIONS
-            ?? [];
+        $config = $container->getSingleton(FilesystemFlysystemS3ConfigContract::class);
+
+        $bucket  = $config->flysystemS3Bucket;
+        $prefix  = $config->flysystemS3Prefix;
+        $options = $config->flysystemS3Options;
 
         $clientConfig = [
             'credentials' => [
-                'key'    => $key,
-                'secret' => $secret,
+                'key'    => $config->flysystemS3Key,
+                'secret' => $config->flysystemS3Secret,
             ],
-            'region'      => $region,
-            'version'     => $version,
+            'region'      => $config->flysystemS3Region,
+            'version'     => $config->flysystemS3Version,
         ];
 
         $container->setSingleton(
@@ -188,14 +246,18 @@ class FilesystemServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            FilesystemContract::class       => [self::class, 'publishFilesystem'],
-            FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
-            LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
-            LocalFilesystemAdapter::class   => [self::class, 'publishFlysystemLocalAdapter'],
-            S3FlysystemFilesystem::class    => [self::class, 'publishS3FlysystemFilesystem'],
-            AwsS3V3Adapter::class           => [self::class, 'publishFlysystemAwsS3Adapter'],
-            InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
-            NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
+            FilesystemConfigContract::class               => [self::class, 'publishConfig'],
+            FilesystemFlysystemConfigContract::class      => [self::class, 'publishFlysystemConfig'],
+            FilesystemFlysystemLocalConfigContract::class => [self::class, 'publishFlysystemLocalConfig'],
+            FilesystemFlysystemS3ConfigContract::class    => [self::class, 'publishFlysystemS3Config'],
+            FilesystemContract::class                     => [self::class, 'publishFilesystem'],
+            FlysystemFilesystem::class                    => [self::class, 'publishFlysystemFilesystem'],
+            LocalFlysystemFilesystem::class               => [self::class, 'publishLocalFlysystemFilesystem'],
+            LocalFilesystemAdapter::class                 => [self::class, 'publishFlysystemLocalAdapter'],
+            S3FlysystemFilesystem::class                  => [self::class, 'publishS3FlysystemFilesystem'],
+            AwsS3V3Adapter::class                         => [self::class, 'publishFlysystemAwsS3Adapter'],
+            InMemoryFilesystem::class                     => [self::class, 'publishInMemoryFilesystem'],
+            NullFilesystem::class                         => [self::class, 'publishNullFilesystem'],
         ];
     }
 }
