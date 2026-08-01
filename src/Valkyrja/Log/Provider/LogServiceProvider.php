@@ -18,10 +18,12 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Override;
 use Psr\Log\LoggerInterface;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Log\Data\Contract\LogConfigContract;
+use Valkyrja\Log\Data\LogConfig;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
@@ -32,18 +34,34 @@ use function date;
 class LogServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the log config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof LogConfigContract) {
+            $container->setSingleton(LogConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            LogConfigContract::class,
+            new LogConfig()
+        );
+    }
+
+    /**
      * Publish the logger service.
      */
     public static function publishLogger(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<LoggerContract> $default */
-        $default = $env::LOG_DEFAULT_LOGGER
-            ?? PsrLogger::class;
+        $config = $container->getSingleton(LogConfigContract::class);
 
         $container->setSingleton(
             LoggerContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultLogger),
         );
     }
 
@@ -124,11 +142,12 @@ class LogServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            LoggerContract::class  => [self::class, 'publishLogger'],
-            PsrLogger::class       => [self::class, 'publishPsrLogger'],
-            NullLogger::class      => [self::class, 'publishNullLogger'],
-            LoggerInterface::class => [self::class, 'publishLoggerInterface'],
-            Logger::class          => [self::class, 'publishMonolog'],
+            LogConfigContract::class => [self::class, 'publishConfig'],
+            LoggerContract::class    => [self::class, 'publishLogger'],
+            PsrLogger::class         => [self::class, 'publishPsrLogger'],
+            NullLogger::class        => [self::class, 'publishNullLogger'],
+            LoggerInterface::class   => [self::class, 'publishLoggerInterface'],
+            Logger::class            => [self::class, 'publishMonolog'],
         ];
     }
 }
