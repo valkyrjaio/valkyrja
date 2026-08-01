@@ -204,8 +204,8 @@ final class UploadedFileTest extends TestCase
         $this->expectException(UploadedFileInvalidDirectoryException::class);
 
         // Should fail since this is not a valid uploaded file
-        $uploadedFile2 = new InvalidDirectoryExceptionFixture(file: 'test');
-        $uploadedFile2->moveTo('test2');
+        $uploadedFile2 = new InvalidDirectoryExceptionFixture(file: Directory::storagePath('/uploadedFileTest-testInvalidDirectoryException.txt'));
+        $uploadedFile2->moveTo(Directory::storagePath('/uploadedFileTest-testInvalidDirectoryException2.txt'));
     }
 
     public function testUnableToWriteFileException(): void
@@ -213,14 +213,14 @@ final class UploadedFileTest extends TestCase
         $this->expectException(UploadedFileUnableToWriteFileException::class);
 
         // Should fail since this is not a valid uploaded file
-        $uploadedFile2 = new UnableToWriteFileExceptionFixture(file: 'test');
-        $uploadedFile2->moveTo('test2');
+        $uploadedFile2 = new UnableToWriteFileExceptionFixture(file: Directory::storagePath('/uploadedFileTest-testUnableToWriteFileException.txt'));
+        $uploadedFile2->moveTo(Directory::storagePath('/uploadedFileTest-testUnableToWriteFileException2.txt'));
     }
 
     public function testGetSize(): void
     {
-        $uploadedFile  = new UploadedFile(file: 'test');
-        $uploadedFile2 = new UploadedFile(file: 'test', size: $size = 1);
+        $uploadedFile  = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetSize.txt'));
+        $uploadedFile2 = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetSize.txt'), size: $size = 1);
 
         self::assertFalse($uploadedFile->hasSize());
         self::assertTrue($uploadedFile2->hasSize());
@@ -229,14 +229,14 @@ final class UploadedFileTest extends TestCase
 
     public function testGetSizeReturnsEmptyStringWhenNonExistent(): void
     {
-        $uploadedFile = new UploadedFile(file: 'test');
+        $uploadedFile = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetSizeReturnsEmptyStringWhenNonExistent.txt'));
 
         self::assertSame(0, $uploadedFile->getSize());
     }
 
     public function testGetError(): void
     {
-        $uploadedFile  = new UploadedFile(file: 'test');
+        $uploadedFile  = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetError.txt'));
         $uploadedFile2 = new UploadedFile(uploadError: $error = UploadError::NO_FILE);
 
         self::assertSame(UploadError::OK, $uploadedFile->getError());
@@ -245,8 +245,8 @@ final class UploadedFileTest extends TestCase
 
     public function testGetClientFilename(): void
     {
-        $uploadedFile  = new UploadedFile(file: 'test');
-        $uploadedFile2 = new UploadedFile(file: 'test', fileName: $fileName = 'test');
+        $uploadedFile  = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientFilename.txt'));
+        $uploadedFile2 = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientFilename.txt'), fileName: $fileName = 'test');
 
         self::assertFalse($uploadedFile->hasClientFilename());
         self::assertTrue($uploadedFile2->hasClientFilename());
@@ -255,15 +255,15 @@ final class UploadedFileTest extends TestCase
 
     public function testGetClientFilenameReturnsEmptyStringWhenNonExistent(): void
     {
-        $uploadedFile = new UploadedFile(file: 'test');
+        $uploadedFile = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientFilenameReturnsEmptyStringWhenNonExistent.txt'));
 
         self::assertSame('', $uploadedFile->getClientFilename());
     }
 
     public function testGetClientMediaType(): void
     {
-        $uploadedFile  = new UploadedFile(file: 'test');
-        $uploadedFile2 = new UploadedFile(file: 'test', mediaType: $mediaType = 'txt');
+        $uploadedFile  = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientMediaType.txt'));
+        $uploadedFile2 = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientMediaType.txt'), mediaType: $mediaType = 'txt');
 
         self::assertFalse($uploadedFile->hasClientMediaType());
         self::assertTrue($uploadedFile2->hasClientMediaType());
@@ -272,7 +272,7 @@ final class UploadedFileTest extends TestCase
 
     public function testGetClientMediaTypeReturnsEmptyStringWhenNonExistent(): void
     {
-        $uploadedFile = new UploadedFile(file: 'test');
+        $uploadedFile = new UploadedFile(file: Directory::storagePath('/uploadedFileTest-testGetClientMediaTypeReturnsEmptyStringWhenNonExistent.txt'));
 
         self::assertSame('', $uploadedFile->getClientMediaType());
     }
