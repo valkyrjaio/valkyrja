@@ -32,6 +32,8 @@ use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\Manager\SqliteManager;
+use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
+use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Repository;
 
 class OrmServiceProvider implements ServiceProviderContract
@@ -261,6 +263,20 @@ class OrmServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * Publish the entity metadata registry service.
+     *
+     * The framework registers an empty registry. An application replaces the
+     * singleton in its own service provider to register an entity.
+     */
+    public static function publishEntityMetadataRegistry(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            EntityMetadataRegistryContract::class,
+            new EntityMetadataRegistry()
+        );
+    }
+
+    /**
      * Publish the repository service.
      */
     public static function publishRepository(ContainerContract $container): void
@@ -298,17 +314,18 @@ class OrmServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            OrmConfigContract::class       => [self::class, 'publishConfig'],
-            OrmMysqlConfigContract::class  => [self::class, 'publishMysqlConfig'],
-            OrmPgsqlConfigContract::class  => [self::class, 'publishPgsqlConfig'],
-            OrmSqliteConfigContract::class => [self::class, 'publishSqliteConfig'],
-            ManagerContract::class         => [self::class, 'publishManager'],
-            MysqlManager::class            => [self::class, 'publishMysqlManager'],
-            PgsqlManager::class            => [self::class, 'publishPgsqlManager'],
-            SqliteManager::class           => [self::class, 'publishSqliteManager'],
-            PDO::class                     => [self::class, 'publishPdo'],
-            NullManager::class             => [self::class, 'publishNullManager'],
-            Repository::class              => [self::class, 'publishRepository'],
+            OrmConfigContract::class              => [self::class, 'publishConfig'],
+            OrmMysqlConfigContract::class         => [self::class, 'publishMysqlConfig'],
+            OrmPgsqlConfigContract::class         => [self::class, 'publishPgsqlConfig'],
+            OrmSqliteConfigContract::class        => [self::class, 'publishSqliteConfig'],
+            ManagerContract::class                => [self::class, 'publishManager'],
+            MysqlManager::class                   => [self::class, 'publishMysqlManager'],
+            PgsqlManager::class                   => [self::class, 'publishPgsqlManager'],
+            SqliteManager::class                  => [self::class, 'publishSqliteManager'],
+            PDO::class                            => [self::class, 'publishPdo'],
+            NullManager::class                    => [self::class, 'publishNullManager'],
+            EntityMetadataRegistryContract::class => [self::class, 'publishEntityMetadataRegistry'],
+            Repository::class                     => [self::class, 'publishRepository'],
         ];
     }
 }

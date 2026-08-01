@@ -67,6 +67,45 @@ Compose additional behaviour by implementing these contracts:
 
 Abstract base classes (`DatedEntity`, `SoftDeleteEntity`) and ready-made traits (`Dateable`, `SoftDeletable`, `DatedFields`, `SoftDeleteFields`) are provided so you only need to override field names.
 
+### Entity Metadata Registry
+
+`Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract` holds the metadata that describes an entity type. The registry maps an entity class to an `EntityMetadata` data object. The framework reads the metadata by class token, and it infers nothing.
+
+```php
+public function has(string $entity): bool;
+public function get(string $entity): EntityMetadata;                          // throws when absent
+public function withEntity(string $entity, EntityMetadata $metadata): static;
+```
+
+`EntityMetadata` carries the date metadata for the entity. Each part is optional:
+
+```php
+new EntityMetadata(
+    dated: new DatedMetadata(
+        format: DateFormat::MICROSECOND,   // Optional: the created and modified date format
+        dateCreatedField: 'date_created',  // Optional: the date created field
+        dateModifiedField: 'date_modified' // Optional: the date modified field
+    ),
+    softDelete: new SoftDeleteMetadata(
+        format: DateFormat::DEFAULT,      // Optional: the deleted date format
+        dateDeletedField: 'date_deleted'  // Optional: the date deleted field
+    ),
+);
+```
+
+The registry is immutable. `withEntity()` returns a new registry, so an application registers an entity in a service provider and replaces the singleton:
+
+```php
+$registry = $container->getSingleton(EntityMetadataRegistryContract::class);
+
+$container->setSingleton(
+    EntityMetadataRegistryContract::class,
+    $registry->withEntity(Post::class, new EntityMetadata(dated: new DatedMetadata())),
+);
+```
+
+`get()` throws an `OrmUnregisteredEntityException` when the registry holds no metadata for the entity. The failure is explicit, because a silent default hides a missing registration.
+
 ### EntityCast
 
 `EntityCast` extends the Type component's `Cast` for ORM-specific relationship casting:
