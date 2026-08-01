@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Provider;
 
 use Override;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
-use Valkyrja\Auth\Constant\SessionItemId;
-use Valkyrja\Auth\Data\AuthenticatedUsers;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
-use Valkyrja\Auth\Entity\Contract\UserContract;
-use Valkyrja\Auth\Entity\User;
+use Valkyrja\Auth\Data\AuthConfig;
+use Valkyrja\Auth\Data\Contract\AuthConfigContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Auth\Store\Contract\StoreContract;
@@ -36,18 +33,34 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 class AuthServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the auth config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof AuthConfigContract) {
+            $container->setSingleton(AuthConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            AuthConfigContract::class,
+            new AuthConfig()
+        );
+    }
+
+    /**
      * Publish the authenticator service.
      */
     public static function publishAuthenticator(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<AuthenticatorContract> $default */
-        $default = $env::AUTH_DEFAULT_AUTHENTICATOR
-            ?? SessionAuthenticator::class;
+        $config = $container->getSingleton(AuthConfigContract::class);
 
         $container->setSingleton(
             AuthenticatorContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultAuthenticator),
         );
     }
 
@@ -56,16 +69,7 @@ class AuthServiceProvider implements ServiceProviderContract
      */
     public static function publishSessionAuthenticator(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<UserContract> $entity */
-        $entity = $env::AUTH_DEFAULT_USER_ENTITY
-            ?? User::class;
-        /** @var non-empty-string $sessionItemId */
-        $sessionItemId = $env::AUTH_SESSION_ITEM_ID
-            ?? SessionItemId::AUTHENTICATED_USERS;
-        /** @var class-string<AuthenticatedUsersContract>[] $allowedClasses */
-        $allowedClasses = $env::AUTH_SESSION_ALLOWED_CLASSES
-            ?? [AuthenticatedUsers::class];
+        $config = $container->getSingleton(AuthConfigContract::class);
 
         $container->setSingleton(
             SessionAuthenticator::class,
@@ -73,9 +77,9 @@ class AuthServiceProvider implements ServiceProviderContract
                 session: $container->getSingleton(SessionContract::class),
                 store: $container->getSingleton(StoreContract::class),
                 hasher: $container->getSingleton(PasswordHasherContract::class),
-                entity: $entity,
-                sessionItemId: $sessionItemId,
-                allowedClasses: $allowedClasses
+                entity: $config->defaultUserEntity,
+                sessionItemId: $config->session->itemId,
+                allowedClasses: $config->session->allowedClasses
             ),
         );
     }
@@ -85,14 +89,11 @@ class AuthServiceProvider implements ServiceProviderContract
      */
     public static function publishStore(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<StoreContract> $default */
-        $default = $env::AUTH_DEFAULT_STORE
-            ?? OrmStore::class;
+        $config = $container->getSingleton(AuthConfigContract::class);
 
         $container->setSingleton(
             StoreContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultStore),
         );
     }
 
@@ -149,6 +150,7 @@ class AuthServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
+            AuthConfigContract::class     => [self::class, 'publishConfig'],
             AuthenticatorContract::class  => [self::class, 'publishAuthenticator'],
             SessionAuthenticator::class   => [self::class, 'publishSessionAuthenticator'],
             StoreContract::class          => [self::class, 'publishStore'],
