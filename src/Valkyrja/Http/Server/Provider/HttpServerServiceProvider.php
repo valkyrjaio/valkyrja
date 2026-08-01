@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Server\Provider;
 
 use Override;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
@@ -24,6 +24,8 @@ use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Http\Server\Data\Contract\HttpServerConfigContract;
+use Valkyrja\Http\Server\Data\HttpServerConfig;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
@@ -38,6 +40,25 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 class HttpServerServiceProvider implements ServiceProviderContract
 {
+    /**
+     * Publish the http server config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof HttpServerConfigContract) {
+            $container->setSingleton(HttpServerConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            HttpServerConfigContract::class,
+            new HttpServerConfig()
+        );
+    }
+
     /**
      * Publish the RequestHandler service.
      */
@@ -140,10 +161,10 @@ class HttpServerServiceProvider implements ServiceProviderContract
      */
     public static function publishCacheResponseMiddleware(ContainerContract $container): void
     {
-        $app = $container->getSingleton(ApplicationContract::class);
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $filePath */
-        $filePath = $env::HTTP_SERVER_RESPONSE_CACHE_FILE_PATH
+        $app    = $container->getSingleton(ApplicationContract::class);
+        $config = $container->getSingleton(HttpServerConfigContract::class);
+
+        $filePath = $config->responseCacheFilePath
             ?? Directory::frameworkStorageCachePath('response/');
 
         $container->setSingleton(
@@ -162,6 +183,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
+            HttpServerConfigContract::class      => [self::class, 'publishConfig'],
             RequestHandlerContract::class        => [self::class, 'publishRequestHandler'],
             LogThrowableCaughtMiddleware::class  => [self::class, 'publishLogThrowableCaughtMiddleware'],
             ViewThrowableCaughtMiddleware::class => [self::class, 'publishViewThrowableCaughtMiddleware'],
