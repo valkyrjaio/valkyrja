@@ -25,7 +25,7 @@ jobs:
   trailing-newline-check:
     name: Trailing Newline Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@1438ce03055b4ad8010e8dfd863aa85d07f122ad
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@6bfd75231afaebd9e9681fe6b2ad2b9a083a6371
     permissions:
       pull-requests: write
       contents: read
@@ -35,7 +35,7 @@ jobs:
   # as `CI / Tools / <Tool> / …`.
   tools:
     name: Tools
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@1438ce03055b4ad8010e8dfd863aa85d07f122ad
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@6bfd75231afaebd9e9681fe6b2ad2b9a083a6371
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
