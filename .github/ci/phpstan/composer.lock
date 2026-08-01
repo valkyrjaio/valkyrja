@@ -73,16 +73,16 @@
         },
         {
             "name": "valkyrja/phpstan",
-            "version": "v26.2.0",
+            "version": "v26.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpstan-php.git",
-                "reference": "042e7f06bbec5d70de9e2ffd8d80754dd04c9cdc"
+                "reference": "dd78d9309b825f98ebfe7ad6cf3b67b2c7b7eba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpstan-php/zipball/042e7f06bbec5d70de9e2ffd8d80754dd04c9cdc",
-                "reference": "042e7f06bbec5d70de9e2ffd8d80754dd04c9cdc",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpstan-php/zipball/dd78d9309b825f98ebfe7ad6cf3b67b2c7b7eba8",
+                "reference": "dd78d9309b825f98ebfe7ad6cf3b67b2c7b7eba8",
                 "shasum": ""
             },
             "require": {
@@ -114,9 +114,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpstan-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpstan-php/tree/v26.2.0"
+                "source": "https://github.com/valkyrjaio/ci-phpstan-php/tree/v26.2.1"
             },
-            "time": "2026-07-30T05:44:55+00:00"
+            "time": "2026-07-31T16:14:05+00:00"
         }
     ],
     "aliases": [],
