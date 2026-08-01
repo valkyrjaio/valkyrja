@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Factory;
 
 use Valkyrja\Http\Message\Constant\Port;
+use Valkyrja\Http\Message\Uri\Constant\Char;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidFromStringException;
@@ -25,9 +26,13 @@ use Valkyrja\Http\Message\Uri\Uri;
 use function ltrim;
 use function parse_url;
 use function preg_replace;
+use function preg_replace_callback;
+use function rawurlencode;
 use function str_contains;
+use function str_ends_with;
 use function str_starts_with;
 use function strtolower;
+use function strtoupper;
 
 abstract class UriFactory
 {
@@ -108,16 +113,45 @@ abstract class UriFactory
 
     /**
      * Filter user info.
+     *
+     * The user info allows the unreserved characters, the sub-delimiters, and a colon. The colon
+     * separates the username from the password, and a password can contain one.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.2.1
      */
     public static function filterUserInfo(string $userInfo): string
     {
-        // TODO: Filter user info
+        return self::encode($userInfo, Char::USER_INFO);
+    }
 
-        return $userInfo;
+    /**
+     * Filter a host.
+     *
+     * A host is either an IP literal or a reg-name. An IP literal is in brackets and holds
+     * characters that a reg-name does not allow, so this method does not encode one.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.2.2
+     *
+     * @param string $host The host
+     */
+    public static function filterHost(string $host): string
+    {
+        $host = strtolower($host);
+
+        if (str_starts_with($host, '[') && str_ends_with($host, ']')) {
+            return $host;
+        }
+
+        return self::encode($host, Char::HOST);
     }
 
     /**
      * Filter a path.
+     *
+     * The path allows the unreserved characters, the sub-delimiters, a colon, an at sign, and a
+     * forward slash.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.3
      *
      * @param string $path The path
      *
@@ -127,7 +161,7 @@ abstract class UriFactory
     {
         self::validatePath($path);
 
-        // TODO: Filter path
+        $path = self::encode($path, Char::PATH);
 
         if (str_starts_with($path, '/')) {
             return '/' . ltrim($path, '/');
@@ -157,6 +191,11 @@ abstract class UriFactory
     /**
      * Filter a query.
      *
+     * The query allows the unreserved characters, the sub-delimiters, a colon, an at sign, a
+     * forward slash, and a question mark.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.4
+     *
      * @param string $query The query
      *
      * @throws HttpUriInvalidQueryException
@@ -165,9 +204,7 @@ abstract class UriFactory
     {
         self::validateQuery($query);
 
-        // TODO: Filter query
-
-        return ltrim($query, '?');
+        return self::encode(ltrim($query, '?'), Char::QUERY);
     }
 
     /**
@@ -189,15 +226,17 @@ abstract class UriFactory
     /**
      * Filter a fragment.
      *
+     * The fragment allows the same characters as the query.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.5
+     *
      * @param string $fragment The fragment
      */
     public static function filterFragment(string $fragment): string
     {
         self::validateFragment($fragment);
 
-        // TODO: Filter fragment
-
-        return ltrim($fragment, '#');
+        return self::encode(ltrim($fragment, '#'), Char::QUERY);
     }
 
     /**
@@ -313,5 +352,38 @@ abstract class UriFactory
         }
 
         return '';
+    }
+
+    /**
+     * Percent-encode the characters that a uri component does not allow unencoded.
+     *
+     * A character that is already part of a valid percent-encoded triplet is not encoded a second
+     * time; the triplet keeps its meaning and its hexadecimal digits become uppercase. A percent
+     * sign that does not begin a valid triplet is a literal percent sign, so this method encodes
+     * it.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-2.1
+     *
+     * @param string $value   The component value
+     * @param string $allowed The character class atoms the component allows, from Char
+     */
+    protected static function encode(string $value, string $allowed): string
+    {
+        return (string) preg_replace_callback(
+            '/(%[A-Fa-f0-9]{2})|[^' . $allowed . ']+/',
+            /**
+             * @param array<array-key, string> $matches
+             */
+            static function (array $matches): string {
+                $triplet = $matches[1] ?? '';
+
+                if ($triplet !== '') {
+                    return strtoupper($triplet);
+                }
+
+                return rawurlencode($matches[0]);
+            },
+            $value
+        );
     }
 }

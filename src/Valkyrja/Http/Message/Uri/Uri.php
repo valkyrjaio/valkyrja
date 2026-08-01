@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidQueryException;
 
-use function strtolower;
-
 class Uri implements UriContract
 {
     /** @var string */
@@ -73,7 +71,7 @@ class Uri implements UriContract
 
         $this->port     = $port;
         $this->userInfo = UriFactory::filterUserInfo($userInfo);
-        $this->host     = strtolower($host);
+        $this->host     = UriFactory::filterHost($host);
         $this->path     = UriFactory::filterPath($path);
         $this->query    = UriFactory::filterQuery($query);
         $this->fragment = UriFactory::filterFragment($fragment);
@@ -286,7 +284,7 @@ class Uri implements UriContract
 
         $new = clone $this;
 
-        $new->userInfo = $info;
+        $new->userInfo = UriFactory::filterUserInfo($info);
         $new->username = $user;
         $new->password = $password;
 
@@ -301,7 +299,7 @@ class Uri implements UriContract
     {
         $new = clone $this;
 
-        $new->host = $host;
+        $new->host = UriFactory::filterHost($host);
 
         return $new;
     }
