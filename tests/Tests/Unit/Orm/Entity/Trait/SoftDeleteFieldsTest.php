@@ -13,32 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Entity\Trait;
 
-use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class SoftDeleteFieldsTest extends TestCase
 {
-    public function testHasIsDeletedPropertyWithDefaultFalse(): void
-    {
-        $class = new class {
-            use SoftDeleteFields;
-        };
-
-        self::assertFalse($class->is_deleted);
-    }
-
-    public function testIsDeletedCanBeSetToTrue(): void
-    {
-        $class = new class {
-            use SoftDeleteFields;
-        };
-
-        $class->is_deleted = true;
-
-        self::assertTrue($class->is_deleted);
-    }
-
     public function testHasDateDeletedPropertyWithDefaultNull(): void
     {
         $class = new class {
@@ -57,28 +36,5 @@ final class SoftDeleteFieldsTest extends TestCase
         $class->date_deleted = '01-26-2026 12:00:00 UTC';
 
         self::assertSame('01-26-2026 12:00:00 UTC', $class->date_deleted);
-    }
-
-    public function testIncludesSoftDeletableTrait(): void
-    {
-        $class = new class {
-            use SoftDeleteFields;
-        };
-
-        // SoftDeletable methods should be available
-        self::assertSame(DateFormat::DEFAULT, $class::getDeletedDateFormat());
-        self::assertSame('date_deleted', $class::getDateDeletedField());
-    }
-
-    public function testGetFormattedDeletedDateIsAvailable(): void
-    {
-        $class = new class {
-            use SoftDeleteFields;
-        };
-
-        $date = $class::getFormattedDeletedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
     }
 }

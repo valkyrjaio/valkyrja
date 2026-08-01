@@ -13,25 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entity\Contract;
 
+/**
+ * The contract declares that the repository stamps a created date and a
+ * modified date on the entity.
+ *
+ * The contract holds no method. A data object holds no static method, so the
+ * date format and the two field names live in the entity metadata registry.
+ * The repository throws when an entity implements this contract and the
+ * registry holds no dated metadata for the entity.
+ *
+ * @see \Valkyrja\Orm\Data\DatedMetadata
+ * @see \Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract
+ */
 interface DatedEntityContract extends EntityContract
 {
-    /**
-     * Get the format for the created and modified date.
-     */
-    public static function getDateFormat(): string;
-
-    /**
-     * Get the formatted current date/time as a save-able string.
-     */
-    public static function getFormattedDate(): string;
-
-    /**
-     * Get the date created field.
-     */
-    public static function getDateCreatedField(): string;
-
-    /**
-     * Get the date modified field.
-     */
-    public static function getDateModifiedField(): string;
 }

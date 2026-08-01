@@ -58,14 +58,23 @@ public function asStorableChangedArray(): array;             // Only changed pro
 
 ### Optional Entity Contracts
 
-Compose additional behaviour by implementing these contracts:
+Implement one of these contracts to tell the repository to stamp a date. Each contract declares no method. The date format and the field names come from the entity metadata registry, because a data object holds no static method.
 
-| Contract                   | Adds                                                                              |
-|:---------------------------|:----------------------------------------------------------------------------------|
-| `DatedEntityContract`      | `getDateFormat()`, `getDateCreatedField()`, `getDateModifiedField()`, `getFormattedDate()` |
-| `SoftDeleteEntityContract` | `getDeletedDateFormat()`, `getDateDeletedField()`, `getFormattedDeletedDate()`    |
+| Contract                   | The repository then                                                                     |
+|:---------------------------|:-----------------------------------------------------------------------------------------|
+| `DatedEntityContract`      | stamps the created date and the modified date on `create()`, and the modified date on `update()` |
+| `SoftDeleteEntityContract` | stamps the deleted date on `delete()` and keeps the row                                  |
 
-Abstract base classes (`DatedEntity`, `SoftDeleteEntity`) and ready-made traits (`Dateable`, `SoftDeletable`, `DatedFields`, `SoftDeleteFields`) are provided so you only need to override field names.
+The abstract base classes `DatedEntity` and `SoftDeleteEntity` implement the contract and add the fields. The traits `DatedFields` and `SoftDeleteFields` add the fields alone.
+
+Warning: the repository throws an `OrmUnregisteredEntityException` when an entity implements one of these contracts and the registry holds no matching metadata. Register each entity that implements a contract:
+
+```php
+$registry->withEntity(
+    Post::class,
+    new EntityMetadata(dated: new DatedMetadata(), softDelete: new SoftDeleteMetadata()),
+);
+```
 
 ### Entity Metadata Registry
 
@@ -132,6 +141,7 @@ public function allBy(Where ...$where): array;
 public function create(EntityContract $entity): void;
 public function update(EntityContract $entity): void;
 public function delete(EntityContract $entity): void;
+public function forceDelete(EntityContract $entity): void;
 ```
 
 Obtain a repository through the manager:
@@ -140,6 +150,18 @@ Obtain a repository through the manager:
 $repo = $orm->createRepository(Post::class);
 $post = $repo->find(1);
 $posts = $repo->allBy(new Where(new Value('status', 'published')));
+```
+
+### Delete and Soft Delete
+
+`delete()` removes the row of an entity. For a `SoftDeleteEntityContract` entity it stamps the deleted date and keeps the row instead.
+
+`forceDelete()` always removes the row. Warning: the method destroys the data of a soft delete entity. Use the method only when a law or a data policy requires the removal, such as an erasure request.
+
+A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows:
+
+```php
+$live = $repo->allBy(new Where(new Value('date_deleted', null), Comparison::IS));
 ```
 
 ## Query Builder

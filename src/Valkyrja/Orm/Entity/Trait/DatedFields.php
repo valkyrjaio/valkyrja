@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Entity\Trait;
 
 trait DatedFields
 {
-    use Dateable;
-
     /**
      * The date created date.
      *

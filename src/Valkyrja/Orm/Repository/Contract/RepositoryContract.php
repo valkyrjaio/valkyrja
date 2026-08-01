@@ -58,12 +58,19 @@ interface RepositoryContract
     /**
      * Create a new entity.
      *
+     * The repository stamps the created date and the modified date on a
+     * DatedEntityContract entity.
+     *
      * @param T $entity The entity
      */
     public function create(EntityContract $entity): void;
 
     /**
      * Update an entity.
+     *
+     * The repository stamps the modified date on a DatedEntityContract entity.
+     * The repository never writes the deleted date here, so an update does not
+     * delete an entity, and an update does not restore a deleted entity.
      *
      * @param T $entity The entity
      */
@@ -72,7 +79,22 @@ interface RepositoryContract
     /**
      * Delete an entity.
      *
+     * The repository soft deletes a SoftDeleteEntityContract entity: it stamps
+     * the deleted date and it keeps the row. For every other entity the
+     * repository removes the row.
+     *
      * @param T $entity The entity
      */
     public function delete(EntityContract $entity): void;
+
+    /**
+     * Remove the row of an entity.
+     *
+     * Warning: the method removes the row of a SoftDeleteEntityContract entity,
+     * and the soft delete does not protect the data. Use the method only when a
+     * law or a data policy requires the removal, such as an erasure request.
+     *
+     * @param T $entity The entity
+     */
+    public function forceDelete(EntityContract $entity): void;
 }

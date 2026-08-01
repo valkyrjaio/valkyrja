@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Orm\Repository;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Valkyrja\Orm\Constant\DateFormat;
+use Valkyrja\Orm\Data\DatedMetadata;
+use Valkyrja\Orm\Data\EntityMetadata;
+use Valkyrja\Orm\Data\SoftDeleteMetadata;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
@@ -23,11 +27,17 @@ use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
+use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
+use Valkyrja\Orm\Throwable\Exception\OrmUnregisteredEntityException;
+use Valkyrja\Tests\Fixtures\Orm\Entity\DatedEntityCustomFieldsFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\DatedEntityFixture;
 use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Fixtures\Orm\Entity\EntityStringIdFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\SoftDeleteEntityCustomFieldFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\SoftDeleteEntityFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class RepositoryTest extends TestCase
@@ -40,6 +50,8 @@ final class RepositoryTest extends TestCase
 
     protected Repository $repository;
 
+    protected EntityMetadataRegistry $registry;
+
     /** @var class-string<EntityContract> */
     protected string $entityClass;
 
@@ -50,8 +62,9 @@ final class RepositoryTest extends TestCase
         $this->statement           = $this->createMock(StatementContract::class);
 
         $this->entityClass = EntityIntIdFixture::class;
+        $this->registry    = new EntityMetadataRegistry();
 
-        $this->repository = new Repository($this->manager, $this->entityClass);
+        $this->repository = new Repository($this->manager, $this->entityClass, $this->registry);
     }
 
     public function testImplementsRepositoryContract(): void
@@ -465,5 +478,356 @@ final class RepositoryTest extends TestCase
         $this->repository->delete($entity);
 
         self::assertTrue(true);
+    }
+
+    public function testForceDeleteRemovesEntity(): void
+    {
+        $this->expectDeleteStatement();
+
+        $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
+
+        $this->repository->forceDelete($entity);
+
+        self::assertTrue(true);
+    }
+
+    public function testCreateStampsCreatedAndModifiedDates(): void
+    {
+        $this->expectInsertStatement();
+
+        $repository = $this->repositoryFor(
+            DatedEntityFixture::class,
+            new EntityMetadata(dated: new DatedMetadata())
+        );
+
+        $entity = DatedEntityFixture::fromArray(['name' => 'New Entity']);
+
+        $repository->create($entity);
+
+        self::assertNotEmpty($entity->date_created);
+        self::assertSame($entity->date_created, $entity->date_modified);
+    }
+
+    public function testCreateStampsWithTheRegisteredFieldsAndFormat(): void
+    {
+        $this->expectInsertStatement();
+
+        $repository = $this->repositoryFor(
+            DatedEntityCustomFieldsFixture::class,
+            new EntityMetadata(
+                dated: new DatedMetadata(
+                    format: DateFormat::MICROSECOND,
+                    dateCreatedField: 'created_at',
+                    dateModifiedField: 'updated_at'
+                )
+            )
+        );
+
+        $entity = DatedEntityCustomFieldsFixture::fromArray(['name' => 'New Entity']);
+
+        $repository->create($entity);
+
+        self::assertNotEmpty($entity->created_at);
+        self::assertSame($entity->created_at, $entity->updated_at);
+    }
+
+    public function testCreateDoesNotStampAnUndatedEntity(): void
+    {
+        $this->expectInsertStatement();
+
+        $entity = ($this->entityClass)::fromArray(['name' => 'New Entity']);
+
+        $this->repository->create($entity);
+
+        self::assertArrayNotHasKey('date_created', $entity->asStorableArray());
+    }
+
+    public function testCreateThrowsWhenTheEntityIsNotRegistered(): void
+    {
+        $repository = new Repository($this->manager, DatedEntityFixture::class, $this->registry);
+
+        $entity = DatedEntityFixture::fromArray(['name' => 'New Entity']);
+
+        $this->expectNoStatement();
+
+        $this->expectException(OrmUnregisteredEntityException::class);
+
+        $repository->create($entity);
+    }
+
+    public function testCreateThrowsWhenTheMetadataHoldsNoDatedMetadata(): void
+    {
+        $repository = $this->repositoryFor(DatedEntityFixture::class, new EntityMetadata());
+
+        $entity = DatedEntityFixture::fromArray(['name' => 'New Entity']);
+
+        $this->expectNoStatement();
+
+        $this->expectException(OrmUnregisteredEntityException::class);
+        $this->expectExceptionMessage('holds no dated metadata');
+
+        $repository->create($entity);
+    }
+
+    public function testUpdateStampsTheModifiedDateOnly(): void
+    {
+        $this->expectUpdateStatement();
+
+        $repository = $this->repositoryFor(
+            DatedEntityFixture::class,
+            new EntityMetadata(dated: new DatedMetadata())
+        );
+
+        $entity = DatedEntityFixture::fromArray([
+            'id'            => 1,
+            'name'          => 'Existing',
+            'date_created'  => '01-26-2026 12:00:00 UTC',
+            'date_modified' => '01-26-2026 12:00:00 UTC',
+        ]);
+
+        $repository->update($entity);
+
+        self::assertSame('01-26-2026 12:00:00 UTC', $entity->date_created);
+        self::assertNotSame('01-26-2026 12:00:00 UTC', $entity->date_modified);
+    }
+
+    public function testUpdateDoesNotStampAnUndatedEntity(): void
+    {
+        $this->expectUpdateStatement();
+
+        $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Existing']);
+
+        $this->repository->update($entity);
+
+        self::assertArrayNotHasKey('date_modified', $entity->asStorableArray());
+    }
+
+    public function testUpdateThrowsWhenTheMetadataHoldsNoDatedMetadata(): void
+    {
+        $repository = $this->repositoryFor(DatedEntityFixture::class, new EntityMetadata());
+
+        $entity = DatedEntityFixture::fromArray(['id' => 1, 'name' => 'Existing']);
+
+        $this->expectNoStatement();
+
+        $this->expectException(OrmUnregisteredEntityException::class);
+        $this->expectExceptionMessage('holds no dated metadata');
+
+        $repository->update($entity);
+    }
+
+    public function testDeleteSoftDeletesASoftDeleteEntity(): void
+    {
+        $this->expectUpdateStatement();
+
+        $repository = $this->repositoryFor(
+            SoftDeleteEntityFixture::class,
+            new EntityMetadata(softDelete: new SoftDeleteMetadata())
+        );
+
+        $entity = SoftDeleteEntityFixture::fromArray(['id' => 1, 'name' => 'To Soft Delete']);
+
+        $repository->delete($entity);
+
+        self::assertNotNull($entity->date_deleted);
+    }
+
+    public function testDeleteSoftDeletesWithTheRegisteredFieldAndFormat(): void
+    {
+        $this->expectUpdateStatement();
+
+        $repository = $this->repositoryFor(
+            SoftDeleteEntityCustomFieldFixture::class,
+            new EntityMetadata(
+                softDelete: new SoftDeleteMetadata(
+                    format: DateFormat::MILLISECOND,
+                    dateDeletedField: 'deleted_at'
+                )
+            )
+        );
+
+        $entity = SoftDeleteEntityCustomFieldFixture::fromArray(['id' => 1, 'name' => 'To Soft Delete']);
+
+        $repository->delete($entity);
+
+        self::assertNotNull($entity->deleted_at);
+    }
+
+    public function testDeleteThrowsWhenTheMetadataHoldsNoSoftDeleteMetadata(): void
+    {
+        $repository = $this->repositoryFor(SoftDeleteEntityFixture::class, new EntityMetadata());
+
+        $entity = SoftDeleteEntityFixture::fromArray(['id' => 1, 'name' => 'To Soft Delete']);
+
+        $this->expectNoStatement();
+
+        $this->expectException(OrmUnregisteredEntityException::class);
+        $this->expectExceptionMessage('holds no soft delete metadata');
+
+        $repository->delete($entity);
+    }
+
+    public function testForceDeleteRemovesTheRowOfASoftDeleteEntity(): void
+    {
+        $this->expectDeleteStatement();
+
+        $repository = $this->repositoryFor(
+            SoftDeleteEntityFixture::class,
+            new EntityMetadata(softDelete: new SoftDeleteMetadata())
+        );
+
+        $entity = SoftDeleteEntityFixture::fromArray(['id' => 1, 'name' => 'To Remove']);
+
+        $repository->forceDelete($entity);
+
+        self::assertNull($entity->date_deleted);
+    }
+
+    /**
+     * Build a repository whose registry holds the given metadata for the entity.
+     *
+     * @param class-string<EntityContract> $entity The entity
+     *
+     * @return Repository<EntityContract>
+     */
+    private function repositoryFor(string $entity, EntityMetadata $metadata): Repository
+    {
+        return new Repository(
+            $this->manager,
+            $entity,
+            $this->registry->withEntity($entity, $metadata)
+        );
+    }
+
+    /**
+     * Expect the repository to build no statement at all.
+     */
+    private function expectNoStatement(): void
+    {
+        $this->manager
+            ->expects($this->never())
+            ->method('createQueryBuilder');
+
+        $this->manager
+            ->expects($this->never())
+            ->method('prepare');
+
+        $this->queryBuilderFactory
+            ->expects($this->never())
+            ->method('insert');
+
+        $this->statement
+            ->expects($this->never())
+            ->method('execute');
+    }
+
+    /**
+     * Expect the manager to prepare one INSERT statement.
+     */
+    private function expectInsertStatement(): void
+    {
+        $insertBuilder = $this->createMock(InsertQueryBuilderContract::class);
+
+        $insertBuilder
+            ->expects($this->once())
+            ->method('withSet')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('insert')
+            ->with('test')
+            ->willReturn($insertBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('lastInsertId')
+            ->with('test', 'id')
+            ->willReturn('123');
+
+        $this->statement
+            ->expects($this->never())
+            ->method('execute');
+    }
+
+    /**
+     * Expect the manager to prepare one UPDATE statement.
+     */
+    private function expectUpdateStatement(): void
+    {
+        $updateBuilder = $this->createMock(UpdateQueryBuilderContract::class);
+
+        $updateBuilder
+            ->expects($this->once())
+            ->method('withWhere')
+            ->willReturnSelf();
+
+        $updateBuilder
+            ->expects($this->once())
+            ->method('withSet')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('update')
+            ->with('test')
+            ->willReturn($updateBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $this->statement
+            ->expects($this->never())
+            ->method('execute');
+    }
+
+    /**
+     * Expect the manager to prepare one DELETE statement.
+     */
+    private function expectDeleteStatement(): void
+    {
+        $deleteBuilder = $this->createMock(DeleteQueryBuilderContract::class);
+
+        $deleteBuilder
+            ->expects($this->once())
+            ->method('withWhere')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('delete')
+            ->with('test')
+            ->willReturn($deleteBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $this->statement
+            ->expects($this->never())
+            ->method('execute');
     }
 }
