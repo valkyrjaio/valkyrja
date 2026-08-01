@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Auth\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
+use Valkyrja\Auth\Data\AuthConfig;
+use Valkyrja\Auth\Data\AuthSessionConfig;
+use Valkyrja\Auth\Data\Contract\AuthConfigContract;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract;
 use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Auth\Provider\AuthServiceProvider;
@@ -26,6 +30,7 @@ use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Session\Manager\Contract\SessionContract;
+use Valkyrja\Tests\Fixtures\Auth\Data\AuthConfigFixture;
 
 /**
  * Test the ServiceProvider.
@@ -37,6 +42,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
+        self::assertArrayHasKey(AuthConfigContract::class, new AuthServiceProvider()->publishers());
         self::assertArrayHasKey(AuthenticatorContract::class, new AuthServiceProvider()->publishers());
         self::assertArrayHasKey(SessionAuthenticator::class, new AuthServiceProvider()->publishers());
         self::assertArrayHasKey(StoreContract::class, new AuthServiceProvider()->publishers());
@@ -46,11 +52,33 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(PasswordHasherContract::class, new AuthServiceProvider()->publishers());
     }
 
+    public function testPublishConfig(): void
+    {
+        $callback = new AuthServiceProvider()->publishers()[AuthConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(AuthConfigContract::class, $config = $this->container->getSingleton(AuthConfigContract::class));
+        self::assertSame(SessionAuthenticator::class, $config->defaultAuthenticator);
+        self::assertSame(OrmStore::class, $config->defaultStore);
+    }
+
+    public function testPublishConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new AuthConfigFixture());
+
+        $callback = new AuthServiceProvider()->publishers()[AuthConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(AuthConfigContract::class, $config = $this->container->getSingleton(AuthConfigContract::class));
+        self::assertSame(NullStore::class, $config->defaultStore);
+    }
+
     /**
      * @throws Exception
      */
     public function testPublishAuthenticator(): void
     {
+        $this->container->setSingleton(AuthConfigContract::class, new AuthConfig());
         $this->container->setSingleton(SessionAuthenticator::class, self::createStub(SessionAuthenticator::class));
 
         $callback = new AuthServiceProvider()->publishers()[AuthenticatorContract::class];
@@ -64,6 +92,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishSessionAuthenticator(): void
     {
+        $this->container->setSingleton(AuthConfigContract::class, new AuthConfig(
+            session: new AuthSessionConfig(itemId: 'auth.custom'),
+        ));
         $this->container->setSingleton(SessionContract::class, self::createStub(SessionContract::class));
         $this->container->setSingleton(StoreContract::class, self::createStub(StoreContract::class));
         $this->container->setSingleton(PasswordHasherContract::class, self::createStub(PasswordHasherContract::class));
@@ -79,12 +110,27 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishStore(): void
     {
+        $this->container->setSingleton(AuthConfigContract::class, new AuthConfig());
         $this->container->setSingleton(OrmStore::class, self::createStub(OrmStore::class));
 
         $callback = new AuthServiceProvider()->publishers()[StoreContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(OrmStore::class, $this->container->getSingleton(StoreContract::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishStoreWithConfiguredDefault(): void
+    {
+        $this->container->setSingleton(AuthConfigContract::class, new AuthConfig(defaultStore: NullStore::class));
+        $this->container->setSingleton(NullStore::class, self::createStub(NullStore::class));
+
+        $callback = new AuthServiceProvider()->publishers()[StoreContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(NullStore::class, $this->container->getSingleton(StoreContract::class));
     }
 
     /**
