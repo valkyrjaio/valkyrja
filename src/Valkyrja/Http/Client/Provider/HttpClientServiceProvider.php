@@ -15,9 +15,11 @@ namespace Valkyrja\Http\Client\Provider;
 
 use GuzzleHttp\Client;
 use Override;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Http\Client\Data\Contract\HttpClientConfigContract;
+use Valkyrja\Http\Client\Data\HttpClientConfig;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Client\Manager\LogClient;
@@ -28,18 +30,34 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 class HttpClientServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the http client config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof HttpClientConfigContract) {
+            $container->setSingleton(HttpClientConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            HttpClientConfigContract::class,
+            new HttpClientConfig()
+        );
+    }
+
+    /**
      * Publish the client service.
      */
     public static function publishClient(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<ClientContract> $default */
-        $default = $env::HTTP_CLIENT_DEFAULT
-            ?? GuzzleClient::class;
+        $config = $container->getSingleton(HttpClientConfigContract::class);
 
         $container->setSingleton(
             ClientContract::class,
-            $container->getSingleton($default)
+            $container->getSingleton($config->defaultClient)
         );
     }
 
@@ -99,11 +117,12 @@ class HttpClientServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            ClientContract::class => [self::class, 'publishClient'],
-            GuzzleClient::class   => [self::class, 'publishGuzzleClient'],
-            Client::class         => [self::class, 'publishGuzzle'],
-            LogClient::class      => [self::class, 'publishLogClient'],
-            NullClient::class     => [self::class, 'publishNullClient'],
+            HttpClientConfigContract::class => [self::class, 'publishConfig'],
+            ClientContract::class           => [self::class, 'publishClient'],
+            GuzzleClient::class             => [self::class, 'publishGuzzleClient'],
+            Client::class                   => [self::class, 'publishGuzzle'],
+            LogClient::class                => [self::class, 'publishLogClient'],
+            NullClient::class               => [self::class, 'publishNullClient'],
         ];
     }
 }
