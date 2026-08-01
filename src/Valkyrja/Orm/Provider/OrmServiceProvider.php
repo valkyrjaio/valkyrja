@@ -84,7 +84,7 @@ class OrmServiceProvider implements ServiceProviderContract
         ];
 
         $dsn = 'mysql'
-            . ":dbname=$db}"
+            . ":dbname=$db"
             . ";host=$host"
             . ";port=$port"
             . ";user=$user"
@@ -144,7 +144,7 @@ class OrmServiceProvider implements ServiceProviderContract
         ];
 
         $dsn = 'pgsql'
-            . ":dbname=$db}"
+            . ":dbname=$db"
             . ";host=$host"
             . ";port=$port"
             . ";user=$user"
@@ -199,7 +199,7 @@ class OrmServiceProvider implements ServiceProviderContract
         ];
 
         $dsn = 'sqlite'
-            . ":dbname=$db}"
+            . ":dbname=$db"
             . ";host=$host"
             . ";port=$port"
             . ";user=$user"
