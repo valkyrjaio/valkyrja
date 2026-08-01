@@ -15,9 +15,10 @@ namespace Valkyrja\Crypt\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Contract\ConfigContract;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Crypt\Data\Contract\CryptConfigContract;
+use Valkyrja\Crypt\Data\CryptConfig;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
@@ -25,18 +26,34 @@ use Valkyrja\Crypt\Manager\SodiumCrypt;
 class CryptServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the crypt config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof CryptConfigContract) {
+            $container->setSingleton(CryptConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            CryptConfigContract::class,
+            new CryptConfig()
+        );
+    }
+
+    /**
      * Publish the crypt service.
      */
     public static function publishCrypt(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<CryptContract> $default */
-        $default = $env::CRYPT_DEFAULT
-            ?? SodiumCrypt::class;
+        $config = $container->getSingleton(CryptConfigContract::class);
 
         $container->setSingleton(
             CryptContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultCrypt),
         );
     }
 
@@ -73,9 +90,10 @@ class CryptServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            CryptContract::class => [self::class, 'publishCrypt'],
-            SodiumCrypt::class   => [self::class, 'publishSodiumCrypt'],
-            NullCrypt::class     => [self::class, 'publishNullCrypt'],
+            CryptConfigContract::class => [self::class, 'publishConfig'],
+            CryptContract::class       => [self::class, 'publishCrypt'],
+            SodiumCrypt::class         => [self::class, 'publishSodiumCrypt'],
+            NullCrypt::class           => [self::class, 'publishNullCrypt'],
         ];
     }
 }
