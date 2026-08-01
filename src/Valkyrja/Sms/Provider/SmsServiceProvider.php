@@ -158,12 +158,12 @@ class SmsServiceProvider implements ServiceProviderContract
         return [
             SmsConfigContract::class       => [self::class, 'publishConfig'],
             SmsVonageConfigContract::class => [self::class, 'publishVonageConfig'],
-            MessengerContract::class    => [self::class, 'publishSms'],
-            VonageMessenger::class      => [self::class, 'publishVonageSms'],
-            Client::class               => [self::class, 'publishVonage'],
-            CredentialsInterface::class => [self::class, 'publishVonageCredentials'],
-            LogMessenger::class         => [self::class, 'publishLogSms'],
-            NullMessenger::class        => [self::class, 'publishNullSms'],
+            MessengerContract::class       => [self::class, 'publishSms'],
+            VonageMessenger::class         => [self::class, 'publishVonageSms'],
+            Client::class                  => [self::class, 'publishVonage'],
+            CredentialsInterface::class    => [self::class, 'publishVonageCredentials'],
+            LogMessenger::class            => [self::class, 'publishLogSms'],
+            NullMessenger::class           => [self::class, 'publishNullSms'],
         ];
     }
 }
