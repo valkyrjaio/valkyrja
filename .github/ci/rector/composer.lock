@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c101b5d87f09128dcb74657589e5b8d",
+    "content-hash": "1a9067522ae65e7afc46fb0974392905",
     "packages": [],
     "packages-dev": [
         {
@@ -224,16 +224,16 @@
         },
         {
             "name": "valkyrja/rector",
-            "version": "v26.2.1",
+            "version": "v26.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-rector-php.git",
-                "reference": "221194b3bed851c579ecd2a63d8b3f689cee0cbf"
+                "reference": "839bc60b8e00d0915e463acf797ee7b6f4baa1e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/221194b3bed851c579ecd2a63d8b3f689cee0cbf",
-                "reference": "221194b3bed851c579ecd2a63d8b3f689cee0cbf",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/839bc60b8e00d0915e463acf797ee7b6f4baa1e8",
+                "reference": "839bc60b8e00d0915e463acf797ee7b6f4baa1e8",
                 "shasum": ""
             },
             "require": {
@@ -266,9 +266,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-rector-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.2.1"
+                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.2.3"
             },
-            "time": "2026-07-31T16:07:07+00:00"
+            "time": "2026-08-01T22:57:03+00:00"
         }
     ],
     "aliases": [],
