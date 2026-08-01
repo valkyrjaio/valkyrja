@@ -102,6 +102,46 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertStringContainsString(';engine=InnoDB', $dsn);
     }
 
+    public function testPublishMysqlManagerDsn(): void
+    {
+        self::assertSame(
+            'mysql:dbname=valkyrja'
+            . ';host=127.0.0.1'
+            . ';port=3306'
+            . ';user=valkyrja'
+            . ';password=mysql-password'
+            . ';charset=utf8mb4',
+            $this->captureDsnFor(MysqlManager::class)
+        );
+    }
+
+    public function testPublishSqliteManagerDsn(): void
+    {
+        self::assertSame(
+            'sqlite:dbname=valkyrja'
+            . ';host=127.0.0.1'
+            . ';port=3306'
+            . ';user=valkyrja'
+            . ';charset=utf8'
+            . ';password=sqlite-password',
+            $this->captureDsnFor(SqliteManager::class)
+        );
+    }
+
+    public function testPublishPgsqlManagerDsn(): void
+    {
+        self::assertSame(
+            'pgsql:dbname=valkyrja'
+            . ';host=127.0.0.1'
+            . ';port=6379'
+            . ';user=valkyrja'
+            . ';password=pgsql-password'
+            . ';sslmode=prefer'
+            . ";options='--client_encoding=utf8'",
+            $this->captureDsnFor(PgsqlManager::class)
+        );
+    }
+
     public function testPublishPgsqlManager(): void
     {
         $this->container->bind(
@@ -162,5 +202,31 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(PDO::class, $this->container->getService(PDO::class, [$dsn, $options]));
+    }
+
+    /**
+     * Publish a manager and return the DSN it passed to PDO.
+     *
+     * @param class-string $manager The manager service id
+     */
+    private function captureDsnFor(string $manager): string
+    {
+        $dsn = null;
+
+        $this->container->bind(
+            PDO::class,
+            static function (ContainerContract $container, array $arguments) use (&$dsn): PDO {
+                $dsn = $arguments[0] ?? null;
+
+                return new PdoFixture('sqlite::memory:');
+            }
+        );
+
+        $callback = new OrmServiceProvider()->publishers()[$manager];
+        $callback($this->container);
+
+        self::assertIsString($dsn);
+
+        return $dsn;
     }
 }
