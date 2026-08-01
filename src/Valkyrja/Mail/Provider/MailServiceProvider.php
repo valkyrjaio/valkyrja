@@ -18,11 +18,17 @@ use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use Override;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Mail\Data\Contract\MailConfigContract;
+use Valkyrja\Mail\Data\Contract\MailMailgunConfigContract;
+use Valkyrja\Mail\Data\Contract\MailPhpMailerConfigContract;
+use Valkyrja\Mail\Data\MailConfig;
+use Valkyrja\Mail\Data\MailMailgunConfig;
+use Valkyrja\Mail\Data\MailPhpMailerConfig;
 use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Mail\Mailer\MailgunMailer;
@@ -32,18 +38,72 @@ use Valkyrja\Mail\Mailer\PhpMailer;
 class MailServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the mail config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof MailConfigContract) {
+            $container->setSingleton(MailConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            MailConfigContract::class,
+            new MailConfig()
+        );
+    }
+
+    /**
+     * Publish the mailgun mailer config service.
+     */
+    public static function publishMailgunConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof MailMailgunConfigContract) {
+            $container->setSingleton(MailMailgunConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            MailMailgunConfigContract::class,
+            new MailMailgunConfig()
+        );
+    }
+
+    /**
+     * Publish the PHPMailer mailer config service.
+     */
+    public static function publishPhpMailerConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof MailPhpMailerConfigContract) {
+            $container->setSingleton(MailPhpMailerConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(
+            MailPhpMailerConfigContract::class,
+            new MailPhpMailerConfig()
+        );
+    }
+
+    /**
      * Publish the mailer service.
      */
     public static function publishMailer(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<MailerContract> $default */
-        $default = $env::MAIL_DEFAULT_MAILER
-            ?? MailgunMailer::class;
+        $config = $container->getSingleton(MailConfigContract::class);
 
         $container->setSingleton(
             MailerContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultMailer),
         );
     }
 
@@ -52,16 +112,13 @@ class MailServiceProvider implements ServiceProviderContract
      */
     public static function publishMailgunMailer(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $domain */
-        $domain = $env::MAIL_MAILGUN_DOMAIN
-            ?? 'domain';
+        $config = $container->getSingleton(MailMailgunConfigContract::class);
 
         $container->setSingleton(
             MailgunMailer::class,
             new MailgunMailer(
                 $container->getSingleton(Mailgun::class),
-                $domain
+                $config->mailgunDomain
             )
         );
     }
@@ -84,17 +141,14 @@ class MailServiceProvider implements ServiceProviderContract
      */
     public static function publishMailgunHttpClientConfigurator(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var string $apiKey */
-        $apiKey = $env::MAIL_MAILGUN_API_KEY
-            ?? 'api-key';
+        $config = $container->getSingleton(MailMailgunConfigContract::class);
 
         $httpClientConfigurator = new HttpClientConfigurator();
 
         $container->setSingleton(
             HttpClientConfigurator::class,
             $httpClientConfigurator
-                ->setApiKey($apiKey)
+                ->setApiKey($config->mailgunApiKey)
                 ->setHttpClient(new Client())
         );
     }
@@ -117,23 +171,14 @@ class MailServiceProvider implements ServiceProviderContract
      */
     public static function publishPhpMailerClient(ContainerContract $container): void
     {
-        $app = $container->getSingleton(ApplicationContract::class);
-        $env = $container->getSingleton(Env::class);
-        /** @var string $host */
-        $host = $env::MAIL_PHP_MAILER_HOST
-            ?? 'host';
-        /** @var int $port */
-        $port = $env::MAIL_PHP_MAILER_PORT
-            ?? 25;
-        /** @var string $username */
-        $username = $env::MAIL_PHP_MAILER_USERNAME
-            ?? 'username';
-        /** @var string $password */
-        $password = $env::MAIL_PHP_MAILER_PASSWORD
-            ?? 'password';
-        /** @var string $encryption */
-        $encryption = $env::MAIL_PHP_MAILER_ENCRYPTION
-            ?? 'ssl';
+        $app    = $container->getSingleton(ApplicationContract::class);
+        $config = $container->getSingleton(MailPhpMailerConfigContract::class);
+
+        $host       = $config->phpMailerHost;
+        $port       = $config->phpMailerPort;
+        $username   = $config->phpMailerUsername;
+        $password   = $config->phpMailerPassword;
+        $encryption = $config->phpMailerEncryption;
 
         // Create a new instance of the PHPMailer class
         $mailer = new PHPMailerClient(true);
@@ -192,14 +237,17 @@ class MailServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            MailerContract::class         => [self::class, 'publishMailer'],
-            MailgunMailer::class          => [self::class, 'publishMailgunMailer'],
-            Mailgun::class                => [self::class, 'publishMailgun'],
-            HttpClientConfigurator::class => [self::class, 'publishMailgunHttpClientConfigurator'],
-            PhpMailer::class              => [self::class, 'publishPhpMailer'],
-            PHPMailerClient::class        => [self::class, 'publishPhpMailerClient'],
-            LogMailer::class              => [self::class, 'publishLogMailer'],
-            NullMailer::class             => [self::class, 'publishNullMailer'],
+            MailConfigContract::class          => [self::class, 'publishConfig'],
+            MailMailgunConfigContract::class   => [self::class, 'publishMailgunConfig'],
+            MailPhpMailerConfigContract::class => [self::class, 'publishPhpMailerConfig'],
+            MailerContract::class              => [self::class, 'publishMailer'],
+            MailgunMailer::class               => [self::class, 'publishMailgunMailer'],
+            Mailgun::class                     => [self::class, 'publishMailgun'],
+            HttpClientConfigurator::class      => [self::class, 'publishMailgunHttpClientConfigurator'],
+            PhpMailer::class                   => [self::class, 'publishPhpMailer'],
+            PHPMailerClient::class             => [self::class, 'publishPhpMailerClient'],
+            LogMailer::class                   => [self::class, 'publishLogMailer'],
+            NullMailer::class                  => [self::class, 'publishNullMailer'],
         ];
     }
 }
