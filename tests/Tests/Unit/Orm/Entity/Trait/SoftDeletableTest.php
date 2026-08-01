@@ -28,18 +28,6 @@ final class SoftDeletableTest extends TestCase
         self::assertSame(DateFormat::DEFAULT, $class::getDeletedDateFormat());
     }
 
-    public function testGetFormattedDeletedDateReturnsFormattedString(): void
-    {
-        $class = new class {
-            use SoftDeletable;
-        };
-
-        $date = $class::getFormattedDeletedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
-    }
-
     public function testGetDateDeletedFieldReturnsDateDeleted(): void
     {
         $class = new class {
@@ -47,17 +35,5 @@ final class SoftDeletableTest extends TestCase
         };
 
         self::assertSame('date_deleted', $class::getDateDeletedField());
-    }
-
-    public function testGetFormattedDeletedDateMatchesExpectedFormat(): void
-    {
-        $class = new class {
-            use SoftDeletable;
-        };
-
-        $date = $class::getFormattedDeletedDate();
-
-        // Default format: 'm-d-Y H:i:s T'
-        self::assertMatchesRegularExpression('/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}/', $date);
     }
 }

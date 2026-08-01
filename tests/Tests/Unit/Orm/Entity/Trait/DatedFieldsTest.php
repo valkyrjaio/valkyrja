@@ -52,16 +52,4 @@ final class DatedFieldsTest extends TestCase
         self::assertSame('date_created', $class::getDateCreatedField());
         self::assertSame('date_modified', $class::getDateModifiedField());
     }
-
-    public function testGetFormattedDateIsAvailable(): void
-    {
-        $class = new class {
-            use DatedFields;
-        };
-
-        $date = $class::getFormattedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
-    }
 }

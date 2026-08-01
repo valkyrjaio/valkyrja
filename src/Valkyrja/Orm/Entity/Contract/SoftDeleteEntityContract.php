@@ -21,11 +21,6 @@ interface SoftDeleteEntityContract extends EntityContract
     public static function getDeletedDateFormat(): string;
 
     /**
-     * Get the formatted current date/time as a save-able string.
-     */
-    public static function getFormattedDeletedDate(): string;
-
-    /**
      * Get the date deleted field.
      */
     public static function getDateDeletedField(): string;

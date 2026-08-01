@@ -21,11 +21,6 @@ interface DatedEntityContract extends EntityContract
     public static function getDateFormat(): string;
 
     /**
-     * Get the formatted current date/time as a save-able string.
-     */
-    public static function getFormattedDate(): string;
-
-    /**
      * Get the date created field.
      */
     public static function getDateCreatedField(): string;

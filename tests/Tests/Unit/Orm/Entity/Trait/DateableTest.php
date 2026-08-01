@@ -28,18 +28,6 @@ final class DateableTest extends TestCase
         self::assertSame(DateFormat::DEFAULT, $class::getDateFormat());
     }
 
-    public function testGetFormattedDateReturnsFormattedString(): void
-    {
-        $class = new class {
-            use Dateable;
-        };
-
-        $date = $class::getFormattedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
-    }
-
     public function testGetDateCreatedFieldReturnsDateCreated(): void
     {
         $class = new class {
@@ -56,17 +44,5 @@ final class DateableTest extends TestCase
         };
 
         self::assertSame('date_modified', $class::getDateModifiedField());
-    }
-
-    public function testGetFormattedDateMatchesExpectedFormat(): void
-    {
-        $class = new class {
-            use Dateable;
-        };
-
-        $date = $class::getFormattedDate();
-
-        // Default format: 'm-d-Y H:i:s T'
-        self::assertMatchesRegularExpression('/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}/', $date);
     }
 }

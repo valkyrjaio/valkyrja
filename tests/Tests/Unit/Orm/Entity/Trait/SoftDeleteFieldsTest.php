@@ -69,16 +69,4 @@ final class SoftDeleteFieldsTest extends TestCase
         self::assertSame(DateFormat::DEFAULT, $class::getDeletedDateFormat());
         self::assertSame('date_deleted', $class::getDateDeletedField());
     }
-
-    public function testGetFormattedDeletedDateIsAvailable(): void
-    {
-        $class = new class {
-            use SoftDeleteFields;
-        };
-
-        $date = $class::getFormattedDeletedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
-    }
 }
