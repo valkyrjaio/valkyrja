@@ -129,6 +129,13 @@ class JwtServiceProvider implements ServiceProviderContract
      * The algorithm decides which key config the container resolves. An
      * application that signs with one algorithm never constructs the key config
      * for the other algorithms.
+     *
+     * Each `match` arm calls `getSingleton()` itself, and the encode `match` and
+     * the decode `match` repeat that call. The repetition is deliberate. A local
+     * variable would have to resolve every key config before the `match` chooses
+     * one. That would construct a config for an algorithm the application does
+     * not sign with, and the application may never define one. Keep the call
+     * inside the arm. Do not lift it into a variable.
      */
     public static function publishFirebaseJwt(ContainerContract $container): void
     {
