@@ -5,18 +5,14 @@ on:
     branches: [ 'master', '*.x' ]
 
   pull_request:
-    # `edited` is included so a pull request that GitHub auto-retargets — which happens to a stacked
-    # pull request the moment its parent merges — re-runs its checks against the new base. A
-    # base-branch change has no activity type of its own; GitHub reports it as `edited`, and `edited`
-    # is not one of the default types, so such a pull request otherwise sits with no checks at all.
-    #
-    # `edited` also fires for title and description edits, so the whole suite re-runs for those too.
-    # That cost is accepted deliberately. Skipping the jobs instead — via a `changes.base` guard —
-    # does not work: a skipped caller job never produces the `<job> / <job>` context the required
-    # status checks are waiting for, and GitHub evaluates requirements against the latest run, so an
-    # earlier run's success does not carry over. The pull request ends up blocked on
-    # "Expected — Waiting for status to be reported" until someone pushes a commit.
-    types: [ opened, synchronize, reopened, edited ]
+    # `edited` is deliberately absent. It fires for a title or description edit, and this workflow
+    # checks file content, which an edit cannot change. Running it on an edit would cost the full
+    # tool suite for a typo. Guarding the jobs on `github.event.changes` instead does not work and
+    # is not safe: a caller job skipped by `if:` never produces the `<job> / <job>` context the
+    # required status checks wait for, so the pull request blocks; and a guard inside the job would
+    # report success without running the tools, so an edit on a red pull request would turn it
+    # green. Pull request metadata is checked by `pr.yml`, which does subscribe to `edited`.
+    types: [ opened, synchronize, reopened ]
     branches: [ 'master', '*.x' ]
 
 permissions:
@@ -25,11 +21,6 @@ permissions:
 
 jobs:
 
-  commit-message-check:
-    name: Commit Message Check
-    if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@09dea16834afe9016704cc57fa49f351bc55af6c
-    secrets: inherit
 
   trailing-newline-check:
     name: Trailing Newline Check
