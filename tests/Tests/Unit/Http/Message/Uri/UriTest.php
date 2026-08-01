@@ -379,6 +379,58 @@ final class UriTest extends TestCase
         self::assertSame('www.host.com', $uri4->getHost());
     }
 
+    /**
+     * The constructor and the wither filter the host the same way.
+     */
+    public function testWithHostFilters(): void
+    {
+        $uri = UriFactory::fromString(self::URI);
+
+        self::assertSame('example.com', $uri->withHost('EXAMPLE.COM')->getHost());
+        self::assertSame('exa%20mple.com', $uri->withHost('exa mple.com')->getHost());
+        self::assertSame('[::1]', $uri->withHost('[::1]')->getHost());
+
+        $constructed = new Uri(host: 'EXAMPLE.COM');
+
+        self::assertSame($constructed->getHost(), $uri->withHost('EXAMPLE.COM')->getHost());
+    }
+
+    /**
+     * The constructor and the wither filter the user info the same way.
+     */
+    public function testWithUserInfoFilters(): void
+    {
+        $uri = UriFactory::fromString(self::URI);
+
+        self::assertSame('user%20name:p%40ss', $uri->withUserInfo('user name', 'p@ss')->getUserInfo());
+        // The colon that separates the username from the password stays unencoded.
+        self::assertSame('user:pass', $uri->withUserInfo('user', 'pass')->getUserInfo());
+        // A value that is already encoded is not encoded a second time.
+        self::assertSame('us%C3%A9r', $uri->withUserInfo('us%C3%A9r')->getUserInfo());
+
+        $constructed = new Uri(username: 'user name', password: 'p@ss');
+
+        self::assertSame($constructed->getUserInfo(), $uri->withUserInfo('user name', 'p@ss')->getUserInfo());
+    }
+
+    /**
+     * A uri string carries every component encoded.
+     */
+    public function testToStringEncodesEveryComponent(): void
+    {
+        $uri = new Uri(
+            scheme: Scheme::HTTPS,
+            username: 'user',
+            password: 'p@ss',
+            host: 'EXAMPLE.com',
+            path: '/a b',
+            query: 'q=1 2',
+            fragment: 'f g'
+        );
+
+        self::assertSame('https://user:p%40ss@example.com/a%20b?q=1%202#f%20g', (string) $uri);
+    }
+
     public function testWithPort(): void
     {
         $uri  = UriFactory::fromString(self::URI);
@@ -480,7 +532,9 @@ final class UriTest extends TestCase
 
         self::assertSame('', $uri->getQuery());
         self::assertSame('arg=value', $uri2->getQuery());
-        self::assertSame('some=bar&foo[]=1&foo[]=2', $uri3->getQuery());
+        // A bracket is a gen-delim, so a query encodes it. `parse_str` reads the two spellings
+        // identically, so the array parameter keeps its meaning.
+        self::assertSame('some=bar&foo%5B%5D=1&foo%5B%5D=2', $uri3->getQuery());
         self::assertSame('another=three', $uri4->getQuery());
     }
 

@@ -29,7 +29,8 @@ final class MarshalUriFactoryTest extends TestCase
 
     public function testMarshalUriFromServer(): void
     {
-        $host     = 'https://www.host.com';
+        // A SERVER_NAME holds a host, never a scheme, so this value carries no `https://` prefix.
+        $host     = 'www.host.com';
         $port     = 70;
         $path     = '/path';
         $query    = 'query=test';

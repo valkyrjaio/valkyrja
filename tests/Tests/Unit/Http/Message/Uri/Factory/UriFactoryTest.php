@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Factory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Factory\UriFactory;
@@ -29,6 +30,102 @@ final class UriFactoryTest extends TestCase
     protected const string URI_HTTP      = 'http://' . self::URI;
     protected const string URI_EMPTY     = '//' . self::URI;
     protected const string URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function filterUserInfoEncodesProvider(): array
+    {
+        return [
+            'keeps the unreserved characters'  => ['aZ0-_.~', 'aZ0-_.~'],
+            'keeps the sub delimiters'         => ['!$&\'()*+,;=', '!$&\'()*+,;='],
+            'keeps the username separator'     => ['user:pass', 'user:pass'],
+            'encodes a space'                  => ['user name', 'user%20name'],
+            'encodes an at sign'               => ['user:p@ss', 'user:p%40ss'],
+            'encodes a forward slash'          => ['user/name', 'user%2Fname'],
+            'encodes a question mark'          => ['user?name', 'user%3Fname'],
+            'encodes a multibyte character'    => ['usér', 'us%C3%A9r'],
+            'keeps a valid triplet'            => ['us%C3%A9r', 'us%C3%A9r'],
+            'uppercases a triplet'             => ['us%c3%a9r', 'us%C3%A9r'],
+            'encodes a lone percent sign'      => ['100%', '100%25'],
+            'encodes an incomplete triplet'    => ['%2', '%252'],
+            'encodes a non hexadecimal escape' => ['%zz', '%25zz'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function filterPathEncodesProvider(): array
+    {
+        return [
+            'keeps the unreserved characters' => ['/aZ0-_.~', '/aZ0-_.~'],
+            'keeps the sub delimiters'        => ['/!$&\'()*+,;=', '/!$&\'()*+,;='],
+            'keeps a colon and an at sign'    => ['/a:b@c', '/a:b@c'],
+            'keeps the segment separator'     => ['/a/b/c', '/a/b/c'],
+            'encodes a space'                 => ['/foo bar', '/foo%20bar'],
+            'encodes a multibyte character'   => ['/café', '/caf%C3%A9'],
+            'keeps a valid triplet'           => ['/foo%20bar', '/foo%20bar'],
+            'uppercases a triplet'            => ['/foo%2fbar', '/foo%2Fbar'],
+            'encodes a lone percent sign'     => ['/100%/x', '/100%25/x'],
+            'encodes a bracket'               => ['/a[b]c', '/a%5Bb%5Dc'],
+            'normalizes the leading slashes'  => ['///a b', '/a%20b'],
+            'keeps a relative path'           => ['a b', 'a%20b'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function filterQueryEncodesProvider(): array
+    {
+        return [
+            'keeps the unreserved characters' => ['a=Z0-_.~', 'a=Z0-_.~'],
+            'keeps the sub delimiters'        => ['!$&\'()*+,;=', '!$&\'()*+,;='],
+            'keeps a colon and an at sign'    => ['a=b:c@d', 'a=b:c@d'],
+            'keeps a slash'                   => ['a=b/c', 'a=b/c'],
+            'keeps an inner question mark'    => ['?a=b?c', 'a=b?c'],
+            'encodes a space'                 => ['a=b c&d=e', 'a=b%20c&d=e'],
+            'encodes a multibyte character'   => ['a=café', 'a=caf%C3%A9'],
+            'keeps a valid triplet'           => ['a=%C3%A9', 'a=%C3%A9'],
+            'uppercases a triplet'            => ['a=%c3%a9', 'a=%C3%A9'],
+            'encodes a lone percent sign'     => ['a=100%', 'a=100%25'],
+            'encodes a bracket'               => ['a[]=b', 'a%5B%5D=b'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function filterFragmentEncodesProvider(): array
+    {
+        return [
+            'keeps the unreserved characters' => ['aZ0-_.~', 'aZ0-_.~'],
+            'keeps a colon and an at sign'    => ['a:b@c', 'a:b@c'],
+            'keeps a slash and a question'    => ['a/b?c', 'a/b?c'],
+            'encodes a space'                 => ['#a b', 'a%20b'],
+            'encodes a multibyte character'   => ['café', 'caf%C3%A9'],
+            'keeps a valid triplet'           => ['%C3%A9', '%C3%A9'],
+            'uppercases a triplet'            => ['%c3%a9', '%C3%A9'],
+            'encodes a lone percent sign'     => ['100%', '100%25'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function filterHostEncodesProvider(): array
+    {
+        return [
+            'lowercases the reg name'       => ['EXAMPLE.COM', 'example.com'],
+            'keeps the sub delimiters'      => ['a!$&\'()*+,;=b', 'a!$&\'()*+,;=b'],
+            'encodes a space'               => ['exa mple.com', 'exa%20mple.com'],
+            'encodes a colon'               => ['example.com:x', 'example.com%3Ax'],
+            'encodes a multibyte character' => ['café.com', 'caf%C3%A9.com'],
+            'keeps a valid triplet'         => ['caf%C3%A9.com', 'caf%C3%A9.com'],
+            'encodes a lone percent sign'   => ['100%.com', '100%25.com'],
+        ];
+    }
 
     public function testFromString(): void
     {
@@ -160,6 +257,73 @@ final class UriFactoryTest extends TestCase
         self::assertSame('fragment', UriFactory::filterFragment('fragment'));
         self::assertSame('fragment', UriFactory::filterFragment('#fragment'));
         self::assertSame('', UriFactory::filterFragment(''));
+    }
+
+    public function testFilterHost(): void
+    {
+        self::assertSame('example.com', UriFactory::filterHost('EXAMPLE.com'));
+        self::assertSame('example.com', UriFactory::filterHost('example.com'));
+        self::assertSame('', UriFactory::filterHost(''));
+    }
+
+    /**
+     * An IP literal is in brackets, and it holds colons that a reg-name does not allow.
+     */
+    public function testFilterHostKeepsIpLiteral(): void
+    {
+        self::assertSame('[::1]', UriFactory::filterHost('[::1]'));
+        self::assertSame('[2001:db8::ff00:42:8329]', UriFactory::filterHost('[2001:DB8::FF00:42:8329]'));
+        // A bracket on one side only does not make an IP literal, so the value is a reg-name.
+        self::assertSame('%5B%3A%3A1', UriFactory::filterHost('[::1'));
+        self::assertSame('%3A%3A1%5D', UriFactory::filterHost('::1]'));
+    }
+
+    #[DataProvider('filterUserInfoEncodesProvider')]
+    public function testFilterUserInfoEncodes(string $userInfo, string $expected): void
+    {
+        self::assertSame($expected, UriFactory::filterUserInfo($userInfo));
+    }
+
+    #[DataProvider('filterPathEncodesProvider')]
+    public function testFilterPathEncodes(string $path, string $expected): void
+    {
+        self::assertSame($expected, UriFactory::filterPath($path));
+    }
+
+    #[DataProvider('filterQueryEncodesProvider')]
+    public function testFilterQueryEncodes(string $query, string $expected): void
+    {
+        self::assertSame($expected, UriFactory::filterQuery($query));
+    }
+
+    #[DataProvider('filterFragmentEncodesProvider')]
+    public function testFilterFragmentEncodes(string $fragment, string $expected): void
+    {
+        self::assertSame($expected, UriFactory::filterFragment($fragment));
+    }
+
+    #[DataProvider('filterHostEncodesProvider')]
+    public function testFilterHostEncodes(string $host, string $expected): void
+    {
+        self::assertSame($expected, UriFactory::filterHost($host));
+    }
+
+    /**
+     * A value that arrives already encoded keeps its meaning through a second filter pass.
+     */
+    public function testFilterIsIdempotent(): void
+    {
+        $path     = UriFactory::filterPath('/foo bar/100%');
+        $query    = UriFactory::filterQuery('a=b c&d=100%');
+        $fragment = UriFactory::filterFragment('a b 100%');
+        $userInfo = UriFactory::filterUserInfo('user:p@ss word');
+        $host     = UriFactory::filterHost('exa mple.com');
+
+        self::assertSame($path, UriFactory::filterPath($path));
+        self::assertSame($query, UriFactory::filterQuery($query));
+        self::assertSame($fragment, UriFactory::filterFragment($fragment));
+        self::assertSame($userInfo, UriFactory::filterUserInfo($userInfo));
+        self::assertSame($host, UriFactory::filterHost($host));
     }
 
     public function testIsStandardPort(): void
