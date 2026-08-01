@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Message\Header\Factory;
 
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
 use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidValueException;
 use Valkyrja\Http\Message\Throwable\Exception\Abstract\HttpMessageInvalidArgumentException;
@@ -85,6 +86,22 @@ abstract class HeaderFactory
         }
 
         return $string;
+    }
+
+    /**
+     * Assert a param is a header.
+     *
+     * @throws HttpHeaderInvalidHeaderParamException for a param that is not a header
+     *
+     * @psalm-assert HeaderContract $param
+     *
+     * @phpstan-assert HeaderContract $param
+     */
+    public static function assertValidHeader(mixed $param): void
+    {
+        if (! $param instanceof HeaderContract) {
+            throw new HttpHeaderInvalidHeaderParamException('Param must be header');
+        }
     }
 
     /**
