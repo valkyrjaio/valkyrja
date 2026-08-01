@@ -7,7 +7,7 @@ on:
 
 jobs:
   update-dependencies:
-    uses: valkyrjaio/.github/.github/workflows/_php-update-dependencies.yml@6bfd75231afaebd9e9681fe6b2ad2b9a083a6371
+    uses: valkyrjaio/.github/.github/workflows/_php-update-dependencies.yml@9a50807409916719ee5af7a9061bd4ddedc8bc03
     secrets: inherit
     with:
       php-version: '8.4'
