@@ -150,7 +150,7 @@ class OrmServiceProvider implements ServiceProviderContract
             . ";user=$user"
             . ";password=$password"
             . ";sslmode=$sslmode"
-            . ";options='--client_encoding=$charset";
+            . ";options='--client_encoding=$charset'";
 
         $container->setSingleton(
             PgsqlManager::class,

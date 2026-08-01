@@ -128,6 +128,20 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         );
     }
 
+    public function testPublishPgsqlManagerDsn(): void
+    {
+        self::assertSame(
+            'pgsql:dbname=valkyrja'
+            . ';host=127.0.0.1'
+            . ';port=6379'
+            . ';user=valkyrja'
+            . ';password=pgsql-password'
+            . ';sslmode=prefer'
+            . ";options='--client_encoding=utf8'",
+            $this->captureDsnFor(PgsqlManager::class)
+        );
+    }
+
     public function testPublishPgsqlManager(): void
     {
         $this->container->bind(
