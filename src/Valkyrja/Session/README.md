@@ -80,41 +80,54 @@ contexts:
 | `NullSession`  | No-op session for testing                  |
 
 The active implementation is resolved from the container as `SessionContract`.
-Configure the default via your `Env` class.
-
-## Cookie Parameters
-
-`Valkyrja\Session\Data\CookieParams` holds the cookie configuration used by
-`PhpSession` and cookie-based sessions:
-
-| Property   | Default          | Description                              |
-|:-----------|:-----------------|:-----------------------------------------|
-| `path`     | `'/'`            | Cookie path                              |
-| `domain`   | `''`             | Cookie domain                            |
-| `lifetime` | `0`              | Cookie lifetime in seconds (0 = session) |
-| `secure`   | `false`          | HTTPS only                               |
-| `httpOnly` | `false`          | HTTP only (not accessible to JS)         |
-| `sameSite` | `SameSite::NONE` | SameSite cookie policy                   |
+Configure the default through `SessionConfigContract`.
 
 ## Configuration
 
-| Env Constant                     | Default             | Description                               |
-|:---------------------------------|:--------------------|:------------------------------------------|
-| `SESSION_DEFAULT`                | `PhpSession::class` | Implementation bound to `SessionContract` |
-| `SESSION_PHP_ID`                 | —                   | PHP session ID                            |
-| `SESSION_PHP_NAME`               | —                   | PHP session name                          |
-| `SESSION_COOKIE_PARAM_PATH`      | `'/'`               | Cookie path                               |
-| `SESSION_COOKIE_PARAM_DOMAIN`    | —                   | Cookie domain                             |
-| `SESSION_COOKIE_PARAM_LIFETIME`  | `0`                 | Cookie lifetime in seconds                |
-| `SESSION_COOKIE_PARAM_SECURE`    | `false`             | HTTPS-only cookie                         |
-| `SESSION_COOKIE_PARAM_HTTP_ONLY` | `false`             | HTTP-only cookie                          |
-| `SESSION_COOKIE_PARAM_SAME_SITE` | `SameSite::NONE`    | SameSite policy                           |
-| `SESSION_JWT_OPTION_NAME`        | `'token'`           | CLI option name for JWT sessions          |
-| `SESSION_JWT_HEADER_NAME`        | `'Authorization'`   | HTTP header name for JWT sessions         |
-| `SESSION_TOKEN_OPTION_NAME`      | —                   | CLI option name for token sessions        |
-| `SESSION_TOKEN_HEADER_NAME`      | —                   | HTTP header name for token sessions       |
+The component reads four config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each contract
+prefixes its properties with the adapter name, so one class can implement
+several of them at once.
+
+### `SessionConfigContract`
+
+Every session manager reads these settings.
+
+| Property         | Default             | Description                               |
+|:-----------------|:--------------------|:------------------------------------------|
+| `defaultSession` | `PhpSession::class` | Implementation bound to `SessionContract` |
+| `sessionId`      | `null`              | The session id                            |
+| `sessionName`    | `null`              | The session name                          |
+
+### `SessionCookieConfigContract`
+
+`PhpSession` reads these settings and gives them to
+`session_set_cookie_params()`.
+
+| Property         | Default          | Description                              |
+|:-----------------|:-----------------|:-----------------------------------------|
+| `cookiePath`     | `'/'`            | Cookie path                              |
+| `cookieDomain`   | `null`           | Cookie domain                            |
+| `cookieLifetime` | `0`              | Cookie lifetime in seconds (0 = session) |
+| `cookieSecure`   | `false`          | HTTPS only                               |
+| `cookieHttpOnly` | `false`          | HTTP only (not accessible to JS)         |
+| `cookieSameSite` | `SameSite::NONE` | SameSite cookie policy                   |
+
+### `SessionJwtConfigContract`
+
+| Property        | Default | Description                       |
+|:----------------|:--------|:----------------------------------|
+| `jwtOptionName` | `null`  | CLI option name for JWT sessions  |
+| `jwtHeaderName` | `null`  | HTTP header name for JWT sessions |
+
+### `SessionTokenConfigContract`
+
+| Property          | Default | Description                         |
+|:------------------|:--------|:------------------------------------|
+| `tokenOptionName` | `null`  | CLI option name for token sessions  |
+| `tokenHeaderName` | `null`  | HTTP header name for token sessions |
 
 ## Service Registration
 
-The Session service provider registers `SessionContract` and all session
-implementation singletons, along with the `CookieParams` data object.
+The Session service provider registers `SessionContract`, the four config
+contracts, and all session implementation singletons.

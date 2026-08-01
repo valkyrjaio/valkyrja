@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager;
 
 use Override;
-use Valkyrja\Session\Data\CookieParams;
+use Valkyrja\Session\Data\Contract\SessionCookieConfigContract;
 use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Session\Throwable\Exception\SessionIdFailureException;
 use Valkyrja\Session\Throwable\Exception\SessionInvalidSessionIdException;
@@ -39,7 +39,7 @@ class PhpSession extends Session
      * @param non-empty-string|null $sessionName The session id
      */
     public function __construct(
-        protected CookieParams $cookieParams,
+        protected SessionCookieConfigContract $cookieConfig,
         string|null $sessionId = null,
         string|null $sessionName = null,
     ) {
@@ -63,12 +63,12 @@ class PhpSession extends Session
 
         // Set the session cookie parameters
         session_set_cookie_params([
-            'path'     => $this->cookieParams->path,
-            'domain'   => $this->cookieParams->domain ?? '',
-            'lifetime' => $this->cookieParams->lifetime,
-            'secure'   => $this->cookieParams->secure,
-            'httponly' => $this->cookieParams->httpOnly,
-            'samesite' => $this->cookieParams->sameSite->value,
+            'path'     => $this->cookieConfig->cookiePath,
+            'domain'   => $this->cookieConfig->cookieDomain ?? '',
+            'lifetime' => $this->cookieConfig->cookieLifetime,
+            'secure'   => $this->cookieConfig->cookieSecure,
+            'httponly' => $this->cookieConfig->cookieHttpOnly,
+            'samesite' => $this->cookieConfig->cookieSameSite->value,
         ]);
 
         // If the session failed to start
