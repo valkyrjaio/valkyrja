@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Tests\Fixtures\Cache\Data;
+
+use Valkyrja\Application\Data\Config;
+use Valkyrja\Cache\Data\Contract\CacheConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheLogConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheNullConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheRedisConfigContract;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Cache\Manager\NullCache;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+
+/**
+ * An application config that implements every cache contract at once.
+ *
+ * The adapter contracts prefix each property with the adapter name, so one class
+ * can carry the settings for several adapters without a name collision.
+ */
+final class CacheConfigFixture extends Config implements CacheConfigContract, CacheRedisConfigContract, CacheLogConfigContract, CacheNullConfigContract
+{
+    /**
+     * @param class-string<CacheContract>  $defaultCache
+     * @param non-empty-string             $redisHost
+     * @param class-string<LoggerContract> $logLogger
+     */
+    public function __construct(
+        public string $defaultCache = NullCache::class,
+        public string $redisHost = 'redis.test',
+        public int $redisPort = 6380,
+        public string $redisPrefix = 'redis:',
+        public string $logLogger = LoggerContract::class,
+        public string $logPrefix = 'log:',
+        public string $nullPrefix = 'null:',
+    ) {
+        parent::__construct();
+    }
+}
