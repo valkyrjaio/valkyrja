@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\UploadedFile;
@@ -328,16 +329,18 @@ final class ServerRequestTest extends TestCase
 
     public function testUploadedFiles(): void
     {
+        $file = Directory::storagePath('/serverRequestTest-testUploadedFiles.txt');
+
         $request  = new ServerRequest();
         $request2 = $request->withUploadedFiles(
             new UploadedFileCollection([
-                new UploadedFile(file: 'test'),
-                new UploadedFile(file: 'test'),
+                new UploadedFile(file: $file),
+                new UploadedFile(file: $file),
             ])
         );
         $request3 = $request->withUploadedFiles(
             $request->getUploadedFiles()->withAdded(
-                [new UploadedFile(file: 'test')]
+                [new UploadedFile(file: $file)]
             )
         );
 

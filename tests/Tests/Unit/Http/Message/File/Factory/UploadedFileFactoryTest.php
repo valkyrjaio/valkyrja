@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\File\Factory;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidFilesArrayStructureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadedFileInvalidTmpNameException;
@@ -104,9 +105,11 @@ final class UploadedFileFactoryTest extends TestCase
 
     public function testNormalizeFilesUploadFilesAlready(): void
     {
+        $file = Directory::storagePath('/uploadedFileFactoryTest-testNormalizeFilesUploadFilesAlready.jpg');
+
         $files = [
-            'file1' => new UploadedFile(file: 'test.jpg'),
-            'file2' => [new UploadedFile(file: 'test.jpg')],
+            'file1' => new UploadedFile(file: $file),
+            'file2' => [new UploadedFile(file: $file)],
         ];
 
         $uploadedFiles = UploadedFileFactory::normalizeFiles($files);
