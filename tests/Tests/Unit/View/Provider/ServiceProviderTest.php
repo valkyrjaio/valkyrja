@@ -17,15 +17,22 @@ use PHPUnit\Framework\MockObject\Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\DebugExtension;
-use Twig\Extension\ExtensionInterface;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\EnvClass;
+use Valkyrja\Tests\Fixtures\View\Data\ViewConfigFixture;
+use Valkyrja\View\Data\Contract\ViewConfigContract;
+use Valkyrja\View\Data\Contract\ViewOrkaConfigContract;
+use Valkyrja\View\Data\Contract\ViewPhpConfigContract;
+use Valkyrja\View\Data\Contract\ViewTwigConfigContract;
+use Valkyrja\View\Data\ViewConfig;
+use Valkyrja\View\Data\ViewOrkaConfig;
+use Valkyrja\View\Data\ViewPhpConfig;
+use Valkyrja\View\Data\ViewTwigConfig;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Orka\Constant\OrkaReplacement;
-use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -42,6 +49,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testExpectedPublishers(): void
     {
+        self::assertArrayHasKey(ViewConfigContract::class, new ViewServiceProvider()->publishers());
+        self::assertArrayHasKey(ViewPhpConfigContract::class, new ViewServiceProvider()->publishers());
+        self::assertArrayHasKey(ViewOrkaConfigContract::class, new ViewServiceProvider()->publishers());
+        self::assertArrayHasKey(ViewTwigConfigContract::class, new ViewServiceProvider()->publishers());
         self::assertArrayHasKey(RendererContract::class, new ViewServiceProvider()->publishers());
         self::assertArrayHasKey(PhpRenderer::class, new ViewServiceProvider()->publishers());
         self::assertArrayHasKey(OrkaRenderer::class, new ViewServiceProvider()->publishers());
@@ -53,8 +64,92 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     /**
      * @throws Exception
      */
+    public function testPublishConfig(): void
+    {
+        $callback = new ViewServiceProvider()->publishers()[ViewConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewConfigContract::class, $config = $this->container->getSingleton(ViewConfigContract::class));
+        self::assertSame(PhpRenderer::class, $config->defaultRenderer);
+    }
+
+    public function testPublishConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new ViewConfigFixture());
+
+        $callback = new ViewServiceProvider()->publishers()[ViewConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewConfigContract::class, $config = $this->container->getSingleton(ViewConfigContract::class));
+        self::assertSame(OrkaRenderer::class, $config->defaultRenderer);
+    }
+
+    public function testPublishPhpConfig(): void
+    {
+        $callback = new ViewServiceProvider()->publishers()[ViewPhpConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewPhpConfigContract::class, $config = $this->container->getSingleton(ViewPhpConfigContract::class));
+        self::assertSame('/resources/views', $config->phpPath);
+    }
+
+    public function testPublishPhpConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new ViewConfigFixture());
+
+        $callback = new ViewServiceProvider()->publishers()[ViewPhpConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewPhpConfigContract::class, $config = $this->container->getSingleton(ViewPhpConfigContract::class));
+        self::assertSame('/storage', $config->phpPath);
+    }
+
+    public function testPublishOrkaConfig(): void
+    {
+        $callback = new ViewServiceProvider()->publishers()[ViewOrkaConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewOrkaConfigContract::class, $config = $this->container->getSingleton(ViewOrkaConfigContract::class));
+        self::assertSame('/resources/views', $config->orkaPath);
+    }
+
+    public function testPublishOrkaConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new ViewConfigFixture());
+
+        $callback = new ViewServiceProvider()->publishers()[ViewOrkaConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewOrkaConfigContract::class, $config = $this->container->getSingleton(ViewOrkaConfigContract::class));
+        self::assertSame('/storage', $config->orkaPath);
+    }
+
+    public function testPublishTwigConfig(): void
+    {
+        $callback = new ViewServiceProvider()->publishers()[ViewTwigConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewTwigConfigContract::class, $config = $this->container->getSingleton(ViewTwigConfigContract::class));
+        self::assertSame('/storage/views', $config->twigCompiledPath);
+    }
+
+    public function testPublishTwigConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new ViewConfigFixture());
+
+        $callback = new ViewServiceProvider()->publishers()[ViewTwigConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(ViewTwigConfigContract::class, $config = $this->container->getSingleton(ViewTwigConfigContract::class));
+        self::assertSame('/storage', $config->twigCompiledPath);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testPublishRenderer(): void
     {
+        $this->container->setSingleton(ViewConfigContract::class, new ViewConfig());
         $this->container->setSingleton(PhpRenderer::class, self::createStub(PhpRenderer::class));
 
         $callback = new ViewServiceProvider()->publishers()[RendererContract::class];
@@ -65,6 +160,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPhpRenderer(): void
     {
+        $this->container->setSingleton(ViewPhpConfigContract::class, new ViewPhpConfig(phpPath: '/storage'));
+
         $callback = new ViewServiceProvider()->publishers()[PhpRenderer::class];
         $callback($this->container);
 
@@ -73,6 +170,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOrkaRenderer(): void
     {
+        $this->container->setSingleton(ViewOrkaConfigContract::class, new ViewOrkaConfig(orkaPath: '/storage'));
+
         $callback = new ViewServiceProvider()->publishers()[OrkaRenderer::class];
         $callback($this->container);
 
@@ -82,17 +181,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishOrkaRendererWithCustomReplacements(): void
     {
         $this->container->setSingleton(
-            Env::class,
-            new class extends Env {
-                /** @var class-string<ReplacementContract>[] */
-                public const array|null VIEW_ORKA_CORE_REPLACEMENTS = [
-                    OrkaReplacement::LAYOUT,
-                ];
-                /** @var class-string<ReplacementContract>[] */
-                public const array|null VIEW_ORKA_REPLACEMENTS = [
-                    OrkaReplacement::DEBUG,
-                ];
-            }
+            ViewOrkaConfigContract::class,
+            new ViewOrkaConfig(
+                orkaPath: '/storage',
+                orkaCoreReplacements: [OrkaReplacement::LAYOUT],
+                orkaReplacements: [OrkaReplacement::DEBUG],
+            )
         );
 
         $callback = new ViewServiceProvider()->publishers()[OrkaRenderer::class];
@@ -119,7 +213,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishTwigEnvironment(): void
     {
-        $this->container->setSingleton(Env::class, self::createStub(Env::class));
+        $this->container->setSingleton(
+            ViewTwigConfigContract::class,
+            new ViewTwigConfig(twigCompiledPath: '/storage')
+        );
 
         $callback = new ViewServiceProvider()->publishers()[Environment::class];
         $callback($this->container);
@@ -133,17 +230,12 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishTwigEnvironmentWithCustomEnv(): void
     {
         $this->container->setSingleton(
-            Env::class,
-            new class extends Env {
-                /** @var array<string, string> */
-                public const array VIEW_TWIG_PATHS = [
-                    'namespace' => EnvClass::APP_DIR . '/storage',
-                ];
-                /** @var class-string<ExtensionInterface>[] */
-                public const array VIEW_TWIG_EXTENSIONS = [
-                    DebugExtension::class,
-                ];
-            }
+            ViewTwigConfigContract::class,
+            new ViewTwigConfig(
+                twigPaths: ['namespace' => EnvClass::APP_DIR . '/storage'],
+                twigExtensions: [DebugExtension::class],
+                twigCompiledPath: '/storage',
+            )
         );
 
         $callback = new ViewServiceProvider()->publishers()[Environment::class];
