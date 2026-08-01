@@ -2,7 +2,7 @@ name: Claude Review
 
 on:
   pull_request:
-    types: [ opened, ready_for_review, synchronize ]
+    types: [ opened, ready_for_review, synchronize, labeled ]
 
 concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
@@ -11,7 +11,7 @@ concurrency:
 jobs:
   claude-review:
     name: Claude Review
-    uses: valkyrjaio/.github/.github/workflows/_claude-review.yml@cae11be22f6a4147e92044e9256b53ee080ad622
+    uses: valkyrjaio/.github/.github/workflows/_claude-review.yml@0ebed4dba52459ee762d416def8ae08e4f8b69ba
     permissions:
       contents: read
       pull-requests: write
