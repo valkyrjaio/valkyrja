@@ -1,8 +1,8 @@
-name: Create Major Release Version Branch
+name: Create Yearly Release Version Branch
 
 on: workflow_dispatch
 
-run-name: Create new version for upcoming major release
+run-name: Create new version for upcoming yearly release
 
 jobs:
   create:
