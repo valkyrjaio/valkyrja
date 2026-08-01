@@ -24,7 +24,6 @@ class SmsConfig implements SmsConfigContract
      */
     public function __construct(
         public readonly string $defaultMessenger = VonageMessenger::class,
-        public readonly SmsVonageConfig $vonage = new SmsVonageConfig(),
     ) {
     }
 }

@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Data;
 
-class SmsVonageConfig
+use Valkyrja\Sms\Data\Contract\SmsVonageConfigContract;
+
+class SmsVonageConfig implements SmsVonageConfigContract
 {
     /**
-     * @param string $key    The Vonage api key
-     * @param string $secret The Vonage api secret
+     * @param string $vonageKey    The Vonage api key
+     * @param string $vonageSecret The Vonage api secret
      */
     public function __construct(
-        public readonly string $key = 'vonage-key',
-        public readonly string $secret = 'vonage-secret',
+        public readonly string $vonageKey = 'vonage-key',
+        public readonly string $vonageSecret = 'vonage-secret',
     ) {
     }
 }

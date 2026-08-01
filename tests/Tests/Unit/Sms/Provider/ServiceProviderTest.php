@@ -18,6 +18,7 @@ use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Sms\Data\Contract\SmsConfigContract;
+use Valkyrja\Sms\Data\Contract\SmsVonageConfigContract;
 use Valkyrja\Sms\Data\SmsConfig;
 use Valkyrja\Sms\Data\SmsVonageConfig;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
@@ -41,6 +42,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(SmsConfigContract::class, new SmsServiceProvider()->publishers());
+        self::assertArrayHasKey(SmsVonageConfigContract::class, new SmsServiceProvider()->publishers());
         self::assertArrayHasKey(MessengerContract::class, new SmsServiceProvider()->publishers());
         self::assertArrayHasKey(VonageMessenger::class, new SmsServiceProvider()->publishers());
         self::assertArrayHasKey(Client::class, new SmsServiceProvider()->publishers());
@@ -56,21 +58,37 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(SmsConfigContract::class, $config = $this->container->getSingleton(SmsConfigContract::class));
         self::assertSame(VonageMessenger::class, $config->defaultMessenger);
-        self::assertSame('vonage-key', $config->vonage->key);
     }
 
     public function testPublishConfigWithApplicationConfig(): void
     {
-        $this->container->setSingleton(ConfigContract::class, new SmsConfigFixture(
-            vonage: new SmsVonageConfig(key: 'test-key'),
-        ));
+        $this->container->setSingleton(ConfigContract::class, new SmsConfigFixture());
 
         $callback = new SmsServiceProvider()->publishers()[SmsConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(SmsConfigContract::class, $config = $this->container->getSingleton(SmsConfigContract::class));
         self::assertSame(NullMessenger::class, $config->defaultMessenger);
-        self::assertSame('test-key', $config->vonage->key);
+    }
+
+    public function testPublishVonageConfig(): void
+    {
+        $callback = new SmsServiceProvider()->publishers()[SmsVonageConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(SmsVonageConfigContract::class, $config = $this->container->getSingleton(SmsVonageConfigContract::class));
+        self::assertSame('vonage-key', $config->vonageKey);
+    }
+
+    public function testPublishVonageConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new SmsConfigFixture());
+
+        $callback = new SmsServiceProvider()->publishers()[SmsVonageConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(SmsVonageConfigContract::class, $config = $this->container->getSingleton(SmsVonageConfigContract::class));
+        self::assertSame('test-key', $config->vonageKey);
     }
 
     /**
@@ -129,9 +147,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishVonageCredentials(): void
     {
-        $this->container->setSingleton(SmsConfigContract::class, new SmsConfig(
-            vonage: new SmsVonageConfig(key: 'test-key', secret: 'test-secret'),
-        ));
+        $this->container->setSingleton(
+            SmsVonageConfigContract::class,
+            new SmsVonageConfig(vonageKey: 'test-key', vonageSecret: 'test-secret')
+        );
 
         $callback = new SmsServiceProvider()->publishers()[CredentialsInterface::class];
         $callback($this->container);

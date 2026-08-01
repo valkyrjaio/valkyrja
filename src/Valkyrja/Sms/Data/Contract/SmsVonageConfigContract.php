@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Data\Contract;
 
-use Valkyrja\Sms\Messenger\Contract\MessengerContract;
-
-interface SmsConfigContract
+interface SmsVonageConfigContract
 {
-    /** @var class-string<MessengerContract> */
-    public string $defaultMessenger {
+    public string $vonageKey {
+        get;
+    }
+
+    public string $vonageSecret {
         get;
     }
 }

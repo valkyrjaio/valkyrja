@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Sms\Data;
 
 use Valkyrja\Sms\Data\Contract\SmsConfigContract;
 use Valkyrja\Sms\Data\SmsConfig;
-use Valkyrja\Sms\Data\SmsVonageConfig;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -29,22 +28,14 @@ final class SmsConfigTest extends TestCase
 
     public function testDefaults(): void
     {
-        $config = new SmsConfig();
-
-        self::assertSame(VonageMessenger::class, $config->defaultMessenger);
-        self::assertSame('vonage-key', $config->vonage->key);
+        self::assertSame(VonageMessenger::class, new SmsConfig()->defaultMessenger);
     }
 
     public function testCustomValuesAreStored(): void
     {
-        $vonage = new SmsVonageConfig(key: 'test-key');
-
-        $config = new SmsConfig(
-            defaultMessenger: NullMessenger::class,
-            vonage: $vonage,
+        self::assertSame(
+            NullMessenger::class,
+            new SmsConfig(defaultMessenger: NullMessenger::class)->defaultMessenger
         );
-
-        self::assertSame(NullMessenger::class, $config->defaultMessenger);
-        self::assertSame($vonage, $config->vonage);
     }
 }
