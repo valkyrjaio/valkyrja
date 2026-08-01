@@ -17,7 +17,7 @@ use Override;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Session\Data\CookieParams;
+use Valkyrja\Session\Data\SessionCookieConfig;
 use Valkyrja\Session\Manager\Abstract\Session;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\PhpSession;
@@ -41,17 +41,17 @@ use const PHP_SESSION_ACTIVE;
 #[PreserveGlobalState(false)]
 final class PhpSessionTest extends TestCase
 {
-    protected CookieParams $cookieParams;
+    protected SessionCookieConfig $cookieConfig;
 
     protected function setUp(): void
     {
-        $this->cookieParams = new CookieParams(
-            path: '/',
-            domain: null,
-            lifetime: 0,
-            secure: false,
-            httpOnly: false,
-            sameSite: SameSite::NONE,
+        $this->cookieConfig = new SessionCookieConfig(
+            cookiePath: '/',
+            cookieDomain: null,
+            cookieLifetime: 0,
+            cookieSecure: false,
+            cookieHttpOnly: false,
+            cookieSameSite: SameSite::NONE,
         );
     }
 
@@ -65,21 +65,21 @@ final class PhpSessionTest extends TestCase
 
     public function testImplementsSessionContract(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         self::assertInstanceOf(SessionContract::class, $session);
     }
 
     public function testExtendsSession(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         self::assertInstanceOf(Session::class, $session);
     }
 
     public function testDoesNotStartTwice(): void
     {
-        $session = new PhpSessionWithAlreadyActiveFixture($this->cookieParams);
+        $session = new PhpSessionWithAlreadyActiveFixture($this->cookieConfig);
 
         self::assertSame(1, $session->sessionStartCount);
 
@@ -90,23 +90,23 @@ final class PhpSessionTest extends TestCase
 
     public function testStartWithNonNullDomain(): void
     {
-        $cookieParams = new CookieParams(
-            path: '/',
-            domain: 'example.com',
-            lifetime: 0,
-            secure: false,
-            httpOnly: false,
-            sameSite: SameSite::NONE,
+        $cookieConfig = new SessionCookieConfig(
+            cookiePath: '/',
+            cookieDomain: 'example.com',
+            cookieLifetime: 0,
+            cookieSecure: false,
+            cookieHttpOnly: false,
+            cookieSameSite: SameSite::NONE,
         );
 
-        $session = new PhpSession($cookieParams);
+        $session = new PhpSession($cookieConfig);
 
         self::assertSame(PHP_SESSION_ACTIVE, session_status());
     }
 
     public function testConstructorWithSessionIdAndName(): void
     {
-        $session = new PhpSession($this->cookieParams, 'test-session-id', 'MY_SESSION');
+        $session = new PhpSession($this->cookieConfig, 'test-session-id', 'MY_SESSION');
 
         self::assertNotSame('test-session-id', $session->getId());
         self::assertSame('MY_SESSION', $session->getName());
@@ -114,7 +114,7 @@ final class PhpSessionTest extends TestCase
 
     public function testSetStoresValue(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key', 'value');
 
         self::assertSame('value', $session->get('key'));
@@ -122,14 +122,14 @@ final class PhpSessionTest extends TestCase
 
     public function testGetReturnsDefaultForNonExistent(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         self::assertSame('default', $session->get('nonexistent', 'default'));
     }
 
     public function testHasReturnsTrueForExistingItem(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key', 'value');
 
         self::assertTrue($session->has('key'));
@@ -137,14 +137,14 @@ final class PhpSessionTest extends TestCase
 
     public function testHasReturnsFalseForNonExistentItem(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         self::assertFalse($session->has('nonexistent'));
     }
 
     public function testRemoveReturnsTrueAndRemovesItem(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key', 'value');
 
         self::assertTrue($session->remove('key'));
@@ -153,14 +153,14 @@ final class PhpSessionTest extends TestCase
 
     public function testRemoveReturnsFalseForNonExistent(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         self::assertFalse($session->remove('nonexistent'));
     }
 
     public function testAllReturnsAllData(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key1', 'value1');
         $session->set('key2', 'value2');
 
@@ -169,7 +169,7 @@ final class PhpSessionTest extends TestCase
 
     public function testClearRemovesAllData(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key1', 'value1');
         $session->set('key2', 'value2');
 
@@ -180,7 +180,7 @@ final class PhpSessionTest extends TestCase
 
     public function testDestroyRemovesAllData(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
         $session->set('key1', 'value1');
 
         $session->destroy();
@@ -193,12 +193,12 @@ final class PhpSessionTest extends TestCase
         $this->expectException(SessionStartFailureException::class);
         $this->expectExceptionMessage('The session failed to start');
 
-        new PhpSessionWithFailingStartFixture($this->cookieParams);
+        new PhpSessionWithFailingStartFixture($this->cookieConfig);
     }
 
     public function testGetIdThrowsSessionIdFailureOnFailure(): void
     {
-        $session = new PhpSessionWithFailingGetIdFixture($this->cookieParams);
+        $session = new PhpSessionWithFailingGetIdFixture($this->cookieConfig);
 
         $this->expectException(SessionIdFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');
@@ -208,7 +208,7 @@ final class PhpSessionTest extends TestCase
 
     public function testGetNameThrowsSessionNameFailureOnFailure(): void
     {
-        $session = new PhpSessionWithFailingGetNameFixture($this->cookieParams);
+        $session = new PhpSessionWithFailingGetNameFixture($this->cookieConfig);
 
         $this->expectException(SessionNameFailureException::class);
         $this->expectExceptionMessage('Retrieval of session id failed');
@@ -218,7 +218,7 @@ final class PhpSessionTest extends TestCase
 
     public function testSetIdThrowsInvalidSessionIdForInvalidId(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         $this->expectException(SessionInvalidSessionIdException::class);
         $this->expectExceptionMessage("The session id, 'invalid id with spaces!', is invalid!");
@@ -231,12 +231,12 @@ final class PhpSessionTest extends TestCase
         $this->expectException(SessionInvalidSessionIdException::class);
         $this->expectExceptionMessage("The session id, 'invalid@id#chars', is invalid!");
 
-        new PhpSession($this->cookieParams, 'invalid@id#chars');
+        new PhpSession($this->cookieConfig, 'invalid@id#chars');
     }
 
     public function testSetIdThrowsInvalidSessionIdForTooLongId(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         $this->expectException(SessionInvalidSessionIdException::class);
 
@@ -245,7 +245,7 @@ final class PhpSessionTest extends TestCase
 
     public function testSetIdThrowsInvalidSessionIdForEmptyId(): void
     {
-        $session = new PhpSession($this->cookieParams);
+        $session = new PhpSession($this->cookieConfig);
 
         $this->expectException(SessionInvalidSessionIdException::class);
 

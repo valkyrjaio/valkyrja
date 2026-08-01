@@ -29,7 +29,6 @@ use Valkyrja\Session\Data\Contract\SessionConfigContract;
 use Valkyrja\Session\Data\Contract\SessionCookieConfigContract;
 use Valkyrja\Session\Data\Contract\SessionJwtConfigContract;
 use Valkyrja\Session\Data\Contract\SessionTokenConfigContract;
-use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Data\SessionConfig;
 use Valkyrja\Session\Data\SessionCookieConfig;
 use Valkyrja\Session\Data\SessionJwtConfig;
@@ -117,33 +116,6 @@ class SessionServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * Publish the cookie params service.
-     */
-    public static function publishCookieParams(ContainerContract $container): void
-    {
-        $config = $container->getSingleton(SessionCookieConfigContract::class);
-
-        $path     = $config->cookiePath;
-        $domain   = $config->cookieDomain;
-        $lifetime = $config->cookieLifetime;
-        $secure   = $config->cookieSecure;
-        $httpOnly = $config->cookieHttpOnly;
-        $sameSite = $config->cookieSameSite;
-
-        $container->setSingleton(
-            CookieParams::class,
-            new CookieParams(
-                path: $path,
-                domain: $domain,
-                lifetime: $lifetime,
-                secure: $secure,
-                httpOnly: $httpOnly,
-                sameSite: $sameSite,
-            )
-        );
-    }
-
-    /**
      * Publish the session service.
      */
     public static function publishSession(ContainerContract $container): void
@@ -169,7 +141,7 @@ class SessionServiceProvider implements ServiceProviderContract
         $container->setSingleton(
             PhpSession::class,
             new PhpSession(
-                cookieParams: $container->getSingleton(CookieParams::class),
+                cookieConfig: $container->getSingleton(SessionCookieConfigContract::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,
             ),
@@ -494,7 +466,6 @@ class SessionServiceProvider implements ServiceProviderContract
             HeaderTokenSession::class          => [self::class, 'publishHeaderTokenSession'],
             EncryptedHeaderTokenSession::class => [self::class, 'publishEncryptedHeaderTokenSession'],
             LogSession::class                  => [self::class, 'publishLogSession'],
-            CookieParams::class                => [self::class, 'publishCookieParams'],
         ];
     }
 }

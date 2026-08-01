@@ -29,7 +29,6 @@ use Valkyrja\Session\Data\Contract\SessionConfigContract;
 use Valkyrja\Session\Data\Contract\SessionCookieConfigContract;
 use Valkyrja\Session\Data\Contract\SessionJwtConfigContract;
 use Valkyrja\Session\Data\Contract\SessionTokenConfigContract;
-use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Data\SessionConfig;
 use Valkyrja\Session\Data\SessionCookieConfig;
 use Valkyrja\Session\Data\SessionJwtConfig;
@@ -96,7 +95,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(HeaderTokenSession::class, new SessionServiceProvider()->publishers());
         self::assertArrayHasKey(EncryptedHeaderTokenSession::class, new SessionServiceProvider()->publishers());
         self::assertArrayHasKey(LogSession::class, new SessionServiceProvider()->publishers());
-        self::assertArrayHasKey(CookieParams::class, new SessionServiceProvider()->publishers());
     }
 
     public function testPublishConfig(): void
@@ -204,8 +202,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishPhpSession(): void
     {
-        $this->container->setSingleton(CookieParams::class, new CookieParams());
-
         $callback = new SessionServiceProvider()->publishers()[PhpSession::class];
         $callback($this->container);
 
@@ -383,19 +379,5 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(LogSession::class, $this->container->getSingleton(LogSession::class));
-    }
-
-    public function testPublishCookieParams(): void
-    {
-        $callback = new SessionServiceProvider()->publishers()[CookieParams::class];
-        $callback($this->container);
-
-        self::assertInstanceOf(CookieParams::class, $cookieParams = $this->container->getSingleton(CookieParams::class));
-        self::assertSame('/', $cookieParams->path);
-        self::assertNull($cookieParams->domain);
-        self::assertSame(0, $cookieParams->lifetime);
-        self::assertFalse($cookieParams->secure);
-        self::assertFalse($cookieParams->httpOnly);
-        self::assertSame(SameSite::NONE, $cookieParams->sameSite);
     }
 }
