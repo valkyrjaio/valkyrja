@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Http\Server\Data\Contract\HttpServerConfigContract;
+use Valkyrja\Http\Server\Data\HttpServerConfig;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
@@ -28,6 +31,7 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddlewar
 use Valkyrja\Http\Server\Provider\HttpServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
+use Valkyrja\Tests\Fixtures\Http\Server\Data\HttpServerConfigFixture;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
@@ -48,6 +52,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ResponseStructMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(CacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(HttpServerConfigContract::class, new HttpServerServiceProvider()->publishers());
     }
 
     public function testPublishersArray(): void
@@ -159,8 +164,46 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(ViewRouteNotMatchedMiddleware::class, $container->getSingleton(ViewRouteNotMatchedMiddleware::class));
     }
 
+    public function testPublishConfig(): void
+    {
+        $callback = new HttpServerServiceProvider()->publishers()[HttpServerConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(HttpServerConfigContract::class, $config = $this->container->getSingleton(HttpServerConfigContract::class));
+        self::assertNull($config->responseCacheFilePath);
+    }
+
+    public function testPublishConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new HttpServerConfigFixture());
+
+        $callback = new HttpServerServiceProvider()->publishers()[HttpServerConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(HttpServerConfigContract::class, $config = $this->container->getSingleton(HttpServerConfigContract::class));
+        self::assertSame('/tmp/response-cache', $config->responseCacheFilePath);
+    }
+
     public function testPublishCacheResponseMiddleware(): void
     {
+        $this->container->setSingleton(HttpServerConfigContract::class, new HttpServerConfig());
+
+        $callback = new HttpServerServiceProvider()->publishers()[CacheResponseMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            CacheResponseMiddleware::class,
+            $this->container->getSingleton(CacheResponseMiddleware::class)
+        );
+    }
+
+    public function testPublishCacheResponseMiddlewareWithConfiguredFilePath(): void
+    {
+        $this->container->setSingleton(
+            HttpServerConfigContract::class,
+            new HttpServerConfig(responseCacheFilePath: '/tmp/response-cache')
+        );
+
         $callback = new HttpServerServiceProvider()->publishers()[CacheResponseMiddleware::class];
         $callback($this->container);
 
