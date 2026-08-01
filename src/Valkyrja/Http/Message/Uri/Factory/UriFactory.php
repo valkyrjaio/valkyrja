@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Factory;
 
 use Valkyrja\Http\Message\Constant\Port;
+use Valkyrja\Http\Message\Uri\Constant\Char;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\HttpUriInvalidFromStringException;
@@ -35,20 +36,6 @@ use function strtoupper;
 
 abstract class UriFactory
 {
-    /**
-     * The unreserved characters, which every uri component allows unencoded.
-     *
-     * @see https://tools.ietf.org/html/rfc3986#section-2.3
-     */
-    protected const string CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
-
-    /**
-     * The sub-delimiters, which every uri component this factory filters allows unencoded.
-     *
-     * @see https://tools.ietf.org/html/rfc3986#section-2.2
-     */
-    protected const string CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
-
     /**
      * Create a Uri instance from a parsed uri string.
      *
@@ -134,7 +121,7 @@ abstract class UriFactory
      */
     public static function filterUserInfo(string $userInfo): string
     {
-        return self::encode($userInfo, ':');
+        return self::encode($userInfo, Char::USER_INFO);
     }
 
     /**
@@ -155,7 +142,7 @@ abstract class UriFactory
             return $host;
         }
 
-        return self::encode($host);
+        return self::encode($host, Char::HOST);
     }
 
     /**
@@ -174,7 +161,7 @@ abstract class UriFactory
     {
         self::validatePath($path);
 
-        $path = self::encode($path, ':@\/');
+        $path = self::encode($path, Char::PATH);
 
         if (str_starts_with($path, '/')) {
             return '/' . ltrim($path, '/');
@@ -217,7 +204,7 @@ abstract class UriFactory
     {
         self::validateQuery($query);
 
-        return self::encode(ltrim($query, '?'), ':@\/\?');
+        return self::encode(ltrim($query, '?'), Char::QUERY);
     }
 
     /**
@@ -249,7 +236,7 @@ abstract class UriFactory
     {
         self::validateFragment($fragment);
 
-        return self::encode(ltrim($fragment, '#'), ':@\/\?');
+        return self::encode(ltrim($fragment, '#'), Char::QUERY);
     }
 
     /**
@@ -377,13 +364,11 @@ abstract class UriFactory
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2.1
      *
-     * @param string $value        The component value
-     * @param string $extraAllowed [optional] The character class atoms the component also allows
+     * @param string $value   The component value
+     * @param string $allowed The character class atoms the component allows, from Char
      */
-    protected static function encode(string $value, string $extraAllowed = ''): string
+    protected static function encode(string $value, string $allowed): string
     {
-        $allowed = self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . $extraAllowed;
-
         return (string) preg_replace_callback(
             '/(%[A-Fa-f0-9]{2})|[^' . $allowed . ']+/',
             /**
