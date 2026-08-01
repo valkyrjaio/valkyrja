@@ -15,9 +15,17 @@ namespace Valkyrja\Orm\Provider;
 
 use Override;
 use PDO;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Orm\Data\Contract\OrmConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmMysqlConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmPgsqlConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmSqliteConfigContract;
+use Valkyrja\Orm\Data\OrmConfig;
+use Valkyrja\Orm\Data\OrmMysqlConfig;
+use Valkyrja\Orm\Data\OrmPgsqlConfig;
+use Valkyrja\Orm\Data\OrmSqliteConfig;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\MysqlManager;
@@ -29,18 +37,79 @@ use Valkyrja\Orm\Repository\Repository;
 class OrmServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the orm config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof OrmConfigContract) {
+            $container->setSingleton(OrmConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(OrmConfigContract::class, new OrmConfig());
+    }
+
+    /**
+     * Publish the mysql config service.
+     */
+    public static function publishMysqlConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof OrmMysqlConfigContract) {
+            $container->setSingleton(OrmMysqlConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(OrmMysqlConfigContract::class, new OrmMysqlConfig());
+    }
+
+    /**
+     * Publish the pgsql config service.
+     */
+    public static function publishPgsqlConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof OrmPgsqlConfigContract) {
+            $container->setSingleton(OrmPgsqlConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(OrmPgsqlConfigContract::class, new OrmPgsqlConfig());
+    }
+
+    /**
+     * Publish the sqlite config service.
+     */
+    public static function publishSqliteConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof OrmSqliteConfigContract) {
+            $container->setSingleton(OrmSqliteConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(OrmSqliteConfigContract::class, new OrmSqliteConfig());
+    }
+
+    /**
      * Publish the manager service.
      */
     public static function publishManager(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<ManagerContract> $default */
-        $default = $env::ORM_DEFAULT_MANAGER
-            ?? MysqlManager::class;
+        $config = $container->getSingleton(OrmConfigContract::class);
 
         $container->setSingleton(
             ManagerContract::class,
-            $container->getSingleton($default),
+            $container->getSingleton($config->defaultManager),
         );
     }
 
@@ -49,39 +118,17 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function publishMysqlManager(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $db */
-        $db = $env::ORM_MYSQL_DB
-            ?? 'valkyrja';
-        /** @var non-empty-string $host */
-        $host = $env::ORM_MYSQL_HOST
-            ?? '127.0.0.1';
-        /** @var positive-int $port */
-        $port = $env::ORM_MYSQL_PORT
-            ?? 3306;
-        /** @var non-empty-string $user */
-        $user = $env::ORM_MYSQL_USER
-            ?? 'valkyrja';
-        /** @var non-empty-string $password */
-        $password = $env::ORM_MYSQL_PASSWORD
-            ?? 'mysql-password';
-        /** @var non-empty-string $charset */
-        $charset = $env::ORM_MYSQL_CHARSET
-            ?? 'utf8mb4';
-        /** @var non-empty-string|null $strict */
-        $strict = $env::ORM_MYSQL_STRICT;
-        /** @var non-empty-string|null $engine */
-        $engine = $env::ORM_MYSQL_ENGINE;
-        /** @var array<int, int|bool>|null $options */
-        $options = $env::ORM_MYSQL_OPTIONS;
+        $config = $container->getSingleton(OrmMysqlConfigContract::class);
 
-        $options ??= [
-            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-            PDO::ATTR_EMULATE_PREPARES  => false,
-        ];
+        $db       = $config->mysqlDb;
+        $host     = $config->mysqlHost;
+        $port     = $config->mysqlPort;
+        $user     = $config->mysqlUser;
+        $password = $config->mysqlPassword;
+        $charset  = $config->mysqlCharset;
+        $strict   = $config->mysqlStrict;
+        $engine   = $config->mysqlEngine;
+        $options  = $config->mysqlOptions;
 
         $dsn = 'mysql'
             . ":dbname=$db"
@@ -107,41 +154,17 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function publishPgsqlManager(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $db */
-        $db = $env::ORM_PGSQL_DB
-            ?? 'valkyrja';
-        /** @var non-empty-string $host */
-        $host = $env::ORM_PGSQL_HOST
-            ?? '127.0.0.1';
-        /** @var positive-int $port */
-        $port = $env::ORM_PGSQL_PORT
-            ?? 6379;
-        /** @var non-empty-string $user */
-        $user = $env::ORM_PGSQL_USER
-            ?? 'valkyrja';
-        /** @var non-empty-string $password */
-        $password = $env::ORM_PGSQL_PASSWORD
-            ?? 'pgsql-password';
-        /** @var non-empty-string $charset */
-        $charset = $env::ORM_PGSQL_CHARSET
-            ?? 'utf8';
-        /** @var non-empty-string $schema */
-        $schema = $env::ORM_PGSQL_SCHEMA
-            ?? 'public';
-        /** @var non-empty-string $sslmode */
-        $sslmode = $env::ORM_PGSQL_SSL_MODE
-            ?? 'prefer';
-        /** @var array<int, int|bool>|null $options */
-        $options = $env::ORM_PGSQL_OPTIONS;
+        $config = $container->getSingleton(OrmPgsqlConfigContract::class);
 
-        $options ??= [
-            PDO::ATTR_PERSISTENT        => true,
-            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-        ];
+        $db       = $config->pgsqlDb;
+        $host     = $config->pgsqlHost;
+        $port     = $config->pgsqlPort;
+        $user     = $config->pgsqlUser;
+        $password = $config->pgsqlPassword;
+        $charset  = $config->pgsqlCharset;
+        $schema   = $config->pgsqlSchema;
+        $sslmode  = $config->pgsqlSslMode;
+        $options  = $config->pgsqlOptions;
 
         $dsn = 'pgsql'
             . ":dbname=$db"
@@ -168,35 +191,15 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function publishSqliteManager(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $db */
-        $db = $env::ORM_SQLITE_DB
-            ?? 'valkyrja';
-        /** @var non-empty-string $host */
-        $host = $env::ORM_SQLITE_HOST
-            ?? '127.0.0.1';
-        /** @var positive-int $port */
-        $port = $env::ORM_SQLITE_PORT
-            ?? 3306;
-        /** @var non-empty-string $user */
-        $user = $env::ORM_SQLITE_USER
-            ?? 'valkyrja';
-        /** @var non-empty-string $password */
-        $password = $env::ORM_SQLITE_PASSWORD
-            ?? 'sqlite-password';
-        /** @var non-empty-string $charset */
-        $charset = $env::ORM_SQLITE_CHARSET
-            ?? 'utf8';
-        /** @var array<int, int|bool>|null $options */
-        $options = $env::ORM_SQLITE_OPTIONS;
+        $config = $container->getSingleton(OrmSqliteConfigContract::class);
 
-        $options ??= [
-            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-            PDO::ATTR_EMULATE_PREPARES  => false,
-        ];
+        $db       = $config->sqliteDb;
+        $host     = $config->sqliteHost;
+        $port     = $config->sqlitePort;
+        $user     = $config->sqliteUser;
+        $password = $config->sqlitePassword;
+        $charset  = $config->sqliteCharset;
+        $options  = $config->sqliteOptions;
 
         $dsn = 'sqlite'
             . ":dbname=$db"
@@ -295,13 +298,17 @@ class OrmServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
-            ManagerContract::class => [self::class, 'publishManager'],
-            MysqlManager::class    => [self::class, 'publishMysqlManager'],
-            PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
-            SqliteManager::class   => [self::class, 'publishSqliteManager'],
-            PDO::class             => [self::class, 'publishPdo'],
-            NullManager::class     => [self::class, 'publishNullManager'],
-            Repository::class      => [self::class, 'publishRepository'],
+            OrmConfigContract::class       => [self::class, 'publishConfig'],
+            OrmMysqlConfigContract::class  => [self::class, 'publishMysqlConfig'],
+            OrmPgsqlConfigContract::class  => [self::class, 'publishPgsqlConfig'],
+            OrmSqliteConfigContract::class => [self::class, 'publishSqliteConfig'],
+            ManagerContract::class         => [self::class, 'publishManager'],
+            MysqlManager::class            => [self::class, 'publishMysqlManager'],
+            PgsqlManager::class            => [self::class, 'publishPgsqlManager'],
+            SqliteManager::class           => [self::class, 'publishSqliteManager'],
+            PDO::class                     => [self::class, 'publishPdo'],
+            NullManager::class             => [self::class, 'publishNullManager'],
+            Repository::class              => [self::class, 'publishRepository'],
         ];
     }
 }
