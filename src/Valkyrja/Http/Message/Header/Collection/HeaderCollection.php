@@ -16,9 +16,9 @@ namespace Valkyrja\Http\Message\Header\Collection;
 use Override;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Contract\HeaderContract;
+use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
 use Valkyrja\Http\Message\Header\Throwable\Exception\Abstract\HttpHeaderInvalidArgumentException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderNameException;
-use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
 
 use function array_filter;
 use function in_array;
@@ -60,26 +60,12 @@ class HeaderCollection implements HeaderCollectionContract
          * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($data as $name => $param) {
-            static::validateHeader($param);
+            HeaderFactory::assertValidHeader($param);
 
             $headers[$name] = $param;
         }
 
         return new static(...$headers);
-    }
-
-    /**
-     * Validate a header.
-     *
-     * @psalm-assert HeaderContract $param
-     *
-     * @phpstan-assert HeaderContract $param
-     */
-    protected static function validateHeader(mixed $param): void
-    {
-        if (! $param instanceof HeaderContract) {
-            throw new HttpHeaderInvalidHeaderParamException('Param must be header');
-        }
     }
 
     /**

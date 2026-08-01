@@ -69,26 +69,15 @@ class UploadedFileCollection implements UploadedFileCollectionContract
                 $param = static::fromArray($param);
             }
 
-            static::validateFile($param);
-
             $params[$name] = $param;
         }
 
+        /**
+         * @var array<array-key, UploadedFileContract|UploadedFileCollectionContract> $params
+         *
+         * @phpstan-ignore-next-line
+         */
         return new static($params);
-    }
-
-    /**
-     * Validate a file.
-     *
-     * @psalm-assert UploadedFileContract|self $param
-     *
-     * @phpstan-assert UploadedFileContract|self $param
-     */
-    protected static function validateFile(mixed $param): void
-    {
-        if (! $param instanceof UploadedFileCollectionContract && ! $param instanceof UploadedFileContract) {
-            throw new UploadedFileInvalidParamException('Param must be an UploadedFileContract or UploadedFileData instance');
-        }
     }
 
     /**
@@ -196,7 +185,21 @@ class UploadedFileCollection implements UploadedFileCollectionContract
          * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($params as $param) {
-            static::validateFile($param);
+            $this->validateFile($param);
+        }
+    }
+
+    /**
+     * Validate a file.
+     *
+     * @psalm-assert UploadedFileContract|self $param
+     *
+     * @phpstan-assert UploadedFileContract|self $param
+     */
+    protected function validateFile(mixed $param): void
+    {
+        if (! $param instanceof UploadedFileCollectionContract && ! $param instanceof UploadedFileContract) {
+            throw new UploadedFileInvalidParamException('Param must be an UploadedFileContract or UploadedFileData instance');
         }
     }
 }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Factory;
 
 use Valkyrja\Http\Message\Header\Factory\HeaderFactory;
+use Valkyrja\Http\Message\Header\Header;
+use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidHeaderParamException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidNameException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\HttpHeaderInvalidValueException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -216,5 +218,20 @@ final class HeaderFactoryTest extends TestCase
     {
         // CR not followed by LF should be removed
         self::assertSame('testvalue', HeaderFactory::filterValue("test\rvalue"));
+    }
+
+    public function testAssertValidHeaderDoesNotThrowForHeader(): void
+    {
+        HeaderFactory::assertValidHeader(Header::fromValue('test: value'));
+
+        self::assertTrue(true); // If we reach here, no exception was thrown
+    }
+
+    public function testAssertValidHeaderThrowsForNonHeader(): void
+    {
+        $this->expectException(HttpHeaderInvalidHeaderParamException::class);
+        $this->expectExceptionMessage('Param must be header');
+
+        HeaderFactory::assertValidHeader('test');
     }
 }

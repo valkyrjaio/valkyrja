@@ -63,8 +63,6 @@ abstract class ParamCollection implements ParamCollectionContract
                 $param = static::fromArray($param);
             }
 
-            static::validateParam($param);
-
             $params[$name] = $param;
         }
 
@@ -74,28 +72,6 @@ abstract class ParamCollection implements ParamCollectionContract
          * @phpstan-ignore-next-line
          */
         return new static($params);
-    }
-
-    /**
-     * Validate a param.
-     *
-     * @psalm-assert T $param
-     *
-     * @phpstan-assert T $param
-     */
-    protected static function validateParam(mixed $param): void
-    {
-        if (! static::isValidParam($param)) {
-            throw new InvalidArgumentException('Param must be scalar, null, or a ParamCollectionContract instance');
-        }
-    }
-
-    /**
-     * Determine if a param is valid.
-     */
-    protected static function isValidParam(mixed $param): bool
-    {
-        return is_scalar($param) || $param instanceof static || $param === null;
     }
 
     /**
@@ -202,7 +178,29 @@ abstract class ParamCollection implements ParamCollectionContract
          * @var scalar|object|array<array-key, mixed>|resource|null $param
          */
         foreach ($params as $param) {
-            static::validateParam($param);
+            $this->validateParam($param);
         }
+    }
+
+    /**
+     * Validate a param.
+     *
+     * @psalm-assert T $param
+     *
+     * @phpstan-assert T $param
+     */
+    protected function validateParam(mixed $param): void
+    {
+        if (! $this->isValidParam($param)) {
+            throw new InvalidArgumentException('Param must be scalar, null, or a ParamCollectionContract instance');
+        }
+    }
+
+    /**
+     * Determine if a param is valid.
+     */
+    protected function isValidParam(mixed $param): bool
+    {
+        return is_scalar($param) || $param instanceof static || $param === null;
     }
 }
