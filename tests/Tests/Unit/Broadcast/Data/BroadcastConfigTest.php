@@ -16,8 +16,6 @@ namespace Valkyrja\Tests\Unit\Broadcast\Data;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Broadcast\Data\BroadcastConfig;
-use Valkyrja\Broadcast\Data\BroadcastLogConfig;
-use Valkyrja\Broadcast\Data\BroadcastPusherConfig;
 use Valkyrja\Broadcast\Data\Contract\BroadcastConfigContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -30,26 +28,14 @@ final class BroadcastConfigTest extends TestCase
 
     public function testDefaults(): void
     {
-        $config = new BroadcastConfig();
-
-        self::assertSame(PusherBroadcaster::class, $config->defaultBroadcaster);
-        self::assertSame('pusher-key', $config->pusher->key);
-        self::assertTrue($config->pusher->useTls);
+        self::assertSame(PusherBroadcaster::class, new BroadcastConfig()->defaultBroadcaster);
     }
 
     public function testCustomValuesAreStored(): void
     {
-        $pusher = new BroadcastPusherConfig(key: 'test-key');
-        $log    = new BroadcastLogConfig();
-
-        $config = new BroadcastConfig(
-            defaultBroadcaster: NullBroadcaster::class,
-            pusher: $pusher,
-            log: $log,
+        self::assertSame(
+            NullBroadcaster::class,
+            new BroadcastConfig(defaultBroadcaster: NullBroadcaster::class)->defaultBroadcaster
         );
-
-        self::assertSame(NullBroadcaster::class, $config->defaultBroadcaster);
-        self::assertSame($pusher, $config->pusher);
-        self::assertSame($log, $config->log);
     }
 }

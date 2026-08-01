@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Data;
 
+use Valkyrja\Broadcast\Data\Contract\BroadcastLogConfigContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-class BroadcastLogConfig
+class BroadcastLogConfig implements BroadcastLogConfigContract
 {
     /**
-     * @param class-string<LoggerContract> $logger The logger to write to
+     * @param class-string<LoggerContract> $logLogger The logger to write to
      */
     public function __construct(
-        public readonly string $logger = LoggerContract::class,
+        public readonly string $logLogger = LoggerContract::class,
     ) {
     }
 }

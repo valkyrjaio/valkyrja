@@ -14,35 +14,41 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Broadcast\Data;
 
 use Valkyrja\Broadcast\Data\BroadcastPusherConfig;
+use Valkyrja\Broadcast\Data\Contract\BroadcastPusherConfigContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class BroadcastPusherConfigTest extends TestCase
 {
+    public function testImplementsContract(): void
+    {
+        self::assertInstanceOf(BroadcastPusherConfigContract::class, new BroadcastPusherConfig());
+    }
+
     public function testDefaults(): void
     {
         $config = new BroadcastPusherConfig();
 
-        self::assertSame('pusher-key', $config->key);
-        self::assertSame('pusher-secret', $config->secret);
-        self::assertSame('pusher-id', $config->id);
-        self::assertSame('us1', $config->cluster);
-        self::assertTrue($config->useTls);
+        self::assertSame('pusher-key', $config->pusherKey);
+        self::assertSame('pusher-secret', $config->pusherSecret);
+        self::assertSame('pusher-id', $config->pusherId);
+        self::assertSame('us1', $config->pusherCluster);
+        self::assertTrue($config->pusherUseTls);
     }
 
     public function testCustomValuesAreStored(): void
     {
         $config = new BroadcastPusherConfig(
-            key: 'test-key',
-            secret: 'test-secret',
-            id: 'test-id',
-            cluster: 'eu',
-            useTls: false,
+            pusherKey: 'test-key',
+            pusherSecret: 'test-secret',
+            pusherId: 'test-id',
+            pusherCluster: 'eu',
+            pusherUseTls: false,
         );
 
-        self::assertSame('test-key', $config->key);
-        self::assertSame('test-secret', $config->secret);
-        self::assertSame('test-id', $config->id);
-        self::assertSame('eu', $config->cluster);
-        self::assertFalse($config->useTls);
+        self::assertSame('test-key', $config->pusherKey);
+        self::assertSame('test-secret', $config->pusherSecret);
+        self::assertSame('test-id', $config->pusherId);
+        self::assertSame('eu', $config->pusherCluster);
+        self::assertFalse($config->pusherUseTls);
     }
 }

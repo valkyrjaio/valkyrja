@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Data\Contract;
 
-use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-interface BroadcastConfigContract
+interface BroadcastLogConfigContract
 {
-    /** @var class-string<BroadcasterContract> */
-    public string $defaultBroadcaster {
+    /** @var class-string<LoggerContract> */
+    public string $logLogger {
         get;
     }
 }

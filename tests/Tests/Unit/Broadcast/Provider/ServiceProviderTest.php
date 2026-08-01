@@ -23,8 +23,11 @@ use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Broadcast\Data\BroadcastConfig;
+use Valkyrja\Broadcast\Data\BroadcastLogConfig;
 use Valkyrja\Broadcast\Data\BroadcastPusherConfig;
 use Valkyrja\Broadcast\Data\Contract\BroadcastConfigContract;
+use Valkyrja\Broadcast\Data\Contract\BroadcastLogConfigContract;
+use Valkyrja\Broadcast\Data\Contract\BroadcastPusherConfigContract;
 use Valkyrja\Broadcast\Provider\BroadcastServiceProvider;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -42,6 +45,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(BroadcastConfigContract::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(BroadcastPusherConfigContract::class, new BroadcastServiceProvider()->publishers());
+        self::assertArrayHasKey(BroadcastLogConfigContract::class, new BroadcastServiceProvider()->publishers());
         self::assertArrayHasKey(BroadcasterContract::class, new BroadcastServiceProvider()->publishers());
         self::assertArrayHasKey(PusherBroadcaster::class, new BroadcastServiceProvider()->publishers());
         self::assertArrayHasKey(CryptPusherBroadcaster::class, new BroadcastServiceProvider()->publishers());
@@ -57,21 +62,59 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(BroadcastConfigContract::class, $config = $this->container->getSingleton(BroadcastConfigContract::class));
         self::assertSame(PusherBroadcaster::class, $config->defaultBroadcaster);
-        self::assertSame('pusher-key', $config->pusher->key);
     }
 
     public function testPublishConfigWithApplicationConfig(): void
     {
-        $this->container->setSingleton(ConfigContract::class, new BroadcastConfigFixture(
-            pusher: new BroadcastPusherConfig(key: 'test-key'),
-        ));
+        $this->container->setSingleton(ConfigContract::class, new BroadcastConfigFixture());
 
         $callback = new BroadcastServiceProvider()->publishers()[BroadcastConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(BroadcastConfigContract::class, $config = $this->container->getSingleton(BroadcastConfigContract::class));
         self::assertSame(NullBroadcaster::class, $config->defaultBroadcaster);
-        self::assertSame('test-key', $config->pusher->key);
+    }
+
+    public function testPublishPusherConfig(): void
+    {
+        $callback = new BroadcastServiceProvider()->publishers()[BroadcastPusherConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(BroadcastPusherConfigContract::class, $config = $this->container->getSingleton(BroadcastPusherConfigContract::class));
+        self::assertSame('pusher-key', $config->pusherKey);
+        self::assertTrue($config->pusherUseTls);
+    }
+
+    public function testPublishPusherConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new BroadcastConfigFixture());
+
+        $callback = new BroadcastServiceProvider()->publishers()[BroadcastPusherConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(BroadcastPusherConfigContract::class, $config = $this->container->getSingleton(BroadcastPusherConfigContract::class));
+        self::assertSame('test-key', $config->pusherKey);
+        self::assertFalse($config->pusherUseTls);
+    }
+
+    public function testPublishLogConfig(): void
+    {
+        $callback = new BroadcastServiceProvider()->publishers()[BroadcastLogConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(BroadcastLogConfigContract::class, $config = $this->container->getSingleton(BroadcastLogConfigContract::class));
+        self::assertSame(LoggerContract::class, $config->logLogger);
+    }
+
+    public function testPublishLogConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new BroadcastConfigFixture());
+
+        $callback = new BroadcastServiceProvider()->publishers()[BroadcastLogConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(BroadcastLogConfigContract::class, $config = $this->container->getSingleton(BroadcastLogConfigContract::class));
+        self::assertSame(LoggerContract::class, $config->logLogger);
     }
 
     /**
@@ -137,9 +180,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPusher(): void
     {
-        $this->container->setSingleton(BroadcastConfigContract::class, new BroadcastConfig(
-            pusher: new BroadcastPusherConfig(key: 'test-key', cluster: 'eu', useTls: false),
-        ));
+        $this->container->setSingleton(
+            BroadcastPusherConfigContract::class,
+            new BroadcastPusherConfig(pusherKey: 'test-key', pusherCluster: 'eu', pusherUseTls: false)
+        );
 
         $callback = new BroadcastServiceProvider()->publishers()[Pusher::class];
         $callback($this->container);
@@ -152,7 +196,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogBroadcaster(): void
     {
-        $this->container->setSingleton(BroadcastConfigContract::class, new BroadcastConfig());
+        $this->container->setSingleton(BroadcastLogConfigContract::class, new BroadcastLogConfig());
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         $callback = new BroadcastServiceProvider()->publishers()[LogBroadcaster::class];

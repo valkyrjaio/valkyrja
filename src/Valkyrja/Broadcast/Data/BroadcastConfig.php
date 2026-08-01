@@ -24,8 +24,6 @@ class BroadcastConfig implements BroadcastConfigContract
      */
     public function __construct(
         public readonly string $defaultBroadcaster = PusherBroadcaster::class,
-        public readonly BroadcastPusherConfig $pusher = new BroadcastPusherConfig(),
-        public readonly BroadcastLogConfig $log = new BroadcastLogConfig(),
     ) {
     }
 }
