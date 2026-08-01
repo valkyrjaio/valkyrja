@@ -21,6 +21,9 @@ use Valkyrja\Cache\Data\CacheLogConfig;
 use Valkyrja\Cache\Data\CacheNullConfig;
 use Valkyrja\Cache\Data\CacheRedisConfig;
 use Valkyrja\Cache\Data\Contract\CacheConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheLogConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheNullConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheRedisConfigContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
@@ -41,6 +44,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     public function testExpectedPublishers(): void
     {
         self::assertArrayHasKey(CacheConfigContract::class, new CacheServiceProvider()->publishers());
+        self::assertArrayHasKey(CacheRedisConfigContract::class, new CacheServiceProvider()->publishers());
+        self::assertArrayHasKey(CacheLogConfigContract::class, new CacheServiceProvider()->publishers());
+        self::assertArrayHasKey(CacheNullConfigContract::class, new CacheServiceProvider()->publishers());
         self::assertArrayHasKey(CacheContract::class, new CacheServiceProvider()->publishers());
         self::assertArrayHasKey(RedisCache::class, new CacheServiceProvider()->publishers());
         self::assertArrayHasKey(Client::class, new CacheServiceProvider()->publishers());
@@ -55,21 +61,79 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(CacheConfigContract::class, $config = $this->container->getSingleton(CacheConfigContract::class));
         self::assertSame(RedisCache::class, $config->defaultCache);
-        self::assertSame('127.0.0.1', $config->redisCache->host);
     }
 
     public function testPublishConfigWithApplicationConfig(): void
     {
-        $this->container->setSingleton(ConfigContract::class, new CacheConfigFixture(
-            redisCache: new CacheRedisConfig(host: 'redis.test'),
-        ));
+        $this->container->setSingleton(ConfigContract::class, new CacheConfigFixture());
 
         $callback = new CacheServiceProvider()->publishers()[CacheConfigContract::class];
         $callback($this->container);
 
         self::assertInstanceOf(CacheConfigContract::class, $config = $this->container->getSingleton(CacheConfigContract::class));
         self::assertSame(NullCache::class, $config->defaultCache);
-        self::assertSame('redis.test', $config->redisCache->host);
+    }
+
+    public function testPublishRedisConfig(): void
+    {
+        $callback = new CacheServiceProvider()->publishers()[CacheRedisConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheRedisConfigContract::class, $config = $this->container->getSingleton(CacheRedisConfigContract::class));
+        self::assertSame('127.0.0.1', $config->redisHost);
+        self::assertSame(6379, $config->redisPort);
+    }
+
+    public function testPublishRedisConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new CacheConfigFixture());
+
+        $callback = new CacheServiceProvider()->publishers()[CacheRedisConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheRedisConfigContract::class, $config = $this->container->getSingleton(CacheRedisConfigContract::class));
+        self::assertSame('redis.test', $config->redisHost);
+        self::assertSame(6380, $config->redisPort);
+    }
+
+    public function testPublishLogConfig(): void
+    {
+        $callback = new CacheServiceProvider()->publishers()[CacheLogConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheLogConfigContract::class, $config = $this->container->getSingleton(CacheLogConfigContract::class));
+        self::assertSame('', $config->logPrefix);
+    }
+
+    public function testPublishLogConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new CacheConfigFixture());
+
+        $callback = new CacheServiceProvider()->publishers()[CacheLogConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheLogConfigContract::class, $config = $this->container->getSingleton(CacheLogConfigContract::class));
+        self::assertSame('log:', $config->logPrefix);
+    }
+
+    public function testPublishNullConfig(): void
+    {
+        $callback = new CacheServiceProvider()->publishers()[CacheNullConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheNullConfigContract::class, $config = $this->container->getSingleton(CacheNullConfigContract::class));
+        self::assertSame('', $config->nullPrefix);
+    }
+
+    public function testPublishNullConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new CacheConfigFixture());
+
+        $callback = new CacheServiceProvider()->publishers()[CacheNullConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(CacheNullConfigContract::class, $config = $this->container->getSingleton(CacheNullConfigContract::class));
+        self::assertSame('null:', $config->nullPrefix);
     }
 
     /**
@@ -105,9 +169,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRedisCache(): void
     {
-        $this->container->setSingleton(CacheConfigContract::class, new CacheConfig(
-            redisCache: new CacheRedisConfig(prefix: 'redis:'),
-        ));
+        $this->container->setSingleton(CacheRedisConfigContract::class, new CacheRedisConfig(redisPrefix: 'redis:'));
         $this->container->setSingleton(Client::class, self::createStub(Client::class));
 
         $callback = new CacheServiceProvider()->publishers()[RedisCache::class];
@@ -118,9 +180,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRedisClient(): void
     {
-        $this->container->setSingleton(CacheConfigContract::class, new CacheConfig(
-            redisCache: new CacheRedisConfig(host: 'redis.test', port: 6380),
-        ));
+        $this->container->setSingleton(
+            CacheRedisConfigContract::class,
+            new CacheRedisConfig(redisHost: 'redis.test', redisPort: 6380)
+        );
 
         $callback = new CacheServiceProvider()->publishers()[Client::class];
         $callback($this->container);
@@ -133,9 +196,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogCache(): void
     {
-        $this->container->setSingleton(CacheConfigContract::class, new CacheConfig(
-            logCache: new CacheLogConfig(prefix: 'log:'),
-        ));
+        $this->container->setSingleton(CacheLogConfigContract::class, new CacheLogConfig(logPrefix: 'log:'));
         $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         $callback = new CacheServiceProvider()->publishers()[LogCache::class];
@@ -146,9 +207,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullCache(): void
     {
-        $this->container->setSingleton(CacheConfigContract::class, new CacheConfig(
-            nullCache: new CacheNullConfig(prefix: 'null:'),
-        ));
+        $this->container->setSingleton(CacheNullConfigContract::class, new CacheNullConfig(nullPrefix: 'null:'));
 
         $callback = new CacheServiceProvider()->publishers()[NullCache::class];
         $callback($this->container);

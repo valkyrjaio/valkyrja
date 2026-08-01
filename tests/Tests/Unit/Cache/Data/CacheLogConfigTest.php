@@ -14,28 +14,34 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cache\Data;
 
 use Valkyrja\Cache\Data\CacheLogConfig;
+use Valkyrja\Cache\Data\Contract\CacheLogConfigContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CacheLogConfigTest extends TestCase
 {
+    public function testImplementsContract(): void
+    {
+        self::assertInstanceOf(CacheLogConfigContract::class, new CacheLogConfig());
+    }
+
     public function testDefaults(): void
     {
         $config = new CacheLogConfig();
 
-        self::assertSame(LoggerContract::class, $config->logger);
-        self::assertSame('', $config->prefix);
+        self::assertSame(LoggerContract::class, $config->logLogger);
+        self::assertSame('', $config->logPrefix);
     }
 
     public function testCustomValuesAreStored(): void
     {
         $config = new CacheLogConfig(
-            logger: PsrLogger::class,
-            prefix: 'test:',
+            logLogger: PsrLogger::class,
+            logPrefix: 'test:',
         );
 
-        self::assertSame(PsrLogger::class, $config->logger);
-        self::assertSame('test:', $config->prefix);
+        self::assertSame(PsrLogger::class, $config->logLogger);
+        self::assertSame('test:', $config->logPrefix);
     }
 }

@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Data\Contract;
 
-use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-interface CacheConfigContract
+interface CacheLogConfigContract
 {
-    /** @var class-string<CacheContract> */
-    public string $defaultCache {
+    /** @var class-string<LoggerContract> */
+    public string $logLogger {
+        get;
+    }
+
+    public string $logPrefix {
         get;
     }
 }

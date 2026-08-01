@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Data;
 
-class CacheNullConfig
+use Valkyrja\Cache\Data\Contract\CacheNullConfigContract;
+
+class CacheNullConfig implements CacheNullConfigContract
 {
     /**
-     * @param string $prefix The prefix to prepend to every key
+     * @param string $nullPrefix The prefix to prepend to every key
      */
     public function __construct(
-        public readonly string $prefix = '',
+        public readonly string $nullPrefix = '',
     ) {
     }
 }

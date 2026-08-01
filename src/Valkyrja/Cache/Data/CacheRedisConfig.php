@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Data;
 
-class CacheRedisConfig
+use Valkyrja\Cache\Data\Contract\CacheRedisConfigContract;
+
+class CacheRedisConfig implements CacheRedisConfigContract
 {
     /**
-     * @param non-empty-string $host   The host to connect to
-     * @param int              $port   The port to connect to
-     * @param string           $prefix The prefix to prepend to every key
+     * @param non-empty-string $redisHost   The host to connect to
+     * @param int              $redisPort   The port to connect to
+     * @param string           $redisPrefix The prefix to prepend to every key
      */
     public function __construct(
-        public readonly string $host = '127.0.0.1',
-        public readonly int $port = 6379,
-        public readonly string $prefix = '',
+        public readonly string $redisHost = '127.0.0.1',
+        public readonly int $redisPort = 6379,
+        public readonly string $redisPrefix = '',
     ) {
     }
 }

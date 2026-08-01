@@ -14,23 +14,35 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Cache\Data;
 
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Cache\Data\CacheLogConfig;
-use Valkyrja\Cache\Data\CacheNullConfig;
-use Valkyrja\Cache\Data\CacheRedisConfig;
 use Valkyrja\Cache\Data\Contract\CacheConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheLogConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheNullConfigContract;
+use Valkyrja\Cache\Data\Contract\CacheRedisConfigContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\NullCache;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-final class CacheConfigFixture extends Config implements CacheConfigContract
+/**
+ * An application config that implements every cache contract at once.
+ *
+ * The adapter contracts prefix each property with the adapter name, so one class
+ * can carry the settings for several adapters without a name collision.
+ */
+final class CacheConfigFixture extends Config implements CacheConfigContract, CacheRedisConfigContract, CacheLogConfigContract, CacheNullConfigContract
 {
     /**
-     * @param class-string<CacheContract> $defaultCache
+     * @param class-string<CacheContract>  $defaultCache
+     * @param non-empty-string             $redisHost
+     * @param class-string<LoggerContract> $logLogger
      */
     public function __construct(
         public string $defaultCache = NullCache::class,
-        public CacheRedisConfig $redisCache = new CacheRedisConfig(),
-        public CacheLogConfig $logCache = new CacheLogConfig(),
-        public CacheNullConfig $nullCache = new CacheNullConfig(),
+        public string $redisHost = 'redis.test',
+        public int $redisPort = 6380,
+        public string $redisPrefix = 'redis:',
+        public string $logLogger = LoggerContract::class,
+        public string $logPrefix = 'log:',
+        public string $nullPrefix = 'null:',
     ) {
         parent::__construct();
     }

@@ -24,9 +24,6 @@ class CacheConfig implements CacheConfigContract
      */
     public function __construct(
         public readonly string $defaultCache = RedisCache::class,
-        public readonly CacheRedisConfig $redisCache = new CacheRedisConfig(),
-        public readonly CacheLogConfig $logCache = new CacheLogConfig(),
-        public readonly CacheNullConfig $nullCache = new CacheNullConfig(),
     ) {
     }
 }

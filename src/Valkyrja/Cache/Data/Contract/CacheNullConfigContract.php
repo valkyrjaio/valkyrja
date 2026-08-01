@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Data\Contract;
 
-use Valkyrja\Cache\Manager\Contract\CacheContract;
-
-interface CacheConfigContract
+interface CacheNullConfigContract
 {
-    /** @var class-string<CacheContract> */
-    public string $defaultCache {
+    public string $nullPrefix {
         get;
     }
 }

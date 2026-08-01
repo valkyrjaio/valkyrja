@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Data\Contract;
 
-use Valkyrja\Cache\Manager\Contract\CacheContract;
-
-interface CacheConfigContract
+interface CacheRedisConfigContract
 {
-    /** @var class-string<CacheContract> */
-    public string $defaultCache {
+    /** @var non-empty-string */
+    public string $redisHost {
+        get;
+    }
+
+    public int $redisPort {
+        get;
+    }
+
+    public string $redisPrefix {
         get;
     }
 }

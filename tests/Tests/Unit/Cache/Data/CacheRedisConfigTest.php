@@ -14,29 +14,35 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cache\Data;
 
 use Valkyrja\Cache\Data\CacheRedisConfig;
+use Valkyrja\Cache\Data\Contract\CacheRedisConfigContract;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CacheRedisConfigTest extends TestCase
 {
+    public function testImplementsContract(): void
+    {
+        self::assertInstanceOf(CacheRedisConfigContract::class, new CacheRedisConfig());
+    }
+
     public function testDefaults(): void
     {
         $config = new CacheRedisConfig();
 
-        self::assertSame('127.0.0.1', $config->host);
-        self::assertSame(6379, $config->port);
-        self::assertSame('', $config->prefix);
+        self::assertSame('127.0.0.1', $config->redisHost);
+        self::assertSame(6379, $config->redisPort);
+        self::assertSame('', $config->redisPrefix);
     }
 
     public function testCustomValuesAreStored(): void
     {
         $config = new CacheRedisConfig(
-            host: 'redis.test',
-            port: 6380,
-            prefix: 'test:',
+            redisHost: 'redis.test',
+            redisPort: 6380,
+            redisPrefix: 'test:',
         );
 
-        self::assertSame('redis.test', $config->host);
-        self::assertSame(6380, $config->port);
-        self::assertSame('test:', $config->prefix);
+        self::assertSame('redis.test', $config->redisHost);
+        self::assertSame(6380, $config->redisPort);
+        self::assertSame('test:', $config->redisPrefix);
     }
 }
