@@ -16,5 +16,5 @@ jobs:
 
   commit-message-check:
     name: Commit Message Check
-    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@1438ce03055b4ad8010e8dfd863aa85d07f122ad
+    uses: valkyrjaio/.github/.github/workflows/_commit-message-check.yml@6bfd75231afaebd9e9681fe6b2ad2b9a083a6371
     secrets: inherit
