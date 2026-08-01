@@ -2,7 +2,6 @@ name: Claude Review
 
 on:
   pull_request:
-    branches: [ 'master', '*.x' ]
     types: [ opened, ready_for_review, synchronize ]
 
 concurrency:
