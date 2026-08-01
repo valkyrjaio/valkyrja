@@ -2,6 +2,11 @@ name: Rebase to Master
 
 on:
   workflow_dispatch:
+    inputs:
+      allow_diverged:
+        description: 'Rebase even when master holds commits of its own'
+        type: boolean
+        default: false
 
 run-name: "Rebase ${{ github.ref_name }} to master"
 
@@ -11,3 +16,5 @@ jobs:
     permissions:
       contents: write
     secrets: inherit
+    with:
+      allow_diverged: ${{ inputs.allow_diverged }}
