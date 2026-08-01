@@ -13,10 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Provider;
 
+use Override;
 use PDO;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env\Env;
+use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Orm\Data\Contract\OrmConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmMysqlConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmPgsqlConfigContract;
+use Valkyrja\Orm\Data\Contract\OrmSqliteConfigContract;
+use Valkyrja\Orm\Data\OrmConfig;
+use Valkyrja\Orm\Data\OrmMysqlConfig;
+use Valkyrja\Orm\Data\OrmPgsqlConfig;
+use Valkyrja\Orm\Data\OrmSqliteConfig;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\MysqlManager;
@@ -26,7 +36,7 @@ use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Provider\OrmServiceProvider;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\Fixtures\Env\OrmMysqlStrictEngineEnvFixture;
+use Valkyrja\Tests\Fixtures\Orm\Data\OrmConfigFixture;
 use Valkyrja\Tests\Fixtures\Orm\PdoFixture;
 
 /**
@@ -37,8 +47,27 @@ final class ServiceProviderTest extends ServiceProviderTestCase
     /** @inheritDoc */
     protected static string $provider = OrmServiceProvider::class;
 
+    /**
+     * Every manager reads its connection config, so bind the framework defaults
+     * for each publisher test.
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container->setSingleton(OrmConfigContract::class, new OrmConfig());
+        $this->container->setSingleton(OrmMysqlConfigContract::class, new OrmMysqlConfig());
+        $this->container->setSingleton(OrmPgsqlConfigContract::class, new OrmPgsqlConfig());
+        $this->container->setSingleton(OrmSqliteConfigContract::class, new OrmSqliteConfig());
+    }
+
     public function testExpectedPublishers(): void
     {
+        self::assertArrayHasKey(OrmConfigContract::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(OrmMysqlConfigContract::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(OrmPgsqlConfigContract::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(OrmSqliteConfigContract::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(ManagerContract::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(MysqlManager::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(PgsqlManager::class, new OrmServiceProvider()->publishers());
@@ -46,6 +75,94 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(PDO::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(NullManager::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(Repository::class, new OrmServiceProvider()->publishers());
+    }
+
+    public function testPublishConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new Config());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmConfigContract::class, $config = $this->container->getSingleton(OrmConfigContract::class));
+        self::assertSame(MysqlManager::class, $config->defaultManager);
+    }
+
+    public function testPublishConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new OrmConfigFixture());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmConfigContract::class, $config = $this->container->getSingleton(OrmConfigContract::class));
+        self::assertSame(SqliteManager::class, $config->defaultManager);
+    }
+
+    public function testPublishMysqlConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new Config());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmMysqlConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmMysqlConfigContract::class, $config = $this->container->getSingleton(OrmMysqlConfigContract::class));
+        self::assertSame('valkyrja', $config->mysqlDb);
+    }
+
+    public function testPublishMysqlConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new OrmConfigFixture());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmMysqlConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmMysqlConfigContract::class, $config = $this->container->getSingleton(OrmMysqlConfigContract::class));
+        self::assertSame('test-mysql-db', $config->mysqlDb);
+    }
+
+    public function testPublishPgsqlConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new Config());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmPgsqlConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmPgsqlConfigContract::class, $config = $this->container->getSingleton(OrmPgsqlConfigContract::class));
+        self::assertSame('public', $config->pgsqlSchema);
+    }
+
+    public function testPublishPgsqlConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new OrmConfigFixture());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmPgsqlConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmPgsqlConfigContract::class, $config = $this->container->getSingleton(OrmPgsqlConfigContract::class));
+        self::assertSame('test', $config->pgsqlSchema);
+    }
+
+    public function testPublishSqliteConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new Config());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmSqliteConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmSqliteConfigContract::class, $config = $this->container->getSingleton(OrmSqliteConfigContract::class));
+        self::assertSame('valkyrja', $config->sqliteDb);
+    }
+
+    public function testPublishSqliteConfigWithApplicationConfig(): void
+    {
+        $this->container->setSingleton(ConfigContract::class, new OrmConfigFixture());
+
+        $callback = new OrmServiceProvider()->publishers()[OrmSqliteConfigContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(OrmSqliteConfigContract::class, $config = $this->container->getSingleton(OrmSqliteConfigContract::class));
+        self::assertSame('test-sqlite-db', $config->sqliteDb);
     }
 
     /**
@@ -80,7 +197,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishMysqlManagerWithStrictAndEngine(): void
     {
-        $this->container->setSingleton(Env::class, new OrmMysqlStrictEngineEnvFixture());
+        $this->container->setSingleton(
+            OrmMysqlConfigContract::class,
+            new OrmMysqlConfig(mysqlStrict: true, mysqlEngine: 'InnoDB')
+        );
 
         $dsn = null;
 
