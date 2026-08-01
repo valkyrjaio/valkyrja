@@ -41,7 +41,7 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 class HttpServerServiceProvider implements ServiceProviderContract
 {
     /**
-     * Publish the http server config service.
+     * Publish the HttpServerConfig service.
      */
     public static function publishConfig(ContainerContract $container): void
     {
