@@ -16,17 +16,23 @@ namespace Valkyrja\View\Provider;
 use Override;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\View\Data\Contract\ViewConfigContract;
+use Valkyrja\View\Data\Contract\ViewOrkaConfigContract;
+use Valkyrja\View\Data\Contract\ViewPhpConfigContract;
+use Valkyrja\View\Data\Contract\ViewTwigConfigContract;
+use Valkyrja\View\Data\ViewConfig;
+use Valkyrja\View\Data\ViewOrkaConfig;
+use Valkyrja\View\Data\ViewPhpConfig;
+use Valkyrja\View\Data\ViewTwigConfig;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
-use Valkyrja\View\Orka\Constant\OrkaReplacementCollection;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -38,17 +44,79 @@ use function array_merge;
 class ViewServiceProvider implements ServiceProviderContract
 {
     /**
+     * Publish the view config service.
+     */
+    public static function publishConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof ViewConfigContract) {
+            $container->setSingleton(ViewConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(ViewConfigContract::class, new ViewConfig());
+    }
+
+    /**
+     * Publish the php renderer config service.
+     */
+    public static function publishPhpConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof ViewPhpConfigContract) {
+            $container->setSingleton(ViewPhpConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(ViewPhpConfigContract::class, new ViewPhpConfig());
+    }
+
+    /**
+     * Publish the orka renderer config service.
+     */
+    public static function publishOrkaConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof ViewOrkaConfigContract) {
+            $container->setSingleton(ViewOrkaConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(ViewOrkaConfigContract::class, new ViewOrkaConfig());
+    }
+
+    /**
+     * Publish the twig renderer config service.
+     */
+    public static function publishTwigConfig(ContainerContract $container): void
+    {
+        $config = $container->getSingleton(ConfigContract::class);
+
+        if ($config instanceof ViewTwigConfigContract) {
+            $container->setSingleton(ViewTwigConfigContract::class, $config);
+
+            return;
+        }
+
+        $container->setSingleton(ViewTwigConfigContract::class, new ViewTwigConfig());
+    }
+
+    /**
      * Publish the renderer service.
      */
     public static function publishRenderer(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var class-string<RendererContract> $default */
-        $default = $env::VIEW_DEFAULT_RENDERER ?? PhpRenderer::class;
+        $config = $container->getSingleton(ViewConfigContract::class);
 
         $container->setSingleton(
             RendererContract::class,
-            $container->getSingleton($default)
+            $container->getSingleton($config->defaultRenderer)
         );
     }
 
@@ -57,16 +125,11 @@ class ViewServiceProvider implements ServiceProviderContract
      */
     public static function publishPhpRenderer(ContainerContract $container): void
     {
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $dir */
-        $dir = $env::VIEW_PHP_PATH
-            ?? '/resources/views';
-        /** @var non-empty-string $fileExtension */
-        $fileExtension = $env::VIEW_PHP_FILE_EXTENSION
-            ?? '.phtml';
-        /** @var array<string, string> $paths */
-        $paths = $env::VIEW_PHP_PATHS
-            ?? [];
+        $config = $container->getSingleton(ViewPhpConfigContract::class);
+
+        $dir           = $config->phpPath;
+        $fileExtension = $config->phpFileExtension;
+        $paths         = $config->phpPaths;
 
         $container->setSingleton(
             PhpRenderer::class,
@@ -83,19 +146,14 @@ class ViewServiceProvider implements ServiceProviderContract
      */
     public static function publishOrkaRenderer(ContainerContract $container): void
     {
-        $app = $container->getSingleton(ApplicationContract::class);
-        $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $dir */
-        $dir = $env::VIEW_ORKA_PATH
-            ?? '/resources/views';
-        /** @var non-empty-string $fileExtension */
-        $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION
-            ?? '.orka.phtml';
-        /** @var array<non-empty-string, non-empty-string> $paths */
-        $paths = $env::VIEW_ORKA_PATHS
-            ?? [];
+        $app    = $container->getSingleton(ApplicationContract::class);
+        $config = $container->getSingleton(ViewOrkaConfigContract::class);
 
-        $replacementClasses = self::getOrkaComponents($container, $env);
+        $dir           = $config->orkaPath;
+        $fileExtension = $config->orkaFileExtension;
+        $paths         = $config->orkaPaths;
+
+        $replacementClasses = self::getOrkaComponents($container, $config);
 
         $container->setSingleton(
             OrkaRenderer::class,
@@ -130,17 +188,12 @@ class ViewServiceProvider implements ServiceProviderContract
      */
     public static function publishTwigEnvironment(ContainerContract $container): void
     {
-        $app = $container->getSingleton(ApplicationContract::class);
-        $env = $container->getSingleton(Env::class);
-        /** @var array<string, string> $paths */
-        $paths = $env::VIEW_TWIG_PATHS
-            ?? [];
-        /** @var class-string<ExtensionInterface>[] $extensions */
-        $extensions = $env::VIEW_TWIG_EXTENSIONS
-            ?? [];
-        /** @var non-empty-string $compiledDir */
-        $compiledDir = $env::VIEW_TWIG_COMPILED_PATH
-            ?? '/storage/views';
+        $app    = $container->getSingleton(ApplicationContract::class);
+        $config = $container->getSingleton(ViewTwigConfigContract::class);
+
+        $paths       = $config->twigPaths;
+        $extensions  = $config->twigExtensions;
+        $compiledDir = $config->twigCompiledPath;
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
@@ -191,16 +244,9 @@ class ViewServiceProvider implements ServiceProviderContract
      *
      * @return ReplacementContract[]
      */
-    private static function getOrkaComponents(ContainerContract $container, Env $env): array
+    private static function getOrkaComponents(ContainerContract $container, ViewOrkaConfigContract $config): array
     {
-        /** @var class-string<ReplacementContract>[] $coreReplacements */
-        $coreReplacements = $env::VIEW_ORKA_CORE_REPLACEMENTS
-            ?? OrkaReplacementCollection::CORE;
-        /** @var class-string<ReplacementContract>[] $replacements */
-        $replacements = $env::VIEW_ORKA_REPLACEMENTS
-            ?? OrkaReplacementCollection::DEBUG;
-
-        $allReplacements = array_merge($coreReplacements, $replacements);
+        $allReplacements = array_merge($config->orkaCoreReplacements, $config->orkaReplacements);
 
         $replacementClasses = [];
 
@@ -218,6 +264,10 @@ class ViewServiceProvider implements ServiceProviderContract
     public function publishers(): array
     {
         return [
+            ViewConfigContract::class          => [self::class, 'publishConfig'],
+            ViewPhpConfigContract::class       => [self::class, 'publishPhpConfig'],
+            ViewOrkaConfigContract::class      => [self::class, 'publishOrkaConfig'],
+            ViewTwigConfigContract::class      => [self::class, 'publishTwigConfig'],
             RendererContract::class            => [self::class, 'publishRenderer'],
             PhpRenderer::class                 => [self::class, 'publishPhpRenderer'],
             OrkaRenderer::class                => [self::class, 'publishOrkaRenderer'],
