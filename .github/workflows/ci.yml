@@ -44,6 +44,24 @@ jobs:
       VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
       VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
 
+  # PHP CS Fixer holds every PHP file to the copyright header, and it reads only PHP. A shell
+  # script has no mechanism of its own for that reason, so this job holds `*.sh` to the same
+  # header. It stands outside the `source-paths` filter that the `tools` job derives, because a
+  # filter that misses a path skips the job, and a skipped job reads the same as a clean run.
+  copyright-header-check:
+    name: Copyright Header Check
+    if: github.event_name == 'pull_request'
+    uses: valkyrjaio/.github/.github/workflows/_copyright-header-check.yml@a22f1b9d16b842d897276706800fad2c72f89799
+    permissions:
+      pull-requests: write
+      contents: read
+    with:
+      package-identifier: 'Valkyrja Framework'
+      paths: '*.sh'
+    secrets:
+      VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+      VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
   # A check's name is built from every job name down the call chain, so this composes
   # as `CI / Tools / <Tool> / …`.
   tools:
