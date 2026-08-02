@@ -17,6 +17,8 @@ use Override;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
+use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
+use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
@@ -24,13 +26,18 @@ use Valkyrja\Orm\Statement\NullStatement;
 
 class NullManager implements ManagerContract
 {
+    public function __construct(
+        protected EntityMetadataRegistryContract $registry = new EntityMetadataRegistry(),
+    ) {
+    }
+
     /**
      * @inheritDoc
      */
     #[Override]
     public function createRepository(string $entity): RepositoryContract
     {
-        return new Repository($this, $entity);
+        return new Repository($this, $entity, $this->registry);
     }
 
     /**

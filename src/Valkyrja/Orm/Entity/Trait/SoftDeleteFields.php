@@ -15,15 +15,6 @@ namespace Valkyrja\Orm\Entity\Trait;
 
 trait SoftDeleteFields
 {
-    use SoftDeletable;
-
-    /**
-     * The deleted flag.
-     *
-     * @var bool
-     */
-    public bool $is_deleted = false;
-
     /**
      * The date deleted date.
      *

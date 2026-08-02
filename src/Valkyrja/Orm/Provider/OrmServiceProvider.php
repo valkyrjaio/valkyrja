@@ -258,7 +258,9 @@ class OrmServiceProvider implements ServiceProviderContract
     {
         $container->setSingleton(
             NullManager::class,
-            new NullManager()
+            new NullManager(
+                $container->getSingleton(EntityMetadataRegistryContract::class)
+            )
         );
     }
 
@@ -294,16 +296,18 @@ class OrmServiceProvider implements ServiceProviderContract
      */
     public static function createRepository(ContainerContract $container, array $arguments): Repository
     {
-        [$manager, $entity] = $arguments;
+        [$manager, $entity, $registry] = $arguments;
 
         /**
-         * @var ManagerContract              $manager
-         * @var class-string<EntityContract> $entity
+         * @var ManagerContract                $manager
+         * @var class-string<EntityContract>   $entity
+         * @var EntityMetadataRegistryContract $registry
          */
 
         return new Repository(
             manager: $manager,
-            entity: $entity
+            entity: $entity,
+            registry: $registry
         );
     }
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Entity\Trait;
 
-use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Entity\Trait\DatedFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -39,29 +38,5 @@ final class DatedFieldsTest extends TestCase
         $class->date_modified = '01-26-2026 12:00:00 UTC';
 
         self::assertSame('01-26-2026 12:00:00 UTC', $class->date_modified);
-    }
-
-    public function testIncludesDateableTrait(): void
-    {
-        $class = new class {
-            use DatedFields;
-        };
-
-        // Dateable methods should be available
-        self::assertSame(DateFormat::DEFAULT, $class::getDateFormat());
-        self::assertSame('date_created', $class::getDateCreatedField());
-        self::assertSame('date_modified', $class::getDateModifiedField());
-    }
-
-    public function testGetFormattedDateIsAvailable(): void
-    {
-        $class = new class {
-            use DatedFields;
-        };
-
-        $date = $class::getFormattedDate();
-
-        self::assertIsString($date);
-        self::assertNotEmpty($date);
     }
 }

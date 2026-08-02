@@ -304,6 +304,8 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishNullManager(): void
     {
+        $this->container->setSingleton(EntityMetadataRegistryContract::class, new EntityMetadataRegistry());
+
         $callback = new OrmServiceProvider()->publishers()[NullManager::class];
         $callback($this->container);
 
@@ -315,13 +317,17 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRepository(): void
     {
-        $manager = self::createStub(MysqlManager::class);
-        $entity  = Entity::class;
+        $manager  = self::createStub(MysqlManager::class);
+        $entity   = Entity::class;
+        $registry = new EntityMetadataRegistry();
 
         $callback = new OrmServiceProvider()->publishers()[Repository::class];
         $callback($this->container);
 
-        self::assertInstanceOf(Repository::class, $this->container->getService(Repository::class, [$manager, $entity]));
+        self::assertInstanceOf(
+            Repository::class,
+            $this->container->getService(Repository::class, [$manager, $entity, $registry])
+        );
     }
 
     /**

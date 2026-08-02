@@ -20,6 +20,7 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
+use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
@@ -49,10 +50,12 @@ abstract class PdoManager implements ManagerContract
     #[Override]
     public function createRepository(string $entity): RepositoryContract
     {
+        $registry = $this->container->getSingleton(EntityMetadataRegistryContract::class);
+
         /** @var RepositoryContract<T> $repository */
         $repository = $this->container->get(
             $entity::getRepository(),
-            [$this, $entity]
+            [$this, $entity, $registry]
         );
 
         return $repository;

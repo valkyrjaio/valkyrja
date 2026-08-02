@@ -21,7 +21,10 @@ use Valkyrja\Orm\Manager\Abstract\PdoManager;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
+use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
+use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
+use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Throwable\Exception\OrmNoLastIdException;
 use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
@@ -107,10 +110,21 @@ final class SqliteManagerTest extends TestCase
         $this->pdo->expects($this->never())->method('lastInsertId');
 
         $repository = self::createStub(RepositoryContract::class);
+        $registry   = new EntityMetadataRegistry();
+
+        $this->container
+            ->expects($this->once())
+            ->method('getSingleton')
+            ->with(EntityMetadataRegistryContract::class)
+            ->willReturn($registry);
 
         $this->container
             ->expects($this->once())
             ->method('get')
+            ->with(
+                Repository::class,
+                self::identicalTo([$this->manager, EntityIntIdFixture::class, $registry])
+            )
             ->willReturn($repository);
 
         $result = $this->manager->createRepository(EntityIntIdFixture::class);
