@@ -13,9 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Constant;
 
+/**
+ * The formats that the ORM writes to a date column.
+ *
+ * Each format is ISO 8601, so a text sort of the column is a date sort, and the
+ * date functions of the database read the value. Each format also fits a column
+ * type: DEFAULT fits DATETIME, MILLISECOND fits DATETIME(3), and MICROSECOND
+ * fits DATETIME(6).
+ *
+ * No format holds a timezone. `DateFactory` builds each time in UTC, so a
+ * timezone would render the same characters on every row. Read each stored
+ * value as UTC.
+ */
 final class DateFormat
 {
-    public const string DEFAULT     = 'm-d-Y H:i:s T';
-    public const string MILLISECOND = 'm-d-Y H:i:s.v T';
-    public const string MICROSECOND = 'm-d-Y H:i:s.u T';
+    public const string DEFAULT     = 'Y-m-d H:i:s';
+    public const string MILLISECOND = 'Y-m-d H:i:s.v';
+    public const string MICROSECOND = 'Y-m-d H:i:s.u';
 }
