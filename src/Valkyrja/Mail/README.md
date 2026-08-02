@@ -101,40 +101,48 @@ public function withName(string $name): static;
 | `NullMailer`    | No-op; discards all messages silently      |
 
 The active implementation is resolved from the container as `MailerContract`.
-Configure the default via your `Env` class.
+Configure the default through `MailConfigContract`.
 
 ## Configuration
 
-### General
+The component reads three config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each adapter
+contract prefixes its properties with the adapter name, so one class can
+implement several of them at once.
 
-| Env Constant          | Default                | Description                              |
-|:----------------------|:-----------------------|:-----------------------------------------|
-| `MAIL_DEFAULT_MAILER` | `MailgunMailer::class` | Implementation bound to `MailerContract` |
+### `MailConfigContract`
 
-### Mailgun
+| Property        | Default                | Description                              |
+|:----------------|:-----------------------|:-----------------------------------------|
+| `defaultMailer` | `MailgunMailer::class` | Implementation bound to `MailerContract` |
 
-| Env Constant           | Default     | Description     |
-|:-----------------------|:------------|:----------------|
-| `MAIL_MAILGUN_DOMAIN`  | `'domain'`  | Mailgun domain  |
-| `MAIL_MAILGUN_API_KEY` | `'api-key'` | Mailgun API key |
+### `MailMailgunConfigContract`
 
-### PHPMailer (SMTP)
+| Property        | Default     | Description     |
+|:----------------|:------------|:----------------|
+| `mailgunDomain` | `'domain'`  | Mailgun domain  |
+| `mailgunApiKey` | `'api-key'` | Mailgun API key |
 
-| Env Constant                 | Default      | Description          |
-|:-----------------------------|:-------------|:---------------------|
-| `MAIL_PHP_MAILER_HOST`       | `'host'`     | SMTP server hostname |
-| `MAIL_PHP_MAILER_PORT`       | `25`         | SMTP server port     |
-| `MAIL_PHP_MAILER_USERNAME`   | `'username'` | SMTP username        |
-| `MAIL_PHP_MAILER_PASSWORD`   | `'password'` | SMTP password        |
-| `MAIL_PHP_MAILER_ENCRYPTION` | `'ssl'`      | Encryption type      |
+### `MailPhpMailerConfigContract`
+
+| Property              | Default      | Description          |
+|:----------------------|:-------------|:---------------------|
+| `phpMailerHost`       | `'host'`     | SMTP server hostname |
+| `phpMailerPort`       | `25`         | SMTP server port     |
+| `phpMailerUsername`   | `'username'` | SMTP username        |
+| `phpMailerPassword`   | `'password'` | SMTP password        |
+| `phpMailerEncryption` | `'ssl'`      | Encryption type      |
 
 ## Service Registration
 
 The Mail service provider registers the following singletons:
 
-| Contract / Class  | Description                              |
-|:------------------|:-----------------------------------------|
-| `MailerContract`  | Active mailer (default: `MailgunMailer`) |
+| Contract / Class              | Description                              |
+|:------------------------------|:-----------------------------------------|
+| `MailConfigContract`          | Component config                         |
+| `MailMailgunConfigContract`   | Mailgun adapter config                   |
+| `MailPhpMailerConfigContract` | PHPMailer adapter config                 |
+| `MailerContract`              | Active mailer (default: `MailgunMailer`) |
 | `MailgunMailer`   | Mailgun implementation                   |
 | `PhpMailer`       | PHPMailer SMTP implementation            |
 | `LogMailer`       | Log implementation                       |
