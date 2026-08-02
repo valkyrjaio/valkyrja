@@ -210,6 +210,7 @@ The Auth service provider registers the following singletons:
 
 | Contract / Class         | Description                                            |
 |:-------------------------|:-------------------------------------------------------|
+| `AuthConfigContract`     | Component config                                       |
 | `AuthenticatorContract`  | Active authenticator (default: `SessionAuthenticator`) |
 | `SessionAuthenticator`   | Session-backed authenticator                           |
 | `StoreContract`          | Active store (default: `OrmStore`)                     |
