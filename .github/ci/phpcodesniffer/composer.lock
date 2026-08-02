@@ -296,16 +296,16 @@
         },
         {
             "name": "valkyrja/phpcodesniffer",
-            "version": "v26.2.2",
+            "version": "v26.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpcodesniffer-php.git",
-                "reference": "b7ce43a806d030a4e8eb8a9e4ce6be4c3732963d"
+                "reference": "9534c8b457f0374f6e6d8a3b26549c23343842ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpcodesniffer-php/zipball/b7ce43a806d030a4e8eb8a9e4ce6be4c3732963d",
-                "reference": "b7ce43a806d030a4e8eb8a9e4ce6be4c3732963d",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpcodesniffer-php/zipball/9534c8b457f0374f6e6d8a3b26549c23343842ec",
+                "reference": "9534c8b457f0374f6e6d8a3b26549c23343842ec",
                 "shasum": ""
             },
             "require": {
@@ -338,9 +338,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpcodesniffer-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpcodesniffer-php/tree/v26.2.2"
+                "source": "https://github.com/valkyrjaio/ci-phpcodesniffer-php/tree/v26.2.3"
             },
-            "time": "2026-08-01T14:58:47+00:00"
+            "time": "2026-08-02T14:59:35+00:00"
         }
     ],
     "aliases": [],
