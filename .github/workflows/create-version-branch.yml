@@ -7,7 +7,9 @@ run-name: Create new version for upcoming yearly release
 jobs:
   create:
     uses: valkyrjaio/.github/.github/workflows/_php-create-version-branch.yml@bf51850f7e9b50e40e13dd62022ee56c548f616e
-    secrets: inherit
+    secrets:
+      VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+      VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
     with:
       dependencies: |
         [

@@ -15,6 +15,8 @@ jobs:
     uses: valkyrjaio/.github/.github/workflows/_rebase-to-master.yml@bf51850f7e9b50e40e13dd62022ee56c548f616e
     permissions:
       contents: write
-    secrets: inherit
+    secrets:
+      VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+      VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
     with:
       allow_diverged: ${{ inputs.allow_diverged }}
