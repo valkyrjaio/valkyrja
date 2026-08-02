@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "valkyrja/phpcodesniffer" : "^26.2.2"
+    "valkyrja/phpcodesniffer" : "^26.2.3"
   },
   "scripts"           : {
     "check"    : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src -n && vendor/bin/phpcs --standard=./ruleset.xml ../../../tests -n -s",
