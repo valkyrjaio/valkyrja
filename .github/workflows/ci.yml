@@ -33,6 +33,17 @@ jobs:
       VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
       VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
 
+  markdown-check:
+    name: Markdown Check
+    if: github.event_name == 'pull_request'
+    uses: valkyrjaio/.github/.github/workflows/_markdown-check.yml@699060a99b1eb0c346bc66dc33e99410f5de55d7
+    permissions:
+      pull-requests: write
+      contents: read
+    secrets:
+      VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+      VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
   # A check's name is built from every job name down the call chain, so this composes
   # as `CI / Tools / <Tool> / …`.
   tools:
