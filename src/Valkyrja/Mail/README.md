@@ -143,9 +143,10 @@ The Mail service provider registers the following singletons:
 | `MailMailgunConfigContract`   | Mailgun adapter config                   |
 | `MailPhpMailerConfigContract` | PHPMailer adapter config                 |
 | `MailerContract`              | Active mailer (default: `MailgunMailer`) |
-| `MailgunMailer`   | Mailgun implementation                   |
-| `PhpMailer`       | PHPMailer SMTP implementation            |
-| `LogMailer`       | Log implementation                       |
-| `NullMailer`      | No-op implementation                     |
-| `Mailgun`         | Configured Mailgun client instance       |
-| `PHPMailerClient` | Configured PHPMailer SMTP instance       |
+| `MailgunMailer`               | Mailgun implementation                   |
+| `PhpMailer`                   | PHPMailer SMTP implementation            |
+| `LogMailer`                   | Log implementation                       |
+| `NullMailer`                  | No-op implementation                     |
+| `Mailgun`                     | Configured Mailgun client instance       |
+| `HttpClientConfigurator`      | Configured Mailgun HTTP client           |
+| `PHPMailerClient`             | Configured PHPMailer SMTP instance       |
