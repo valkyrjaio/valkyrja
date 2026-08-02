@@ -67,13 +67,17 @@ deserialize after decrypting.
 | `NullCrypt`   | No-op; returns input unchanged (for testing)     |
 
 The active implementation is resolved from the container as `CryptContract`.
-Configure the default via your `Env` class.
+Configure the default through `CryptConfigContract`.
 
 ## Configuration
 
-| Env Constant    | Default              | Description                             |
-|:----------------|:---------------------|:----------------------------------------|
-| `CRYPT_DEFAULT` | `SodiumCrypt::class` | Implementation bound to `CryptContract` |
+The component reads `CryptConfigContract`. Your application config class
+implements the contract. The service provider binds `CryptConfig` when the
+application config does not implement it.
+
+| Property       | Default              | Description                             |
+|:---------------|:---------------------|:----------------------------------------|
+| `defaultCrypt` | `SodiumCrypt::class` | Implementation bound to `CryptContract` |
 
 The encryption key itself is read from `Config::$key` (the application-level
 key). It must be a hex-encoded string representing the raw key bytes expected by
@@ -83,8 +87,9 @@ libsodium.
 
 The Crypt service provider registers the following singletons:
 
-| Contract / Class | Description                                    |
-|:-----------------|:-----------------------------------------------|
-| `CryptContract`  | Active implementation (default: `SodiumCrypt`) |
+| Contract / Class      | Description                                    |
+|:----------------------|:-----------------------------------------------|
+| `CryptConfigContract` | Component config                               |
+| `CryptContract`       | Active implementation (default: `SodiumCrypt`) |
 | `SodiumCrypt`    | libsodium secretbox implementation             |
 | `NullCrypt`      | No-op implementation                           |
