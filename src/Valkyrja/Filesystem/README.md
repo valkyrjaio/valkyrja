@@ -58,14 +58,14 @@ File visibility is represented by the `Valkyrja\Filesystem\Enum\Visibility`
 enum:
 
 | Case      | Value       |
-|:----------|:------------|
+| :-------- | :---------- |
 | `PUBLIC`  | `'public'`  |
 | `PRIVATE` | `'private'` |
 
 ## Implementations
 
 | Class                      | Description                                             |
-|:---------------------------|:--------------------------------------------------------|
+| :------------------------- | :------------------------------------------------------ |
 | `LocalFlysystemFilesystem` | Local filesystem via Flysystem `LocalFilesystemAdapter` |
 | `S3FlysystemFilesystem`    | AWS S3 via Flysystem `AwsS3V3Adapter`                   |
 | `InMemoryFilesystem`       | In-memory storage; useful for testing                   |
@@ -84,25 +84,25 @@ implement several of them at once.
 ### `FilesystemConfigContract`
 
 | Property            | Default                      | Description                                  |
-|:--------------------|:-----------------------------|:---------------------------------------------|
+| :------------------ | :--------------------------- | :------------------------------------------- |
 | `defaultFilesystem` | `FlysystemFilesystem::class` | Implementation bound to `FilesystemContract` |
 
 ### `FilesystemFlysystemConfigContract`
 
 | Property                     | Default                           | Description                                        |
-|:-----------------------------|:----------------------------------|:---------------------------------------------------|
+| :--------------------------- | :-------------------------------- | :------------------------------------------------- |
 | `defaultFlysystemFilesystem` | `LocalFlysystemFilesystem::class` | Flysystem backend when using `FlysystemFilesystem` |
 
 ### `FilesystemFlysystemLocalConfigContract`
 
 | Property             | Default          | Description               |
-|:---------------------|:-----------------|:--------------------------|
+| :------------------- | :--------------- | :------------------------ |
 | `flysystemLocalPath` | `'/storage/app'` | Root path for local files |
 
 ### `FilesystemFlysystemS3ConfigContract`
 
 | Property             | Default       | Description           |
-|:---------------------|:--------------|:----------------------|
+| :------------------- | :------------ | :-------------------- |
 | `flysystemS3Key`     | `'s3-key'`    | AWS access key        |
 | `flysystemS3Secret`  | `'s3-secret'` | AWS secret key        |
 | `flysystemS3Region`  | `'us-east-1'` | AWS region            |
@@ -115,16 +115,16 @@ implement several of them at once.
 
 The Filesystem service provider registers the following singletons:
 
-| Contract / Class                        | Description                                             |
-|:----------------------------------------|:--------------------------------------------------------|
+| Contract / Class                         | Description                                             |
+| :--------------------------------------- | :------------------------------------------------------ |
 | `FilesystemConfigContract`               | Component config                                        |
 | `FilesystemFlysystemConfigContract`      | Flysystem backend config                                |
 | `FilesystemFlysystemLocalConfigContract` | Local adapter config                                    |
 | `FilesystemFlysystemS3ConfigContract`    | S3 adapter config                                       |
 | `FilesystemContract`                     | Active filesystem (default: `LocalFlysystemFilesystem`) |
-| `LocalFlysystemFilesystem` | Local adapter implementation                            |
-| `S3FlysystemFilesystem`    | S3 adapter implementation                               |
-| `InMemoryFilesystem`       | In-memory implementation                                |
-| `NullFilesystem`           | No-op implementation                                    |
-| `LocalFilesystemAdapter`   | Flysystem local adapter instance                        |
-| `AwsS3V3Adapter`           | Flysystem S3 adapter instance                           |
+| `LocalFlysystemFilesystem`               | Local adapter implementation                            |
+| `S3FlysystemFilesystem`                  | S3 adapter implementation                               |
+| `InMemoryFilesystem`                     | In-memory implementation                                |
+| `NullFilesystem`                         | No-op implementation                                    |
+| `LocalFilesystemAdapter`                 | Flysystem local adapter instance                        |
+| `AwsS3V3Adapter`                         | Flysystem S3 adapter instance                           |

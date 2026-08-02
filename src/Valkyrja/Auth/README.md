@@ -70,7 +70,7 @@ The concrete `AuthenticationAttempt` class implements this contract. Additional
 attempt types cover other flows:
 
 | Class                   | Description                                           |
-|:------------------------|:------------------------------------------------------|
+| :---------------------- | :---------------------------------------------------- |
 | `AuthenticationAttempt` | Standard login (retrieval + password)                 |
 | `ForgotPasswordAttempt` | Initiates a password reset (retrieval only)           |
 | `ResetPasswordAttempt`  | Completes a password reset (retrieval + new password) |
@@ -88,7 +88,7 @@ public function getRetrievalFields(string $user): array;
 Built-in retrieval strategies:
 
 | Class                      | Description                       |
-|:---------------------------|:----------------------------------|
+| :------------------------- | :-------------------------------- |
 | `RetrievalByUsername`      | Looks up a user by username field |
 | `RetrievalById`            | Looks up a user by primary key    |
 | `RetrievalByIdAndUsername` | Looks up by both ID and username  |
@@ -134,7 +134,7 @@ public function getPasswordValue(): string;
 Valkyrja ships several base user entity classes that can be extended:
 
 | Class            | Adds                                                                       |
-|:-----------------|:---------------------------------------------------------------------------|
+| :--------------- | :------------------------------------------------------------------------- |
 | `User`           | Base user with username, password, and reset token fields                  |
 | `MailableUser`   | Adds `getEmailField()` via `MailableUserContract`                          |
 | `VerifiableUser` | Adds `getIsVerifiedField()` via `VerifiableUserContract`                   |
@@ -145,7 +145,7 @@ Valkyrja ships several base user entity classes that can be extended:
 Additional user capability contracts can be composed as needed:
 
 | Contract                          | Adds                                                                     |
-|:----------------------------------|:-------------------------------------------------------------------------|
+| :-------------------------------- | :----------------------------------------------------------------------- |
 | `MailableUserContract`            | `getEmailField()`                                                        |
 | `VerifiableUserContract`          | `getIsVerifiedField()` (extends `MailableUserContract`)                  |
 | `LockableUserContract`            | `getMaxLoginAttempts()`, `getLoginAttemptsField()`, `getIsLockedField()` |
@@ -163,13 +163,13 @@ Additional user capability contracts can be composed as needed:
 ### Authenticators
 
 | Class                  | Description                                      |
-|:-----------------------|:-------------------------------------------------|
+| :--------------------- | :----------------------------------------------- |
 | `SessionAuthenticator` | Stores authenticated user IDs in the PHP session |
 
 ### Stores
 
 | Class           | Description                                        |
-|:----------------|:---------------------------------------------------|
+| :-------------- | :------------------------------------------------- |
 | `OrmStore`      | Retrieves and persists users via the ORM component |
 | `InMemoryStore` | Stores users in memory (for testing)               |
 | `NullStore`     | No-op store; discards all operations               |
@@ -191,7 +191,7 @@ implements the contract. The service provider binds `AuthConfig` when the
 application config does not implement it.
 
 | Property               | Default                       | Description                                     |
-|:-----------------------|:------------------------------|:------------------------------------------------|
+| :--------------------- | :---------------------------- | :---------------------------------------------- |
 | `defaultAuthenticator` | `SessionAuthenticator::class` | Implementation bound to `AuthenticatorContract` |
 | `defaultStore`         | `OrmStore::class`             | Implementation bound to `StoreContract`         |
 | `defaultUserEntity`    | `User::class`                 | Default user entity class                       |
@@ -200,7 +200,7 @@ application config does not implement it.
 `AuthSessionConfig` holds the settings that only `SessionAuthenticator` reads:
 
 | Property         | Default                       | Description                                        |
-|:-----------------|:------------------------------|:---------------------------------------------------|
+| :--------------- | :---------------------------- | :------------------------------------------------- |
 | `itemId`         | `'auth.users'`                | Session key for the authenticated users collection |
 | `allowedClasses` | `[AuthenticatedUsers::class]` | Allowed classes during session deserialization     |
 
@@ -209,7 +209,7 @@ application config does not implement it.
 The Auth service provider registers the following singletons:
 
 | Contract / Class         | Description                                            |
-|:-------------------------|:-------------------------------------------------------|
+| :----------------------- | :----------------------------------------------------- |
 | `AuthConfigContract`     | Component config                                       |
 | `AuthenticatorContract`  | Active authenticator (default: `SessionAuthenticator`) |
 | `SessionAuthenticator`   | Session-backed authenticator                           |

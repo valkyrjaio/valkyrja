@@ -47,7 +47,7 @@ public function withMessage(string $message): static;
 ## Implementations
 
 | Class                    | Description                                         |
-|:-------------------------|:----------------------------------------------------|
+| :----------------------- | :-------------------------------------------------- |
 | `PusherBroadcaster`      | Sends events to Pusher                              |
 | `CryptPusherBroadcaster` | Encrypts the payload before sending to Pusher       |
 | `LogBroadcaster`         | Logs broadcast events; useful for local development |
@@ -66,13 +66,13 @@ implement several of them at once.
 ### `BroadcastConfigContract`
 
 | Property             | Default                    | Description                                   |
-|:---------------------|:---------------------------|:----------------------------------------------|
+| :------------------- | :------------------------- | :-------------------------------------------- |
 | `defaultBroadcaster` | `PusherBroadcaster::class` | Implementation bound to `BroadcasterContract` |
 
 ### `BroadcastPusherConfigContract`
 
 | Property        | Default           | Description                               |
-|:----------------|:------------------|:------------------------------------------|
+| :-------------- | :---------------- | :---------------------------------------- |
 | `pusherKey`     | `'pusher-key'`    | Pusher application key                    |
 | `pusherSecret`  | `'pusher-secret'` | Pusher application secret                 |
 | `pusherId`      | `'pusher-id'`     | Pusher application ID                     |
@@ -82,7 +82,7 @@ implement several of them at once.
 ### `BroadcastLogConfigContract`
 
 | Property    | Default                 | Description                     |
-|:------------|:------------------------|:--------------------------------|
+| :---------- | :---------------------- | :------------------------------ |
 | `logLogger` | `LoggerContract::class` | Logger used by `LogBroadcaster` |
 
 ## Service Registration
@@ -90,13 +90,13 @@ implement several of them at once.
 The Broadcast service provider registers the following singletons:
 
 | Contract / Class                | Description                                       |
-|:--------------------------------|:--------------------------------------------------|
+| :------------------------------ | :------------------------------------------------ |
 | `BroadcastConfigContract`       | Component config                                  |
 | `BroadcastPusherConfigContract` | Pusher adapter config                             |
 | `BroadcastLogConfigContract`    | Log adapter config                                |
 | `BroadcasterContract`           | Active broadcaster (default: `PusherBroadcaster`) |
-| `PusherBroadcaster`      | Pusher implementation                             |
-| `CryptPusherBroadcaster` | Encrypted Pusher implementation                   |
-| `LogBroadcaster`         | Log implementation                                |
-| `NullBroadcaster`        | No-op implementation                              |
-| `Pusher`                 | Configured Pusher SDK instance                    |
+| `PusherBroadcaster`             | Pusher implementation                             |
+| `CryptPusherBroadcaster`        | Encrypted Pusher implementation                   |
+| `LogBroadcaster`                | Log implementation                                |
+| `NullBroadcaster`               | No-op implementation                              |
+| `Pusher`                        | Configured Pusher SDK instance                    |

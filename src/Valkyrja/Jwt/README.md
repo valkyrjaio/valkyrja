@@ -26,7 +26,7 @@ array.
 firebase/php-jwt:
 
 | Family | Cases                               |
-|:-------|:------------------------------------|
+| :----- | :---------------------------------- |
 | HMAC   | `HS256`, `HS384`, `HS512`           |
 | RSA    | `RS256`, `RS384`, `RS512`           |
 | PSA    | `PS256`, `PS384`, `PS512`           |
@@ -36,7 +36,7 @@ firebase/php-jwt:
 ## Implementations
 
 | Class         | Description                                             |
-|:--------------|:--------------------------------------------------------|
+| :------------ | :------------------------------------------------------ |
 | `FirebaseJwt` | Delegates to firebase/php-jwt                           |
 | `NullJwt`     | No-op; `encode()` returns `''`, `decode()` returns `[]` |
 
@@ -56,29 +56,29 @@ application that signs with HMAC never constructs the RSA keys.
 ### `JwtConfigContract`
 
 | Property     | Default              | Description                                   |
-|:-------------|:---------------------|:----------------------------------------------|
+| :----------- | :------------------- | :-------------------------------------------- |
 | `defaultJwt` | `FirebaseJwt::class` | Implementation bound to `JwtContract`         |
 | `algorithm`  | `Algorithm::HS256`   | Algorithm to use for signing and verification |
 
 ### `JwtHsConfigContract`
 
 | Property | Default | Description                    |
-|:---------|:--------|:-------------------------------|
+| :------- | :------ | :----------------------------- |
 | `hsKey`  | `'key'` | Secret key for HMAC algorithms |
 
 ### `JwtRsConfigContract`
 
 | Property       | Default         | Description                    |
-|:---------------|:----------------|:-------------------------------|
+| :------------- | :-------------- | :----------------------------- |
 | `rsPrivateKey` | `'private-key'` | Private key for RSA algorithms |
 | `rsPublicKey`  | `'public-key'`  | Public key for RSA algorithms  |
 
 ### `JwtEdDsaConfigContract`
 
-| Property          | Default         | Description            |
-|:------------------|:----------------|:-----------------------|
-| `edDsaPrivateKey` | `'private-key'` | Private key for EdDSA  |
-| `edDsaPublicKey`  | `'public-key'`  | Public key for EdDSA   |
+| Property          | Default         | Description           |
+| :---------------- | :-------------- | :-------------------- |
+| `edDsaPrivateKey` | `'private-key'` | Private key for EdDSA |
+| `edDsaPublicKey`  | `'public-key'`  | Public key for EdDSA  |
 
 An algorithm outside these three families falls back to the application-level
 `Config::$key` for both the encode key and the decode key.
@@ -88,7 +88,7 @@ An algorithm outside these three families falls back to the application-level
 The JWT service provider registers the following singletons:
 
 | Contract / Class         | Description                                 |
-|:-------------------------|:--------------------------------------------|
+| :----------------------- | :------------------------------------------ |
 | `JwtConfigContract`      | Component config                            |
 | `JwtHsConfigContract`    | HMAC key config                             |
 | `JwtRsConfigContract`    | RSA key config                              |

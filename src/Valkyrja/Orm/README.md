@@ -60,10 +60,10 @@ public function asStorableChangedArray(): array;             // Only changed pro
 
 Implement one of these contracts to tell the repository to stamp a date. Each contract declares no method. The date format and the field names come from the entity metadata registry, because a data object holds no static method.
 
-| Contract                   | The repository then                                                                     |
-|:---------------------------|:-----------------------------------------------------------------------------------------|
+| Contract                   | The repository then                                                                              |
+| :------------------------- | :----------------------------------------------------------------------------------------------- |
 | `DatedEntityContract`      | stamps the created date and the modified date on `create()`, and the modified date on `update()` |
-| `SoftDeleteEntityContract` | stamps the deleted date on `delete()` and keeps the row                                  |
+| `SoftDeleteEntityContract` | stamps the deleted date on `delete()` and keeps the row                                          |
 
 The abstract base classes `DatedEntity` and `SoftDeleteEntity` implement the contract and add the fields. The traits `DatedFields` and `SoftDeleteFields` add the fields alone.
 
@@ -116,9 +116,9 @@ Warning: the entity must declare a property with the registered name. `asStorabl
 
 `DateFormat` holds the three formats that the ORM writes. Each one is ISO 8601, so a text sort of the column is a date sort and the date functions of the database read the value:
 
-| Constant | Format | Column type |
-|:---------|:-------|:------------|
-| `DateFormat::DEFAULT` | `Y-m-d H:i:s` | `DATETIME` |
+| Constant                  | Format          | Column type   |
+| :------------------------ | :-------------- | :------------ |
+| `DateFormat::DEFAULT`     | `Y-m-d H:i:s`   | `DATETIME`    |
 | `DateFormat::MILLISECOND` | `Y-m-d H:i:s.v` | `DATETIME(3)` |
 | `DateFormat::MICROSECOND` | `Y-m-d H:i:s.u` | `DATETIME(6)` |
 
@@ -264,13 +264,13 @@ new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)     // WHERE >
 
 Convenience subclasses for combining clauses:
 
-| Class          | SQL equivalent       |
-|:---------------|:---------------------|
-| `AndWhere`     | `AND column = :val`  |
-| `OrWhere`      | `OR column = :val`   |
-| `NotWhere`     | `NOT column = :val`  |
-| `AndNotWhere`  | `AND NOT column = :val` |
-| `OrNotWhere`   | `OR NOT column = :val` |
+| Class         | SQL equivalent          |
+| :------------ | :---------------------- |
+| `AndWhere`    | `AND column = :val`     |
+| `OrWhere`     | `OR column = :val`      |
+| `NotWhere`    | `NOT column = :val`     |
+| `AndNotWhere` | `AND NOT column = :val` |
+| `OrNotWhere`  | `OR NOT column = :val`  |
 
 Group multiple clauses into a parenthesised block with `WhereGroup`:
 
@@ -315,24 +315,24 @@ new OrderBy('created_at', SortOrder::DESC)
 
 `Valkyrja\Orm\Enum\Comparison` covers all standard SQL comparison operators:
 
-| Case                  | Value         |
-|:----------------------|:--------------|
-| `EQUALS`              | `=`           |
-| `NULL_SAFE_EQUALS`    | `<=>`         |
-| `NOT_EQUAL`           | `!=`          |
-| `IN`                  | `IN`          |
-| `NOT_IN`              | `NOT_IN`      |
-| `LIKE`                | `LIKE`        |
-| `NOT_LIKE`            | `NOT LIKE`    |
-| `SOUNDS_LIKE`         | `SOUNDS LIKE` |
-| `IS`                  | `IS`          |
-| `IS_NOT`              | `IS NOT`      |
-| `GREATER_THAN`        | `>`           |
-| `GREATER_THAN_EQUAL`  | `>=`          |
-| `LESS_THAN`           | `<`           |
-| `LESS_THAN_EQUAL`     | `<=`          |
-| `REGEXP`              | `REGEXP`      |
-| `MEMBER_OF`           | `MEMBER_OF`   |
+| Case                 | Value         |
+| :------------------- | :------------ |
+| `EQUALS`             | `=`           |
+| `NULL_SAFE_EQUALS`   | `<=>`         |
+| `NOT_EQUAL`          | `!=`          |
+| `IN`                 | `IN`          |
+| `NOT_IN`             | `NOT_IN`      |
+| `LIKE`               | `LIKE`        |
+| `NOT_LIKE`           | `NOT LIKE`    |
+| `SOUNDS_LIKE`        | `SOUNDS LIKE` |
+| `IS`                 | `IS`          |
+| `IS_NOT`             | `IS NOT`      |
+| `GREATER_THAN`       | `>`           |
+| `GREATER_THAN_EQUAL` | `>=`          |
+| `LESS_THAN`          | `<`           |
+| `LESS_THAN_EQUAL`    | `<=`          |
+| `REGEXP`             | `REGEXP`      |
+| `MEMBER_OF`          | `MEMBER_OF`   |
 
 ## Statements
 
@@ -415,12 +415,12 @@ public function getError(): string;
 
 ## Implementations
 
-| Class           | Description                          |
-|:----------------|:-------------------------------------|
-| `MysqlManager`  | PDO connection to MySQL              |
-| `PgsqlManager`  | PDO connection to PostgreSQL         |
-| `SqliteManager` | PDO connection to SQLite             |
-| `NullManager`   | No-op implementation for testing     |
+| Class           | Description                      |
+| :-------------- | :------------------------------- |
+| `MysqlManager`  | PDO connection to MySQL          |
+| `PgsqlManager`  | PDO connection to PostgreSQL     |
+| `SqliteManager` | PDO connection to SQLite         |
+| `NullManager`   | No-op implementation for testing |
 
 The active manager is resolved from the container as `ManagerContract`.
 
@@ -434,13 +434,13 @@ implement several of them at once.
 ### `OrmConfigContract`
 
 | Property         | Default               | Description                               |
-|:-----------------|:----------------------|:------------------------------------------|
+| :--------------- | :-------------------- | :---------------------------------------- |
 | `defaultManager` | `MysqlManager::class` | Implementation bound to `ManagerContract` |
 
 ### `OrmMysqlConfigContract`
 
 | Property        | Default            | Description         |
-|:----------------|:-------------------|:--------------------|
+| :-------------- | :----------------- | :------------------ |
 | `mysqlDb`       | `'valkyrja'`       | Database name       |
 | `mysqlHost`     | `'127.0.0.1'`      | Host                |
 | `mysqlPort`     | `3306`             | Port                |
@@ -454,7 +454,7 @@ implement several of them at once.
 ### `OrmPgsqlConfigContract`
 
 | Property        | Default            | Description         |
-|:----------------|:-------------------|:--------------------|
+| :-------------- | :----------------- | :------------------ |
 | `pgsqlDb`       | `'valkyrja'`       | Database name       |
 | `pgsqlHost`     | `'127.0.0.1'`      | Host                |
 | `pgsqlPort`     | `6379`             | Port                |
@@ -468,7 +468,7 @@ implement several of them at once.
 ### `OrmSqliteConfigContract`
 
 | Property         | Default             | Description         |
-|:-----------------|:--------------------|:--------------------|
+| :--------------- | :------------------ | :------------------ |
 | `sqliteDb`       | `'valkyrja'`        | Database name       |
 | `sqliteHost`     | `'127.0.0.1'`       | Host                |
 | `sqlitePort`     | `3306`              | Port                |
@@ -481,18 +481,18 @@ implement several of them at once.
 
 The ORM service provider registers the following:
 
-| Contract / Class          | Description                                        |
-|:--------------------------|:---------------------------------------------------|
-| `OrmConfigContract`       | Component config                                   |
-| `OrmMysqlConfigContract`  | MySQL connection config                            |
-| `OrmPgsqlConfigContract`  | PostgreSQL connection config                       |
-| `OrmSqliteConfigContract` | SQLite connection config                           |
-| `ManagerContract`         | Active manager (default: `MysqlManager`)           |
-| `MysqlManager`    | MySQL PDO manager                                  |
-| `PgsqlManager`    | PostgreSQL PDO manager                             |
-| `SqliteManager`   | SQLite PDO manager                                 |
-| `NullManager`     | No-op manager                                      |
-| `PDO`             | PDO factory (registered as callable, not singleton)|
-| `Repository`      | Repository factory (registered as callable)        |
+| Contract / Class          | Description                                         |
+| :------------------------ | :-------------------------------------------------- |
+| `OrmConfigContract`       | Component config                                    |
+| `OrmMysqlConfigContract`  | MySQL connection config                             |
+| `OrmPgsqlConfigContract`  | PostgreSQL connection config                        |
+| `OrmSqliteConfigContract` | SQLite connection config                            |
+| `ManagerContract`         | Active manager (default: `MysqlManager`)            |
+| `MysqlManager`            | MySQL PDO manager                                   |
+| `PgsqlManager`            | PostgreSQL PDO manager                              |
+| `SqliteManager`           | SQLite PDO manager                                  |
+| `NullManager`             | No-op manager                                       |
+| `PDO`                     | PDO factory (registered as callable, not singleton) |
+| `Repository`              | Repository factory (registered as callable)         |
 
 The `PDO` and `Repository` entries are registered as callables rather than singletons, so a new instance is created each time with the provided arguments. The manager implementations call these internally.

@@ -47,5 +47,5 @@ configuration.
 The Reflection service provider registers a single singleton:
 
 | Contract / Class    | Description                         |
-|:--------------------|:------------------------------------|
+| :------------------ | :---------------------------------- |
 | `ReflectorContract` | Caching reflection wrapper instance |

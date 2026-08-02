@@ -55,7 +55,7 @@ public function getTags(): array;
 ## Implementations
 
 | Class        | Description                                            |
-|:-------------|:-------------------------------------------------------|
+| :----------- | :----------------------------------------------------- |
 | `RedisCache` | Redis backend via Predis                               |
 | `LogCache`   | Logs all cache operations; useful for debugging        |
 | `NullCache`  | No-op; all reads return empty, writes succeed silently |
@@ -73,13 +73,13 @@ implement several of them at once.
 ### `CacheConfigContract`
 
 | Property       | Default             | Description                             |
-|:---------------|:--------------------|:----------------------------------------|
+| :------------- | :------------------ | :-------------------------------------- |
 | `defaultCache` | `RedisCache::class` | Implementation bound to `CacheContract` |
 
 ### `CacheRedisConfigContract`
 
 | Property      | Default       | Description          |
-|:--------------|:--------------|:---------------------|
+| :------------ | :------------ | :------------------- |
 | `redisHost`   | `'127.0.0.1'` | Redis host           |
 | `redisPort`   | `6379`        | Redis port           |
 | `redisPrefix` | `''`          | Key prefix for Redis |
@@ -87,14 +87,14 @@ implement several of them at once.
 ### `CacheLogConfigContract`
 
 | Property    | Default                 | Description                  |
-|:------------|:------------------------|:-----------------------------|
+| :---------- | :---------------------- | :--------------------------- |
 | `logLogger` | `LoggerContract::class` | Logger used by `LogCache`    |
 | `logPrefix` | `''`                    | Key prefix for the log cache |
 
 ### `CacheNullConfigContract`
 
 | Property     | Default | Description                   |
-|:-------------|:--------|:------------------------------|
+| :----------- | :------ | :---------------------------- |
 | `nullPrefix` | `''`    | Key prefix for the null cache |
 
 ## Service Registration
@@ -102,7 +102,7 @@ implement several of them at once.
 The Cache service provider registers the following singletons:
 
 | Contract / Class           | Description                          |
-|:---------------------------|:-------------------------------------|
+| :------------------------- | :----------------------------------- |
 | `CacheConfigContract`      | Component config                     |
 | `CacheRedisConfigContract` | Redis adapter config                 |
 | `CacheLogConfigContract`   | Log adapter config                   |

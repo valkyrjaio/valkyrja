@@ -32,6 +32,7 @@
 - [CLI Routing & Commands](Cli/README.md) — Command providers, attribute-based
   registration, arguments and options, the six-stage middleware pipeline, and
   built-in commands
+
 ### Events
 
 - [Event Dispatching](Event/README.md) — PSR-14 event dispatcher, listeners, and

@@ -198,6 +198,7 @@ final class App extends Http
 ```
 
 ### `app/src/App/Http/Config.example.php` (committed) /
+
 `Config.php` (gitignored)
 
 `Config.example.php` is the template committed to version control.
@@ -210,7 +211,7 @@ values are not committed.
 Key constructor parameters:
 
 | Parameter                    | Purpose                                                                                                                                       |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `$namespace`                 | Application namespace (default `'App'`)                                                                                                       |
 | `$dir`                       | Application root directory                                                                                                                    |
 | `$version`                   | Application version string                                                                                                                    |

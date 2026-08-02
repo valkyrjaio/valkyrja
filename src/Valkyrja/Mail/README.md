@@ -94,7 +94,7 @@ public function withName(string $name): static;
 ## Implementations
 
 | Class           | Description                                |
-|:----------------|:-------------------------------------------|
+| :-------------- | :----------------------------------------- |
 | `MailgunMailer` | Sends via Mailgun's batch message API      |
 | `PhpMailer`     | Sends via SMTP using the PHPMailer library |
 | `LogMailer`     | Logs message details instead of sending    |
@@ -113,20 +113,20 @@ implement several of them at once.
 ### `MailConfigContract`
 
 | Property        | Default                | Description                              |
-|:----------------|:-----------------------|:-----------------------------------------|
+| :-------------- | :--------------------- | :--------------------------------------- |
 | `defaultMailer` | `MailgunMailer::class` | Implementation bound to `MailerContract` |
 
 ### `MailMailgunConfigContract`
 
 | Property        | Default     | Description     |
-|:----------------|:------------|:----------------|
+| :-------------- | :---------- | :-------------- |
 | `mailgunDomain` | `'domain'`  | Mailgun domain  |
 | `mailgunApiKey` | `'api-key'` | Mailgun API key |
 
 ### `MailPhpMailerConfigContract`
 
 | Property              | Default      | Description          |
-|:----------------------|:-------------|:---------------------|
+| :-------------------- | :----------- | :------------------- |
 | `phpMailerHost`       | `'host'`     | SMTP server hostname |
 | `phpMailerPort`       | `25`         | SMTP server port     |
 | `phpMailerUsername`   | `'username'` | SMTP username        |
@@ -138,7 +138,7 @@ implement several of them at once.
 The Mail service provider registers the following singletons:
 
 | Contract / Class              | Description                                     |
-|:------------------------------|:------------------------------------------------|
+| :---------------------------- | :---------------------------------------------- |
 | `MailConfigContract`          | Component config                                |
 | `MailMailgunConfigContract`   | Mailgun adapter config                          |
 | `MailPhpMailerConfigContract` | PHPMailer adapter config                        |

@@ -4,14 +4,14 @@ The PHPUnit CI tool directory. Like every tool under `.github/ci/`, it carries
 its own `composer.json` and vendor tree, and is driven through the root
 `composer.json` script shortcuts rather than invoked directly.
 
-| Root script                        | Runs                                          |
-|------------------------------------|-----------------------------------------------|
-| `phpunit`                          | The suite, no coverage                        |
-| `phpunit-coverage`                 | The suite with **line** coverage — the gate   |
-| `phpunit-path-coverage`            | The suite with **branch/path** coverage       |
-| `phpunit-path-coverage-parallel`   | Branch/path coverage, sharded across processes|
-| `phpunit-path-coverage-shard`      | A single named shard                          |
-| `phpunit-path-coverage-merge`      | Merge existing shard results and report       |
+| Root script                      | Runs                                           |
+| -------------------------------- | ---------------------------------------------- |
+| `phpunit`                        | The suite, no coverage                         |
+| `phpunit-coverage`               | The suite with **line** coverage — the gate    |
+| `phpunit-path-coverage`          | The suite with **branch/path** coverage        |
+| `phpunit-path-coverage-parallel` | Branch/path coverage, sharded across processes |
+| `phpunit-path-coverage-shard`    | A single named shard                           |
+| `phpunit-path-coverage-merge`    | Merge existing shard results and report        |
 
 `phpunit-coverage` is the enforced 100% gate and is unaffected by everything
 below.
@@ -56,13 +56,13 @@ from the total.
 
 All are environment variables:
 
-| Variable           | Effect                                                  |
-|--------------------|---------------------------------------------------------|
-| `JOBS`             | Max concurrent shards (default: CPU count)              |
-| `REQUIRE_LINE`     | Fail if merged line coverage is under this (default 100)|
-| `REQUIRE_BRANCH`   | Fail if merged branch coverage is under this            |
-| `REQUIRE_PATH`     | Fail if merged path coverage is under this              |
-| `GAPS=1`           | List every file below 100% branch coverage, ranked      |
+| Variable         | Effect                                                   |
+| ---------------- | -------------------------------------------------------- |
+| `JOBS`           | Max concurrent shards (default: CPU count)               |
+| `REQUIRE_LINE`   | Fail if merged line coverage is under this (default 100) |
+| `REQUIRE_BRANCH` | Fail if merged branch coverage is under this             |
+| `REQUIRE_PATH`   | Fail if merged path coverage is under this               |
+| `GAPS=1`         | List every file below 100% branch coverage, ranked       |
 
 `GAPS=1` is the useful one day to day — it turns "branch coverage is at 99.1%"
 into a ranked worklist of files and how many branches each is missing:
@@ -91,7 +91,7 @@ the combined set.
 **Merged totals overstate the gap — badly, for branches.** Merged output reports
 more executable lines and branches than the serial run does. This is an Xdebug
 artifact, not a regression: Xdebug builds a different map for a function
-depending on whether it actually ran. A shard that *executes* a `match` does not
+depending on whether it actually ran. A shard that _executes_ a `match` does not
 report the `match (` line as executable, while a shard that merely autoloads the
 file reports it as executable via dead-code analysis. Merging unions the two, so
 the entry ends up executable-but-uncovered.
@@ -129,7 +129,7 @@ of reported branches are unreachable by any test:
   and the copies are conflated into one file entry.
   `Type\Enum\Trait\JsonSerializable` reports 3/3 run alone but 2/3 with the full
   `Type` suite, because a backed enum never runs `return $this->name` and a pure
-  enum never runs `return $this->value`. Adding tests *lowers* this number.
+  enum never runs `return $this->value`. Adding tests _lowers_ this number.
 
 ### Neither branch nor path coverage is a 100% target
 

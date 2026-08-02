@@ -48,7 +48,7 @@ type accordingly.
 ## Implementations
 
 | Class             | Description                             |
-|:------------------|:----------------------------------------|
+| :---------------- | :-------------------------------------- |
 | `VonageMessenger` | Sends via the Vonage API                |
 | `LogMessenger`    | Logs message details instead of sending |
 | `NullMessenger`   | No-op; discards all messages silently   |
@@ -66,27 +66,27 @@ at once.
 ### `SmsConfigContract`
 
 | Property           | Default                  | Description                                 |
-|:-------------------|:-------------------------|:--------------------------------------------|
+| :----------------- | :----------------------- | :------------------------------------------ |
 | `defaultMessenger` | `VonageMessenger::class` | Implementation bound to `MessengerContract` |
 
 ### `SmsVonageConfigContract`
 
-| Property       | Default           | Description        |
-|:---------------|:------------------|:-------------------|
-| `vonageKey`    | `'vonage-key'`    | Vonage API key     |
-| `vonageSecret` | `'vonage-secret'` | Vonage API secret  |
+| Property       | Default           | Description       |
+| :------------- | :---------------- | :---------------- |
+| `vonageKey`    | `'vonage-key'`    | Vonage API key    |
+| `vonageSecret` | `'vonage-secret'` | Vonage API secret |
 
 ## Service Registration
 
 The SMS service provider registers the following singletons:
 
 | Contract / Class          | Description                                   |
-|:--------------------------|:----------------------------------------------|
+| :------------------------ | :-------------------------------------------- |
 | `SmsConfigContract`       | Component config                              |
 | `SmsVonageConfigContract` | Vonage adapter config                         |
 | `MessengerContract`       | Active messenger (default: `VonageMessenger`) |
-| `VonageMessenger`      | Vonage implementation                         |
-| `LogMessenger`         | Log implementation                            |
-| `NullMessenger`        | No-op implementation                          |
-| `Vonage\Client`        | Configured Vonage HTTP client                 |
-| `CredentialsInterface` | Vonage Basic auth credentials                 |
+| `VonageMessenger`         | Vonage implementation                         |
+| `LogMessenger`            | Log implementation                            |
+| `NullMessenger`           | No-op implementation                          |
+| `Vonage\Client`           | Configured Vonage HTTP client                 |
+| `CredentialsInterface`    | Vonage Basic auth credentials                 |

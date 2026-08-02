@@ -168,5 +168,5 @@ description and executes it.
 The Dispatch service provider registers the following singletons:
 
 | Contract / Class     | Description                   |
-|:---------------------|:------------------------------|
+| :------------------- | :---------------------------- |
 | `DispatcherContract` | The dispatcher implementation |

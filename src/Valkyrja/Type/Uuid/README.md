@@ -37,16 +37,16 @@ $v4   = new UuidV4('550e8400-e29b-41d4-a716-446655440000');
 $uuid = Uuid::fromValue($someValue);
 ```
 
-| Class    | Contract          | Description                       |
-|:---------|:------------------|:----------------------------------|
-| `Uuid`   | `UuidContract`    | Generic UUID (validates any version) |
-| `UuidV1` | `UuidV1Contract`  | Version 1 (time-based)            |
-| `UuidV3` | `UuidV3Contract`  | Version 3 (name-based, MD5)       |
-| `UuidV4` | `UuidV4Contract`  | Version 4 (random)                |
-| `UuidV5` | `UuidV5Contract`  | Version 5 (name-based, SHA-1)     |
-| `UuidV6` | `UuidV6Contract`  | Version 6 (reordered time-based)  |
-| `UuidV7` | `UuidV7Contract`  | Version 7 (sortable time-based)   |
-| `UuidV8` | `UuidV8Contract`  | Version 8 (custom/experimental)   |
+| Class    | Contract         | Description                          |
+| :------- | :--------------- | :----------------------------------- |
+| `Uuid`   | `UuidContract`   | Generic UUID (validates any version) |
+| `UuidV1` | `UuidV1Contract` | Version 1 (time-based)               |
+| `UuidV3` | `UuidV3Contract` | Version 3 (name-based, MD5)          |
+| `UuidV4` | `UuidV4Contract` | Version 4 (random)                   |
+| `UuidV5` | `UuidV5Contract` | Version 5 (name-based, SHA-1)        |
+| `UuidV6` | `UuidV6Contract` | Version 6 (reordered time-based)     |
+| `UuidV7` | `UuidV7Contract` | Version 7 (sortable time-based)      |
+| `UuidV8` | `UuidV8Contract` | Version 8 (custom/experimental)      |
 
 ## Generating UUIDs
 
@@ -101,7 +101,7 @@ Each factory also exposes a `REGEX` constant with the version-specific pattern.
 `Valkyrja\Type\Uuid\Enum\Version` lists all supported versions:
 
 | Case | Value |
-|:-----|:------|
+| :--- | :---- |
 | `V1` | `1`   |
 | `V3` | `3`   |
 | `V4` | `4`   |
@@ -112,12 +112,12 @@ Each factory also exposes a `REGEX` constant with the version-specific pattern.
 
 ## Generation Details
 
-| Version | Algorithm                                                          |
-|:--------|:-------------------------------------------------------------------|
-| V1      | Microsecond timestamp + sequence counter + node (MAC or random)    |
-| V3      | MD5 hash of a namespace UUID + a name string                       |
-| V4      | 16 random bytes via `random_bytes(16)` with version/variant bits   |
-| V5      | SHA-1 hash of a namespace UUID + a name string                     |
-| V6      | V1 timestamp fields reordered for lexicographic sortability        |
-| V7      | V1 fields rearranged to place time-high first (sortable)           |
-| V8      | Custom layout — reserved for experimental or application use       |
+| Version | Algorithm                                                        |
+| :------ | :--------------------------------------------------------------- |
+| V1      | Microsecond timestamp + sequence counter + node (MAC or random)  |
+| V3      | MD5 hash of a namespace UUID + a name string                     |
+| V4      | 16 random bytes via `random_bytes(16)` with version/variant bits |
+| V5      | SHA-1 hash of a namespace UUID + a name string                   |
+| V6      | V1 timestamp fields reordered for lexicographic sortability      |
+| V7      | V1 fields rearranged to place time-high first (sortable)         |
+| V8      | Custom layout — reserved for experimental or application use     |
