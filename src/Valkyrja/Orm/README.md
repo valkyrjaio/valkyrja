@@ -91,16 +91,26 @@ public function withEntity(string $entity, EntityMetadata $metadata): static;
 ```php
 new EntityMetadata(
     dated: new DatedMetadata(
-        format: DateFormat::MICROSECOND,   // Optional: the created and modified date format
-        dateCreatedField: 'date_created',  // Optional: the date created field
-        dateModifiedField: 'date_modified' // Optional: the date modified field
+        format: DateFormat::MICROSECOND, // Optional: the created and modified date format
+        dateCreatedField: 'created_at',  // Optional: the date created field
+        dateModifiedField: 'updated_at'  // Optional: the date modified field
     ),
     softDelete: new SoftDeleteMetadata(
-        format: DateFormat::DEFAULT,      // Optional: the deleted date format
-        dateDeletedField: 'date_deleted'  // Optional: the date deleted field
+        format: DateFormat::DEFAULT,   // Optional: the deleted date format
+        dateDeletedField: 'deleted_at' // Optional: the date deleted field
     ),
 );
 ```
+
+The default field names are `created_at`, `updated_at` and `deleted_at`, which is the name that most frameworks use. An application with a different schema registers its own names:
+
+```php
+new EntityMetadata(
+    dated: new DatedMetadata(dateCreatedField: 'date_created', dateModifiedField: 'date_modified'),
+);
+```
+
+Warning: the entity must declare a property with the registered name. `asStorableArray()` reads the object properties, so a registered name that the entity does not declare becomes a dynamic property. Use your own entity, and not the `DatedFields` or `SoftDeleteFields` trait, when your names are not the defaults.
 
 The registry is immutable. `withEntity()` returns a new registry, so an application registers an entity in a service provider and replaces the singleton:
 
@@ -161,7 +171,7 @@ $posts = $repo->allBy(new Where(new Value('status', 'published')));
 A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows:
 
 ```php
-$live = $repo->allBy(new Where(new Value('date_deleted', null), Comparison::IS));
+$live = $repo->allBy(new Where(new Value('deleted_at', null), Comparison::IS));
 ```
 
 ## Query Builder

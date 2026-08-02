@@ -24,7 +24,7 @@ final class SoftDeleteFieldsTest extends TestCase
             use SoftDeleteFields;
         };
 
-        self::assertNull($class->date_deleted);
+        self::assertNull($class->deleted_at);
     }
 
     public function testDateDeletedCanBeSet(): void
@@ -33,8 +33,8 @@ final class SoftDeleteFieldsTest extends TestCase
             use SoftDeleteFields;
         };
 
-        $class->date_deleted = '01-26-2026 12:00:00 UTC';
+        $class->deleted_at = '01-26-2026 12:00:00 UTC';
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->date_deleted);
+        self::assertSame('01-26-2026 12:00:00 UTC', $class->deleted_at);
     }
 }

@@ -31,8 +31,8 @@ final class DatedMetadataTest extends TestCase
     {
         $metadata = new DatedMetadata();
 
-        self::assertSame('date_created', $metadata->dateCreatedField);
-        self::assertSame('date_modified', $metadata->dateModifiedField);
+        self::assertSame('created_at', $metadata->dateCreatedField);
+        self::assertSame('updated_at', $metadata->dateModifiedField);
     }
 
     public function testCustomFormat(): void
@@ -45,12 +45,12 @@ final class DatedMetadataTest extends TestCase
     public function testCustomFields(): void
     {
         $metadata = new DatedMetadata(
-            dateCreatedField: 'created_at',
-            dateModifiedField: 'updated_at'
+            dateCreatedField: 'date_created',
+            dateModifiedField: 'date_modified'
         );
 
-        self::assertSame('created_at', $metadata->dateCreatedField);
-        self::assertSame('updated_at', $metadata->dateModifiedField);
+        self::assertSame('date_created', $metadata->dateCreatedField);
+        self::assertSame('date_modified', $metadata->dateModifiedField);
     }
 
     public function testReadonlyClass(): void

@@ -24,8 +24,8 @@ readonly class DatedMetadata
      */
     public function __construct(
         public string $format = DateFormat::DEFAULT,
-        public string $dateCreatedField = 'date_created',
-        public string $dateModifiedField = 'date_modified',
+        public string $dateCreatedField = 'created_at',
+        public string $dateModifiedField = 'updated_at',
     ) {
     }
 }

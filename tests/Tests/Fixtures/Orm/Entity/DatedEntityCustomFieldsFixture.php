@@ -19,13 +19,16 @@ use Valkyrja\Orm\Entity\Contract\DatedEntityContract;
 
 /**
  * Entity to use to test the date stamping with a field that is not the default.
+ *
+ * Each field keeps the name that the framework used before the convention
+ * change, which shows that an application with an older schema still works.
  */
 final class DatedEntityCustomFieldsFixture extends Entity implements DatedEntityContract
 {
     public int $id;
     public string $name;
-    public string $created_at;
-    public string $updated_at;
+    public string $date_created;
+    public string $date_modified;
 
     /**
      * @inheritDoc
