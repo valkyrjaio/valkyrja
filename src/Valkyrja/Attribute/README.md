@@ -74,5 +74,5 @@ implementation.
 The Attribute service provider registers a single singleton:
 
 | Contract / Class    | Description                                       |
-|:--------------------|:--------------------------------------------------|
+| :------------------ | :------------------------------------------------ |
 | `CollectorContract` | Attribute collector backed by `ReflectorContract` |

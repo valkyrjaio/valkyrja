@@ -28,7 +28,7 @@ The abstract base provides `validate()`, which calls `isValid()` and throws a
 **Identity and presence**
 
 | Class       | Passes when                    |
-|:------------|:-------------------------------|
+| :---------- | :----------------------------- |
 | `Required`  | Subject is truthy              |
 | `NotEmpty`  | `empty($subject)` is false     |
 | `IsEmpty`   | `empty($subject)` is true      |
@@ -41,7 +41,7 @@ The abstract base provides `validate()`, which calls `isValid()` and throws a
 **String rules** — subject must be a string
 
 | Class        | Constructor extra args | Passes when                       |
-|:-------------|:-----------------------|:----------------------------------|
+| :----------- | :--------------------- | :-------------------------------- |
 | `Min`        | `int $min`             | `strlen($subject) >= $min`        |
 | `Max`        | `int $max`             | `strlen($subject) <= $max`        |
 | `Contains`   | `string $needle`       | Subject contains the needle       |
@@ -56,14 +56,14 @@ The abstract base provides `validate()`, which calls `isValid()` and throws a
 **Integer rules**
 
 | Class         | Constructor extra args | Passes when         |
-|:--------------|:-----------------------|:--------------------|
+| :------------ | :--------------------- | :------------------ |
 | `GreaterThan` | `int $value`           | `$subject > $value` |
 | `LessThan`    | `int $value`           | `$subject < $value` |
 
 **ORM rules**
 
 | Class             | Passes when                              |
-|:------------------|:-----------------------------------------|
+| :---------------- | :--------------------------------------- |
 | `EntityExists`    | A matching entity exists in the database |
 | `EntityNotExists` | No matching entity exists                |
 

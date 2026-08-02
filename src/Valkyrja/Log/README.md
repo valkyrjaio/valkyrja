@@ -38,7 +38,7 @@ record it without manually building the context array.
 `Valkyrja\Log\Enum\LogLevel` is a string-backed enum covering all PSR-3 levels:
 
 | Case        | Value         |
-|:------------|:--------------|
+| :---------- | :------------ |
 | `DEBUG`     | `'debug'`     |
 | `INFO`      | `'info'`      |
 | `NOTICE`    | `'notice'`    |
@@ -51,7 +51,7 @@ record it without manually building the context array.
 ## Implementations
 
 | Class        | Description                                                         |
-|:-------------|:--------------------------------------------------------------------|
+| :----------- | :------------------------------------------------------------------ |
 | `PsrLogger`  | Adapter that wraps any `Psr\Log\LoggerInterface` (default: Monolog) |
 | `NullLogger` | No-op; all log calls are silently discarded                         |
 
@@ -67,7 +67,7 @@ implements the contract. The service provider binds `LogConfig` when the
 application config does not implement it.
 
 | Property        | Default            | Description                              |
-|:----------------|:-------------------|:-----------------------------------------|
+| :-------------- | :----------------- | :--------------------------------------- |
 | `defaultLogger` | `PsrLogger::class` | Implementation bound to `LoggerContract` |
 
 ## Service Registration
@@ -75,7 +75,7 @@ application config does not implement it.
 The Log service provider registers the following singletons:
 
 | Contract / Class          | Description                                    |
-|:--------------------------|:-----------------------------------------------|
+| :------------------------ | :--------------------------------------------- |
 | `LogConfigContract`       | Component config                               |
 | `LoggerContract`          | Active logger (default: `PsrLogger`)           |
 | `PsrLogger`               | PSR-3 adapter wrapping Monolog                 |

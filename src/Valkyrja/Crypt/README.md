@@ -62,7 +62,7 @@ deserialize after decrypting.
 ## Implementations
 
 | Class         | Description                                      |
-|:--------------|:-------------------------------------------------|
+| :------------ | :----------------------------------------------- |
 | `SodiumCrypt` | Authenticated encryption via libsodium secretbox |
 | `NullCrypt`   | No-op; returns input unchanged (for testing)     |
 
@@ -76,7 +76,7 @@ implements the contract. The service provider binds `CryptConfig` when the
 application config does not implement it.
 
 | Property       | Default              | Description                             |
-|:---------------|:---------------------|:----------------------------------------|
+| :------------- | :------------------- | :-------------------------------------- |
 | `defaultCrypt` | `SodiumCrypt::class` | Implementation bound to `CryptContract` |
 
 The encryption key itself is read from `Config::$key` (the application-level
@@ -88,8 +88,8 @@ libsodium.
 The Crypt service provider registers the following singletons:
 
 | Contract / Class      | Description                                    |
-|:----------------------|:-----------------------------------------------|
+| :-------------------- | :--------------------------------------------- |
 | `CryptConfigContract` | Component config                               |
 | `CryptContract`       | Active implementation (default: `SodiumCrypt`) |
-| `SodiumCrypt`    | libsodium secretbox implementation             |
-| `NullCrypt`      | No-op implementation                           |
+| `SodiumCrypt`         | libsodium secretbox implementation             |
+| `NullCrypt`           | No-op implementation                           |

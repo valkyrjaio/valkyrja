@@ -31,7 +31,7 @@ a new instance — preserving immutability. Types also implement
 Each primitive type has a corresponding wrapper class.
 
 | Class     | Wraps  | `asValue()` return |
-|:----------|:-------|:-------------------|
+| :-------- | :----- | :----------------- |
 | `StringT` | string | `string`           |
 | `BoolT`   | bool   | `bool`             |
 | `IntT`    | int    | `int`              |
@@ -59,7 +59,7 @@ maximum length, throwing on violation
 Three identifier types wrap values used as entity keys:
 
 | Class      | Wraps         |
-|:-----------|:--------------|
+| :--------- | :------------ |
 | `Id`       | `string\|int` |
 | `StringId` | `string`      |
 | `IntId`    | `int`         |

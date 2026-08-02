@@ -136,7 +136,7 @@ command names by stacking attributes.
 ### Route Parameters
 
 CLI routes support two kinds of parameters: **arguments** (positional) and *
-*options** (named flags). Both are defined via companion attribute classes and
+_options_* (named flags). Both are defined via companion attribute classes and
 are attached directly to the `#[Route]` declaration.
 
 #### Arguments
@@ -173,7 +173,7 @@ public function show(InputContract $input): OutputContract
 `ArgumentValueMode::ARRAY` allows the argument to accept multiple values.
 
 | Enum                | Cases                  |
-|---------------------|------------------------|
+| ------------------- | ---------------------- |
 | `ArgumentMode`      | `REQUIRED`, `OPTIONAL` |
 | `ArgumentValueMode` | `DEFAULT`, `ARRAY`     |
 
@@ -221,7 +221,7 @@ absent). `OptionValueMode::ARRAY` accepts the option multiple times and collects
 values into an array.
 
 | Enum              | Cases                      |
-|-------------------|----------------------------|
+| ----------------- | -------------------------- |
 | `OptionMode`      | `REQUIRED`, `OPTIONAL`     |
 | `OptionValueMode` | `NONE`, `DEFAULT`, `ARRAY` |
 
@@ -371,7 +371,7 @@ public function create(InputContract $input): OutputContract
 Output implementations:
 
 | Class          | Description                       |
-|----------------|-----------------------------------|
+| -------------- | --------------------------------- |
 | `PlainOutput`  | Standard stdout output            |
 | `FileOutput`   | Writes to a file                  |
 | `StreamOutput` | Writes to any PHP stream resource |
@@ -382,7 +382,7 @@ Output implementations:
 The output message system is composable. Common message types:
 
 | Class            | Description                               |
-|------------------|-------------------------------------------|
+| ---------------- | ----------------------------------------- |
 | `Message`        | Plain text                                |
 | `SuccessMessage` | Success-styled text (typically green)     |
 | `ErrorMessage`   | Error-styled text (typically red)         |
@@ -397,7 +397,7 @@ The output message system is composable. Common message types:
 middleware has run. Valkyrja's exit codes follow the BSD SysExits convention:
 
 | Case             | Value | Meaning                           |
-|------------------|-------|-----------------------------------|
+| ---------------- | ----- | --------------------------------- |
 | `SUCCESS`        | 0     | Normal exit                       |
 | `ERROR`          | 1     | Generic error                     |
 | `USAGE_ERROR`    | 64    | Command used incorrectly          |
@@ -610,7 +610,7 @@ Declared per-route via `processExitingMiddleware` in `#[Route]`, or globally in
 ### Pipeline Summary
 
 | Stage             | When it fires                                 | Can short-circuit | Scope     |
-|-------------------|-----------------------------------------------|-------------------|-----------|
+| ----------------- | --------------------------------------------- | ----------------- | --------- |
 | `InputReceived`   | Before route matching                         | Yes               | Global    |
 | `RouteMatched`    | After match, before dispatch                  | Yes               | Per-route |
 | `RouteNotMatched` | When no command matches                       | No                | Global    |
@@ -625,7 +625,7 @@ These are available in any application that includes the relevant component
 providers:
 
 | Command          | Description                                           |
-|------------------|-------------------------------------------------------|
+| ---------------- | ----------------------------------------------------- |
 | `list`           | Lists all registered commands with their descriptions |
 | `list:bash`      | Outputs a bash-completion-compatible command list     |
 | `help`           | Displays help text for a given command                |

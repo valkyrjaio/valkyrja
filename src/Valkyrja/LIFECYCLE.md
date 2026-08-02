@@ -199,7 +199,7 @@ The input passes through a **six-stage middleware pipeline** that mirrors HTTP
 exactly:
 
 | HTTP Stage        | CLI Equivalent    | Description                                                 |
-|-------------------|-------------------|-------------------------------------------------------------|
+| ----------------- | ----------------- | ----------------------------------------------------------- |
 | `RequestReceived` | `InputReceived`   | Before routing; can short-circuit with output               |
 | `RouteMatched`    | `RouteMatched`    | After match; can short-circuit with output                  |
 | `RouteNotMatched` | `RouteNotMatched` | When no command matches                                     |
@@ -261,11 +261,11 @@ handle(app, data, request)
 
 ### Available Runtimes
 
-| Package               | Class                                | Runtime       |
-|-----------------------|--------------------------------------|---------------|
-| `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | FrankenPHP    |
-| `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | OpenSwoole    |
-| `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | RoadRunner    |
+| Package               | Class                                | Runtime    |
+| --------------------- | ------------------------------------ | ---------- |
+| `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | FrankenPHP |
+| `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | OpenSwoole |
+| `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | RoadRunner |
 
 ### Customising Bootstrap
 

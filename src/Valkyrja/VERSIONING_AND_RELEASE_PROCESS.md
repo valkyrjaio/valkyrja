@@ -40,7 +40,7 @@ automatically — read the release notes before upgrading.
 ## Release Schedule
 
 | Version | PHP       | Release             | Bug Fixes Until | Security Fixes Until |
-|:--------|:----------|:--------------------|:----------------|:---------------------|
+| :------ | :-------- | :------------------ | :-------------- | :------------------- |
 | 25 (*)  | 8.4 – 8.6 | December 11th, 2025 | March 31, 2026  | March 31, 2026       |
 | 26      | 8.4 – 8.6 | March 31, 2026      | Q2 2027         | Q1 2028              |
 | 27      | 8.5 – 8.6 | Q1 2027             | Q2 2028         | Q1 2029              |
@@ -67,10 +67,10 @@ software in production means known security vulnerabilities will not be patched.
 Each major version in active development has a corresponding branch in the
 repository.
 
-| Branch   | Purpose                                                                        |
-|:---------|:-------------------------------------------------------------------------------|
-| `26.x`   | The current release line. Where fixes, features, and deprecations land.          |
-| `master` | Preparation for the next year's major. Open for removals and large API changes.  |
+| Branch   | Purpose                                                                         |
+| :------- | :------------------------------------------------------------------------------ |
+| `26.x`   | The current release line. Where fixes, features, and deprecations land.         |
+| `master` | Preparation for the next year's major. Open for removals and large API changes. |
 
 When a new major version ships, its `YY.x` branch becomes the current line and
 the previous one moves into security-only mode.

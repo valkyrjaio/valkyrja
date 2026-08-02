@@ -411,18 +411,18 @@ class names:
 
 m| Case | Casts to |
 |:------------------------------|:------------------------|
-| `CastType::string`            | `string`                |
-| `CastType::int`               | `int`                   |
-| `CastType::float`             | `float`                 |
-| `CastType::bool`              | `bool`                  |
-| `CastType::true`              | `true`                  |
-| `CastType::false`             | `false`                 |
-| `CastType::null`              | `null`                  |
-| `CastType::array`             | `array`                 |
-| `CastType::object`            | `object` (cast)         |
+| `CastType::string` | `string` |
+| `CastType::int` | `int` |
+| `CastType::float` | `float` |
+| `CastType::bool` | `bool` |
+| `CastType::true` | `true` |
+| `CastType::false` | `false` |
+| `CastType::null` | `null` |
+| `CastType::array` | `array` |
+| `CastType::object` | `object` (cast) |
 | `CastType::serialized_object` | unserialized object |
-| `CastType::json`              | decoded JSON array |
-| `CastType::json_object`       | decoded JSON object |
+| `CastType::json` | decoded JSON array |
+| `CastType::json_object` | decoded JSON object |
 
 ### Casting to Models, Enums, or Custom Types
 

@@ -145,7 +145,7 @@ class UserController
         // POST /users
     }
 
-    // The route collector will automatically know this is a dynamic route via 
+    // The route collector will automatically know this is a dynamic route via
     // the parameter attribute and {id}
     #[Route(path: '/users/{id}', name: 'users.show')]
     #[Parameter(name: 'id', regex: '\d+')]
@@ -154,7 +154,7 @@ class UserController
         // GET /users/{id}
     }
 
-    // However using the DynamicRoute directly can allow you to define Parameter 
+    // However using the DynamicRoute directly can allow you to define Parameter
     // objects directly on the Route attribute via the parameters argument, just
     // remember to use the Parameter data class, not the attribute if you do this.
     #[DynamicRoute(path: '/users/{id}', name: 'users.delete')]
@@ -322,7 +322,7 @@ public function show(string $slug): ResponseContract { ... }
 All standard HTTP methods are available via the `RequestMethod` enum:
 
 | Case      | Value     |
-|-----------|-----------|
+| --------- | --------- |
 | `GET`     | `GET`     |
 | `HEAD`    | `HEAD`    |
 | `POST`    | `POST`    |
@@ -451,8 +451,8 @@ public function store(): ResponseContract { ... }
 ```
 
 > Note: You will need to use the
-`\Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware` or
-`\Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware` to
+> `\Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware` or
+> `\Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware` to
 > automatically validate and hydrate the request and response based on the
 > provided structs.
 
@@ -471,7 +471,7 @@ implementing the corresponding PSR-7 interface so the object is accepted
 wherever a PSR-7 type is required.
 
 | Wrapper class                            | Implements               | Wraps                   |
-|:-----------------------------------------|:-------------------------|:------------------------|
+| :--------------------------------------- | :----------------------- | :---------------------- |
 | `Http\Message\Stream\Psr\Stream`         | `StreamInterface`        | `StreamContract`        |
 | `Http\Message\Uri\Psr\Uri`               | `UriInterface`           | `UriContract`           |
 | `Http\Message\Request\Psr\Request`       | `RequestInterface`       | `RequestContract`       |
@@ -776,7 +776,7 @@ requests.
 ### Pipeline Summary
 
 | Stage             | When it fires                     | Can short-circuit | Scope     |
-|-------------------|-----------------------------------|-------------------|-----------|
+| ----------------- | --------------------------------- | ----------------- | --------- |
 | `RequestReceived` | Before route matching             | Yes               | Global    |
 | `RouteMatched`    | After match, before dispatch      | Yes               | Per-route |
 | `RouteNotMatched` | When no route matches             | No                | Global    |

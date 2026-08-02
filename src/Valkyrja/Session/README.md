@@ -53,7 +53,7 @@ contexts:
 ### HTTP Sessions
 
 | Class                         | Description                                            |
-|:------------------------------|:-------------------------------------------------------|
+| :---------------------------- | :----------------------------------------------------- |
 | `PhpSession`                  | PHP native `$_SESSION` with configurable cookie params |
 | `CookieSession`               | Session data stored in an HTTP cookie                  |
 | `EncryptedCookieSession`      | Cookie session with encrypted payload                  |
@@ -65,7 +65,7 @@ contexts:
 ### CLI Sessions
 
 | Class                         | Description                                     |
-|:------------------------------|:------------------------------------------------|
+| :---------------------------- | :---------------------------------------------- |
 | `OptionJwtSession`            | Session stored as a JWT in a CLI option         |
 | `EncryptedOptionJwtSession`   | JWT CLI session with encrypted payload          |
 | `OptionTokenSession`          | Session stored as a plain token in a CLI option |
@@ -74,7 +74,7 @@ contexts:
 ### Other
 
 | Class          | Description                                |
-|:---------------|:-------------------------------------------|
+| :------------- | :----------------------------------------- |
 | `CacheSession` | Session data backed by the Cache component |
 | `LogSession`   | Logs all session operations                |
 | `NullSession`  | No-op session for testing                  |
@@ -94,7 +94,7 @@ several of them at once.
 Every session manager reads these settings.
 
 | Property         | Default             | Description                               |
-|:-----------------|:--------------------|:------------------------------------------|
+| :--------------- | :------------------ | :---------------------------------------- |
 | `defaultSession` | `PhpSession::class` | Implementation bound to `SessionContract` |
 | `sessionId`      | `null`              | The session id                            |
 | `sessionName`    | `null`              | The session name                          |
@@ -105,7 +105,7 @@ Every session manager reads these settings.
 `session_set_cookie_params()`.
 
 | Property         | Default          | Description                              |
-|:-----------------|:-----------------|:-----------------------------------------|
+| :--------------- | :--------------- | :--------------------------------------- |
 | `cookiePath`     | `'/'`            | Cookie path                              |
 | `cookieDomain`   | `null`           | Cookie domain                            |
 | `cookieLifetime` | `0`              | Cookie lifetime in seconds (0 = session) |
@@ -116,14 +116,14 @@ Every session manager reads these settings.
 ### `SessionJwtConfigContract`
 
 | Property        | Default | Description                       |
-|:----------------|:--------|:----------------------------------|
+| :-------------- | :------ | :-------------------------------- |
 | `jwtOptionName` | `null`  | CLI option name for JWT sessions  |
 | `jwtHeaderName` | `null`  | HTTP header name for JWT sessions |
 
 ### `SessionTokenConfigContract`
 
 | Property          | Default | Description                         |
-|:------------------|:--------|:------------------------------------|
+| :---------------- | :------ | :---------------------------------- |
 | `tokenOptionName` | `null`  | CLI option name for token sessions  |
 | `tokenHeaderName` | `null`  | HTTP header name for token sessions |
 

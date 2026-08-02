@@ -37,13 +37,13 @@ $v1   = new VlidV1('01ARZ3NDEKTSV14RRFFQ69G5F');
 $vlid = Vlid::fromValue($someValue);
 ```
 
-| Class    | Contract          |
-|:---------|:------------------|
-| `Vlid`   | `VlidContract`    |
-| `VlidV1` | `VlidV1Contract`  |
-| `VlidV2` | `VlidV2Contract`  |
-| `VlidV3` | `VlidV3Contract`  |
-| `VlidV4` | `VlidV4Contract`  |
+| Class    | Contract         |
+| :------- | :--------------- |
+| `Vlid`   | `VlidContract`   |
+| `VlidV1` | `VlidV1Contract` |
+| `VlidV2` | `VlidV2Contract` |
+| `VlidV3` | `VlidV3Contract` |
+| `VlidV4` | `VlidV4Contract` |
 
 ## Generating VLIDs
 
@@ -74,7 +74,7 @@ A higher version number means more random bits and slightly less deterministic
 ordering at the same microsecond:
 
 | Version | Version digit | Random segment length |
-|:--------|:--------------|:----------------------|
+| :------ | :------------ | :-------------------- |
 | V1      | `1`           | 12 chars (60 bits)    |
 | V2      | `2`           | varies                |
 | V3      | `3`           | varies                |
@@ -85,16 +85,16 @@ immediately following the 13-character microsecond timestamp.
 
 ## Comparison with ULID
 
-| Property         | ULID                        | VLID                         |
-|:-----------------|:----------------------------|:-----------------------------|
-| Time precision   | Milliseconds                | Microseconds                 |
-| Time encoding    | 10 chars (48 bits)          | 13 chars (~65 bits)          |
-| Random bits      | 80 bits (16 chars)          | 60 bits (12 chars) — V1      |
-| Versions         | 1                           | 4 (V1–V4)                    |
-| Version in ID    | No                          | Yes (position 14)            |
-| Total length     | 26 chars                    | 26 chars                     |
-| Encoding         | Crockford Base32            | Crockford Base32             |
-| Monotonic        | Yes (within millisecond)    | Yes (within microsecond)     |
+| Property       | ULID                     | VLID                     |
+| :------------- | :----------------------- | :----------------------- |
+| Time precision | Milliseconds             | Microseconds             |
+| Time encoding  | 10 chars (48 bits)       | 13 chars (~65 bits)      |
+| Random bits    | 80 bits (16 chars)       | 60 bits (12 chars) — V1  |
+| Versions       | 1                        | 4 (V1–V4)                |
+| Version in ID  | No                       | Yes (position 14)        |
+| Total length   | 26 chars                 | 26 chars                 |
+| Encoding       | Crockford Base32         | Crockford Base32         |
+| Monotonic      | Yes (within millisecond) | Yes (within microsecond) |
 
 ## Validation
 
@@ -114,7 +114,7 @@ factories) on failure. Each factory exposes a `REGEX` constant with its pattern.
 `Valkyrja\Type\Vlid\Enum\Version`:
 
 | Case | Value |
-|:-----|:------|
+| :--- | :---- |
 | `V1` | `1`   |
 | `V2` | `2`   |
 | `V3` | `3`   |

@@ -27,7 +27,7 @@ The following worker runtime integrations are available as separate packages,
 each extending `Valkyrja\Application\Entry\Abstract\WorkerHttp`:
 
 | Package               | Class                                | Runtime                                                          |
-|-----------------------|--------------------------------------|------------------------------------------------------------------|
+| --------------------- | ------------------------------------ | ---------------------------------------------------------------- |
 | `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | [FrankenPHP](https://frankenphp.dev/docs/worker/)                |
 | `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | [OpenSwoole](https://openswoole.com/)                            |
 | `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | [RoadRunner](https://docs.roadrunner.dev/docs/php-worker/worker) |
@@ -75,7 +75,7 @@ Configuration is PHP — typed, IDE-visible, statically analyzable, and fast.
 types:
 
 | Property        | Default                 | Description                                                  |
-|-----------------|-------------------------|--------------------------------------------------------------|
+| --------------- | ----------------------- | ------------------------------------------------------------ |
 | `namespace`     | `'App'`                 | Your application's root namespace                            |
 | `dir`           | `__DIR__`               | The application's root directory (set this explicitly)       |
 | `version`       | framework version       | Your application version string                              |
@@ -110,7 +110,7 @@ receives an `HttpConfig` rather than a base `Config` — and to carry a default
 `CliConfig` extends `Config` with these additional properties:
 
 | Property             | Default            | Description                                         |
-|----------------------|--------------------|-----------------------------------------------------|
+| -------------------- | ------------------ | --------------------------------------------------- |
 | `applicationName`    | `'valkyrja'`       | The binary name, shown in version and help output   |
 | `defaultCommandName` | `'list'`           | The command run when no command argument is given   |
 | `http`               | `new HttpConfig()` | An embedded `HttpConfig` for HTTP services from CLI |
@@ -475,12 +475,12 @@ new HttpConfig(providers: [
 
 ### Choosing the right built-in provider
 
-| Provider                              | CLI | HTTP | View | Typical entry config |
-|---------------------------------------|-----|------|------|----------------------|
-| `ApplicationComponentProvider`        | ✓   | ✓    | ✓    | `Config`             |
-| `CliApplicationComponentProvider`     | ✓   |      |      | custom `CliConfig`   |
-| `CliWithHttpApplicationComponentProvider` | ✓ | ✓  |      | `CliConfig`          |
-| `HttpApplicationComponentProvider`    |     | ✓    | ✓    | `HttpConfig`         |
+| Provider                                  | CLI | HTTP | View | Typical entry config |
+| ----------------------------------------- | --- | ---- | ---- | -------------------- |
+| `ApplicationComponentProvider`            | ✓   | ✓    | ✓    | `Config`             |
+| `CliApplicationComponentProvider`         | ✓   |      |      | custom `CliConfig`   |
+| `CliWithHttpApplicationComponentProvider` | ✓   | ✓    |      | `CliConfig`          |
+| `HttpApplicationComponentProvider`        |     | ✓    | ✓    | `HttpConfig`         |
 
 ## Debug Mode
 

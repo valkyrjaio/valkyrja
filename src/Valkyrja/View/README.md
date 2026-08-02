@@ -72,13 +72,13 @@ file.
 Configure the renderer that the container binds through `ViewConfigContract`:
 
 | Property          | Default              | Description                                    |
-|:------------------|:---------------------|:-----------------------------------------------|
+| :---------------- | :------------------- | :--------------------------------------------- |
 | `defaultRenderer` | `PhpRenderer::class` | The renderer class bound to `RendererContract` |
 
 Configure the PHP renderer through `ViewPhpConfigContract`:
 
 | Property           | Default            | Description                             |
-|:-------------------|:-------------------|:----------------------------------------|
+| :----------------- | :----------------- | :-------------------------------------- |
 | `phpPath`          | `/resources/views` | Directory containing PHP template files |
 | `phpFileExtension` | `.phtml`           | File extension for PHP templates        |
 | `phpPaths`         | `[]`               | Additional named path aliases           |
@@ -93,7 +93,7 @@ always regenerated.
 Configure the Orka renderer through `ViewOrkaConfigContract`:
 
 | Property               | Default            | Description                              |
-|:-----------------------|:-------------------|:-----------------------------------------|
+| :--------------------- | :----------------- | :--------------------------------------- |
 | `orkaPath`             | `/resources/views` | Directory containing Orka template files |
 | `orkaFileExtension`    | `.orka.phtml`      | File extension for Orka templates        |
 | `orkaPaths`            | `[]`               | Additional named path aliases            |
@@ -108,7 +108,7 @@ and `{{ }}` for output.
 **Output**
 
 | Syntax              | Compiles to                                   |
-|:--------------------|:----------------------------------------------|
+| :------------------ | :-------------------------------------------- |
 | `{{ $variable }}`   | HTML-escaped output via `$template->escape()` |
 | `{{{ $variable }}}` | Raw unescaped output                          |
 | `@set($key, $val)`  | `$template->setVariable($key, $val)`          |
@@ -195,7 +195,7 @@ Twig syntax and extensions work as normal.
 Configure the Twig renderer through `ViewTwigConfigContract`:
 
 | Property           | Default          | Description                           |
-|:-------------------|:-----------------|:--------------------------------------|
+| :----------------- | :--------------- | :------------------------------------ |
 | `twigPaths`        | `[]`             | Namespace-to-directory path map       |
 | `twigExtensions`   | `[]`             | Extension class names to add to Twig  |
 | `twigCompiledPath` | `/storage/views` | Directory for compiled Twig templates |
@@ -230,7 +230,7 @@ $response = $responseFactory->createResponseFromView('users/show', ['user' => $u
 The View component registers the following singletons:
 
 | Contract / Class              | Description                                  |
-|:------------------------------|:---------------------------------------------|
+| :---------------------------- | :------------------------------------------- |
 | `ViewConfigContract`          | Component config                             |
 | `ViewPhpConfigContract`       | PHP renderer config                          |
 | `ViewOrkaConfigContract`      | Orka renderer config                         |
