@@ -72,42 +72,56 @@ enum:
 | `NullFilesystem`           | No-op; all operations succeed silently                  |
 
 The active implementation is resolved from the container as
-`FilesystemContract`. Configure the defaults via your `Env` class.
+`FilesystemContract`. Configure the defaults through `FilesystemConfigContract`.
 
 ## Configuration
 
-### General
+The component reads four config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each adapter
+contract prefixes its properties with the adapter name, so one class can
+implement several of them at once.
 
-| Env Constant                   | Default                           | Description                                        |
-|:-------------------------------|:----------------------------------|:---------------------------------------------------|
-| `FILESYSTEM_DEFAULT`           | `FlysystemFilesystem::class`      | Implementation bound to `FilesystemContract`       |
-| `FLYSYSTEM_FILESYSTEM_DEFAULT` | `LocalFlysystemFilesystem::class` | Flysystem backend when using `FlysystemFilesystem` |
+### `FilesystemConfigContract`
 
-### Local Filesystem
+| Property            | Default                      | Description                                  |
+|:--------------------|:-----------------------------|:---------------------------------------------|
+| `defaultFilesystem` | `FlysystemFilesystem::class` | Implementation bound to `FilesystemContract` |
 
-| Env Constant                      | Default          | Description               |
-|:----------------------------------|:-----------------|:--------------------------|
-| `FILESYSTEM_FLYSYSTEM_LOCAL_PATH` | `'/storage/app'` | Root path for local files |
+### `FilesystemFlysystemConfigContract`
 
-### S3
+| Property                     | Default                           | Description                                        |
+|:-----------------------------|:----------------------------------|:---------------------------------------------------|
+| `defaultFlysystemFilesystem` | `LocalFlysystemFilesystem::class` | Flysystem backend when using `FlysystemFilesystem` |
 
-| Env Constant                      | Default       | Description           |
-|:----------------------------------|:--------------|:----------------------|
-| `FILESYSTEM_FLYSYSTEM_S3_KEY`     | `'s3-key'`    | AWS access key        |
-| `FILESYSTEM_FLYSYSTEM_S3_SECRET`  | `'s3-secret'` | AWS secret key        |
-| `FILESYSTEM_FLYSYSTEM_S3_REGION`  | `'us-east-1'` | AWS region            |
-| `FILESYSTEM_FLYSYSTEM_S3_VERSION` | `'latest'`    | AWS API version       |
-| `FILESYSTEM_FLYSYSTEM_S3_BUCKET`  | `'s3-bucket'` | S3 bucket name        |
-| `FILESYSTEM_FLYSYSTEM_S3_PREFIX`  | `''`          | S3 key prefix         |
-| `FILESYSTEM_FLYSYSTEM_S3_OPTIONS` | `[]`          | Additional S3 options |
+### `FilesystemFlysystemLocalConfigContract`
+
+| Property             | Default          | Description               |
+|:---------------------|:-----------------|:--------------------------|
+| `flysystemLocalPath` | `'/storage/app'` | Root path for local files |
+
+### `FilesystemFlysystemS3ConfigContract`
+
+| Property             | Default       | Description           |
+|:---------------------|:--------------|:----------------------|
+| `flysystemS3Key`     | `'s3-key'`    | AWS access key        |
+| `flysystemS3Secret`  | `'s3-secret'` | AWS secret key        |
+| `flysystemS3Region`  | `'us-east-1'` | AWS region            |
+| `flysystemS3Version` | `'latest'`    | AWS API version       |
+| `flysystemS3Bucket`  | `'s3-bucket'` | S3 bucket name        |
+| `flysystemS3Prefix`  | `''`          | S3 key prefix         |
+| `flysystemS3Options` | `[]`          | Additional S3 options |
 
 ## Service Registration
 
 The Filesystem service provider registers the following singletons:
 
-| Contract / Class           | Description                                             |
-|:---------------------------|:--------------------------------------------------------|
-| `FilesystemContract`       | Active filesystem (default: `LocalFlysystemFilesystem`) |
+| Contract / Class                        | Description                                             |
+|:----------------------------------------|:--------------------------------------------------------|
+| `FilesystemConfigContract`               | Component config                                        |
+| `FilesystemFlysystemConfigContract`      | Flysystem backend config                                |
+| `FilesystemFlysystemLocalConfigContract` | Local adapter config                                    |
+| `FilesystemFlysystemS3ConfigContract`    | S3 adapter config                                       |
+| `FilesystemContract`                     | Active filesystem (default: `LocalFlysystemFilesystem`) |
 | `LocalFlysystemFilesystem` | Local adapter implementation                            |
 | `S3FlysystemFilesystem`    | S3 adapter implementation                               |
 | `InMemoryFilesystem`       | In-memory implementation                                |
