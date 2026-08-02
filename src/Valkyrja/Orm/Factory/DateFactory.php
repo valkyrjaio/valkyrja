@@ -16,7 +16,6 @@ namespace Valkyrja\Orm\Factory;
 use DateTime;
 use DateTimeZone;
 use Valkyrja\Orm\Constant\DateFormat;
-use Valkyrja\Orm\Throwable\Exception\OrmDateException;
 
 class DateFactory
 {
@@ -27,13 +26,7 @@ class DateFactory
      */
     public static function getFormattedDate(string $format = DateFormat::DEFAULT): string
     {
-        $dateTime = static::createDateTimeFromMicrotime();
-
-        if ($dateTime === false) {
-            throw new OrmDateException('Failure occurred when creating a new DateTime object for current microtime.');
-        }
-
-        return $dateTime->format($format);
+        return static::createDateTimeFromMicrotime()->format($format);
     }
 
     /**
@@ -50,9 +43,10 @@ class DateFactory
      * stamps a local time instead of UTC. The offset `+00:00` keeps the same
      * rendering that this factory gave before.
      *
-     * @return DateTime|false
+     * The method returns a DateTime and never a failure value. The constructor
+     * throws for a bad argument, and both arguments here are literals.
      */
-    protected static function createDateTimeFromMicrotime(): DateTime|false
+    protected static function createDateTimeFromMicrotime(): DateTime
     {
         return new DateTime('now', new DateTimeZone('+00:00'));
     }
