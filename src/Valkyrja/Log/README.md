@@ -62,9 +62,13 @@ singleton, which is pre-configured as a Monolog instance writing to
 
 ## Configuration
 
-| Env Constant         | Default            | Description                              |
-|:---------------------|:-------------------|:-----------------------------------------|
-| `LOG_DEFAULT_LOGGER` | `PsrLogger::class` | Implementation bound to `LoggerContract` |
+The component reads `LogConfigContract`. Your application config class
+implements the contract. The service provider binds `LogConfig` when the
+application config does not implement it.
+
+| Property        | Default            | Description                              |
+|:----------------|:-------------------|:-----------------------------------------|
+| `defaultLogger` | `PsrLogger::class` | Implementation bound to `LoggerContract` |
 
 ## Service Registration
 
@@ -72,6 +76,7 @@ The Log service provider registers the following singletons:
 
 | Contract / Class          | Description                                    |
 |:--------------------------|:-----------------------------------------------|
+| `LogConfigContract`       | Component config                               |
 | `LoggerContract`          | Active logger (default: `PsrLogger`)           |
 | `PsrLogger`               | PSR-3 adapter wrapping Monolog                 |
 | `NullLogger`              | No-op implementation                           |
