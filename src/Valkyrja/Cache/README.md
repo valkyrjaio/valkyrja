@@ -61,28 +61,54 @@ public function getTags(): array;
 | `NullCache`  | No-op; all reads return empty, writes succeed silently |
 
 The active implementation is resolved from the container as `CacheContract`.
-Configure the default via your `Env` class.
+Configure the default through `CacheConfigContract`.
 
 ## Configuration
 
-| Env Constant         | Default                 | Description                             |
-|:---------------------|:------------------------|:----------------------------------------|
-| `CACHE_DEFAULT`      | `RedisCache::class`     | Implementation bound to `CacheContract` |
-| `CACHE_REDIS_PREFIX` | `''`                    | Key prefix for Redis                    |
-| `CACHE_REDIS_HOST`   | `'127.0.0.1'`           | Redis host                              |
-| `CACHE_REDIS_PORT`   | `6379`                  | Redis port                              |
-| `CACHE_LOG_PREFIX`   | `''`                    | Key prefix for the log cache            |
-| `CACHE_LOG_LOGGER`   | `LoggerContract::class` | Logger used by `LogCache`               |
-| `CACHE_NULL_PREFIX`  | `''`                    | Key prefix for the null cache           |
+The component reads four config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each adapter
+contract prefixes its properties with the adapter name, so one class can
+implement several of them at once.
+
+### `CacheConfigContract`
+
+| Property       | Default             | Description                             |
+|:---------------|:--------------------|:----------------------------------------|
+| `defaultCache` | `RedisCache::class` | Implementation bound to `CacheContract` |
+
+### `CacheRedisConfigContract`
+
+| Property      | Default       | Description          |
+|:--------------|:--------------|:---------------------|
+| `redisHost`   | `'127.0.0.1'` | Redis host           |
+| `redisPort`   | `6379`        | Redis port           |
+| `redisPrefix` | `''`          | Key prefix for Redis |
+
+### `CacheLogConfigContract`
+
+| Property    | Default                 | Description                  |
+|:------------|:------------------------|:-----------------------------|
+| `logLogger` | `LoggerContract::class` | Logger used by `LogCache`    |
+| `logPrefix` | `''`                    | Key prefix for the log cache |
+
+### `CacheNullConfigContract`
+
+| Property     | Default | Description                   |
+|:-------------|:--------|:------------------------------|
+| `nullPrefix` | `''`    | Key prefix for the null cache |
 
 ## Service Registration
 
 The Cache service provider registers the following singletons:
 
-| Contract / Class | Description                          |
-|:-----------------|:-------------------------------------|
-| `CacheContract`  | Active cache (default: `RedisCache`) |
-| `RedisCache`     | Redis implementation                 |
-| `LogCache`       | Log implementation                   |
-| `NullCache`      | No-op implementation                 |
-| `Predis\Client`  | Configured Predis Redis client       |
+| Contract / Class           | Description                          |
+|:---------------------------|:-------------------------------------|
+| `CacheConfigContract`      | Component config                     |
+| `CacheRedisConfigContract` | Redis adapter config                 |
+| `CacheLogConfigContract`   | Log adapter config                   |
+| `CacheNullConfigContract`  | Null adapter config                  |
+| `CacheContract`            | Active cache (default: `RedisCache`) |
+| `RedisCache`               | Redis implementation                 |
+| `LogCache`                 | Log implementation                   |
+| `NullCache`                | No-op implementation                 |
+| `Predis\Client`            | Configured Predis Redis client       |
