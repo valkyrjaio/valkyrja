@@ -54,23 +54,37 @@ type accordingly.
 | `NullMessenger`   | No-op; discards all messages silently   |
 
 The active implementation is resolved from the container as `MessengerContract`.
-Configure the default via your `Env` class.
+Configure the default through `SmsConfigContract`.
 
 ## Configuration
 
-| Env Constant            | Default                  | Description                                 |
-|:------------------------|:-------------------------|:--------------------------------------------|
-| `SMS_DEFAULT_MESSENGER` | `VonageMessenger::class` | Implementation bound to `MessengerContract` |
-| `SMS_VONAGE_KEY`        | `'vonage-key'`           | Vonage API key                              |
-| `SMS_VONAGE_SECRET`     | `'vonage-secret'`        | Vonage API secret                           |
+The component reads two config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each contract
+prefixes its properties with the adapter name, so one class can implement both
+at once.
+
+### `SmsConfigContract`
+
+| Property           | Default                  | Description                                 |
+|:-------------------|:-------------------------|:--------------------------------------------|
+| `defaultMessenger` | `VonageMessenger::class` | Implementation bound to `MessengerContract` |
+
+### `SmsVonageConfigContract`
+
+| Property       | Default           | Description        |
+|:---------------|:------------------|:-------------------|
+| `vonageKey`    | `'vonage-key'`    | Vonage API key     |
+| `vonageSecret` | `'vonage-secret'` | Vonage API secret  |
 
 ## Service Registration
 
 The SMS service provider registers the following singletons:
 
-| Contract / Class       | Description                                   |
-|:-----------------------|:----------------------------------------------|
-| `MessengerContract`    | Active messenger (default: `VonageMessenger`) |
+| Contract / Class          | Description                                   |
+|:--------------------------|:----------------------------------------------|
+| `SmsConfigContract`       | Component config                              |
+| `SmsVonageConfigContract` | Vonage adapter config                         |
+| `MessengerContract`       | Active messenger (default: `VonageMessenger`) |
 | `VonageMessenger`      | Vonage implementation                         |
 | `LogMessenger`         | Log implementation                            |
 | `NullMessenger`        | No-op implementation                          |
