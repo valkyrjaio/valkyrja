@@ -17,6 +17,9 @@ jobs:
   cherry-pick:
     name: Cherry-pick
     uses: valkyrjaio/.github/.github/workflows/_cherry-pick-commits.yml@bf51850f7e9b50e40e13dd62022ee56c548f616e
+    secrets:
+      VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+      VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
     permissions:
       contents: write
     with:
