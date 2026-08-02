@@ -112,6 +112,18 @@ new EntityMetadata(
 
 Warning: the entity must declare a property with the registered name. `asStorableArray()` reads the object properties, so a registered name that the entity does not declare becomes a dynamic property. Use your own entity, and not the `DatedFields` or `SoftDeleteFields` trait, when your names are not the defaults.
 
+### The Stored Date
+
+`DateFormat` holds the three formats that the ORM writes. Each one is ISO 8601, so a text sort of the column is a date sort and the date functions of the database read the value:
+
+| Constant | Format | Column type |
+|:---------|:-------|:------------|
+| `DateFormat::DEFAULT` | `Y-m-d H:i:s` | `DATETIME` |
+| `DateFormat::MILLISECOND` | `Y-m-d H:i:s.v` | `DATETIME(3)` |
+| `DateFormat::MICROSECOND` | `Y-m-d H:i:s.u` | `DATETIME(6)` |
+
+**The ORM stores UTC.** `DateFactory` builds each time with the offset `+00:00`, and no format holds a timezone, because the same characters would repeat on every row. Convert the value to a local time when you show it to a person, and never assume the column holds a local time.
+
 The registry is immutable. `withEntity()` returns a new registry, so an application registers an entity in a service provider and replaces the singleton:
 
 ```php

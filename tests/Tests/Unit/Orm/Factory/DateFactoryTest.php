@@ -36,27 +36,27 @@ final class DateFactoryTest extends TestCase
     {
         $result = DateFactory::getFormattedDate();
 
-        // Default format: 'm-d-Y H:i:s T'
-        // Should match pattern like: 01-26-2026 12:30:45 UTC
-        self::assertMatchesRegularExpression('/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2} [A-Z]{3,}\+\d{4}$/', $result);
+        // Default format: 'Y-m-d H:i:s'
+        // Should match a pattern such as: 2026-01-26 12:30:45
+        self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $result);
     }
 
     public function testGetFormattedDateWithMillisecondFormat(): void
     {
         $result = DateFactory::getFormattedDate(DateFormat::MILLISECOND);
 
-        // Millisecond format: 'm-d-Y H:i:s.v T'
+        // Millisecond format: 'Y-m-d H:i:s.v'
         // Should contain milliseconds
-        self::assertMatchesRegularExpression('/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}\.\d{3} [A-Z]{3,}\+\d{4}$/', $result);
+        self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}$/', $result);
     }
 
     public function testGetFormattedDateWithMicrosecondFormat(): void
     {
         $result = DateFactory::getFormattedDate(DateFormat::MICROSECOND);
 
-        // Microsecond format: 'm-d-Y H:i:s.u T'
+        // Microsecond format: 'Y-m-d H:i:s.u'
         // Should contain microseconds
-        self::assertMatchesRegularExpression('/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}\.\d{6} [A-Z]{3,}\+\d{4}$/', $result);
+        self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}$/', $result);
     }
 
     public function testGetFormattedDateWithCustomFormat(): void
