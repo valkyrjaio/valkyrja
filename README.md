@@ -108,7 +108,8 @@ fixes are provided for 2 years after the initial release.
 | 27      | 8.5 – 8.6 | Q1 2027             | Q2 2028         | Q1 2029              |
 | 28      | 8.6+      | Q1 2028             | Q2 2029         | Q1 2030              |
 
-(*) Pre-release. Version 25 is not supported once version 26 is released.
+(*) Version 25 was a pre-release line. It is no longer supported now that
+version 26 has shipped.
 
 Contributing
 ------------
