@@ -54,27 +54,47 @@ public function withMessage(string $message): static;
 | `NullBroadcaster`        | No-op; discards all messages silently               |
 
 The active implementation is resolved from the container as
-`BroadcasterContract`. Configure the default via your `Env` class.
+`BroadcasterContract`. Configure the default through `BroadcastConfigContract`.
 
 ## Configuration
 
-| Env Constant                    | Default                    | Description                                   |
-|:--------------------------------|:---------------------------|:----------------------------------------------|
-| `BROADCAST_DEFAULT_BROADCASTER` | `PusherBroadcaster::class` | Implementation bound to `BroadcasterContract` |
-| `BROADCAST_PUSHER_KEY`          | `'pusher-key'`             | Pusher application key                        |
-| `BROADCAST_PUSHER_SECRET`       | `'pusher-secret'`          | Pusher application secret                     |
-| `BROADCAST_PUSHER_ID`           | `'pusher-id'`              | Pusher application ID                         |
-| `BROADCAST_PUSHER_CLUSTER`      | `'us1'`                    | Pusher cluster region                         |
-| `BROADCAST_PUSHER_USE_TLS`      | `true`                     | Whether to use TLS for Pusher connections     |
-| `BROADCAST_LOG_LOGGER`          | `LoggerContract::class`    | Logger used by `LogBroadcaster`               |
+The component reads three config contracts. Your application config class
+implements only the contracts for the adapters that it uses. Each adapter
+contract prefixes its properties with the adapter name, so one class can
+implement several of them at once.
+
+### `BroadcastConfigContract`
+
+| Property             | Default                    | Description                                   |
+|:---------------------|:---------------------------|:----------------------------------------------|
+| `defaultBroadcaster` | `PusherBroadcaster::class` | Implementation bound to `BroadcasterContract` |
+
+### `BroadcastPusherConfigContract`
+
+| Property        | Default           | Description                               |
+|:----------------|:------------------|:------------------------------------------|
+| `pusherKey`     | `'pusher-key'`    | Pusher application key                    |
+| `pusherSecret`  | `'pusher-secret'` | Pusher application secret                 |
+| `pusherId`      | `'pusher-id'`     | Pusher application ID                     |
+| `pusherCluster` | `'us1'`           | Pusher cluster region                     |
+| `pusherUseTls`  | `true`            | Whether to use TLS for Pusher connections |
+
+### `BroadcastLogConfigContract`
+
+| Property    | Default                 | Description                     |
+|:------------|:------------------------|:--------------------------------|
+| `logLogger` | `LoggerContract::class` | Logger used by `LogBroadcaster` |
 
 ## Service Registration
 
 The Broadcast service provider registers the following singletons:
 
-| Contract / Class         | Description                                       |
-|:-------------------------|:--------------------------------------------------|
-| `BroadcasterContract`    | Active broadcaster (default: `PusherBroadcaster`) |
+| Contract / Class                | Description                                       |
+|:--------------------------------|:--------------------------------------------------|
+| `BroadcastConfigContract`       | Component config                                  |
+| `BroadcastPusherConfigContract` | Pusher adapter config                             |
+| `BroadcastLogConfigContract`    | Log adapter config                                |
+| `BroadcasterContract`           | Active broadcaster (default: `PusherBroadcaster`) |
 | `PusherBroadcaster`      | Pusher implementation                             |
 | `CryptPusherBroadcaster` | Encrypted Pusher implementation                   |
 | `LogBroadcaster`         | Log implementation                                |
