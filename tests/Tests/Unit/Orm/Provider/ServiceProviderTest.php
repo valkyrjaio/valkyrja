@@ -34,6 +34,8 @@ use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\Manager\PgsqlManager;
 use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Provider\OrmServiceProvider;
+use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
+use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Fixtures\Orm\Data\OrmConfigFixture;
@@ -74,6 +76,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(SqliteManager::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(PDO::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(NullManager::class, new OrmServiceProvider()->publishers());
+        self::assertArrayHasKey(EntityMetadataRegistryContract::class, new OrmServiceProvider()->publishers());
         self::assertArrayHasKey(Repository::class, new OrmServiceProvider()->publishers());
     }
 
@@ -163,6 +166,17 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(OrmSqliteConfigContract::class, $config = $this->container->getSingleton(OrmSqliteConfigContract::class));
         self::assertSame('test-sqlite-db', $config->sqliteDb);
+    }
+
+    public function testPublishEntityMetadataRegistry(): void
+    {
+        $callback = new OrmServiceProvider()->publishers()[EntityMetadataRegistryContract::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            EntityMetadataRegistry::class,
+            $this->container->getSingleton(EntityMetadataRegistryContract::class)
+        );
     }
 
     /**

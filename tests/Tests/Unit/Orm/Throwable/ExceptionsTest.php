@@ -20,6 +20,7 @@ use Valkyrja\Orm\Throwable\Exception\OrmEntityNotFoundException;
 use Valkyrja\Orm\Throwable\Exception\OrmExecuteException;
 use Valkyrja\Orm\Throwable\Exception\OrmInvalidEntityException;
 use Valkyrja\Orm\Throwable\Exception\OrmNotFoundException;
+use Valkyrja\Orm\Throwable\Exception\OrmUnregisteredEntityException;
 use Valkyrja\Orm\Throwable\Exception\OrmWhereException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
@@ -98,6 +99,22 @@ final class ExceptionsTest extends TestCase
         throw new OrmInvalidEntityException('Entity must implement EntityContract');
     }
 
+    public function testUnregisteredEntityExceptionExtendsInvalidArgumentException(): void
+    {
+        $exception = new OrmUnregisteredEntityException('Unregistered entity');
+
+        self::assertInstanceOf(OrmInvalidArgumentException::class, $exception);
+        self::assertInstanceOf(OrmThrowable::class, $exception);
+    }
+
+    public function testUnregisteredEntityExceptionCanBeThrown(): void
+    {
+        $this->expectException(OrmUnregisteredEntityException::class);
+        $this->expectExceptionMessage('Entity has no registered metadata');
+
+        throw new OrmUnregisteredEntityException('Entity has no registered metadata');
+    }
+
     public function testWhereExceptionExtendsRuntimeException(): void
     {
         $exception = new OrmWhereException('Where error');
@@ -126,5 +143,6 @@ final class ExceptionsTest extends TestCase
         // InvalidArgumentException hierarchy
         self::assertTrue(is_a(OrmInvalidArgumentException::class, OrmThrowable::class, true));
         self::assertTrue(is_a(OrmInvalidEntityException::class, OrmInvalidArgumentException::class, true));
+        self::assertTrue(is_a(OrmUnregisteredEntityException::class, OrmInvalidArgumentException::class, true));
     }
 }
