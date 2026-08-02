@@ -53,7 +53,7 @@ jobs:
   copyright-header-check:
     name: Copyright Header Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_copyright-header-check.yml@3e3227b2d75c56c308bfdb23ff0f52c4b9c97c87
+    uses: valkyrjaio/.github/.github/workflows/_copyright-header-check.yml@efdf089d06409ec946c52197eea3cfabe17aff48
     permissions:
       pull-requests: write
       contents: read
