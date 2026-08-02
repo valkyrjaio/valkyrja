@@ -1,0 +1,30 @@
+# The package this repository is. COPYRIGHT_HEADER.md in the .github repository
+# maps every repository to its own identifier.
+IDENTIFIER='Valkyrja Framework'
+
+# The files that carry no copyright header. Every other tracked file must carry
+# it, so a new file fails the check until a person adds the header or adds the
+# file here.
+EXCLUDED=(
+    # A document, a lock file, and a configuration file hold no program code.
+    '*.md'
+    '*.json'
+    '*.lock'
+    '*.neon'
+    '*.xml'
+    '*.yaml'
+    '*.yml'
+    '*.dist'
+    '*.gitattributes'
+    '*.editorconfig'
+    '*.gitignore'
+
+    # A stub whose first comment explains the file. The header fixer replaces the
+    # comment in the header position, so PHP CS Fixer skips this file too.
+    '.github/ci/psalm/stubs/frankenphp.php'
+
+    # A fixture that a test renders or parses. A header would change the rendered
+    # output, and the PHPT format reserves the top of the file for its sections.
+    'tests/templates/*'
+    'tests/end-to-end/*.phpt'
+)
