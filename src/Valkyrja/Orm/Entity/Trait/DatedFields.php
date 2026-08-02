@@ -16,16 +16,16 @@ namespace Valkyrja\Orm\Entity\Trait;
 trait DatedFields
 {
     /**
-     * The date created date.
+     * The date the entity was created.
      *
      * @var string
      */
-    public string $date_created;
+    public string $created_at;
 
     /**
-     * The date modified date.
+     * The date the entity was last modified.
      *
      * @var string
      */
-    public string $date_modified;
+    public string $updated_at;
 }

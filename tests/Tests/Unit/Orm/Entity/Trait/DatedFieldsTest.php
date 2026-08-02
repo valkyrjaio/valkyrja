@@ -24,9 +24,9 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        $class->date_created = '01-26-2026 12:00:00 UTC';
+        $class->created_at = '01-26-2026 12:00:00 UTC';
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->date_created);
+        self::assertSame('01-26-2026 12:00:00 UTC', $class->created_at);
     }
 
     public function testHasDateModifiedProperty(): void
@@ -35,8 +35,8 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        $class->date_modified = '01-26-2026 12:00:00 UTC';
+        $class->updated_at = '01-26-2026 12:00:00 UTC';
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->date_modified);
+        self::assertSame('01-26-2026 12:00:00 UTC', $class->updated_at);
     }
 }

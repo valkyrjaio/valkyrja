@@ -16,9 +16,9 @@ namespace Valkyrja\Orm\Entity\Trait;
 trait SoftDeleteFields
 {
     /**
-     * The date deleted date.
+     * The date the entity was soft deleted.
      *
      * @var string|null
      */
-    public string|null $date_deleted = null;
+    public string|null $deleted_at = null;
 }

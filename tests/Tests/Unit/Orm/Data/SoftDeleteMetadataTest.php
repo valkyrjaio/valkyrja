@@ -31,7 +31,7 @@ final class SoftDeleteMetadataTest extends TestCase
     {
         $metadata = new SoftDeleteMetadata();
 
-        self::assertSame('date_deleted', $metadata->dateDeletedField);
+        self::assertSame('deleted_at', $metadata->dateDeletedField);
     }
 
     public function testCustomFormat(): void
@@ -43,9 +43,9 @@ final class SoftDeleteMetadataTest extends TestCase
 
     public function testCustomField(): void
     {
-        $metadata = new SoftDeleteMetadata(dateDeletedField: 'deleted_at');
+        $metadata = new SoftDeleteMetadata(dateDeletedField: 'date_deleted');
 
-        self::assertSame('deleted_at', $metadata->dateDeletedField);
+        self::assertSame('date_deleted', $metadata->dateDeletedField);
     }
 
     public function testReadonlyClass(): void

@@ -23,7 +23,7 @@ readonly class SoftDeleteMetadata
      */
     public function __construct(
         public string $format = DateFormat::DEFAULT,
-        public string $dateDeletedField = 'date_deleted',
+        public string $dateDeletedField = 'deleted_at',
     ) {
     }
 }

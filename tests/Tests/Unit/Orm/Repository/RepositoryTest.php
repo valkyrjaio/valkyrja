@@ -504,8 +504,8 @@ final class RepositoryTest extends TestCase
 
         $repository->create($entity);
 
-        self::assertNotEmpty($entity->date_created);
-        self::assertSame($entity->date_created, $entity->date_modified);
+        self::assertNotEmpty($entity->created_at);
+        self::assertSame($entity->created_at, $entity->updated_at);
     }
 
     public function testCreateStampsWithTheRegisteredFieldsAndFormat(): void
@@ -517,8 +517,8 @@ final class RepositoryTest extends TestCase
             new EntityMetadata(
                 dated: new DatedMetadata(
                     format: DateFormat::MICROSECOND,
-                    dateCreatedField: 'created_at',
-                    dateModifiedField: 'updated_at'
+                    dateCreatedField: 'date_created',
+                    dateModifiedField: 'date_modified'
                 )
             )
         );
@@ -527,8 +527,8 @@ final class RepositoryTest extends TestCase
 
         $repository->create($entity);
 
-        self::assertNotEmpty($entity->created_at);
-        self::assertSame($entity->created_at, $entity->updated_at);
+        self::assertNotEmpty($entity->date_created);
+        self::assertSame($entity->date_created, $entity->date_modified);
     }
 
     public function testCreateDoesNotStampAnUndatedEntity(): void
@@ -539,7 +539,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->create($entity);
 
-        self::assertArrayNotHasKey('date_created', $entity->asStorableArray());
+        self::assertArrayNotHasKey('created_at', $entity->asStorableArray());
     }
 
     public function testCreateThrowsWhenTheEntityIsNotRegistered(): void
@@ -579,16 +579,16 @@ final class RepositoryTest extends TestCase
         );
 
         $entity = DatedEntityFixture::fromArray([
-            'id'            => 1,
-            'name'          => 'Existing',
-            'date_created'  => '01-26-2026 12:00:00 UTC',
-            'date_modified' => '01-26-2026 12:00:00 UTC',
+            'id'         => 1,
+            'name'       => 'Existing',
+            'created_at' => '01-26-2026 12:00:00 UTC',
+            'updated_at' => '01-26-2026 12:00:00 UTC',
         ]);
 
         $repository->update($entity);
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $entity->date_created);
-        self::assertNotSame('01-26-2026 12:00:00 UTC', $entity->date_modified);
+        self::assertSame('01-26-2026 12:00:00 UTC', $entity->created_at);
+        self::assertNotSame('01-26-2026 12:00:00 UTC', $entity->updated_at);
     }
 
     public function testUpdateDoesNotStampAnUndatedEntity(): void
@@ -599,7 +599,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->update($entity);
 
-        self::assertArrayNotHasKey('date_modified', $entity->asStorableArray());
+        self::assertArrayNotHasKey('updated_at', $entity->asStorableArray());
     }
 
     public function testUpdateThrowsWhenTheMetadataHoldsNoDatedMetadata(): void
@@ -629,7 +629,7 @@ final class RepositoryTest extends TestCase
 
         $repository->delete($entity);
 
-        self::assertNotNull($entity->date_deleted);
+        self::assertNotNull($entity->deleted_at);
     }
 
     public function testDeleteSoftDeletesWithTheRegisteredFieldAndFormat(): void
@@ -641,7 +641,7 @@ final class RepositoryTest extends TestCase
             new EntityMetadata(
                 softDelete: new SoftDeleteMetadata(
                     format: DateFormat::MILLISECOND,
-                    dateDeletedField: 'deleted_at'
+                    dateDeletedField: 'date_deleted'
                 )
             )
         );
@@ -650,7 +650,7 @@ final class RepositoryTest extends TestCase
 
         $repository->delete($entity);
 
-        self::assertNotNull($entity->deleted_at);
+        self::assertNotNull($entity->date_deleted);
     }
 
     public function testDeleteThrowsWhenTheMetadataHoldsNoSoftDeleteMetadata(): void
@@ -680,7 +680,7 @@ final class RepositoryTest extends TestCase
 
         $repository->forceDelete($entity);
 
-        self::assertNull($entity->date_deleted);
+        self::assertNull($entity->deleted_at);
     }
 
     /**
