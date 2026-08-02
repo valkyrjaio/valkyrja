@@ -137,16 +137,16 @@ implement several of them at once.
 
 The Mail service provider registers the following singletons:
 
-| Contract / Class              | Description                              |
-|:------------------------------|:-----------------------------------------|
-| `MailConfigContract`          | Component config                         |
-| `MailMailgunConfigContract`   | Mailgun adapter config                   |
-| `MailPhpMailerConfigContract` | PHPMailer adapter config                 |
-| `MailerContract`              | Active mailer (default: `MailgunMailer`) |
-| `MailgunMailer`               | Mailgun implementation                   |
-| `PhpMailer`                   | PHPMailer SMTP implementation            |
-| `LogMailer`                   | Log implementation                       |
-| `NullMailer`                  | No-op implementation                     |
-| `Mailgun`                     | Configured Mailgun client instance       |
-| `HttpClientConfigurator`      | Configured Mailgun HTTP client           |
-| `PHPMailerClient`             | Configured PHPMailer SMTP instance       |
+| Contract / Class              | Description                                     |
+|:------------------------------|:------------------------------------------------|
+| `MailConfigContract`          | Component config                                |
+| `MailMailgunConfigContract`   | Mailgun adapter config                          |
+| `MailPhpMailerConfigContract` | PHPMailer adapter config                        |
+| `MailerContract`              | Active mailer (default: `MailgunMailer`)        |
+| `MailgunMailer`               | Mailgun implementation                          |
+| `PhpMailer`                   | PHPMailer SMTP implementation                   |
+| `LogMailer`                   | Log implementation                              |
+| `NullMailer`                  | No-op implementation                            |
+| `Mailgun`                     | Configured Mailgun client instance              |
+| `HttpClientConfigurator`      | Configured HTTP client configurator for Mailgun |
+| `PHPMailerClient`             | Configured PHPMailer SMTP instance              |
