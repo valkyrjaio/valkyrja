@@ -18,7 +18,6 @@ use Spiral\RoadRunner\Http\HttpWorker;
 use Spiral\RoadRunner\Http\Request;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 /**
@@ -62,7 +61,7 @@ final class RoadRunnerHttpSmokeFixture extends RoadRunnerHttp
     }
 
     #[Override]
-    public static function bootstrap(HttpConfigContract $config, Env $env = new Env()): ApplicationContract
+    public static function bootstrap(HttpConfigContract $config): ApplicationContract
     {
         return self::$app;
     }

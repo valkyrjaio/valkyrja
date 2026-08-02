@@ -90,7 +90,7 @@ along with your configuration object, is passed to a new
 application — it holds the container, exposes the configuration, and coordinates
 component loading.
 
-Several core singletons are immediately registered into the container: `Env`,
+Several core singletons are immediately registered into the container:
 `Config`, the concrete config class (e.g. `HttpConfig`), `ContainerContract`,
 and `ApplicationContract` itself. If a `CliConfig` is in use, its embedded
 `HttpConfig` is also registered.

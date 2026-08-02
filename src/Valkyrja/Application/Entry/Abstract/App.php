@@ -17,7 +17,6 @@ use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Container\Data\ContainerData;
@@ -36,7 +35,7 @@ abstract class App
     /**
      * Start the application.
      */
-    public static function start(Env $env, ConfigContract $config): ApplicationContract
+    public static function start(ConfigContract $config): ApplicationContract
     {
         if ($config->debugMode) {
             static::defaultExceptionHandler();
@@ -45,7 +44,7 @@ abstract class App
         static::appStart();
         static::directory(dir: $config->dir);
 
-        return static::app(env: $env, config: $config);
+        return static::app(config: $config);
     }
 
     /**
@@ -80,7 +79,7 @@ abstract class App
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
      */
-    public static function app(Env $env, ConfigContract $config): ApplicationContract
+    public static function app(ConfigContract $config): ApplicationContract
     {
         $container = static::getContainer();
         $app       = static::getApplication(container: $container, config: $config);
@@ -88,7 +87,6 @@ abstract class App
         static::bootstrapServices(
             app: $app,
             container: $container,
-            env: $env,
             config: $config
         );
 
@@ -109,9 +107,8 @@ abstract class App
     /**
      * Bootstrap container services.
      */
-    public static function bootstrapServices(ApplicationContract $app, ContainerContract $container, Env $env, ConfigContract $config): void
+    public static function bootstrapServices(ApplicationContract $app, ContainerContract $container, ConfigContract $config): void
     {
-        $container->setSingleton(Env::class, $env);
         $container->setSingleton(ConfigContract::class, $config);
         $container->setSingleton($config::class, $config);
         $container->setSingleton(ContainerContract::class, $container);

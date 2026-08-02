@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Fixtures\Application\Entry;
 use Override;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -78,9 +77,9 @@ final class WorkerHttpFixture extends WorkerHttp
      * Mirrors the real worker entry class pattern: bootstrap once, capture data,
      * build a handler closure, then invoke it requestCount times.
      */
-    public static function run(HttpConfigContract $config, int $requestCount = 1, Env $env = new Env()): void
+    public static function run(HttpConfigContract $config, int $requestCount = 1): void
     {
-        $app  = self::bootstrap(config: $config, env: $env);
+        $app  = self::bootstrap(config: $config);
         $data = $app->getContainer()->getData();
 
         $handler = static function () use ($app, $data): void {

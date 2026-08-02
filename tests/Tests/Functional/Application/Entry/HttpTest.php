@@ -18,7 +18,6 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Http;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -28,7 +27,6 @@ use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpComponentProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderFixture;
@@ -71,12 +69,6 @@ final class HttpTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/version';
 
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
-            /** @var non-empty-string */
-            public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-        };
         $dir = Directory::$basePath;
 
         $config = new HttpConfig(
@@ -88,14 +80,13 @@ final class HttpTest extends TestCase
             ],
         );
 
-        $application = Http::app($env, $config);
+        $application = Http::app($config);
         $container   = $application->getContainer();
 
         $container->getSingleton(RouteCollectionContract::class);
 
         self::assertFalse($container->has(CliConfig::class));
         self::assertTrue($container->has(HttpConfig::class));
-        self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ContainerContract::class));
         self::assertTrue($container->has(ApplicationContract::class));
 
@@ -108,13 +99,6 @@ final class HttpTest extends TestCase
         // With debug mode on we expect the route data publisher publish method to bypass
         self::assertFalse(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
-            /** @var non-empty-string */
-            public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-        };
 
         $config = new HttpConfig(
             dir: $dir,
@@ -129,7 +113,7 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config, env: $env);
+        Http::run(config: $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
@@ -145,13 +129,6 @@ final class HttpTest extends TestCase
         self::assertTrue(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
 
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'HttpTestContainerData';
-            /** @var non-empty-string */
-            public const string HTTP_ROUTING_DATA_CLASS_NAME = 'HttpTestHttpRoutingData';
-        };
-
         $config = new HttpConfig(
             dir: $dir,
             debugMode: true,
@@ -165,7 +142,7 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config, env: $env);
+        Http::run(config: $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);

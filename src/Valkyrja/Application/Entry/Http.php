@@ -15,7 +15,6 @@ namespace Valkyrja\Application\Entry;
 
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\Abstract\App;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
@@ -25,10 +24,9 @@ class Http extends App
     /**
      * Run the http app.
      */
-    public static function run(HttpConfigContract $config, Env $env = new Env()): void
+    public static function run(HttpConfigContract $config): void
     {
         $app = static::start(
-            env: $env,
             config: $config,
         );
 

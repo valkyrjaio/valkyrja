@@ -20,7 +20,6 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -61,7 +60,7 @@ final class HttpTest extends TestCase
             public static ApplicationContract $appMock;
 
             #[Override]
-            public static function start(Env $env, ConfigContract $config): ApplicationContract
+            public static function start(ConfigContract $config): ApplicationContract
             {
                 return self::$appMock;
             }

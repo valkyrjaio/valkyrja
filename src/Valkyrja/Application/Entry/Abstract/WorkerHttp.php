@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Entry\Abstract;
 
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\ChildApplication;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
@@ -47,10 +46,9 @@ abstract class WorkerHttp extends App
      * ApplicationContract is frozen after this call — its container must not
      * be written to again. Pass it to run() for every subsequent request.
      */
-    public static function bootstrap(HttpConfigContract $config, Env $env = new Env()): ApplicationContract
+    public static function bootstrap(HttpConfigContract $config): ApplicationContract
     {
         $app = static::start(
-            env: $env,
             config: $config,
         );
 

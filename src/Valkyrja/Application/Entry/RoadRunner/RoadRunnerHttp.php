@@ -19,7 +19,6 @@ use Spiral\RoadRunner\Http\Request;
 use Spiral\RoadRunner\Worker;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -36,11 +35,10 @@ class RoadRunnerHttp extends WorkerHttp
      *
      * @see https://docs.roadrunner.dev/docs/php-worker/worker
      */
-    public static function run(HttpConfig $config, Env $env = new Env()): void
+    public static function run(HttpConfig $config): void
     {
         $app = static::bootstrap(
             config: $config,
-            env: $env,
         );
 
         $container = $app->getContainer();

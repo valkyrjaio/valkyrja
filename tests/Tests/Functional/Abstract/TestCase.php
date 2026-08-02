@@ -20,7 +20,6 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Tests\Abstract\TestCase as AbstractTestCase;
-use Valkyrja\Tests\EnvClass;
 
 /**
  * Test case for functional tests.
@@ -31,11 +30,6 @@ abstract class TestCase extends AbstractTestCase
      * The application.
      */
     protected ApplicationContract $app;
-
-    /**
-     * The env.
-     */
-    protected EnvClass $env;
 
     /**
      * The config.
@@ -50,7 +44,6 @@ abstract class TestCase extends AbstractTestCase
         App::directory(dir: Directory::$basePath);
 
         $this->app = $app = App::app(
-            $this->env    = new EnvClass(),
             $this->config = new Config(),
         );
 

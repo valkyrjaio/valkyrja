@@ -139,9 +139,9 @@ When `run()` is called, `App::start()` executes in order:
 4. **The application is instantiated.** `Valkyrja` is created with the container
    and the config. The timezone is set immediately from `config->timezone`.
 
-5. **Core singletons are registered.** `Env`, `Config`, the concrete config
-   subclass, `ContainerContract`, and `ApplicationContract` are injected
-   directly into the container as singletons. If `CliConfig` is in use, its
+5. **Core singletons are registered.** `Config`, the concrete config subclass,
+   `ContainerContract`, and `ApplicationContract` are injected directly into the
+   container as singletons. If `CliConfig` is in use, its
    embedded `HttpConfig` is also registered.
 
 6. **Provider callbacks are published.** The `callbacks` array from your config
@@ -161,7 +161,7 @@ flowchart TD
     C --> D["2 - Set base path from config->dir"]
     D --> E["3 - Create Container"]
     E --> F["4 - Instantiate Valkyrja, set timezone"]
-    F --> G["5 - Register core singletons\nEnv, Config, ContainerContract, ApplicationContract"]
+    F --> G["5 - Register core singletons\nConfig, ContainerContract, ApplicationContract"]
     G --> H["6 - Run provider callbacks"]
     H --> I{"Data cache exists\nand debugMode = false?"}
     I -->|Yes| J["7 - Load data cache class\nno reflection, single step"]

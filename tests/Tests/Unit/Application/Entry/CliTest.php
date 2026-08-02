@@ -20,7 +20,6 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
@@ -64,7 +63,7 @@ final class CliTest extends TestCase
             public static ApplicationContract $appMock;
 
             #[Override]
-            public static function start(Env $env, ConfigContract $config): ApplicationContract
+            public static function start(ConfigContract $config): ApplicationContract
             {
                 return self::$appMock;
             }
