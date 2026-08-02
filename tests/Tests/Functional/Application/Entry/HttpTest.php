@@ -125,7 +125,7 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config, env: $env);
+        Http::run(config: $config);
         self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
@@ -161,7 +161,7 @@ final class HttpTest extends TestCase
         );
 
         ob_start();
-        Http::run(config: $config, env: $env);
+        Http::run(config: $config);
         self::cleanOutputBuffer();
 
         /**

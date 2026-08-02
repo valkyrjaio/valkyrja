@@ -159,7 +159,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config, env: $env);
+        Cli::run(config: $config);
         self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
@@ -209,7 +209,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config, env: $env);
+        Cli::run(config: $config);
         self::cleanOutputBuffer();
 
         restore_error_handler();
