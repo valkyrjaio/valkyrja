@@ -213,8 +213,8 @@ responses directly from a template name:
 public function createResponseFromView(
     string $template,
     array $data = [],
-    StatusCode $statusCode,
-    HeaderCollectionContract $headers
+    StatusCode $statusCode = StatusCode::OK,
+    HeaderCollectionContract|null $headers = null
 ): ResponseContract;
 ```
 
