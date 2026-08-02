@@ -206,15 +206,15 @@ name, so one class can implement several of them at once.
 
 ## Producing HTTP Responses
 
-`Valkyrja\View\Factory\Contract\ResponseFactoryContract` creates PSR-7 HTTP
+`Valkyrja\View\Factory\Contract\ViewResponseFactoryContract` creates PSR-7 HTTP
 responses directly from a template name:
 
 ```php
 public function createResponseFromView(
     string $template,
     array $data = [],
-    StatusCode $statusCode,
-    HeaderCollectionContract $headers
+    StatusCode $statusCode = StatusCode::OK,
+    HeaderCollectionContract|null $headers = null
 ): ResponseContract;
 ```
 
@@ -229,18 +229,18 @@ $response = $responseFactory->createResponseFromView('users/show', ['user' => $u
 
 The View component registers the following singletons:
 
-| Contract / Class          | Description                                  |
-|:--------------------------|:---------------------------------------------|
-| `ViewConfigContract`      | Component config                             |
-| `ViewPhpConfigContract`   | PHP renderer config                          |
-| `ViewOrkaConfigContract`  | Orka renderer config                         |
-| `ViewTwigConfigContract`  | Twig renderer config                         |
-| `RendererContract`        | The active renderer (default: `PhpRenderer`) |
-| `PhpRenderer`             | PHP renderer instance                        |
-| `OrkaRenderer`            | Orka renderer instance                       |
-| `TwigRenderer`            | Twig renderer instance                       |
-| `Twig\Environment`        | Configured Twig environment                  |
-| `ResponseFactoryContract` | View response factory                        |
+| Contract / Class              | Description                                  |
+|:------------------------------|:---------------------------------------------|
+| `ViewConfigContract`          | Component config                             |
+| `ViewPhpConfigContract`       | PHP renderer config                          |
+| `ViewOrkaConfigContract`      | Orka renderer config                         |
+| `ViewTwigConfigContract`      | Twig renderer config                         |
+| `RendererContract`            | The active renderer (default: `PhpRenderer`) |
+| `PhpRenderer`                 | PHP renderer instance                        |
+| `OrkaRenderer`                | Orka renderer instance                       |
+| `TwigRenderer`                | Twig renderer instance                       |
+| `Twig\Environment`            | Configured Twig environment                  |
+| `ViewResponseFactoryContract` | View response factory                        |
 
 Register the View service provider by including it in your component provider's
 `getContainerProviders()` return value.
