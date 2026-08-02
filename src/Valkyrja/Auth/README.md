@@ -179,20 +179,30 @@ Additional user capability contracts can be composed as needed:
 `SessionAuthenticator` serializes the `AuthenticatedUsers` object and stores it
 in the session under the `auth.users` key. On construction, it reads and
 deserializes this value, validating the allowed classes against
-`AUTH_SESSION_ALLOWED_CLASSES` to prevent unsafe deserialization.
+`AuthSessionConfig::$allowedClasses` to prevent unsafe deserialization.
 
 The `auth.passwordConfirmedTimestamp` session key is also reserved for
 password-confirmation flows.
 
 ## Configuration
 
-| Env Constant                   | Default                       | Description                                        |
-|:-------------------------------|:------------------------------|:---------------------------------------------------|
-| `AUTH_DEFAULT_AUTHENTICATOR`   | `SessionAuthenticator::class` | Implementation bound to `AuthenticatorContract`    |
-| `AUTH_DEFAULT_STORE`           | `OrmStore::class`             | Implementation bound to `StoreContract`            |
-| `AUTH_DEFAULT_USER_ENTITY`     | `User::class`                 | Default user entity class                          |
-| `AUTH_SESSION_ITEM_ID`         | `'auth.users'`                | Session key for the authenticated users collection |
-| `AUTH_SESSION_ALLOWED_CLASSES` | `[AuthenticatedUsers::class]` | Allowed classes during session deserialization     |
+The component reads `AuthConfigContract`. Your application config class
+implements the contract. The service provider binds `AuthConfig` when the
+application config does not implement it.
+
+| Property               | Default                       | Description                                     |
+|:-----------------------|:------------------------------|:------------------------------------------------|
+| `defaultAuthenticator` | `SessionAuthenticator::class` | Implementation bound to `AuthenticatorContract` |
+| `defaultStore`         | `OrmStore::class`             | Implementation bound to `StoreContract`         |
+| `defaultUserEntity`    | `User::class`                 | Default user entity class                       |
+| `session`              | `new AuthSessionConfig()`     | Settings for `SessionAuthenticator`             |
+
+`AuthSessionConfig` holds the settings that only `SessionAuthenticator` reads:
+
+| Property         | Default                       | Description                                        |
+|:-----------------|:------------------------------|:---------------------------------------------------|
+| `itemId`         | `'auth.users'`                | Session key for the authenticated users collection |
+| `allowedClasses` | `[AuthenticatedUsers::class]` | Allowed classes during session deserialization     |
 
 ## Service Registration
 
