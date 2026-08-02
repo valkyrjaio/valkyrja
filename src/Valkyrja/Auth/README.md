@@ -179,7 +179,7 @@ Additional user capability contracts can be composed as needed:
 `SessionAuthenticator` serializes the `AuthenticatedUsers` object and stores it
 in the session under the `auth.users` key. On construction, it reads and
 deserializes this value, validating the allowed classes against
-`AUTH_SESSION_ALLOWED_CLASSES` to prevent unsafe deserialization.
+`AuthSessionConfig::$allowedClasses` to prevent unsafe deserialization.
 
 The `auth.passwordConfirmedTimestamp` session key is also reserved for
 password-confirmation flows.
