@@ -1,3 +1,11 @@
+#
+# This file is part of the Valkyrja Framework package.
+#
+# Copyright (c) 2016-present Melech Mizrachi
+#
+# Released under the MIT License. See LICENSE.md for details.
+#
+
 # The package this repository is. COPYRIGHT_HEADER.md in the .github repository
 # maps every repository to its own identifier.
 IDENTIFIER='Valkyrja Framework'
