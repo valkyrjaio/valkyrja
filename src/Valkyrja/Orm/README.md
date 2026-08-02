@@ -382,59 +382,68 @@ The active manager is resolved from the container as `ManagerContract`.
 
 ## Configuration
 
-### General
+The component reads four config contracts. Your application config class
+implements only the contracts for the connections that it uses. Each connection
+contract prefixes its properties with the connection name, so one class can
+implement several of them at once.
 
-| Env Constant          | Default            | Description                                |
-|:----------------------|:-------------------|:-------------------------------------------|
-| `ORM_DEFAULT_MANAGER` | `MysqlManager::class` | Implementation bound to `ManagerContract` |
+### `OrmConfigContract`
 
-### MySQL
+| Property         | Default               | Description                               |
+|:-----------------|:----------------------|:------------------------------------------|
+| `defaultManager` | `MysqlManager::class` | Implementation bound to `ManagerContract` |
 
-| Env Constant          | Default            | Description                        |
-|:----------------------|:-------------------|:-----------------------------------|
-| `ORM_MYSQL_DB`        | `'valkyrja'`       | Database name                      |
-| `ORM_MYSQL_HOST`      | `'127.0.0.1'`      | Host                               |
-| `ORM_MYSQL_PORT`      | `3306`             | Port                               |
-| `ORM_MYSQL_USER`      | `'valkyrja'`       | Username                           |
-| `ORM_MYSQL_PASSWORD`  | `'mysql-password'` | Password                           |
-| `ORM_MYSQL_CHARSET`   | `'utf8mb4'`        | Character set                      |
-| `ORM_MYSQL_STRICT`    | `null`             | Strict mode                        |
-| `ORM_MYSQL_ENGINE`    | `null`             | Storage engine                     |
-| `ORM_MYSQL_OPTIONS`   | PDO defaults       | PDO attribute array                |
+### `OrmMysqlConfigContract`
 
-### PostgreSQL
+| Property        | Default            | Description         |
+|:----------------|:-------------------|:--------------------|
+| `mysqlDb`       | `'valkyrja'`       | Database name       |
+| `mysqlHost`     | `'127.0.0.1'`      | Host                |
+| `mysqlPort`     | `3306`             | Port                |
+| `mysqlUser`     | `'valkyrja'`       | Username            |
+| `mysqlPassword` | `'mysql-password'` | Password            |
+| `mysqlCharset`  | `'utf8mb4'`        | Character set       |
+| `mysqlStrict`   | `null`             | Strict mode         |
+| `mysqlEngine`   | `null`             | Storage engine      |
+| `mysqlOptions`  | PDO defaults       | PDO attribute array |
 
-| Env Constant           | Default            | Description              |
-|:-----------------------|:-------------------|:-------------------------|
-| `ORM_PGSQL_DB`         | `'valkyrja'`       | Database name            |
-| `ORM_PGSQL_HOST`       | `'127.0.0.1'`      | Host                     |
-| `ORM_PGSQL_PORT`       | `6379`             | Port                     |
-| `ORM_PGSQL_USER`       | `'valkyrja'`       | Username                 |
-| `ORM_PGSQL_PASSWORD`   | `'pgsql-password'` | Password                 |
-| `ORM_PGSQL_CHARSET`    | `'utf8'`           | Character encoding       |
-| `ORM_PGSQL_SCHEMA`     | `'public'`         | Search path schema       |
-| `ORM_PGSQL_SSL_MODE`   | `'prefer'`         | SSL mode                 |
-| `ORM_PGSQL_OPTIONS`    | PDO defaults       | PDO attribute array      |
+### `OrmPgsqlConfigContract`
 
-### SQLite
+| Property        | Default            | Description         |
+|:----------------|:-------------------|:--------------------|
+| `pgsqlDb`       | `'valkyrja'`       | Database name       |
+| `pgsqlHost`     | `'127.0.0.1'`      | Host                |
+| `pgsqlPort`     | `6379`             | Port                |
+| `pgsqlUser`     | `'valkyrja'`       | Username            |
+| `pgsqlPassword` | `'pgsql-password'` | Password            |
+| `pgsqlCharset`  | `'utf8'`           | Character encoding  |
+| `pgsqlSchema`   | `'public'`         | Search path schema  |
+| `pgsqlSslMode`  | `'prefer'`         | SSL mode            |
+| `pgsqlOptions`  | PDO defaults       | PDO attribute array |
 
-| Env Constant            | Default              | Description              |
-|:------------------------|:---------------------|:-------------------------|
-| `ORM_SQLITE_DB`         | `'valkyrja'`         | Database name            |
-| `ORM_SQLITE_HOST`       | `'127.0.0.1'`        | Host                     |
-| `ORM_SQLITE_PORT`       | `3306`               | Port                     |
-| `ORM_SQLITE_USER`       | `'valkyrja'`         | Username                 |
-| `ORM_SQLITE_PASSWORD`   | `'sqlite-password'`  | Password                 |
-| `ORM_SQLITE_CHARSET`    | `'utf8'`             | Character encoding       |
-| `ORM_SQLITE_OPTIONS`    | PDO defaults         | PDO attribute array      |
+### `OrmSqliteConfigContract`
+
+| Property         | Default             | Description         |
+|:-----------------|:--------------------|:--------------------|
+| `sqliteDb`       | `'valkyrja'`        | Database name       |
+| `sqliteHost`     | `'127.0.0.1'`       | Host                |
+| `sqlitePort`     | `3306`              | Port                |
+| `sqliteUser`     | `'valkyrja'`        | Username            |
+| `sqlitePassword` | `'sqlite-password'` | Password            |
+| `sqliteCharset`  | `'utf8'`            | Character encoding  |
+| `sqliteOptions`  | PDO defaults        | PDO attribute array |
 
 ## Service Registration
 
 The ORM service provider registers the following:
 
-| Contract / Class  | Description                                        |
-|:------------------|:---------------------------------------------------|
-| `ManagerContract` | Active manager (default: `MysqlManager`)           |
+| Contract / Class          | Description                                        |
+|:--------------------------|:---------------------------------------------------|
+| `OrmConfigContract`       | Component config                                   |
+| `OrmMysqlConfigContract`  | MySQL connection config                            |
+| `OrmPgsqlConfigContract`  | PostgreSQL connection config                       |
+| `OrmSqliteConfigContract` | SQLite connection config                           |
+| `ManagerContract`         | Active manager (default: `MysqlManager`)           |
 | `MysqlManager`    | MySQL PDO manager                                  |
 | `PgsqlManager`    | PostgreSQL PDO manager                             |
 | `SqliteManager`   | SQLite PDO manager                                 |
