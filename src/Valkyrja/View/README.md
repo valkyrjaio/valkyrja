@@ -69,14 +69,19 @@ extracted into the local scope via `extract()`, so
 `$template->setVariable('user', $user)` becomes `$user` within the template
 file.
 
-Configure via your `Env` class:
+Configure the renderer that the container binds through `ViewConfigContract`:
 
-| Constant                  | Default              | Description                                    |
-|:--------------------------|:---------------------|:-----------------------------------------------|
-| `VIEW_DEFAULT_RENDERER`   | `PhpRenderer::class` | The renderer class bound to `RendererContract` |
-| `VIEW_PHP_PATH`           | `/resources/views`   | Directory containing PHP template files        |
-| `VIEW_PHP_FILE_EXTENSION` | `.phtml`             | File extension for PHP templates               |
-| `VIEW_PHP_PATHS`          | `[]`                 | Additional named path aliases                  |
+| Property          | Default              | Description                                    |
+|:------------------|:---------------------|:-----------------------------------------------|
+| `defaultRenderer` | `PhpRenderer::class` | The renderer class bound to `RendererContract` |
+
+Configure the PHP renderer through `ViewPhpConfigContract`:
+
+| Property           | Default            | Description                             |
+|:-------------------|:-------------------|:----------------------------------------|
+| `phpPath`          | `/resources/views` | Directory containing PHP template files |
+| `phpFileExtension` | `.phtml`           | File extension for PHP templates        |
+| `phpPaths`         | `[]`               | Additional named path aliases           |
 
 ## Orka Renderer
 
@@ -85,15 +90,15 @@ output in `storage/views/`. Compilation happens on first access; subsequent
 requests use the cached PHP file. When `debugMode` is enabled, the cache is
 always regenerated.
 
-Configure via your `Env` class:
+Configure the Orka renderer through `ViewOrkaConfigContract`:
 
-| Constant                      | Default            | Description                              |
-|:------------------------------|:-------------------|:-----------------------------------------|
-| `VIEW_ORKA_PATH`              | `/resources/views` | Directory containing Orka template files |
-| `VIEW_ORKA_FILE_EXTENSION`    | `.orka.phtml`      | File extension for Orka templates        |
-| `VIEW_ORKA_PATHS`             | `[]`               | Additional named path aliases            |
-| `VIEW_ORKA_CORE_REPLACEMENTS` | all built-ins      | Core replacement classes to load         |
-| `VIEW_ORKA_REPLACEMENTS`      | `[DEBUG]`          | Additional replacement classes           |
+| Property               | Default            | Description                              |
+|:-----------------------|:-------------------|:-----------------------------------------|
+| `orkaPath`             | `/resources/views` | Directory containing Orka template files |
+| `orkaFileExtension`    | `.orka.phtml`      | File extension for Orka templates        |
+| `orkaPaths`            | `[]`               | Additional named path aliases            |
+| `orkaCoreReplacements` | all built-ins      | Core replacement classes to load         |
+| `orkaReplacements`     | `[DEBUG]`          | Additional replacement classes           |
 
 ### Orka Syntax Reference
 
@@ -187,13 +192,17 @@ and `{{ }}` for output.
 The Twig renderer delegates to a configured `Twig\Environment` instance. All
 Twig syntax and extensions work as normal.
 
-Configure via your `Env` class:
+Configure the Twig renderer through `ViewTwigConfigContract`:
 
-| Constant                  | Default          | Description                           |
-|:--------------------------|:-----------------|:--------------------------------------|
-| `VIEW_TWIG_PATHS`         | `[]`             | Namespace-to-directory path map       |
-| `VIEW_TWIG_EXTENSIONS`    | `[]`             | Extension class names to add to Twig  |
-| `VIEW_TWIG_COMPILED_PATH` | `/storage/views` | Directory for compiled Twig templates |
+| Property           | Default          | Description                           |
+|:-------------------|:-----------------|:--------------------------------------|
+| `twigPaths`        | `[]`             | Namespace-to-directory path map       |
+| `twigExtensions`   | `[]`             | Extension class names to add to Twig  |
+| `twigCompiledPath` | `/storage/views` | Directory for compiled Twig templates |
+
+Your application config class implements only the contracts for the renderers
+that it uses. Each renderer contract prefixes its properties with the renderer
+name, so one class can implement several of them at once.
 
 ## Producing HTTP Responses
 
@@ -222,6 +231,10 @@ The View component registers the following singletons:
 
 | Contract / Class          | Description                                  |
 |:--------------------------|:---------------------------------------------|
+| `ViewConfigContract`      | Component config                             |
+| `ViewPhpConfigContract`   | PHP renderer config                          |
+| `ViewOrkaConfigContract`  | Orka renderer config                         |
+| `ViewTwigConfigContract`  | Twig renderer config                         |
 | `RendererContract`        | The active renderer (default: `PhpRenderer`) |
 | `PhpRenderer`             | PHP renderer instance                        |
 | `OrkaRenderer`            | Orka renderer instance                       |
