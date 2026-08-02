@@ -23,7 +23,6 @@ use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
@@ -86,7 +85,6 @@ use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddlewar
 use Valkyrja\Http\Server\Provider\HttpServerComponentProvider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Support\Time\Microtime;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Fixtures\Application\Entry\AppExceptionHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
@@ -140,13 +138,13 @@ final class AppTest extends TestCase
     {
         AppExceptionHandlerFixture::$called = false;
 
-        AppExceptionHandlerFixture::start(new Env(), new Config(debugMode: true));
+        AppExceptionHandlerFixture::start(new Config(debugMode: true));
 
         self::assertTrue(AppExceptionHandlerFixture::$called);
 
         AppExceptionHandlerFixture::$called = false;
 
-        AppExceptionHandlerFixture::start(new Env(), new Config(debugMode: false));
+        AppExceptionHandlerFixture::start(new Config(debugMode: false));
 
         self::assertFalse(AppExceptionHandlerFixture::$called);
 
@@ -172,16 +170,12 @@ final class AppTest extends TestCase
     {
         App::directory(Directory::$basePath);
 
-        $env = new class extends EnvClass {
-        };
-
         $config = new Config();
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         $container = $application->getContainer();
 
-        self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($config, $container->getSingleton(Config::class));
         self::assertSame($config->timezone, date_default_timezone_get());
     }
@@ -193,9 +187,6 @@ final class AppTest extends TestCase
     {
         App::directory(Directory::$basePath);
 
-        $env = new class extends EnvClass {
-        };
-
         $config = new Config(
             providers: [
                 new EventComponentProvider(),
@@ -204,7 +195,7 @@ final class AppTest extends TestCase
             ]
         );
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         $container = $application->getContainer();
 
@@ -212,7 +203,6 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(EventData::class));
         self::assertTrue($container->has(CliRoutingData::class));
         self::assertTrue($container->has(HttpRoutingData::class));
-        self::assertSame($env, $container->getSingleton(Env::class));
         self::assertSame($config, $container->getSingleton(Config::class));
         self::assertSame($config->timezone, date_default_timezone_get());
     }
@@ -222,9 +212,6 @@ final class AppTest extends TestCase
      */
     public function testEnsureDefaultComponents(): void
     {
-        $env = new class extends Env {
-        };
-
         $config = new Config(
             providers: [
                 new DispatchComponentProvider(),
@@ -241,14 +228,13 @@ final class AppTest extends TestCase
             ]
         );
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         $container = $application->getContainer();
 
         self::assertSame($container, $application->getContainer());
         self::assertFalse($container->has(ReflectorContract::class));
         self::assertFalse($container->has(CollectorContract::class));
-        self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ApplicationContract::class));
         self::assertTrue($container->has(Config::class));
         self::assertTrue($container->has(CliInteractionConfigContract::class));
@@ -306,24 +292,18 @@ final class AppTest extends TestCase
      */
     public function testCustomComponents(): void
     {
-        $env = new class extends Env {
-        };
-
         $config = new Config(
             providers: [
                 new ContainerComponentProvider(),
             ],
         );
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         $container = $application->getContainer();
 
         self::assertSame($container, $application->getContainer());
         self::assertFalse($container->has(TemplateContract::class));
-
-        $env2 = new class extends Env {
-        };
 
         $config2 = new Config(
             providers: [
@@ -332,7 +312,7 @@ final class AppTest extends TestCase
             ],
         );
 
-        $application2 = App::app($env2, $config2);
+        $application2 = App::app($config2);
 
         $container2 = $application2->getContainer();
 
@@ -347,11 +327,9 @@ final class AppTest extends TestCase
     {
         App::directory(Directory::$basePath);
 
-        $env    = new class extends EnvClass {
-        };
         $config = new CliConfig(providers: []);
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         self::assertTrue($application->getContainer()->has(CliConfigContract::class));
         self::assertSame($config, $application->getContainer()->getSingleton(CliConfigContract::class));
@@ -364,11 +342,9 @@ final class AppTest extends TestCase
     {
         App::directory(Directory::$basePath);
 
-        $env    = new class extends EnvClass {
-        };
         $config = new HttpConfig(providers: []);
 
-        $application = App::app($env, $config);
+        $application = App::app($config);
 
         self::assertTrue($application->getContainer()->has(HttpConfigContract::class));
         self::assertSame($config, $application->getContainer()->getSingleton(HttpConfigContract::class));

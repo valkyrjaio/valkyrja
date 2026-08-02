@@ -19,7 +19,6 @@ use OpenSwoole\Http\Server;
 use Override;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -71,7 +70,7 @@ final class OpenSwooleHttpFixture extends OpenSwooleHttp
     }
 
     #[Override]
-    public static function bootstrap(HttpConfigContract $config, Env $env = new Env()): ApplicationContract
+    public static function bootstrap(HttpConfigContract $config): ApplicationContract
     {
         return self::$app;
     }

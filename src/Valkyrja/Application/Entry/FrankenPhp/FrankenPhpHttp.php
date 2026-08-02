@@ -16,7 +16,6 @@ namespace Valkyrja\Application\Entry\FrankenPhp;
 use Throwable;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
-use Valkyrja\Application\Env\Env;
 
 use function frankenphp_handle_request;
 use function gc_collect_cycles;
@@ -28,11 +27,10 @@ class FrankenPhpHttp extends WorkerHttp
      *
      * @see https://frankenphp.dev/docs/worker/
      */
-    public static function run(HttpConfig $config, Env $env = new Env()): void
+    public static function run(HttpConfig $config): void
     {
         $app = static::bootstrap(
             config: $config,
-            env: $env,
         );
 
         $container = $app->getContainer();

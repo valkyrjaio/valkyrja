@@ -18,7 +18,6 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Cli;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\CliApplicationComponentProvider;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -30,7 +29,6 @@ use Valkyrja\Cli\Routing\Data\Contract\CliRoutingConfigContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliComponentProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderFixture;
@@ -84,10 +82,6 @@ final class CliTest extends TestCase
             'version',
         ];
 
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-        };
         $dir = Directory::$basePath;
 
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
@@ -107,13 +101,12 @@ final class CliTest extends TestCase
             }
         };
 
-        $application = Cli::app($env, $config);
+        $application = Cli::app($config);
         $container   = $application->getContainer();
 
         $container->getSingleton(RouteCollectionContract::class);
 
         self::assertTrue($container->has(CliConfigContract::class));
-        self::assertTrue($container->has(Env::class));
         self::assertTrue($container->has(ContainerContract::class));
         self::assertTrue($container->has(ApplicationContract::class));
 
@@ -126,11 +119,6 @@ final class CliTest extends TestCase
         // With debug mode on we expect the route data publisher publish method to bypass
         self::assertFalse(CliRoutingDataProviderFixture::$published);
         CliRoutingDataProviderFixture::$published = false;
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-        };
 
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
@@ -153,7 +141,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config, env: $env);
+        Cli::run(config: $config);
         ob_get_clean();
 
         self::assertTrue(self::$runCalled);
@@ -171,11 +159,6 @@ final class CliTest extends TestCase
         // With debug mode off we expect the route data publisher publish method to NOT bypass
         self::assertTrue(CliRoutingDataProviderFixture::$published);
         CliRoutingDataProviderFixture::$published = false;
-
-        $env = new class extends EnvClass {
-            /** @var non-empty-string */
-            public const string CONTAINER_DATA_CLASS_NAME = 'CliTestContainerData';
-        };
 
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
@@ -198,7 +181,7 @@ final class CliTest extends TestCase
         };
 
         ob_start();
-        Cli::run(config: $config, env: $env);
+        Cli::run(config: $config);
         ob_get_clean();
 
         restore_error_handler();

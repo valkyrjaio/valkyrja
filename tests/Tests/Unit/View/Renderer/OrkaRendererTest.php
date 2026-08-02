@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\View\Renderer;
 
 use Override;
 use Valkyrja\Application\Directory\Directory;
-use Valkyrja\Tests\EnvClass;
+use Valkyrja\Tests\Constant\TestPath;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Orka\Replacement\Contract\ReplacementContract;
 use Valkyrja\View\Orka\Replacement\Variable\Unescaped;
@@ -39,7 +39,7 @@ use function usleep;
  */
 final class OrkaRendererTest extends TestCase
 {
-    protected const string TEMPLATES_DIR = EnvClass::APP_DIR . '/templates/orka';
+    protected const string TEMPLATES_DIR = TestPath::APP_DIR . '/templates/orka';
 
     #[Override]
     protected function tearDown(): void

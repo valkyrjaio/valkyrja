@@ -20,7 +20,7 @@ use Twig\Extension\DebugExtension;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
-use Valkyrja\Tests\EnvClass;
+use Valkyrja\Tests\Constant\TestPath;
 use Valkyrja\Tests\Fixtures\View\Data\ViewConfigFixture;
 use Valkyrja\View\Data\Contract\ViewConfigContract;
 use Valkyrja\View\Data\Contract\ViewOrkaConfigContract;
@@ -232,7 +232,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(
             ViewTwigConfigContract::class,
             new ViewTwigConfig(
-                twigPaths: ['namespace' => EnvClass::APP_DIR . '/storage'],
+                twigPaths: ['namespace' => TestPath::APP_DIR . '/storage'],
                 twigExtensions: [DebugExtension::class],
                 twigCompiledPath: '/storage',
             )

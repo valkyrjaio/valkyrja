@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Fixtures\Application\Entry\FrankenPhp;
 use Override;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
@@ -54,7 +53,7 @@ final class FrankenPhpHttpSmokeFixture extends FrankenPhpHttp
     }
 
     #[Override]
-    public static function bootstrap(HttpConfigContract $config, Env $env = new Env()): ApplicationContract
+    public static function bootstrap(HttpConfigContract $config): ApplicationContract
     {
         return self::$app;
     }

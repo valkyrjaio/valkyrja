@@ -19,7 +19,6 @@ use OpenSwoole\Http\Response;
 use OpenSwoole\Http\Server;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Abstract\WorkerHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -39,11 +38,10 @@ class OpenSwooleHttp extends WorkerHttp
      *
      * @see https://openswoole.com/
      */
-    public static function run(HttpConfig $config, Env $env = new Env()): void
+    public static function run(HttpConfig $config): void
     {
         $app = static::bootstrap(
             config: $config,
-            env: $env,
         );
 
         $container = $app->getContainer();

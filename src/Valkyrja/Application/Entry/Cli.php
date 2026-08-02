@@ -15,7 +15,6 @@ namespace Valkyrja\Application\Entry;
 
 use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Entry\Abstract\App;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
@@ -25,10 +24,9 @@ class Cli extends App
     /**
      * Run the cli app.
      */
-    public static function run(CliConfigContract $config, Env $env = new Env()): void
+    public static function run(CliConfigContract $config): void
     {
         $app = static::start(
-            env: $env,
             config: $config,
         );
 

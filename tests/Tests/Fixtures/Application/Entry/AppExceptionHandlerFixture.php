@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Fixtures\Application\Entry;
 use Override;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Entry\Abstract\App;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Container\Manager\Container;
@@ -45,7 +44,7 @@ abstract class AppExceptionHandlerFixture extends App
      * @inheritDoc
      */
     #[Override]
-    public static function app(Env $env, ConfigContract $config): ApplicationContract
+    public static function app(ConfigContract $config): ApplicationContract
     {
         return new Valkyrja(new Container(), $config);
     }

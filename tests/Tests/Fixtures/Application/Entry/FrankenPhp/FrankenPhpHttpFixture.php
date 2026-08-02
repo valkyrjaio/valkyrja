@@ -17,7 +17,6 @@ use Override;
 use RuntimeException;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
-use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -60,7 +59,7 @@ final class FrankenPhpHttpFixture extends FrankenPhpHttp
     }
 
     #[Override]
-    public static function bootstrap(HttpConfigContract $config, Env $env = new Env()): ApplicationContract
+    public static function bootstrap(HttpConfigContract $config): ApplicationContract
     {
         return self::$app;
     }
