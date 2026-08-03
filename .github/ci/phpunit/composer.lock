@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7022c5eb5a41b3b0c88a3d7939424f9",
+    "content-hash": "e7e757b4aef2936c09b3e37a5960f289",
     "packages": [],
     "packages-dev": [
         {
@@ -3977,7 +3977,7 @@
             "time": "2025-12-08T11:19:18+00:00"
         },
         {
-            "name": "valkyrja/phpunit",
+            "name": "valkyrja/ci-phpunit",
             "version": "v26.5.2",
             "source": {
                 "type": "git",

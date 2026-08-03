@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dffa168163294fd2fe5514dac12fcfc8",
+    "content-hash": "8d4f1641f206a5aa82b1f7e1da2879c3",
     "packages": [],
     "packages-dev": [
         {
@@ -72,7 +72,7 @@
             "time": "2026-07-29T17:39:32+00:00"
         },
         {
-            "name": "valkyrja/phpstan",
+            "name": "valkyrja/ci-phpstan",
             "version": "v26.2.3",
             "source": {
                 "type": "git",

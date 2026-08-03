@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab8d007e5c2523293ca3558955dea4fa",
+    "content-hash": "9492d2f48298411aa97a92d87b3f481b",
     "packages": [],
     "packages-dev": [
         {
@@ -2845,7 +2845,7 @@
             "time": "2026-07-28T07:35:25+00:00"
         },
         {
-            "name": "valkyrja/phpcsfixer",
+            "name": "valkyrja/ci-phpcsfixer",
             "version": "v26.3.0",
             "source": {
                 "type": "git",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83fb7915473a7f8bbf7734ab1a2cea09",
+    "content-hash": "e0228e3b91c21598c5943fc3eb4d47fc",
     "packages": [],
     "packages-dev": [
         {
@@ -1457,7 +1457,7 @@
             "time": "2026-07-28T07:35:25+00:00"
         },
         {
-            "name": "valkyrja/phparkitect",
+            "name": "valkyrja/ci-phparkitect",
             "version": "v26.6.1",
             "source": {
                 "type": "git",
