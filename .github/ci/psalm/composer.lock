@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3776c74770e1a5a424a4b5d2d0300a4",
+    "content-hash": "7721be187a57ef36e11ca560cd442ecc",
     "packages": [],
     "packages-dev": [
         {
@@ -3257,7 +3257,7 @@
             "time": "2026-07-28T07:35:25+00:00"
         },
         {
-            "name": "valkyrja/psalm",
+            "name": "valkyrja/ci-psalm",
             "version": "v26.2.3",
             "source": {
                 "type": "git",
