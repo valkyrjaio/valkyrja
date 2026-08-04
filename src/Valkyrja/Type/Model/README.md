@@ -1,18 +1,16 @@
-mo# Models
+# Models
 
 ## Introduction
 
-A model is a typed object representation of structured data — a database row, an
-API payload, a request body. Valkyrja's model system provides a base class that
-handles property access, mass assignment, array serialisation, change tracking,
-and optional type casting, all without reflection or magic configuration files.
-
-Models implement `TypeContract`, meaning they integrate naturally with the rest
-of the Type component and can be passed anywhere a typed value is expected.
+A model is a typed object representation of structured data — a database row,
+an API payload, a request body. The base class handles property access, mass
+assignment, array serialization, change tracking, and optional type casting.
+Models implement `TypeContract`, so a model can go anywhere a typed value is
+expected.
 
 ## Defining a Model
 
-Extend `Valkyrja\Type\Model\Abstract\Model` and declare your properties:
+Extend `Valkyrja\Type\Model\Abstract\Model` and declare the properties:
 
 ```php
 use Valkyrja\Type\Model\Abstract\Model;
@@ -25,27 +23,20 @@ class UserModel extends Model
 }
 ```
 
-### How Property Access Works
+Constructor property promotion works as expected.
 
-The model's `__get`, `__set`, and `__isset` magic methods are the heart of the
-property access system. PHP only invokes them when a property is inaccessible
-from the calling context — which means:
+## Property Access
 
-**Public properties** — PHP handles them directly via direct assignment and
-access. The magic methods are only invoked during mass-assignment operations
-like `fromArray()`, which iterates properties and calls `__set` for each one.
+PHP calls `__get` and `__set` only for a property that the calling context
+cannot access. Three rules follow from that:
 
-**Protected properties** — from outside the class, `__get` and `__set` are
-triggered. The base implementation's fallback — `$this->{$name}` — can reach
-protected properties because a parent class method has access to its subclass's
-protected members. You can also choose to use the methodology listed for private
-properties. Another option is to use property hooks.
-
-**Private properties** — from outside the class, `__get` and `__set` are
-triggered, but the base fallback `$this->{$name}` **cannot** reach private
-properties defined in a subclass. Private properties **must** be wired up via
-the three callable registration methods described below. Another option is to
-use property hooks.
+1. PHP assigns and reads public properties directly. Mass assignment
+   (`fromArray()`, `updateProperties()`, `withProperties()`) calls `__set` for
+   every key, public or not.
+2. The magic-method fallback `$this->{$name}` reaches protected properties,
+   because the base `Model` is a parent class of the model.
+3. The fallback cannot reach a private property of a subclass. Register
+   callables for private properties, or use property hooks.
 
 ### Registering Callables for Private Properties
 
@@ -58,14 +49,10 @@ use Valkyrja\Type\Model\Abstract\Model;
 class UserModel extends Model
 {
     private string $nickname;
-    private string $funname;
 
     protected function internalGetCallables(): array
     {
-        return [
-            'nickname' => fn (): string => $this->nickname,
-            'funname' => [$this, 'getFunname'],
-        ];
+        return ['nickname' => fn (): string => $this->nickname];
     }
 
     protected function internalSetCallables(): array
@@ -74,75 +61,25 @@ class UserModel extends Model
             'nickname' => function (string $value): void {
                 $this->nickname = $value;
             },
-            'funname' => [$this, 'setFunname'],
         ];
     }
 
     protected function internalIssetCallables(): array
     {
-        return [
-            'nickname' => fn (): bool => isset($this->nickname),
-            'funname' => [$this, 'issetFunname'],
-        ];
-    }
-
-    protected function getFunname(): string
-    {
-        return $this->funname;
-    }
-
-    protected function setFunname(string $value): void
-    {
-        $this->funname = $value;
-    }
-
-    protected function issetFunname(): bool
-    {
-        return isset($this->funname);
+        return ['nickname' => fn (): bool => isset($this->nickname)];
     }
 }
 ```
 
-These arrays are checked first on every `__get`, `__set`, and `__isset` call. If
-no callable is registered for a property, the base implementation falls through
-to `$this->{$name}`.
-
-The callables can also encapsulate validation or transformation logic — they are
-not limited to simple property access:
-
-```php
-protected function internalSetCallables(): array
-{
-    return [
-        'nickname' => function (string $value): void {
-            if (strlen($value) < 2) {
-                throw new \InvalidArgumentException('Nickname too short.');
-            }
-            $this->nickname = strtolower($value);
-        },
-    ];
-}
-```
-
-### Constructor Property Promotion
-
-Constructor property promotion works as expected:
-
-```php
-class UserModel extends Model
-{
-    public function __construct(
-        public string $name,
-        public string $email,
-    ) {}
-}
-```
+Every `__get`, `__set`, and `__isset` call checks these arrays first. When no
+callable is registered, the call falls through to `$this->{$name}`. A callable
+can also validate or transform the value before it stores the value.
 
 ### Unpacking Properties into the Constructor
 
-By default, `fromArray()` calls `new static()` with no arguments before setting
-properties. If your constructor has required parameters, apply the
-`UnpackForNewInstance` trait to have the properties array unpacked into the
+By default, `fromArray()` calls `new static()` with no arguments before it
+sets properties. When the constructor has required parameters, apply the
+`UnpackForNewInstance` trait. The trait unpacks the properties array into the
 constructor:
 
 ```php
@@ -162,174 +99,142 @@ class UserModel extends Model
 
 ## Creating Instances
 
-**Via constructor:**
-
-```php
-$user = new UserModel(id: '123', name: 'Alice');
-```
-
-**From an array** — useful when hydrating from a database row or request body:
+`fromArray()` calls `__set` for each key-value pair, so registered callables
+apply. `fromValue()` accepts an existing instance, an array, or a JSON string:
 
 ```php
 $user = UserModel::fromArray(['id' => '123', 'name' => 'Alice']);
-```
-
-`fromArray()` calls `__set` for each key-value pair, routing through any
-registered callables automatically. Unknown keys (properties that don't exist on
-the model) are silently ignored.
-
-**Via `TypeContract::fromValue()`** — accepts an existing instance, an array, or
-a JSON string:
-
-```php
 $user = UserModel::fromValue($arrayOrJsonString);
 ```
 
+Warning: an unknown key is not ignored. A key that matches no declared
+property and no set callable creates a dynamic property on the model, and
+that property appears in `asArray()` output. PHP deprecates dynamic property
+creation. Filter unknown keys before you call `fromArray()`.
+
 ## Updating Properties
 
-**Mutable update** — modifies the existing instance:
+`updateProperties()` modifies the existing instance. `withProperties()`
+clones the model, applies the changes, and leaves the original untouched:
 
 ```php
 $user->updateProperties(['name' => 'Bob', 'email' => 'bob@example.com']);
-```
-
-**Immutable update** — clones the model and applies changes, leaving the
-original untouched:
-
-```php
 $updated = $user->withProperties(['name' => 'Bob']);
 ```
 
-## Serialising to Arrays
+## Serializing to Arrays
 
-**`asArray(string ...$properties): array`** — returns public properties as a
-key-value array. Pass property names to limit the output:
+**`asArray(string ...$properties): array`** — returns the model's public and
+protected properties as a key-value array. Private properties of a subclass
+are excluded, because the base `Model` collects properties with
+`get_object_vars($this)` from its own scope. Each value resolves through
+`__get`, so get callables apply. Pass property names to limit the output:
 
 ```php
 $array  = $user->asArray();
 $subset = $user->asArray('name', 'email');
 ```
 
-Protected and private properties are excluded by default.
-See [Exposing Protected Properties](#exposing-protected-properties) below.
+**`asChangedArray(): array`** — returns the properties whose current value
+differs from the recorded original value.
 
-**`asChangedArray(): array`** — returns only the properties that changed after
-the model was first populated:
+**`asOriginalArray(): array`** — returns the recorded original values.
 
-```php
-$user->updateProperties(['name' => 'Bob']);
-$changed = $user->asChangedArray(); // ['name' => 'Bob']
-```
+**`getOriginalPropertyValue(string $name): mixed`** — returns one original
+value, or `null` when none was recorded.
 
-**`asOriginalArray(): array`** — returns the properties as they were when first
-set via `__set`:
+### When Original Values Are Recorded
 
-```php
-$original = $user->asOriginalArray();
-```
+`__set` records the first value it receives for each property, and it stops
+recording after the first mass assignment completes. `fromArray()`,
+`updateProperties()`, and `withProperties()` each count as a mass assignment.
+`__clone` also stops the recording, so a clone records no new originals. A
+direct assignment to a public property bypasses `__set` and is never recorded.
 
-**`getOriginalPropertyValue(string $name): mixed`** — returns the original value
-of a single property, or `null` if no original exists.
+To disable the recording, set
+`protected bool $internalShouldSetOriginalProperties = false;` on the model.
 
-> Original properties are tracked for any property set through `__set`. This
-> means protected and private properties (always via `__set`) and public
-> properties during mass assignment. Public properties set via direct assignment
-> bypass `__set` and are not tracked.
+### JSON Serialization
 
-### Disabling Original Property Tracking
+Models implement `JsonSerializable`, and `json_encode()` serializes the same
+properties as `asArray()`. Models also implement `Stringable`; the string cast
+returns the JSON-encoded representation.
 
-If change tracking is unnecessary, disable it to save memory:
+## Exposing Properties
 
-```php
-class UserModel extends Model
-{
-    protected bool $internalShouldSetOriginalProperties = false;
-}
-```
-
-### JSON Serialisation
-
-Models implement `JsonSerializable`. Passing a model to `json_encode()`
-serialises the same properties as `asArray()`. Models also implement
-`Stringable`; casting to string returns the JSON-encoded representation.
-
-## Exposing Protected Properties
-
-**Temporary exposure** — expose specific properties for a single call, then
-remove them:
+The base `Model` has no `expose()` or `unexpose()` method. Those methods come
+from the `Exposable` trait, which implements `ExposableModelContract`:
 
 ```php
-$user->expose('lastName');
-$array = $user->asArray();
-$user->unexpose('lastName');
-
-// Or clear all exposed properties:
-$user->unexpose();
-```
-
-**Permanent exposure via `ExposableModelContract`** — implement the contract and
-apply the `Exposable` trait to declare a static list of always-exposable
-properties:
-
-```php
+use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Trait\Exposable;
-use Valkyrja\Type\Model\Abstract\Model;
 
 class UserModel extends Model implements ExposableModelContract
 {
     use Exposable;
 
-    protected string $lastName;
-
     public static function getExposable(): array
     {
-        return ['lastName'];
+        return ['nickname'];
     }
 }
 ```
 
-This adds three additional output methods:
+The trait adds three output methods. Each one exposes the `getExposable()`
+names for the duration of the call, then unexposes them:
 
 ```php
-$user->asExposedArray();         // asArray() with exposable properties included
-$user->asExposedChangedArray();  // asChangedArray() with exposable properties included
-$user->asExposedOnlyArray();     // only the properties from getExposable()
+$user->asExposedArray();        // asArray() plus the exposable properties
+$user->asExposedChangedArray(); // asChangedArray() plus the exposable properties
+$user->asExposedOnlyArray();    // only the properties from getExposable()
+
+$user->expose('nickname');      // expose manually until unexposed
+$user->unexpose('nickname');    // or unexpose() to clear all
 ```
 
-### Including All Protected and Private Properties
+On a plain `Model`, `asArray()` already contains the protected properties, so
+exposing adds nothing for them. Exposing adds a name that the property
+collection missed — for example, a private property with a registered get
+callable.
 
-Apply the `ProtectedExposable` trait to include all protected and private
-properties in `asArray()` output. `getExposable()` still controls what
-`asExposedOnlyArray()` returns:
+### Hiding Protected Properties Until Exposed
+
+The `ProtectedExposable` trait uses `Exposable` and changes the property
+source: `asArray()` returns only the public properties plus the currently
+exposed names. Protected and private properties stay out of the output until
+exposed:
 
 ```php
-use Valkyrja\Type\Model\Trait\ProtectedExposable;
 use Valkyrja\Type\Model\Abstract\Model;
+use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
 class UserModel extends Model
 {
     use ProtectedExposable;
 
+    public string $name;
     protected string $lastName;
-    private string $nickname;
 
     public static function getExposable(): array
     {
         return ['lastName'];
     }
 }
+
+$user->asArray();        // ['name' => ...]
+$user->asExposedArray(); // ['name' => ..., 'lastName' => ...]
 ```
 
 ## Casting
 
-The default `Model` base does not perform type casting. To cast property values
-on assignment, extend `CastableModel` and override `getCastings()`:
+The base `Model` performs no type casting. To cast property values on mass
+assignment, extend `CastableModel` and override the static `getCastings()`:
 
 ```php
-use Valkyrja\Type\Model\Abstract\CastableModel;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class UserModel extends CastableModel
 {
@@ -346,109 +251,75 @@ class UserModel extends CastableModel
 }
 ```
 
-When a property is set via mass assignment (e.g. `fromArray()` or
-`updateProperties()`), the model calls `TypeContract::fromValue()` on the
-declared type and, by default, stores the unwrapped value via `asValue()`.
+Casting applies only during mass assignment. For each cast property, the model
+calls `TypeContract::fromValue()` on the declared type and, by default, stores
+the unwrapped value from `asValue()`. A `null` value skips the cast. A value
+that already is an instance of the declared type skips `fromValue()`.
 
-You can also apply the `Castable` trait directly to a model that cannot extend
-`CastableModel`:
-
-```php
-use Valkyrja\Type\Model\Trait\Castable;
-use Valkyrja\Type\Model\Abstract\Model;
-
-class UserModel extends Model
-{
-    use Castable;
-
-    public static function getCastings(): array
-    {
-        return [ /* ... */ ];
-    }
-}
-```
+A model that cannot extend `CastableModel` can apply the `Castable` trait
+directly and implement `CastableModelContract`.
 
 ### The Cast Class
 
-`Valkyrja\Type\Data\Cast` accepts any `CastType` enum case or any class that
-implements `TypeContract`:
+`Valkyrja\Type\Data\Cast` accepts a `CastType` case or the name of any class
+that implements `TypeContract`:
 
 ```php
 public function __construct(
     CastType|string $type,   // CastType case or TypeContract class name
-    bool $convert = true,    // call asValue() after casting (unwrap the type)
-    bool $isArray = false    // property holds an array of the type
+    bool $convert = true,    // store asValue() instead of the type instance
+    bool $isArray = false    // cast each element of an incoming array
 )
 ```
 
-**`convert: true`** (default) — after casting, `asValue()` is called, so the
-property stores the unwrapped PHP value (e.g. a plain `string` from `StringT`).
-
-**`convert: false`** — the `TypeContract` instance itself is stored on the
-property. `OriginalCast` is a shorthand for this:
-
-```php
-use Valkyrja\Type\Data\OriginalCast;
-
-'uuid' => new OriginalCast(UuidV4::class),   // property stores a UuidV4 instance
-```
-
-**`isArray: true`** — the incoming value is treated as an array and each element
-is cast individually. Use `ArrayCast` or `OriginalArrayCast` as shorthands:
+`convert: false` stores the `TypeContract` instance itself; `OriginalCast` is
+the shorthand. `isArray: true` casts each element of the incoming array;
+`ArrayCast` and `OriginalArrayCast` are the shorthands:
 
 ```php
 use Valkyrja\Type\Data\ArrayCast;
 use Valkyrja\Type\Data\OriginalArrayCast;
+use Valkyrja\Type\Data\OriginalCast;
 
-'tags'   => new ArrayCast(CastType::string),           // array of plain strings
-'events' => new OriginalArrayCast(UserEvent::class),   // array of UserEvent instances
-```
-
-### CastType Values
-
-`CastType` is a backed enum whose values are the corresponding `TypeContract`
-class names:
-
-m| Case | Casts to |
-|:------------------------------|:------------------------|
-| `CastType::string` | `string` |
-| `CastType::int` | `int` |
-| `CastType::float` | `float` |
-| `CastType::bool` | `bool` |
-| `CastType::true` | `true` |
-| `CastType::false` | `false` |
-| `CastType::null` | `null` |
-| `CastType::array` | `array` |
-| `CastType::object` | `object` (cast) |
-| `CastType::serialized_object` | unserialized object |
-| `CastType::json` | decoded JSON array |
-| `CastType::json_object` | decoded JSON object |
-
-### Casting to Models, Enums, or Custom Types
-
-Any class implementing `TypeContract` can be used as a cast target by passing
-the class name directly:
-
-```php
 public static function getCastings(): array
 {
     return [
         'address' => new Cast(AddressModel::class),            // nested model, unwrapped
-        'uuid'    => new OriginalCast(UuidV4::class),          // kept as UuidV4 instance
+        'uuid'    => new OriginalCast(UuidV4::class),          // kept as a UuidV4 instance
         'status'  => new Cast(StatusEnum::class),              // enum via fromValue()
-        'tags'    => new ArrayCast(CastType::string),          // array of strings
+        'tags'    => new ArrayCast(CastType::string),          // array of plain strings
         'roles'   => new OriginalArrayCast(RoleModel::class),  // array of RoleModel instances
     ];
 }
 ```
 
+### CastType Values
+
+`CastType` is a string-backed enum whose values are `TypeContract` class
+names. With the default `convert: true`, the property stores the `asValue()`
+result of that type class:
+
+| Case                          | Type class         |
+| :---------------------------- | :----------------- |
+| `CastType::string`            | `StringT`          |
+| `CastType::int`               | `IntT`             |
+| `CastType::float`             | `FloatT`           |
+| `CastType::bool`              | `BoolT`            |
+| `CastType::true`              | `TrueT`            |
+| `CastType::false`             | `FalseT`           |
+| `CastType::null`              | `NullT`            |
+| `CastType::array`             | `ArrayT`           |
+| `CastType::object`            | `ObjectT`          |
+| `CastType::serialized_object` | `SerializedObject` |
+| `CastType::json`              | `Json`             |
+| `CastType::json_object`       | `JsonObject`       |
+
 ## Indexed Models
 
-An indexed model maps property names to integer offsets, enabling compact
-positional array representations.
-
-Extend `IndexedModel` (or apply the `Indexable` trait and implement
-`IndexedModelContract`):
+An indexed model maps property names to integer offsets for compact positional
+arrays. Extend `IndexedModel`, or apply the `Indexable` trait and implement
+`IndexedModelContract`. Override only `getIndexes()` — `getReversedIndexes()`
+flips it automatically:
 
 ```php
 use Valkyrja\Type\Model\Abstract\IndexedModel;
@@ -462,11 +333,6 @@ class UserModel extends IndexedModel
     {
         return ['name' => 0, 'email' => 1];
     }
-
-    public static function getReversedIndexes(): array
-    {
-        return [0 => 'name', 1 => 'email'];
-    }
 }
 ```
 
@@ -474,8 +340,9 @@ The indexed methods mirror the named-property equivalents:
 
 ```php
 $user    = UserModel::fromIndexedArray(['Alice', 'alice@example.com']);
-$indexed = $user->asIndexedArray();                          // [0 => 'Alice', 1 => 'alice@...']
+$indexed = $user->asIndexedArray();          // [0 => 'Alice', 1 => 'alice@...']
 $changed = $user->asChangedIndexedArray();
+$orig    = $user->asOriginalIndexedArray();
 $updated = $user->withIndexedProperties([0 => 'Bob']);
 $user->updateIndexedProperties([1 => 'bob@example.com']);
 
