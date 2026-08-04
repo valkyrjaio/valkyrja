@@ -63,9 +63,6 @@
         <testsuite name="Crypt">
             <directory suffix="Test.php">../../../tests/Tests/Unit/Crypt</directory>
         </testsuite>
-        <testsuite name="Dispatch">
-            <directory suffix="Test.php">../../../tests/Tests/Unit/Dispatch</directory>
-        </testsuite>
         <testsuite name="Event">
             <directory suffix="Test.php">../../../tests/Tests/Unit/Event</directory>
         </testsuite>

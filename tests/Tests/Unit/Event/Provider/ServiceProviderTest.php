@@ -16,7 +16,6 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Collector\AttributeListenerCollector;
@@ -75,7 +74,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishDispatcher(): void
     {
-        $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(ListenerCollectionContract::class, self::createStub(ListenerCollectionContract::class));
 
         $callback = new EventServiceProvider()->publishers()[EventDispatcherContract::class];

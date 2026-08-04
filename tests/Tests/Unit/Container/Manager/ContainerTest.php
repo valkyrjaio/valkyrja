@@ -18,8 +18,8 @@ use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
 use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -148,9 +148,9 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(new DispatchServiceProvider());
+        $container->register(new PublishingProviderFixture());
 
-        self::assertTrue($container->has(DispatcherContract::class));
+        self::assertTrue($container->has(ProvidedFixture::class));
     }
 
     public function testGetNonExistent(): void
@@ -199,15 +199,15 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(new DispatchServiceProvider());
+        $container->register(new PublishingProviderFixture());
 
-        self::assertTrue($container->has(DispatcherContract::class));
+        self::assertTrue($container->has(ProvidedFixture::class));
 
         $data = $this->container->getData();
 
         self::assertSame(
             [
-                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
+                ProvidedFixture::class => [PublishingProviderFixture::class, 'publishProvided'],
             ],
             $data->callbacks
         );
@@ -221,25 +221,25 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(new DispatchServiceProvider());
+        $container->register(new PublishingProviderFixture());
 
-        self::assertTrue($container->has(DispatcherContract::class));
+        self::assertTrue($container->has(ProvidedFixture::class));
 
         $data = $this->container->getData();
 
         $container2 = new Container();
 
-        self::assertFalse($container2->has(DispatcherContract::class));
+        self::assertFalse($container2->has(ProvidedFixture::class));
 
         $container2->setFromData($data);
 
-        self::assertTrue($container2->has(DispatcherContract::class));
+        self::assertTrue($container2->has(ProvidedFixture::class));
 
         $newData = $container2->getData();
 
         self::assertSame(
             [
-                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
+                ProvidedFixture::class => [PublishingProviderFixture::class, 'publishProvided'],
             ],
             $newData->callbacks
         );
@@ -249,21 +249,21 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
 
-        $container->register(new DispatchServiceProvider());
+        $container->register(new PublishingProviderFixture());
 
-        self::assertTrue($container->has(DispatcherContract::class));
+        self::assertTrue($container->has(ProvidedFixture::class));
 
         $data = $this->container->getData();
 
         $container2 = new Container($data);
 
-        self::assertTrue($container2->has(DispatcherContract::class));
+        self::assertTrue($container2->has(ProvidedFixture::class));
 
         $newData = $container2->getData();
 
         self::assertSame(
             [
-                DispatcherContract::class => [DispatchServiceProvider::class, 'publishDispatcher'],
+                ProvidedFixture::class => [PublishingProviderFixture::class, 'publishProvided'],
             ],
             $newData->callbacks
         );

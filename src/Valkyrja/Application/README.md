@@ -399,8 +399,8 @@ aggregator.
 
 ### `ApplicationComponentProvider`
 
-The widest bundle — includes every framework component: Container, Dispatch,
-all CLI components (Interaction, Middleware, Routing, Server), Event, all HTTP
+The widest bundle — includes every framework component: Container, all CLI
+components (Interaction, Middleware, Routing, Server), Event, all HTTP
 components (Message, Middleware, Routing, RoutingCli, Server), Log, and View.
 
 Use this when your entry point is neither purely CLI nor purely HTTP, or when
@@ -418,8 +418,8 @@ new Config(providers: [
 
 ### `CliApplicationComponentProvider`
 
-A bare CLI-only bundle — includes Container, Dispatch, CLI Interaction,
-Middleware, Routing, Server, Event, and Log. Omits every HTTP component and
+A bare CLI-only bundle — includes Container, CLI Interaction, Middleware,
+Routing, Server, Event, and Log. Omits every HTTP component and
 View entirely.
 
 Use this when building a pure console application that has no HTTP surface and
@@ -456,7 +456,7 @@ new CliConfig(providers: [
 
 ### `HttpApplicationComponentProvider`
 
-An HTTP-optimised bundle — includes Container, Dispatch, Event, the full HTTP
+An HTTP-optimised bundle — includes Container, Event, the full HTTP
 stack (Message, Middleware, Routing, RoutingCli, Server), Log, and View. Omits
 all CLI-specific components (Interaction, Middleware, Routing, Server).
 

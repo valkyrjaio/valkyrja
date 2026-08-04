@@ -16,8 +16,6 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
@@ -72,7 +70,6 @@ final readonly class HttpTestContainerDataFixture extends ContainerData
         parent::__construct(
             callbacks: [
                 ContainerData::class                  => [HttpContainerDataProviderFixture::class, 'publishData'],
-                DispatcherContract::class             => [DispatchServiceProvider::class, 'publishDispatcher'],
                 ListenerCollectorContract::class      => [EventServiceProvider::class, 'publishAttributesListenerCollector'],
                 EventDispatcherContract::class        => [EventServiceProvider::class, 'publishDispatcher'],
                 ListenerCollectionContract::class     => [EventServiceProvider::class, 'publishListenerCollection'],
