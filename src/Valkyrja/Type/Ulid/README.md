@@ -2,95 +2,69 @@
 
 ## Introduction
 
-The ULID subcomponent generates and validates Universally Unique Lexicographically
-Sortable Identifiers as specified by the [ULID spec](https://github.com/ulid/spec).
-ULIDs are 128-bit identifiers encoded as 26-character Crockford Base32 strings.
-They are URL-safe, case-insensitive, and sort lexicographically by generation time.
+The ULID subcomponent generates and validates Universally Unique
+Lexicographically Sortable Identifiers per the
+[ULID spec](https://github.com/ulid/spec). A ULID is 26 Crockford Base32
+characters: a 10-character millisecond timestamp followed by 16 characters of
+randomness. ULIDs are URL-safe and sort lexicographically by generation time.
 
-A ULID encodes a 48-bit millisecond timestamp in the first 10 characters followed
-by 80 bits of randomness in the remaining 16 characters. When multiple ULIDs are
-generated within the same millisecond, the random component is incremented
-monotonically to preserve sort order.
-
-## The UlidContract
-
-`Valkyrja\Type\Ulid\Contract\UlidContract` extends `TypeContract<string>`:
-
-```php
-public function asValue(): string;
-public function asFlatValue(): string;
+```
+01ARZ3NDEKTSV4RRFFQ69G5FAV
+|--------||--------------|
+ timestamp    randomness
+ 10 chars      16 chars
 ```
 
 ## Value Object
 
+`Ulid` implements `TypeContract<string>` through `UlidContract` (`asValue()`
+and `asFlatValue()` both return `string`):
+
 ```php
 use Valkyrja\Type\Ulid\Ulid;
 
-$ulid = new Ulid('01ARZ3NDEKTSV4RRFFQ69G5FAV');
-
-// Or from an unknown value:
-$ulid = Ulid::fromValue($someValue);
+$ulid = new Ulid();                             // self-generates a new ULID
+$ulid = new Ulid('01ARZ3NDEKTSV4RRFFQ69G5FAV'); // validates the given string
 ```
 
-The constructor validates the string against the ULID regex and throws
-`InvalidUlidException` on failure.
+The constructor validates a given string and throws `InvalidUlidException` on
+failure. `fromValue()` throws `UlidInvalidFromValueException` when the value
+is not a string; `null` triggers generation.
 
 ## Generating ULIDs
+
+Both factory methods return a plain `string`:
 
 ```php
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 
-// Generate from current time (millisecond precision)
-$ulid = UlidFactory::generate();                    // uppercase
-$ulid = UlidFactory::generate(lowerCase: true);     // lowercase
-$ulid = UlidFactory::generateLowerCase();           // lowercase shorthand
-
-// Generate from a specific datetime
-$ulid = UlidFactory::generate(new DateTime('2024-01-01'));
+$ulid = UlidFactory::generate();                        // current time, uppercase
+$ulid = UlidFactory::generate(lowerCase: true);         // lowercase
+$ulid = UlidFactory::generateLowerCase();               // lowercase shorthand
+$ulid = UlidFactory::generate(new DateTime('2024-01-01')); // a specific datetime
 ```
 
-Both `generate()` and `generateLowerCase()` return a plain `string`.
+## Monotonicity
 
-## Valid Characters
+When the factory generates again within the same millisecond, it increments
+the previous random value instead of drawing fresh randomness, so the
+identifiers stay sorted. When every random part is at its maximum, the factory
+increments the timestamp by one.
 
-ULIDs use Crockford Base32 encoding, which excludes characters that are visually
-ambiguous (`I`, `L`, `O`, `U`):
+## Valid Characters and Validation
+
+Crockford Base32 excludes the ambiguous characters `I`, `L`, `O`, and `U`:
 
 ```
 0123456789ABCDEFGHJKMNPQRSTVWXYZ
 ```
 
-The `VALID_CHARACTERS` constant on `UlidFactory` holds the full set (both cases).
-
-## Monotonicity
-
-When multiple ULIDs are generated within the same millisecond, the factory
-increments the lowest random segment rather than generating fresh randomness.
-This guarantees that ULIDs generated in rapid succession remain sortable. If all
-80 random bits overflow (extremely unlikely in practice), the timestamp component
-is incremented by one.
-
-## Validation
+The `VALID_CHARACTERS` constant on `UlidFactory` holds the set in both cases.
+The `REGEX` constant is `[0-7][valid_chars]{25}` — the leading `[0-7]` keeps
+the timestamp within 48 bits:
 
 ```php
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 
 UlidFactory::validate($string); // throws InvalidUlidException on failure
 ```
-
-The `REGEX` constant on `UlidFactory` holds the validation pattern:
-`[0-7][valid_chars]{25}` — the leading `[0-7]` constrains the maximum timestamp
-to stay within 48 bits.
-
-## Format
-
-```
- 01ARZ3NDEKTSV4RRFFQ69G5FAV
- |---------|----------------|
-  10 chars    16 chars
-  timestamp   randomness
-```
-
-- Total: 26 Crockford Base32 characters
-- Timestamp: 48 bits (milliseconds since Unix epoch)
-- Randomness: 80 bits
