@@ -176,8 +176,9 @@ companion `#[ListenerHandler]` — registers a listener whose handler does
 nothing and returns `null`. The dispatch reports no error. Always supply a
 handler.
 
-PHP 8.4 does not permit a closure in an attribute argument, so an attribute
-handler is an array callable, and the named method must be static:
+PHP permits a closure in an attribute argument only from PHP 8.5. This
+package supports PHP 8.4, so an attribute handler is an array callable, and
+the named method must be static:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
