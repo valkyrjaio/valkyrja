@@ -42,7 +42,8 @@ $dispatcher->dispatch(new UserRegistered($user));
 
 **`dispatchById()`** — dispatch by class name. The dispatcher constructs a new
 instance of the event class and dispatches that instance. The event class must
-be constructible without arguments.
+be constructible without arguments. A class name that does not exist dispatches
+a new `stdClass` instance, and the dispatcher reports no error.
 
 Warning: `dispatchById()` does not pass its `$arguments` parameter to the
 event, and `dispatchByIdIfHasListeners()` discards its `$arguments` the same
