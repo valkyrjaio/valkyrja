@@ -146,10 +146,13 @@ value, or `null` when none was recorded.
 ### When Original Values Are Recorded
 
 `__set` records the first value it receives for each property, and it stops
-recording after the first mass assignment completes. `fromArray()`,
-`updateProperties()`, and `withProperties()` each count as a mass assignment.
-`__clone` also stops the recording, so a clone records no new originals. A
-direct assignment to a public property bypasses `__set` and is never recorded.
+recording after the first mass assignment completes. `fromArray()` and
+`updateProperties()` each count as a mass assignment: the properties that the
+first call sets are recorded, and later calls record nothing. `__clone` also
+stops the recording, so a clone records no new originals. `withProperties()`
+clones before it sets, so it never records the properties it is given — not
+even on a model with no prior mass assignment. A direct assignment to a
+public property bypasses `__set` and is never recorded.
 
 To disable the recording, set
 `protected bool $internalShouldSetOriginalProperties = false;` on the model.
