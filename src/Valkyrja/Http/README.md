@@ -1,37 +1,19 @@
 # HTTP
 
-## Introduction
+The HTTP component matches an incoming request to a handler and runs middleware
+around every phase of the dispatch. The request and response classes follow the
+shape of PSR-7, but they do not implement the `Psr\Http\Message\*` interfaces.
+The middleware pipeline is Valkyrja's own; the component does not use PSR-15
+internally. The [PSR compatibility](#psr-compatibility) section lists the
+bridges to code that expects the PSR interfaces.
 
-Valkyrja's HTTP layer uses PSR-7-shaped message objects and a structured
-pipeline that gives you predictable, observable control over every phase of
-request handling. Whether a route matches, fails to match, throws an exception,
-or completes normally, there is a dedicated middleware stage for it.
+## Configuration and entry point
 
-> **PSR-7**: Valkyrja's request and response classes follow the PSR-7 interface
-> shape but are their own implementations — they are not a direct binding to the
-> `psr/http-message` interfaces. Code that depends on `Psr\Http\Message\*` types
-> directly will not receive Valkyrja objects without additional adaptation.
->
-> **PSR-15**: Valkyrja does **not** use PSR-15 middleware internally. The
-> middleware system is Valkyrja's own, with seven named pipeline stages
-> (described below). PSR-15 `MiddlewareInterface` is not used. A bridge class
-> (`Http\Server\Psr\RequestHandler`) is provided for integration scenarios where
-> third-party code expects a `Psr\Http\Server\RequestHandlerInterface` — see the
-> [PSR Compatibility](#psr-compatibility) section.
-
-The two primary concerns in this component are **routing** — matching an
-incoming request to a handler — and **middleware** — operating on the request
-and response before, during, and after dispatch. Routes are dispatched directly
-via a handler callable — no separate Dispatcher object — keeping the execution
-path simple and the handler target explicit and statically checkable.
-
-## Configuration
-
-HTTP applications are bootstrapped using the `HttpConfig` typed configuration
-class. Rather than reading from environment variables at runtime, all
-configuration is expressed as PHP constructor arguments with sensible defaults.
+The `HttpConfig` class holds all configuration as constructor arguments, and
+every argument has a default. `Http::run()` is the entry point:
 
 ```php
+// public/index.php
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
@@ -40,435 +22,285 @@ Http::run(new HttpConfig(
     dir:           __DIR__,
     environment:   'production',
     debugMode:     false,
-    timezone:      'UTC',
     key:           'your-application-key',
     dataPath:      'App/Provider/Data',
     dataNamespace: 'App\\Provider\\Data',
 ));
 ```
 
-The `dataPath` and `dataNamespace` properties tell the framework where to write
-and load generated data files (for all components that have a data file) — the
-compiled PHP classes that make production routing allocation-free for this
-specific http application.
+The `dataPath` and `dataNamespace` arguments name the location of the generated
+data classes that production uses instead of runtime reflection. The `providers`
+array lists the component providers, and seven middleware arrays configure the
+global pipeline — see [the middleware pipeline](#the-middleware-pipeline).
 
-## Entry Point
-
-`Http::run()` is the single entry point for an HTTP application. It boots the
-application, resolves the `RequestHandlerContract` from the container, creates a
-`ServerRequest` from PHP's superglobals via `RequestFactory::fromGlobals()`, and
-hands it to the handler:
-
-```php
-// public/index.php
-use Valkyrja\Application\Data\HttpConfig;
-use Valkyrja\Application\Entry\Http;
-
-Http::run(new HttpConfig(
-    dir: __DIR__,
-));
-```
-
-Everything that happens after that point — middleware, routing, dispatch,
-response sending — is managed by `RequestHandler`.
+`Http::run()` boots the application, builds a `ServerRequest` from the
+superglobals with `RequestFactory::fromGlobals()`, resolves the
+`RequestHandlerContract` from the container, and runs the request through it.
 
 ## Routing
 
-### Route Providers
+### Route providers
 
-Routes are registered through **route providers** — classes that implement
-`ProviderContract` and return a list of controller classes and/or pre-built
-route objects. The framework iterates over all registered providers during
-bootstrap to build the route collection.
+A route provider implements `HttpRouteProviderContract`. It returns a list of
+controller classes to reflect on, a list of pre-built route objects, or both:
 
 ```php
 use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
 
-class ApiRouteProvider implements HttpRouteProviderContract
+class UserRouteProvider implements HttpRouteProviderContract
 {
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
-        return [
-            UserController::class,
-            PostController::class,
-        ];
+        return [UserController::class];
     }
 
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
     }
 }
 ```
 
-When `getControllerClasses()` returns classes, the framework's
-`AttributeCollector` reflects on each class, extracts `#[Route]` attributes from
-its methods, and adds the resulting routes to the collection. When `getRoutes()`
-returns `Route` objects directly, those are passed through the `Processor` and
-added as well. You can use either mechanism or both.
+The `AttributeRouteCollector` reflects on each controller class and collects the
+routes that its `#[Route]` attributes declare. The `Processor` prepares each
+pre-built route from `getRoutes()`. A component provider returns the route
+providers from its `getHttpProviders()` method and is listed in the `providers`
+array of `HttpConfig`.
 
-Route providers are wired into the application through a component provider's
-`getHttpProviders()` method. The component provider itself is listed in
-`HttpConfig`'s `providers` array, which is the same mechanism used for container
-service providers and event providers.
+### Attribute routes
 
-### Attribute-Based Registration
-
-The idiomatic way to define routes in Valkyrja is to annotate controller methods
-with the `#[Route]` attribute:
+Declare a route with the `#[Route]` attribute on a controller method. The
+attribute is repeatable, and the default request methods are `HEAD` and `GET`:
 
 ```php
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Routing\Attribute\DynamicRoute;
-use Valkyrja\Http\Routing\Attribute\Parameter;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Routing\Attribute\Route;
-use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Patch;
 
 class UserController
 {
     #[Route(path: '/users', name: 'users.index')]
     public function index(): ResponseContract
     {
-        // GET /users
+        return new JsonResponse(['users' => []]);
     }
 
     #[Route(path: '/users', name: 'users.store', requestMethods: [RequestMethod::POST])]
     public function store(): ResponseContract
     {
-        // POST /users
-    }
-
-    #[Patch]
-    #[Route(path: '/users', name: 'users.update')]
-    public function store(): ResponseContract
-    {
-        // POST /users
-    }
-
-    // The route collector will automatically know this is a dynamic route via
-    // the parameter attribute and {id}
-    #[Route(path: '/users/{id}', name: 'users.show')]
-    #[Parameter(name: 'id', regex: '\d+')]
-    public function show(int $id): ResponseContract
-    {
-        // GET /users/{id}
-    }
-
-    // However using the DynamicRoute directly can allow you to define Parameter
-    // objects directly on the Route attribute via the parameters argument, just
-    // remember to use the Parameter data class, not the attribute if you do this.
-    #[DynamicRoute(path: '/users/{id}', name: 'users.delete')]
-    public function delete(
-        // The parameter attribute can either go on the method, or the parameter
-        // itself; whatever you feel is best for readability on your project
-        #[Parameter(name: 'id', regex: '\d+')]
-        int $id
-    ): ResponseContract
-    {
-        // GET /users/{id}
+        return new JsonResponse([], StatusCode::CREATED);
     }
 }
 ```
 
-The `#[Route]` attribute is repeatable — a single method can handle multiple
-paths or methods by stacking attributes. The default `requestMethods` are
-`[RequestMethod::HEAD, RequestMethod::GET]`.
+Every attribute on the method applies to all routes that the method declares.
+Give a route its own configuration through that route's own arguments.
 
-> Note: Any other attributes placed on the method will be added to ALL routes
-> defined on that method. If a certain route requires specific configuration
-> unique to that route and not others you will need to use that route's
-> arguments
+### Route handlers
 
-### Route Handlers
+Every route has a handler with the signature
+`callable(ContainerContract $container, RouteContract $route): ResponseContract`.
+The handler resolves the controller from the container and calls it. A route
+without a handler returns an empty `Response`. Wire a handler with
+`#[RouteHandler([UserRouteProvider::class, 'showHandler'])]` on the routed
+method, or pass the `handler` argument of `#[Route]` directly.
 
-Every route must have a **handler** — a callable with the signature:
-
-```php
-callable(ContainerContract $container, array<string, mixed> $arguments): ResponseContract
-```
-
-The `$container` gives the handler access to all registered services. The
-`$arguments` array carries matched path parameters (e.g. `['id' => '42']` for a
-`/users/{id}` route). The handler is responsible for resolving the controller
-from the container and calling it.
-
-The idiomatic way to wire a handler to a route method is the companion
-`#[RouteHandler]` attribute, placed on the same method as `#[Route]`:
-
-```php
-use Valkyrja\Http\Routing\Attribute\Route;
-use Valkyrja\Http\Routing\Attribute\Route\RouteHandler;
-
-class UserController
-{
-    #[Route(path: '/users/{id}', name: 'users.show')]
-    #[Parameter(name: 'id', regex: '\d+')]
-    #[RouteHandler([UserRouteProvider::class, 'showHandler'])]
-    public function show(int $id): ResponseContract { ... }
-}
-```
-
-The referenced static method on the provider receives the container and
-arguments and returns the response:
+The matched path values live on the route's `Parameter` objects. The handler
+reads a value from the route:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
-use Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-class UserRouteProvider implements HttpRouteProviderContract
+public static function showHandler(ContainerContract $container, RouteContract $route): ResponseContract
 {
-    public static function getControllerClasses(): array
-    {
-        return [UserController::class];
-    }
+    /** @var DynamicRouteContract $route */
+    $id = (int) $route->getParameter('id')->getValue();
 
-    public static function getRoutes(): array
-    {
-        return [];
-    }
-
-    public static function showHandler(ContainerContract $container, array $arguments): ResponseContract
-    {
-        return $container->getSingleton(UserController::class)->show((int) $arguments['id']);
-    }
+    return $container->getSingleton(UserController::class)->show($id);
 }
 ```
 
-The `#[Route]` attribute also accepts a `handler` parameter directly, which is
-convenient for inline definitions:
+A generated data class can export an array-callable handler; it cannot export a
+closure. Prefer array callables for routes that the data cache stores.
+
+### Dynamic routes and parameters
+
+A path with a `{param}` segment becomes a dynamic route. The
+`Valkyrja\Http\Routing\Attribute\Parameter` attribute declares the regex and an
+optional cast for each parameter. Place it on the method or on the method's
+parameter:
 
 ```php
-#[Route(
-    path:    '/users/{id}',
-    name:    'users.show',
-    handler: [UserRouteProvider::class, 'showHandler'],
-)]
-```
-
-#### Caching Trade-off
-
-How you express the handler determines whether it participates in Valkyrja's
-data file cache. The cache captures the full route collection in a generated PHP
-class so that production boots require no reflection.
-
-**Array callables can be cached.** A handler expressed as
-`[ClassName::class, 'method']` is a plain array — serialisable, writable to a
-file, and loadable without loss of fidelity:
-
-```php
-handler: [UserRouteProvider::class, 'showHandler'],
-```
-
-**Closures cannot be cached.** A handler expressed as `static fn (...)` is an
-anonymous function — it cannot be serialised. Use closures during development or
-when inline definitions are clearer, but prefer array callables in production
-code that will be cached.
-
-### Route Modifiers
-
-Several companion attributes refine how individual routes behave:
-
-**`#[Route\Path]`** — Use this on the class itself to prepend a path to all
-routes defined on methods in that class. When used on a method it prepends
-to all routes defined on that method.
-
-**`#[Route\Name]`** — Use this on the class itself to prepend a common name to
-all routes defined on methods in that class. When used on a method it prepends
-to all routes defined on that method.
-
-**`#[Route\RequestMethod]`** — Sets allowed HTTP methods on a method, separate
-from the `#[Route]` declaration:
-
-```php
-use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
-use Valkyrja\Http\Message\Enum\RequestMethod as Method;
-use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Head;
-
-#[Route(path: '/posts/{id}', name: 'posts.update')]
-#[RequestMethod(Method::PUT, Method::PATCH)]
-#[Head]
-public function update(int $id): ResponseContract { ... }
-```
-
-**`#[Route\Middleware]`** — Attaches a middleware class to a route. The
-middleware type determines which pipeline stage it runs in:
-
-```php
-use Valkyrja\Http\Routing\Attribute\Route\Middleware;
-
-#[Route(path: '/admin', name: 'admin.dashboard')]
-#[Middleware(AuthMiddleware::class)]
-public function dashboard(): ResponseContract { ... }
-```
-
-### Dynamic Routes and Parameters
-
-Routes with `{param}` segments are automatically treated as dynamic routes. The
-`#[Route\Parameter]` attribute allows you to declare regex constraints and cast
-rules per parameter:
-
-```php
-use Valkyrja\Http\Routing\Attribute\Route\Parameter;
+use Valkyrja\Http\Routing\Attribute\Parameter;
+use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Constant\Regex;
 
 #[Route(path: '/articles/{slug}', name: 'articles.show')]
 #[Parameter(name: 'slug', regex: Regex::SLUG)]
-public function show(string $slug): ResponseContract { ... }
+public function show(string $slug): ResponseContract
+{
+    return new JsonResponse(['slug' => $slug]);
+}
 ```
 
-### HTTP Methods
+The `#[DynamicRoute]` attribute declares the parameters inline instead. Its
+`parameters` argument is required and takes `Parameter` data objects:
 
-All standard HTTP methods are available via the `RequestMethod` enum:
+```php
+use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Routing\Attribute\DynamicRoute;
+use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Parameter;
 
-| Case      | Value     |
-| --------- | --------- |
-| `GET`     | `GET`     |
-| `HEAD`    | `HEAD`    |
-| `POST`    | `POST`    |
-| `PUT`     | `PUT`     |
-| `DELETE`  | `DELETE`  |
-| `PATCH`   | `PATCH`   |
-| `OPTIONS` | `OPTIONS` |
-| `CONNECT` | `CONNECT` |
-| `TRACE`   | `TRACE`   |
-| `ANY`     | `ANY`     |
-
-### Route Collection and Data Generation
-
-During development (`debugMode: true`), the framework collects routes fresh on
-every request by reflecting on all registered controller classes. In production,
-the route collection is compiled into a generated PHP data class — a static file
-that the container loads directly, requiring no reflection at runtime.
-
-You generate this file using the built-in CLI command:
-
-```bash
-php cli http:data:generate
+#[DynamicRoute(
+    path: '/users/{id}',
+    name: 'users.delete',
+    parameters: [new Parameter(name: 'id', regex: Regex::ID)],
+    requestMethods: [RequestMethod::DELETE],
+)]
+public function delete(int $id): ResponseContract
+{
+    return new JsonResponse(['id' => $id]);
+}
 ```
 
-The generated class is written to the path defined by `dataPath` and
-`dataNamespace` in your configuration and is loaded automatically when
-`debugMode` is `false`.
+The `Regex` constant class ships patterns for common shapes: `ID`, `NUM`,
+`SLUG`, `ALPHA`, `UUID`, `ULID`, and more. The `RequestMethod` enum has one case
+per HTTP method, each backed by its method name, plus `ANY`.
 
-### URL Generation
+### Route modifiers
 
-The `UrlContract` service generates URLs from route names. Inject it wherever
-needed:
+- **`#[Route\Path]`** — on a class, prepends a path to every route in the class;
+  on a method, appends a path to that method's routes.
+- **`#[Route\Name]`** — on a class, prefixes every route name in the class; on a
+  method, suffixes that method's route names.
+- **`#[Route\RequestMethod]`** — adds request methods to a route, apart from the
+  `#[Route]` declaration. Shorthand subclasses in `Attribute\Route\RequestMethod`
+  add one method each; `#[Patch]` adds `PATCH` to the default `HEAD` and `GET`.
+- **`#[Route\Middleware]`** — attaches a middleware class to a route. The
+  collector reads the contracts the class implements and assigns it to the
+  matching pipeline stages.
+
+### The route collection and debug mode
+
+`HttpRoutingServiceProvider::publishRouteCollection()` gates the collection on
+the debug mode. When `debugMode` is `true`, the framework collects the routes
+fresh on every request from the route providers. When `debugMode` is `false`,
+the collection loads from the `HttpRoutingData` singleton. A generated data
+class under `dataPath` provides that singleton in production; without one, the
+default publisher builds the data from the route providers at boot.
+
+The `http:list` CLI command prints every registered route.
+
+### URL generation
+
+The `UrlContract` service builds a URL from a route name. The `data` argument is
+required; pass an empty array for a static route:
 
 ```php
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
-public function __construct(private UrlContract $url) {}
-
-public function someAction(): ResponseContract
-{
-    $url = $this->url->getUrl('users.show', ['id' => 42]);
-    // /users/42
-}
+// $url is an injected UrlContract
+$path = $url->getUrl('users.show', ['id' => 42]); // /users/42
 ```
 
-## Request and Response
+## Requests and responses
 
 ### ServerRequest
 
-The `ServerRequest` class follows the shape of PSR-7's `ServerRequestInterface`
-but is Valkyrja's own implementation — it does not implement the
-`Psr\Http\Message\ServerRequestInterface` type directly. It is created from
-PHP's superglobals at the entry point and is immutable — all `with*` methods
-return a new instance.
-
-```php
-use Valkyrja\Http\Message\Request\ServerRequest;
-
-$method   = $request->getMethod();          // RequestMethod enum
-$uri      = $request->getUri();             // UriContract
-$query    = $request->getQueryParams();
-$body     = $request->getParsedBody();
-$cookies  = $request->getCookieParams();
-$files    = $request->getUploadedFiles();
-$attrs    = $request->getAttributes();
-
-$isAjax   = $request->isXmlHttpRequest();
-```
+`RequestFactory::fromGlobals()` builds the `ServerRequest` at the entry point.
+The object is immutable — every `with*` method returns a new instance. The
+getters return typed param collections, not arrays: `getQueryParams()` returns a
+`QueryParamCollectionContract`, `getParsedBody()` a
+`ParsedBodyParamCollectionContract`, and so on. Each collection exposes `get()`
+for a single value.
 
 ### Responses
 
-Valkyrja provides several named response types, all implementing
-`ResponseContract`:
+Every response type implements `ResponseContract`. `Response` takes a stream
+body and a status code. `JsonResponse` takes a data array. `HtmlResponse`,
+`TextResponse`, and `XmlResponse` take a string body, and `EmptyResponse` is a
+204 with a read-only body. `RedirectResponse` takes a `UriContract`, not a
+string:
 
 ```php
-use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Response\JsonResponse;
-use Valkyrja\Http\Message\Response\HtmlResponse;
-use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Response\RedirectResponse;
-use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Uri\Uri;
 
-// Plain response with a body
-$response = new Response(body: $stream, statusCode: StatusCode::OK);
+$json     = new JsonResponse(['user' => 'melech']);
+$redirect = new RedirectResponse(new Uri(path: '/dashboard'));
+$redirect = RedirectResponse::createFromUri(new Uri(path: '/dashboard'));
 
-// Typed convenience responses
-$json     = new JsonResponse(['user' => $user]);
-$html     = new HtmlResponse('<h1>Hello</h1>');
-$text     = new TextResponse('Hello');
-$redirect = new RedirectResponse('/dashboard');
-$empty    = new EmptyResponse();
+// $factory is an injected RoutingResponseFactoryContract
+$redirect = $factory->createRouteRedirectResponse('users.show', ['id' => 42]);
 ```
 
-The `ResponseFactory` available via injection provides a fluent interface for
-building redirect and other common responses, including one that resolves URLs
-by route name.
+`ResponseFactoryContract::createRedirectResponse()` accepts a URI string. The
+route-name redirect above lives on `RoutingResponseFactoryContract`, in
+`Http\Routing\Factory`.
 
-### Request and Response Structs
+### Structs
 
-For routes that need input validation or structured output, Valkyrja provides
-the struct system. A class implementing `RequestStructContract` carries the
-route's validation rules and knows how to extract typed data from the request. A
-class implementing `ResponseStructContract` shapes what goes into the response.
+A struct is an enum. A request struct implements `RequestStructContract` and
+declares one case per expected field plus the validation rules. The traits in
+`Struct\Request\Trait` supply the data extraction for the query, the parsed
+body, or a JSON body:
 
-Both are attached to a route via companion attributes:
+```php
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
+use Valkyrja\Http\Struct\Request\Trait\ParsedBodyRequestStruct;
+use Valkyrja\Validation\Rule\Is\Required;
+
+enum CreateUserRequestStruct implements RequestStructContract
+{
+    use ParsedBodyRequestStruct;
+
+    case username;
+
+    public static function getValidationRules(ServerRequestContract $request): array
+    {
+        $username = $request->getParsedBody()->get(self::username->name);
+
+        return [
+            self::username->name => [new Required($username, 'The username is required')],
+        ];
+    }
+}
+```
+
+Attach a struct to a route with an enum case — an instance of the contract,
+never a `::class` string. Any case of the enum works, because the middleware
+calls only static methods:
 
 ```php
 #[Route(path: '/users', name: 'users.store', requestMethods: [RequestMethod::POST])]
-#[Route\RequestStruct(CreateUserRequest::class)]
-#[Route\ResponseStruct(UserResponse::class)]
-public function store(): ResponseContract { ... }
+#[Route\RequestStruct(CreateUserRequestStruct::username)]
+public function store(): ResponseContract
+{
+    return new JsonResponse([], StatusCode::CREATED);
+}
 ```
 
-Or inline in the `#[Route]` declaration:
+The `requestStruct` and `responseStruct` arguments of `#[Route]` accept the same
+instances inline. Two middleware classes act on the structs:
+`RequestStructMiddleware` (a `RouteMatched` middleware) rejects a request that
+fails validation with a 400 response, and `ResponseStructMiddleware` (a
+`RouteDispatched` middleware) shapes the outgoing response. Register them
+globally or per route for structs to take effect.
 
-```php
-#[Route(
-    path: '/users',
-    name: 'users.store',
-    requestMethods: [RequestMethod::POST],
-    requestStruct: CreateUserRequest::class,
-    responseStruct: UserResponse::class,
-)]
-public function store(): ResponseContract { ... }
-```
+## PSR compatibility
 
-> Note: You will need to use the
-> `\Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware` or
-> `\Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware` to
-> automatically validate and hydrate the request and response based on the
-> provided structs.
-
-## PSR Compatibility
-
-Valkyrja ships a complete set of adapter classes so its HTTP message objects can
-be passed to any third-party library that depends on `psr/http-message` or
-`psr/http-server-handler` interfaces. The wrappers live in `Psr/` subdirectories
-alongside their native counterparts and are never used internally — Valkyrja's
-own pipeline works exclusively with its own contracts.
-
-### PSR-7 Wrappers
-
-Each wrapper holds a Valkyrja object and delegates every method call to it,
-implementing the corresponding PSR-7 interface so the object is accepted
-wherever a PSR-7 type is required.
+The pipeline works exclusively with Valkyrja's own contracts. Wrapper classes in
+`Psr/` subdirectories adapt the objects for third-party code that depends on
+`psr/http-message` or `psr/http-server-handler`. Each wrapper holds a Valkyrja
+object and delegates every call to it.
 
 | Wrapper class                            | Implements               | Wraps                   |
 | :--------------------------------------- | :----------------------- | :---------------------- |
@@ -479,136 +311,29 @@ wherever a PSR-7 type is required.
 | `Http\Message\Response\Psr\Response`     | `ResponseInterface`      | `ResponseContract`      |
 | `Http\Message\File\Psr\UploadedFile`     | `UploadedFileInterface`  | `UploadedFileContract`  |
 
-Construct any wrapper by passing the corresponding Valkyrja object:
+Static factories convert in the other direction: `PsrStreamFactory`,
+`PsrUriFactory`, and `PsrRequestFactory` each have a `fromPsr()` method, and
+`PsrHeaderFactory` and `PsrUploadedFileFactory` convert both ways.
+
+`Http\Server\Psr\RequestHandler` bridges PSR-15. Its `handle()` method converts
+the incoming PSR-7 request, runs it through the Valkyrja request handler, and
+returns the response in a PSR-7 wrapper.
+
+## The middleware pipeline
+
+The pipeline has seven named stages. Each stage has its own contract, and one
+class can implement several contracts. A middleware receives the stage handler
+as its last argument; it calls the handler to continue, or it returns a response
+to stop the pipeline early:
 
 ```php
-use Valkyrja\Http\Message\Response\Psr\Response as PsrResponse;
-
-$psrResponse = new PsrResponse($valkyrjaResponse);
-// $psrResponse now satisfies Psr\Http\Message\ResponseInterface
-```
-
-### PSR-7 Factories
-
-Static factory classes convert in both directions between Valkyrja objects and
-raw PSR-7 representations. They are abstract and provide only static methods.
-
-#### `PsrStreamFactory`
-
-```php
-// PSR StreamInterface → Valkyrja StreamContract
-PsrStreamFactory::fromPsr(StreamInterface $stream): StreamContract;
-```
-
-#### `PsrUriFactory`
-
-```php
-// PSR UriInterface → Valkyrja UriContract
-PsrUriFactory::fromPsr(UriInterface $psrUri): UriContract;
-```
-
-#### `PsrRequestFactory`
-
-```php
-// PSR ServerRequestInterface → Valkyrja ServerRequest
-PsrRequestFactory::fromPsr(ServerRequestInterface $psrRequest): ServerRequest;
-```
-
-#### `PsrHeaderFactory`
-
-```php
-// PSR headers array → Valkyrja HeaderContract[]
-PsrHeaderFactory::fromPsr(array $headers): array;
-
-// Valkyrja HeaderCollectionContract → PSR headers array
-PsrHeaderFactory::toPsr(HeaderCollectionContract $headers): array;
-
-// Single Valkyrja HeaderContract → PSR string[] values
-PsrHeaderFactory::toPsrValues(HeaderContract $header): array;
-```
-
-#### `PsrUploadedFileFactory`
-
-```php
-// PSR UploadedFileInterface → Valkyrja UploadedFileContract
-PsrUploadedFileFactory::fromPsr(UploadedFileInterface $file): UploadedFileContract;
-
-// Array of PSR files → Valkyrja UploadedFileCollectionContract
-PsrUploadedFileFactory::fromPsrArray(array $files): UploadedFileCollectionContract;
-
-// Valkyrja UploadedFileCollectionContract → PSR array format
-PsrUploadedFileFactory::toPsrArray(UploadedFileCollectionContract $collection): array;
-```
-
-### PSR-15 Request Handler Bridge
-
-Although Valkyrja does not use PSR-15 internally, a bridge class is provided for
-integration scenarios where third-party code expects a
-`Psr\Http\Server\RequestHandlerInterface`:
-
-```php
-use Valkyrja\Http\Server\Psr\RequestHandler as PsrRequestHandler;
-
-$psrHandler = new PsrRequestHandler($valkyrjaRequestHandler);
-// $psrHandler satisfies Psr\Http\Server\RequestHandlerInterface
-```
-
-`handle(ServerRequestInterface $request): ResponseInterface` converts the
-incoming PSR-7 `ServerRequestInterface` to a Valkyrja `ServerRequest`, runs it
-through the Valkyrja request handler, and wraps the resulting response in a
-`Psr\Http\Message\Response` wrapper before returning.
-
-## The Middleware Pipeline
-
-Every HTTP request passes through a structured seven-stage middleware pipeline.
-Each stage has a dedicated contract, and middleware classes implement whichever
-contracts correspond to the stages they participate in. A single class can
-implement multiple contracts.
-
-### Stage 1 — RequestReceived
-
-`RequestReceivedMiddlewareContract` fires the moment a request enters the
-handler, before any route matching occurs. It receives the raw `ServerRequest`
-and can either return a modified request (to continue) or return a
-`ResponseContract` directly (short-circuiting the pipeline):
-
-```php
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
-
-class MaintenanceModeMiddleware implements RequestReceivedMiddlewareContract
-{
-    public function requestReceived(
-        ServerRequestContract $request,
-        RequestReceivedHandlerContract $handler
-    ): ServerRequestContract|ResponseContract {
-        if ($this->isUnderMaintenance()) {
-            return new HtmlResponse('Service unavailable.', StatusCode::SERVICE_UNAVAILABLE);
-        }
-
-        return $handler->requestReceived($request);
-    }
-}
-```
-
-`RequestReceived` middleware is global — it runs on every request regardless of
-which route is matched. Configure it in `RequestHandler`.
-
-The response cache (`CacheResponseMiddleware`) operates at this stage: on the
-way in, it checks whether a cached response file exists for the request path and
-method; if so, it returns it immediately without executing any further pipeline
-stages.
-
-### Stage 2 — RouteMatched
-
-`RouteMatchedMiddlewareContract` fires after a route has been matched but before
-its handler is dispatched. It receives both the request and the matched
-`RouteContract`, and can return a modified route or short-circuit with a
-response:
-
-```php
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 class AuthMiddleware implements RouteMatchedMiddlewareContract
 {
@@ -617,8 +342,8 @@ class AuthMiddleware implements RouteMatchedMiddlewareContract
         RouteContract $route,
         RouteMatchedHandlerContract $handler
     ): RouteContract|ResponseContract {
-        if (! $this->isAuthenticated($request)) {
-            return new RedirectResponse('/login');
+        if ($request->getHeaders()->getHeaderLine('Authorization') === '') {
+            return new RedirectResponse(new Uri(path: '/login'));
         }
 
         return $handler->routeMatched($request, $route);
@@ -626,277 +351,118 @@ class AuthMiddleware implements RouteMatchedMiddlewareContract
 }
 ```
 
-`RouteMatched` middleware can be declared globally or per-route via the
-`routeMatchedMiddleware` parameter of `#[Route]`.
+The other stage contracts follow the same shape with their own arguments:
 
-### Stage 3 — RouteNotMatched
+- **`RequestReceived`** — runs before route matching.
+- **`RouteMatched`** — runs after the match, before the dispatch.
+- **`RouteNotMatched`** — runs when the router returns a 404 or a 405.
+- **`RouteDispatched`** — runs after the route handler returns.
+- **`ThrowableCaught`** — runs when a throwable is caught.
+- **`SendingResponse`** — runs before the response is written to the output.
+- **`ResponseSent`** — runs after the client received the response.
 
-`RouteNotMatchedMiddlewareContract` fires when the router cannot match the
-incoming request to any registered route. It receives the request and a default
-404 response. This is the right place to implement custom 404 pages or fallback
-logic:
+The `RequestReceived` stage can also return a modified request, and the
+`RouteMatched` stage a modified route. The `ResponseSent` stage returns nothing
+— it is the place for deferred work.
 
-```php
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+Every stage is configurable globally through a class-string array on
+`HttpConfig`. Five stages are also configurable per route, through the matching
+arguments of `#[Route]`. The stage handlers resolve each class-string from the
+container.
 
-class NotFoundMiddleware implements RouteNotMatchedMiddlewareContract
-{
-    public function routeNotMatched(
-        ServerRequestContract $request,
-        ResponseContract $response,
-        RouteNotMatchedHandlerContract $handler
-    ): ResponseContract {
-        return new HtmlResponse(
-            $this->renderNotFoundPage($request),
-            StatusCode::NOT_FOUND
-        );
-    }
-}
-```
+| Stage             | `HttpConfig` property       | Per-route argument          | Default middleware                                              |
+| ----------------- | --------------------------- | --------------------------- | --------------------------------------------------------------- |
+| `RequestReceived` | `requestReceivedMiddleware` | —                           | —                                                               |
+| `RouteMatched`    | `routeMatchedMiddleware`    | `routeMatchedMiddleware`    | —                                                               |
+| `RouteNotMatched` | `routeNotMatchedMiddleware` | —                           | `ViewRouteNotMatchedMiddleware`                                 |
+| `RouteDispatched` | `routeDispatchedMiddleware` | `routeDispatchedMiddleware` | —                                                               |
+| `ThrowableCaught` | `throwableCaughtMiddleware` | `throwableCaughtMiddleware` | `LogThrowableCaughtMiddleware`, `ViewThrowableCaughtMiddleware` |
+| `SendingResponse` | `sendingResponseMiddleware` | `sendingResponseMiddleware` | —                                                               |
+| `ResponseSent`    | `responseSentMiddleware`    | `responseSentMiddleware`    | —                                                               |
 
-`RouteNotMatched` middleware is global — it applies to all unmatched requests.
+The router returns a 404 response when no route matches the path. It returns a
+405 response when the path matches a route under `RequestMethod::ANY` but not
+under the requested method. Both responses pass through the `RouteNotMatched`
+stage.
 
-### Stage 4 — RouteDispatched
+## Response caching
 
-`RouteDispatchedMiddlewareContract` fires after the route's handler has been
-called and a response has been produced. It receives the request, the response,
-and the matched route. This is the right place for post-dispatch concerns:
-response transformation, logging, adding headers:
-
-```php
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
-
-class JsonApiMiddleware implements RouteDispatchedMiddlewareContract
-{
-    public function routeDispatched(
-        ServerRequestContract $request,
-        ResponseContract $response,
-        RouteContract $route,
-        RouteDispatchedHandlerContract $handler
-    ): ResponseContract {
-        return $handler->routeDispatched($request, $response->withHeader('Content-Type', 'application/json'), $route);
-    }
-}
-```
-
-Can be declared globally or per-route via the via `routeDispatchedMiddleware`.
-
-### Stage 5 — ThrowableCaught
-
-`ThrowableCaughtMiddlewareContract` fires when any `Throwable` is caught during
-request handling. It receives the request, a default error response, and the
-throwable itself:
+`CacheResponseMiddleware` stores full responses on disk and replays them.
+It implements two contracts, and both registrations are required: the
+`RequestReceived` side reads the cache, and the `ResponseSent` side writes it.
 
 ```php
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-
-class ErrorReportingMiddleware implements ThrowableCaughtMiddlewareContract
-{
-    public function throwableCaught(
-        ServerRequestContract $request,
-        ResponseContract $response,
-        Throwable $throwable,
-        ThrowableCaughtHandlerContract $handler
-    ): ResponseContract {
-        $this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
-
-        return $handler->throwableCaught($request, $response, $throwable);
-    }
-}
-```
-
-Can be declared globally or per-route via `throwableCaughtMiddleware`.
-
-### Stage 6 — SendingResponse
-
-`SendingResponseMiddlewareContract` fires after the response is finalized but
-before it is written to the output buffer. This is the right place to add
-universal headers, compress bodies, or strip sensitive data:
-
-```php
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
-
-class CorsPolicyMiddleware implements SendingResponseMiddlewareContract
-{
-    public function sendingResponse(
-        ServerRequestContract $request,
-        ResponseContract $response,
-        SendingResponseHandlerContract $handler
-    ): ResponseContract {
-        return $handler->sendingResponse(
-            $request,
-            $response->withHeader('Access-Control-Allow-Origin', '*')
-        );
-    }
-}
-```
-
-Can be declared globally or per-route via `sendingResponseMiddleware`.
-
-The built-in `NoCacheResponseMiddleware` operates at this stage — it adds
-`Cache-Control: no-cache, no-store`, `Pragma: no-cache`, and a past `Expires`
-header to prevent client-side caching of sensitive responses for example.
-
-### Stage 7 — ResponseSent
-
-`ResponseSentMiddlewareContract` fires after the response has been sent to the
-client. At this point the user has already received the response; work done here
-does not affect what they see. It is the appropriate stage for deferred side
-effects: writing logs, dispatching queued events, clearing caches:
-
-```php
-use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ResponseSentHandlerContract;
-
-class ActivityLogMiddleware implements ResponseSentMiddlewareContract
-{
-    public function responseSent(
-        ServerRequestContract $request,
-        ResponseContract $response,
-        ResponseSentHandlerContract $handler
-    ): void {
-        $this->activityLog->record($request, $response);
-
-        $handler->responseSent($request, $response);
-    }
-}
-```
-
-Can be declared globally or per-route via `responseSentMiddleware`.
-
-The `CacheResponseMiddleware` also hooks into this stage: if the response was a
-success (not a 5xx) and has not yet been cached, it serializes the response to a
-PHP file on disk, making it available for instantaneous replay on future
-requests.
-
-### Pipeline Summary
-
-| Stage             | When it fires                     | Can short-circuit | Scope     |
-| ----------------- | --------------------------------- | ----------------- | --------- |
-| `RequestReceived` | Before route matching             | Yes               | Global    |
-| `RouteMatched`    | After match, before dispatch      | Yes               | Per-route |
-| `RouteNotMatched` | When no route matches             | No                | Global    |
-| `RouteDispatched` | After dispatch, before sending    | No                | Per-route |
-| `ThrowableCaught` | When a throwable is caught        | No                | Per-route |
-| `SendingResponse` | Before writing response to output | No                | Per-route |
-| `ResponseSent`    | After response is sent            | No                | Per-route |
-
-## Response Caching
-
-Valkyrja ships a full-response cache middleware — `CacheResponseMiddleware` —
-that stores serialized response objects on the filesystem and replays them on
-subsequent identical requests. Because it operates at the `RequestReceived`
-stage, a cache hit bypasses route matching, dispatch, and goes straight to the
-sending and response-sent middleware stages.
-
-Enable it by registering it as global `RequestReceived` middleware and pointing
-it at a writable directory:
-
-```php
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 
-// In your RequestHandler configuration or middleware provider:
-new CacheResponseMiddleware(
-    filePath: '/var/cache/responses',
-    debug: false,
+$config = new HttpConfig(
+    requestReceivedMiddleware: [CacheResponseMiddleware::class],
+    responseSentMiddleware:    [CacheResponseMiddleware::class],
 );
 ```
 
-The cache key is an MD5 hash of the request path combined with the HTTP method.
-Cached entries expire after 30 minutes (1800 seconds); expired files are deleted
-and the request proceeds normally. Responses with a 5xx status code are never
-cached. Enabling `debug: true` disables cache reads (writes still occur, so
-caches warm even in dev, but stale caches are never served).
+The container publisher constructs the middleware. It takes the cache directory
+from `HttpServerConfig::$responseCacheFilePath` — with the framework's storage
+cache path as the fallback — and `debug` from the application's debug mode.
 
-To prevent caching on routes that return user-specific or sensitive data, add
-`NoCacheResponseMiddleware` to those routes' `sendingResponseMiddleware`:
+The cache key is an MD5 hash of the request path and the request method. Each
+cache file holds the response as JSON. An entry expires after 1800 seconds. A
+response with a 5xx status code is never cached. In debug mode the middleware
+still writes the cache, but it never reads it. A cache hit returns before route
+matching, so only the `SendingResponse` and `ResponseSent` stages still run.
+
+To keep a sensitive route out of the cache, add `NoCacheResponseMiddleware` to
+that route. It sets the `Cache-Control`, `Pragma`, and `Expires` headers:
 
 ```php
 use Valkyrja\Http\Server\Middleware\SendingResponse\NoCacheResponseMiddleware;
 
-#[Route(
-    path: '/account',
-    name: 'account.show',
-    sendingResponseMiddleware: [NoCacheResponseMiddleware::class],
-)]
-public function show(): ResponseContract { ... }
+#[Route(path: '/account', name: 'account.show', sendingResponseMiddleware: [NoCacheResponseMiddleware::class])]
+public function account(): ResponseContract
+{
+    return new JsonResponse(['account' => []]);
+}
 ```
 
-## HttpException
+## HttpResponseException
 
-When application code needs to produce a specific HTTP error response the
-preferred method is to create a response with that status code.
-
-However, you can also throw an `HttpException`. The `RequestHandler` detects it
-and uses its embedded `StatusCode` and optional response body, rather than
-falling back to a generic 500:
+Prefer to return a response with the wanted status code. To fail from deep
+inside application code, throw an `HttpResponseException`:
 
 ```php
-use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Throwable\Exception\HttpResponseException;
 
-throw new HttpException(StatusCode::NOT_FOUND, 'Resource not found.');
+throw new HttpResponseException(StatusCode::NOT_FOUND, 'Resource not found.');
 ```
 
-`ThrowableCaught` middleware sees the exception before the handler's default
-behavior takes effect, so you can override the response further at that stage.
+The `RequestHandler` catches every throwable. In debug mode it rethrows the
+throwable. Otherwise, for an `HttpResponseException` it uses the attached
+response when one is set; without one it builds a generic body with the
+exception's status code and a trace code. Any other throwable produces a
+generic 500 response. The `ThrowableCaught` middleware then runs and can replace
+the response, and the `SendingResponse` and `ResponseSent` stages still follow.
 
-> Note: Sending and response-sent middleware still run after the throwable is caught.
-
-## Full Request Lifecycle
-
-From `Http::run()` to process exit, the lifecycle is:
-
-1. `HttpConfig` is validated and the application is bootstrapped.
-2. Component providers register services into the container.
-3. Route providers register routes into the collection (or load the compiled
-   data file).
-4. `RequestFactory::fromGlobals()` builds a `ServerRequest` from `$_SERVER`,
-   `$_GET`, `$_POST`, `$_COOKIE`, and `$_FILES`.
-5. `RequestHandler::run()` is called.
-6. `RequestReceived` middleware runs (cache check, maintenance mode, etc.).
-7. The `Router` asks the `Matcher` to find a matching route.
-8. **If no route matches**: `RouteNotMatched` middleware runs and produces a 404
-   response and goes straight to SendingResponse.
-9. **If a route matches**: `RouteMatched` middleware runs (authentication,
-   authorization).
-10. The route's handler callable is invoked as `$handler($container, $arguments)`,
-    where `$arguments` contains the matched path parameters. The handler resolves
-    the controller from the container and calls it.
-11. `RouteDispatched` middleware runs (response transformation, logging).
-12. **If a throwable is caught** at any point: `ThrowableCaught` middleware
-    runs.
-13. `SendingResponse` middleware runs (final header injection, compression).
-14. The response is written to the output buffer; the session is closed; FastCGI
-    or Litespeed finish-request is called if available.
-15. `ResponseSent` middleware runs (deferred work, cache writes, analytics).
-
-<p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/26.x/flow-charts/php/http-lifecycle.svg" width="100%">
-</a></p>
+## Request lifecycle
 
 ```mermaid
 flowchart TD
     A([Http::run]) --> B[Bootstrap - build ServerRequest from globals]
-    B --> C[Stage 1 - RequestReceived]
-    C -->|"cache hit / short-circuit"| G[Stage 6 - SendingResponse]
-    C -->|throwable| J[Stage 5 - ThrowableCaught]
+    B --> C[RequestReceived middleware]
+    C -->|"cache hit / short-circuit"| G[SendingResponse middleware]
+    C -->|throwable| J[ThrowableCaught middleware]
     C --> D{"Router: route matched?"}
-    D -->|"no match"| E["Stage 3 - RouteNotMatched (404/405 response)"]
-    D -->|matched| F[Stage 2 - RouteMatched]
+    D -->|"no match: 404 / wrong method: 405"| E[RouteNotMatched middleware]
+    D -->|matched| F[RouteMatched middleware]
     E --> G
     F -->|"short-circuit / throwable"| J
     F --> H[Route handler callable]
     H -->|throwable| J
-    H[Route handler callable] --> I[Stage 4 - RouteDispatched]
+    H --> I[RouteDispatched middleware]
     I -->|throwable| J
     I --> G
     J --> G
-    G --> K[Write response to output buffer]
-    K --> L[Stage 7 - ResponseSent]
+    G --> K[Send the response, close the session, finish the request]
+    K --> L[ResponseSent middleware]
     L --> M([Process ends])
 ```
