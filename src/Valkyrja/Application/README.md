@@ -563,7 +563,7 @@ in the child only. The parent's `instances` map is never written to after
 ### Lifecycle Flowchart
 
 <p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/master/flow-charts/php/worker-http-lifecycle.svg" width="100%">
+    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/26.x/flow-charts/php/worker-http-lifecycle.svg" width="100%">
 </a></p>
 
 ```mermaid
