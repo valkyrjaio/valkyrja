@@ -2,207 +2,109 @@
 
 ## Introduction
 
-Valkyrja's event system is built
-on [PSR-14](https://www.php-fig.org/psr/psr-14/), the PHP standard for event
-dispatching. Any PSR-14 compliant event object works with the dispatcher out of
-the box, and the dispatcher itself can be used anywhere a
-`Psr\EventDispatcher\EventDispatcherInterface` is expected.
-
-On top of PSR-14, Valkyrja adds argument passing to events, collection of
-listener return values, attribute-based listener registration, and stoppable
-event support — all integrated naturally with the container and the deferred
-loading model.
+The Event component implements [PSR-14](https://www.php-fig.org/psr/psr-14/).
+Any PSR-14 event object works with the dispatcher, and the dispatcher serves
+anywhere a `Psr\EventDispatcher\EventDispatcherInterface` is expected. On top
+of PSR-14, the component adds attribute-based listener registration, the
+collection of listener return values, and stoppable-event support.
 
 ## Core Concepts
 
-An **event** is a plain PHP class that represents something that has occurred in
-your application. It carries whatever data is relevant to that occurrence.
-Events are plain objects — there is no required base class.
+An **event** is a plain PHP object with no required base class. It carries the
+data for one occurrence in the application.
 
-A **listener** is a callable — a handler — that responds to a specific event
-when it is dispatched. The handler receives the container and an arguments array
-(with the event under the `event` key) and performs whatever action is
-appropriate.
+A **listener** connects one event class to one **handler**. A handler is a
+callable that the dispatcher invokes when the event is dispatched.
 
-The **event dispatcher** —
-`Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract` — is the service that
-connects events to their listeners and invokes each handler when an event is
-fired.
+The **dispatcher** —
+`Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract` — finds the
+listeners for an event and invokes each handler in order.
 
 ## Dispatching Events
 
-The dispatcher provides six methods, giving you precise control over dispatch
-behaviour.
+The dispatcher contract declares six methods:
 
-**`dispatch(object $event): object`** — The standard PSR-14 method. Pass a
-constructed event object; the dispatcher invokes all registered listener handlers
-in order and returns the event.
+```php
+public function dispatch(object $event): object;
+public function dispatchIfHasListeners(object $event): object;
+public function dispatchById(string $eventId, array $arguments = []): object;
+public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object;
+public function dispatchListeners(object $event, ListenerContract ...$listeners): object;
+public function dispatchListener(object $event, ListenerContract $listener): object;
+```
+
+**`dispatch()`** — the PSR-14 method. Pass a constructed event object. The
+dispatcher invokes every registered handler in order and returns the event.
 
 ```php
 $dispatcher->dispatch(new UserRegistered($user));
 ```
 
-**`dispatchIfHasListeners(object $event): object`** — Same as `dispatch()`, but
-only runs if at least one listener is registered for the event. Useful for
-optional hooks where firing with no listeners would be wasteful.
+**`dispatchById()`** — dispatch by class name. The dispatcher constructs a new
+instance of the event class and dispatches that instance. The event class must
+be constructible without arguments.
+
+Warning: `dispatchById()` does not pass its `$arguments` parameter to the
+event. When the event needs data, construct the event yourself and call
+`dispatch()`.
 
 ```php
-$dispatcher->dispatchIfHasListeners(new UserRegistered($user));
+$dispatcher->dispatchById(UserRegistered::class);
 ```
 
-**`dispatchById(string $eventId, array $arguments = []): object`** — Dispatch by
-class name. The container resolves the class name into the event. If the event
-implements `ArgumentsCapableEventContract`, the dispatcher calls
-`setArguments()` with the arguments. The dispatcher then invokes the listeners.
-See [Resolving Events From the Container](#resolving-events-from-the-container).
+**`dispatchListeners()`** — dispatch an event against the given listeners
+only. The dispatcher does not consult the registered collection.
 
-```php
-$dispatcher->dispatchById(UserRegistered::class, [$user]);
-```
+**`dispatchListener()`** — invoke one listener's handler against an event.
 
-**`dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object`
-** — Same as `dispatchById()`, but only runs the listeners if listeners are
-registered. The container resolves the event either way, and the method returns
-the event.
-
-```php
-$dispatcher->dispatchByIdIfHasListeners(UserRegistered::class, [$user]);
-```
-
-**`dispatchListeners(object $event, ListenerContract ...$listeners): object`** —
-Fire an event against a specific set of listeners directly, bypassing whatever
-listeners are registered in the event collection. Useful for targeted, ad hoc
-dispatch.
-
-```php
-$dispatcher->dispatchListeners($event, $listenerOne, $listenerTwo);
-```
-
-**`dispatchListener(object $event, ListenerContract $listener): object`** —
-Invoke a single listener's handler against an event. The handler is called as:
-
-```php
-$handler($container, ['event' => $event]);
-```
-
-## Resolving Events From the Container
-
-`dispatchById()` and `dispatchByIdIfHasListeners()` take a class name, not an
-event object. The dispatcher asks the container for that class name, and the
-container returns the event. The dispatcher constructs nothing itself.
-
-Bind each event that you dispatch by class name. The binding is a closure, so
-you decide how the container builds the event:
-
-```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-
-$container->bind(
-    UserRegistered::class,
-    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered(),
-);
-```
-
-The dispatcher passes the arguments from the call site to the container, so a
-binding can read them:
-
-```php
-$container->bind(
-    UserRegistered::class,
-    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered($arguments[0]),
-);
-```
-
-Warning: a binding is required. The container builds nothing that a binding does
-not describe, so the dispatch throws when the container cannot return the event.
-Two exceptions report the two failures:
-
-- `Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException` —
-  the container resolves nothing for the class name.
-- `Valkyrja\Event\Throwable\Exception\EventInvalidEventException` — the container
-  resolves the class name to a different type.
+The `dispatchIfHasListeners()` and `dispatchByIdIfHasListeners()` variants
+call their base method only when at least one listener is registered for the
+event. Otherwise they invoke no handler: `dispatchIfHasListeners()` returns
+the event unchanged, and `dispatchByIdIfHasListeners()` returns a new event
+instance.
 
 ## Listener Handlers
 
-A listener's **handler** is a callable with the signature:
+A handler has the signature:
 
 ```php
 callable(ContainerContract $container, array<string, mixed> $arguments): mixed
 ```
 
-The `$arguments` array always contains the dispatched event under the `event`
-key. The container is passed so handlers can resolve dependencies without
-requiring them to be pre-constructed. The return value of the handler is
-collected if the event implements `DispatchCollectableEventContract`.
-
-### Caching Trade-off
-
-How you express the handler affects whether it can participate in Valkyrja's
-data file cache. The cache captures the full set of listener registrations in a
-generated PHP class so that subsequent boots pay no registration overhead.
-
-**Array callables can be cached.** A handler expressed as
-`[ClassName::class, 'method']` is a plain array — serialisable, writable to a
-file, and loadable without any loss of fidelity:
+The dispatcher invokes the handler as:
 
 ```php
-handler: [NotificationService::class, 'onUserRegistered'],
+$handler($container, ['event' => $event]);
 ```
 
-**Closures cannot be cached.** A handler expressed as a `static fn (...)` is an
-anonymous function — it cannot be serialised or written to a generated file. Use
-closures during development or when an inline definition is clearer, but prefer
-array callables in production code that will be cached.
+The `$arguments` array holds the dispatched event under the `event` key. The
+handler resolves its dependencies from the container.
 
-The trade-off is explicit by design. Closures are less to type and easier to
-read inline, but array callables keep the listener set cacheable and keep the
-handler target inspectable without loading it.
+A handler that is an array callable, such as
+`[NotificationService::class, 'handle']`, can be written to a generated data
+file. A closure cannot. Prefer an array callable, so the listener set stays
+cacheable.
 
-## Passing Arguments to Events
+## Event Contracts
 
-When dispatching by class name via `dispatchById()` or
-`dispatchByIdIfHasListeners()`, the dispatcher can populate the event with data
-before invoking its listeners. To opt into this, implement
-`Valkyrja\Event\Contract\ArgumentsCapableEventContract`:
+Two optional contracts change how the dispatcher treats an event, and one PSR
+interface stops propagation.
+
+### `ArgumentsCapableEventContract`
+
+`Valkyrja\Event\Contract\ArgumentsCapableEventContract` declares one method:
 
 ```php
 public function setArguments(array $arguments): static;
 ```
 
-The dispatcher calls `setArguments()` with the array you provide at the dispatch
-call site. Store those arguments as typed properties and expose them through
-getters for your listeners to consume:
+When `dispatchById()` constructs an event that implements this contract, the
+dispatcher calls `setArguments()` on the new instance with an empty array.
 
-```php
-use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
+### `DispatchCollectableEventContract`
 
-class UserRegistered implements ArgumentsCapableEventContract
-{
-    private User $user;
-
-    public function setArguments(array $arguments): static
-    {
-        $this->user = $arguments[0];
-        return $this;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-}
-```
-
-The dispatcher also gives the arguments to the container. An event that does
-not implement `ArgumentsCapableEventContract` can therefore still read the
-arguments through its container binding. See
-[Resolving Events From the Container](#resolving-events-from-the-container).
-
-## Collecting Listener Return Values
-
-By default, listener return values are discarded. If you need to collect what
-your listeners return — for example, when building a pipeline where each
-listener contributes to a result — implement
+By default, the dispatcher discards each handler's return value. To collect
+the return values, implement
 `Valkyrja\Event\Contract\DispatchCollectableEventContract`:
 
 ```php
@@ -210,15 +112,16 @@ public function addDispatch(mixed $dispatch): void;
 public function getDispatches(): array;
 ```
 
-When the dispatcher invokes a listener whose handler returns a value, it calls
-`addDispatch()` on the event with that return value. After all listeners have
-been invoked, `getDispatches()` returns the full collection in invocation order:
+After each handler runs, the dispatcher passes the handler's return value to
+`addDispatch()`. `getDispatches()` returns every collected value in invocation
+order.
 
 ```php
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
 class UserRegistered implements DispatchCollectableEventContract
 {
+    /** @var array<int, mixed> */
     private array $dispatches = [];
 
     public function addDispatch(mixed $dispatch): void
@@ -233,86 +136,47 @@ class UserRegistered implements DispatchCollectableEventContract
 }
 ```
 
-## Stoppable Events
+### Stoppable Events
 
-Events implementing `Psr\EventDispatcher\StoppableEventInterface` are fully
-supported. If a listener marks an event as propagation-stopped, the dispatcher
-will not invoke subsequent listeners.
+An event may implement `Psr\EventDispatcher\StoppableEventInterface`. After
+each handler runs, the dispatcher checks `isPropagationStopped()`. When the
+check returns `true`, the dispatcher returns the event and does not invoke the
+remaining listeners.
 
 ## Registering Listeners
 
-Listeners are registered through **event providers**. An event provider
-implements `Valkyrja\Event\Provider\Contract\ListenerProviderContract`. It
-defines two static methods:
-
-**`getListenerClasses(): array`** — Returns class names to scan for
-`#[Listener]` attributes.
-
-**`getListeners(): array`** — Returns pre-built `ListenerContract` instances for
-manual registration.
-
-Event providers are wired into the application through component providers (see
-below). Listeners are deferred — they are registered into the event collection
-during component loading, but their handlers are not invoked until the event is
-actually fired.
-
-### Attribute-Based Registration
-
-The recommended approach for most listeners. Add your listener class names to
-`getListenerClasses()` in your event provider:
+Listeners register through a listener provider — a class that implements
+`Valkyrja\Event\Provider\Contract\ListenerProviderContract`:
 
 ```php
-use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
-
-class AppEventProvider implements ListenerProviderContract
-{
-    public static function getListenerClasses(): array
-    {
-        return [
-            SendWelcomeEmail::class,
-            NotificationService::class,
-        ];
-    }
-
-    public static function getListeners(): array
-    {
-        return [];
-    }
-}
+public function getListenerClasses(): array;
+public function getListeners(): array;
 ```
 
-The framework inspects each class for `#[Valkyrja\Event\Attribute\Listener]`
-attributes. The attribute is repeatable, so a single class or method can listen
-to multiple events.
+`getListenerClasses()` returns class names that the framework scans for
+`#[Listener]` attributes. `getListeners()` returns constructed
+`ListenerContract` instances. The framework collects every listener provider
+from the component providers and registers each listener into the listener
+collection. A handler runs only when its event is dispatched.
 
-The `#[Listener]` attribute takes two required parameters — the event class name
-and a unique listener name — plus an optional `handler` callable. When no
-handler is provided on the attribute itself, the framework expects a companion
-`#[ListenerHandler]` attribute to supply the callable.
+### Attribute Registration
 
-**Class-level attribute** — Place `#[Listener]` on the class and
-`#[ListenerHandler]` with the handler callable. The handler receives the
-container and the `['event' => $event]` arguments array:
+Return class names from `getListenerClasses()`. The framework scans each class
+for `#[Valkyrja\Event\Attribute\Listener]` on the class and on its methods.
+The attribute is repeatable, so one class or method can listen to more than
+one event.
 
-```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Event\Attribute\Listener;
-use Valkyrja\Event\Attribute\ListenerHandler;
+`#[Listener]` takes the event class name, a unique listener name, and an
+optional handler. A companion `#[ListenerHandler]` attribute on the same class
+or method can supply the handler instead.
 
-#[Listener(UserRegistered::class, 'send_welcome_email')]
-#[ListenerHandler(static fn (ContainerContract $c, array $args) => $c->get(SendWelcomeEmail::class)($args['event']))]
-class SendWelcomeEmail
-{
-    public function __invoke(UserRegistered $event): void
-    {
-        // send the email
-    }
-}
-```
+Warning: a `#[Listener]` with no handler — none on the attribute and no
+companion `#[ListenerHandler]` — registers a listener whose handler does
+nothing and returns `null`. The dispatch reports no error. Always supply a
+handler.
 
-**Method-level attribute** — Place `#[Listener]` and `#[ListenerHandler]` on
-the specific method. The handler callable typically resolves the class from the
-container and calls the method:
+PHP 8.4 does not permit a closure in an attribute argument, so an attribute
+handler is an array callable, and the named method must be static:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -321,159 +185,90 @@ use Valkyrja\Event\Attribute\ListenerHandler;
 
 class NotificationService
 {
-    #[Listener(UserRegistered::class, 'notification_service.on_user_registered')]
-    #[ListenerHandler(static fn (ContainerContract $c, array $args) => $c->get(NotificationService::class)->onUserRegistered($args['event']))]
+    #[Listener(UserRegistered::class, 'notification.user_registered')]
+    #[ListenerHandler([self::class, 'handle'])]
     public function onUserRegistered(UserRegistered $event): void
     {
-        // send notification
+        // Send the notification.
+    }
+
+    /** @param array<string, mixed> $arguments */
+    public static function handle(ContainerContract $container, array $arguments): void
+    {
+        $container->get(self::class)->onUserRegistered($arguments['event']);
     }
 }
 ```
 
-Alternatively, the handler callable can be provided directly on the `#[Listener]`
-attribute instead of using `#[ListenerHandler]`:
+The same pair also works at the class level, and the handler can pass as the
+third `#[Listener]` argument in place of a `#[ListenerHandler]`.
+
+The listener provider names the class:
 
 ```php
-#[Listener(
-    eventId: UserRegistered::class,
-    name:    'notification_service.on_user_registered',
-    handler: static fn (ContainerContract $c, array $args) => $c->get(NotificationService::class)->onUserRegistered($args['event']),
-)]
-public function onUserRegistered(UserRegistered $event): void
+use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
+
+class AppListenerProvider implements ListenerProviderContract
 {
-    // send notification
+    public function getListenerClasses(): array
+    {
+        return [NotificationService::class];
+    }
+
+    public function getListeners(): array
+    {
+        return [];
+    }
 }
 ```
 
 ### Manual Registration
 
-For cases where attribute-based registration is not suitable, return pre-built
-listener instances from `getListeners()`. Each instance is a
-`Valkyrja\Event\Data\Listener` (or any class implementing `ListenerContract`),
-constructed with an event ID, a unique name, and a handler callable:
+Return constructed listeners from `getListeners()`. Each one is a
+`Valkyrja\Event\Data\Listener` — or any `ListenerContract` implementation —
+built from an event class name, a unique listener name, and a handler. The
+handler may be any callable, including a closure:
 
 ```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
 
-class AppEventProvider implements ListenerProviderContract
+public function getListeners(): array
 {
-    public static function getListenerClasses(): array
-    {
-        return [];
-    }
-
-    public static function getListeners(): array
-    {
-        return [
-            new Listener(
-                eventId: UserRegistered::class,
-                name:    'notification_service.on_user_registered',
-                handler: static fn (ContainerContract $c, array $args) => $c->get(NotificationService::class)->onUserRegistered($args['event']),
-            ),
-        ];
-    }
+    return [
+        new Listener(
+            eventId: UserRegistered::class,
+            name: 'notification.user_registered',
+            handler: [NotificationService::class, 'handle'],
+        ),
+    ];
 }
 ```
 
-## Event Providers and Component Providers
+## Wiring Through a Component Provider
 
-Your event provider is wired into the application through your component
-provider's `getEventProviders()` method:
+The application reads listener providers from each component provider's
+`getEventProviders()` method. The method belongs to
+`Valkyrja\Application\Provider\Contract\ComponentProviderContract`, which the
+Application component's README documents in full:
 
 ```php
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class AppComponentProvider implements ComponentProviderContract
+public function getEventProviders(ApplicationContract $app): array
 {
-    public function getEventProviders(ApplicationContract $app): array
-    {
-        return [
-            new AppEventProvider(),
-        ];
-    }
+    return [
+        new AppListenerProvider(),
+    ];
 }
 ```
 
-## A Complete Example
+## Service Registration
 
-```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Event\Attribute\Listener;
-use Valkyrja\Event\Attribute\ListenerHandler;
-use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
-use Valkyrja\Event\Contract\DispatchCollectableEventContract;
-use Valkyrja\Event\Data\Listener as ListenerData;
-use Valkyrja\Event\Provider\Contract\ListenerProviderContract;
-use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+The Event service provider registers the following singletons:
 
-// 1. The event
-class UserRegistered implements ArgumentsCapableEventContract, DispatchCollectableEventContract
-{
-    private User $user;
-    private array $dispatches = [];
-
-    public function setArguments(array $arguments): static
-    {
-        $this->user = $arguments[0];
-        return $this;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function addDispatch(mixed $dispatch): void
-    {
-        $this->dispatches[] = $dispatch;
-    }
-
-    public function getDispatches(): array
-    {
-        return $this->dispatches;
-    }
-}
-
-// 2. A listener using a method-level attribute
-class NotificationService
-{
-    #[Listener(UserRegistered::class, 'notification_service.on_user_registered')]
-    #[ListenerHandler(static fn (ContainerContract $c, array $args) => $c->get(NotificationService::class)->onUserRegistered($args['event']))]
-    public function onUserRegistered(UserRegistered $event): string
-    {
-        // send notification
-        return 'notification_sent';
-    }
-}
-
-// 3. The event provider
-class AppEventProvider implements ListenerProviderContract
-{
-    public static function getListenerClasses(): array
-    {
-        return [NotificationService::class];
-    }
-
-    public static function getListeners(): array
-    {
-        return [];
-    }
-}
-
-// 4. The component provider
-class AppComponentProvider implements ComponentProviderContract
-{
-    public function getEventProviders(ApplicationContract $app): array
-    {
-        return [new AppEventProvider()];
-    }
-}
-
-// 5. Dispatching the event
-$event   = $dispatcher->dispatchById(UserRegistered::class, [$user]);
-$results = $event->getDispatches(); // ['notification_sent']
-```
+| Contract / Class             | Description                                            |
+| :--------------------------- | :----------------------------------------------------- |
+| `EventDispatcherContract`    | The dispatcher (`EventDispatcher`)                     |
+| `ListenerCollectionContract` | The listener collection                                |
+| `ListenerCollectorContract`  | The attribute collector (`AttributeListenerCollector`) |
+| `EventData`                  | The generated listener data                            |
