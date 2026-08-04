@@ -2,122 +2,78 @@
 
 ## Introduction
 
-The UUID subcomponent generates and validates Universally Unique Identifiers
-(UUIDs) conforming to RFC 4122. All versions (V1, V3, V4, V5, V6, V7, V8) are
-supported. Each version is a typed value object wrapping a validated UUID string
-and integrating with the Type component's `TypeContract`.
-
-## The UuidContract
-
-`Valkyrja\Type\Uuid\Contract\UuidContract` extends `TypeContract<string>`:
-
-```php
-public function asValue(): string;
-public function asFlatValue(): string;
-```
-
-Each version has its own contract (`UuidV1Contract` through `UuidV8Contract`)
-extending `UuidContract`. These are thin — the version distinction is expressed
-through the value object class rather than additional methods.
+The UUID subcomponent generates and validates Universally Unique Identifiers.
+Versions 1, 3, 4, and 5 follow RFC 4122; the version 6, 7, and 8 formats come
+from RFC 9562. Each version is a typed value object that wraps a validated
+UUID string and implements `TypeContract<string>` through
+`Valkyrja\Type\Uuid\Contract\UuidContract` (`asValue()` and `asFlatValue()`
+both return `string`). Each version has a thin contract, `UuidV1Contract`
+through `UuidV8Contract`.
 
 ## Value Objects
 
-Instantiate a UUID value object by passing a validated UUID string. The
-constructor calls `UuidFactory::validate()` and throws `InvalidUuidException` on
-failure:
+| Class    | Constructor    | Generation when constructed without a string                                                              |
+| :------- | :------------- | :-------------------------------------------------------------------------------------------------------- |
+| `Uuid`   | `string`       | None — validates a UUID of any version                                                                    |
+| `UuidV1` | `string\|null` | Time-based; random 2-byte clock sequence; node from a caller string or random bytes — never a MAC address |
+| `UuidV3` | `string`       | None — generate via factory: MD5 of namespace + name                                                      |
+| `UuidV4` | `string\|null` | Random: `random_bytes(16)` with version and variant bits                                                  |
+| `UuidV5` | `string`       | None — generate via factory: SHA-1 of namespace + name                                                    |
+| `UuidV6` | `string\|null` | A V1 UUID with the time fields reordered and version digit `6`                                            |
+| `UuidV7` | `string`       | None — generate via factory: a V1 UUID with reordered fields and version digit `7`                        |
+| `UuidV8` | `string`       | None — generate via factory: a V1 UUID with reordered fields and version digit `8`                        |
+
+`UuidV1`, `UuidV4`, and `UuidV6` self-generate when constructed with no
+argument. The other classes require a string:
 
 ```php
 use Valkyrja\Type\Uuid\Uuid;
 use Valkyrja\Type\Uuid\UuidV4;
 
 $uuid = new Uuid('550e8400-e29b-41d4-a716-446655440000');
-$v4   = new UuidV4('550e8400-e29b-41d4-a716-446655440000');
-
-// Or from an unknown value (throws InvalidArgumentException for non-strings):
-$uuid = Uuid::fromValue($someValue);
+$v4   = new UuidV4();  // self-generates a new V4 UUID
 ```
 
-| Class    | Contract         | Description                          |
-| :------- | :--------------- | :----------------------------------- |
-| `Uuid`   | `UuidContract`   | Generic UUID (validates any version) |
-| `UuidV1` | `UuidV1Contract` | Version 1 (time-based)               |
-| `UuidV3` | `UuidV3Contract` | Version 3 (name-based, MD5)          |
-| `UuidV4` | `UuidV4Contract` | Version 4 (random)                   |
-| `UuidV5` | `UuidV5Contract` | Version 5 (name-based, SHA-1)        |
-| `UuidV6` | `UuidV6Contract` | Version 6 (reordered time-based)     |
-| `UuidV7` | `UuidV7Contract` | Version 7 (sortable time-based)      |
-| `UuidV8` | `UuidV8Contract` | Version 8 (custom/experimental)      |
+Each constructor validates a given string and throws the version-specific
+exception on failure. `fromValue()` throws `UuidInvalidFromValueException`
+when the value is not a string (for the self-generating classes, `null` is
+also accepted and triggers generation).
 
 ## Generating UUIDs
 
-All generation is done through static factory methods. Use `UuidFactory` as a
-single entry point or call the version-specific factory directly:
+`UuidFactory` has entry points for versions 1, 3, 4, 5, and 6. It has no
+`v7()` or `v8()` method — call those factories directly. All methods return a
+plain `string`:
 
 ```php
 use Valkyrja\Type\Uuid\Factory\UuidFactory;
+use Valkyrja\Type\Uuid\Factory\UuidV7Factory;
+use Valkyrja\Type\Uuid\Factory\UuidV8Factory;
 
-// Version 1 — time-based, optional node identifier
-$v1 = UuidFactory::v1();                     // random node
-$v1 = UuidFactory::v1('my-server-node');     // named node
-
-// Version 3 — name-based (MD5 hash of namespace + name)
-$v3 = UuidFactory::v3($namespace, $name);
-
-// Version 4 — random
+$v1 = UuidFactory::v1();                  // optional node string: v1('my-node')
+$v3 = UuidFactory::v3($namespace, $name); // $namespace is itself a valid UUID
 $v4 = UuidFactory::v4();
-
-// Version 5 — name-based (SHA-1 hash of namespace + name)
 $v5 = UuidFactory::v5($namespace, $name);
-
-// Version 6 — reordered time-based (monotonically sortable)
-$v6 = UuidFactory::v6();
-$v6 = UuidFactory::v6('my-server-node');
-
-// Version 7 — time-sortable (derived from V1 with reordered fields)
-// (use UuidV7Factory::generate() directly)
+$v6 = UuidFactory::v6();                  // optional node string: v6('my-node')
+$v7 = UuidV7Factory::generate();          // optional node string
+$v8 = UuidV8Factory::generate();          // optional node string
 ```
-
-All methods return a plain `string` in standard UUID format:
-`xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx`
 
 ## Validation
 
-Each factory exposes a `validate()` static method. It throws the
-version-specific `InvalidUuidVnException` (or `InvalidUuidException` for the
-base factory) if the string does not match the expected format:
+Each factory exposes a static `validate()` method and a `REGEX` constant. The
+base factory validates any version; a version factory validates its own
+format only. On failure, `validate()` throws `InvalidUuidException` from the
+base factory or `InvalidUuidVnException` from a version factory:
 
 ```php
 use Valkyrja\Type\Uuid\Factory\UuidFactory;
 use Valkyrja\Type\Uuid\Factory\UuidV4Factory;
 
-UuidFactory::validate($string);   // validates any version
-UuidV4Factory::validate($string); // validates V4 format only
+UuidFactory::validate($string);   // any version
+UuidV4Factory::validate($string); // V4 format only
 ```
 
-Each factory also exposes a `REGEX` constant with the version-specific pattern.
-
-## Version Enum
-
-`Valkyrja\Type\Uuid\Enum\Version` lists all supported versions:
-
-| Case | Value |
-| :--- | :---- |
-| `V1` | `1`   |
-| `V3` | `3`   |
-| `V4` | `4`   |
-| `V5` | `5`   |
-| `V6` | `6`   |
-| `V7` | `7`   |
-| `V8` | `8`   |
-
-## Generation Details
-
-| Version | Algorithm                                                        |
-| :------ | :--------------------------------------------------------------- |
-| V1      | Microsecond timestamp + sequence counter + node (MAC or random)  |
-| V3      | MD5 hash of a namespace UUID + a name string                     |
-| V4      | 16 random bytes via `random_bytes(16)` with version/variant bits |
-| V5      | SHA-1 hash of a namespace UUID + a name string                   |
-| V6      | V1 timestamp fields reordered for lexicographic sortability      |
-| V7      | V1 fields rearranged to place time-high first (sortable)         |
-| V8      | Custom layout — reserved for experimental or application use     |
+`Valkyrja\Type\Uuid\Enum\Version` is an int-backed enum with the cases `V1`
+and `V3` through `V8`. Each factory exposes its case as the `VERSION`
+constant.
