@@ -144,9 +144,9 @@ Valkyrja is open-source software licensed under the
 [events docs url]: ./src/Valkyrja/Event/README.md
 [orm docs url]: ./src/Valkyrja/Orm/README.md
 [Versioning and Release Process url]: ./src/Valkyrja/VERSIONING_AND_RELEASE_PROCESS.md
-[contributing url]: https://github.com/valkyrjaio/.github/blob/master/CONTRIBUTING.md
-[vocabulary url]: https://github.com/valkyrjaio/.github/blob/master/VOCABULARY.md
-[security vulnerabilities url]: https://github.com/valkyrjaio/.github/blob/master/SECURITY.md
+[contributing url]: https://github.com/valkyrjaio/.github/blob/26.x/CONTRIBUTING.md
+[vocabulary url]: https://github.com/valkyrjaio/.github/blob/26.x/VOCABULARY.md
+[security vulnerabilities url]: https://github.com/valkyrjaio/.github/blob/26.x/SECURITY.md
 [semantic versioning url]: https://semver.org/
 [MIT license url]: https://opensource.org/licenses/MIT
 [license url]: ./LICENSE.md
