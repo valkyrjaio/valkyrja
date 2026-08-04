@@ -45,7 +45,8 @@ instance of the event class and dispatches that instance. The event class must
 be constructible without arguments.
 
 Warning: `dispatchById()` does not pass its `$arguments` parameter to the
-event. When the event needs data, construct the event yourself and call
+event, and `dispatchByIdIfHasListeners()` discards its `$arguments` the same
+way. When the event needs data, construct the event yourself and call
 `dispatch()`.
 
 ```php
