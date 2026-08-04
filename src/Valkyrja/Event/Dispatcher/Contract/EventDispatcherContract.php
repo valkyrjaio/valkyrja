@@ -16,7 +16,7 @@ use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Data\Contract\ListenerContract;
-use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
+use Valkyrja\Event\Throwable\Exception\InvalidEventException;
 
 interface EventDispatcherContract extends EventDispatcherInterface
 {
@@ -43,7 +43,7 @@ interface EventDispatcherContract extends EventDispatcherInterface
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id
-     * @throws EventInvalidEventException         When the container resolves the id to a different type
+     * @throws InvalidEventException              When the container resolves the id to a different type
      */
     public function dispatchById(string $eventId, array $arguments = []): object;
 
@@ -57,7 +57,7 @@ interface EventDispatcherContract extends EventDispatcherInterface
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id
-     * @throws EventInvalidEventException         When the container resolves the id to a different type
+     * @throws InvalidEventException              When the container resolves the id to a different type
      */
     public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object;
 

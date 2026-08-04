@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Throwable\Exception;
 
-use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
+use Valkyrja\Event\Throwable\Exception\InvalidEventException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class InvalidEventExceptionTest extends TestCase
@@ -21,7 +21,7 @@ final class InvalidEventExceptionTest extends TestCase
     {
         $id = self::class;
 
-        $exception = new EventInvalidEventException($id);
+        $exception = new InvalidEventException($id);
 
         self::assertSame("Service with `$id` is not an event", $exception->getMessage());
     }

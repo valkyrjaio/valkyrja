@@ -23,7 +23,7 @@ use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
-use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
+use Valkyrja\Event\Throwable\Exception\InvalidEventException;
 
 class EventDispatcher implements EventDispatcherContract
 {
@@ -134,14 +134,14 @@ class EventDispatcher implements EventDispatcherContract
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      *
      * @throws ContainerInvalidReferenceException When the container resolves nothing for the id
-     * @throws EventInvalidEventException         When the container resolves the id to a different type
+     * @throws InvalidEventException              When the container resolves the id to a different type
      */
     protected function getEventFromId(string $eventId, array $arguments = []): object
     {
         $event = $this->container->get($eventId, $arguments);
 
         if (! $event instanceof $eventId) {
-            throw new EventInvalidEventException($eventId);
+            throw new InvalidEventException($eventId);
         }
 
         if ($event instanceof ArgumentsCapableEventContract) {
