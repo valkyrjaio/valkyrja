@@ -14,17 +14,16 @@ namespace Valkyrja\Event\Dispatcher;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
-use stdClass;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Contract\ArgumentsCapableEventContract;
 use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract;
-
-use function class_exists;
+use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
 
 class EventDispatcher implements EventDispatcherContract
 {
@@ -66,7 +65,7 @@ class EventDispatcher implements EventDispatcherContract
     public function dispatchById(string $eventId, array $arguments = []): object
     {
         return $this->dispatch(
-            $this->getEventClassFromId($eventId)
+            $this->getEventFromId($eventId, $arguments)
         );
     }
 
@@ -76,11 +75,13 @@ class EventDispatcher implements EventDispatcherContract
     #[Override]
     public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object
     {
+        $event = $this->getEventFromId($eventId, $arguments);
+
         if ($this->collection->hasListenersForEventById($eventId)) {
-            return $this->dispatchById($eventId, $arguments);
+            return $this->dispatch($event);
         }
 
-        return $this->getEventClassFromId($eventId);
+        return $event;
     }
 
     /**
@@ -124,18 +125,24 @@ class EventDispatcher implements EventDispatcherContract
     }
 
     /**
-     * Get an event class from a given id.
+     * Get the event that a given id names.
+     *
+     * The container resolves the id. The application binds each event that it
+     * dispatches by id.
      *
      * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
+     *
+     * @throws ContainerInvalidReferenceException When the container resolves nothing for the id
+     * @throws EventInvalidEventException         When the container resolves the id to a different type
      */
-    protected function getEventClassFromId(string $eventId, array $arguments = []): object
+    protected function getEventFromId(string $eventId, array $arguments = []): object
     {
-        if (! class_exists($eventId)) {
-            return new stdClass();
-        }
+        $event = $this->container->get($eventId, $arguments);
 
-        $event = new $eventId();
+        if (! $event instanceof $eventId) {
+            throw new EventInvalidEventException($eventId);
+        }
 
         if ($event instanceof ArgumentsCapableEventContract) {
             return $event->setArguments($arguments);

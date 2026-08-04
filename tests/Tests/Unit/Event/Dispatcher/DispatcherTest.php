@@ -12,13 +12,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Dispatcher;
 
-use stdClass;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
+use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
 use Valkyrja\Tests\Fixtures\Event\ArgumentsCapableEventFixture;
 use Valkyrja\Tests\Fixtures\Event\DispatchCollectableEventFixture;
+use Valkyrja\Tests\Fixtures\Event\EventFixture;
 use Valkyrja\Tests\Fixtures\Event\StoppableEventFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -168,15 +171,83 @@ final class DispatcherTest extends TestCase
     }
 
     /**
-     * Test dispatchById with a non-existent class returns stdClass.
+     * Test dispatchById returns the event that the container is bound to.
      */
-    public function testDispatchByIdWithNonExistentClassReturnsStdClass(): void
+    public function testDispatchByIdResolvesTheEventFromTheContainer(): void
+    {
+        $event = new EventFixture();
+
+        $container = new Container();
+        $container->bind(
+            EventFixture::class,
+            static fn (ContainerContract $container, array $arguments): EventFixture => $event
+        );
+
+        $dispatcher = new EventDispatcher(container: $container);
+
+        self::assertSame($event, $dispatcher->dispatchById(EventFixture::class));
+    }
+
+    /**
+     * Test dispatchById gives the arguments to the container.
+     */
+    public function testDispatchByIdGivesTheArgumentsToTheContainer(): void
+    {
+        $argumentsFromContainer = [];
+
+        $container = new Container();
+        $container->bind(
+            EventFixture::class,
+            static function (ContainerContract $container, array $arguments) use (&$argumentsFromContainer): EventFixture {
+                $argumentsFromContainer = $arguments;
+
+                return new EventFixture();
+            }
+        );
+
+        $dispatcher = new EventDispatcher(container: $container);
+
+        $dispatcher->dispatchById(EventFixture::class, ['test']);
+
+        self::assertSame(['test'], $argumentsFromContainer);
+    }
+
+    /**
+     * Test dispatchById builds the event where the container is bound to nothing.
+     */
+    public function testDispatchByIdWithUnboundIdBuildsTheEvent(): void
     {
         $dispatcher = new EventDispatcher();
 
-        $result = $dispatcher->dispatchById('NonExistent\\Class\\Name');
+        self::assertInstanceOf(EventFixture::class, $dispatcher->dispatchById(EventFixture::class));
+    }
 
-        self::assertInstanceOf(stdClass::class, $result);
+    /**
+     * Test dispatchById throws where the container resolves nothing for the id.
+     */
+    public function testDispatchByIdWithNonExistentClassThrows(): void
+    {
+        $dispatcher = new EventDispatcher();
+
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $dispatcher->dispatchById('NonExistent\\Class\\Name');
+    }
+
+    /**
+     * Test dispatchById throws where the container resolves the id to a different type.
+     */
+    public function testDispatchByIdWithNonEventThrows(): void
+    {
+        $container = new Container();
+        $container->bindAlias(EventFixture::class, DispatchCollectableEventFixture::class);
+
+        $dispatcher = new EventDispatcher(container: $container);
+
+        $this->expectException(EventInvalidEventException::class);
+        $this->expectExceptionMessage('Service with `' . EventFixture::class . '` is not an event');
+
+        $dispatcher->dispatchById(EventFixture::class);
     }
 
     /**
@@ -186,8 +257,22 @@ final class DispatcherTest extends TestCase
     {
         $dispatcher = new EventDispatcher();
 
-        $result = $dispatcher->dispatchById(ArgumentsCapableEventFixture::class);
+        /** @var ArgumentsCapableEventFixture $result */
+        $result = $dispatcher->dispatchById(ArgumentsCapableEventFixture::class, ['test']);
 
         self::assertInstanceOf(ArgumentsCapableEventFixture::class, $result);
+        self::assertSame(['test'], $result->getArguments());
+    }
+
+    /**
+     * Test dispatchByIdIfHasListeners throws where the container resolves nothing for the id.
+     */
+    public function testDispatchByIdIfHasListenersWithNonExistentClassThrows(): void
+    {
+        $dispatcher = new EventDispatcher();
+
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $dispatcher->dispatchByIdIfHasListeners('NonExistent\\Class\\Name');
     }
 }
