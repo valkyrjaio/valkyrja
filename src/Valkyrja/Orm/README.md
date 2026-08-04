@@ -2,41 +2,36 @@
 
 ## Introduction
 
-The ORM component provides a PDO-backed data access layer supporting MySQL, PostgreSQL, and SQLite. It includes an entity system, a repository pattern for typed data access, a fluent immutable query builder, raw statement execution, and a schema/migration API for managing database structure. A null implementation is included for testing.
+The ORM component provides a PDO data access layer for MySQL, PostgreSQL, and SQLite. It includes an entity system, a repository for typed data access, an immutable query builder, raw statement execution, and migration base classes. The `NullManager` supports testing.
 
-Entities extend the Model system from the Type component, giving them full support for property casting, exposure control, and storable array serialization.
+An entity extends the Model system from the Type component. That system gives the entity property casting, exposure control, and storable array serialization.
 
-## The Manager Contract
+## The Manager
 
-`Valkyrja\Orm\Manager\Contract\ManagerContract` is the top-level entry point:
+`Valkyrja\Orm\Manager\Contract\ManagerContract` is the entry point of the component. The container resolves the active manager:
 
 ```php
-// Repositories and query builders
-public function createRepository(string $entity): RepositoryContract;
-public function createQueryBuilder(): QueryBuilderFactoryContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 
-// Transactions
-public function beginTransaction(): bool;
-public function inTransaction(): bool;
-public function ensureTransaction(): void;
-public function commit(): bool;
-public function rollback(): bool;
+$orm = $container->getSingleton(ManagerContract::class);
 
-// Raw queries
-public function prepare(string $query): StatementContract;
-public function query(string $query): StatementContract;
-
-// Identity
-public function lastInsertId(string $table, string $idField): string;
+$repository = $orm->createRepository(Post::class);
+$factory    = $orm->createQueryBuilder();
+$statement  = $orm->prepare('SELECT * FROM posts');
 ```
 
-`ensureTransaction()` starts a transaction if one is not already in progress. `createRepository()` returns a typed `RepositoryContract<T>` for a given entity class.
+The manager also controls the transaction: `beginTransaction()`, `inTransaction()`, `ensureTransaction()`, `commit()`, and `rollback()`. `ensureTransaction()` begins a transaction when none is in progress. `lastInsertId()` returns the id of the last inserted row. See the contract for the full method list.
 
-`prepare()` returns a statement that is not yet executed, so the caller binds values and calls `execute()`. `query()` prepares the statement and executes it in one step, and throws an `OrmExecuteException` when the execution fails.
+| Class           | Description                      |
+| :-------------- | :------------------------------- |
+| `MysqlManager`  | PDO connection to MySQL          |
+| `PgsqlManager`  | PDO connection to PostgreSQL     |
+| `SqliteManager` | PDO connection to SQLite         |
+| `NullManager`   | No-op implementation for testing |
+
+The `defaultManager` config property selects the implementation that the container binds to `ManagerContract`.
 
 ## Entities
-
-### EntityContract
 
 `Valkyrja\Orm\Entity\Contract\EntityContract` extends both `CastableModelContract` and `ExposableModelContract` from the Type component:
 
@@ -56,11 +51,23 @@ public function asStorableArray(string ...$properties): array;
 public function asStorableChangedArray(): array;             // Only changed properties
 ```
 
-`asStorableChangedArray()` tracks which properties were modified since hydration and returns only those, making partial updates efficient.
+`asStorableChangedArray()` returns only the properties that changed since hydration, so an update writes only those columns. `getRepository()` names the repository class that `createRepository()` resolves for the entity.
 
-### Optional Entity Contracts
+`EntityCast` extends the Type component's `Cast` for relationship casting:
 
-Implement one of these contracts to tell the repository to stamp a date. Each contract declares no method. The date format and the field names come from the entity metadata registry, because a data object holds no static method.
+```php
+new EntityCast(
+    type: SomeEntity::class,   // Entity class or CastType
+    column: 'foreign_key',     // Optional: column to use for retrieval
+    relationships: ['rel'],    // Optional: relationships to eager-load
+    convert: true,
+    isArray: false,
+);
+```
+
+### Dates, Soft Delete, and Metadata
+
+Implement one of these contracts to tell the repository to stamp a date. Each contract declares no method:
 
 | Contract                   | The repository then                                                                              |
 | :------------------------- | :----------------------------------------------------------------------------------------------- |
@@ -69,26 +76,23 @@ Implement one of these contracts to tell the repository to stamp a date. Each co
 
 The abstract base classes `DatedEntity` and `SoftDeleteEntity` implement the contract and add the fields. The traits `DatedFields` and `SoftDeleteFields` add the fields alone.
 
-Warning: the repository throws an `OrmUnregisteredEntityException` when an entity implements one of these contracts and the registry holds no matching metadata. Register each entity that implements a contract:
+The date format and the field names come from `Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract`, because a data object holds no static method. The registry maps an entity class to an `EntityMetadata` data object through `has()`, `get()`, and `withEntity()`. The registry infers nothing: `get()` throws an `OrmUnregisteredEntityException` when the entity is not registered, and the repository throws the same exception when a contract implementation has no matching metadata.
+
+The registry is immutable. `withEntity()` returns a new registry, so an application registers an entity in a service provider and replaces the singleton:
 
 ```php
-$registry->withEntity(
-    Post::class,
-    new EntityMetadata(dated: new DatedMetadata(), softDelete: new SoftDeleteMetadata()),
+$registry = $container->getSingleton(EntityMetadataRegistryContract::class);
+
+$container->setSingleton(
+    EntityMetadataRegistryContract::class,
+    $registry->withEntity(
+        Post::class,
+        new EntityMetadata(dated: new DatedMetadata(), softDelete: new SoftDeleteMetadata()),
+    ),
 );
 ```
 
-### Entity Metadata Registry
-
-`Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract` holds the metadata that describes an entity type. The registry maps an entity class to an `EntityMetadata` data object. The framework reads the metadata by class token, and it infers nothing.
-
-```php
-public function has(string $entity): bool;
-public function get(string $entity): EntityMetadata;                          // throws when absent
-public function withEntity(string $entity, EntityMetadata $metadata): static;
-```
-
-`EntityMetadata` carries the date metadata for the entity. Each part is optional:
+Each part of `EntityMetadata` is optional, and each metadata argument has a default:
 
 ```php
 new EntityMetadata(
@@ -104,17 +108,7 @@ new EntityMetadata(
 );
 ```
 
-The default field names are `created_at`, `updated_at` and `deleted_at`, which is the name that most frameworks use. An application with a different schema registers its own names:
-
-```php
-new EntityMetadata(
-    dated: new DatedMetadata(dateCreatedField: 'date_created', dateModifiedField: 'date_modified'),
-);
-```
-
 Warning: the entity must declare a property with the registered name. `asStorableArray()` reads the object properties, so a registered name that the entity does not declare becomes a dynamic property. Use your own entity, and not the `DatedFields` or `SoftDeleteFields` trait, when your names are not the defaults.
-
-### The Stored Date
 
 `DateFormat` holds the three formats that the ORM writes. Each one is ISO 8601, so a text sort of the column is a date sort and the date functions of the database read the value:
 
@@ -126,36 +120,9 @@ Warning: the entity must declare a property with the registered name. `asStorabl
 
 **The ORM stores UTC.** `DateFactory` builds each time with the offset `+00:00`, and no format holds a timezone, because the same characters would repeat on every row. Convert the value to a local time when you show it to a person, and never assume the column holds a local time.
 
-The registry is immutable. `withEntity()` returns a new registry, so an application registers an entity in a service provider and replaces the singleton:
-
-```php
-$registry = $container->getSingleton(EntityMetadataRegistryContract::class);
-
-$container->setSingleton(
-    EntityMetadataRegistryContract::class,
-    $registry->withEntity(Post::class, new EntityMetadata(dated: new DatedMetadata())),
-);
-```
-
-`get()` throws an `OrmUnregisteredEntityException` when the registry holds no metadata for the entity. The failure is explicit, because a silent default hides a missing registration.
-
-### EntityCast
-
-`EntityCast` extends the Type component's `Cast` for ORM-specific relationship casting:
-
-```php
-new EntityCast(
-    type: SomeEntity::class,   // Entity class or CastType
-    column: 'foreign_key',     // Optional: column to use for retrieval
-    relationships: ['rel'],    // Optional: relationships to eager-load
-    convert: true,
-    isArray: false,
-);
-```
-
 ## Repositories
 
-`Valkyrja\Orm\Repository\Contract\RepositoryContract` provides the standard CRUD interface for a single entity type:
+`Valkyrja\Orm\Repository\Contract\RepositoryContract` provides the CRUD interface for a single entity type:
 
 ```php
 public function find(string|int $id): EntityContract|null;
@@ -171,12 +138,10 @@ public function forceDelete(EntityContract $entity): void;
 Obtain a repository through the manager:
 
 ```php
-$repo = $orm->createRepository(Post::class);
-$post = $repo->find(1);
-$posts = $repo->allBy(new Where(new Value('status', 'published')));
+$repository = $orm->createRepository(Post::class);
+$post       = $repository->find(1);
+$posts      = $repository->allBy(new Where(new Value('status', 'published')));
 ```
-
-### Delete and Soft Delete
 
 `delete()` removes the row of an entity. For a `SoftDeleteEntityContract` entity it stamps the deleted date and keeps the row instead.
 
@@ -185,62 +150,44 @@ $posts = $repo->allBy(new Where(new Value('status', 'published')));
 A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows:
 
 ```php
-$live = $repo->allBy(new Where(new Value('deleted_at', null), Comparison::IS));
+$live = $repository->allBy(new Where(new Value('deleted_at', null), Comparison::IS));
 ```
 
 ## Query Builder
 
-Obtain a factory from the manager, then build typed query objects:
+`createQueryBuilder()` returns a factory with one method per statement type: `select()`, `insert()`, `update()`, and `delete()`. Each method takes the table name and returns a typed builder. Every `with*` method returns a new instance, and every builder implements `Stringable`:
 
 ```php
-$factory = $orm->createQueryBuilder();
+use Valkyrja\Orm\Data\Join\LeftJoin;
+use Valkyrja\Orm\Data\OrderBy;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Enum\Comparison;
+use Valkyrja\Orm\Enum\JoinOperator;
+use Valkyrja\Orm\Enum\SortOrder;
 
-$select = $factory->select('posts');
-$insert = $factory->insert('posts');
-$update = $factory->update('posts');
-$delete = $factory->delete('posts');
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withColumns('posts.*')
+    ->withJoin(new LeftJoin(
+        table: 'comments',
+        column: 'posts.id',
+        joinColumn: 'comments.post_id',
+        comparison: Comparison::EQUALS,
+        operator: JoinOperator::ON,
+    ))
+    ->withWhere(new Where(new Value('status', 'published')))
+    ->withOrderBy(new OrderBy('created_at', SortOrder::DESC))
+    ->withLimit(10);
+
+// (string) $select renders:
+// SELECT posts.* FROM posts LEFT JOIN comments ON posts.id = comments.post_id
+//     WHERE = :status ORDER BY created_at DESC LIMIT 10
 ```
 
-All query builder methods return new instances (immutable). Every builder implements `Stringable` so it can be cast directly to the SQL string.
+A rendered where clause holds no column name: the `Value` name is the bind parameter. See the contracts under `QueryBuilder/Contract/` for the full method lists — `QueryBuilderContract` for the shared from, alias, join, and where methods, `SelectQueryBuilderContract` for columns, group by, order by, limit, and offset, and `InsertQueryBuilderContract` and `UpdateQueryBuilderContract` for `withSet()`. The delete builder adds nothing to the shared methods.
 
-### Common Methods (all builders)
-
-```php
-->withFrom(string $table): static
-->withAlias(string $alias): static
-->withJoin(Join ...$joins): static
-->withAddedJoin(Join ...$joins): static
-->withWhere(Where|WhereGroup ...$where): static
-->withAddedWhere(Where|WhereGroup ...$where): static
-```
-
-### Select
-
-```php
-->withColumns(string ...$columns): static
-->withAddedColumns(string ...$columns): static
-->withGroupBy(string ...$groupBy): static
-->withAddedGroupBy(string ...$groupBy): static
-->withOrderBy(OrderBy ...$orderBy): static
-->withAddedOrderBy(OrderBy ...$orderBy): static
-->withLimit(int $limit): static
-->withOffset(int $offset): static
-```
-
-### Insert / Update
-
-```php
-->withSet(Value ...$values): static
-->withAddedSet(Value ...$values): static
-```
-
-### Delete
-
-Inherits only the common query builder methods.
-
-## Data Objects
-
-### Value
+### Data Objects
 
 `Value` binds a named parameter with its value:
 
@@ -249,189 +196,64 @@ new Value(name: 'status', value: 'published')
 // Renders as :status with PDO binding
 ```
 
-The value may be a scalar, array (renders as `(:name0, :name1, ...)`), or a nested `QueryBuilderContract` (renders as a subquery).
+The value may be a scalar, an array (renders as `(:name0, :name1, ...)`), or a nested `QueryBuilderContract` (renders as a subquery).
 
-### Where
-
-`Where` wraps a `Value` with a comparison operator and clause type:
+`Where` wraps a `Value` with a comparison operator and a clause type:
 
 ```php
-use Valkyrja\Orm\Data\Where;
-use Valkyrja\Orm\Enum\Comparison;
-
-new Where(new Value('status', 'published'))                            // WHERE status = :status
-new Where(new Value('id', [1, 2, 3]), Comparison::IN)                 // WHERE id IN (:id0, :id1, :id2)
-new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)     // WHERE score >= :score
+new Where(new Value('status', 'published'))                        // WHERE = :status
+new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // WHERE IN (:id0, :id1, :id2)
+new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // WHERE >= :score
 ```
 
-Convenience subclasses for combining clauses:
-
-| Class         | SQL equivalent          |
-| :------------ | :---------------------- |
-| `AndWhere`    | `AND column = :val`     |
-| `OrWhere`     | `OR column = :val`      |
-| `NotWhere`    | `NOT column = :val`     |
-| `AndNotWhere` | `AND NOT column = :val` |
-| `OrNotWhere`  | `OR NOT column = :val`  |
-
-Group multiple clauses into a parenthesised block with `WhereGroup`:
+The subclasses `AndWhere`, `OrWhere`, `NotWhere`, `AndNotWhere`, and `OrNotWhere` set the clause type. `WhereGroup` groups clauses into a parenthesized block:
 
 ```php
 new WhereGroup(
     new Where(new Value('a', 1)),
     new OrWhere(new Value('b', 2)),
 )
-// Renders as: (a = :a OR b = :b)
+// Renders as: (= :a OR = :b)
 ```
 
-### Join
+`Valkyrja\Orm\Enum\Comparison` holds the comparison operators, from equality and range (`=`, `!=`, `>`, `>=`) through pattern and set (`LIKE`, `REGEXP`, `IN`) to bitwise and shift (`^`, `|`, `<<`, `>>`). See the enum for the full case list.
+
+`Join` renders a join clause; the example above shows it. The subclasses `InnerJoin`, `LeftJoin`, `RightJoin`, `OuterJoin`, and `FullOuterJoin` set the join type. `OrderBy` pairs a field with a `SortOrder`:
 
 ```php
-use Valkyrja\Orm\Data\Join;
-use Valkyrja\Orm\Enum\{Comparison, JoinOperator, JoinType};
-
-new Join(
-    table: 'comments',
-    column: 'posts.id',
-    joinColumn: 'comments.post_id',
-    comparison: Comparison::EQUALS,
-    operator: JoinOperator::ON,
-    type: JoinType::LEFT,
-)
-// Renders as: LEFT JOIN comments ON posts.id = comments.post_id
-```
-
-Convenience subclasses: `InnerJoin`, `LeftJoin`, `RightJoin`, `OuterJoin`, `FullOuterJoin`.
-
-### OrderBy
-
-```php
-use Valkyrja\Orm\Data\OrderBy;
-use Valkyrja\Orm\Enum\SortOrder;
-
 new OrderBy('created_at', SortOrder::DESC)
 // Renders as: created_at DESC
 ```
 
-## Comparison Enum
-
-`Valkyrja\Orm\Enum\Comparison` covers all standard SQL comparison operators:
-
-| Case                 | Value         |
-| :------------------- | :------------ |
-| `EQUALS`             | `=`           |
-| `NULL_SAFE_EQUALS`   | `<=>`         |
-| `NOT_EQUAL`          | `!=`          |
-| `IN`                 | `IN`          |
-| `NOT_IN`             | `NOT_IN`      |
-| `LIKE`               | `LIKE`        |
-| `NOT_LIKE`           | `NOT LIKE`    |
-| `SOUNDS_LIKE`        | `SOUNDS LIKE` |
-| `IS`                 | `IS`          |
-| `IS_NOT`             | `IS NOT`      |
-| `GREATER_THAN`       | `>`           |
-| `GREATER_THAN_EQUAL` | `>=`          |
-| `LESS_THAN`          | `<`           |
-| `LESS_THAN_EQUAL`    | `<=`          |
-| `REGEXP`             | `REGEXP`      |
-| `MEMBER_OF`          | `MEMBER_OF`   |
-
 ## Statements
 
-`StatementContract` wraps a prepared PDO statement:
+`Valkyrja\Orm\Statement\Contract\StatementContract` wraps a prepared PDO statement. `bindValue()` binds a `Value`, and `execute()` runs the statement:
 
 ```php
-public function bindValue(Value $value): bool;
-public function execute(): bool;
+$statement = $orm->prepare((string) $select);
+$statement->bindValue(new Value('status', 'published'));
+$statement->execute();
 
-// Fetch results
-public function fetch(): array;                              // Single row as array
-public function fetchEntity(string $entity): EntityContract; // Single row as entity
-public function fetchColumn(int $columnNumber = 0): mixed;
-public function fetchAll(): array;                           // All rows as arrays
-public function fetchAllEntities(string $entity): array;     // All rows as entities
-
-// Metadata
-public function getCount(): int;
-public function getRowCount(): int;
-public function getColumnCount(): int;
-public function getColumnMeta(int $columnNumber): array;
-
-// Errors
-public function hasError(): bool;
-public function getErrorCode(): string;
-public function getErrorMessage(): string;
+$posts = $statement->fetchAllEntities(Post::class);
 ```
+
+`fetch()` and `fetchAll()` return rows as arrays, `fetchEntity()` and `fetchAllEntities()` return typed entities, and `fetchColumn()` returns a single column. The contract also exposes row, column, and error accessors — see the contract for the full method list.
 
 ## Schema and Migrations
 
-### MigrationContract
+A migration implements `MigrationContract`, which declares `run()` and `rollback()`. Three abstract base classes cover the common shapes:
 
-```php
-public function run(): void;
-public function rollback(): void;
-```
+| Class                    | Description                                                              |
+| :----------------------- | :----------------------------------------------------------------------- |
+| `Migration`              | Receives the manager; override `run()` and `rollback()`                  |
+| `TransactionalMigration` | Wraps each direction in a transaction, and rolls back on a `Throwable`   |
+| `SqlFileMigration`       | Executes SQL files; provide the run file path and the rollback file path |
 
-Extend the abstract `Migration` base class and override `run()` and `rollback()`. For migrations that need to run inside a transaction, extend `TransactionalMigration`. For migrations defined in SQL files, extend `SqlFileMigration`.
-
-### SchemaContract
-
-```php
-public function createTable(string $name): TableContract;
-public function getTable(string $name): TableContract;
-public function renameTable(string $name, string $newName): TableContract;
-public function dropTable(string $name): TableContract;
-public function execute(TableContract $table): bool;
-public function executeAll(): bool;
-public function getQueryString(): string;
-public function getError(): string;
-```
-
-### TableContract
-
-```php
-// Table operations
-->create(): static
-->rename(string $name): static
-->drop(): static
-->ifNotExists(): static
-->ifExists(): static
-
-// Columns
-->createColumn(string $name): ColumnContract
-->changeColumn(string $name): ColumnContract
-->dropColumn(string $name): ColumnContract
-
-// Indexes
-->createIndex(string $name): IndexContract
-->changeIndex(string $name): IndexContract
-->dropIndex(string $name): IndexContract
-
-// Constraints
-->createConstraint(string $name): ConstraintContract
-->changeConstraint(string $name): ConstraintContract
-->dropConstraint(string $name): ConstraintContract
-
-->getQueryString(): string
-```
-
-## Implementations
-
-| Class           | Description                      |
-| :-------------- | :------------------------------- |
-| `MysqlManager`  | PDO connection to MySQL          |
-| `PgsqlManager`  | PDO connection to PostgreSQL     |
-| `SqliteManager` | PDO connection to SQLite         |
-| `NullManager`   | No-op implementation for testing |
-
-The active manager is resolved from the container as `ManagerContract`.
+The `Schema/Contract/` directory also declares a schema builder API — `SchemaContract`, `TableContract`, `ColumnContract`, `IndexContract`, and `ConstraintContract`. This component ships no implementation of those contracts.
 
 ## Configuration
 
-The component reads four config contracts. Your application config class
-implements only the contracts for the connections that it uses. Each connection
-contract prefixes its properties with the connection name, so one class can
-implement several of them at once.
+The component reads four config contracts. Your application config class implements only the contracts for the connections that it uses. Each connection contract prefixes its properties with the connection name, so one class can implement several of them at once.
 
 ### `OrmConfigContract`
 
@@ -483,18 +305,19 @@ implement several of them at once.
 
 The ORM service provider registers the following:
 
-| Contract / Class          | Description                                         |
-| :------------------------ | :-------------------------------------------------- |
-| `OrmConfigContract`       | Component config                                    |
-| `OrmMysqlConfigContract`  | MySQL connection config                             |
-| `OrmPgsqlConfigContract`  | PostgreSQL connection config                        |
-| `OrmSqliteConfigContract` | SQLite connection config                            |
-| `ManagerContract`         | Active manager (default: `MysqlManager`)            |
-| `MysqlManager`            | MySQL PDO manager                                   |
-| `PgsqlManager`            | PostgreSQL PDO manager                              |
-| `SqliteManager`           | SQLite PDO manager                                  |
-| `NullManager`             | No-op manager                                       |
-| `PDO`                     | PDO factory (registered as callable, not singleton) |
-| `Repository`              | Repository factory (registered as callable)         |
+| Contract / Class                 | Description                              |
+| :------------------------------- | :--------------------------------------- |
+| `OrmConfigContract`              | Component config                         |
+| `OrmMysqlConfigContract`         | MySQL connection config                  |
+| `OrmPgsqlConfigContract`         | PostgreSQL connection config             |
+| `OrmSqliteConfigContract`        | SQLite connection config                 |
+| `ManagerContract`                | Active manager (default: `MysqlManager`) |
+| `MysqlManager`                   | MySQL PDO manager                        |
+| `PgsqlManager`                   | PostgreSQL PDO manager                   |
+| `SqliteManager`                  | SQLite PDO manager                       |
+| `NullManager`                    | No-op manager                            |
+| `EntityMetadataRegistryContract` | Empty entity metadata registry           |
+| `PDO`                            | PDO factory (bound with `bind()`)        |
+| `Repository`                     | Repository factory (bound with `bind()`) |
 
-The `PDO` and `Repository` entries are registered as callables rather than singletons, so a new instance is created each time with the provided arguments. The manager implementations call these internally.
+Every entry is a singleton except `PDO` and `Repository`. The provider registers those two with `bind()`, so each resolution invokes the factory callable and returns a fresh instance with the provided arguments. The manager implementations resolve these bindings internally.
