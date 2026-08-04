@@ -96,16 +96,16 @@ Before a resolution, you can inspect what is registered:
   form, a deferred publish callback included.
 - `isSingleton(string $id): bool` — a singleton binding or a resolved
   instance exists.
-- `isSingletonBinding(string $id): bool` — a binding exists that is not yet
-  resolved.
+- `isSingletonBinding(string $id): bool` — a singleton binding exists. The
+  binding does not clear on resolution, so the method can return `true` for a
+  resolved singleton.
 - `isSingletonInstance(string $id): bool` — the singleton is resolved and
   cached.
 - `isService(string $id): bool` — a service binding exists.
 - `isAlias(string $id): bool` — the id is an alias.
 
 `isSingleton($id)` equals `isSingletonBinding($id) || isSingletonInstance($id)`.
-The fine-grained pair separates "registered but not yet built" from "resolved
-and reusable" — the distinction that child containers rely on (see
+Use `isSingletonInstance()` to test for a resolved instance (see
 [Child Containers](#child-containers)).
 
 ## Resolving Services
