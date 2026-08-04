@@ -131,8 +131,7 @@ flowchart TD
     F --> G["Register the core singletons"]
     G --> H["Invoke config->callbacks with the application"]
     H --> I{"Is ContainerData already a singleton?"}
-    I -->|No| J["Register every service provider,
-    snapshot the result as ContainerData"]
+    I -->|No| J["Register every service provider,\nsnapshot the result as ContainerData"]
     I -->|Yes| K["Use the existing ContainerData singleton"]
     J --> L["container->setFromData(containerData)"]
     K --> L
@@ -278,15 +277,12 @@ The invariant: **the parent application and its container are frozen after
 ```mermaid
 flowchart TD
     A(["Worker process starts"]) --> B["bootstrap(config)"]
-    B --> C["Full bootstrap sequence, throwable handler,
-    bootstrapParentServices()"]
-    C --> D["container->getData()
-    capture the ContainerData snapshot once"]
+    B --> C["Full bootstrap sequence, throwable handler,\nbootstrapParentServices()"]
+    C --> D["container->getData()\ncapture the ContainerData snapshot once"]
     D --> E(["Parent frozen — the request loop begins"])
     E --> F["The runtime delivers a request"]
     F --> G["handle(app, data, request)"]
-    G --> H["New ChildContainer(parent, data)
-    New ChildApplication(app, childContainer)"]
+    G --> H["New ChildContainer(parent, data)\nNew ChildApplication(app, childContainer)"]
     H --> I["Dispatch the request"]
     I --> J["Discard the child"]
     J --> E
