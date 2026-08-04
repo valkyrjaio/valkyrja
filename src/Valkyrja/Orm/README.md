@@ -213,7 +213,7 @@ new WhereGroup(
     new Where(new Value('a', 1)),
     new OrWhere(new Value('b', 2)),
 )
-// Renders as: (= :a OR = :b)
+// Renders as: ( = :a OR = :b)
 ```
 
 `Valkyrja\Orm\Enum\Comparison` holds the comparison operators, from equality and range (`=`, `!=`, `>`, `>=`) through pattern and set (`LIKE`, `REGEXP`, `IN`) to bitwise and shift (`^`, `|`, `<<`, `>>`). See the enum for the full case list.
