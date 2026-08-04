@@ -92,7 +92,7 @@ $container->setSingleton(
 );
 ```
 
-Each part of `EntityMetadata` is optional, and each metadata argument has a default:
+Each part of `EntityMetadata` is optional:
 
 ```php
 new EntityMetadata(
