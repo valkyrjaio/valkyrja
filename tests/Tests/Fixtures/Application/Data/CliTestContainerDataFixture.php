@@ -42,8 +42,6 @@ use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
@@ -63,7 +61,6 @@ final readonly class CliTestContainerDataFixture extends ContainerData
         parent::__construct(
             callbacks: [
                 ContainerData::class                           => [CliContainerDataProviderFixture::class, 'publishData'],
-                DispatcherContract::class                      => [DispatchServiceProvider::class, 'publishDispatcher'],
                 CliInteractionConfigContract::class            => [CliInteractionServiceProvider::class, 'publishConfig'],
                 OutputFactoryContract::class                   => [CliInteractionServiceProvider::class, 'publishOutputFactory'],
                 InputReceivedHandlerContract::class            => [CliMiddlewareServiceProvider::class, 'publishInputReceivedHandler'],

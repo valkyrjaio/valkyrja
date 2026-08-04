@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\DispatchServiceProvider;
+use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
+use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
 use Valkyrja\Tests\Fixtures\Container\SingletonFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -124,19 +124,19 @@ final class ChildContainerTest extends TestCase
 
     public function testHasFromParentWhenRegisteredInParent(): void
     {
-        $this->parent->register(new DispatchServiceProvider());
+        $this->parent->register(new PublishingProviderFixture());
         // Re-create child so callbacks are copied from parent
         $child = $this->createChild();
 
-        self::assertTrue($child->has(DispatcherContract::class));
+        self::assertTrue($child->has(ProvidedFixture::class));
     }
 
     public function testHasFromChildWhenRegisteredInChild(): void
     {
-        $this->child->register(new DispatchServiceProvider());
+        $this->child->register(new PublishingProviderFixture());
 
-        self::assertTrue($this->child->has(DispatcherContract::class));
-        self::assertFalse($this->parent->has(DispatcherContract::class));
+        self::assertTrue($this->child->has(ProvidedFixture::class));
+        self::assertFalse($this->parent->has(ProvidedFixture::class));
     }
 
     public function testIsPublishedFromParent(): void
@@ -266,7 +266,7 @@ final class ChildContainerTest extends TestCase
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
         $this->parent->bindAlias('svcAlias', ServiceFixture::class);
         $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
-        $this->parent->register(new DispatchServiceProvider());
+        $this->parent->register(new PublishingProviderFixture());
 
         // Build child from the fully-set-up parent
         $child = $this->createChild();
@@ -274,14 +274,14 @@ final class ChildContainerTest extends TestCase
         // Snapshot parent state before any child interaction
         $dataBefore                = $this->parent->getData();
         $singletonInstanceBefore   = $this->parent->isSingletonInstance(SingletonFixture::class);
-        $dispatcherPublishedBefore = $this->parent->isPublished(DispatcherContract::class);
+        $providedPublishedBefore   = $this->parent->isPublished(ProvidedFixture::class);
 
         // Perform a broad set of child operations
         $child->get(ServiceFixture::class);
         $child->getService(ServiceFixture::class);
         $child->getAliased('svcAlias');
         $child->getSingleton(SingletonFixture::class);
-        $child->get(DispatcherContract::class); // triggers publish in child
+        $child->get(ProvidedFixture::class); // triggers publish in child
 
         // Parent data maps must be identical
         $dataAfter = $this->parent->getData();
@@ -294,7 +294,7 @@ final class ChildContainerTest extends TestCase
         self::assertSame($singletonInstanceBefore, $this->parent->isSingletonInstance(SingletonFixture::class));
 
         // Service published in child must not mark parent as published
-        self::assertSame($dispatcherPublishedBefore, $this->parent->isPublished(DispatcherContract::class));
+        self::assertSame($providedPublishedBefore, $this->parent->isPublished(ProvidedFixture::class));
     }
 
     // -----------------------------------------------------------------------
@@ -303,29 +303,29 @@ final class ChildContainerTest extends TestCase
 
     public function testProviderFromChildPublishedInChild(): void
     {
-        $this->child->register(new DispatchServiceProvider());
+        $this->child->register(new PublishingProviderFixture());
 
-        self::assertTrue($this->child->has(DispatcherContract::class));
+        self::assertTrue($this->child->has(ProvidedFixture::class));
 
-        $dispatcher = $this->child->get(DispatcherContract::class);
-        self::assertInstanceOf(DispatcherContract::class, $dispatcher);
+        $provided = $this->child->get(ProvidedFixture::class);
+        self::assertInstanceOf(ProvidedFixture::class, $provided);
 
-        self::assertFalse($this->parent->isPublished(DispatcherContract::class));
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
     }
 
     public function testProviderFromParentPublishedInChild(): void
     {
-        $this->parent->register(new DispatchServiceProvider());
+        $this->parent->register(new PublishingProviderFixture());
         // Re-create child so callbacks are copied from parent
         $child = $this->createChild();
 
-        self::assertTrue($child->has(DispatcherContract::class));
+        self::assertTrue($child->has(ProvidedFixture::class));
 
-        $dispatcher = $child->get(DispatcherContract::class);
-        self::assertInstanceOf(DispatcherContract::class, $dispatcher);
+        $provided = $child->get(ProvidedFixture::class);
+        self::assertInstanceOf(ProvidedFixture::class, $provided);
 
         // Publishing must stay in child, not pollute parent
-        self::assertFalse($this->parent->isPublished(DispatcherContract::class));
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
     }
 
     /**

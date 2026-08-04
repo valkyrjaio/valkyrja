@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
@@ -82,7 +81,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(SendingResponseHandlerContract::class, new SendingResponseHandler());
         $container->setSingleton(ResponseSentHandlerContract::class, new ResponseSentHandler());
         $container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
-        $container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
         $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 

@@ -233,7 +233,6 @@ use Valkyrja\Application\Constant\ComponentClass;
 
 array $providers = [
     ComponentClass::CONTAINER,
-    ComponentClass::DISPATCHER,
     ComponentClass::EVENT,
     ComponentClass::HTTP_MESSAGE,
     ComponentClass::HTTP_MIDDLEWARE,

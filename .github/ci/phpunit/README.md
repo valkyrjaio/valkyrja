@@ -124,7 +124,8 @@ of reported branches are unreachable by any test:
   the run, so that arm cannot be recorded.
 - **Exhaustive `match` fall-through** — a `match (true)` whose arms already cover
   the parameter's whole union type still carries an implicit `UnhandledMatchError`
-  branch that nothing can reach (see `DispatchFactory::fromReflection()`).
+  branch that nothing can reach. Give the `match` a `default` arm to remove the
+  branch. Every `match` in `src` has one today.
 - **Traits used by several classes** — a trait is compiled into each using class
   and the copies are conflated into one file entry.
   `Type\Enum\Trait\JsonSerializable` reports 3/3 run alone but 2/3 with the full

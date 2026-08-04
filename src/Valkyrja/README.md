@@ -17,9 +17,6 @@
   configuration, component loading, and the data cache
 - [The Container](Container/README.md) — Dependency injection, service types,
   service providers, and component providers
-- [The Dispatcher](Dispatch/README.md) — Dispatch types, the dispatcher
-  contract,
-  and how events, CLI, and HTTP all share the same invocation engine
 
 ### HTTP
 

@@ -30,7 +30,6 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\RouteProviderFixture;
@@ -86,7 +85,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(RouteNotMatchedHandlerContract::class, self::createStub(RouteNotMatchedHandlerContract::class));
         $this->container->setSingleton(RouteDispatchedHandlerContract::class, self::createStub(RouteDispatchedHandlerContract::class));
         $this->container->setSingleton(ProcessExitingHandlerContract::class, self::createStub(ProcessExitingHandlerContract::class));
-        $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(RouteCollectionContract::class, self::createStub(RouteCollectionContract::class));
         $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 

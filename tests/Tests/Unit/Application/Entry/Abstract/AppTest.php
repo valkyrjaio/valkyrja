@@ -46,8 +46,6 @@ use Valkyrja\Cli\Server\Provider\CliServerComponentProvider;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\ContainerComponentProvider;
-use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
-use Valkyrja\Dispatch\Provider\DispatchComponentProvider;
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
 use Valkyrja\Event\Data\EventData;
@@ -213,7 +211,6 @@ final class AppTest extends TestCase
     {
         $config = new Config(
             providers: [
-                new DispatchComponentProvider(),
                 new EventComponentProvider(),
                 new CliInteractionComponentProvider(),
                 new CliMiddlewareComponentProvider(),
@@ -249,7 +246,6 @@ final class AppTest extends TestCase
         self::assertTrue($container->has(RouteCollectionContract::class));
         self::assertTrue($container->has(InputHandlerContract::class));
         self::assertTrue($container->has(CliLogThrowableCaughtMiddleware::class));
-        self::assertTrue($container->has(DispatcherContract::class));
         self::assertTrue($container->has(ListenerCollectorContract::class));
         self::assertTrue($container->has(EventDispatcherContract::class));
         self::assertTrue($container->has(ListenerCollectionContract::class));
