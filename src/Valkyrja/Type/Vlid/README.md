@@ -4,97 +4,69 @@
 
 The VLID subcomponent generates and validates Valkyrja Universally Unique
 Lexicographically Sortable Identifiers — a Valkyrja-specific extension of the
-ULID format designed for higher time precision and controlled randomness.
+ULID format with microsecond time precision (`DateTimeInterface` format
+`'Uu'`). Every VLID starts with a 13-character Crockford Base32 timestamp,
+then a version digit at index 13, then the version's random segment:
 
-The key difference from ULID is **microsecond** timestamp precision rather than
-millisecond. VLID encodes the current time down to the microsecond, trades a
-small amount of randomness for that extra precision, and remains 128 bits total.
-Four versions (V1–V4) are provided, each with a different balance of random bits.
-The version digit is embedded directly in the identifier itself at position 14.
-
-## The VlidContract
-
-`Valkyrja\Type\Vlid\Contract\VlidContract` extends `TypeContract<string>`:
-
-```php
-public function asValue(): string;
-public function asFlatValue(): string;
+```
+04YKM75VZG2A8 1 KTFKRFQJ3B69
+|-----------| ^ |----------|
+  timestamp   |  randomness
+  13 chars    |  12 chars (V1)
+        version digit
 ```
 
-Each version has its own contract (`VlidV1Contract` through `VlidV4Contract`)
-extending `VlidContract`.
+## Versions
+
+The four versions differ only in the length of the random segment. Each
+random part encodes 20 bits in 4 characters:
+
+| Version | Random chars | Random bits | Total length |
+| :------ | :----------- | :---------- | :----------- |
+| V1      | 12           | 60          | 26           |
+| V2      | 16           | 80          | 30           |
+| V3      | 8            | 40          | 22           |
+| V4      | 4            | 20          | 18           |
+
+`Valkyrja\Type\Vlid\Enum\Version` is an int-backed enum with the cases `V1`
+through `V4`, whose values are the version digits.
 
 ## Value Objects
 
+`Vlid` and `VlidV1` through `VlidV4` implement `TypeContract<string>` through
+`VlidContract` (`asValue()` and `asFlatValue()` both return `string`), plus a
+thin per-version contract. Every constructor takes `string|null`:
+
 ```php
 use Valkyrja\Type\Vlid\Vlid;
-use Valkyrja\Type\Vlid\VlidV1;
+use Valkyrja\Type\Vlid\VlidV2;
 
-$vlid = new Vlid('01ARZ3NDEKTSV14RRFFQ69G5F');
-$v1   = new VlidV1('01ARZ3NDEKTSV14RRFFQ69G5F');
-
-// Or from an unknown value:
-$vlid = Vlid::fromValue($someValue);
+$vlid = new Vlid();                             // self-generates a V1 VLID
+$vlid = new Vlid('04YKM75VZG2A81KTFKRFQJ3B69'); // validates any version
+$v2   = new VlidV2();                           // self-generates a V2 VLID
 ```
 
-| Class    | Contract         |
-| :------- | :--------------- |
-| `Vlid`   | `VlidContract`   |
-| `VlidV1` | `VlidV1Contract` |
-| `VlidV2` | `VlidV2Contract` |
-| `VlidV3` | `VlidV3Contract` |
-| `VlidV4` | `VlidV4Contract` |
+The constructor validates a given string and throws `InvalidVlidException`
+(or `InvalidVlidVnException` from a version class) on failure. `fromValue()`
+throws `VlidInvalidFromValueException` when the value is not a string; `null`
+triggers generation.
 
 ## Generating VLIDs
 
-All generation goes through `VlidFactory` or a version-specific factory:
+All four factory methods share one signature and return a plain `string`:
 
 ```php
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 
-// Generate from current time (microsecond precision)
-$v1 = VlidFactory::v1();
-$v2 = VlidFactory::v2();
-$v3 = VlidFactory::v3();
+$v1 = VlidFactory::v1();                     // current time, uppercase
+$v2 = VlidFactory::v2(lowerCase: true);      // lowercase
+$v3 = VlidFactory::v3(new DateTime('2024-01-01 12:00:00.123456'));
 $v4 = VlidFactory::v4();
-
-// Generate lowercase
-$v1 = VlidFactory::v1(lowerCase: true);
-
-// Generate from a specific datetime
-$v1 = VlidFactory::v1(new DateTime('2024-01-01 12:00:00.123456'));
 ```
 
-All methods return a plain `string`.
-
-## Versions
-
-The four VLID versions differ in how many random bits follow the version digit.
-A higher version number means more random bits and slightly less deterministic
-ordering at the same microsecond:
-
-| Version | Version digit | Random segment length |
-| :------ | :------------ | :-------------------- |
-| V1      | `1`           | 12 chars (60 bits)    |
-| V2      | `2`           | varies                |
-| V3      | `3`           | varies                |
-| V4      | `4`           | varies                |
-
-The version digit is embedded at character position 14 of the identifier (0-indexed),
-immediately following the 13-character microsecond timestamp.
-
-## Comparison with ULID
-
-| Property       | ULID                     | VLID                     |
-| :------------- | :----------------------- | :----------------------- |
-| Time precision | Milliseconds             | Microseconds             |
-| Time encoding  | 10 chars (48 bits)       | 13 chars (~65 bits)      |
-| Random bits    | 80 bits (16 chars)       | 60 bits (12 chars) — V1  |
-| Versions       | 1                        | 4 (V1–V4)                |
-| Version in ID  | No                       | Yes (position 14)        |
-| Total length   | 26 chars                 | 26 chars                 |
-| Encoding       | Crockford Base32         | Crockford Base32         |
-| Monotonic      | Yes (within millisecond) | Yes (within microsecond) |
+Like the ULID factory, each VLID factory increments the previous random value
+when it generates again at the same microsecond, so the identifiers stay
+sorted.
 
 ## Validation
 
@@ -103,19 +75,9 @@ use Valkyrja\Type\Vlid\Factory\VlidFactory;
 use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
 
 VlidFactory::validate($string);   // validates any VLID version
-VlidV1Factory::validate($string); // validates V1 format only
+VlidV1Factory::validate($string); // validates the V1 format only
 ```
 
-Throws `InvalidVlidException` (or `InvalidVlidVnException` for version-specific
-factories) on failure. Each factory exposes a `REGEX` constant with its pattern.
-
-## Version Enum
-
-`Valkyrja\Type\Vlid\Enum\Version`:
-
-| Case | Value |
-| :--- | :---- |
-| `V1` | `1`   |
-| `V2` | `2`   |
-| `V3` | `3`   |
-| `V4` | `4`   |
+On failure, `validate()` throws `InvalidVlidException` from the base factory
+or `InvalidVlidVnException` from a version factory. Each factory exposes its
+pattern as the `REGEX` constant.
