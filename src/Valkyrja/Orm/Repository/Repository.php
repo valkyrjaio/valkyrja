@@ -23,7 +23,11 @@ use Valkyrja\Orm\Factory\DateFactory;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
+use Valkyrja\Orm\Statement\Contract\StatementContract;
+use Valkyrja\Orm\Throwable\Exception\OrmExecuteException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnregisteredEntityException;
+
+use function array_map;
 
 /**
  * @template T of EntityContract
@@ -78,6 +82,8 @@ class Repository implements RepositoryContract
 
         $statement = $this->manager->prepare((string) $select);
 
+        $this->executeStatement($statement, ...$this->getWhereValues(...$where));
+
         $fetch = $statement->fetchAllEntities($this->entity);
 
         return $fetch[0] ?? null;
@@ -110,6 +116,8 @@ class Repository implements RepositoryContract
 
         $statement = $this->manager->prepare((string) $select);
 
+        $this->executeStatement($statement, ...$this->getWhereValues(...$where));
+
         return $statement->fetchAllEntities($this->entity);
     }
 
@@ -139,7 +147,9 @@ class Repository implements RepositoryContract
             ->insert($table)
             ->withSet(...$set);
 
-        $this->manager->prepare((string) $create);
+        $statement = $this->manager->prepare((string) $create);
+
+        $this->executeStatement($statement, ...$set);
 
         $id = $this->manager->lastInsertId($table, $entity::getIdField());
 
@@ -200,7 +210,9 @@ class Repository implements RepositoryContract
             ->delete($table)
             ->withWhere($where);
 
-        $this->manager->prepare((string) $delete);
+        $statement = $this->manager->prepare((string) $delete);
+
+        $this->executeStatement($statement, $where->value);
     }
 
     /**
@@ -306,6 +318,46 @@ class Repository implements RepositoryContract
             ->withWhere($where)
             ->withSet(...$set);
 
-        $this->manager->prepare((string) $update);
+        $statement = $this->manager->prepare((string) $update);
+
+        $this->executeStatement($statement, $where->value, ...$set);
+    }
+
+    /**
+     * Get the values of a set of where clauses.
+     *
+     * @param Where ...$where The where clauses
+     *
+     * @return Value[]
+     */
+    protected function getWhereValues(Where ...$where): array
+    {
+        return array_map(
+            static fn (Where $whereClause): Value => $whereClause->value,
+            $where
+        );
+    }
+
+    /**
+     * Bind each value to a prepared statement, then execute the statement.
+     *
+     * @param StatementContract $statement The prepared statement
+     * @param Value             ...$values The values to bind
+     *
+     * @throws OrmExecuteException When the execution fails
+     */
+    protected function executeStatement(StatementContract $statement, Value ...$values): void
+    {
+        foreach ($values as $value) {
+            $statement->bindValue($value);
+        }
+
+        if (! $statement->execute()) {
+            throw new OrmExecuteException(
+                $statement->hasError()
+                    ? $statement->getErrorMessage()
+                    : 'Statement execution has failed'
+            );
+        }
     }
 }
