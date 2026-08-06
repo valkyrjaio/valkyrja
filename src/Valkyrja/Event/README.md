@@ -51,16 +51,19 @@ $dispatcher->dispatchIfHasListeners(new UserRegistered($user));
 ```
 
 **`dispatchById(string $eventId, array $arguments = []): object`** — Dispatch by
-class name. The dispatcher instantiates the event and, if the event implements
-`ArgumentsCapableEventContract`, calls `setArguments()` with the provided array
-before invoking listeners.
+class name. The container resolves the class name into the event. If the event
+implements `ArgumentsCapableEventContract`, the dispatcher calls
+`setArguments()` with the arguments. The dispatcher then invokes the listeners.
+See [Resolving Events From the Container](#resolving-events-from-the-container).
 
 ```php
 $dispatcher->dispatchById(UserRegistered::class, [$user]);
 ```
 
 **`dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object`
-** — Same as `dispatchById()`, but only runs if listeners are registered.
+** — Same as `dispatchById()`, but only runs the listeners if listeners are
+registered. The container resolves the event either way, and the method returns
+the event.
 
 ```php
 $dispatcher->dispatchByIdIfHasListeners(UserRegistered::class, [$user]);
@@ -81,6 +84,47 @@ Invoke a single listener's handler against an event. The handler is called as:
 ```php
 $handler($container, ['event' => $event]);
 ```
+
+## Resolving Events From the Container
+
+`dispatchById()` and `dispatchByIdIfHasListeners()` take a class name, not an
+event object. The dispatcher asks the container for that class name, and the
+container returns the event. The dispatcher constructs nothing itself.
+
+Bind each event that you dispatch by class name. The binding is a closure, so
+you decide how the container builds the event:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+$container->bind(
+    UserRegistered::class,
+    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered(),
+);
+```
+
+The dispatcher passes the arguments from the call site to the container, so a
+binding can read them:
+
+```php
+$container->bind(
+    UserRegistered::class,
+    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered($arguments[0]),
+);
+```
+
+The container builds the class itself when the application binds nothing for
+the class name. This keeps a dispatch by class name available without a
+binding. A binding is still the better choice, because the container then
+builds the event through code that you can read.
+
+Warning: the dispatch throws when the container cannot return the event. Two
+exceptions report the two failures:
+
+- `Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException` —
+  the container resolves nothing for the class name.
+- `Valkyrja\Event\Throwable\Exception\EventInvalidEventException` — the container
+  resolves the class name to a different type.
 
 ## Listener Handlers
 
@@ -153,8 +197,10 @@ class UserRegistered implements ArgumentsCapableEventContract
 }
 ```
 
-If the event does not implement `ArgumentsCapableEventContract`, any arguments
-provided at the call site are silently ignored.
+The dispatcher also gives the arguments to the container. An event that does
+not implement `ArgumentsCapableEventContract` can therefore still read the
+arguments through its container binding. See
+[Resolving Events From the Container](#resolving-events-from-the-container).
 
 ## Collecting Listener Return Values
 
