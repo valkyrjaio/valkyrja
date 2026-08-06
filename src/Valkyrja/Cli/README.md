@@ -38,8 +38,8 @@ The example spells out the arguments that an application commonly sets, and
 some shown values equal the constructor defaults. Pass a named argument to set
 a value, and omit the arguments you do not change. Convention: hold your
 application's real values in the config object — one config file per
-environment, or values that your own bootstrap
-reads from an env file. The constructor defaults are generic placeholders. See
+environment, or values that your own bootstrap reads from an env file. The
+constructor defaults are generic placeholders. See
 the [Application README](../Application/README.md#configuration) for the full
 property list.
 
