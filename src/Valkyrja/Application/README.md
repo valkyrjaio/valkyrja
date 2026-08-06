@@ -130,7 +130,7 @@ HTTP-specific configuration.
 | Property             | Default | Description                                              |
 | -------------------- | ------- | -------------------------------------------------------- |
 | `port`               | `50051` | The port the worker runtime listens on                   |
-| `maxInboundMessages` | `100`   | The largest number of messages one call may send inbound |
+| `maxInboundMessages` | `1000`  | The largest number of messages one call may send inbound |
 
 `GrpcConfig` also carries one array per middleware stage. Each array holds the
 middleware that runs at that stage for every call:
