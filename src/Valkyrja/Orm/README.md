@@ -22,6 +22,8 @@ $statement  = $orm->prepare('SELECT * FROM posts');
 
 The manager also controls the transaction: `beginTransaction()`, `inTransaction()`, `ensureTransaction()`, `commit()`, and `rollback()`. `ensureTransaction()` begins a transaction when none is in progress. `lastInsertId()` returns the id of the last inserted row. See the contract for the full method list.
 
+`prepare()` returns a statement that is not yet executed, so the caller binds values and calls `execute()`. `query()` prepares the statement and executes it in one step, and throws an `OrmExecuteException` when the execution fails.
+
 | Class           | Description                      |
 | :-------------- | :------------------------------- |
 | `MysqlManager`  | PDO connection to MySQL          |
@@ -182,10 +184,10 @@ $select = $orm->createQueryBuilder()
 
 // (string) $select renders, on one line:
 // SELECT posts.* FROM posts LEFT JOIN comments ON posts.id = comments.post_id
-//     WHERE  = :status ORDER BY created_at DESC LIMIT 10
+//     WHERE status = :status ORDER BY created_at DESC LIMIT 10
 ```
 
-A rendered where clause holds no column name: the `Value` name is the bind parameter. See the contracts under `QueryBuilder/Contract/` for the full method lists — `QueryBuilderContract` for the shared from, alias, join, and where methods, `SelectQueryBuilderContract` for columns, group by, order by, limit, and offset, and `InsertQueryBuilderContract` and `UpdateQueryBuilderContract` for `withSet()`. The delete builder adds nothing to the shared methods.
+The `Value` name is both the column name and the bind parameter in the rendered clause. See the contracts under `QueryBuilder/Contract/` for the full method lists — `QueryBuilderContract` for the shared from, alias, join, and where methods, `SelectQueryBuilderContract` for columns, group by, order by, limit, and offset, and `InsertQueryBuilderContract` and `UpdateQueryBuilderContract` for `withSet()`. The delete builder adds nothing to the shared methods.
 
 ### Data Objects
 
@@ -201,9 +203,9 @@ The value may be a scalar, an array (renders as `(:name0, :name1, ...)`), or a n
 `Where` wraps a `Value` with a comparison operator and a clause type:
 
 ```php
-new Where(new Value('status', 'published'))                        // WHERE  = :status
-new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // WHERE  IN (:id0, :id1, :id2)
-new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // WHERE  >= :score
+new Where(new Value('status', 'published'))                        // WHERE status = :status
+new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // WHERE id IN (:id0, :id1, :id2)
+new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // WHERE score >= :score
 ```
 
 The subclasses `AndWhere`, `OrWhere`, `NotWhere`, `AndNotWhere`, and `OrNotWhere` set the clause type. `WhereGroup` groups clauses into a parenthesized block:
@@ -213,7 +215,7 @@ new WhereGroup(
     new Where(new Value('a', 1)),
     new OrWhere(new Value('b', 2)),
 )
-// Renders as: ( = :a OR = :b)
+// Renders as: (a = :a OR b = :b)
 ```
 
 `Valkyrja\Orm\Enum\Comparison` holds the comparison operators, from equality and range (`=`, `!=`, `>`, `>=`) through pattern and set (`LIKE`, `REGEXP`, `IN`) to bitwise and shift (`^`, `|`, `<<`, `>>`). See the enum for the full case list.
