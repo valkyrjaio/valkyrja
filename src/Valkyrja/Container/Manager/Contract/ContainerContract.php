@@ -128,6 +128,15 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object;
 
     /**
+     * Get the id that an alias points to.
+     *
+     * @param class-string $alias The alias
+     *
+     * @return class-string|null
+     */
+    public function getAliasedId(string $alias): string|null;
+
+    /**
      * Get an aliased service from the container.
      *
      * @template T of object
