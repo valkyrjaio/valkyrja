@@ -293,11 +293,10 @@ public function store(): ResponseContract
 
 The `requestStruct` and `responseStruct` arguments of `#[Route]` accept the same
 instances inline. Two middleware classes act on the structs:
-`RequestStructMiddleware` (a `RouteMatched` middleware) rejects a request that
-fails validation with a 400 response, and rejects a request that carries a
-field the struct does not declare with a 413 response.
-`ResponseStructMiddleware` (a `RouteDispatched` middleware) shapes the
-outgoing response. Register them
+`RequestStructMiddleware` (a `RouteMatched` middleware) rejects a request
+that fails validation with a 400 response. It rejects a request that carries
+an undeclared field with a 413 response. `ResponseStructMiddleware` (a
+`RouteDispatched` middleware) shapes the outgoing response. Register them
 globally or per route for structs to take effect.
 
 ## PSR compatibility
