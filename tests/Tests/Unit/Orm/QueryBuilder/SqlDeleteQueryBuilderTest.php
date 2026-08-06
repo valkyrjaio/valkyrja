@@ -92,7 +92,7 @@ final class SqlDeleteQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('users', $query);
+        self::assertSame('DELETE FROM users u', $query);
     }
 
     public function testWithJoinAddsJoinClause(): void

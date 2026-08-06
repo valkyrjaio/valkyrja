@@ -66,7 +66,7 @@ class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilde
     }
 
     /**
-     * Get the SET part of an INSERT query.
+     * Get the SET part of an UPDATE query.
      */
     protected function getSetQuery(): string
     {
@@ -76,6 +76,6 @@ class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilde
             $values[] = "$value->name = " . ((string) $value);
         }
 
-        return Statement::SET . ' ' . implode(', ', $values);
+        return ' ' . Statement::SET . ' ' . implode(', ', $values);
     }
 }
