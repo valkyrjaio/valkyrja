@@ -71,8 +71,10 @@ class Repository implements RepositoryContract
     public function findBy(Where ...$where): EntityContract|null
     {
         $table  = $this->entity::getTableName();
-        $select = $this->manager->createQueryBuilder()->select($table);
-        $select->withWhere(...$where);
+        $select = $this->manager
+            ->createQueryBuilder()
+            ->select($table)
+            ->withWhere(...$where);
 
         $statement = $this->manager->prepare((string) $select);
 
@@ -101,8 +103,10 @@ class Repository implements RepositoryContract
     public function allBy(Where ...$where): array
     {
         $table  = $this->entity::getTableName();
-        $select = $this->manager->createQueryBuilder()->select($table);
-        $select->withWhere(...$where);
+        $select = $this->manager
+            ->createQueryBuilder()
+            ->select($table)
+            ->withWhere(...$where);
 
         $statement = $this->manager->prepare((string) $select);
 

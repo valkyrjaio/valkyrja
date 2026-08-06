@@ -78,11 +78,17 @@ final class RepositoryTest extends TestCase
     public function testFindReturnsEntityWhenFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE id = :id');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -98,6 +104,7 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE id = :id')
             ->willReturn($this->statement);
 
         $entityData = ['id' => 1, 'name' => 'Test Entity'];
@@ -118,11 +125,17 @@ final class RepositoryTest extends TestCase
     public function testFindReturnsNullWhenNotFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE id = :id');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -137,6 +150,7 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE id = :id')
             ->willReturn($this->statement);
 
         $this->statement
@@ -152,11 +166,17 @@ final class RepositoryTest extends TestCase
     public function testFindByReturnsEntityWhenFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE name = :name');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -172,6 +192,7 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE name = :name')
             ->willReturn($this->statement);
 
         $entityData = ['id' => 1, 'name' => 'Test Entity'];
@@ -191,11 +212,17 @@ final class RepositoryTest extends TestCase
     public function testAllReturnsArrayOfEntities(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -210,6 +237,7 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test')
             ->willReturn($this->statement);
 
         $entities = [
@@ -231,11 +259,17 @@ final class RepositoryTest extends TestCase
     public function testAllByReturnsFilteredEntities(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE name = :name');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -250,6 +284,7 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE name = :name')
             ->willReturn($this->statement);
 
         $entities = [
