@@ -378,12 +378,15 @@ The HTTP routing component registers `http:list` through its own provider,
 flowchart TD
     A([Cli::run]) --> B[Bootstrap - build Input from argv]
     B --> C[Stage 1 - InputReceived]
-    C -->|"short-circuit / throwable"| J[Stage 5 - ThrowableCaught]
+    C -->|"short-circuit"| H[Write output to stdout]
+    C -->|throwable| J[Stage 5 - ThrowableCaught]
     C --> D{"Router: command matched?"}
     D -->|"no match"| E["Stage 3 - RouteNotMatched (error output)"]
     D -->|matched| F[Stage 2 - RouteMatched]
-    E --> H[Write output to stdout]
-    F -->|"short-circuit / throwable"| J
+    E -->|throwable| J
+    E --> H
+    F -->|"short-circuit"| H
+    F -->|throwable| J
     F --> G["Route handler: handler(container, route)"]
     G -->|throwable| J
     G --> I[Stage 4 - RouteDispatched]
