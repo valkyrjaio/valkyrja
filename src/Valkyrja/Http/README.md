@@ -410,8 +410,9 @@ cache path as the fallback — and `debug` from the application's debug mode.
 
 The cache key is an MD5 hash of the request path and the request method. Each
 cache file holds the response as JSON. An entry expires after 1800 seconds. A
-response with a 5xx status code is never cached. An existing cache file is
-never rewritten. The middleware stores a new response for a path and method
+response with a 5xx status code is never cached.
+
+An existing cache file is never rewritten. The middleware stores a new response for a path and method
 only after the old entry expires and a later read deletes it. In debug mode the
 middleware still writes the cache, but it never reads it. A cache hit returns before route
 matching, so only the `SendingResponse` and `ResponseSent` stages still run.
