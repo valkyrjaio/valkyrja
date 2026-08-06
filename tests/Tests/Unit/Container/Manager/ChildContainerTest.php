@@ -57,6 +57,28 @@ final class ChildContainerTest extends TestCase
         self::assertFalse($this->parent->isAlias('childAlias'));
     }
 
+    public function testGetAliasedIdAgreesWithIsAlias(): void
+    {
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('myAlias', ServiceFixture::class);
+
+        // isAlias consults the parent, so the target read must consult it too
+        self::assertTrue($this->child->isAlias('myAlias'));
+        self::assertSame(ServiceFixture::class, $this->child->getAliasedId('myAlias'));
+
+        self::assertFalse($this->child->isAlias('unknown'));
+        self::assertNull($this->child->getAliasedId('unknown'));
+    }
+
+    public function testGetAliasedIdFromChildTakesPrecedence(): void
+    {
+        $this->parent->bindAlias('shared', ServiceFixture::class);
+        $this->child->bindAlias('shared', SingletonFixture::class);
+
+        self::assertSame(SingletonFixture::class, $this->child->getAliasedId('shared'));
+        self::assertSame(ServiceFixture::class, $this->parent->getAliasedId('shared'));
+    }
+
     // -----------------------------------------------------------------------
     // isService
     // -----------------------------------------------------------------------

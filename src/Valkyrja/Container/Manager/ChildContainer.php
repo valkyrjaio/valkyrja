@@ -43,6 +43,20 @@ class ChildContainer extends Container
     /**
      * @inheritDoc
      *
+     * @param class-string $alias The alias
+     *
+     * @return class-string|null
+     */
+    #[Override]
+    public function getAliasedId(string $alias): string|null
+    {
+        return parent::getAliasedId($alias)
+            ?? $this->parent->getAliasedId($alias);
+    }
+
+    /**
+     * @inheritDoc
+     *
      * @param class-string $id The service id
      */
     #[Override]
