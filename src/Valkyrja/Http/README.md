@@ -455,7 +455,8 @@ flowchart TD
     D -->|"no match: 404 / wrong method: 405"| E[RouteNotMatched middleware]
     D -->|matched| F[RouteMatched middleware]
     E --> G
-    F -->|"short-circuit / throwable"| J
+    F -->|"short-circuit"| G
+    F -->|throwable| J
     F --> H[Route handler callable]
     H -->|throwable| J
     H --> I[RouteDispatched middleware]
