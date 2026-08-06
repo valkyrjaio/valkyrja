@@ -245,6 +245,45 @@ final class ChildContainerTest extends TestCase
         self::assertInstanceOf(ServiceFixture::class, $instance);
     }
 
+    public function testGetAliasedFromParentPublishesDeferredTargetInChild(): void
+    {
+        // A deferred (provided, not yet published) target behind a parent-only alias
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        $child = $this->createChild();
+
+        $provided = $child->getAliased('providedAlias');
+
+        self::assertInstanceOf(ProvidedFixture::class, $provided);
+        // The alias target must publish into the child, never into the frozen parent
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(ProvidedFixture::class));
+        self::assertTrue($child->isSingletonInstance(ProvidedFixture::class));
+        self::assertSame($provided, $child->getAliased('providedAlias'));
+    }
+
+    public function testGetWithParentAliasPublishesDeferredTargetInChild(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        $child = $this->createChild();
+
+        $provided = $child->get('providedAlias');
+
+        self::assertInstanceOf(ProvidedFixture::class, $provided);
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(ProvidedFixture::class));
+        self::assertTrue($child->isSingletonInstance(ProvidedFixture::class));
+    }
+
+    public function testGetUnknownIdFallsBackWithoutAlias(): void
+    {
+        // Neither the child nor the parent has an alias, so get() falls back to a new instance
+        $instance = $this->child->get(SingletonFixture::class);
+
+        self::assertInstanceOf(SingletonFixture::class, $instance);
+    }
+
     public function testGetAliasedFromChild(): void
     {
         $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);

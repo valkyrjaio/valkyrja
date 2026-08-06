@@ -117,16 +117,19 @@ class ChildContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param class-string            $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
+     * A parent-only alias resolves its target through the child's own get(), so
+     * a deferred target publishes into the child and the frozen parent stays
+     * untouched between requests.
+     *
+     * @param class-string $id The service id
+     *
+     * @return class-string|null
      */
     #[Override]
-    protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
+    protected function getAlias(string $id): string|null
     {
-        if (! parent::isAlias($id) && $this->parent->isAlias($id)) {
-            return $this->parent->getAliased($id, $arguments);
-        }
-
-        return parent::getAliasedWithoutChecks($id, $arguments);
+        return parent::getAlias($id)
+            ?? $this->parent->getData()->aliases[$id]
+            ?? null;
     }
 }
