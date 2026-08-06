@@ -58,7 +58,7 @@ final class AndNotWhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new AndNotWhere($value);
 
-        self::assertSame('AND NOT = :status', (string) $where);
+        self::assertSame('AND NOT status = :status', (string) $where);
     }
 
     public function testPreservesValue(): void
@@ -74,6 +74,6 @@ final class AndNotWhereTest extends TestCase
         $value = new Value('category', ['a', 'b']);
         $where = new AndNotWhere($value, Comparison::IN);
 
-        self::assertSame('AND NOT IN (:category0, :category1)', (string) $where);
+        self::assertSame('AND NOT category IN (:category0, :category1)', (string) $where);
     }
 }

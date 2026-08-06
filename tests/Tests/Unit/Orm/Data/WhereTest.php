@@ -75,7 +75,7 @@ final class WhereTest extends TestCase
         $value = new Value('column', 'test');
         $where = new Where($value);
 
-        self::assertSame(' = :column', (string) $where);
+        self::assertSame('column = :column', (string) $where);
     }
 
     public function testToStringWithAndType(): void
@@ -83,7 +83,7 @@ final class WhereTest extends TestCase
         $value = new Value('column', 'test');
         $where = new Where($value, Comparison::EQUALS, WhereType::AND);
 
-        self::assertSame('AND = :column', (string) $where);
+        self::assertSame('AND column = :column', (string) $where);
     }
 
     public function testToStringWithOrType(): void
@@ -91,7 +91,7 @@ final class WhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new Where($value, Comparison::EQUALS, WhereType::OR);
 
-        self::assertSame('OR = :status', (string) $where);
+        self::assertSame('OR status = :status', (string) $where);
     }
 
     public function testToStringWithGreaterThan(): void
@@ -99,7 +99,7 @@ final class WhereTest extends TestCase
         $value = new Value('age', 18);
         $where = new Where($value, Comparison::GREATER_THAN, WhereType::AND);
 
-        self::assertSame('AND > :age', (string) $where);
+        self::assertSame('AND age > :age', (string) $where);
     }
 
     public function testToStringWithLike(): void
@@ -107,7 +107,7 @@ final class WhereTest extends TestCase
         $value = new Value('name', '%john%');
         $where = new Where($value, Comparison::LIKE);
 
-        self::assertSame(' LIKE :name', (string) $where);
+        self::assertSame('name LIKE :name', (string) $where);
     }
 
     public function testToStringWithIn(): void
@@ -115,10 +115,7 @@ final class WhereTest extends TestCase
         $value = new Value('status', ['active', 'pending']);
         $where = new Where($value, Comparison::IN);
 
-        $result = (string) $where;
-
-        self::assertStringContainsString('IN', $result);
-        self::assertStringContainsString(':status', $result);
+        self::assertSame('status IN (:status0, :status1)', (string) $where);
     }
 
     public function testReadonlyClass(): void

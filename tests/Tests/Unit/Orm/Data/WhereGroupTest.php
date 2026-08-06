@@ -77,7 +77,7 @@ final class WhereGroupTest extends TestCase
 
         $whereGroup = new WhereGroup($where);
 
-        self::assertSame('( = :status)', (string) $whereGroup);
+        self::assertSame('(status = :status)', (string) $whereGroup);
     }
 
     public function testToStringWithMultipleWhere(): void

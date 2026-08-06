@@ -58,7 +58,7 @@ final class OrWhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new OrWhere($value);
 
-        self::assertSame('OR = :status', (string) $where);
+        self::assertSame('OR status = :status', (string) $where);
     }
 
     public function testPreservesValue(): void
@@ -74,6 +74,6 @@ final class OrWhereTest extends TestCase
         $value = new Value('price', 100);
         $where = new OrWhere($value, Comparison::LESS_THAN);
 
-        self::assertSame('OR < :price', (string) $where);
+        self::assertSame('OR price < :price', (string) $where);
     }
 }

@@ -58,7 +58,7 @@ final class OrNotWhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new OrNotWhere($value);
 
-        self::assertSame('OR NOT = :status', (string) $where);
+        self::assertSame('OR NOT status = :status', (string) $where);
     }
 
     public function testPreservesValue(): void
@@ -74,6 +74,6 @@ final class OrNotWhereTest extends TestCase
         $value = new Value('name', 'test%');
         $where = new OrNotWhere($value, Comparison::LIKE);
 
-        self::assertSame('OR NOT LIKE :name', (string) $where);
+        self::assertSame('OR NOT name LIKE :name', (string) $where);
     }
 }
