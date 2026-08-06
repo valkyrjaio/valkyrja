@@ -18,7 +18,7 @@ use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Collection\ListenerCollection;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
-use Valkyrja\Event\Throwable\Exception\InvalidEventException;
+use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
 use Valkyrja\Tests\Fixtures\Event\ArgumentsCapableEventFixture;
 use Valkyrja\Tests\Fixtures\Event\DispatchCollectableEventFixture;
 use Valkyrja\Tests\Fixtures\Event\EventFixture;
@@ -244,7 +244,7 @@ final class DispatcherTest extends TestCase
 
         $dispatcher = new EventDispatcher(container: $container);
 
-        $this->expectException(InvalidEventException::class);
+        $this->expectException(EventInvalidEventException::class);
         $this->expectExceptionMessage('Service with `' . EventFixture::class . '` is not an event');
 
         $dispatcher->dispatchById(EventFixture::class);

@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Throwable\Exception;
 use Throwable;
 use Valkyrja\Event\Throwable\Exception\Abstract\EventInvalidArgumentException;
 
-class InvalidEventException extends EventInvalidArgumentException
+class EventInvalidEventException extends EventInvalidArgumentException
 {
     /**
      * @param class-string $id The event id that the container resolves to a different type

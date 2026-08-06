@@ -123,7 +123,7 @@ exceptions report the two failures:
 
 - `Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException` —
   the container resolves nothing for the class name.
-- `Valkyrja\Event\Throwable\Exception\InvalidEventException` — the container
+- `Valkyrja\Event\Throwable\Exception\EventInvalidEventException` — the container
   resolves the class name to a different type.
 
 ## Listener Handlers
