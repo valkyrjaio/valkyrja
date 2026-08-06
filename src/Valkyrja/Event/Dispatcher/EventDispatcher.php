@@ -125,7 +125,7 @@ class EventDispatcher implements EventDispatcherContract
     }
 
     /**
-     * Get an event class from a given id.
+     * Get an event from a given id.
      *
      * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
