@@ -57,8 +57,9 @@ Cli::run(new CliConfig(
 ));
 ```
 
-Each named argument overrides one constructor default. The examples spell out
-the common overrides; pass only the values that differ in your application.
+The examples spell out the arguments that an application commonly sets, and
+some shown values equal the constructor defaults. Pass a named argument to set
+a value, and omit the arguments you do not change.
 
 ## Configuration
 
