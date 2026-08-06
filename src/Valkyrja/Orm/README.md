@@ -32,6 +32,8 @@ public function lastInsertId(string $table, string $idField): string;
 
 `ensureTransaction()` starts a transaction if one is not already in progress. `createRepository()` returns a typed `RepositoryContract<T>` for a given entity class.
 
+`prepare()` returns a statement that is not yet executed, so the caller binds values and calls `execute()`. `query()` prepares the statement and executes it in one step, and throws an `OrmExecuteException` when the execution fails.
+
 ## Entities
 
 ### EntityContract

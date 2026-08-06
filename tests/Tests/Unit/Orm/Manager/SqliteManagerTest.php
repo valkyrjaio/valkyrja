@@ -25,6 +25,7 @@ use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
+use Valkyrja\Orm\Throwable\Exception\OrmExecuteException;
 use Valkyrja\Orm\Throwable\Exception\OrmNoLastIdException;
 use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
 use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
@@ -245,12 +246,17 @@ final class SqliteManagerTest extends TestCase
         $this->manager->prepare('INVALID QUERY');
     }
 
-    public function testQuery(): void
+    public function testQueryExecutesPreparedStatement(): void
     {
         $this->pdo->expects($this->never())->method('lastInsertId');
         $this->container->expects($this->never())->method('get');
 
-        $pdoStatement = self::createStub(PDOStatement::class);
+        $pdoStatement = $this->createMock(PDOStatement::class);
+
+        $pdoStatement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->pdo
             ->expects($this->once())
@@ -263,7 +269,7 @@ final class SqliteManagerTest extends TestCase
         self::assertInstanceOf(StatementContract::class, $result);
     }
 
-    public function testQueryThrowsExceptionOnFailure(): void
+    public function testQueryThrowsExceptionOnPreparationFailure(): void
     {
         $this->pdo->expects($this->never())->method('lastInsertId');
         $this->container->expects($this->never())->method('get');
@@ -275,9 +281,65 @@ final class SqliteManagerTest extends TestCase
             ->willReturn(false);
 
         $this->expectException(OrmStatementPreparationFailureException::class);
-        $this->expectExceptionMessage('Statement query has failed');
+        $this->expectExceptionMessage('Statement preparation has failed');
 
         $this->manager->query('INVALID QUERY');
+    }
+
+    public function testQueryThrowsExceptionWithErrorMessageOnExecutionFailure(): void
+    {
+        $this->pdo->expects($this->never())->method('lastInsertId');
+        $this->container->expects($this->never())->method('get');
+
+        $pdoStatement = $this->createMock(PDOStatement::class);
+
+        $pdoStatement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        $pdoStatement
+            ->method('errorInfo')
+            ->willReturn(['HY000', 1, 'Driver error']);
+
+        $this->pdo
+            ->expects($this->once())
+            ->method('prepare')
+            ->with('SELECT * FROM users')
+            ->willReturn($pdoStatement);
+
+        $this->expectException(OrmExecuteException::class);
+        $this->expectExceptionMessage('Driver error');
+
+        $this->manager->query('SELECT * FROM users');
+    }
+
+    public function testQueryThrowsExceptionWithFallbackMessageOnExecutionFailure(): void
+    {
+        $this->pdo->expects($this->never())->method('lastInsertId');
+        $this->container->expects($this->never())->method('get');
+
+        $pdoStatement = $this->createMock(PDOStatement::class);
+
+        $pdoStatement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        $pdoStatement
+            ->method('errorInfo')
+            ->willReturn(['00000', null, null]);
+
+        $this->pdo
+            ->expects($this->once())
+            ->method('prepare')
+            ->with('SELECT * FROM users')
+            ->willReturn($pdoStatement);
+
+        $this->expectException(OrmExecuteException::class);
+        $this->expectExceptionMessage('Statement execution has failed');
+
+        $this->manager->query('SELECT * FROM users');
     }
 
     public function testCommit(): void
