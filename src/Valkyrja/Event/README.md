@@ -40,18 +40,16 @@ dispatcher invokes every registered handler in order and returns the event.
 $dispatcher->dispatch(new UserRegistered($user));
 ```
 
-**`dispatchById()`** — dispatch by class name. The dispatcher constructs a new
-instance of the event class and dispatches that instance. The event class must
-be constructible without arguments. A class name that does not exist dispatches
-a new `stdClass` instance, and the dispatcher reports no error.
-
-Warning: `dispatchById()` does not pass its `$arguments` parameter to the
-event, and `dispatchByIdIfHasListeners()` discards its `$arguments` the same
-way. When the event needs data, construct the event yourself and call
-`dispatch()`.
+**`dispatchById()`** — dispatch by class name. The container resolves the
+class name into the event, and the dispatcher then invokes the listeners. The
+dispatcher constructs nothing itself — see
+[Resolving Events From the Container](#resolving-events-from-the-container).
+The dispatcher throws a `ContainerInvalidReferenceException` when the
+container resolves nothing for the id, and an `EventInvalidEventException`
+when the container returns a different type.
 
 ```php
-$dispatcher->dispatchById(UserRegistered::class);
+$dispatcher->dispatchById(UserRegistered::class, [$user]);
 ```
 
 **`dispatchListeners()`** — dispatch an event against the given listeners
@@ -60,10 +58,27 @@ only. The dispatcher does not consult the registered collection.
 **`dispatchListener()`** — invoke one listener's handler against an event.
 
 The `dispatchIfHasListeners()` and `dispatchByIdIfHasListeners()` variants
-call their base method only when at least one listener is registered for the
-event. Otherwise they invoke no handler: `dispatchIfHasListeners()` returns
-the event unchanged, and `dispatchByIdIfHasListeners()` returns a new event
-instance.
+invoke the listeners only when at least one listener is registered for the
+event. `dispatchIfHasListeners()` otherwise returns the event unchanged.
+`dispatchByIdIfHasListeners()` resolves the event from the container either
+way, and returns it.
+
+## Resolving Events From the Container
+
+`dispatchById()` and `dispatchByIdIfHasListeners()` take a class name, not an
+event object. The dispatcher asks the container for that class name and passes
+the call-site arguments along. Bind each event that you dispatch by class
+name. The binding is a callable, so you decide how the container builds the
+event:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+$container->bind(
+    UserRegistered::class,
+    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered($arguments[0]),
+);
+```
 
 ## Listener Handlers
 
@@ -100,8 +115,8 @@ interface stops propagation.
 public function setArguments(array $arguments): static;
 ```
 
-When `dispatchById()` constructs an event that implements this contract, the
-dispatcher calls `setArguments()` on the new instance with an empty array.
+When `dispatchById()` resolves an event that implements this contract, the
+dispatcher calls `setArguments()` with the arguments from the call site.
 
 ### `DispatchCollectableEventContract`
 
