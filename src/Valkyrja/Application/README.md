@@ -20,6 +20,12 @@ You do not instantiate `Valkyrja` directly. The entry classes handle this:
 - `Valkyrja\Application\Entry\Http` — for traditional PHP-FPM / CGI web
   applications
 - `Valkyrja\Application\Entry\Cli` — for console applications
+- `Valkyrja\Application\Entry\Queue` — for one job, run once (see
+  [Queue Entry Classes](#queue-entry-classes))
+- `Valkyrja\Application\Entry\PullQueue` — for a worker that pulls jobs from a
+  broker
+- `Valkyrja\Application\Entry\PushQueue` — for a broker that pushes a job over
+  HTTP
 - Persistent worker entry classes — for long-running worker runtimes (
   see [Persistent Worker Lifecycle](#persistent-worker-lifecycle))
 
@@ -62,6 +68,32 @@ Cli::run(new CliConfig(
 These entry classes exist so that improvements to the bootstrap sequence
 propagate to all projects without requiring manual updates to your entry point
 files.
+
+### Queue Entry Classes
+
+A queue has three entry classes, because a job reaches an application in three
+different ways.
+
+`Queue` is single-shot. It builds an application, runs one job, and exits. Use
+it for a one-off dispatch and for a test. A host that pushes repeatedly pays a
+full boot on every push, so use `WorkerQueue` instead.
+
+`PullQueue` runs a worker that takes jobs from a broker one at a time. It
+extends `Valkyrja\Application\Entry\Abstract\WorkerQueue`, which boots the
+application once and then gives each job a fresh child container.
+
+`PushQueue` answers a broker that delivers a job over HTTP. It maps the inbound
+request onto a job, runs it, and returns the outcome as the response status.
+
+```php
+// app/bin/queue
+use Valkyrja\Application\Data\QueueConfig;
+use Valkyrja\Application\Entry\PullQueue;
+
+PullQueue::run(new QueueConfig(
+    dir: __DIR__ . '/..',
+));
+```
 
 ## Configuration
 
