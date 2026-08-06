@@ -18,7 +18,7 @@ use Valkyrja\Event\Throwable\Exception\Abstract\EventInvalidArgumentException;
 class EventInvalidEventException extends EventInvalidArgumentException
 {
     /**
-     * @param class-string $id The event id that the container resolves to a different type
+     * @param class-string $id The invalid event class name
      */
     public function __construct(string $id, int $code = 0, Throwable|null $previous = null)
     {
