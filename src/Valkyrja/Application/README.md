@@ -31,7 +31,12 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
 Http::run(new HttpConfig(
-    dir: __DIR__ . '/..',
+    namespace:   'App',
+    dir:         __DIR__ . '/..',
+    environment: 'production',
+    debugMode:   false,
+    timezone:    'UTC',
+    key:         'your-application-key',
 ));
 ```
 
@@ -41,10 +46,19 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
 Cli::run(new CliConfig(
-    dir: __DIR__ . '/..',
-    applicationName: 'myapp',
+    namespace:          'App',
+    dir:                __DIR__ . '/..',
+    environment:        'production',
+    debugMode:          false,
+    timezone:           'UTC',
+    key:                'your-application-key',
+    applicationName:    'myapp',
+    defaultCommandName: 'list',
 ));
 ```
+
+Each named argument overrides one constructor default. The examples spell out
+the common overrides; pass only the values that differ in your application.
 
 ## Configuration
 
@@ -54,6 +68,12 @@ and `CliConfig` do not extend `Config` — each implements its own contract
 (`HttpConfigContract`, `CliConfigContract`) and repeats the base properties.
 The entry classes discriminate on the contract: `Http::run()` requires an
 `HttpConfigContract`, and `Cli::run()` requires a `CliConfigContract`.
+
+Convention: hold your application's real values in the config object that the
+entry point builds. Create one config file per environment, or read the values
+from an env file in your own bootstrap, and pass them as constructor
+arguments. The constructor defaults are generic placeholders, not production
+values.
 
 ### Base Properties
 
