@@ -23,11 +23,23 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
 Cli::run(new CliConfig(
+    namespace:          'App',
     dir:                __DIR__,
+    environment:        'production',
+    debugMode:          false,
+    timezone:           'UTC',
+    key:                'your-application-key',
     applicationName:    'myapp',
     defaultCommandName: 'list',
 ));
 ```
+
+Each named argument overrides one constructor default; pass only the values
+that differ. Convention: hold your application's real values in the config
+object — one config file per environment, or values that your own bootstrap
+reads from an env file. The constructor defaults are generic placeholders. See
+the [Application README](../Application/README.md#configuration) for the full
+property list.
 
 ### Global middleware
 
