@@ -183,13 +183,22 @@ Use this method to classify an alias. The state methods answer for the id that
 you give them, never for the alias target, so ask for the target first:
 
 ```php
-// Right — classify the target that the alias points to.
+// Wrong — the state method answers for the alias, which holds no instance.
+// This reports false while getAliased() returns a resolved singleton.
+if ($container->isSingletonInstance($alias)) {
+}
+```
+
+```php
+// Right — read the target first, then classify the target.
 $aliasedId = $container->getAliasedId($alias);
 
 if ($aliasedId !== null && $container->isSingletonInstance($aliasedId)) {
     // The container holds a resolved instance for the target.
 }
+```
 
+```php
 // Right — classify the id itself, and exclude an alias.
 if ($container->isSingleton($id) && ! $container->isAlias($id)) {
     // The id is a singleton in its own right.
