@@ -76,4 +76,13 @@ final class DuplicateSubProviderFixture implements ComponentProviderContract
             HttpRouteProviderFixture::class,
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getGrpcProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
 }
