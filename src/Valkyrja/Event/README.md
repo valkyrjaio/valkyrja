@@ -41,12 +41,10 @@ $dispatcher->dispatch(new UserRegistered($user));
 ```
 
 **`dispatchById()`** — dispatch by class name. The container resolves the
-class name into the event, and the dispatcher then invokes the listeners. The
-dispatcher constructs nothing itself — see
-[Resolving Events From the Container](#resolving-events-from-the-container).
-The dispatcher throws a `ContainerInvalidReferenceException` when the
-container resolves nothing for the id, and an `EventInvalidEventException`
-when the container returns a different type.
+class name into the event, and the dispatcher then invokes the listeners —
+see [Resolving Events From the Container](#resolving-events-from-the-container).
+The dispatcher throws an `EventInvalidEventException` when the container
+returns a different type.
 
 ```php
 $dispatcher->dispatchById(UserRegistered::class, [$user]);
@@ -67,9 +65,13 @@ way, and returns it.
 
 `dispatchById()` and `dispatchByIdIfHasListeners()` take a class name, not an
 event object. The dispatcher asks the container for that class name and passes
-the call-site arguments along. Bind each event that you dispatch by class
-name. The binding is a callable, so you decide how the container builds the
-event:
+the call-site arguments along. The container constructs an unbound event class
+itself and passes the call-site arguments to the constructor. A class name
+that the container cannot resolve throws a
+`ContainerInvalidReferenceException`.
+
+Bind each event that you dispatch by class name. The binding is a callable, so
+you decide how the container builds the event:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -115,8 +117,9 @@ interface stops propagation.
 public function setArguments(array $arguments): static;
 ```
 
-When `dispatchById()` resolves an event that implements this contract, the
-dispatcher calls `setArguments()` with the arguments from the call site.
+When `dispatchById()` or `dispatchByIdIfHasListeners()` resolves an event
+that implements this contract, the dispatcher calls `setArguments()` with the
+arguments from the call site.
 
 ### `DispatchCollectableEventContract`
 
