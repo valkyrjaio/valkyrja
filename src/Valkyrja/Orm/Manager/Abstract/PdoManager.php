@@ -23,6 +23,7 @@ use Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
+use Valkyrja\Orm\Throwable\Exception\OrmExecuteException;
 use Valkyrja\Orm\Throwable\Exception\OrmNoLastIdException;
 use Valkyrja\Orm\Throwable\Exception\OrmStatementPreparationFailureException;
 
@@ -119,13 +120,17 @@ abstract class PdoManager implements ManagerContract
     #[Override]
     public function query(string $query): StatementContract
     {
-        $statement = $this->pdo->prepare($query);
+        $statement = $this->prepare($query);
 
-        if (is_bool($statement)) {
-            throw new OrmStatementPreparationFailureException('Statement query has failed');
+        if (! $statement->execute()) {
+            throw new OrmExecuteException(
+                $statement->hasError()
+                    ? $statement->getErrorMessage()
+                    : 'Statement execution has failed'
+            );
         }
 
-        return new PdoStatement(statement: $statement);
+        return $statement;
     }
 
     /**
