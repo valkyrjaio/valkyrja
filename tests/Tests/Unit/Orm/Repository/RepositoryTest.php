@@ -30,6 +30,7 @@ use Valkyrja\Orm\Registry\EntityMetadataRegistry;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
+use Valkyrja\Orm\Throwable\Exception\OrmExecuteException;
 use Valkyrja\Orm\Throwable\Exception\OrmUnregisteredEntityException;
 use Valkyrja\Tests\Fixtures\Orm\Entity\DatedEntityCustomFieldsFixture;
 use Valkyrja\Tests\Fixtures\Orm\Entity\DatedEntityFixture;
@@ -78,11 +79,17 @@ final class RepositoryTest extends TestCase
     public function testFindReturnsEntityWhenFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE id = :id');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -98,10 +105,16 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE id = :id')
             ->willReturn($this->statement);
 
         $entityData = ['id' => 1, 'name' => 'Test Entity'];
         $entity     = ($this->entityClass)::fromArray($entityData);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->statement
             ->expects($this->once())
@@ -118,11 +131,17 @@ final class RepositoryTest extends TestCase
     public function testFindReturnsNullWhenNotFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE id = :id');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -137,7 +156,13 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE id = :id')
             ->willReturn($this->statement);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->statement
             ->expects($this->once())
@@ -152,11 +177,17 @@ final class RepositoryTest extends TestCase
     public function testFindByReturnsEntityWhenFound(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE name = :name');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -172,10 +203,16 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE name = :name')
             ->willReturn($this->statement);
 
         $entityData = ['id' => 1, 'name' => 'Test Entity'];
         $entity     = ($this->entityClass)::fromArray($entityData);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->statement
             ->expects($this->once())
@@ -191,11 +228,17 @@ final class RepositoryTest extends TestCase
     public function testAllReturnsArrayOfEntities(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -210,12 +253,18 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test')
             ->willReturn($this->statement);
 
         $entities = [
             ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Entity 1']),
             ($this->entityClass)::fromArray(['id' => 2, 'name' => 'Entity 2']),
         ];
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->statement
             ->expects($this->once())
@@ -231,11 +280,17 @@ final class RepositoryTest extends TestCase
     public function testAllByReturnsFilteredEntities(): void
     {
         $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+        $whereBuilder  = $this->createMock(SelectQueryBuilderContract::class);
 
         $selectBuilder
             ->expects($this->once())
             ->method('withWhere')
-            ->willReturnSelf();
+            ->willReturn($whereBuilder);
+
+        $whereBuilder
+            ->expects($this->once())
+            ->method('__toString')
+            ->willReturn('SELECT * FROM test WHERE name = :name');
 
         $this->queryBuilderFactory
             ->expects($this->once())
@@ -250,11 +305,17 @@ final class RepositoryTest extends TestCase
         $this->manager
             ->expects($this->once())
             ->method('prepare')
+            ->with('SELECT * FROM test WHERE name = :name')
             ->willReturn($this->statement);
 
         $entities = [
             ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Test']),
         ];
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $this->statement
             ->expects($this->once())
@@ -299,8 +360,9 @@ final class RepositoryTest extends TestCase
             ->willReturn('123');
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $entity = ($this->entityClass)::fromArray(['name' => 'New Entity']);
 
@@ -341,8 +403,9 @@ final class RepositoryTest extends TestCase
             ->willReturn('123');
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $entity = EntityStringIdFixture::fromArray(['name' => 'New Entity']);
 
@@ -382,8 +445,9 @@ final class RepositoryTest extends TestCase
             ->willReturn($this->statement);
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Updated Entity']);
 
@@ -432,8 +496,9 @@ final class RepositoryTest extends TestCase
             ->willReturn($this->statement);
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $entity       = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Original Name']);
         $entity->name = 'Changed Name';
@@ -469,8 +534,9 @@ final class RepositoryTest extends TestCase
             ->willReturn($this->statement);
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
 
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
 
@@ -682,6 +748,205 @@ final class RepositoryTest extends TestCase
         self::assertNull($entity->deleted_at);
     }
 
+    public function testFindByBindsTheWhereValues(): void
+    {
+        $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+
+        $selectBuilder
+            ->expects($this->once())
+            ->method('withWhere')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('select')
+            ->willReturn($selectBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $value = new Value('name', 'Test Entity');
+
+        $this->statement
+            ->expects($this->once())
+            ->method('bindValue')
+            ->with($value)
+            ->willReturn(true);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('fetchAllEntities')
+            ->willReturn([]);
+
+        $result = $this->repository->findBy(new Where($value));
+
+        self::assertNull($result);
+    }
+
+    public function testFindByThrowsWhenTheExecutionFails(): void
+    {
+        $selectBuilder = $this->createMock(SelectQueryBuilderContract::class);
+
+        $selectBuilder
+            ->expects($this->once())
+            ->method('withWhere')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('select')
+            ->willReturn($selectBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('hasError')
+            ->willReturn(true);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('getErrorMessage')
+            ->willReturn('Statement failed');
+
+        $this->statement
+            ->expects($this->never())
+            ->method('fetchAllEntities');
+
+        $this->expectException(OrmExecuteException::class);
+        $this->expectExceptionMessage('Statement failed');
+
+        $this->repository->findBy(new Where(new Value('name', 'Test')));
+    }
+
+    public function testCreateBindsTheSetValues(): void
+    {
+        $this->expectInsertStatement();
+
+        $this->statement
+            ->expects($this->once())
+            ->method('bindValue')
+            ->with(new Value('name', 'New Entity'))
+            ->willReturn(true);
+
+        $entity = ($this->entityClass)::fromArray(['name' => 'New Entity']);
+
+        $this->repository->create($entity);
+
+        self::assertSame(123, $entity->id);
+    }
+
+    public function testUpdateBindsTheWhereAndSetValues(): void
+    {
+        $this->expectUpdateStatement();
+
+        $bound = [];
+
+        $this->statement
+            ->method('bindValue')
+            ->willReturnCallback(static function (Value $value) use (&$bound): bool {
+                $bound[] = [$value->name, $value->value];
+
+                return true;
+            });
+
+        $entity       = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Original Name']);
+        $entity->name = 'Changed Name';
+
+        $this->repository->update($entity);
+
+        self::assertContains(['id', 1], $bound);
+        self::assertContains(['name', 'Changed Name'], $bound);
+    }
+
+    public function testForceDeleteBindsTheIdValue(): void
+    {
+        $this->expectDeleteStatement();
+
+        $this->statement
+            ->expects($this->once())
+            ->method('bindValue')
+            ->with(new Value('id', 1))
+            ->willReturn(true);
+
+        $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
+
+        $this->repository->forceDelete($entity);
+
+        self::assertTrue(true);
+    }
+
+    public function testForceDeleteThrowsWhenTheExecutionFailsWithNoError(): void
+    {
+        $deleteBuilder = $this->createMock(DeleteQueryBuilderContract::class);
+
+        $deleteBuilder
+            ->expects($this->once())
+            ->method('withWhere')
+            ->willReturnSelf();
+
+        $this->queryBuilderFactory
+            ->expects($this->once())
+            ->method('delete')
+            ->willReturn($deleteBuilder);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($this->queryBuilderFactory);
+
+        $this->manager
+            ->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->statement);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        $this->statement
+            ->expects($this->once())
+            ->method('hasError')
+            ->willReturn(false);
+
+        $this->statement
+            ->expects($this->never())
+            ->method('getErrorMessage');
+
+        $this->expectException(OrmExecuteException::class);
+        $this->expectExceptionMessage('Statement execution has failed');
+
+        $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
+
+        $this->repository->forceDelete($entity);
+    }
+
     /**
      * Build a repository whose registry holds the given metadata for the entity.
      *
@@ -755,8 +1020,9 @@ final class RepositoryTest extends TestCase
             ->willReturn('123');
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
     }
 
     /**
@@ -793,8 +1059,9 @@ final class RepositoryTest extends TestCase
             ->willReturn($this->statement);
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
     }
 
     /**
@@ -826,7 +1093,8 @@ final class RepositoryTest extends TestCase
             ->willReturn($this->statement);
 
         $this->statement
-            ->expects($this->never())
-            ->method('execute');
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
     }
 }
