@@ -34,7 +34,10 @@ readonly class Where implements Stringable
     #[Override]
     public function __toString(): string
     {
-        return $this->type->value
+        $type = $this->type->value;
+
+        return ($type === '' ? '' : "$type ")
+            . $this->value->name
             . ' '
             . $this->comparison->value
             . ' '

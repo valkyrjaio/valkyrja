@@ -257,9 +257,9 @@ The value may be a scalar, array (renders as `(:name0, :name1, ...)`), or a nest
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Enum\Comparison;
 
-new Where(new Value('status', 'published'))                            // WHERE = :status
-new Where(new Value('id', [1, 2, 3]), Comparison::IN)                 // WHERE IN (:id0, :id1, :id2)
-new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)     // WHERE >= :score
+new Where(new Value('status', 'published'))                            // WHERE status = :status
+new Where(new Value('id', [1, 2, 3]), Comparison::IN)                 // WHERE id IN (:id0, :id1, :id2)
+new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)     // WHERE score >= :score
 ```
 
 Convenience subclasses for combining clauses:
@@ -279,7 +279,7 @@ new WhereGroup(
     new Where(new Value('a', 1)),
     new OrWhere(new Value('b', 2)),
 )
-// Renders as: (= :a OR = :b)
+// Renders as: (a = :a OR b = :b)
 ```
 
 ### Join

@@ -58,7 +58,7 @@ final class AndWhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new AndWhere($value);
 
-        self::assertSame('AND = :status', (string) $where);
+        self::assertSame('AND status = :status', (string) $where);
     }
 
     public function testPreservesValue(): void
@@ -74,6 +74,6 @@ final class AndWhereTest extends TestCase
         $value = new Value('price', 100);
         $where = new AndWhere($value, Comparison::GREATER_THAN);
 
-        self::assertSame('AND > :price', (string) $where);
+        self::assertSame('AND price > :price', (string) $where);
     }
 }

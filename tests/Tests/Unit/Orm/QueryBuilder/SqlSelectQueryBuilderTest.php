@@ -101,8 +101,7 @@ final class SqlSelectQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('WHERE', $query);
-        self::assertStringContainsString(':status', $query);
+        self::assertSame('SELECT * FROM users WHERE status = :status', $query);
     }
 
     public function testWithAddedWhereAppendsWhereClause(): void
@@ -119,9 +118,7 @@ final class SqlSelectQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('WHERE', $query);
-        self::assertStringContainsString(':status', $query);
-        self::assertStringContainsString(':role', $query);
+        self::assertSame('SELECT * FROM users WHERE status = :status AND role = :role', $query);
     }
 
     public function testWithJoinAddsJoinClause(): void

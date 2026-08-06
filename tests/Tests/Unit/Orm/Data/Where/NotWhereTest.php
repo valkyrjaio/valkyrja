@@ -58,7 +58,7 @@ final class NotWhereTest extends TestCase
         $value = new Value('status', 'active');
         $where = new NotWhere($value);
 
-        self::assertSame('NOT = :status', (string) $where);
+        self::assertSame('NOT status = :status', (string) $where);
     }
 
     public function testPreservesValue(): void
@@ -74,6 +74,6 @@ final class NotWhereTest extends TestCase
         $value = new Value('name', 'test%');
         $where = new NotWhere($value, Comparison::LIKE);
 
-        self::assertSame('NOT LIKE :name', (string) $where);
+        self::assertSame('NOT name LIKE :name', (string) $where);
     }
 }
