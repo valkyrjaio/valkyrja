@@ -18,20 +18,22 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
 Http::run(new HttpConfig(
-    namespace:     'App',
-    dir:           __DIR__,
-    environment:   'production',
-    debugMode:     false,
-    key:           'your-application-key',
-    dataPath:      'App/Provider/Data',
-    dataNamespace: 'App\\Provider\\Data',
+    namespace:   'App',
+    dir:         __DIR__,
+    environment: 'production',
+    debugMode:   false,
+    timezone:    'UTC',
+    key:         'your-application-key',
 ));
 ```
 
-The `dataPath` and `dataNamespace` arguments name the location of the generated
-data classes that production uses instead of runtime reflection. The `providers`
-array lists the component providers, and seven middleware arrays configure the
-global pipeline — see [the middleware pipeline](#the-middleware-pipeline).
+Each named argument overrides one constructor default; pass only the values
+that differ. Convention: hold your application's real values in the config
+object — one config file per environment, or values that your own bootstrap
+reads from an env file. The constructor defaults are generic placeholders. The
+`providers` array lists the component providers, and seven middleware arrays
+configure the global pipeline — see
+[the middleware pipeline](#the-middleware-pipeline).
 
 `Http::run()` boots the application, builds a `ServerRequest` from the
 superglobals with `RequestFactory::fromGlobals()`, resolves the
