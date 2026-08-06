@@ -104,7 +104,7 @@ final class SqlInsertQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('users', $query);
+        self::assertSame('INSERT INTO users u (name) VALUES (:name)', $query);
     }
 
     public function testWithJoinAddsJoinClause(): void

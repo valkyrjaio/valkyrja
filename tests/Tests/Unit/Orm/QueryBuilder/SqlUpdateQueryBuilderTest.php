@@ -45,7 +45,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
     {
         $query = (string) $this->builder;
 
-        self::assertStringContainsString('UPDATE users', $query);
+        self::assertSame('UPDATE users SET ', $query);
     }
 
     public function testWithSetReturnsNewInstance(): void
@@ -65,10 +65,23 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('UPDATE users', $query);
-        self::assertStringContainsString('SET', $query);
-        self::assertStringContainsString('name = :name', $query);
-        self::assertStringContainsString('email = :email', $query);
+        self::assertSame('UPDATE users SET name = :name, email = :email', $query);
+    }
+
+    public function testSetClauseIsSeparatedFromTheTable(): void
+    {
+        $newBuilder = $this->builder->withSet(new Value('name', 'John'));
+
+        self::assertSame('UPDATE users SET name = :name', (string) $newBuilder);
+    }
+
+    public function testSetClauseIsSeparatedFromTheAlias(): void
+    {
+        $newBuilder = $this->builder
+            ->withAlias('u')
+            ->withSet(new Value('name', 'John'));
+
+        self::assertSame('UPDATE users u SET name = :name', (string) $newBuilder);
     }
 
     public function testWithAddedSetAppendsValues(): void
@@ -83,9 +96,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('name = :name', $query);
-        self::assertStringContainsString('email = :email', $query);
-        self::assertStringContainsString('age = :age', $query);
+        self::assertSame('UPDATE users SET name = :name, email = :email, age = :age', $query);
     }
 
     public function testWithWhereAddsWhereClause(): void
@@ -99,8 +110,8 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('WHERE', $query);
-        self::assertStringContainsString(':id', $query);
+        // The Where renders its own text, so the expectation pins the composition only.
+        self::assertSame("UPDATE users SET name = :name WHERE $where", $query);
     }
 
     public function testWithFromReturnsNewInstance(): void
@@ -108,7 +119,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
         $newBuilder = $this->builder->withFrom('posts');
 
         self::assertNotSame($this->builder, $newBuilder);
-        self::assertStringContainsString('UPDATE posts', (string) $newBuilder);
+        self::assertSame('UPDATE posts SET ', (string) $newBuilder);
     }
 
     public function testWithJoinAddsJoinClause(): void
@@ -129,7 +140,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('INNER JOIN profiles', $query);
+        self::assertSame("UPDATE users SET name = :name $join", $query);
     }
 
     public function testWithAddedJoinAppendsJoinClause(): void
@@ -159,8 +170,7 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('INNER JOIN profiles', $query);
-        self::assertStringContainsString('LEFT JOIN addresses', $query);
+        self::assertSame("UPDATE users SET name = :name $join1 $join2", $query);
     }
 
     public function testImmutability(): void
@@ -186,12 +196,9 @@ final class SqlUpdateQueryBuilderTest extends TestCase
 
         $query = (string) $newBuilder;
 
-        self::assertStringContainsString('UPDATE users', $query);
-        self::assertStringContainsString('SET', $query);
-        self::assertStringContainsString('name = :name', $query);
-        self::assertStringContainsString('email = :email', $query);
-        self::assertStringContainsString('WHERE', $query);
-        self::assertStringContainsString(':id', $query);
-        self::assertStringContainsString(':active', $query);
+        self::assertSame(
+            "UPDATE users SET name = :name, email = :email WHERE $where1 $where2",
+            $query
+        );
     }
 }
