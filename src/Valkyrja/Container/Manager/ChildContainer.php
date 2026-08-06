@@ -119,7 +119,8 @@ class ChildContainer extends Container
      *
      * A parent-only alias resolves its target through the child's own get(), so
      * a deferred target publishes into the child and the frozen parent stays
-     * untouched between requests.
+     * untouched between requests. The isAlias() guard keeps the parent's data
+     * object off the common path, where the id is no alias at all.
      *
      * @param class-string $id The service id
      *
@@ -129,7 +130,8 @@ class ChildContainer extends Container
     protected function getAlias(string $id): string|null
     {
         return parent::getAlias($id)
-            ?? $this->parent->getData()->aliases[$id]
-            ?? null;
+            ?? ($this->parent->isAlias($id)
+                ? $this->parent->getData()->aliases[$id]
+                : null);
     }
 }
