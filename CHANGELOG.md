@@ -1,6 +1,19 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.9.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.10.0...26.x)
+
+## [v26.10.0](https://github.com/valkyrjaio/valkyrja/compare/v26.9.0...v26.10.0) - 2026-08-06
+
+* [Workflow] ci: Update .github workflow refs to v26.24.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1150
+* [Cli] refactor!: Remove the unused data:generate command name constant by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1155
+* [Orm] fix: Execute the prepared statement in query() by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1153
+* [Orm] fix: Add the missing space before SET in the update query builder by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1152
+* [Orm] fix: Add the column name to the rendered where clause by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1151
+* [Orm] fix: Use the query builder that withWhere returns in findBy and allBy by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1156
+* [Event] fix: Resolve a dispatched event from the container by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1134
+* [Workflow] ci: Update .github workflow refs to v26.24.1 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1173
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1174
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1175
 
 ## [v26.9.0](https://github.com/valkyrjaio/valkyrja/compare/v26.8.0...v26.9.0) - 2026-08-05
 
