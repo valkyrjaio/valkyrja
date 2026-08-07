@@ -446,7 +446,7 @@ throw new HttpResponseException(StatusCode::NOT_FOUND, 'Resource not found.');
 
 The `RequestHandler` catches every throwable. In debug mode it rethrows the
 throwable. Otherwise, for an `HttpResponseException` it uses the attached
-response when one is set; without one it builds a generic body with the
+response when one is set. Without one, it builds a generic body from the
 exception's status code and a trace code. Any other throwable produces a
 generic 500 response. The `ThrowableCaught` middleware then runs and can replace
 the response, and the `SendingResponse` and `ResponseSent` stages still follow.
