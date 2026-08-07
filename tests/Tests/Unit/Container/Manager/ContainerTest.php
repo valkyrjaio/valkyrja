@@ -105,7 +105,6 @@ final class ContainerTest extends TestCase
 
         $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
 
-        // A bound id is not an alias, so it points to nothing
         self::assertNull($container->getAliasedId(ServiceFixture::class));
         self::assertNull($container->getAliasedId('unknown'));
     }

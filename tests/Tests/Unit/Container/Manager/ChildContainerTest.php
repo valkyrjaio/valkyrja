@@ -62,7 +62,6 @@ final class ChildContainerTest extends TestCase
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
         $this->parent->bindAlias('myAlias', ServiceFixture::class);
 
-        // isAlias consults the parent, so the target read must consult it too
         self::assertTrue($this->child->isAlias('myAlias'));
         self::assertSame(ServiceFixture::class, $this->child->getAliasedId('myAlias'));
 
