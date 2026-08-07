@@ -176,6 +176,11 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $this->expectException(UploadedFileInvalidArgumentException::class);
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $this->fileData->with(['invalid' => 'not-a-file']);
     }
 

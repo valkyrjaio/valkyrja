@@ -550,6 +550,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->forceDelete($entity);
 
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         self::assertTrue(true);
     }
 
@@ -895,6 +896,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->forceDelete($entity);
 
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         self::assertTrue(true);
     }
 

@@ -361,6 +361,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->bind(
             PDO::class,
             static function (ContainerContract $container, array $arguments) use (&$dsn): PDO {
+                /** @psalm-suppress MixedAssignment The test gives invalid input on purpose to reach the guard. */
                 $dsn = $arguments[0] ?? null;
 
                 return new PdoFixture('sqlite::memory:');

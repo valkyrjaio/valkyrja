@@ -145,6 +145,11 @@ final class PhpRendererTest extends TestCase
         $exceptionThrown = false;
 
         try {
+            /**
+             * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+             *
+             * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+             */
             $renderer->renderFile('');
         } catch (ViewInvalidPathException $e) {
             $exceptionThrown = true;

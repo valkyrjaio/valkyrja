@@ -143,6 +143,11 @@ final class QueryParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $this->paramData->with(['invalid' => new stdClass()]);
     }
 

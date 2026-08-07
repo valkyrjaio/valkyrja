@@ -85,7 +85,7 @@ final class PhpSessionTest extends TestCase
 
         $session->start();
 
-        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
+        /** @psalm-suppress RedundantConditionGivenDocblockType The test gives invalid input on purpose to reach the guard. */
         self::assertSame(1, $session->sessionStartCount);
     }
 
@@ -250,6 +250,11 @@ final class PhpSessionTest extends TestCase
 
         $this->expectException(SessionInvalidSessionIdException::class);
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $session->setId('');
     }
 }

@@ -119,7 +119,9 @@ final class RouteCollectionTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $data = new HttpRoutingData(
+            /* @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.) */
             routes: [
                 'test' => CorruptRouteFactoryFixture::create(),
             ],

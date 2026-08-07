@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Fixtures\Http\Routing\Handler;
 
 use Closure;
 use stdClass;
-use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * A route factory shaped the way generated routing data declares one, whose body hands back the wrong type.
@@ -22,11 +21,11 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 final class CorruptRouteFactoryFixture
 {
     /**
-     * @return Closure(): RouteContract
+     * @return Closure(): object
      */
     public static function create(): Closure
     {
-        /** @var Closure(): RouteContract $factory */
+        /** @var Closure(): object $factory */
         $factory = Closure::fromCallable(static fn (): object => new stdClass());
 
         return $factory;

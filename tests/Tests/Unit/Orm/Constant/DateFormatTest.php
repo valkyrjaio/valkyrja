@@ -124,9 +124,20 @@ final class DateFormatTest extends TestCase
 
         self::assertNotFalse($read);
 
+        /** @psalm-suppress MixedAssignment The test gives invalid input on purpose to reach the guard. */
         $row = $read->fetch(PDO::FETCH_ASSOC);
 
+        /**
+         * @psalm-suppress MixedArrayAccess The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore offsetAccess.nonOffsetAccessible (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertSame('2026-01-15', $row['day'], "SQLite cannot read a date in the $format format.");
+        /**
+         * @psalm-suppress MixedArrayAccess The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore offsetAccess.nonOffsetAccessible (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertSame('2026', $row['year'], "SQLite cannot read a year in the $format format.");
     }
 }

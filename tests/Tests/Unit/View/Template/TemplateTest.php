@@ -232,6 +232,11 @@ final class TemplateTest extends TestCase
         $template = new Template($renderer, 'test');
         $template->setLayout('layouts/main');
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $result = $template->setLayout('');
 
         self::assertSame($template, $result);

@@ -21,15 +21,12 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 final class NonObjectServiceFactoryFixture
 {
     /**
-     * @return Closure(ContainerContract, array<array-key, mixed>): object
+     * Get the factory, whose body returns null rather than an object.
      */
     public static function create(): Closure
     {
-        /** @var Closure(ContainerContract, array<array-key, mixed>): object $factory */
-        $factory = Closure::fromCallable(
+        return Closure::fromCallable(
             static fn (ContainerContract $container, array $arguments = []): object|null => null
         );
-
-        return $factory;
     }
 }

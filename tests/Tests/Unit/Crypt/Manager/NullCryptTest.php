@@ -36,6 +36,11 @@ final class NullCryptTest extends TestCase
     public function testIsValidEncryptedMessageAlwaysReturnsTrue(): void
     {
         self::assertTrue($this->crypt->isValidEncryptedMessage('any-string'));
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertTrue($this->crypt->isValidEncryptedMessage(''));
     }
 

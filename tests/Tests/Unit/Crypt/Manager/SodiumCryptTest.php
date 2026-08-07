@@ -122,6 +122,11 @@ final class SodiumCryptTest extends TestCase
     public function testIsValidEncryptedMessageWithInvalidMessage(): void
     {
         self::assertFalse(@$this->crypt->isValidEncryptedMessage('invalid'));
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertFalse(@$this->crypt->isValidEncryptedMessage(''));
     }
 

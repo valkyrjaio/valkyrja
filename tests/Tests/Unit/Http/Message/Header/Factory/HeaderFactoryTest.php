@@ -236,8 +236,10 @@ final class HeaderFactoryTest extends TestCase
 
     public function testAssertValidHeaderDoesNotThrowForHeader(): void
     {
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         HeaderFactory::assertValidHeader(Header::fromValue('test: value'));
 
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         self::assertTrue(true); // If we reach here, no exception was thrown
     }
 
@@ -246,6 +248,7 @@ final class HeaderFactoryTest extends TestCase
         $this->expectException(HttpHeaderInvalidHeaderParamException::class);
         $this->expectExceptionMessage('Param must be header');
 
+        /* @phpstan-ignore staticMethod.impossibleType (The test gives invalid input on purpose to reach the guard.) */
         HeaderFactory::assertValidHeader('test');
     }
 }

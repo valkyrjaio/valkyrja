@@ -43,6 +43,11 @@ final class LoggerTest extends TestCase
 
         $logger = new NullLogger();
 
+        /**
+         * @psalm-suppress MixedArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $logger->log($level, 'Test message');
     }
 

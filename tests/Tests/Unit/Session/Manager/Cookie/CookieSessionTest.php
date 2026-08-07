@@ -195,6 +195,11 @@ final class CookieSessionTest extends TestCase
         $session = new CookieSession($request, 'session-id');
 
         // Set id to empty to trigger the early return on line 51
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $session->setId('');
         $session->start();
 

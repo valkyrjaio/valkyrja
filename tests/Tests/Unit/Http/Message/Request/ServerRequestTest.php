@@ -51,9 +51,11 @@ final class ServerRequestTest extends TestCase
                 'test5' => 'value',
             ])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request4 = $request2->withServerParams(
             $request2->getServerParams()->withAdded(['test6' => 'null'])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request5 = $request2->withServerParams(
             $request2->getServerParams()->withAdded(['test6' => 'value5'])
         );
@@ -130,9 +132,11 @@ final class ServerRequestTest extends TestCase
                 'cookie5' => 'value',
             ])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request4 = $request2->withCookieParams(
             $request2->getCookieParams()->withAdded(['cookie6' => 'null'])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request5 = $request2->withCookieParams(
             $request2->getCookieParams()->withAdded(['cookie6' => 'value5'])
         );
@@ -215,9 +219,11 @@ final class ServerRequestTest extends TestCase
                 'param2' => 'value',
             ])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request4 = $request2->withQueryParams(
             $request2->getQueryParams()->withAdded(['param3' => 'null'])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request5 = $request2->withQueryParams(
             $request2->getQueryParams()->withAdded(['param3' => 'value5'])
         );
@@ -374,9 +380,11 @@ final class ServerRequestTest extends TestCase
                 'param2' => 'value',
             ])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request4 = $request2->withParsedBody(
             $request2->getParsedBody()->withAdded(['param3' => 'null'])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request5 = $request2->withParsedBody(
             $request2->getParsedBody()->withAdded(['param3' => 'value5'])
         );
@@ -504,6 +512,7 @@ final class ServerRequestTest extends TestCase
         $request3 = $request->withAttributes(
             AttributeParamCollection::fromArray($attributes2)
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request4 = $request->withAttributes(
             $request2->getAttributes()->withAdded(['test3' => 'fire'])
         );

@@ -88,7 +88,7 @@ final class DispatcherTest extends TestCase
         /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchById($eventId);
 
-        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
+        /** @psalm-suppress RedundantConditionGivenDocblockType The test gives invalid input on purpose to reach the guard. */
         self::assertTrue(self::$dispatched);
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatch2->getDispatches());
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatchById2->getDispatches());
@@ -235,6 +235,11 @@ final class DispatcherTest extends TestCase
 
         $this->expectException(ContainerInvalidReferenceException::class);
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion, UndefinedClass The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $dispatcher->dispatchById('NonExistent\\Class\\Name');
     }
 
@@ -277,6 +282,11 @@ final class DispatcherTest extends TestCase
 
         $this->expectException(ContainerInvalidReferenceException::class);
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion, UndefinedClass The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $dispatcher->dispatchByIdIfHasListeners('NonExistent\\Class\\Name');
     }
 }
