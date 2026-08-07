@@ -1,6 +1,15 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.10.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.11.0...26.x)
+
+## [v26.11.0](https://github.com/valkyrjaio/valkyrja/compare/v26.10.0...v26.11.0) - 2026-08-07
+
+* [Container] feat!: Remove the implicit new-instance fallback by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1177
+* [Container] feat(#1168): Add getAliasedId to the container contract by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1171
+* [Workflow] ci: Update .github workflow refs to v26.24.2 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1178
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1179
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1180
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1181
 
 ## [v26.10.0](https://github.com/valkyrjaio/valkyrja/compare/v26.9.0...v26.10.0) - 2026-08-06
 
