@@ -14,9 +14,6 @@ namespace Valkyrja\Tests\Fixtures\Attribute;
 
 /**
  * An attributed function for the collector's function and parameter lookups.
- *
- * It lives at the top level rather than inside the test method that uses it, so the
- * collector has a real function to reflect over.
  */
 #[AttributeFixture(1)]
 #[AttributeFixture(2)]

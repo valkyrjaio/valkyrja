@@ -15,8 +15,7 @@ namespace Valkyrja\Tests\Fixtures\Auth\Entity;
 use Valkyrja\Auth\Entity\Trait\UserMethods;
 
 /**
- * The smallest carrier for the UserMethods trait, backing its field lookups with a
- * plain array so a test can hand it any value the trait has to cope with.
+ * A carrier for the UserMethods trait, backed by a plain array.
  */
 final class UserMethodsFixture
 {

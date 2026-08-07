@@ -18,8 +18,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
- * A route handler matching the signature an HTTP route declares, for tests that
- * need a handler but never dispatch it.
+ * A route handler with the signature an HTTP route declares.
  */
 final class RouteHandlerFixture
 {

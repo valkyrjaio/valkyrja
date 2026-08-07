@@ -18,8 +18,7 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
- * A route handler matching the signature a CLI route declares, for tests that
- * need a handler but never dispatch it.
+ * A route handler with the signature a CLI route declares.
  */
 final class RouteHandlerFixture
 {

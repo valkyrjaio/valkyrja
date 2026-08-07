@@ -41,23 +41,8 @@
         <UnsafeInstantiation errorLevel="suppress" />
 
         <!--
-            Two places where Psalm rejects a call PHPStan accepts, both from how it
-            resolves a generic it was not given a parameter for. Each listed path is
-            checked by PHPStan at the same call sites with nothing reported, and each
-            holds no other InvalidArgument, so nothing else is hidden here.
-
-            1. Middleware handler constructors resolve their template to the first
-               option in the union rather than the one the subclass declares via
-               @extends. That upstream bug is already noted in
-               Cli\Middleware\Handler\Abstract\Handler (https://psalm.dev/r/e76d278bf9).
-
-            2. A cast names its type as class-string<TypeContract>. Psalm resolves the
-               unparameterized contract to its template bound and compares invariantly,
-               so a concrete type's class string (StringT is a TypeContract<string>) is
-               rejected. Parameterizing the bound does not help, and making T covariant
-               is unsound: modify() takes a callable(T): T, which puts T in a
-               contravariant position. Widening to a bare class-string does silence it
-               but loses the constraint everywhere the cast type is instantiated.
+            Psalm rejects two calls that PHPStan accepts, because Psalm resolves a
+            generic it was given no parameter for. See the pull request for each case.
         -->
         <InvalidArgument>
             <errorLevel type="suppress">

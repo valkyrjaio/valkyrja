@@ -35,9 +35,6 @@ final class DispatcherTest extends TestCase
 
     /**
      * Callback test.
-     *
-     * The handler receives its arguments as a mixed-valued map, so check what came
-     * through rather than declaring a type the dispatcher cannot guarantee.
      */
     public static function dispatchCallback(mixed $event): string
     {
@@ -91,13 +88,7 @@ final class DispatcherTest extends TestCase
         /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchById($eventId);
 
-        /**
-         * @psalm-suppress RedundantConditionGivenDocblockType
-         *
-         * Psalm follows the fixture flag through the call chain and reads it
-         * as already known. The assertion is what proves the framework itself
-         * set it at runtime.
-         */
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(self::$dispatched);
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatch2->getDispatches());
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatchById2->getDispatches());

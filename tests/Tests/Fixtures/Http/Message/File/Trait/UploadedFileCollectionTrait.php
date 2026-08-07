@@ -16,9 +16,7 @@ use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContrac
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
 
 /**
- * An uploaded file collection holds files and nested collections alike, so `get()`
- * hands back either one. Tests that walk a known shape narrow through these instead
- * of calling file methods on a value that might be a collection.
+ * Narrowing helpers for an uploaded file collection's mixed values.
  */
 trait UploadedFileCollectionTrait
 {

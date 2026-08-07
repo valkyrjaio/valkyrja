@@ -55,8 +55,7 @@ final class LockableUserTest extends TestCase
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
 
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty(LockableUser::class, 'login_attempts');
 
         self::assertTrue($property->isPublic());
@@ -77,8 +76,7 @@ final class LockableUserTest extends TestCase
         $user           = new LockableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty(LockableUser::class, 'locked');
 
         self::assertTrue($property->isPublic());

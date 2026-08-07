@@ -75,12 +75,7 @@ final class ModelTest extends TestCase
 
         self::assertSame([], $model->asArray());
         self::assertFalse($model->__isset('test'));
-        /**
-         * @psalm-suppress UndefinedThisPropertyFetch
-         *
-         * The model's magic accessor takes any name, so there is no property for
-         * Psalm to find. Answering for an unknown one is the case under test.
-         */
+        /** @psalm-suppress UndefinedThisPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
         self::assertNull($model->__get('test'));
 
         $model->__set('protected', 'value');
@@ -223,9 +218,7 @@ final class ModelTest extends TestCase
         $model->private   = ModelFixture::PRIVATE;
         $model->nullable  = ModelFixture::NULLABLE;
 
-        // asArray() reads back through the model's own accessors, so it shows the
-        // value __set actually stored. It never exposes a private property, so that
-        // one is read the only way it can be.
+        // asArray() reads through the model's accessors, so it shows what __set stored.
         self::assertSame(
             [
                 ModelFixture::PUBLIC    => ModelFixture::PUBLIC,

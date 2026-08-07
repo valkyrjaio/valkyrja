@@ -16,9 +16,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
 /**
- * Input-received middleware either passes an input along or short-circuits with an
- * output, so its return type is a union. Tests that expect one of the two narrow
- * through these rather than calling the expected side's methods on the union.
+ * Narrowing helpers for the input-received middleware result union.
  */
 trait InputReceivedResultTrait
 {

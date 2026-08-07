@@ -24,8 +24,7 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty($class::class, 'created_at');
 
         self::assertTrue($property->isPublic());
@@ -38,8 +37,7 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty($class::class, 'updated_at');
 
         self::assertTrue($property->isPublic());

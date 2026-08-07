@@ -30,10 +30,6 @@ abstract class TestCase extends ValkyrjaTestCase
     /**
      * Open a stream for a test.
      *
-     * `fopen()` is typed `resource|false`, and every caller here opens a stream it
-     * expects to exist; fail the test outright rather than hand each one a `false`
-     * it has no meaningful way to handle.
-     *
      * @return resource
      */
     protected static function openStream(string $filename, string $mode)
@@ -49,10 +45,6 @@ abstract class TestCase extends ValkyrjaTestCase
 
     /**
      * Get and delete the current output buffer.
-     *
-     * `ob_get_clean()` is typed `string|false` because it fails when no buffer is
-     * active; every caller here opens one first, so normalize the type away rather
-     * than have each assertion carry a `false` it can never receive.
      */
     protected static function cleanOutputBuffer(): string
     {

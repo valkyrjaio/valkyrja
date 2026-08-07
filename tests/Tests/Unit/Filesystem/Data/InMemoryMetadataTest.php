@@ -65,8 +65,7 @@ final class InMemoryMetadataTest extends TestCase
 
     public function testPropertiesAreMutable(): void
     {
-        // Assigning a public property and reading it back only exercises PHP. What
-        // this pins is the design decision: these stay mutable value holders.
+        // This pins the design decision: these stay mutable value holders.
         $property = new ReflectionProperty(InMemoryMetadata::class, 'mimetype');
 
         self::assertTrue($property->isPublic());

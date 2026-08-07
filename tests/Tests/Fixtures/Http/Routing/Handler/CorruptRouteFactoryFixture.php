@@ -17,13 +17,7 @@ use stdClass;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
- * A route factory shaped the way generated routing data declares one, whose body
- * hands back the wrong type.
- *
- * Routing data is generated, so the framework trusts its declared shape and lets the
- * return boundary raise a TypeError when the generated cache does not match. Reaching
- * that boundary needs a factory the type system would otherwise reject, which is the
- * one thing this fixture exists to build.
+ * A route factory shaped the way generated routing data declares one, whose body hands back the wrong type.
  */
 final class CorruptRouteFactoryFixture
 {

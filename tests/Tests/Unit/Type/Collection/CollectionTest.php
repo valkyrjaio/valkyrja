@@ -222,12 +222,7 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        /**
-         * @psalm-suppress UndefinedThisPropertyFetch
-         *
-         * A collection is a dynamic bag: its magic accessors take any name, so there
-         * is no property for Psalm to find. The call is the code under test.
-         */
+        /** @psalm-suppress UndefinedThisPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
         self::assertSame($this->valueAlt['bar'], $this->class->__get('bar'));
     }
 
@@ -248,12 +243,7 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        /**
-         * @psalm-suppress UndefinedThisPropertyAssignment
-         *
-         * A collection is a dynamic bag: its magic accessors take any name, so there
-         * is no property for Psalm to find. The call is the code under test.
-         */
+        /** @psalm-suppress UndefinedThisPropertyAssignment A magic accessor takes any name, so Psalm finds no property. */
         $this->class->__set('foo', 'test');
 
         self::assertSame('test', $this->class->get('foo'));
@@ -264,12 +254,7 @@ final class CollectionTest extends TestCase
      */
     public function testMagicUnset(): void
     {
-        /**
-         * @psalm-suppress UndefinedMagicPropertyFetch
-         *
-         * A collection is a dynamic bag: its magic accessors take any name, so there
-         * is no property for Psalm to find. The call is the code under test.
-         */
+        /** @psalm-suppress UndefinedMagicPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
         unset($this->class->foo);
 
         self::assertFalse($this->class->has('foo'));

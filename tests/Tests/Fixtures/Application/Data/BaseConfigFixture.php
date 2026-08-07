@@ -17,12 +17,7 @@ use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 
 /**
- * The base application config, handed back as the protocol config an entry point asks
- * for.
- *
- * An entry point declares the protocol config it needs and lets PHP's own type check
- * reject anything else. Reaching that check needs the base config in a protocol
- * config's place, which is the one thing this fixture provides.
+ * The base application config, handed back as the protocol config an entry point asks for.
  */
 final class BaseConfigFixture
 {

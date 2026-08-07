@@ -16,12 +16,7 @@ use Closure;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
- * A service factory shaped the way the container declares one, whose body hands back
- * nothing.
- *
- * The container guards against a binding that fails to produce an object, and a
- * well-behaved factory can never reach that guard. Building the misbehaving one is
- * the only thing this fixture does.
+ * A service factory shaped the way the container declares one, whose body hands back nothing.
  */
 final class NonObjectServiceFactoryFixture
 {

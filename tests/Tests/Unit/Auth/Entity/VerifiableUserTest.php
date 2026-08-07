@@ -50,8 +50,7 @@ final class VerifiableUserTest extends TestCase
         $user           = new VerifiableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty(VerifiableUser::class, 'verified');
 
         self::assertTrue($property->isPublic());
@@ -63,8 +62,7 @@ final class VerifiableUserTest extends TestCase
         $user           = new VerifiableUser();
         $user->id       = self::USER_ID;
         $user->username = self::USERNAME;
-        // A property declaration has no behavior to exercise; assert the shape the
-        // test name claims instead of reading back what was just assigned.
+        // A property declaration has no behavior, so assert its shape.
         $property = new ReflectionProperty(VerifiableUser::class, 'email');
 
         self::assertTrue($property->isPublic());
