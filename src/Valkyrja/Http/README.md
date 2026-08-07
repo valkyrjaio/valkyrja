@@ -386,8 +386,7 @@ container.
 | `ResponseSent`    | `responseSentMiddleware`    | `responseSentMiddleware`    | —                                                               |
 
 The router returns a 404 response when no route matches the path. It returns a
-405 response when the path matches a route under `RequestMethod::ANY` but not
-under the requested method. Both responses pass through the `RouteNotMatched`
+405 response when the path matches a route under a different request method. Both responses pass through the `RouteNotMatched`
 stage.
 
 ## Response caching
