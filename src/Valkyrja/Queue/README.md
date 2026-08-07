@@ -72,6 +72,7 @@ what lets the processor answer the broker directly.
 | `AmqpClient`       | AMQP       | processor  |
 | `SqsClient`        | SQS        | processor  |
 | `BeanstalkdClient` | beanstalkd | processor  |
+| `DatabaseClient`   | a database | framework  |
 
 `SyncClient` is the zero-config default. It runs the job inline and blocks, and
 it runs the whole retry chain. There is no durable place to hold a retry delay,
@@ -89,6 +90,27 @@ durable, and it needs a host runtime that can keep working after the response.
 Warning: a client scopes `getPushed` to one request, one command, or one job. A
 client that keeps a process-global record leaks in a long-running server, and it
 gives one request the deferred jobs of the request before it.
+
+## The Database Table
+
+`DatabaseClient` and `DatabasePuller` read and write one table. The application
+owns the table, so the application creates it:
+
+```sql
+CREATE TABLE queue_jobs (
+    id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    queue           VARCHAR(255)    NOT NULL,
+    envelope        LONGTEXT        NOT NULL,
+    priority        INT             NOT NULL DEFAULT 0,
+    available_at_ms BIGINT          NOT NULL,
+    reserved_at_ms  BIGINT          NULL,
+    INDEX queue_jobs_claim (queue, reserved_at_ms, available_at_ms, priority)
+);
+```
+
+The puller claims a row by stamping `reserved_at_ms`, which is what stops two
+workers taking the same job. A reservation older than the timeout counts as
+free, so a row that a crashed worker abandoned returns to the queue.
 
 ## Entry Points
 
