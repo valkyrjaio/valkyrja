@@ -107,8 +107,9 @@ $container->register(new ViewOrkaServiceProvider());
 application that renders with `PhpRenderer` or `TwigRenderer` carries none of
 them.
 
-Bind each replacement that `orkaReplacements` adds. The provider binds the core
-set only.
+The provider binds what the default config selects — the core set, and the debug
+set that `orkaReplacements` defaults to. Bind each replacement that you add
+beyond those.
 
 Configure the Orka renderer through `ViewOrkaConfigContract`:
 
