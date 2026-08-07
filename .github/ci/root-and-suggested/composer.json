@@ -18,7 +18,7 @@
     "openswoole/core"            : "^26.2.1",
     "phpmailer/phpmailer"        : "^7.1.1",
     "predis/predis"              : "^3.5.1",
-    "pusher/pusher-php-server"   : "^7.2.8",
+    "pusher/pusher-php-server"   : "^7.3.0",
     "spiral/roadrunner-http"     : "^4.1.0",
     "twig/twig"                  : "^3.28.0",
     "vonage/client-core"         : "^4.14.0"
