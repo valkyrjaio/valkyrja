@@ -72,6 +72,7 @@ what lets the processor answer the broker directly.
 | `AmqpClient`       | AMQP       | processor  |
 | `SqsClient`        | SQS        | processor  |
 | `BeanstalkdClient` | beanstalkd | processor  |
+| `DatabaseClient`   | a database | framework  |
 
 `SyncClient` is the zero-config default. It runs the job inline and blocks, and
 it runs the whole retry chain. There is no durable place to hold a retry delay,
