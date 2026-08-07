@@ -12,8 +12,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\NativeChildContainer;
+use Valkyrja\Tests\Fixtures\Container\Contract\ChildServiceFixtureContract;
+use Valkyrja\Tests\Fixtures\Container\Contract\ServiceFixtureContract;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
@@ -28,6 +31,7 @@ final class NativeChildContainerTest extends TestCase
     private Container $parent;
     private NativeChildContainer $child;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->parent = new Container();
@@ -41,19 +45,19 @@ final class NativeChildContainerTest extends TestCase
     public function testIsAliasFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
-        $this->parent->bindAlias('myAlias', ServiceFixture::class);
+        $this->parent->bindAlias(ServiceFixtureContract::class, ServiceFixture::class);
 
-        self::assertTrue($this->child->isAlias('myAlias'));
-        self::assertFalse($this->child->isAlias('unknown'));
+        self::assertTrue($this->child->isAlias(ServiceFixtureContract::class));
+        self::assertFalse($this->child->isAlias(SingletonFixture::class));
     }
 
     public function testIsAliasFromChild(): void
     {
         $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
-        $this->child->bindAlias('childAlias', ServiceFixture::class);
+        $this->child->bindAlias(ChildServiceFixtureContract::class, ServiceFixture::class);
 
-        self::assertTrue($this->child->isAlias('childAlias'));
-        self::assertFalse($this->parent->isAlias('childAlias'));
+        self::assertTrue($this->child->isAlias(ChildServiceFixtureContract::class));
+        self::assertFalse($this->parent->isAlias(ChildServiceFixtureContract::class));
     }
 
     // -----------------------------------------------------------------------
@@ -205,7 +209,6 @@ final class NativeChildContainerTest extends TestCase
 
         // Parent must remain unpolluted
         self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
-        self::assertNotNull($childInstance);
     }
 
     // -----------------------------------------------------------------------
@@ -241,9 +244,9 @@ final class NativeChildContainerTest extends TestCase
     public function testGetAliasedFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
-        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
+        $this->parent->bindAlias(ServiceFixtureContract::class, ServiceFixture::class);
 
-        $instance = $this->child->getAliased('svcAlias');
+        $instance = $this->child->getAliased(ServiceFixtureContract::class);
 
         self::assertInstanceOf(ServiceFixture::class, $instance);
     }
@@ -256,7 +259,7 @@ final class NativeChildContainerTest extends TestCase
     {
         // Set up parent with each registration type
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
-        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
+        $this->parent->bindAlias(ServiceFixtureContract::class, ServiceFixture::class);
         $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
         $this->parent->register(new PublishingProviderFixture());
 
@@ -268,7 +271,7 @@ final class NativeChildContainerTest extends TestCase
         // Perform a broad set of child operations
         $this->child->get(ServiceFixture::class);
         $this->child->getService(ServiceFixture::class);
-        $this->child->getAliased('svcAlias');
+        $this->child->getAliased(ServiceFixtureContract::class);
         $this->child->getSingleton(SingletonFixture::class);
         $this->child->get(ProvidedFixture::class); // triggers publish in child
 

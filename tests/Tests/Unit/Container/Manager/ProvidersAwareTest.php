@@ -47,7 +47,9 @@ final class ProvidersAwareTest extends TestCase
         // Registering the same provider again just overwrites the callbacks
         $providersAware->register(new ProviderFixture());
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertFalse(ProviderFixture::$publishCalled);
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
         self::assertFalse($providersAware->isPublished(ProvidedFixture::class));
@@ -56,6 +58,7 @@ final class ProvidersAwareTest extends TestCase
         $providersAware->publish(ProvidedFixture::class);
 
         self::assertTrue(ProviderFixture::$publishCalled);
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertFalse(ProviderFixture::$publishSecondaryCalled);
 
         self::assertTrue($providersAware->isPublished(ProvidedFixture::class));
@@ -63,6 +66,7 @@ final class ProvidersAwareTest extends TestCase
 
         $providersAware->publish(ProvidedSecondaryFixture::class);
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(ProviderFixture::$publishCalled);
         self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 
@@ -91,6 +95,7 @@ final class ProvidersAwareTest extends TestCase
 
         $providersAware->publish(ProvidedSecondaryFixture::class);
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(ProviderFixture::$publishCalled);
         self::assertTrue(ProviderFixture::$publishSecondaryCalled);
 

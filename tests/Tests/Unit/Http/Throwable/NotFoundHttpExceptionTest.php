@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Throwable;
 
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Throwable\Exception\HttpNotFoundResponseException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -32,7 +33,7 @@ final class NotFoundHttpExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertTrue($this->getException() instanceof HttpNotFoundResponseException);
+        self::assertSame(StatusCode::NOT_FOUND, $this->getException()->getStatusCode());
     }
 
     /**

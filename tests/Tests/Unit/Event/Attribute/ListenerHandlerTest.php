@@ -22,7 +22,7 @@ final class ListenerHandlerTest extends TestCase
 {
     public function testHandler(): void
     {
-        $handler = static fn () => null;
+        $handler = static fn (): null => null;
 
         $listenerHandler = new ListenerHandler($handler);
 

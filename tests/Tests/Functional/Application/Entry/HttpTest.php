@@ -31,7 +31,6 @@ use Valkyrja\Tests\Fixtures\Application\Provider\HttpRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\HttpRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -93,9 +92,11 @@ final class HttpTest extends TestCase
         self::assertTrue(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
         HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
 
@@ -113,12 +114,13 @@ final class HttpTest extends TestCase
 
         ob_start();
         Http::run(config: $config);
-        ob_get_clean();
+        self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode off we expect the component publish method to NOT bypass
@@ -142,8 +144,9 @@ final class HttpTest extends TestCase
 
         ob_start();
         Http::run(config: $config);
-        ob_get_clean();
+        self::cleanOutputBuffer();
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
 
@@ -151,9 +154,11 @@ final class HttpTest extends TestCase
         self::assertTrue(HttpRouteProviderFixture::$called);
         HttpRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(HttpComponentProviderFixture::$publishedContainerData);
         HttpComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(HttpRoutingDataProviderFixture::$published);
         HttpRoutingDataProviderFixture::$published = false;
     }

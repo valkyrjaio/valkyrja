@@ -69,8 +69,9 @@ final class CastableModelFixture extends CastableModel
     public const STRING_ID_PROPERTY               = 'stringId';
     public const STRING_ID_ARRAY_PROPERTY         = 'stringIdArray';
 
+    /** @var array<array-key, mixed> */
     public array $array;
-    /** @var array[] */
+    /** @var array<int, array<array-key, mixed>> */
     public array $arrayArray;
 
     public bool $bool;
@@ -97,8 +98,9 @@ final class CastableModelFixture extends CastableModel
     /** @var object[] */
     public array $serializedObjectArray;
 
+    /** @var array<array-key, mixed> */
     public array $json;
-    /** @var array[] */
+    /** @var array<int, array<array-key, mixed>> */
     public array $jsonArray;
 
     public object $jsonObject;

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Data;
 
+use ReflectionProperty;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
@@ -42,14 +43,20 @@ final class InMemoryFileTest extends TestCase
 
     public function testPropertiesAreMutable(): void
     {
-        $file = new InMemoryFile('test.txt');
+        // This pins the design decision: these stay mutable value holders.
+        $property = new ReflectionProperty(InMemoryFile::class, 'name');
 
-        $file->name      = 'renamed.txt';
-        $file->contents  = 'new contents';
-        $file->timestamp = 9999999999;
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
 
-        self::assertSame('renamed.txt', $file->name);
-        self::assertSame('new contents', $file->contents);
-        self::assertSame(9999999999, $file->timestamp);
+        $property = new ReflectionProperty(InMemoryFile::class, 'contents');
+
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
+
+        $property = new ReflectionProperty(InMemoryFile::class, 'timestamp');
+
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isReadOnly());
     }
 }

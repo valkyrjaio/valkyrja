@@ -41,6 +41,23 @@ use const SEEK_END;
 
 final class StreamTest extends TestCase
 {
+    /**
+     * Unserialize a serialized stream.
+     *
+     * `unserialize()` is typed `mixed`; fail the test outright when the value does not
+     * round-trip back to a stream, rather than calling stream methods on an unknown.
+     */
+    private static function unserializeStream(string $serialized): Stream
+    {
+        $stream = unserialize($serialized);
+
+        if (! $stream instanceof Stream) {
+            self::fail('Expected the serialized value to unserialize to a stream.');
+        }
+
+        return $stream;
+    }
+
     public function testIsSeekable(): void
     {
         $stream = new Stream();
@@ -368,7 +385,6 @@ final class StreamTest extends TestCase
     {
         $stream = new Stream();
 
-        self::assertIsArray($stream->getMetadata());
         self::assertTrue($stream->getMetadataItem('seekable'));
         self::assertNull($stream->getMetadataItem('nonexistent'));
 
@@ -394,7 +410,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertInstanceOf(Stream::class, $unserialized);
         self::assertSame($contents, (string) $unserialized);
@@ -409,7 +425,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertSame($contents, $unserialized->getContents());
     }
@@ -421,7 +437,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertTrue($unserialized->isReadable());
         self::assertTrue($unserialized->isWritable());
@@ -433,7 +449,7 @@ final class StreamTest extends TestCase
         $stream = new Stream();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertInstanceOf(Stream::class, $unserialized);
         self::assertSame('', (string) $unserialized);
@@ -450,7 +466,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertSame($contents, (string) $unserialized);
     }
@@ -464,7 +480,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertSame($contents, (string) $unserialized);
     }
@@ -478,7 +494,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertSame($contents, (string) $unserialized);
         self::assertSame(10000, $unserialized->getSize());
@@ -493,7 +509,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         $unserialized->seek(0, SEEK_END);
         $unserialized->write(' - appended');
@@ -511,7 +527,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         self::assertSame('Read', $unserialized->read(4));
         self::assertSame(' test content', $unserialized->getContents());
@@ -526,7 +542,7 @@ final class StreamTest extends TestCase
         $stream->rewind();
 
         $serialized   = serialize($stream);
-        $unserialized = unserialize($serialized);
+        $unserialized = self::unserializeStream($serialized);
 
         $unserialized->getContents();
         self::assertTrue($unserialized->eof());

@@ -23,18 +23,24 @@ final class DirectoryTest extends TestCase
 {
     /**
      * The base path.
+     *
+     * @var non-empty-string
      */
     protected string $basePath = '/base/path';
 
     /**
      * The sub path.
+     *
+     * @var non-empty-string
      */
     protected string $subPath = '/sub/path';
 
     /**
      * The original base path.
+     *
+     * @var non-empty-string
      */
-    protected string $originalBasePath = '';
+    protected string $originalBasePath = '/';
 
     /**
      * @inheritDoc

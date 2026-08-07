@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Json;
 
 use JsonException;
+use Valkyrja\Tests\Fixtures\Type\Object\ObjectFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Json\JsonObject;
 
@@ -58,24 +59,30 @@ final class JsonObjectTest extends TestCase
      */
     public function testModify(): void
     {
-        $value = new class {
-            public string $foo = 'test';
-        };
+        $value = new ObjectFixture();
         $type  = new JsonObject($value);
         // The new value
         $newValue = 'bar';
 
         $modified = $type->modify(static function (object $subject) use ($newValue): object {
+            self::assertInstanceOf(ObjectFixture::class, $subject);
+
             $subject->foo = $newValue;
 
             return $subject;
         });
 
         // Original should be unmodified
-        self::assertSame('test', $type->asValue()->foo);
+        $original = $type->asValue();
+
+        self::assertInstanceOf(ObjectFixture::class, $original);
+        self::assertSame('test', $original->foo);
         self::assertSame($value, $type->asValue());
         // New should be modified
-        self::assertSame($newValue, $modified->asValue()->foo);
+        $new = $modified->asValue();
+
+        self::assertInstanceOf(ObjectFixture::class, $new);
+        self::assertSame($newValue, $new->foo);
     }
 
     public function testJsonSerialize(): void
@@ -95,6 +102,6 @@ final class JsonObjectTest extends TestCase
     {
         $type = JsonObject::fromValue('{"foo":"bar"}');
 
-        self::assertSame('bar', $type->asValue()->foo);
+        self::assertSame(['foo' => 'bar'], (array) $type->asValue());
     }
 }

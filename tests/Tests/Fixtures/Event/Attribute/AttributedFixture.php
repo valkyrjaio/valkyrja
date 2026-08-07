@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Event\Attribute;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Attribute\Listener;
 use Valkyrja\Event\Attribute\ListenerHandler;
 use Valkyrja\Tests\Unit\Event\Collector\AttributesListenerCollectorTest;
@@ -32,7 +33,10 @@ final class AttributedFixture
         return 'Static Method';
     }
 
-    public static function handler(): string
+    /**
+     * @param array<string, mixed> $arguments The arguments
+     */
+    public static function handler(ContainerContract $container, array $arguments): string
     {
         return 'Handler';
     }

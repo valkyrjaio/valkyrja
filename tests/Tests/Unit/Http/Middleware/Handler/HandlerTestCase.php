@@ -12,10 +12,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -34,6 +36,7 @@ abstract class HandlerTestCase extends TestCase
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->container = new Container();
@@ -43,7 +46,7 @@ abstract class HandlerTestCase extends TestCase
         $this->route    = new Route(
             '/',
             'name',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
     }
 }

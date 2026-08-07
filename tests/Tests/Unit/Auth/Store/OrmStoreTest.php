@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
+use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
@@ -41,6 +43,7 @@ final class OrmStoreTest extends TestCase
     protected OrmStore $store;
     protected User $user;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->repository = $this->createMock(RepositoryContract::class);
@@ -48,10 +51,10 @@ final class OrmStoreTest extends TestCase
 
         $this->store = new OrmStore($this->orm);
 
-        $this->user           = new User();
-        $this->user->id       = self::USER_ID;
-        $this->user->username = self::USERNAME;
-        $this->user->password = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
+        $this->user                      = new User();
+        $this->user->id                  = self::USER_ID;
+        $this->user->username            = self::USERNAME;
+        $this->user[UserField::PASSWORD] = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
     }
 
     public function testRetrieveByIdCallsRepositoryFindBy(): void

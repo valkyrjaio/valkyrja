@@ -21,6 +21,9 @@ use function random_int;
 
 final class PortTest extends TestCase
 {
+    /**
+     * @return array<int, array{int}>
+     */
     public static function validPortsProvider(): array
     {
         return [
@@ -30,6 +33,9 @@ final class PortTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<int, array{int}>
+     */
     public static function invalidPortsProvider(): array
     {
         return [

@@ -18,8 +18,11 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class MessageTest extends TestCase
 {
+    /** @var non-empty-string */
     protected string $channel = 'test-channel';
+    /** @var non-empty-string */
     protected string $event   = 'test-event';
+    /** @var non-empty-string */
     protected string $message = 'Test message';
 
     /** @var array<string, mixed> */

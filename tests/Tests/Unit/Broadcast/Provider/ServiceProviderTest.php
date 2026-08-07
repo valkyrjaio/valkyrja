@@ -28,6 +28,7 @@ use Valkyrja\Broadcast\Data\Contract\BroadcastConfigContract;
 use Valkyrja\Broadcast\Data\Contract\BroadcastLogConfigContract;
 use Valkyrja\Broadcast\Data\Contract\BroadcastPusherConfigContract;
 use Valkyrja\Broadcast\Provider\BroadcastServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
@@ -38,7 +39,11 @@ use Valkyrja\Tests\Fixtures\Broadcast\Data\BroadcastConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = BroadcastServiceProvider::class;
 
     public function testExpectedPublishers(): void

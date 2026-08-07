@@ -16,13 +16,13 @@ use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use TypeError;
 use Valkyrja\Application\Data\CliConfig;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Entry\Cli;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Tests\Fixtures\Application\Data\BaseConfigFixture;
 use Valkyrja\Tests\Fixtures\Application\Entry\CliFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -36,7 +36,7 @@ final class CliTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
-        Cli::run(config: new Config());
+        Cli::run(config: BaseConfigFixture::asCliConfig());
     }
 
     public function testRunBootstrapsAndDispatchesInputHandler(): void

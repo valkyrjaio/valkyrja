@@ -12,34 +12,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Container\Manager;
 
-use Valkyrja\Container\Manager\Trait\ProvidersAware;
-
-use function array_key_exists;
+use Valkyrja\Container\Manager\Container;
 
 /**
  * Class ProvidersAwareFixture.
  */
-final class ProvidersAwareFixture
+final class ProvidersAwareFixture extends Container
 {
-    use ProvidersAware;
-
-    private array $objects = [];
-
-    public function __get(string $name)
-    {
-        return $this->objects[$name] ?? null;
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $this->objects[$name] = $value;
-    }
-
-    public function __isset(string $name): bool
-    {
-        return array_key_exists($name, $this->objects);
-    }
-
     /**
      * @param class-string $id The service id
      */

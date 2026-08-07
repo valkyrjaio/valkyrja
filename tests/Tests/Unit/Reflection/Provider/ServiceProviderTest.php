@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Reflection\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Provider\ReflectionServiceProvider;
@@ -24,7 +25,11 @@ use Valkyrja\Reflection\Reflector\Reflector;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = ReflectionServiceProvider::class;
 
     public function testExpectedPublishers(): void

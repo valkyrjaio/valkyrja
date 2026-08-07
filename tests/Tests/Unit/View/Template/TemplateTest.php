@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\View\Template;
 
+use Override;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\View\Renderer\Contract\RendererContract;
@@ -231,6 +232,11 @@ final class TemplateTest extends TestCase
         $template = new Template($renderer, 'test');
         $template->setLayout('layouts/main');
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $result = $template->setLayout('');
 
         self::assertSame($template, $result);
@@ -364,7 +370,7 @@ final class TemplateTest extends TestCase
             ->method('renderFile')
             ->with(
                 'partials/greeting',
-                self::callback(static fn ($variables) => $variables['name'] === 'John' && isset($variables['template']))
+                self::callback(static fn (array $variables): bool => $variables['name'] === 'John' && isset($variables['template']))
             )
             ->willReturn($partialContent);
 
@@ -406,7 +412,7 @@ final class TemplateTest extends TestCase
             ->method('renderFile')
             ->with(
                 'greeting',
-                self::callback(static fn ($variables) => $variables['name'] === 'World' && isset($variables['template']))
+                self::callback(static fn (array $variables): bool => $variables['name'] === 'World' && isset($variables['template']))
             )
             ->willReturn($renderedContent);
 
@@ -460,6 +466,7 @@ final class TemplateTest extends TestCase
         $firstLayoutContent = '<div>First layout</div>';
         $finalLayoutContent = '<html lang="en"><body>Final layout</body></html>';
 
+        /** @var Template|null $template */
         $template = null;
 
         $renderer = $this->createMock(RendererContract::class);
@@ -477,6 +484,8 @@ final class TemplateTest extends TestCase
                     }
 
                     if ($path === 'layouts/first') {
+                        self::assertInstanceOf(Template::class, $template);
+
                         $template->setLayout('layouts/final');
 
                         return $firstLayoutContent;
@@ -499,6 +508,7 @@ final class TemplateTest extends TestCase
     {
         $renderer = self::createStub(RendererContract::class);
         $template = new class($renderer, 'test') extends Template {
+            #[Override]
             protected function convertEncoding(string $value): string|false
             {
                 return false;

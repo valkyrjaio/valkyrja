@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional\Cli\Interaction\Input;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use Throwable;
 use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
@@ -237,8 +238,8 @@ final class InputMappingTest extends TestCase
     }
 
     /**
-     * @param non-empty-string[] $args
-     * @param class-string       $expected
+     * @param non-empty-string[]      $args
+     * @param class-string<Throwable> $expected
      */
     #[DataProvider('provideRejectedSpellings')]
     public function testRejectedSpellingsThrow(array $args, string $expected): void
@@ -259,7 +260,9 @@ final class InputMappingTest extends TestCase
             self::DEFAULT_COMMAND
         );
 
-        [$with, $without] = array_values($input->getOptions());
+        $options = array_values($input->getOptions());
+        $with    = $options[0] ?? self::fail('Expected a --with option.');
+        $without = $options[1] ?? self::fail('Expected a --without option.');
 
         self::assertTrue($with->hasValue());
         self::assertSame(expected: 'value', actual: $with->getValue());

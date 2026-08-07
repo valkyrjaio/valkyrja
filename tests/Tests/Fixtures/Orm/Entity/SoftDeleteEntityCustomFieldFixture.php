@@ -48,6 +48,7 @@ final class SoftDeleteEntityCustomFieldFixture extends Entity implements SoftDel
     #[Override]
     protected function internalSetCallables(): array
     {
+        /* @phpstan-ignore return.type (The test gives invalid input on purpose to reach the guard.) */
         return [
             'id' => [$this, 'setId'],
         ];

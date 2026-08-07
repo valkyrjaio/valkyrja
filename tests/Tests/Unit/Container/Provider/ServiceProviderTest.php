@@ -24,7 +24,11 @@ use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = ContainerServiceProvider::class;
 
     public function testExpectedPublishers(): void

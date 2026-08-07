@@ -16,6 +16,8 @@ use Valkyrja\Tests\Fixtures\Type\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
+use function is_string;
+
 /**
  * Model class to use to test UnpackForNewInstance model.
  *
@@ -26,9 +28,13 @@ final class UnpackForNewInstanceModelFixture extends Model
     use PrivatePropertyTrait;
     use UnpackForNewInstance;
 
-    public function __construct(
-        public string $public,
-        protected string $protected,
-    ) {
+    public string $public;
+
+    protected string $protected;
+
+    public function __construct(mixed $public = '', mixed $protected = '')
+    {
+        $this->public    = is_string($public) ? $public : '';
+        $this->protected = is_string($protected) ? $protected : '';
     }
 }

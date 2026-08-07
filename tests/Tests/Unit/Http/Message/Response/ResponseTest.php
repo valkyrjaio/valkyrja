@@ -24,7 +24,6 @@ use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Fixtures\Http\Message\Response\ResponseSendRecorderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 #[RunTestsInSeparateProcesses]
@@ -136,7 +135,7 @@ final class ResponseTest extends TestCase
 
         ob_start();
         $response->sendBody();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         self::assertSame('test', $contents);
         self::assertSame('test', $stream->getContents());
@@ -157,7 +156,7 @@ final class ResponseTest extends TestCase
 
         ob_start();
         $response->sendBody();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         self::assertSame('test', $contents);
         self::assertSame('test', $stream->getContents());
@@ -177,7 +176,7 @@ final class ResponseTest extends TestCase
 
         ob_start();
         $response->send();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
         self::assertSame('test', $contents);
         self::assertSame('test', $stream->getContents());
@@ -205,8 +204,8 @@ final class ResponseTest extends TestCase
         ob_start();
         ob_start();
         $result = $response->send();
-        ob_get_clean();
-        ob_get_clean();
+        self::cleanOutputBuffer();
+        self::cleanOutputBuffer();
 
         self::assertSame($response, $result);
     }

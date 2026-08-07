@@ -14,11 +14,13 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Processor;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\DynamicRouteContract;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\HttpRoutingInvalidRoutePathException;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function preg_match;
@@ -158,7 +160,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -174,7 +176,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: 'some/path',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -197,13 +199,14 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^\/(?<value>[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
     }
 
@@ -223,7 +226,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $processor->route($route);
@@ -243,7 +246,7 @@ final class ProcessorTest extends TestCase
                     regex: Regex::ALPHA
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -251,6 +254,7 @@ final class ProcessorTest extends TestCase
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
         // Shouldn't change, even if it's wrong
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame($route->getRegex(), $routeAfterProcessing->getRegex());
     }
 
@@ -269,13 +273,14 @@ final class ProcessorTest extends TestCase
                     isOptional: true
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^(?:\/)?(?<optional>[a-zA-Z]+)?$/', $routeAfterProcessing->getRegex());
     }
 
@@ -294,13 +299,14 @@ final class ProcessorTest extends TestCase
                     shouldCapture: false
                 ),
             ],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('/^\/(?:[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
     }
 
@@ -388,13 +394,14 @@ final class ProcessorTest extends TestCase
             name: 'route',
             regex: '',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
 
         self::assertInstanceOf(DynamicRoute::class, $routeAfterProcessing);
         self::assertSame('/static/path', $routeAfterProcessing->getPath());
+        self::assertInstanceOf(DynamicRouteContract::class, $routeAfterProcessing);
         self::assertSame('', $routeAfterProcessing->getRegex());
     }
 
@@ -408,7 +415,7 @@ final class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{notDynamic}',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -432,7 +439,7 @@ final class ProcessorTest extends TestCase
             name: 'route',
             regex: '',
             parameters: $parameters,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $processed = new Processor()->route($route);

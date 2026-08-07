@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Entry\FrankenPhp;
 
+use Override;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -25,6 +26,7 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class FrankenPhpHttpTest extends TestCase
 {
+    #[Override]
     protected function setUp(): void
     {
         FrankenPhpHttpFixture::reset();

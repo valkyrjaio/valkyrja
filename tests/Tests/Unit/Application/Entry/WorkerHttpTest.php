@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Entry;
 
+use Override;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Kernel\ChildApplication;
@@ -35,6 +36,7 @@ final class WorkerHttpTest extends TestCase
 
     private ServerRequest $request;
 
+    #[Override]
     protected function setUp(): void
     {
         WorkerHttpFixture::reset();

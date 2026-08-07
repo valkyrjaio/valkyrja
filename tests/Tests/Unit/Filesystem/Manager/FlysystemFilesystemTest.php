@@ -17,6 +17,7 @@ use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\UnableToReadFile;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
@@ -24,7 +25,6 @@ use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 
 final class FlysystemFilesystemTest extends TestCase
 {
@@ -32,6 +32,7 @@ final class FlysystemFilesystemTest extends TestCase
 
     protected FlysystemFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flysystem  = $this->createMock(FilesystemOperator::class);
@@ -128,7 +129,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testWriteStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())
@@ -158,7 +159,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testUpdateStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())
@@ -188,7 +189,7 @@ final class FlysystemFilesystemTest extends TestCase
      */
     public function testPutStreamWritesFile(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         $this->flysystem
             ->expects($this->once())

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Validation\Rule\Orm;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
-use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -31,6 +31,7 @@ final class EntityNotExistsTest extends TestCase
 
     protected MockObject&RepositoryContract $repository;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->orm        = $this->createMock(ManagerContract::class);
@@ -104,8 +105,6 @@ final class EntityNotExistsTest extends TestCase
 
         // Should not throw
         $rule->validate();
-
-        self::assertTrue(true);
     }
 
     public function testValidateThrowsWhenEntityExists(): void
@@ -162,8 +161,7 @@ final class EntityNotExistsTest extends TestCase
             ->with(self::callback(static function (Where $where): bool {
                 $value = $where->value;
 
-                return $value instanceof Value
-                    && $value->name === 'username'
+                return $value->name === 'username'
                     && $value->value === 'newuser';
             }))
             ->willReturn(null);

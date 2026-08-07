@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Entity\Trait;
 
+use ReflectionProperty;
 use Valkyrja\Orm\Entity\Trait\DatedFields;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -23,9 +24,11 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        $class->created_at = '01-26-2026 12:00:00 UTC';
+        // A property declaration has no behavior, so assert its shape.
+        $property = new ReflectionProperty($class::class, 'created_at');
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->created_at);
+        self::assertTrue($property->isPublic());
+        self::assertSame('string', (string) $property->getType());
     }
 
     public function testHasDateModifiedProperty(): void
@@ -34,8 +37,10 @@ final class DatedFieldsTest extends TestCase
             use DatedFields;
         };
 
-        $class->updated_at = '01-26-2026 12:00:00 UTC';
+        // A property declaration has no behavior, so assert its shape.
+        $property = new ReflectionProperty($class::class, 'updated_at');
 
-        self::assertSame('01-26-2026 12:00:00 UTC', $class->updated_at);
+        self::assertTrue($property->isPublic());
+        self::assertSame('string', (string) $property->getType());
     }
 }

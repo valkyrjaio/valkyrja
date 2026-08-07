@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
+use ReflectionClass;
 use RuntimeException;
 use Valkyrja\Tests\Fixtures\Enum\EnumFixture;
 use Valkyrja\Tests\Fixtures\Enum\IntEnum;
@@ -38,7 +39,6 @@ use Valkyrja\Type\String\StringT;
 
 use function json_decode;
 use function json_encode;
-use function method_exists;
 use function serialize;
 
 use const JSON_THROW_ON_ERROR;
@@ -50,7 +50,7 @@ final class CastableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(CastableModelContract::class, 'getCastings'));
+        self::assertTrue(new ReflectionClass(CastableModelContract::class)->hasMethod('getCastings'));
         self::isA(ModelContract::class, CastableModelContract::class);
     }
 
@@ -225,7 +225,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->object);
         self::assertObjectHasProperty('test', $model->object);
 
         // Test an array of objects
@@ -257,7 +256,6 @@ final class CastableModelTest extends TestCase
 
         // Test a stringified object
         $model = $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_PROPERTY, serialize($value), $value, true);
-        self::assertIsObject($model->serializedObject);
 
         // Test an array of objects
         $this->propertyTest(CastableModelFixture::SERIALIZED_OBJECT_ARRAY_PROPERTY, [$value], [$value]);
@@ -321,7 +319,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->jsonObject);
         self::assertObjectHasProperty('test', $model->jsonObject);
 
         // Test an array of objects
@@ -493,7 +490,6 @@ final class CastableModelTest extends TestCase
 
         // Test an array
         $model = $this->propertyTest(CastableModelFixture::MODEL_PROPERTY, $value->asArray(), $value, true);
-        self::assertIsObject($model->model);
 
         // Test a json encoded model
         $model = $this->propertyTest(
@@ -502,7 +498,6 @@ final class CastableModelTest extends TestCase
             $value,
             true
         );
-        self::assertIsObject($model->model);
 
         // Test an array of models
         $this->propertyTest(CastableModelFixture::MODEL_ARRAY_PROPERTY, [$value], [$value]);
@@ -534,6 +529,7 @@ final class CastableModelTest extends TestCase
     public function testEnumCast(): void
     {
         $value   = EnumFixture::club;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
@@ -564,6 +560,7 @@ final class CastableModelTest extends TestCase
     public function testStringEnumCast(): void
     {
         $value   = StringEnum::foo;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
@@ -594,6 +591,7 @@ final class CastableModelTest extends TestCase
     public function testIntEnumCast(): void
     {
         $value   = IntEnum::first;
+        /** @var scalar $decoded */
         $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager;
 
+use Override;
 use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\NullSession;
 use Valkyrja\Session\Throwable\Exception\SessionInvalidCsrfTokenException;
@@ -24,6 +25,7 @@ final class NullSessionTest extends TestCase
 {
     protected NullSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->session = new NullSession();

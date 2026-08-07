@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Orm\Schema;
 
+use Override;
 use RuntimeException;
 use Throwable;
 use Valkyrja\Orm\Schema\Abstract\TransactionalMigration;
@@ -34,6 +35,7 @@ final class TransactionalMigrationFixture extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function runMigration(): void
     {
         $this->runMigrationCalled = true;
@@ -46,6 +48,7 @@ final class TransactionalMigrationFixture extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function rollbackMigration(): void
     {
         $this->rollbackMigrationCalled = true;
@@ -58,6 +61,7 @@ final class TransactionalMigrationFixture extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function runFailure(Throwable $exception): void
     {
         parent::runFailure($exception);
@@ -69,6 +73,7 @@ final class TransactionalMigrationFixture extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function rollbackFailure(Throwable $exception): void
     {
         parent::rollbackFailure($exception);

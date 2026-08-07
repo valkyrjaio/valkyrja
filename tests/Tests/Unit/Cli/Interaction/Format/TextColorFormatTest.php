@@ -64,7 +64,6 @@ final class TextColorFormatTest extends TestCase
             TextColor::WHITE,
         ];
 
-        /** @var TextColor $color */
         foreach ($colors as $color) {
             $format = new TextColorFormat($color);
 

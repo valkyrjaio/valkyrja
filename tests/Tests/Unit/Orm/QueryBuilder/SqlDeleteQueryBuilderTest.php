@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\QueryBuilder;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\Value;
@@ -29,6 +30,7 @@ final class SqlDeleteQueryBuilderTest extends TestCase
 {
     protected SqlDeleteQueryBuilder $builder;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->builder = new SqlDeleteQueryBuilder('users');

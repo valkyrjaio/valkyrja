@@ -209,10 +209,10 @@ final class ApplicationTest extends TestCase
         $config      = new Config(providers: [new EventComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
-        self::assertSame(
-            [ListenerProviderFixture::class],
-            $application->getEventProviders(),
-        );
+        $providers = $application->getEventProviders();
+
+        self::assertCount(1, $providers);
+        self::assertInstanceOf(ListenerProviderFixture::class, $providers[0]);
     }
 
     /**
@@ -229,7 +229,8 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getEventProviders();
 
-        self::assertSame([ListenerProviderFixture::class], $result);
+        self::assertCount(1, $result);
+        self::assertInstanceOf(ListenerProviderFixture::class, $result[0]);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getEventProviders());
     }
@@ -242,10 +243,10 @@ final class ApplicationTest extends TestCase
         $config      = new Config(providers: [new CliRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
-        self::assertSame(
-            [CliRouteProviderFixture::class],
-            $application->getCliProviders(),
-        );
+        $providers = $application->getCliProviders();
+
+        self::assertCount(1, $providers);
+        self::assertInstanceOf(CliRouteProviderFixture::class, $providers[0]);
     }
 
     /**
@@ -262,7 +263,8 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getCliProviders();
 
-        self::assertSame([CliRouteProviderFixture::class], $result);
+        self::assertCount(1, $result);
+        self::assertInstanceOf(CliRouteProviderFixture::class, $result[0]);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getCliProviders());
     }
@@ -275,10 +277,10 @@ final class ApplicationTest extends TestCase
         $config      = new Config(providers: [new HttpRouteComponentProviderFixture()]);
         $application = new Valkyrja(container: new Container(), config: $config);
 
-        self::assertSame(
-            [HttpRouteProviderFixture::class],
-            $application->getHttpProviders(),
-        );
+        $providers = $application->getHttpProviders();
+
+        self::assertCount(1, $providers);
+        self::assertInstanceOf(HttpRouteProviderFixture::class, $providers[0]);
     }
 
     /**
@@ -295,7 +297,8 @@ final class ApplicationTest extends TestCase
 
         $result = $application->getHttpProviders();
 
-        self::assertSame([HttpRouteProviderFixture::class], $result);
+        self::assertCount(1, $result);
+        self::assertInstanceOf(HttpRouteProviderFixture::class, $result[0]);
         self::assertSame($result, $property->getValue($application));
         self::assertSame($result, $application->getHttpProviders());
     }
@@ -353,6 +356,6 @@ final class ApplicationTest extends TestCase
         // No exception should be thrown
         $application->publishProviderCallbacks();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

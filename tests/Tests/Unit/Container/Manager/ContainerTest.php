@@ -12,12 +12,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Override;
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Tests\Fixtures\Container\Contract\ServiceFixtureContract;
+use Valkyrja\Tests\Fixtures\Container\NonObjectServiceFactoryFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
@@ -39,6 +42,7 @@ final class ContainerTest extends TestCase
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->container = new Container();
@@ -68,7 +72,7 @@ final class ContainerTest extends TestCase
     {
         $container = $this->container;
         $id        = ServiceFixture::class;
-        $alias     = 'alias';
+        $alias     = ServiceFixtureContract::class;
 
         $container->bind($id, [ServiceFixture::class, 'make']);
         $container->bindAlias($alias, $id);
@@ -119,8 +123,7 @@ final class ContainerTest extends TestCase
         $container = $this->container;
         $id        = SingletonFixture::class;
 
-        /** @psalm-suppress InvalidArgument, MixedArgumentTypeCoercion */
-        $container->bindSingleton($id, static fn (): null => null);
+        $container->bindSingleton($id, NonObjectServiceFactoryFixture::create());
 
         self::assertTrue($container->isSingletonBinding($id));
         // Nothing was cached as an instance, so the singleton is still unresolved.

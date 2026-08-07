@@ -12,25 +12,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Mail\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Mail\Throwable\Contract\MailThrowable;
 use Valkyrja\Mail\Throwable\Exception\Abstract\MailInvalidArgumentException;
 use Valkyrja\Mail\Throwable\Exception\Abstract\MailRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(MailThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(MailThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
         // Both implement Throwable
-        self::assertTrue(is_a(MailRuntimeException::class, MailThrowable::class, true));
-        self::assertTrue(is_a(MailInvalidArgumentException::class, MailThrowable::class, true));
+        self::assertTrue(new ReflectionClass(MailRuntimeException::class)->isSubclassOf(MailThrowable::class));
+        self::assertTrue(new ReflectionClass(MailInvalidArgumentException::class)->isSubclassOf(MailThrowable::class));
     }
 }

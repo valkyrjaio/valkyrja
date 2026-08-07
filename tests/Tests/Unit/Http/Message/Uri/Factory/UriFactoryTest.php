@@ -191,7 +191,7 @@ final class UriFactoryTest extends TestCase
         UriFactory::validatePort(443);
         UriFactory::validatePort(8080);
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidatePortInvalidForNegative(): void
@@ -440,7 +440,7 @@ final class UriFactoryTest extends TestCase
         UriFactory::validateFragment('section');
         UriFactory::validateFragment('section-with-special-chars!@#');
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidatePathValid(): void
@@ -452,7 +452,7 @@ final class UriFactoryTest extends TestCase
         UriFactory::validatePath('/path/to/resource');
         UriFactory::validatePath('relative/path');
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateQueryValid(): void
@@ -462,7 +462,7 @@ final class UriFactoryTest extends TestCase
         UriFactory::validateQuery('key=value');
         UriFactory::validateQuery('key1=value1&key2=value2');
 
-        self::assertTrue(true); // If we reach here, no exception was thrown
+        $this->expectNotToPerformAssertions();
     }
 
     public function testFilterPathWithValidPath(): void

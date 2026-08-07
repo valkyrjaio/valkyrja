@@ -51,7 +51,7 @@ final class FalseTest extends TestCase
         // The new value
         $newValue = true;
 
-        $modified = $type->modify(static fn (bool $subject): bool => $newValue);
+        $modified = $type->modify(static fn (false $subject): false => $subject);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

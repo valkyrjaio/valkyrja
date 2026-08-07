@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Authenticator;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
@@ -38,6 +39,7 @@ final class SessionAuthenticatorTest extends TestCase
     protected StoreContract $store;
     protected PasswordHasherContract $hasher;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->session = $this->createMock(SessionContract::class);

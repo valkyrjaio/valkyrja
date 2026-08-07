@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Crypt\Manager;
 
+use Override;
 use stdClass;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
@@ -21,6 +22,7 @@ final class NullCryptTest extends TestCase
 {
     protected NullCrypt $crypt;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crypt = new NullCrypt();
@@ -34,6 +36,11 @@ final class NullCryptTest extends TestCase
     public function testIsValidEncryptedMessageAlwaysReturnsTrue(): void
     {
         self::assertTrue($this->crypt->isValidEncryptedMessage('any-string'));
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertTrue($this->crypt->isValidEncryptedMessage(''));
     }
 

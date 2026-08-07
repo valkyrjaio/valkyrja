@@ -17,6 +17,7 @@ use Valkyrja\Http\Routing\Data\DynamicRoute;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Factory\RouteFactory;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -28,7 +29,7 @@ final class RouteFactoryTest extends TestCase
 {
     public function testFromRouteReturnsRouteForStaticPath(): void
     {
-        $handler = static fn (): null => null;
+        $handler = RouteHandlerFixture::handle(...);
         $route   = new Route(
             path: '/users',
             name: 'users.index',
@@ -46,7 +47,7 @@ final class RouteFactoryTest extends TestCase
 
     public function testFromRouteReturnsDynamicRouteForPathWithParam(): void
     {
-        $handler = static fn (): null => null;
+        $handler = RouteHandlerFixture::handle(...);
         $route   = new Route(
             path: '/users/{id}',
             name: 'users.show',
@@ -63,7 +64,7 @@ final class RouteFactoryTest extends TestCase
 
     public function testFromRouteCopiesParametersFromDynamicRoute(): void
     {
-        $handler    = static fn (): null => null;
+        $handler    = RouteHandlerFixture::handle(...);
         $parameter  = new Parameter(name: 'id', regex: '\d+');
         $route      = new DynamicRoute(
             path: '/users/{id}',
@@ -84,7 +85,7 @@ final class RouteFactoryTest extends TestCase
         $route = new Route(
             path: '/users/{id}',
             name: 'users.show',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $result = RouteFactory::fromRoute($route);
@@ -95,7 +96,7 @@ final class RouteFactoryTest extends TestCase
 
     public function testFromRoutePreservesAllProperties(): void
     {
-        $handler               = static fn (): null => null;
+        $handler               = RouteHandlerFixture::handle(...);
         $requestStruct         = IndexedJsonRequestStructEnum::first;
         $responseStruct        = ResponseStructEnum::first;
 
@@ -123,7 +124,7 @@ final class RouteFactoryTest extends TestCase
         $route = new Route(
             path: '/users',
             name: 'users.index',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         self::assertNull(RouteFactory::getRequestStructFromRoute($route));
@@ -136,7 +137,7 @@ final class RouteFactoryTest extends TestCase
         $route = new Route(
             path: '/users',
             name: 'users.store',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: $requestStruct,
         );
 
@@ -148,7 +149,7 @@ final class RouteFactoryTest extends TestCase
         $route = new Route(
             path: '/users',
             name: 'users.index',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         self::assertNull(RouteFactory::getResponseStructFromRoute($route));
@@ -161,7 +162,7 @@ final class RouteFactoryTest extends TestCase
         $route = new Route(
             path: '/users',
             name: 'users.index',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseStruct: $responseStruct,
         );
 

@@ -20,6 +20,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -34,7 +35,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $handler = new RouteMatchedHandler();
 
@@ -62,7 +63,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
@@ -91,7 +92,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();
@@ -120,7 +121,7 @@ final class RequestStructMiddlewareTest extends TestCase
         $route   = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: IndexedJsonRequestStructEnum::first
         );
         $handler = new RouteMatchedHandler();

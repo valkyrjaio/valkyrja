@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Dispatcher;
 
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -21,11 +22,13 @@ use Valkyrja\Http\Message\Uri\Factory\UriFactory;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteNotMatchedMiddlewareChangedFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -33,8 +36,10 @@ use Valkyrja\Tests\Unit\Abstract\TestCase;
  */
 final class RouterTest extends TestCase
 {
-    public static function dispatch(): ResponseContract
-    {
+    public static function dispatch(
+        ContainerContract $container,
+        RouteContract $route
+    ): ResponseContract {
         return new Response(statusCode: StatusCode::I_AM_A_TEAPOT);
     }
 
@@ -87,7 +92,7 @@ final class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collection->add($route);
 

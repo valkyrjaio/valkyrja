@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Type\Model;
 
+use Override;
 use Valkyrja\Tests\Fixtures\Type\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ExposableModelContract;
@@ -36,6 +37,7 @@ final class ExposableModelFixture extends Model implements ExposableModelContrac
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getExposable(): array
     {
         return [

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
 final class QuestionEmptyFgetsFixture extends Question
 {
     #[Override]
-    protected function fgets($stream): string|false
+    protected function fgets($stream): string
     {
         return '';
     }

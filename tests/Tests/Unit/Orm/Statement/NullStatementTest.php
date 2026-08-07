@@ -12,16 +12,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Statement;
 
+use Override;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullStatementTest extends TestCase
 {
     protected NullStatement $statement;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->statement = new NullStatement();
@@ -76,7 +79,7 @@ final class NullStatementTest extends TestCase
 
     public function testFetchAllWithEntityReturnsEmptyArray(): void
     {
-        self::assertSame([], $this->statement->fetchAllEntities('SomeEntity'));
+        self::assertSame([], $this->statement->fetchAllEntities(EntityIntIdFixture::class));
     }
 
     public function testGetCountReturnsZero(): void

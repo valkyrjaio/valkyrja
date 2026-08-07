@@ -21,7 +21,6 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 final class ListCommandTest extends TestCase
@@ -51,7 +50,7 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString('No routes found.', $obOutput);
     }
@@ -86,7 +85,7 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString('Namespace `non-existent namespace` was not found.', $obOutput);
     }
@@ -145,7 +144,7 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString('Commands:', $obOutput);
@@ -223,7 +222,7 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString("Commands [$namespace]:", $obOutput);

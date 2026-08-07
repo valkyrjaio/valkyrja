@@ -68,10 +68,10 @@ final class UserTest extends TestCase
 
     public function testGetPasswordValue(): void
     {
-        $user           = new User();
-        $user->id       = self::USER_ID;
-        $user->username = self::USERNAME;
-        $user->password = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
+        $user                      = new User();
+        $user->id                  = self::USER_ID;
+        $user->username            = self::USERNAME;
+        $user[UserField::PASSWORD] = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
 
         self::assertNotEmpty($user->getPasswordValue());
     }

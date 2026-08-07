@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Cookie;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Http\Message\Param\Contract\CookieParamCollectionContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -25,6 +26,7 @@ final class CookieSessionTest extends TestCase
 
     protected CookieSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->request = $this->createMock(ServerRequestContract::class);
@@ -193,6 +195,11 @@ final class CookieSessionTest extends TestCase
         $session = new CookieSession($request, 'session-id');
 
         // Set id to empty to trigger the early return on line 51
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $session->setId('');
         $session->start();
 

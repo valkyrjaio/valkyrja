@@ -40,7 +40,7 @@ final class DuplicateSubProviderFixture implements ComponentProviderContract
     public function getContainerProviders(ApplicationContract $app): array
     {
         return [
-            CliContainerDataProviderFixture::class,
+            new CliContainerDataProviderFixture(),
         ];
     }
 
@@ -51,7 +51,7 @@ final class DuplicateSubProviderFixture implements ComponentProviderContract
     public function getEventProviders(ApplicationContract $app): array
     {
         return [
-            ListenerProviderFixture::class,
+            new ListenerProviderFixture(),
         ];
     }
 
@@ -62,7 +62,7 @@ final class DuplicateSubProviderFixture implements ComponentProviderContract
     public function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CliRouteProviderFixture::class,
+            new CliRouteProviderFixture(),
         ];
     }
 
@@ -73,7 +73,7 @@ final class DuplicateSubProviderFixture implements ComponentProviderContract
     public function getHttpProviders(ApplicationContract $app): array
     {
         return [
-            HttpRouteProviderFixture::class,
+            new HttpRouteProviderFixture(),
         ];
     }
 }

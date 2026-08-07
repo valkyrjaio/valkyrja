@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional\Abstract;
 
+use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\Abstract\App;
@@ -38,6 +39,7 @@ abstract class TestCase extends AbstractTestCase
     /**
      * Setup functional tests.
      */
+    #[Override]
     protected function setUp(): void
     {
         App::directory(dir: Directory::$basePath);

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Kernel;
 
+use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Kernel\ChildApplication;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
@@ -32,6 +33,7 @@ final class ChildApplicationTest extends TestCase
     private ChildApplication $child;
     private NativeChildContainer $childContainer;
 
+    #[Override]
     protected function setUp(): void
     {
         $config          = new Config();

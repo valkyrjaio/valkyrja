@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Cli\Middleware;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
@@ -22,6 +23,7 @@ final class RouteNotMatchedMiddlewareFixture implements RouteNotMatchedMiddlewar
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function routeNotMatched(InputContract $input, OutputContract $output, RouteNotMatchedHandlerContract $handler): OutputContract
     {
         $this->updateCounter();

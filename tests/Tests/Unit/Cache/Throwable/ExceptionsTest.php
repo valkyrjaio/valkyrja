@@ -12,24 +12,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cache\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Cache\Throwable\Contract\CacheThrowable;
 use Valkyrja\Cache\Throwable\Exception\Abstract\CacheInvalidArgumentException;
 use Valkyrja\Cache\Throwable\Exception\Abstract\CacheRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(CacheThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(CacheThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(CacheRuntimeException::class, CacheThrowable::class, true));
-        self::assertTrue(is_a(CacheInvalidArgumentException::class, CacheThrowable::class, true));
+        self::assertTrue(new ReflectionClass(CacheRuntimeException::class)->isSubclassOf(CacheThrowable::class));
+        self::assertTrue(new ReflectionClass(CacheInvalidArgumentException::class)->isSubclassOf(CacheThrowable::class));
     }
 }

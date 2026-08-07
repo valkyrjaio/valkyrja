@@ -210,7 +210,6 @@ final class UlidFactoryTest extends TestCase
         $result = UlidFactoryFixture::testGetTimeFromDateTime($dateTime);
 
         // Should return Unix timestamp in milliseconds (Uv format)
-        self::assertIsString($result);
         self::assertMatchesRegularExpression('/^\d+$/', $result);
     }
 
@@ -303,7 +302,6 @@ final class UlidFactoryTest extends TestCase
         // Test converting each random byte part
         for ($i = 1; $i <= 4; $i++) {
             $result = UlidFactoryFixture::testConvertRandomBytesPart($i);
-            self::assertIsString($result);
         }
 
         // Test with index > MAX_RANDOM_BYTES returns empty string

@@ -296,7 +296,6 @@ final class MatcherTest extends TestCase
         self::assertTrue($route->hasParameter('dynamic2'));
         self::assertIsInt($route->getParameter('dynamic1')->getValue());
         self::assertInstanceOf(IntT::class, $route->getParameter('dynamic2')->getValue());
-        self::assertIsInt($route->getParameter('dynamic2')->getValue()->asValue());
     }
 
     public function testInvalidDynamicMatch(): void

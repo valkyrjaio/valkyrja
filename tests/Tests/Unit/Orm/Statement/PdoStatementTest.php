@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Statement;
 
+use Override;
 use PDO;
 use PDOStatement as Statement;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,6 +33,7 @@ final class PdoStatementTest extends TestCase
 
     protected PdoStatement $statement;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->pdoStatement = $this->createMock(Statement::class);

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Middleware;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -43,6 +44,7 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
 
     protected EntityRouteMatchedMiddleware $middleware;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->container       = $this->createMock(ContainerContract::class);

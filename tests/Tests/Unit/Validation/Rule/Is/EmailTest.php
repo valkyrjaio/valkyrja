@@ -118,7 +118,7 @@ final class EmailTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithInvalidEmail(): void

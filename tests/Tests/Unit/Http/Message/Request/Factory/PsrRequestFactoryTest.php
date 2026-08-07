@@ -135,6 +135,9 @@ final class PsrRequestFactoryTest extends TestCase
         );
     }
 
+    /**
+     * @return array<int, UploadedFile>
+     */
     protected function getUploadedFiles(): array
     {
         $stream = new Stream();

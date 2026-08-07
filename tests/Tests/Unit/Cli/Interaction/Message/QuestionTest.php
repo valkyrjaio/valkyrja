@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionEmptyFgetsFixture;
@@ -152,12 +153,12 @@ final class QuestionTest extends TestCase
         self::assertSame($defaultResponse, $askedAnswer->getUserResponse());
     }
 
-    public function questionCallable(OutputContract $output, Answer $answer): OutputContract
+    public function questionCallable(OutputContract $output, AnswerContract $answer): OutputContract
     {
         return $output;
     }
 
-    public function questionCallable2(OutputContract $output, Answer $answer): OutputContract
+    public function questionCallable2(OutputContract $output, AnswerContract $answer): OutputContract
     {
         return $output;
     }

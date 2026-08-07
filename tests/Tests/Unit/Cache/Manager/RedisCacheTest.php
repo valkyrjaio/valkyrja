@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cache\Manager;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Predis\Client;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
@@ -30,6 +31,7 @@ final class RedisCacheTest extends TestCase
 
     protected string $prefix = 'test:';
 
+    #[Override]
     protected function setUp(): void
     {
         $this->client = $this->createMock(ClientFixture::class);
@@ -125,9 +127,13 @@ final class RedisCacheTest extends TestCase
             ->with(
                 self::callback(
                     static function (mixed $callback) use ($client): bool {
+                        if (! is_callable($callback)) {
+                            return false;
+                        }
+
                         $callback($client);
 
-                        return is_callable($callback);
+                        return true;
                     }
                 )
             );
@@ -138,6 +144,7 @@ final class RedisCacheTest extends TestCase
             ->with(
                 self::callback(
                     function (string $key) use (&$countKey): bool {
+                        /** @psalm-suppress RedundantCondition PHPUnit invokes this callback more than once. */
                         if ($countKey === 0) {
                             $countKey++;
 
@@ -150,6 +157,7 @@ final class RedisCacheTest extends TestCase
                 $seconds,
                 self::callback(
                     static function (string $value) use (&$countValue): bool {
+                        /** @psalm-suppress RedundantCondition PHPUnit invokes this callback more than once. */
                         if ($countValue === 0) {
                             $countValue++;
 

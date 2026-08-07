@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Crypt\Manager;
 
 use JsonException;
+use Override;
 use Random\RandomException;
 use SodiumException;
 use stdClass;
@@ -38,6 +39,7 @@ final class SodiumCryptTest extends TestCase
     /**
      * @throws RandomException
      */
+    #[Override]
     protected function setUp(): void
     {
         // Generate a valid 32-byte key in hex format (64 hex characters)
@@ -120,6 +122,11 @@ final class SodiumCryptTest extends TestCase
     public function testIsValidEncryptedMessageWithInvalidMessage(): void
     {
         self::assertFalse(@$this->crypt->isValidEncryptedMessage('invalid'));
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         self::assertFalse(@$this->crypt->isValidEncryptedMessage(''));
     }
 
@@ -160,22 +167,26 @@ final class SodiumCryptTest extends TestCase
         $this->expectExceptionMessage('The message was tampered with in transit');
 
         $crypt = new class('key') extends SodiumCrypt {
+            #[Override]
             protected function isValidDecodedType(string|false $decoded): bool
             {
                 return true;
             }
 
+            #[Override]
             protected function isValidDecodedStrLen(string $decoded): bool
             {
                 return true;
             }
 
+            #[Override]
             protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
             {
                 return false;
             }
 
-            protected function hex2bin(string $key): string|false
+            #[Override]
+            protected function hex2bin(string $key): string
             {
                 return 'keyasbytes';
             }
@@ -194,11 +205,13 @@ final class SodiumCryptTest extends TestCase
         $this->expectExceptionMessage("$key could not be converted to bytes");
 
         $crypt = new class($key) extends SodiumCrypt {
-            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string|false
+            #[Override]
+            protected function sodiumCryptoSecretboxOpen(string $cipherText, string $nonce, string $key): string
             {
                 return 'decrypted';
             }
 
+            #[Override]
             protected function hex2bin(string $key): string|false
             {
                 return false;

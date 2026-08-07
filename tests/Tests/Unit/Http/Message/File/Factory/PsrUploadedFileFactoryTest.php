@@ -20,10 +20,13 @@ use Valkyrja\Http\Message\File\Factory\PsrUploadedFileFactory;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Tests\Fixtures\Http\Message\File\Trait\UploadedFileCollectionTrait;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class PsrUploadedFileFactoryTest extends TestCase
 {
+    use UploadedFileCollectionTrait;
+
     public function testFromPsr(): void
     {
         $stream = new Stream();
@@ -75,8 +78,8 @@ final class PsrUploadedFileFactoryTest extends TestCase
 
         $fromPsrArray = PsrUploadedFileFactory::fromPsrArray([$psrUploadedFile, $psrUploadedFile2]);
 
-        $uploadedFileFromFactory  = $fromPsrArray->get(0);
-        $uploadedFileFromFactory2 = $fromPsrArray->get(1);
+        $uploadedFileFromFactory  = self::getFile($fromPsrArray, 0);
+        $uploadedFileFromFactory2 = self::getFile($fromPsrArray, 1);
 
         self::assertSame($contents, $uploadedFileFromFactory->getStream()->getContents());
         self::assertSame($size, $uploadedFileFromFactory->getSize());
@@ -135,7 +138,6 @@ final class PsrUploadedFileFactoryTest extends TestCase
 
         $result = PsrUploadedFileFactory::toPsrArray($outerCollection);
 
-        self::assertIsArray($result);
         self::assertCount(1, $result);
         self::assertIsArray($result[0]);
         self::assertCount(1, $result[0]);

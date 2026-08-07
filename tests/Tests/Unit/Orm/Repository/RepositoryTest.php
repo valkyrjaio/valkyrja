@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Repository;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Data\DatedMetadata;
@@ -53,8 +54,10 @@ final class RepositoryTest extends TestCase
     protected EntityMetadataRegistry $registry;
 
     /** @var class-string<EntityContract> */
+    /** @var class-string<EntityIntIdFixture> */
     protected string $entityClass;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->manager             = $this->createMock(ManagerContract::class);
@@ -124,7 +127,7 @@ final class RepositoryTest extends TestCase
 
         $result = $this->repository->find(1);
 
-        self::assertInstanceOf(EntityContract::class, $result);
+        self::assertInstanceOf(EntityIntIdFixture::class, $result);
         self::assertSame(1, $result->id);
     }
 
@@ -452,8 +455,6 @@ final class RepositoryTest extends TestCase
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'Updated Entity']);
 
         $this->repository->update($entity);
-
-        self::assertTrue(true);
     }
 
     public function testUpdateWithChangedProperties(): void
@@ -504,8 +505,6 @@ final class RepositoryTest extends TestCase
         $entity->name = 'Changed Name';
 
         $this->repository->update($entity);
-
-        self::assertTrue(true);
     }
 
     public function testDeleteRemovesEntity(): void
@@ -541,8 +540,6 @@ final class RepositoryTest extends TestCase
         $entity = ($this->entityClass)::fromArray(['id' => 1, 'name' => 'To Delete']);
 
         $this->repository->delete($entity);
-
-        self::assertTrue(true);
     }
 
     public function testForceDeleteRemovesEntity(): void
@@ -553,6 +550,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->forceDelete($entity);
 
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         self::assertTrue(true);
     }
 
@@ -898,6 +896,7 @@ final class RepositoryTest extends TestCase
 
         $this->repository->forceDelete($entity);
 
+        /* @phpstan-ignore staticMethod.alreadyNarrowedType (The test gives invalid input on purpose to reach the guard.) */
         self::assertTrue(true);
     }
 

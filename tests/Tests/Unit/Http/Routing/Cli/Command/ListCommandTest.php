@@ -19,9 +19,9 @@ use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Data\DynamicRoute;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 use function strpos;
 
@@ -41,7 +41,7 @@ final class ListCommandTest extends TestCase
             name: $name,
             regex: $regex,
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $outputFactory = new OutputFactory();
@@ -59,9 +59,8 @@ final class ListCommandTest extends TestCase
             outputFactory: $outputFactory
         );
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
-        self::assertIsString($contents);
         self::assertStringContainsString($path, $contents);
         self::assertStringContainsString($name, $contents);
         self::assertStringContainsString($regex, $contents);
@@ -78,14 +77,14 @@ final class ListCommandTest extends TestCase
             name: 'zebra',
             regex: 'z',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         ));
         $collection->add(new DynamicRoute(
             path: '/apple',
             name: 'apple',
             regex: 'a',
             parameters: [],
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         ));
 
         $listCommand = new ListCommand();
@@ -97,10 +96,10 @@ final class ListCommandTest extends TestCase
             outputFactory: $outputFactory
         );
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
-        $applePos = strpos((string) $contents, '/apple');
-        $zebraPos = strpos((string) $contents, '/zebra');
+        $applePos = strpos($contents, '/apple');
+        $zebraPos = strpos($contents, '/zebra');
 
         self::assertIsInt($applePos);
         self::assertIsInt($zebraPos);
@@ -124,9 +123,8 @@ final class ListCommandTest extends TestCase
 
         ob_start();
         $output->writeMessages();
-        $contents = ob_get_clean();
+        $contents = self::cleanOutputBuffer();
 
-        self::assertIsString($contents);
         self::assertStringContainsString('No routes were found', $contents);
     }
 

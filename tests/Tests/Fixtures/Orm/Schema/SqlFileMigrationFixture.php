@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Orm\Schema;
 
+use Override;
 use Throwable;
 use Valkyrja\Orm\Schema\Abstract\SqlFileMigration;
 
@@ -29,6 +30,7 @@ final class SqlFileMigrationFixture extends SqlFileMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function getRunMigrationFilePath(): string
     {
         return $this->runFilePath;
@@ -37,6 +39,7 @@ final class SqlFileMigrationFixture extends SqlFileMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function getRollbackMigrationFilePath(): string
     {
         return $this->rollbackFilePath;
@@ -45,6 +48,7 @@ final class SqlFileMigrationFixture extends SqlFileMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function runFailure(Throwable $exception): void
     {
         parent::runFailure($exception);

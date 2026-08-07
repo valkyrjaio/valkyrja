@@ -19,8 +19,6 @@ use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\String\Factory\StringFactory;
 
-use function fopen;
-
 final class StringFactoryTest extends TestCase
 {
     protected const string VALUE = 'Some Words';
@@ -161,7 +159,7 @@ final class StringFactoryTest extends TestCase
         $obj      = new stdClass();
         $obj->foo = 'bar';
 
-        $resource = fopen(filename: Directory::storagePath('.gitignore'), mode: 'rb');
+        $resource = self::openStream(filename: Directory::storagePath('.gitignore'), mode: 'rb');
 
         self::assertSame('string', StringFactory::fromMixed('string'));
         self::assertSame('3', StringFactory::fromMixed(3));

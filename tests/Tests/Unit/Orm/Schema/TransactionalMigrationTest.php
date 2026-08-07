@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Schema;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -26,6 +27,7 @@ final class TransactionalMigrationTest extends TestCase
 
     protected TransactionalMigrationFixture $migration;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->orm       = $this->createMock(ManagerContract::class);

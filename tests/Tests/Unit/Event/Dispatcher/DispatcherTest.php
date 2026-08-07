@@ -16,6 +16,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Event\Collection\ListenerCollection;
+use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\EventDispatcher;
 use Valkyrja\Event\Throwable\Exception\EventInvalidEventException;
@@ -35,8 +36,10 @@ final class DispatcherTest extends TestCase
     /**
      * Callback test.
      */
-    public static function dispatchCallback(DispatchCollectableEventFixture|StoppableEventFixture $event): string
+    public static function dispatchCallback(mixed $event): string
     {
+        self::assertInstanceOf(DispatchCollectableEventContract::class, $event);
+
         self::$dispatched = true;
 
         return 'test';
@@ -85,6 +88,7 @@ final class DispatcherTest extends TestCase
         /** @var DispatchCollectableEventFixture $eventAfterDispatchById2 */
         $eventAfterDispatchById2 = $dispatcher->dispatchById($eventId);
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The test gives invalid input on purpose to reach the guard. */
         self::assertTrue(self::$dispatched);
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatch2->getDispatches());
         self::assertSame(['test', 'test', 'test'], $eventAfterDispatchById2->getDispatches());
@@ -231,6 +235,11 @@ final class DispatcherTest extends TestCase
 
         $this->expectException(ContainerInvalidReferenceException::class);
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion, UndefinedClass The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $dispatcher->dispatchById('NonExistent\\Class\\Name');
     }
 
@@ -273,6 +282,11 @@ final class DispatcherTest extends TestCase
 
         $this->expectException(ContainerInvalidReferenceException::class);
 
+        /**
+         * @psalm-suppress ArgumentTypeCoercion, UndefinedClass The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $dispatcher->dispatchByIdIfHasListeners('NonExistent\\Class\\Name');
     }
 }

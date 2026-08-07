@@ -92,7 +92,7 @@ final class EnumTest extends TestCase
 
         $type = self::VALUE;
 
-        $type->modify(static fn (EnumFixture $subject): EnumFixture => EnumFixture::heart);
+        $type->modify(static fn (EnumFixture $subject) => $subject);
     }
 
     /**

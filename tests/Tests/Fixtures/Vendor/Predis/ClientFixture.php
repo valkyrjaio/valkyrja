@@ -27,12 +27,17 @@ class ClientFixture extends Client
         return 'test';
     }
 
+    /**
+     * @param string[]|string $keyOrKeys
+     *
+     * @return array<int, string|null>
+     */
     public function mget(array|string $keyOrKeys, string ...$keys): array
     {
         return [];
     }
 
-    public function setex(string $key, $seconds, $value): Status
+    public function setex(string $key, int $seconds, mixed $value): Status
     {
         return new Status('OK');
     }
@@ -49,7 +54,7 @@ class ClientFixture extends Client
 
     public function set(
         string $key,
-        $value,
+        mixed $value,
         null $expireResolution = null,
         null $expireTTL = null,
         null $flag = null,
@@ -58,6 +63,9 @@ class ClientFixture extends Client
         return new Status('OK');
     }
 
+    /**
+     * @param string[]|string $keyOrKeys
+     */
     public function del(array|string $keyOrKeys, string ...$keys): int
     {
         return 1;

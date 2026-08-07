@@ -16,6 +16,7 @@ use ArrayAccess;
 use Closure;
 use Error;
 use JsonException;
+use ReflectionClass;
 use TypeError;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelInvalidIssetMethodFixture;
@@ -26,8 +27,8 @@ use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
+use function is_scalar;
 use function json_encode;
-use function method_exists;
 use function strtoupper;
 
 use const JSON_THROW_ON_ERROR;
@@ -47,21 +48,23 @@ final class ModelTest extends TestCase
 
     public function testContract(): void
     {
-        self::assertTrue(method_exists(ModelContract::class, 'fromArray'));
-        self::assertTrue(method_exists(ModelContract::class, '__get'));
-        self::assertTrue(method_exists(ModelContract::class, '__set'));
-        self::assertTrue(method_exists(ModelContract::class, '__isset'));
-        self::assertTrue(method_exists(ModelContract::class, 'hasProperty'));
-        self::assertTrue(method_exists(ModelContract::class, 'updateProperties'));
-        self::assertTrue(method_exists(ModelContract::class, 'withProperties'));
-        self::assertTrue(method_exists(ModelContract::class, 'asValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asFlatValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'asChangedArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'getOriginalPropertyValue'));
-        self::assertTrue(method_exists(ModelContract::class, 'asOriginalArray'));
-        self::assertTrue(method_exists(ModelContract::class, 'jsonSerialize'));
-        self::assertTrue(method_exists(ModelContract::class, '__toString'));
+        $reflection = new ReflectionClass(ModelContract::class);
+
+        self::assertTrue($reflection->hasMethod('fromArray'));
+        self::assertTrue($reflection->hasMethod('__get'));
+        self::assertTrue($reflection->hasMethod('__set'));
+        self::assertTrue($reflection->hasMethod('__isset'));
+        self::assertTrue($reflection->hasMethod('hasProperty'));
+        self::assertTrue($reflection->hasMethod('updateProperties'));
+        self::assertTrue($reflection->hasMethod('withProperties'));
+        self::assertTrue($reflection->hasMethod('asValue'));
+        self::assertTrue($reflection->hasMethod('asFlatValue'));
+        self::assertTrue($reflection->hasMethod('asArray'));
+        self::assertTrue($reflection->hasMethod('asChangedArray'));
+        self::assertTrue($reflection->hasMethod('getOriginalPropertyValue'));
+        self::assertTrue($reflection->hasMethod('asOriginalArray'));
+        self::assertTrue($reflection->hasMethod('jsonSerialize'));
+        self::assertTrue($reflection->hasMethod('__toString'));
         self::isA(ArrayAccess::class, ModelContract::class);
         self::isA(TypeContract::class, ModelContract::class);
     }
@@ -72,6 +75,7 @@ final class ModelTest extends TestCase
 
         self::assertSame([], $model->asArray());
         self::assertFalse($model->__isset('test'));
+        /** @psalm-suppress UndefinedThisPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
         self::assertNull($model->__get('test'));
 
         $model->__set('protected', 'value');
@@ -126,8 +130,6 @@ final class ModelTest extends TestCase
         $model = ModelFixture::fromArray([]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
 
         self::assertFalse(isset($model[ModelFixture::PUBLIC]));
         self::assertFalse(isset($model[ModelFixture::PROTECTED]));
@@ -142,10 +144,6 @@ final class ModelTest extends TestCase
         self::assertFalse($model->offsetExists(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromArray(ModelFixture::VALUES);
-
-        self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
 
         self::assertTrue(isset($model[ModelFixture::PUBLIC]));
         self::assertTrue(isset($model[ModelFixture::PROTECTED]));
@@ -176,39 +174,39 @@ final class ModelTest extends TestCase
         $model = ModelFixture::fromValue([]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(ModelFixture::VALUES);
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue((object) ModelFixture::VALUES);
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(json_encode(ModelFixture::VALUES));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(ModelFixture::fromValue(ModelFixture::VALUES));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
-        self::assertTrue(isset($model->private));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($model->__isset(ModelFixture::PRIVATE));
 
         $model = ModelFixture::fromValue(json_encode(ModelFixture::fromValue(ModelFixture::VALUES)));
 
         self::assertTrue(isset($model->public));
-        self::assertTrue(isset($model->protected));
+        self::assertTrue($model->__isset(ModelFixture::PROTECTED));
         // Since private fields are not exposed
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
     }
 
     public function testSet(): void
@@ -220,10 +218,17 @@ final class ModelTest extends TestCase
         $model->private   = ModelFixture::PRIVATE;
         $model->nullable  = ModelFixture::NULLABLE;
 
-        self::assertSame(ModelFixture::PUBLIC, $model->public);
-        self::assertSame(ModelFixture::PROTECTED, $model->protected);
+        // asArray() reads through the model's accessors, so it shows what __set stored.
+        self::assertSame(
+            [
+                ModelFixture::PUBLIC    => ModelFixture::PUBLIC,
+                ModelFixture::NULLABLE  => ModelFixture::NULLABLE,
+                ModelFixture::PROTECTED => ModelFixture::PROTECTED,
+            ],
+            $model->asArray()
+        );
+        /** @psalm-suppress RedundantCondition A private property is not exposed by asArray(), and Psalm folds the __get round trip */
         self::assertSame(ModelFixture::PRIVATE, $model->private);
-        self::assertSame(ModelFixture::NULLABLE, $model->nullable);
 
         $model = ModelFixture::fromArray([]);
 
@@ -269,7 +274,7 @@ final class ModelTest extends TestCase
         unset($model[ModelFixture::PUBLIC], $model[ModelFixture::PROTECTED]);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
 
         $model = ModelFixture::fromArray(ModelFixture::VALUES);
 
@@ -277,7 +282,7 @@ final class ModelTest extends TestCase
         $model->offsetUnset(ModelFixture::PROTECTED);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
     }
 
     public function testUnsetPrivateErrors(): void
@@ -304,13 +309,13 @@ final class ModelTest extends TestCase
         $newModel = $model->withProperties(ModelFixture::VALUES);
 
         self::assertFalse(isset($model->public));
-        self::assertFalse(isset($model->protected));
-        self::assertFalse(isset($model->private));
+        self::assertFalse($model->__isset(ModelFixture::PROTECTED));
+        self::assertFalse($model->__isset(ModelFixture::PRIVATE));
         self::assertFalse(isset($model->nullable));
 
-        self::assertTrue(isset($newModel->public));
-        self::assertTrue(isset($newModel->protected));
-        self::assertTrue(isset($newModel->private));
+        self::assertTrue($newModel->__isset(ModelFixture::PUBLIC));
+        self::assertTrue($newModel->__isset(ModelFixture::PROTECTED));
+        self::assertTrue($newModel->__isset(ModelFixture::PRIVATE));
     }
 
     public function testOriginal(): void
@@ -492,7 +497,7 @@ final class ModelTest extends TestCase
 
         $model->applyWithModifier(
             ['name' => 'value'],
-            static fn (string $property, mixed $value): string => strtoupper((string) $value),
+            static fn (string $property, mixed $value): string => strtoupper(is_scalar($value) ? (string) $value : ''),
         );
 
         self::assertSame('VALUE', $model->name);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Api\Middleware;
 
 use Exception;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Contract\ApiContract;
@@ -44,6 +45,7 @@ final class ApiThrowableCaughtMiddlewareTest extends TestCase
     protected JsonResponseContract&MockObject $jsonResponse;
     protected ApiThrowableCaughtMiddleware $middleware;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->api             = $this->createMock(ApiContract::class);

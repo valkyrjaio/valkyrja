@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Manager\Contract\SessionContract;
@@ -24,6 +25,7 @@ final class LogSessionTest extends TestCase
 
     protected LogSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->logger  = $this->createMock(LoggerContract::class);

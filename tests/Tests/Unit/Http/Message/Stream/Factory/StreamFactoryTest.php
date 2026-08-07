@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Stream\Factory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
+use Throwable;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -28,17 +30,74 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\HttpStreamUnwritableStreamE
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 use function get_resource_type;
-use function is_resource;
 
 final class StreamFactoryTest extends TestCase
 {
+    /**
+     * @return array<string, array{int|false, class-string<Throwable>|null}>
+     */
+    public static function writeResultProvider(): array
+    {
+        return [
+            'bytes written'   => [5, null],
+            'nothing written' => [0, null],
+            'write failed'    => [false, HttpStreamStreamWriteException::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{int, class-string<Throwable>|null}>
+     */
+    public static function seekResultProvider(): array
+    {
+        return [
+            'seeked'      => [0, null],
+            'seek failed' => [1, HttpStreamStreamSeekException::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{string|false, class-string<Throwable>|null}>
+     */
+    public static function readResultProvider(): array
+    {
+        return [
+            'data read'    => ['data', null],
+            'nothing read' => ['', null],
+            'read failed'  => [false, HttpStreamStreamReadException::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{int|false, class-string<Throwable>|null}>
+     */
+    public static function tellResultProvider(): array
+    {
+        return [
+            'position told' => [10, null],
+            'at the start'  => [0, null],
+            'tell failed'   => [false, HttpStreamStreamTellException::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{mixed}>
+     */
+    public static function invalidStreamProvider(): array
+    {
+        return [
+            'string' => ['not-a-stream'],
+            'int'    => [1],
+            'null'   => [null],
+            'array'  => [[]],
+        ];
+    }
+
     public function testGetResourceStreamReturnsValidStreamResource(): void
     {
         $resource = StreamFactory::getResourceStream(PhpWrapper::temp, Mode::WRITE_READ);
 
-        self::assertTrue(is_resource($resource));
         self::assertSame('stream', get_resource_type($resource));
     }
 
@@ -46,7 +105,6 @@ final class StreamFactoryTest extends TestCase
     {
         $resource = StreamFactory::getResourceStream('php://temp', Mode::WRITE_READ);
 
-        self::assertTrue(is_resource($resource));
         self::assertSame('stream', get_resource_type($resource));
     }
 
@@ -100,8 +158,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isWritable')->willReturn(true);
 
         StreamFactory::verifyWritable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifyWritableThrowsForUnwritableStream(): void
@@ -114,18 +170,15 @@ final class StreamFactoryTest extends TestCase
         StreamFactory::verifyWritable($stream);
     }
 
-    public function testVerifyWriteResultPassesForInt(): void
+    /**
+     * @param class-string<Throwable>|null $expectedException
+     */
+    #[DataProvider('writeResultProvider')]
+    public function testVerifyWriteResult(int|false $result, string|null $expectedException): void
     {
-        StreamFactory::verifyWriteResult(5);
+        $this->expectGuardOutcome($expectedException);
 
-        self::assertTrue(true);
-    }
-
-    public function testVerifyWriteResultThrowsForFalse(): void
-    {
-        $this->expectException(HttpStreamStreamWriteException::class);
-
-        StreamFactory::verifyWriteResult(false);
+        StreamFactory::verifyWriteResult($result);
     }
 
     public function testVerifySeekablePassesForSeekableStream(): void
@@ -134,8 +187,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isSeekable')->willReturn(true);
 
         StreamFactory::verifySeekable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifySeekableThrowsForUnseekableStream(): void
@@ -148,18 +199,15 @@ final class StreamFactoryTest extends TestCase
         StreamFactory::verifySeekable($stream);
     }
 
-    public function testVerifySeekResultPassesForZero(): void
+    /**
+     * @param class-string<Throwable>|null $expectedException
+     */
+    #[DataProvider('seekResultProvider')]
+    public function testVerifySeekResult(int $result, string|null $expectedException): void
     {
-        StreamFactory::verifySeekResult(0);
+        $this->expectGuardOutcome($expectedException);
 
-        self::assertTrue(true);
-    }
-
-    public function testVerifySeekResultThrowsForNonZero(): void
-    {
-        $this->expectException(HttpStreamStreamSeekException::class);
-
-        StreamFactory::verifySeekResult(1);
+        StreamFactory::verifySeekResult($result);
     }
 
     public function testVerifyReadablePassesForReadableStream(): void
@@ -168,8 +216,6 @@ final class StreamFactoryTest extends TestCase
         $stream->expects($this->once())->method('isReadable')->willReturn(true);
 
         StreamFactory::verifyReadable($stream);
-
-        self::assertTrue(true);
     }
 
     public function testVerifyReadableThrowsForUnreadableStream(): void
@@ -182,51 +228,61 @@ final class StreamFactoryTest extends TestCase
         StreamFactory::verifyReadable($stream);
     }
 
-    public function testVerifyReadResultPassesForString(): void
+    /**
+     * @param class-string<Throwable>|null $expectedException
+     */
+    #[DataProvider('readResultProvider')]
+    public function testVerifyReadResult(string|false $result, string|null $expectedException): void
     {
-        StreamFactory::verifyReadResult('data');
+        $this->expectGuardOutcome($expectedException);
 
-        self::assertTrue(true);
+        StreamFactory::verifyReadResult($result);
     }
 
-    public function testVerifyReadResultThrowsForFalse(): void
+    /**
+     * @param class-string<Throwable>|null $expectedException
+     */
+    #[DataProvider('tellResultProvider')]
+    public function testVerifyTellResult(int|false $result, string|null $expectedException): void
     {
-        $this->expectException(HttpStreamStreamReadException::class);
+        $this->expectGuardOutcome($expectedException);
 
-        StreamFactory::verifyReadResult(false);
-    }
-
-    public function testVerifyTellResultPassesForInt(): void
-    {
-        StreamFactory::verifyTellResult(10);
-
-        self::assertTrue(true);
-    }
-
-    public function testVerifyTellResultThrowsForFalse(): void
-    {
-        $this->expectException(HttpStreamStreamTellException::class);
-
-        StreamFactory::verifyTellResult(false);
+        StreamFactory::verifyTellResult($result);
     }
 
     public function testValidateStreamPassesForValidResource(): void
     {
-        $resource = fopen('php://temp', 'w+');
+        $resource = self::openStream('php://temp', 'w+');
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The guard must accept a valid resource without throwing. */
         StreamFactory::validateStream($resource);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
 
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
-    public function testValidateStreamThrowsForNonResource(): void
+    #[DataProvider('invalidStreamProvider')]
+    public function testValidateStreamThrowsForNonResource(mixed $resource): void
     {
         $this->expectException(HttpStreamInvalidStreamException::class);
 
-        StreamFactory::validateStream('not-a-stream');
+        StreamFactory::validateStream($resource);
+    }
+
+    /**
+     * Expect the guard under test to either throw or do nothing at all.
+     *
+     * @param class-string<Throwable>|null $expectedException
+     */
+    private function expectGuardOutcome(string|null $expectedException): void
+    {
+        if ($expectedException !== null) {
+            $this->expectException($expectedException);
+
+            return;
+        }
+
+        $this->expectNotToPerformAssertions();
     }
 }

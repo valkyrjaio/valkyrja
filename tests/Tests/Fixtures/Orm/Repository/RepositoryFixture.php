@@ -13,7 +13,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Orm\Repository;
 
 use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityFixture;
 
+/**
+ * @extends Repository<EntityFixture>
+ */
 final class RepositoryFixture extends Repository
 {
 }

@@ -39,6 +39,6 @@ final class NullBroadcasterTest extends TestCase
         $broadcaster->send($message);
 
         // If we get here, the test passes (no exceptions thrown)
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

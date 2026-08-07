@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function fopen;
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -31,12 +29,12 @@ final class StreamOutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = new StreamOutput(fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb'))
+        $output = new StreamOutput(self::openStream(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb'))
             ->withAddedMessage($message);
 
         ob_start();
         $outputWritten = $output->writeMessages();
-        $contents      = ob_get_clean();
+        $contents      = self::cleanOutputBuffer();
 
         self::assertSame([$message], $outputWritten->getMessages());
         self::assertCount(1, $outputWritten->getWrittenMessages());
@@ -48,8 +46,8 @@ final class StreamOutputTest extends TestCase
 
     public function testFilePath(): void
     {
-        $stream  = fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb');
-        $stream2 = fopen(filename: Directory::storagePath('stream-output-test2.txt'), mode: 'wrb');
+        $stream  = self::openStream(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb');
+        $stream2 = self::openStream(filename: Directory::storagePath('stream-output-test2.txt'), mode: 'wrb');
 
         $output  = (new StreamOutput($stream));
         $output2 = $output->withStream($stream2);

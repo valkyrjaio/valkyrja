@@ -16,6 +16,7 @@ use Mailgun\Api\Message as MailgunMessageApi;
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Mail\Data\Attachment;
@@ -33,6 +34,7 @@ final class MailgunMailerTest extends TestCase
 
     protected MockObject&BatchMessage $batchMessage;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mailgunClient     = $this->createMock(Mailgun::class);
@@ -101,6 +103,7 @@ final class MailgunMailerTest extends TestCase
             ->with(
                 self::callback(
                     static function (string $param) use ($body, $plainBody, &$count): bool {
+                        /** @psalm-suppress RedundantCondition PHPUnit invokes this callback more than once. */
                         if ($count === 0) {
                             $count++;
 

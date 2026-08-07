@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -31,11 +32,13 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 final class AllMiddlewareFixture implements RequestReceivedMiddlewareContract, RouteMatchedMiddlewareContract, RouteDispatchedMiddlewareContract, SendingResponseMiddlewareContract, ThrowableCaughtMiddlewareContract, ResponseSentMiddlewareContract
 {
+    #[Override]
     public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {
         return $request;
     }
 
+    #[Override]
     public function routeDispatched(
         ServerRequestContract $request,
         ResponseContract $response,
@@ -45,20 +48,24 @@ final class AllMiddlewareFixture implements RequestReceivedMiddlewareContract, R
         return $response;
     }
 
+    #[Override]
     public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
         return $route;
     }
 
+    #[Override]
     public function sendingResponse(ServerRequestContract $request, ResponseContract $response, SendingResponseHandlerContract $handler): ResponseContract
     {
         return $response;
     }
 
+    #[Override]
     public function responseSent(ServerRequestContract $request, ResponseContract $response, ResponseSentHandlerContract $handler): void
     {
     }
 
+    #[Override]
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,

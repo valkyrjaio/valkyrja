@@ -22,6 +22,8 @@ use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Rule\Is\NotEmpty;
 use Valkyrja\Validation\Rule\Is\Required;
 
+use function is_scalar;
+
 /**
  * Struct TestIndexedParsedBodyRequestStruct.
  */
@@ -51,7 +53,7 @@ enum IndexedParsedBodyRequestStructEnum: int implements RequestStructContract
                 new NotEmpty($first, errorMessage: ErrorMessage::IS_NOT_EMPTY),
             ],
             self::second->name => [
-                new IsNumeric((int) $second, errorMessage: ErrorMessage::IS_NUMERIC),
+                new IsNumeric(is_scalar($second) ? (int) $second : 0, errorMessage: ErrorMessage::IS_NUMERIC),
             ],
             self::third->name  => [
                 new IsString($third, errorMessage: ErrorMessage::IS_STRING),

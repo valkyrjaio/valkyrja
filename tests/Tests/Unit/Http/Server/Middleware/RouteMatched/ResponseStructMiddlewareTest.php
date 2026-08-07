@@ -19,6 +19,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -34,7 +35,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $handler  = new RouteDispatchedHandler();
 
@@ -57,7 +58,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();
@@ -84,7 +85,7 @@ final class ResponseStructMiddlewareTest extends TestCase
         $route    = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseStruct: IndexedResponseStructEnum::first
         );
         $handler  = new RouteDispatchedHandler();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Orm\Data;
 
 use Valkyrja\Orm\Data\EntityCast;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
@@ -111,8 +112,8 @@ final class EntityCastTest extends TestCase
     public function testWithStringType(): void
     {
         // This tests using a class-string for the type instead of CastType enum
-        $cast = new EntityCast(CastType::string->value);
+        $cast = new EntityCast(EntityIntIdFixture::class);
 
-        self::assertSame(CastType::string->value, $cast->type);
+        self::assertSame(EntityIntIdFixture::class, $cast->type);
     }
 }

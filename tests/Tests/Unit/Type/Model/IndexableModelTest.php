@@ -12,14 +12,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
+use ReflectionClass;
 use Valkyrja\Tests\Fixtures\Type\Model\IndexableModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\SimpleIndexableModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Model\Contract\IndexedModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
-
-use function method_exists;
 
 /**
  * Test the Indexable model.
@@ -28,16 +27,18 @@ final class IndexableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(IndexedModelContract::class, 'getIndexes'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'getReversedIndexes'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'getMappedArrayFromIndexedArray'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'getIndexedArrayFromMappedArray'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'fromIndexedArray'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'updateIndexedProperties'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'withIndexedProperties'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'asIndexedArray'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'asChangedIndexedArray'));
-        self::assertTrue(method_exists(IndexedModelContract::class, 'asOriginalIndexedArray'));
+        $reflection = new ReflectionClass(IndexedModelContract::class);
+
+        self::assertTrue($reflection->hasMethod('getIndexes'));
+        self::assertTrue($reflection->hasMethod('getReversedIndexes'));
+        self::assertTrue($reflection->hasMethod('getMappedArrayFromIndexedArray'));
+        self::assertTrue($reflection->hasMethod('getIndexedArrayFromMappedArray'));
+        self::assertTrue($reflection->hasMethod('fromIndexedArray'));
+        self::assertTrue($reflection->hasMethod('updateIndexedProperties'));
+        self::assertTrue($reflection->hasMethod('withIndexedProperties'));
+        self::assertTrue($reflection->hasMethod('asIndexedArray'));
+        self::assertTrue($reflection->hasMethod('asChangedIndexedArray'));
+        self::assertTrue($reflection->hasMethod('asOriginalIndexedArray'));
         self::isA(ModelContract::class, IndexedModelContract::class);
     }
 

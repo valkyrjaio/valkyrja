@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\File\Collection;
 
+use Override;
 use Valkyrja\Http\Message\File\Collection\Contract\UploadedFileCollectionContract;
 use Valkyrja\Http\Message\File\Collection\UploadedFileCollection;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
@@ -28,6 +29,7 @@ final class UploadedFileCollectionTest extends TestCase
 
     protected UploadedFileContract $file2;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->file     = self::createStub(UploadedFileContract::class);
@@ -174,7 +176,11 @@ final class UploadedFileCollectionTest extends TestCase
     {
         $this->expectException(UploadedFileInvalidArgumentException::class);
 
-        /* @phpstan-ignore-next-line */
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $this->fileData->with(['invalid' => 'not-a-file']);
     }
 

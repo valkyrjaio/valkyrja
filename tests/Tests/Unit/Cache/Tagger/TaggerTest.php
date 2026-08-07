@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cache\Tagger;
 
 use JsonException;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
@@ -25,6 +26,7 @@ final class TaggerTest extends TestCase
 {
     protected MockObject&CacheContract $cache;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cache = $this->createMock(CacheContract::class);
@@ -118,6 +120,7 @@ final class TaggerTest extends TestCase
             ->with(
                 self::callback(
                     static function (string $key) use (&$count): bool {
+                        /** @psalm-suppress RedundantCondition PHPUnit invokes this callback more than once. */
                         if ($count === 0) {
                             $count++;
 
@@ -169,7 +172,7 @@ final class TaggerTest extends TestCase
             ->expects($this->exactly(3))
             ->method('get')
             ->willReturnCallback(
-                static function (string $key): string|null {
+                static function (string $key): string {
                     if ($key === 'tag1') {
                         return '{"key1":"key1","key2":"key2"}';
                     }

@@ -46,9 +46,9 @@ final class TwigRendererTest extends TestCase
         $twig     = self::createStub(Environment::class);
         $renderer = new TwigRenderer($twig);
 
-        $renderer->startRender();
+        $this->expectNotToPerformAssertions();
 
-        $this->addToAssertionCount(1);
+        $renderer->startRender();
     }
 
     /**

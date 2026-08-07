@@ -33,7 +33,6 @@ use Valkyrja\Tests\Fixtures\Application\Provider\CliRouteProviderFixture;
 use Valkyrja\Tests\Fixtures\Application\Provider\CliRoutingDataProviderFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 use function restore_error_handler;
 use function restore_exception_handler;
@@ -86,6 +85,9 @@ final class CliTest extends TestCase
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
@@ -113,15 +115,20 @@ final class CliTest extends TestCase
         self::assertTrue(CliRouteProviderFixture::$called);
         CliRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(CliComponentProviderFixture::$publishedContainerData);
         CliComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(CliRoutingDataProviderFixture::$published);
         CliRoutingDataProviderFixture::$published = false;
 
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
@@ -141,7 +148,7 @@ final class CliTest extends TestCase
 
         ob_start();
         Cli::run(config: $config);
-        ob_get_clean();
+        self::cleanOutputBuffer();
 
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
@@ -150,6 +157,7 @@ final class CliTest extends TestCase
         self::$handlerCalled = false;
 
         // With debug mode off we expect the data service providers to provide the data and routes
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(CliRouteProviderFixture::$called);
         CliRouteProviderFixture::$called = false;
         // With debug mode off we expect the component publish method to NOT bypass
@@ -162,6 +170,9 @@ final class CliTest extends TestCase
         $config = new class(dir: $dir) extends CliConfig implements CliRoutingConfigContract {
             public string $dataClassName = 'CliTestCliRoutingData';
 
+            /**
+             * @param non-empty-string $dir
+             */
             public function __construct(
                 string $dir,
             ) {
@@ -181,14 +192,16 @@ final class CliTest extends TestCase
 
         ob_start();
         Cli::run(config: $config);
-        ob_get_clean();
+        self::cleanOutputBuffer();
 
         restore_error_handler();
         restore_exception_handler();
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(self::$runCalled);
         self::$runCalled = false;
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType The assertion proves the framework set the flag. */
         self::assertTrue(self::$handlerCalled);
         self::$handlerCalled = false;
 
@@ -196,9 +209,11 @@ final class CliTest extends TestCase
         self::assertTrue(CliRouteProviderFixture::$called);
         CliRouteProviderFixture::$called = false;
         // With debug mode on we expect the component publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(CliComponentProviderFixture::$publishedContainerData);
         CliComponentProviderFixture::$publishedContainerData = false;
         // With debug mode on we expect the route data publisher publish method to bypass
+        /** @psalm-suppress RedundantCondition The assertion proves the framework set the flag. */
         self::assertFalse(CliRoutingDataProviderFixture::$published);
         CliRoutingDataProviderFixture::$published = false;
 

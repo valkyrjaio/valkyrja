@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
-use Valkyrja\Auth\Entity\Trait\LockableUserMethods;
+use Valkyrja\Tests\Fixtures\Auth\Entity\LockableUserMethodsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class LockableUserMethodsTest extends TestCase
@@ -33,10 +33,8 @@ final class LockableUserMethodsTest extends TestCase
         self::assertSame(UserField::IS_LOCKED, $this->user()::getIsLockedField());
     }
 
-    private function user(): object
+    private function user(): LockableUserMethodsFixture
     {
-        return new class {
-            use LockableUserMethods;
-        };
+        return new LockableUserMethodsFixture();
     }
 }

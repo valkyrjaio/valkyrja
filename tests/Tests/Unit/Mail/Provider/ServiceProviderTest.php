@@ -18,6 +18,7 @@ use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Mail\Data\Contract\MailConfigContract;
 use Valkyrja\Mail\Data\Contract\MailMailgunConfigContract;
@@ -39,7 +40,11 @@ use Valkyrja\Tests\Fixtures\Mail\Data\MailConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = MailServiceProvider::class;
 
     public function testExpectedPublishers(): void

@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Sms\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Sms\Data\Contract\SmsConfigContract;
@@ -35,7 +36,11 @@ use Vonage\Client\Credentials\CredentialsInterface;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = SmsServiceProvider::class;
 
     public function testExpectedPublishers(): void

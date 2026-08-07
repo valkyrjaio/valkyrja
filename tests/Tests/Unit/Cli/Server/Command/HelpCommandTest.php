@@ -28,9 +28,9 @@ use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Server\Command\HelpCommand;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 final class HelpCommandTest extends TestCase
@@ -66,7 +66,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::ERROR, $outputFromRun->getExitCode());
         self::assertStringContainsString("Command `$commandName` was not found.", $obOutput);
@@ -81,7 +81,7 @@ final class HelpCommandTest extends TestCase
         $helpRoute   = new Route(
             name: $commandName,
             description: $description,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             helpText: [$this, 'getHelpText'],
             arguments: [
                 new ArgumentParameter(
@@ -156,7 +156,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
@@ -196,7 +196,7 @@ final class HelpCommandTest extends TestCase
         $helpRoute = new Route(
             name: $commandName,
             description: $description,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         $option = $this->createMock(OptionParameterContract::class);
@@ -234,7 +234,7 @@ final class HelpCommandTest extends TestCase
 
         ob_start();
         $outputFromRun->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertSame(ExitCode::SUCCESS, $outputFromRun->getExitCode());
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);

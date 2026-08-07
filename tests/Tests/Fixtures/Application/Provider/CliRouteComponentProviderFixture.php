@@ -52,7 +52,7 @@ final class CliRouteComponentProviderFixture implements ComponentProviderContrac
     public function getCliProviders(ApplicationContract $app): array
     {
         return [
-            CliRouteProviderFixture::class,
+            new CliRouteProviderFixture(),
         ];
     }
 

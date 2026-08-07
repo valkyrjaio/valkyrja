@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Jwt\Manager;
 
 use JsonException;
+use Override;
 use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -21,6 +22,7 @@ final class NullJwtTest extends TestCase
 {
     protected NullJwt $jwt;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->jwt = new NullJwt();

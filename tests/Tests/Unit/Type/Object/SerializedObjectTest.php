@@ -63,7 +63,9 @@ final class SerializedObjectTest extends TestCase
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(static function (ModelFixture $subject) use ($newValue): ModelFixture {
+        $modified = $type->modify(static function (object $subject) use ($newValue): object {
+            self::assertInstanceOf(ModelFixture::class, $subject);
+
             $subject->public = $newValue;
 
             return $subject;
@@ -71,9 +73,15 @@ final class SerializedObjectTest extends TestCase
 
         // Original should be unmodified
         self::assertSame($type->asValue(), $value);
-        self::assertSame('test', $type->asValue()->public);
+        $original = $type->asValue();
+
+        self::assertInstanceOf(ModelFixture::class, $original);
+        self::assertSame('test', $original->public);
         // New should be modified
-        self::assertSame($newValue, $modified->asValue()->public);
+        $new = $modified->asValue();
+
+        self::assertInstanceOf(ModelFixture::class, $new);
+        self::assertSame($newValue, $new->public);
     }
 
     public function testJsonSerialize(): void
@@ -90,6 +98,6 @@ final class SerializedObjectTest extends TestCase
 
         $type = SerializedObject::fromValue($serialized, [stdClass::class]);
 
-        self::assertSame('bar', $type->asValue()->foo);
+        self::assertSame(['foo' => 'bar'], (array) $type->asValue());
     }
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Data\Contract\HttpServerConfigContract;
@@ -39,7 +40,11 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = HttpServerServiceProvider::class;
 
     public function testExpectedPublishers(): void

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Provider\HttpMessageServiceProvider;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Response\Factory\ResponseFactory;
@@ -22,7 +23,11 @@ use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = HttpMessageServiceProvider::class;
 
     public function testExpectedPublishers(): void

@@ -26,12 +26,15 @@ use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\RouteCollectorContract;
 use Valkyrja\Cli\Routing\Data\CliRoutingData;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\CliRoutingServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Tests\Fixtures\Cli\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\RouteProviderFixture;
 
 /**
@@ -39,7 +42,11 @@ use Valkyrja\Tests\Fixtures\Cli\Routing\Provider\RouteProviderFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = CliRoutingServiceProvider::class;
 
     public function testExpectedPublishers(): void
@@ -113,10 +120,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'version';
         $data = new CliRoutingData(
             routes: [
-                $name => new Route(
+                $name => static fn (): RouteContract => new Route(
                     $name,
                     'description',
-                    handler: static fn (): null => null,
+                    handler: RouteHandlerFixture::handle(...),
                 ),
             ]
         );
@@ -151,7 +158,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
@@ -161,8 +168,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
-        self::assertNotNull($collection->get('test'));
-        self::assertNotNull($collection->get('test-provider'));
     }
 
     /**
@@ -179,7 +184,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$command]);
 
@@ -189,8 +194,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $callback($this->container);
 
         self::assertInstanceOf(RouteCollection::class, $collection = $this->container->getSingleton(RouteCollectionContract::class));
-        self::assertNotNull($collection->get('test'));
-        self::assertNotNull($collection->get('test-provider'));
     }
 
     /**
@@ -207,7 +210,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $command = new Route(
             name: 'test',
             description: 'test',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$command]);
 

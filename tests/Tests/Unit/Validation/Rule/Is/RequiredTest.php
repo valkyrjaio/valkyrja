@@ -104,7 +104,7 @@ final class RequiredTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithFalsyValue(): void

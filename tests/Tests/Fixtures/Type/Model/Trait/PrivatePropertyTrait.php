@@ -23,6 +23,8 @@ trait PrivatePropertyTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(): mixed>
      */
     protected function internalGetCallables(): array
     {
@@ -33,6 +35,8 @@ trait PrivatePropertyTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(mixed): void>
      */
     protected function internalSetCallables(): array
     {
@@ -43,6 +47,8 @@ trait PrivatePropertyTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<non-empty-string, callable(): bool>
      */
     protected function internalIssetCallables(): array
     {

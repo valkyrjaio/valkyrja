@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Collection;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Header\Collection\Contract\HeaderCollectionContract;
 use Valkyrja\Http\Message\Header\Collection\HeaderCollection;
@@ -30,6 +31,7 @@ final class HeaderCollectionTest extends TestCase
 
     protected Header $contentTypeHeader;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->hostHeader        = new Header(HeaderName::HOST, 'example.com');
@@ -79,7 +81,6 @@ final class HeaderCollectionTest extends TestCase
     {
         $header = $this->headerData->get(HeaderName::HOST);
 
-        self::assertNotNull($header);
         self::assertSame(HeaderName::HOST, $header->getName());
     }
 
@@ -89,9 +90,6 @@ final class HeaderCollectionTest extends TestCase
         $header2 = $this->headerData->get('HOST');
         $header3 = $this->headerData->get('Host');
 
-        self::assertNotNull($header1);
-        self::assertNotNull($header2);
-        self::assertNotNull($header3);
         self::assertSame($header1, $header2);
         self::assertSame($header2, $header3);
     }
@@ -175,7 +173,6 @@ final class HeaderCollectionTest extends TestCase
 
         $header = $new->get(HeaderName::HOST);
 
-        self::assertNotNull($header);
         self::assertSame('new-host.com', $header->getHeaderLine());
     }
 
@@ -222,7 +219,6 @@ final class HeaderCollectionTest extends TestCase
 
         $header = $new->get(HeaderName::HOST);
 
-        self::assertNotNull($header);
         self::assertSame('example.com, another.com', $header->getHeaderLine());
     }
 
@@ -271,7 +267,7 @@ final class HeaderCollectionTest extends TestCase
         $header     = new Header('X-Test', 'value');
         $headerData = HeaderCollection::fromArray(['x-test' => $header]);
 
-        self::assertNotNull($headerData->get('X-Test'));
+        self::assertSame($header, $headerData->get('X-Test'));
     }
 
     public function testFromArrayThrowsForInvalidData(): void
@@ -291,7 +287,6 @@ final class HeaderCollectionTest extends TestCase
 
         $header = $headerData->get('Host');
 
-        self::assertNotNull($header);
         self::assertSame('second.com', $header->getHeaderLine());
     }
 

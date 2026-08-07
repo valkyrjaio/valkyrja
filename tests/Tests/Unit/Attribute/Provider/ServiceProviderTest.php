@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
 use Valkyrja\Attribute\Provider\AttributeServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
@@ -24,7 +25,11 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = AttributeServiceProvider::class;
 
     public function testExpectedPublishers(): void

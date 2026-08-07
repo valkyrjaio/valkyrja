@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\QueryBuilder\Factory;
 
+use Override;
 use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilderContract;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract;
@@ -28,6 +29,7 @@ final class SqlQueryBuilderFactoryTest extends TestCase
 {
     protected SqlQueryBuilderFactory $factory;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->factory = new SqlQueryBuilderFactory();

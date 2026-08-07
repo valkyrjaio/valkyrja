@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
+use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Tests\Fixtures\Attribute\AttributeClassChildFixture;
@@ -79,6 +80,7 @@ final class CollectorTest extends TestCase
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->attributes = new Collector();
@@ -157,6 +159,8 @@ final class CollectorTest extends TestCase
         );
 
         $this->testsForConst(...$attributes);
+
+        self::assertSame('Protected Const', AttributedFixture::getProtectedConst());
 
         $attributes = $this->attributes->forConstant(
             AttributedFixture::class,
@@ -291,18 +295,7 @@ final class CollectorTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[AttributeFixture(1)]
-        #[AttributeFixture(2)]
-        #[AttributeClassChildFixture(3, 'three')]
-        function testFunction(
-            #[AttributeFixture(1)]
-            #[AttributeFixture(2)]
-            #[AttributeClassChildFixture(3, 'three')]
-            string $param
-        ): void {
-        }
-
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Fixtures\Attribute\attributedFixtureFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -313,7 +306,7 @@ final class CollectorTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeFixture::class);
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Fixtures\Attribute\attributedFixtureFunction', AttributeFixture::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -505,21 +498,18 @@ final class CollectorTest extends TestCase
         self::assertInstanceOf(AttributeFixture::class, $attributes[0]);
         self::assertInstanceOf(AttributeFixture::class, $attributes[1]);
         self::assertInstanceOf(AttributeClassChildFixture::class, $attributes[2]);
-        self::assertNotNull($attributes[0]->getReflection());
-        self::assertNotNull($attributes[1]->getReflection());
-        self::assertNotNull($attributes[2]->getReflection());
     }
 
     /**
      * Test values.
      *
-     * @param int                        $value1     The value in the first attribute
-     * @param int                        $value2     The value in the second attribute
-     * @param int                        $value3     The first value in the third attribute
-     * @param string                     $value4     The second value in the third attribute
-     * @param AttributeFixture           $attribute1 The first attribute
-     * @param AttributeFixture           $attribute2 The second attribute
-     * @param AttributeClassChildFixture $attribute3 The third attribute
+     * @param int              $value1     The value in the first attribute
+     * @param int              $value2     The value in the second attribute
+     * @param int              $value3     The first value in the third attribute
+     * @param string           $value4     The second value in the third attribute
+     * @param AttributeFixture $attribute1 The first attribute
+     * @param AttributeFixture $attribute2 The second attribute
+     * @param AttributeFixture $attribute3 The third attribute, a child attribute
      */
     protected function valueTests(
         int $value1,
@@ -528,11 +518,14 @@ final class CollectorTest extends TestCase
         string $value4,
         AttributeFixture $attribute1,
         AttributeFixture $attribute2,
-        AttributeClassChildFixture $attribute3
+        AttributeFixture $attribute3
     ): void {
         self::assertSame($value1, $attribute1->counter);
         self::assertSame($value2, $attribute2->counter);
         self::assertSame($value3, $attribute3->counter);
+
+        // The collector hands back the declared attribute type; the third is the child
+        self::assertInstanceOf(AttributeClassChildFixture::class, $attribute3);
         self::assertSame($value4, $attribute3->test);
     }
 }

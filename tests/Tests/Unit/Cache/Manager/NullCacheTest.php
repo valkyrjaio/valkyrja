@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cache\Manager;
 
+use Override;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
@@ -21,6 +22,7 @@ final class NullCacheTest extends TestCase
 {
     protected NullCache $cache;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->cache = new NullCache();
@@ -52,7 +54,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->put('key', 'value', 10);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testPutManyDoesNothing(): void
@@ -60,7 +62,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->putMany(['key1' => 'value1', 'key2' => 'value2'], 10);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testIncrementReturnsValue(): void
@@ -80,7 +82,7 @@ final class NullCacheTest extends TestCase
         // Should not throw any exceptions
         $this->cache->forever('key', 'value');
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testForgetReturnsTrue(): void

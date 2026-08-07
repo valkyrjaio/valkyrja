@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Manager;
 
+use Override;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\NullManager;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
@@ -20,12 +21,14 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
+use Valkyrja\Tests\Fixtures\Orm\Entity\EntityIntIdFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class NullManagerTest extends TestCase
 {
     protected NullManager $manager;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->manager = new NullManager();
@@ -38,7 +41,7 @@ final class NullManagerTest extends TestCase
 
     public function testCreateRepositoryReturnsRepository(): void
     {
-        $repository = $this->manager->createRepository('SomeEntity');
+        $repository = $this->manager->createRepository(EntityIntIdFixture::class);
 
         self::assertInstanceOf(RepositoryContract::class, $repository);
         self::assertInstanceOf(Repository::class, $repository);
@@ -67,7 +70,7 @@ final class NullManagerTest extends TestCase
         // Should not throw any exception
         $this->manager->ensureTransaction();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testPrepareReturnsNullStatement(): void

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Attribute;
 
+use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Attribute\Listener;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -43,6 +44,7 @@ final class ListenerTest extends TestCase
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->class = new Listener(self::VALUE, self::NAME);

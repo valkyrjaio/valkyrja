@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Sms\Messenger;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Data\Message;
@@ -30,6 +31,7 @@ final class VonageMessengerTest extends TestCase
 
     protected MockObject&SmsClient $smsClient;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->vonageClient = $this->createMock(ClientFixture::class);

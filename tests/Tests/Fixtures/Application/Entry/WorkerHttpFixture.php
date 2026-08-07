@@ -21,6 +21,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 
 use function ob_get_clean;
@@ -118,8 +119,10 @@ final class WorkerHttpFixture extends WorkerHttp
     /**
      * Handle the route.
      */
-    public static function handleRoute(): TextResponse
-    {
+    public static function handleRoute(
+        ContainerContract $container,
+        RouteContract $route
+    ): TextResponse {
         self::$handleRouteCallCount++;
 
         return new TextResponse('Hello World!');
@@ -180,7 +183,7 @@ final class WorkerHttpFixture extends WorkerHttp
         $output = '';
 
         while (ob_get_level() > $baseline) {
-            $output = ob_get_clean() . $output;
+            $output = ((string) ob_get_clean()) . $output;
         }
 
         self::$requestResponses[] = $output;

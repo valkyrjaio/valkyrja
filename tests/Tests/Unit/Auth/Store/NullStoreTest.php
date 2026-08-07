@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Override;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\User;
 use Valkyrja\Auth\Store\NullStore;
@@ -25,6 +26,7 @@ final class NullStoreTest extends TestCase
 {
     protected NullStore $store;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->store = new NullStore();

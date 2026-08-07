@@ -12,18 +12,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Manager;
 
+use Override;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 
 final class NullFilesystemTest extends TestCase
 {
     protected NullFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->filesystem = new NullFilesystem();
@@ -52,7 +53,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testWriteStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->writeStream('path', $resource));
 
@@ -66,7 +67,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testUpdateStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->updateStream('path', $resource));
 
@@ -80,7 +81,7 @@ final class NullFilesystemTest extends TestCase
 
     public function testPutStreamReturnsTrue(): void
     {
-        $resource = fopen('php://memory', 'r');
+        $resource = self::openStream('php://memory', 'r');
 
         self::assertTrue($this->filesystem->putStream('path', $resource));
 

@@ -63,9 +63,11 @@ final class JsonServerRequestTest extends TestCase
         $request6 = $request4->withParsedJson(
             ParsedJsonParamCollection::fromArray($json2)
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request7 = $request3->withParsedJson(
             $request3->getParsedJson()->withAdded(['test3' => 'fire'])
         );
+        /** @psalm-suppress ArgumentTypeCoercion The test gives invalid input on purpose to reach the guard. */
         $request8 = $request4->withParsedJson(
             $request3->getParsedJson()->withAdded(['test3' => 'pie'])
         );

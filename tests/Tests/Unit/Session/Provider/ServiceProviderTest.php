@@ -18,6 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
@@ -55,7 +56,11 @@ use Valkyrja\Tests\Fixtures\Session\Data\SessionConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = SessionServiceProvider::class;
 
     /**

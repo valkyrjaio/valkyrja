@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Sms\Messenger;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Sms\Data\Message;
@@ -23,6 +24,7 @@ final class LogMessengerTest extends TestCase
 {
     protected MockObject&LoggerContract $logger;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerContract::class);
@@ -52,6 +54,7 @@ final class LogMessengerTest extends TestCase
             ->expects($this->exactly(7))
             ->method('info')
             ->willReturnCallback(static function (string $logMessage) use ($from, $to, $text): void {
+                /** @var int $callIndex */
                 static $callIndex = 0;
 
                 $expectedMessages = [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use JsonException;
+use ReflectionClass;
 use Valkyrja\Tests\Fixtures\Type\Model\ExposableModelFixture;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -20,7 +21,6 @@ use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_encode;
-use function method_exists;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -31,11 +31,13 @@ final class ExposableModelTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(ExposableModelContract::class, 'getExposable'));
-        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedArray'));
-        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedChangedArray'));
-        self::assertTrue(method_exists(ExposableModelContract::class, 'asExposedOnlyArray'));
-        self::assertTrue(method_exists(ExposableModelContract::class, 'expose'));
+        $reflection = new ReflectionClass(ExposableModelContract::class);
+
+        self::assertTrue($reflection->hasMethod('getExposable'));
+        self::assertTrue($reflection->hasMethod('asExposedArray'));
+        self::assertTrue($reflection->hasMethod('asExposedChangedArray'));
+        self::assertTrue($reflection->hasMethod('asExposedOnlyArray'));
+        self::assertTrue($reflection->hasMethod('expose'));
         self::isA(ModelContract::class, ExposableModelContract::class);
     }
 

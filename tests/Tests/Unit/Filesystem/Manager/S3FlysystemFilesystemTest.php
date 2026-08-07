@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Filesystem\Manager;
 
 use League\Flysystem\FilesystemOperator;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
@@ -25,6 +26,7 @@ final class S3FlysystemFilesystemTest extends TestCase
 
     protected S3FlysystemFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->flysystem  = $this->createMock(FilesystemOperator::class);

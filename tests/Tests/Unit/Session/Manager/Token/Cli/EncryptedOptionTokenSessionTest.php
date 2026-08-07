@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Token\Cli;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
@@ -28,6 +29,7 @@ final class EncryptedOptionTokenSessionTest extends TestCase
     protected InputContract&MockObject $input;
     protected EncryptedOptionTokenSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crypt = $this->createMock(CryptContract::class);

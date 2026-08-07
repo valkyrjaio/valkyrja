@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Fixtures\Http\Middleware;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
@@ -27,6 +28,7 @@ final class RouteDispatchedMiddlewareChangedFixture implements RouteDispatchedMi
 {
     use MiddlewareCounterTrait;
 
+    #[Override]
     public function routeDispatched(
         ServerRequestContract $request,
         ResponseContract $response,

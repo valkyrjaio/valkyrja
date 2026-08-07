@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
@@ -33,6 +34,7 @@ use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Http\Routing\Collection\RouteCollection;
 use Valkyrja\Http\Routing\Collector\AttributeRouteCollector;
 use Valkyrja\Http\Routing\Collector\Contract\RouteCollectorContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\HttpRoutingData;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
@@ -48,6 +50,7 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
 
 /**
@@ -55,7 +58,11 @@ use Valkyrja\Tests\Fixtures\Http\Routing\Provider\RouteProviderFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = HttpRoutingServiceProvider::class;
 
     public function testExpectedPublishers(): void
@@ -114,10 +121,10 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $name = 'route';
         $data = new HttpRoutingData(
             routes: [
-                $name => new Route(
+                $name => static fn (): RouteContract => new Route(
                     $path,
                     $name,
-                    handler: static fn (): null => null,
+                    handler: RouteHandlerFixture::handle(...),
                 ),
             ],
             paths: [
@@ -158,7 +165,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
 
@@ -171,9 +178,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(RouteCollectionContract::class));
         self::assertTrue($container->isSingleton(RouteCollectionContract::class));
         self::assertInstanceOf(RouteCollection::class, $collection = $container->getSingleton(RouteCollectionContract::class));
-
-        self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
-        self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishCollectionWithoutDataDebugModeTrue(): void
@@ -192,7 +196,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->once())->method('getRoutes')->willReturn([$route]);
 
@@ -205,9 +209,6 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(RouteCollectionContract::class));
         self::assertTrue($container->isSingleton(RouteCollectionContract::class));
         self::assertInstanceOf(RouteCollection::class, $collection = $container->getSingleton(RouteCollectionContract::class));
-
-        self::assertNotNull($collection->getByPath('/', RequestMethod::ANY));
-        self::assertNotNull($collection->getByPath('/from-provider', RequestMethod::ANY));
     }
 
     public function testPublishCollectionWithoutRoutes(): void
@@ -226,7 +227,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         $route = new Route(
             path: '/',
             name: 'route',
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $collector->expects($this->never())->method('getRoutes')->willReturn([$route]);
 

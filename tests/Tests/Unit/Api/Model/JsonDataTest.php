@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Api\Model;
 
+use Override;
 use stdClass;
 use Valkyrja\Api\Model\Contract\JsonDataContract;
 use Valkyrja\Api\Model\JsonData;
@@ -24,6 +25,7 @@ final class JsonDataTest extends TestCase
 {
     protected JsonData $jsonData;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->jsonData = new JsonData();

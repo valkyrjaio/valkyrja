@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Log\Logger;
 
 use Exception;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Log\Enum\LogLevel;
@@ -29,6 +30,7 @@ final class PsrLoggerTest extends TestCase
     /** @var LoggerInterface&MockObject */
     protected LoggerInterface $psrLogger;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->psrLogger = $this->createMock(LoggerInterface::class);

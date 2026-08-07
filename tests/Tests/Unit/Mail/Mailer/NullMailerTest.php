@@ -39,7 +39,7 @@ final class NullMailerTest extends TestCase
         // Should not throw any exception
         $mailer->send($message);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testSendMultipleMessages(): void
@@ -67,6 +67,6 @@ final class NullMailerTest extends TestCase
         $mailer->send($message2);
         $mailer->send($message3);
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }

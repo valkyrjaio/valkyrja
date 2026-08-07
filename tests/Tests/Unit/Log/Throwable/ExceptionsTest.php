@@ -12,24 +12,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Log\Throwable;
 
+use ReflectionClass;
 use Valkyrja\Log\Throwable\Contract\LogThrowable;
 use Valkyrja\Log\Throwable\Exception\Abstract\LogInvalidArgumentException;
 use Valkyrja\Log\Throwable\Exception\Abstract\LogRuntimeException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Contract\ValkyrjaThrowable;
 
-use function is_a;
-
 final class ExceptionsTest extends TestCase
 {
     public function testThrowableInterfaceExtendsValkyrjaThrowable(): void
     {
-        self::assertTrue(is_a(LogThrowable::class, ValkyrjaThrowable::class, true));
+        self::assertTrue(new ReflectionClass(LogThrowable::class)->isSubclassOf(ValkyrjaThrowable::class));
     }
 
     public function testExceptionHierarchy(): void
     {
-        self::assertTrue(is_a(LogInvalidArgumentException::class, LogThrowable::class, true));
-        self::assertTrue(is_a(LogRuntimeException::class, LogThrowable::class, true));
+        self::assertTrue(new ReflectionClass(LogInvalidArgumentException::class)->isSubclassOf(LogThrowable::class));
+        self::assertTrue(new ReflectionClass(LogRuntimeException::class)->isSubclassOf(LogThrowable::class));
     }
 }

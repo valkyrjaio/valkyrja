@@ -21,18 +21,30 @@ use Valkyrja\Cli\Server\Data\Contract\CliVersionCommandConfigContract;
 final class CliCommandCommandConfigFixture implements CliHelpCommandConfigContract, CliVersionCommandConfigContract, CliNoInteractionConfigContract, CliQuietInteractionConfigContract, CliSilentInteractionConfigContract
 {
     public function __construct(
-        public string $helpCommandName = '',
-        public string $helpOptionName = '',
-        public string $helpOptionShortName = '',
-        public string $versionCommandName = '',
-        public string $versionOptionName = '',
-        public string $versionOptionShortName = '',
-        public string $noInteractionOptionName = '',
-        public string $noInteractionOptionShortName = '',
-        public string $quietOptionName = '',
-        public string $quietOptionShortName = '',
-        public string $silentOptionName = '',
-        public string $silentOptionShortName = '',
+        /** @var non-empty-string */
+        public string $helpCommandName = 'helpCommandName',
+        /** @var non-empty-string */
+        public string $helpOptionName = 'helpOptionName',
+        /** @var non-empty-string */
+        public string $helpOptionShortName = 'helpOptionShortName',
+        /** @var non-empty-string */
+        public string $versionCommandName = 'versionCommandName',
+        /** @var non-empty-string */
+        public string $versionOptionName = 'versionOptionName',
+        /** @var non-empty-string */
+        public string $versionOptionShortName = 'versionOptionShortName',
+        /** @var non-empty-string */
+        public string $noInteractionOptionName = 'noInteractionOptionName',
+        /** @var non-empty-string */
+        public string $noInteractionOptionShortName = 'noInteractionOptionShortName',
+        /** @var non-empty-string */
+        public string $quietOptionName = 'quietOptionName',
+        /** @var non-empty-string */
+        public string $quietOptionShortName = 'quietOptionShortName',
+        /** @var non-empty-string */
+        public string $silentOptionName = 'silentOptionName',
+        /** @var non-empty-string */
+        public string $silentOptionShortName = 'silentOptionShortName',
     ) {
     }
 }

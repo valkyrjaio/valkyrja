@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\View\Renderer;
 
+use Override;
 use Valkyrja\Tests\Constant\TestPath;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Throwable\Exception\Abstract\ValkyrjaRuntimeException;
@@ -53,6 +54,7 @@ final class PhpRendererTest extends TestCase
     public function testEndRenderThrowsExceptionWhenObGetCleanFails(): void
     {
         $renderer = new class(self::TEMPLATES_DIR) extends PhpRenderer {
+            #[Override]
             protected function obGetClean(): string|false
             {
                 return false;
@@ -143,6 +145,11 @@ final class PhpRendererTest extends TestCase
         $exceptionThrown = false;
 
         try {
+            /**
+             * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+             *
+             * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+             */
             $renderer->renderFile('');
         } catch (ViewInvalidPathException $e) {
             $exceptionThrown = true;

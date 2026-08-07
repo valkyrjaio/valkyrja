@@ -136,7 +136,6 @@ final class VlidFactoryTest extends VlidTestCase
         $result = VlidFactoryFixture::testGetTimeFromDateTime($dateTime);
 
         // Should return Unix timestamp with microseconds (Uu format)
-        self::assertIsString($result);
         self::assertMatchesRegularExpression('/^\d+$/', $result);
         // The result should be longer than Ulid's (which uses Uv - milliseconds)
         // Vlid uses Uu which includes microseconds (6 digits instead of 3)

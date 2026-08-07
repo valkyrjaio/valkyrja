@@ -49,6 +49,10 @@ final class OrkaRendererTest extends TestCase
         if (is_dir($viewsDir)) {
             $files = scandir($viewsDir);
 
+            if ($files === false) {
+                $files = [];
+            }
+
             foreach ($files as $file) {
                 if ($file === '.gitignore') {
                     continue;
@@ -184,6 +188,7 @@ final class OrkaRendererTest extends TestCase
     public function testRenderFileThrowsExceptionForMissingFile(): void
     {
         $renderer = new class(self::TEMPLATES_DIR) extends OrkaRenderer {
+            #[Override]
             protected function getFileContents(string $path): string|false
             {
                 return false;
@@ -226,11 +231,13 @@ final class OrkaRendererTest extends TestCase
     public function testConstructorWithMultipleReplacements(): void
     {
         $replacement1 = new class implements ReplacementContract {
+            #[Override]
             public function regex(): string
             {
                 return '/\[\[(.+?)\]\]/';
             }
 
+            #[Override]
             public function replacement(): string
             {
                 return '<?= ${1}; ?>';
@@ -238,11 +245,13 @@ final class OrkaRendererTest extends TestCase
         };
 
         $replacement2 = new class implements ReplacementContract {
+            #[Override]
             public function regex(): string
             {
                 return '/@test/';
             }
 
+            #[Override]
             public function replacement(): string
             {
                 return 'replaced';

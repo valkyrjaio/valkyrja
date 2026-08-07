@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Http\Message\Param\Abstract;
 
 use Valkyrja\Http\Message\Param\Abstract\ParamCollection;
+use Valkyrja\Http\Message\Param\Contract\ParamCollectionContract;
 
 /**
- * @extends ParamCollection<scalar|self>
+ * @extends ParamCollection<non-empty-string|int, scalar|ParamCollectionContract|null>
  */
 final class ParamCollectionFixture extends ParamCollection
 {

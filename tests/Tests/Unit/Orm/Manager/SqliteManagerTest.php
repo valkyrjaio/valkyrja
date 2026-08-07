@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Manager;
 
+use Override;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,6 +40,7 @@ final class SqliteManagerTest extends TestCase
 
     protected SqliteManager $manager;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->pdo       = $this->createMock(PDO::class);
@@ -188,8 +190,6 @@ final class SqliteManagerTest extends TestCase
             ->willReturn(true);
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testEnsureTransactionDoesNotStartWhenAlreadyInTransaction(): void
@@ -207,8 +207,6 @@ final class SqliteManagerTest extends TestCase
             ->method('beginTransaction');
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testPrepare(): void

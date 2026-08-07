@@ -61,7 +61,7 @@ final class HttpRouteComponentProviderFixture implements ComponentProviderContra
     public function getHttpProviders(ApplicationContract $app): array
     {
         return [
-            HttpRouteProviderFixture::class,
+            new HttpRouteProviderFixture(),
         ];
     }
 }

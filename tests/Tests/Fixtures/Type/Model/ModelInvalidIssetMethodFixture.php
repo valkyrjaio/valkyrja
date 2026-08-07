@@ -33,8 +33,11 @@ final class ModelInvalidIssetMethodFixture extends Model
     #[Override]
     protected function internalIssetCallables(): array
     {
-        return [
+        /** @var array<non-empty-string, callable(): bool> $callables */
+        $callables = [
             'test' => [$this, 'issetTest'],
         ];
+
+        return $callables;
     }
 }

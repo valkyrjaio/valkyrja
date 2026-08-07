@@ -39,6 +39,7 @@ use Valkyrja\Cli\Server\Middleware\RouteNotMatched\CheckCommandForTypoMiddleware
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Middleware\ThrowableCaught\OutputThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Fixtures\Cli\Server\Data\CliCommandCommandConfigFixture;
@@ -48,7 +49,11 @@ use Valkyrja\Tests\Fixtures\Cli\Server\Data\CliCommandCommandConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = CliServerServiceProvider::class;
 
     public function testExpectedPublishers(): void

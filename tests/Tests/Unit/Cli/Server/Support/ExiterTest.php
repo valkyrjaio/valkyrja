@@ -17,7 +17,6 @@ use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Tests\Fixtures\Cli\Server\Support\ExiterRecorderFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 final class ExiterTest extends TestCase
@@ -28,7 +27,7 @@ final class ExiterTest extends TestCase
 
         ob_start();
         Exiter::exit();
-        $code = ob_get_clean();
+        $code = self::cleanOutputBuffer();
 
         Exiter::unfreeze();
 
@@ -43,7 +42,7 @@ final class ExiterTest extends TestCase
 
         ob_start();
         Exiter::exit($code);
-        $output = ob_get_clean();
+        $output = self::cleanOutputBuffer();
 
         Exiter::unfreeze();
 
@@ -62,7 +61,7 @@ final class ExiterTest extends TestCase
 
         ob_start();
         ExiterRecorderFixture::exit($code);
-        $output = ob_get_clean();
+        $output = self::cleanOutputBuffer();
 
         self::assertSame($code, ExiterRecorderFixture::$exitedWithCode);
         self::assertSame('', $output);
@@ -77,7 +76,7 @@ final class ExiterTest extends TestCase
 
         ob_start();
         ExiterRecorderFixture::exit($code);
-        $output = ob_get_clean();
+        $output = self::cleanOutputBuffer();
 
         ExiterRecorderFixture::unfreeze();
 

@@ -111,7 +111,7 @@ final class LessThanTest extends TestCase
         // Should not throw
         $rule->validate();
 
-        self::assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testValidateThrowsWithGreaterValue(): void

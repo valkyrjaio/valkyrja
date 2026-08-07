@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Filesystem\Manager;
 
+use Override;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
@@ -22,7 +23,6 @@ use Valkyrja\Filesystem\Throwable\Exception\FilesystemUnableToReadContentsExcept
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fclose;
-use function fopen;
 use function fwrite;
 use function rewind;
 
@@ -30,6 +30,7 @@ final class InMemoryFilesystemTest extends TestCase
 {
     protected InMemoryFilesystem $filesystem;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->filesystem = new InMemoryFilesystem();
@@ -86,7 +87,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testWriteStreamCreatesFile(): void
     {
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'stream contents');
         rewind($resource);
 
@@ -102,13 +103,14 @@ final class InMemoryFilesystemTest extends TestCase
     public function testWriteStreamThrowsExceptionOnReadFailure(): void
     {
         $filesystem = new class extends InMemoryFilesystem {
+            #[Override]
             protected function readFromResource($resource, int $length): string|false
             {
                 return false;
             }
         };
 
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
 
         $this->expectException(FilesystemResourceReadException::class);
         $this->expectExceptionMessage('Failed to read provided resource');
@@ -133,7 +135,7 @@ final class InMemoryFilesystemTest extends TestCase
     {
         $this->filesystem->write('test.txt', 'original');
 
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'updated stream');
         rewind($resource);
 
@@ -160,7 +162,7 @@ final class InMemoryFilesystemTest extends TestCase
 
     public function testPutStreamCreatesOrUpdatesFile(): void
     {
-        $resource = fopen('php://memory', 'r+');
+        $resource = self::openStream('php://memory', 'r+');
         fwrite($resource, 'stream contents');
         rewind($resource);
 

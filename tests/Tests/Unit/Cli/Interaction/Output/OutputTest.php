@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -22,7 +23,6 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 /**
@@ -151,15 +151,15 @@ final class OutputTest extends TestCase
 
         ob_start();
         $outputWritten  = $output->writeMessages();
-        $outputContents = ob_get_clean();
+        $outputContents = self::cleanOutputBuffer();
 
         ob_start();
         $output2Written  = $output2->writeMessages();
-        $output2Contents = ob_get_clean();
+        $output2Contents = self::cleanOutputBuffer();
 
         ob_start();
         $output3Written  = $output3->writeMessages();
-        $output3Contents = ob_get_clean();
+        $output3Contents = self::cleanOutputBuffer();
 
         self::assertEmpty($outputWritten->getMessages());
         self::assertEmpty($outputWritten->getWrittenMessages());
@@ -186,7 +186,7 @@ final class OutputTest extends TestCase
     public function testQuestion(): void
     {
         $callableCalled = false;
-        $callable       = static function (OutputContract $output, Answer $answer) use (&$callableCalled): OutputContract {
+        $callable       = static function (OutputContract $output, AnswerContract $answer) use (&$callableCalled): OutputContract {
             $callableCalled = true;
 
             return $output;
@@ -208,7 +208,7 @@ final class OutputTest extends TestCase
 
         ob_start();
         $outputWritten  = $output->writeMessages();
-        $outputContents = ob_get_clean();
+        $outputContents = self::cleanOutputBuffer();
 
         self::assertTrue($callableCalled);
         self::assertNotEmpty($outputWritten->getWrittenMessages());
@@ -232,20 +232,20 @@ final class OutputTest extends TestCase
 
         ob_start();
         $quietSuccess->writeMessages();
-        $quietSuccessContents = ob_get_clean();
+        $quietSuccessContents = self::cleanOutputBuffer();
 
         ob_start();
         $quietFailure->writeMessages();
-        $quietFailureContents = ob_get_clean();
+        $quietFailureContents = self::cleanOutputBuffer();
 
         self::assertEmpty($quietSuccessContents);
-        self::assertStringContainsString('text', (string) $quietFailureContents);
+        self::assertStringContainsString('text', $quietFailureContents);
     }
 
     public function testReAskQuestionOnInvalidAnswer(): void
     {
         $callableCalled = false;
-        $callable       = static function (OutputContract $output, Answer $answer) use (&$callableCalled): OutputContract {
+        $callable       = static function (OutputContract $output, AnswerContract $answer) use (&$callableCalled): OutputContract {
             $callableCalled = true;
 
             return $output;

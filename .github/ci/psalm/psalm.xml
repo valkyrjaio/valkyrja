@@ -11,7 +11,7 @@
 >
     <projectFiles>
         <directory name="../../../src" />
-        <!--<directory name="tests" />-->
+        <directory name="../../../tests" />
 
         <ignoreFiles>
             <directory name="../../../vendor" />
@@ -39,5 +39,24 @@
 
         <!-- Up to the developers to ensure params for child classes match, not us -->
         <UnsafeInstantiation errorLevel="suppress" />
+
+        <!--
+            Psalm rejects two calls that PHPStan accepts, because Psalm resolves a
+            generic it was given no parameter for. See the pull request for each case.
+        -->
+        <InvalidArgument>
+            <errorLevel type="suppress">
+                <directory name="../../../tests/Tests/Unit/Cli/Middleware/Handler" />
+                <directory name="../../../tests/Tests/Unit/Http/Middleware/Handler" />
+
+                <file name="../../../tests/Tests/Fixtures/Orm/Entity/EntityWithCastingsFixture.php" />
+                <file name="../../../tests/Tests/Fixtures/Type/Model/CastableModelFixture.php" />
+                <file name="../../../tests/Tests/Unit/Orm/Middleware/EntityRouteMatchedMiddlewareTest.php" />
+                <file name="../../../tests/Tests/Unit/Type/Data/ArrayCastTest.php" />
+                <file name="../../../tests/Tests/Unit/Type/Data/CastTest.php" />
+                <file name="../../../tests/Tests/Unit/Type/Data/OriginalArrayCastTest.php" />
+                <file name="../../../tests/Tests/Unit/Type/Data/OriginalCastTest.php" />
+            </errorLevel>
+        </InvalidArgument>
     </issueHandlers>
 </psalm>

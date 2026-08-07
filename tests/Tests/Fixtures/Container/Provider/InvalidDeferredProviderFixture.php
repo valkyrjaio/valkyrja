@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Fixtures\Container\Provider;
 
 use Override;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 /**
@@ -20,11 +21,25 @@ use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
  */
 final class InvalidDeferredProviderFixture implements ServiceProviderContract
 {
-    #[Override]
-    public function publishers(): array
+    /**
+     * The publisher names a method that does not exist, which is exactly what the
+     * container's registration guard has to reject.
+     *
+     * @return array<array-key, mixed>
+     */
+    private static function brokenPublishers(): array
     {
         return [
             ProvidedSecondaryFixture::class => [self::class, 'publishMethodNonExistent'],
         ];
+    }
+
+    #[Override]
+    public function publishers(): array
+    {
+        /** @var array<class-string, callable(ContainerContract): void> $publishers */
+        $publishers = self::brokenPublishers();
+
+        return $publishers;
     }
 }

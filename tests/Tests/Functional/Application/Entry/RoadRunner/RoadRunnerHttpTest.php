@@ -21,11 +21,13 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Factory\RequestFactory;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Fixtures\Application\Entry\RoadRunner\RoadRunnerHttpSmokeFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
@@ -41,8 +43,10 @@ final class RoadRunnerHttpTest extends TestCase
     /**
      * The route handler.
      */
-    public static function handleRoute(): TextResponse
-    {
+    public static function handleRoute(
+        ContainerContract $container,
+        RouteContract $route
+    ): TextResponse {
         return new TextResponse('RoadRunner route');
     }
 

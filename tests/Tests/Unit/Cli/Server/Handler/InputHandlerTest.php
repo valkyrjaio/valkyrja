@@ -28,7 +28,6 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 final class InputHandlerTest extends TestCase
@@ -229,7 +228,7 @@ final class InputHandlerTest extends TestCase
 
         ob_start();
         $inputHandler->run($input);
-        $runOutput = ob_get_clean();
+        $runOutput = self::cleanOutputBuffer();
 
         Exiter::unfreeze();
 
@@ -266,7 +265,7 @@ final class InputHandlerTest extends TestCase
 
         ob_start();
         $inputHandler->run($input);
-        $runOutput = ob_get_clean();
+        $runOutput = self::cleanOutputBuffer();
 
         Exiter::unfreeze();
 

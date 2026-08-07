@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Crypt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Crypt\Data\Contract\CryptConfigContract;
 use Valkyrja\Crypt\Data\CryptConfig;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
@@ -28,7 +29,11 @@ use Valkyrja\Tests\Fixtures\Crypt\Data\CryptConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = CryptServiceProvider::class;
 
     public function testExpectedPublishers(): void

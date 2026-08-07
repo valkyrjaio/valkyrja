@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Param;
 
 use InvalidArgumentException;
+use Override;
 use stdClass;
 use Valkyrja\Http\Message\Param\AttributeParamCollection;
 use Valkyrja\Http\Message\Param\Contract\AttributeParamCollectionContract;
@@ -22,6 +23,7 @@ final class AttributeParamCollectionTest extends TestCase
 {
     protected AttributeParamCollection $attributes;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->attributes = new AttributeParamCollection(['name' => 'John', 'age' => 30, 'active' => true]);
@@ -148,6 +150,11 @@ final class AttributeParamCollectionTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
+        /**
+         * @psalm-suppress InvalidArgument The test gives invalid input on purpose to reach the guard.
+         *
+         * @phpstan-ignore argument.type (The test gives invalid input on purpose to reach the guard.)
+         */
         $this->attributes->with(['invalid' => new stdClass()]);
     }
 

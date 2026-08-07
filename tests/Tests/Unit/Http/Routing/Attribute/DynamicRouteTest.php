@@ -23,6 +23,7 @@ use Valkyrja\Tests\Fixtures\Http\Middleware\RouteDispatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\RouteMatchedMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -101,7 +102,7 @@ final class DynamicRouteTest extends TestCase
 
     public function testHandler(): void
     {
-        $value = static fn (): null => null;
+        $value = RouteHandlerFixture::handle(...);
         $route = new DynamicRoute(path: '/', name: 'test', parameters: [], handler: $value);
 
         self::assertSame($value, $route->getHandler());

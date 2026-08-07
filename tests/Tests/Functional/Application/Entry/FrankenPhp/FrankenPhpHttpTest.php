@@ -18,8 +18,10 @@ use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Fixtures\Application\Entry\FrankenPhp\FrankenPhpHttpSmokeFixture;
 use Valkyrja\Tests\Functional\Abstract\TestCase;
@@ -35,8 +37,10 @@ final class FrankenPhpHttpTest extends TestCase
     /**
      * The route handler.
      */
-    public static function handleRoute(): TextResponse
-    {
+    public static function handleRoute(
+        ContainerContract $container,
+        RouteContract $route
+    ): TextResponse {
         return new TextResponse('FrankenPhp route');
     }
 

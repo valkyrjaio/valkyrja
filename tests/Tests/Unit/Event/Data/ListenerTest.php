@@ -54,13 +54,13 @@ final class ListenerTest extends TestCase
     {
         $class    = self::class;
         $name     = 'test';
-        $handler  = static fn () => null;
+        $handler  = static fn (): null => null;
         $listener = new Listener(eventId: $class, name: $name, handler: $handler);
 
         self::assertSame($name, $listener->getName());
         self::assertSame($handler, $listener->getHandler());
 
-        $handler2  = static fn () => 'string';
+        $handler2  = static fn (): string => 'string';
         $listener2 = $listener->withHandler($handler2);
 
         self::assertNotSame($listener, $listener2);

@@ -21,7 +21,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-use function ob_get_clean;
 use function ob_start;
 
 use const PHP_VERSION;
@@ -44,7 +43,7 @@ final class VersionCommandTest extends TestCase
 
         ob_start();
         $output->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString("╭── $appName v$appVersion", $obOutput);
         self::assertStringContainsString('│   Built on Valkyrja v' . ApplicationInfo::VERSION, $obOutput);
@@ -64,7 +63,7 @@ final class VersionCommandTest extends TestCase
 
         ob_start();
         $output->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString($appVersion, $obOutput);
         self::assertStringNotContainsString('╭──', $obOutput);
@@ -85,7 +84,7 @@ final class VersionCommandTest extends TestCase
 
         ob_start();
         $output->writeMessages();
-        $obOutput = ob_get_clean();
+        $obOutput = self::cleanOutputBuffer();
 
         self::assertStringContainsString("$appName v$appVersion", $obOutput);
         self::assertStringContainsString('Built on Valkyrja v' . ApplicationInfo::VERSION, $obOutput);

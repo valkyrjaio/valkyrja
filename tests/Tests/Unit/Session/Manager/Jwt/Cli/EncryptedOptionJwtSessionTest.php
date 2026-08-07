@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Jwt\Cli;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
@@ -30,6 +31,7 @@ final class EncryptedOptionJwtSessionTest extends TestCase
     protected InputContract&MockObject $input;
     protected EncryptedOptionJwtSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crypt = $this->createMock(CryptContract::class);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cache\Manager;
 
 use JsonException;
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\LogCache;
@@ -26,6 +27,7 @@ final class LogCacheTest extends TestCase
 
     protected LogCache $cache;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerContract::class);

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Session\Manager\Token\Http;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use Valkyrja\Auth\Throwable\Exception\AuthInvalidAuthenticationException;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
@@ -31,6 +32,7 @@ final class EncryptedHeaderTokenSessionTest extends TestCase
 
     protected EncryptedHeaderTokenSession $session;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->crypt   = $this->createMock(CryptContract::class);

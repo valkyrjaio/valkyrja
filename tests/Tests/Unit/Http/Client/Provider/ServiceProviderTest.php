@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Client\Provider;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Client\Data\Contract\HttpClientConfigContract;
 use Valkyrja\Http\Client\Data\HttpClientConfig;
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
@@ -32,7 +33,11 @@ use Valkyrja\Tests\Fixtures\Http\Client\Data\HttpClientConfigFixture;
  */
 final class ServiceProviderTest extends ServiceProviderTestCase
 {
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     *
+     * @var class-string<ServiceProviderContract>
+     */
     protected static string $provider = HttpClientServiceProvider::class;
 
     public function testExpectedPublishers(): void

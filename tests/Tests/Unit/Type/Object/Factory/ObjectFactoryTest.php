@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Object\Factory;
 
+use __PHP_Incomplete_Class;
 use JsonException;
 use stdClass;
 use Valkyrja\Tests\Fixtures\Type\Model\ModelFixture;
@@ -22,7 +23,6 @@ use Valkyrja\Type\Object\Factory\ObjectFactory;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidEncodedObjectException;
 use Valkyrja\Type\Object\Throwable\Exception\InvalidSerializedObjectException;
 
-use function error_reporting;
 use function serialize;
 
 final class ObjectFactoryTest extends TestCase
@@ -46,7 +46,7 @@ final class ObjectFactoryTest extends TestCase
     {
         $value = ObjectFactory::fromString('{"foo":"bar"}');
 
-        self::assertSame('bar', $value->foo);
+        self::assertSame(['foo' => 'bar'], (array) $value);
     }
 
     /**
@@ -89,13 +89,11 @@ final class ObjectFactoryTest extends TestCase
 
     public function testFromSerializedStringWithNoAllowedClasses(): void
     {
-        error_reporting(1);
-
         $serialized = serialize(ModelFixture::fromArray(['public' => 'test']));
         $value      = ObjectFactory::fromSerializedString($serialized);
 
-        // No values should be accessible and should all be null
-        self::assertNull($value->public);
+        // Disallowing every class leaves an incomplete class, with no values accessible
+        self::assertInstanceOf(__PHP_Incomplete_Class::class, $value);
     }
 
     public function testFromSerializedStringWithNullAllowedClasses(): void
@@ -103,6 +101,7 @@ final class ObjectFactoryTest extends TestCase
         $serialized = serialize(ModelFixture::fromArray(['public' => 'test']));
         $value      = ObjectFactory::fromSerializedString($serialized, null);
 
+        self::assertInstanceOf(ModelFixture::class, $value);
         self::assertSame('test', $value->public);
     }
 
@@ -241,31 +240,14 @@ final class ObjectFactoryTest extends TestCase
 
     public function testGetValueDotNotation(): void
     {
-        $value   = new class {
-            public object $first;
-            public string $notobject = 'test';
-
-            public function __construct()
-            {
-                $this->first = new class {
-                    public object $second;
-
-                    public function __construct()
-                    {
-                        $this->second = new class {
-                            public object $third;
-
-                            public function __construct()
-                            {
-                                $this->third = new class {
-                                    public string $foo = 'bar';
-                                };
-                            }
-                        };
-                    }
-                };
-            }
-        };
+        $value   = (object) [
+            'first'     => (object) [
+                'second' => (object) [
+                    'third' => (object) ['foo' => 'bar'],
+                ],
+            ],
+            'notobject' => 'test',
+        ];
         $default = 'default';
 
         $result        = ObjectFactory::getValueDotNotation($value, 'first.second.third.foo', $default);

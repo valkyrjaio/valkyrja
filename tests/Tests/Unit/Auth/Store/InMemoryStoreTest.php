@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Store;
 
+use Override;
+use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByIdAndUsername;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByUsername;
 use Valkyrja\Auth\Entity\Contract\UserContract;
@@ -37,14 +39,15 @@ final class InMemoryStoreTest extends TestCase
     protected InMemoryStore $store;
     protected User $user;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->store = new InMemoryStore([]);
 
-        $this->user           = new User();
-        $this->user->id       = 'test';
-        $this->user->username = self::USERNAME;
-        $this->user->password = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
+        $this->user                      = new User();
+        $this->user->id                  = 'test';
+        $this->user->username            = self::USERNAME;
+        $this->user[UserField::PASSWORD] = password_hash(self::PASSWORD, PASSWORD_DEFAULT);
     }
 
     /**
@@ -59,10 +62,9 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->retrieveUser();
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
-        self::assertSame($this->user->username, $user->username);
-        self::assertSame($this->user->password, $user->password);
-        self::assertSame($this->user->reset_token, $user->reset_token);
+        self::assertSame($this->user[UserField::USERNAME], $user[UserField::USERNAME]);
+        self::assertSame($this->user[UserField::PASSWORD], $user[UserField::PASSWORD]);
+        self::assertSame($this->user[UserField::RESET_TOKEN], $user[UserField::RESET_TOKEN]);
     }
 
     /**
@@ -75,18 +77,16 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->retrieveUser();
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
-        self::assertNull($user->reset_token);
+        self::assertNull($user[UserField::RESET_TOKEN]);
 
-        $updateUser              = clone $this->user;
-        $updateUser->reset_token = self::RESET_TOKEN;
+        $updateUser                         = clone $this->user;
+        $updateUser[UserField::RESET_TOKEN] = self::RESET_TOKEN;
 
         $this->store->update($updateUser);
 
         $updatedUser = $this->retrieveUser();
 
-        self::assertNotNull($updatedUser);
-        self::assertSame(self::RESET_TOKEN, $updatedUser->reset_token);
+        self::assertSame(self::RESET_TOKEN, $updatedUser[UserField::RESET_TOKEN]);
     }
 
     /**
@@ -111,17 +111,16 @@ final class InMemoryStoreTest extends TestCase
     {
         $this->store->create($this->user);
 
-        $updateUser              = clone $this->user;
-        $updateUser->reset_token = self::RESET_TOKEN;
+        $updateUser                         = clone $this->user;
+        $updateUser[UserField::RESET_TOKEN] = self::RESET_TOKEN;
 
         $this->store->update($updateUser);
 
         $user = $this->store->retrieve($this->getAuthenticationRetrieval(), User::class);
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
-        self::assertSame(self::USERNAME, $user->username);
-        self::assertSame(self::RESET_TOKEN, $user->reset_token);
+        self::assertSame(self::USERNAME, $user[UserField::USERNAME]);
+        self::assertSame(self::RESET_TOKEN, $user[UserField::RESET_TOKEN]);
     }
 
     public function testFailedUserRetrieval(): void
@@ -147,9 +146,9 @@ final class InMemoryStoreTest extends TestCase
         $user = $this->store->retrieve($retrieval, User::class);
 
         self::assertTrue($this->hasRetrieveUser());
-        self::assertNotNull($user);
+        self::assertInstanceOf(User::class, $user);
         self::assertSame('test', $user->id);
-        self::assertSame(self::USERNAME, $user->username);
+        self::assertSame(self::USERNAME, $user[UserField::USERNAME]);
     }
 
     /**

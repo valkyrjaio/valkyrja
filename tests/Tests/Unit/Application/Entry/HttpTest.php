@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Application\Entry;
 use Override;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use TypeError;
-use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
@@ -23,6 +22,7 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
+use Valkyrja\Tests\Fixtures\Application\Data\BaseConfigFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 /**
@@ -35,7 +35,7 @@ final class HttpTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
-        Http::run(config: new Config());
+        Http::run(config: BaseConfigFixture::asHttpConfig());
     }
 
     public function testRunBootstrapsAndDispatchesRequestHandler(): void

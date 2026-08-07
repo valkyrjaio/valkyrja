@@ -24,6 +24,7 @@ use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareChangedFixt
 use Valkyrja\Tests\Fixtures\Http\Middleware\SendingResponseMiddlewareFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareChangedFixture;
 use Valkyrja\Tests\Fixtures\Http\Middleware\ThrowableCaughtMiddlewareFixture;
+use Valkyrja\Tests\Fixtures\Http\Routing\Handler\RouteHandlerFixture;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedJsonRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedParsedBodyRequestStructEnum;
 use Valkyrja\Tests\Fixtures\Http\Struct\IndexedResponseStructEnum;
@@ -43,7 +44,7 @@ final class RouteTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
 
         self::assertSame($path, $route->getPath());
@@ -62,7 +63,7 @@ final class RouteTest extends TestCase
     {
         $path                        = '/';
         $name                        = 'route';
-        $handler                     = static fn (): null => null;
+        $handler                     = RouteHandlerFixture::handle(...);
         $methods                     = [RequestMethod::HEAD, RequestMethod::POST];
         $routeMatchedMiddleware      = [RouteMatchedMiddlewareFixture::class];
         $routeDispatchedMiddleware   = [RouteDispatchedMiddlewareFixture::class];
@@ -108,7 +109,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withPath($path2);
         $route3 = $route->withAddedPath('version');
@@ -136,7 +137,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withName($name2);
         $route3 = $route->withAddedName('.version');
@@ -160,9 +161,9 @@ final class RouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $handler  = static fn (): null => null;
-        $handler2 = static fn (): string => 'test2';
-        $handler3 = static fn (): string => 'test3';
+        $handler  = RouteHandlerFixture::handle(...);
+        $handler2 = RouteHandlerFixture::handle(...);
+        $handler3 = RouteHandlerFixture::handle(...);
 
         $route  = new Route(path: $path, name: $name, handler: $handler);
         $route2 = $route->withHandler($handler2);
@@ -187,7 +188,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
         );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
@@ -237,7 +238,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             routeMatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteMatchedMiddleware($middleware2);
@@ -261,7 +262,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             routeDispatchedMiddleware: [$middleware]
         );
         $route2 = $route->withRouteDispatchedMiddleware($middleware2);
@@ -285,7 +286,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             throwableCaughtMiddleware: [$middleware]
         );
         $route2 = $route->withThrowableCaughtMiddleware($middleware2);
@@ -309,7 +310,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             sendingResponseMiddleware: [$middleware]
         );
         $route2 = $route->withSendingResponseMiddleware($middleware2);
@@ -333,7 +334,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseSentMiddleware: [$middleware]
         );
         $route2 = $route->withResponseSentMiddleware($middleware2);
@@ -357,7 +358,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             requestStruct: $requestStruct
         );
         $route2 = $route->withRequestStruct($requestStruct2);
@@ -378,7 +379,7 @@ final class RouteTest extends TestCase
         $route  = new Route(
             path: $path,
             name: $name,
-            handler: static fn (): null => null,
+            handler: RouteHandlerFixture::handle(...),
             responseStruct: $responseStruct
         );
         $route2 = $route->withResponseStruct($responseStruct2);

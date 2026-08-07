@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Collection;
 
+use Override;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 use Valkyrja\Type\Collection\Collection;
 
@@ -36,20 +37,21 @@ final class CollectionTest extends TestCase
     /**
      * The value to test with.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $value = ['foo' => 'bar'];
 
     /**
      * The value to test with.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $valueAlt = ['bar' => 'foo'];
 
     /**
      * Setup the test.
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->class = new Collection($this->value);
@@ -220,7 +222,8 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertSame($this->valueAlt['bar'], $this->class->bar);
+        /** @psalm-suppress UndefinedThisPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
+        self::assertSame($this->valueAlt['bar'], $this->class->__get('bar'));
     }
 
     /**
@@ -240,7 +243,10 @@ final class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertSame('test', $this->class->foo = 'test');
+        /** @psalm-suppress UndefinedThisPropertyAssignment A magic accessor takes any name, so Psalm finds no property. */
+        $this->class->__set('foo', 'test');
+
+        self::assertSame('test', $this->class->get('foo'));
     }
 
     /**
@@ -248,6 +254,7 @@ final class CollectionTest extends TestCase
      */
     public function testMagicUnset(): void
     {
+        /** @psalm-suppress UndefinedMagicPropertyFetch A magic accessor takes any name, so Psalm finds no property. */
         unset($this->class->foo);
 
         self::assertFalse($this->class->has('foo'));

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Api\Model;
 
+use Override;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Api\Model\Json;
@@ -25,6 +26,7 @@ final class JsonTest extends TestCase
 {
     protected Json $json;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->json = new Json();

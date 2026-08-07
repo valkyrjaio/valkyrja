@@ -19,10 +19,13 @@ use Valkyrja\Cli\Routing\Constant\OptionName;
 use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Server\Constant\CommandName;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Tests\Fixtures\Cli\Middleware\Trait\InputReceivedResultTrait;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 final class CheckForVersionOptionsMiddlewareTest extends TestCase
 {
+    use InputReceivedResultTrait;
+
     public function testWithoutVersionOptions(): void
     {
         $input   = new Input();
@@ -39,7 +42,7 @@ final class CheckForVersionOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::VERSION,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertSame($input, $inputAfterMiddleware);
     }
@@ -59,7 +62,7 @@ final class CheckForVersionOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::VERSION,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertNotSame($input, $inputAfterMiddleware);
         self::assertSame(CommandName::VERSION, $inputAfterMiddleware->getCommandName());
@@ -81,7 +84,7 @@ final class CheckForVersionOptionsMiddlewareTest extends TestCase
             optionShortName: OptionShortName::VERSION,
         );
 
-        $inputAfterMiddleware = $middleware->inputReceived($input, $handler);
+        $inputAfterMiddleware = self::inputFrom($middleware->inputReceived($input, $handler));
 
         self::assertNotSame($input, $inputAfterMiddleware);
         self::assertSame(CommandName::VERSION, $inputAfterMiddleware->getCommandName());

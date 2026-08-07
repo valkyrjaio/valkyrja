@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Orm\Manager;
 
+use Override;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,6 +40,7 @@ final class PgsqlManagerTest extends TestCase
 
     protected PgsqlManager $manager;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->pdo       = $this->createMock(PDO::class);
@@ -149,8 +151,6 @@ final class PgsqlManagerTest extends TestCase
             ->willReturn('1');
 
         $this->manager->lastInsertId('orders', 'order_id');
-
-        self::assertTrue(true);
     }
 
     public function testCreateRepository(): void
@@ -236,8 +236,6 @@ final class PgsqlManagerTest extends TestCase
             ->willReturn(true);
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testEnsureTransactionDoesNotStartWhenAlreadyInTransaction(): void
@@ -255,8 +253,6 @@ final class PgsqlManagerTest extends TestCase
             ->method('beginTransaction');
 
         $this->manager->ensureTransaction();
-
-        self::assertTrue(true);
     }
 
     public function testPrepare(): void

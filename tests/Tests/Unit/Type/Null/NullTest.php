@@ -23,7 +23,7 @@ final class NullTest extends TestCase
 
     public function testValue(): void
     {
-        $type = new NullT(self::VALUE);
+        $type = new NullT();
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -37,28 +37,31 @@ final class NullTest extends TestCase
 
     public function testAsFlatValue(): void
     {
-        $type = new NullT(self::VALUE);
+        $type = new NullT();
 
         self::assertSame(self::VALUE, $type->asFlatValue());
     }
 
     public function testModify(): void
     {
-        $type = new NullT(self::VALUE);
-        // The new value
-        $newValue = 'anything';
+        $type = new NullT();
 
-        $modified = $type->modify(static fn (mixed $subject): string => $newValue);
+        $modified = $type->modify(static fn (null $subject): null => $subject);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());
         // New should be unmodified and always null
-        self::assertNotSame($newValue, $modified->asValue());
+        self::assertSame(self::VALUE, $modified->asValue());
+    }
+
+    public function testFromValueIgnoresTheGivenValue(): void
+    {
+        self::assertSame(self::VALUE, NullT::fromValue('anything')->asValue());
     }
 
     public function testJsonSerialize(): void
     {
-        $type = new NullT(self::VALUE);
+        $type = new NullT();
 
         self::assertSame(json_encode(self::VALUE), json_encode($type));
     }
