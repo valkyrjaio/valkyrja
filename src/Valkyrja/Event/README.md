@@ -113,12 +113,9 @@ $container->bind(
 );
 ```
 
-Warning: a binding is required. The container builds nothing that a binding
-does not describe, so a dispatch by class name throws where the application
-binds nothing for that class name.
-
-Warning: the dispatch throws when the container cannot return the event. Two
-exceptions report the two failures:
+Warning: a binding is required. The container builds nothing that a binding does
+not describe, so the dispatch throws when the container cannot return the event.
+Two exceptions report the two failures:
 
 - `Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException` —
   the container resolves nothing for the class name.
