@@ -43,6 +43,21 @@ final class DispatcherTest extends TestCase
     }
 
     /**
+     * A container that binds each event fixture, the same way an application binds its own events.
+     */
+    private static function containerWithEvents(): Container
+    {
+        $container = new Container();
+
+        $container->bind(ArgumentsCapableEventFixture::class, static fn (): ArgumentsCapableEventFixture => new ArgumentsCapableEventFixture());
+        $container->bind(DispatchCollectableEventFixture::class, static fn (): DispatchCollectableEventFixture => new DispatchCollectableEventFixture());
+        $container->bind(EventFixture::class, static fn (): EventFixture => new EventFixture());
+        $container->bind(StoppableEventFixture::class, static fn (): StoppableEventFixture => new StoppableEventFixture());
+
+        return $container;
+    }
+
+    /**
      * Test the dispatch method.
      */
     public function testDispatch(): void
@@ -62,7 +77,7 @@ final class DispatcherTest extends TestCase
 
         $collection->addListener($listener);
 
-        $dispatcher = new EventDispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection, container: self::containerWithEvents());
 
         /** @var DispatchCollectableEventFixture $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
@@ -110,7 +125,7 @@ final class DispatcherTest extends TestCase
 
         $collection = new ListenerCollection();
 
-        $dispatcher = new EventDispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection, container: self::containerWithEvents());
 
         $eventAfterDispatch     = $dispatcher->dispatchIfHasListeners($event);
         $eventAfterDispatchById = $dispatcher->dispatchByIdIfHasListeners($eventId);
@@ -155,7 +170,7 @@ final class DispatcherTest extends TestCase
         $collection->addListener($listener->withName('listener2'));
         $collection->addListener($listener->withName('listener3'));
 
-        $dispatcher = new EventDispatcher(collection: $collection);
+        $dispatcher = new EventDispatcher(collection: $collection, container: self::containerWithEvents());
 
         /** @var StoppableEventFixture $eventAfterDispatch */
         $eventAfterDispatch = $dispatcher->dispatch($event);
@@ -213,13 +228,15 @@ final class DispatcherTest extends TestCase
     }
 
     /**
-     * Test dispatchById builds the event where the container is bound to nothing.
+     * Test dispatchById throws where the container is bound to nothing.
      */
-    public function testDispatchByIdWithUnboundIdBuildsTheEvent(): void
+    public function testDispatchByIdWithUnboundIdThrows(): void
     {
         $dispatcher = new EventDispatcher();
 
-        self::assertInstanceOf(EventFixture::class, $dispatcher->dispatchById(EventFixture::class));
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $dispatcher->dispatchById(EventFixture::class);
     }
 
     /**
@@ -239,7 +256,9 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchByIdWithNonEventThrows(): void
     {
+        // The alias target is bound, and the alias itself is not, so the container follows the alias.
         $container = new Container();
+        $container->bind(DispatchCollectableEventFixture::class, static fn (): DispatchCollectableEventFixture => new DispatchCollectableEventFixture());
         $container->bindAlias(EventFixture::class, DispatchCollectableEventFixture::class);
 
         $dispatcher = new EventDispatcher(container: $container);
@@ -255,7 +274,7 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchByIdWithArgumentsCapableEvent(): void
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new EventDispatcher(container: self::containerWithEvents());
 
         /** @var ArgumentsCapableEventFixture $result */
         $result = $dispatcher->dispatchById(ArgumentsCapableEventFixture::class, ['test']);
@@ -269,7 +288,7 @@ final class DispatcherTest extends TestCase
      */
     public function testDispatchByIdIfHasListenersWithNonExistentClassThrows(): void
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = new EventDispatcher(container: self::containerWithEvents());
 
         $this->expectException(ContainerInvalidReferenceException::class);
 

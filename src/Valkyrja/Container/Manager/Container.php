@@ -13,15 +13,12 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Manager;
 
 use Override;
-use Throwable;
 use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
-use function class_exists;
 use function is_object;
 
 class Container implements ContainerContract
@@ -231,7 +228,7 @@ class Container implements ContainerContract
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
-    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object
+    public function get(string $id, array $arguments = []): object
     {
         $this->publishUnpublishedProvided($id);
 
@@ -239,7 +236,7 @@ class Container implements ContainerContract
         return $this->getSingletonWithoutChecks($id)
             ?? $this->getServiceWithoutChecks($id, $arguments)
             ?? $this->getAliasedWithoutChecks($id, $arguments)
-            ?? $this->getFallback($id, $arguments, $mode);
+            ?? throw new ContainerInvalidReferenceException($id);
     }
 
     /**
@@ -383,52 +380,5 @@ class Container implements ContainerContract
     {
         return $this->services[$id]
             ?? null;
-    }
-
-    /**
-     * Fallback to the mode when a service is not found.
-     *
-     * @template T of object
-     *
-     * @param class-string<T>         $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return T
-     */
-    protected function getFallback(
-        string $id,
-        array $arguments = [],
-        InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION
-    ): object {
-        return match ($mode) {
-            InvalidReferenceMode::THROW_EXCEPTION => throw new ContainerInvalidReferenceException($id),
-            default                               => $this->newInstanceOrModeFallback($id, $arguments),
-        };
-    }
-
-    /**
-     * Fallback to create a new instance or return null/throw exception depending on mode.
-     *
-     * @template T of object
-     *
-     * @param class-string<T>         $id        The service id
-     * @param array<array-key, mixed> $arguments [optional] The arguments
-     *
-     * @return T
-     */
-    protected function newInstanceOrModeFallback(string $id, array $arguments = []): object
-    {
-        try {
-            if (class_exists($id)) {
-                /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments */
-                // Return a new object with the arguments
-                return new $id(...$arguments);
-            }
-        } catch (Throwable) {
-            // Fall through to the exception being thrown by default
-        }
-
-        /** @var class-string $id */
-        throw new ContainerInvalidReferenceException($id);
     }
 }

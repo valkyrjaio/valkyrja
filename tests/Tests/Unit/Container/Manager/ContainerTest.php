@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
-use Valkyrja\Container\Enum\InvalidReferenceMode;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
@@ -269,43 +268,31 @@ final class ContainerTest extends TestCase
         );
     }
 
-    public function testNewInstanceOrThrowInvalidReferenceMode(): void
+    public function testGetThrowsForAnUnboundService(): void
     {
+        $this->expectException(ContainerInvalidArgumentException::class);
+
         $container = new Container();
 
-        $object = $container->get(SingletonFixture::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+        $container->get(SingletonFixture::class);
+    }
+
+    public function testGetResolvesABoundServiceThroughItsBinding(): void
+    {
+        $container = new Container();
+        $container->bind(SingletonFixture::class, static fn (): SingletonFixture => new SingletonFixture());
+
+        $object = $container->get(SingletonFixture::class);
 
         self::assertInstanceOf(SingletonFixture::class, $object);
     }
 
-    public function testNewInstanceOrThrowInvalidReferenceModeWithCaughtThrowable(): void
+    public function testGetThrowsForAnUnboundInterface(): void
     {
         $this->expectException(ContainerInvalidArgumentException::class);
 
         $container = new Container();
 
-        // Will fail because this requires the container as the first argument, but no arguments passed
-        $container->get(ServiceFixture::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
-    }
-
-    /**
-     * This mode should always throw an exception if the service isn't found in the container.
-     */
-    public function testThrowExceptionInvalidReferenceMode(): void
-    {
-        $this->expectException(ContainerInvalidArgumentException::class);
-
-        $container = new Container();
-
-        $container->get(ServiceFixture::class, mode: InvalidReferenceMode::THROW_EXCEPTION);
-    }
-
-    public function testNewInstanceThrowInvalidReferenceMode(): void
-    {
-        $this->expectException(ContainerInvalidArgumentException::class);
-
-        $container = new Container();
-
-        $container->get(Throwable::class, mode: InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION);
+        $container->get(Throwable::class);
     }
 }

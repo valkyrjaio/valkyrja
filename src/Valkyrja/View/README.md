@@ -90,6 +90,26 @@ output in `storage/views/`. Compilation happens on first access; subsequent
 requests use the cached PHP file. When `debugMode` is enabled, the cache is
 always regenerated.
 
+### Register the Replacement Provider
+
+Warning: the Orka renderer needs `ViewOrkaServiceProvider`. The renderer reads
+each replacement from the container, and the container builds nothing that a
+binding does not describe. Register the provider in the application that uses
+Orka:
+
+```php
+use Valkyrja\View\Provider\ViewOrkaServiceProvider;
+
+$container->register(new ViewOrkaServiceProvider());
+```
+
+`ViewComponentProvider` does not register it. Orka ships 38 replacements, and an
+application that renders with `PhpRenderer` or `TwigRenderer` carries none of
+them.
+
+Bind each replacement that `orkaReplacements` adds. The provider binds the core
+set only.
+
 Configure the Orka renderer through `ViewOrkaConfigContract`:
 
 | Property               | Default            | Description                              |

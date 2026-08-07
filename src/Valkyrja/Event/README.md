@@ -113,10 +113,9 @@ $container->bind(
 );
 ```
 
-The container builds the class itself when the application binds nothing for
-the class name. This keeps a dispatch by class name available without a
-binding. A binding is still the better choice, because the container then
-builds the event through code that you can read.
+Warning: a binding is required. The container builds nothing that a binding
+does not describe, so a dispatch by class name throws where the application
+binds nothing for that class name.
 
 Warning: the dispatch throws when the container cannot return the event. Two
 exceptions report the two failures:

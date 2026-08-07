@@ -119,6 +119,36 @@ class genuinely owns a construction step that callers must reuse.
 Neither approach uses reflection-based autowiring. Every dependency is declared
 in code.
 
+### Every Service Needs a Binding
+
+The container resolves a service id through a cached instance, a bound factory,
+or an alias. It builds nothing that a binding does not describe.
+
+Warning: `get()` throws `ContainerInvalidReferenceException` for a service id
+that none of the three resolves. The container does not construct the class that
+the id names.
+
+```php
+// Wrong — nothing binds the middleware, so the container throws.
+$handler->add(AuthMiddleware::class);
+```
+
+```php
+// Right — the service provider binds the middleware, and the handler resolves it.
+$container->bindSingleton(
+    AuthMiddleware::class,
+    static fn (ContainerContract $container): AuthMiddleware => new AuthMiddleware(
+        $container->getSingleton(AuthContract::class)
+    ),
+);
+
+$handler->add(AuthMiddleware::class);
+```
+
+This rule holds for every class that a config names by class string — a
+middleware, an event, and a view replacement. One explicit place states how each
+service is built.
+
 ### Binding Methods
 
 **`bind(string $id, callable $callable)`** — Binds a service ID to a callable

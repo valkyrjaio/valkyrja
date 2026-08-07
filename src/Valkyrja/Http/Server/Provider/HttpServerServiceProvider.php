@@ -31,6 +31,7 @@ use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Server\Middleware\SendingResponse\NoCacheResponseMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
@@ -176,6 +177,19 @@ class HttpServerServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * Publish the NoCacheResponseMiddleware service.
+     *
+     * @param ContainerContract $container The container
+     */
+    public static function publishNoCacheResponseMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            NoCacheResponseMiddleware::class,
+            new NoCacheResponseMiddleware()
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]
@@ -190,6 +204,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
             ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
             ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
             CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
+            NoCacheResponseMiddleware::class     => [self::class, 'publishNoCacheResponseMiddleware'],
         ];
     }
 }
