@@ -129,7 +129,6 @@ HTTP-specific configuration.
 
 | Property             | Default | Description                                              |
 | -------------------- | ------- | -------------------------------------------------------- |
-| `port`               | `50051` | The port the worker runtime listens on                   |
 | `maxInboundMessages` | `1000`  | The largest number of messages one call may send inbound |
 
 `GrpcConfig` also carries one array per middleware stage. Each array holds the
@@ -138,9 +137,15 @@ middleware that runs at that stage for every call:
 `routeDispatchedMiddleware`, `throwableCaughtMiddleware`,
 `sendingResponseMiddleware`, and `responseSentMiddleware`.
 
+Port binding, TLS, and worker pools are adapter settings, so `GrpcConfig` holds
+none of them. Each adapter carries its own config contract.
+
 Warning: `maxInboundMessages` bounds the inbound direction only. The framework
 puts no bound on the outbound direction, so a worker adapter applies its own
-backpressure when the transport cannot accept another message.
+backpressure when the transport cannot accept another message. Backpressure
+suspends a drain and resumes it; cancellation ends the drain. An adapter that
+treats the two as one drops a message for a slow peer, or hangs on a cancelled
+call.
 
 ## The Bootstrap Sequence
 
