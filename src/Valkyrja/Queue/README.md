@@ -63,14 +63,15 @@ what lets the processor answer the broker directly.
 
 ## Clients
 
-| Client           | Broker | Redelivery |
-| ---------------- | ------ | ---------- |
-| `SyncClient`     | none   | framework  |
-| `DeferredClient` | none   | framework  |
-| `InMemoryClient` | none   | framework  |
-| `RedisClient`    | Redis  | framework  |
-| `AmqpClient`     | AMQP   | processor  |
-| `SqsClient`      | SQS    | processor  |
+| Client             | Broker     | Redelivery |
+| ------------------ | ---------- | ---------- |
+| `SyncClient`       | none       | framework  |
+| `DeferredClient`   | none       | framework  |
+| `InMemoryClient`   | none       | framework  |
+| `RedisClient`      | Redis      | framework  |
+| `AmqpClient`       | AMQP       | processor  |
+| `SqsClient`        | SQS        | processor  |
+| `BeanstalkdClient` | beanstalkd | processor  |
 
 `SyncClient` is the zero-config default. It runs the job inline and blocks, and
 it runs the whole retry chain. There is no durable place to hold a retry delay,
@@ -147,8 +148,9 @@ Each middleware stage handler is a shared singleton, so the `Router` and the
 
 A broker adapter needs its own package, and the framework does not require one:
 
-| Adapter | Package                   |
-| ------- | ------------------------- |
-| Redis   | `predis/predis`           |
-| AMQP    | `php-amqplib/php-amqplib` |
-| SQS     | `async-aws/sqs`           |
+| Adapter    | Package                   |
+| ---------- | ------------------------- |
+| Redis      | `predis/predis`           |
+| AMQP       | `php-amqplib/php-amqplib` |
+| SQS        | `async-aws/sqs`           |
+| beanstalkd | `pda/pheanstalk`          |
