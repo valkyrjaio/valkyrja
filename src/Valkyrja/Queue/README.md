@@ -70,6 +70,7 @@ what lets the processor answer the broker directly.
 | `InMemoryClient` | none   | framework  |
 | `RedisClient`    | Redis  | framework  |
 | `AmqpClient`     | AMQP   | processor  |
+| `SqsClient`      | SQS    | processor  |
 
 `SyncClient` is the zero-config default. It runs the job inline and blocks, and
 it runs the whole retry chain. There is no durable place to hold a retry delay,
@@ -150,3 +151,4 @@ A broker adapter needs its own package, and the framework does not require one:
 | ------- | ------------------------- |
 | Redis   | `predis/predis`           |
 | AMQP    | `php-amqplib/php-amqplib` |
+| SQS     | `async-aws/sqs`           |
