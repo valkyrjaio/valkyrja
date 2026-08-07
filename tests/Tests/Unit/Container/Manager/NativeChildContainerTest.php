@@ -56,6 +56,25 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->parent->isAlias('childAlias'));
     }
 
+    public function testGetAliasedIdFromParent(): void
+    {
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('myAlias', ServiceFixture::class);
+
+        self::assertSame(ServiceFixture::class, $this->child->getAliasedId('myAlias'));
+        self::assertNull($this->child->getAliasedId('unknown'));
+    }
+
+    public function testGetAliasedIdFromChildTakesPrecedence(): void
+    {
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('shared', ServiceFixture::class);
+        $this->child->bindAlias('shared', SingletonFixture::class);
+
+        self::assertSame(SingletonFixture::class, $this->child->getAliasedId('shared'));
+        self::assertSame(ServiceFixture::class, $this->parent->getAliasedId('shared'));
+    }
+
     // -----------------------------------------------------------------------
     // isService
     // -----------------------------------------------------------------------

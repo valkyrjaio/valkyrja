@@ -242,6 +242,20 @@ class Container implements ContainerContract
     /**
      * @inheritDoc
      *
+     * @param class-string $alias The alias
+     *
+     * @return class-string|null
+     */
+    #[Override]
+    public function getAliasedId(string $alias): string|null
+    {
+        return $this->aliases[$alias]
+            ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     *
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress ImplementedReturnTypeMismatch
@@ -296,7 +310,7 @@ class Container implements ContainerContract
      */
     protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
     {
-        $aliased = $this->getAlias($id);
+        $aliased = $this->getAliasedId($id);
 
         if ($aliased === null) {
             return null;
@@ -343,19 +357,6 @@ class Container implements ContainerContract
 
         // Make the object by dispatching the service
         return $service($this, $arguments);
-    }
-
-    /**
-     * Get the alias target for a given id.
-     *
-     * @param class-string $id The service id
-     *
-     * @return class-string|null
-     */
-    protected function getAlias(string $id): string|null
-    {
-        return $this->aliases[$id]
-            ?? null;
     }
 
     /**

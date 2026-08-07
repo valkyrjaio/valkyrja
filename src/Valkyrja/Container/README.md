@@ -204,6 +204,37 @@ fresh instance by invoking the registered callable.
 **`getAliased(string $alias): object`** — Resolves the service the alias points
 to.
 
+**`getAliasedId(string $alias): string|null`** — Returns the id that the alias
+points to, and returns `null` when the id is not an alias. The method reads one
+hop. It does not follow a chain of aliases, so a caller that must reach the end
+of a chain calls the method again.
+
+Use this method to classify an alias. The state methods answer for the id that
+you give them, never for the alias target, so ask for the target first:
+
+```php
+// Wrong — the state method answers for the alias, which holds no instance.
+// This reports false while getAliased() returns a resolved singleton.
+if ($container->isSingletonInstance($alias)) {
+}
+```
+
+```php
+// Right — read the target first, then classify the target.
+$aliasedId = $container->getAliasedId($alias);
+
+if ($aliasedId !== null && $container->isSingletonInstance($aliasedId)) {
+    // The container holds a resolved instance for the target.
+}
+```
+
+```php
+// Right — classify the id itself, and exclude an alias.
+if ($container->isSingleton($id) && ! $container->isAlias($id)) {
+    // The id is a singleton in its own right.
+}
+```
+
 When you know the type of what you are resolving, prefer the specific method
 over `get()`. The difference is small per call but meaningful at scale —
 especially in a hot path like route dispatch.

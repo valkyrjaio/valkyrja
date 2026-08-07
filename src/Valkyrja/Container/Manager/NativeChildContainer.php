@@ -31,7 +31,22 @@ class NativeChildContainer extends Container
     #[Override]
     public function isAlias(string $id): bool
     {
-        return $this->getAlias($id) !== null;
+        return $this->getAliasedId($id) !== null;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $alias The alias
+     *
+     * @return class-string|null
+     */
+    #[Override]
+    public function getAliasedId(string $alias): string|null
+    {
+        return $this->aliases[$alias]
+            ?? $this->parent->aliases[$alias]
+            ?? null;
     }
 
     /**
@@ -123,21 +138,6 @@ class NativeChildContainer extends Container
     {
         return $this->callbacks[$id]
             ?? $this->parent->callbacks[$id]
-            ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     *
-     * @return class-string|null
-     */
-    #[Override]
-    protected function getAlias(string $id): string|null
-    {
-        return $this->aliases[$id]
-            ?? $this->parent->aliases[$id]
             ?? null;
     }
 

@@ -86,6 +86,40 @@ final class ContainerTest extends TestCase
         self::assertNotSame($service, $container->getAliased($alias));
     }
 
+    public function testGetAliasedId(): void
+    {
+        $container = $this->container;
+        $id        = ServiceFixture::class;
+        $alias     = 'alias';
+
+        $container->bind($id, [ServiceFixture::class, 'make']);
+        $container->bindAlias($alias, $id);
+
+        self::assertSame($id, $container->getAliasedId($alias));
+    }
+
+    public function testGetAliasedIdReturnsNullWhenNotAnAlias(): void
+    {
+        $container = $this->container;
+
+        $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+
+        self::assertNull($container->getAliasedId(ServiceFixture::class));
+        self::assertNull($container->getAliasedId('unknown'));
+    }
+
+    public function testGetAliasedIdReturnsOneHopOnly(): void
+    {
+        $container = $this->container;
+        $id        = ServiceFixture::class;
+
+        $container->bind($id, [ServiceFixture::class, 'make']);
+        $container->bindAlias('second', $id);
+        $container->bindAlias('first', 'second');
+
+        self::assertSame('second', $container->getAliasedId('first'));
+    }
+
     public function testBindSingleton(): void
     {
         $container = $this->container;
