@@ -99,13 +99,13 @@ Each part of `EntityMetadata` is optional:
 ```php
 new EntityMetadata(
     dated: new DatedMetadata(
-        format: DateFormat::MICROSECOND, // Optional: the created and modified date format
-        dateCreatedField: 'created_at',  // Optional: the date created field
-        dateModifiedField: 'updated_at'  // Optional: the date modified field
+        format: DateFormat::MICROSECOND,
+        dateCreatedField: 'created_at',
+        dateModifiedField: 'updated_at',
     ),
     softDelete: new SoftDeleteMetadata(
-        format: DateFormat::DEFAULT,   // Optional: the deleted date format
-        dateDeletedField: 'deleted_at' // Optional: the date deleted field
+        format: DateFormat::DEFAULT,
+        dateDeletedField: 'deleted_at',
     ),
 );
 ```
