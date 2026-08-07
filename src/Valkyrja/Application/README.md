@@ -20,6 +20,7 @@ You do not instantiate `Valkyrja` directly. The entry classes handle this:
 - `Valkyrja\Application\Entry\Http` — for traditional PHP-FPM / CGI web
   applications
 - `Valkyrja\Application\Entry\Cli` — for console applications
+- `Valkyrja\Application\Entry\Grpc` — for a single gRPC call, and for tests
 - Persistent worker entry classes — for long-running worker runtimes (
   see [Persistent Worker Lifecycle](#persistent-worker-lifecycle))
 
@@ -121,6 +122,30 @@ HTTP-specific configuration.
 
 > Note: In order for your cli application to be able to use HTTP services, you
 > must include the HTTP component in your application's component providers.
+
+### gRPC Configuration
+
+`GrpcConfig` extends `Config` with these additional properties:
+
+| Property             | Default | Description                                              |
+| -------------------- | ------- | -------------------------------------------------------- |
+| `maxInboundMessages` | `1000`  | The largest number of messages one call may send inbound |
+
+`GrpcConfig` also carries one array per middleware stage. Each array holds the
+middleware that runs at that stage for every call:
+`callReceivedMiddleware`, `routeMatchedMiddleware`, `routeNotMatchedMiddleware`,
+`routeDispatchedMiddleware`, `throwableCaughtMiddleware`,
+`sendingResponseMiddleware`, and `responseSentMiddleware`.
+
+Port binding, TLS, and worker pools are adapter settings, so `GrpcConfig` holds
+none of them. Each adapter carries its own config contract.
+
+Warning: `maxInboundMessages` bounds the inbound direction only. The framework
+puts no bound on the outbound direction, so a worker adapter applies its own
+backpressure when the transport cannot accept another message. Backpressure
+suspends a drain and resumes it; cancellation ends the drain. An adapter that
+treats the two as one drops a message for a slow peer, or hangs on a cancelled
+call.
 
 ## The Bootstrap Sequence
 
@@ -473,14 +498,32 @@ new HttpConfig(providers: [
 ]);
 ```
 
+### `GrpcApplicationComponentProvider`
+
+A gRPC bundle — includes Container, Event, the gRPC stack (Middleware, Routing,
+Server), and Log. Omits every HTTP and CLI component, and omits View, because a
+gRPC call renders no template.
+
+This is the **default for `GrpcConfig`**. Use it for a gRPC worker process.
+
+```php
+use Valkyrja\Application\Provider\GrpcApplicationComponentProvider;
+
+new GrpcConfig(providers: [
+    new GrpcApplicationComponentProvider(),
+    new AppComponentProvider(),
+]);
+```
+
 ### Choosing the right built-in provider
 
-| Provider                                  | CLI | HTTP | View | Typical entry config |
-| ----------------------------------------- | --- | ---- | ---- | -------------------- |
-| `ApplicationComponentProvider`            | ✓   | ✓    | ✓    | `Config`             |
-| `CliApplicationComponentProvider`         | ✓   |      |      | custom `CliConfig`   |
-| `CliWithHttpApplicationComponentProvider` | ✓   | ✓    |      | `CliConfig`          |
-| `HttpApplicationComponentProvider`        |     | ✓    | ✓    | `HttpConfig`         |
+| Provider                                  | CLI | HTTP | gRPC | View | Typical entry config |
+| ----------------------------------------- | --- | ---- | ---- | ---- | -------------------- |
+| `ApplicationComponentProvider`            | ✓   | ✓    |      | ✓    | `Config`             |
+| `CliApplicationComponentProvider`         | ✓   |      |      |      | custom `CliConfig`   |
+| `CliWithHttpApplicationComponentProvider` | ✓   | ✓    |      |      | `CliConfig`          |
+| `HttpApplicationComponentProvider`        |     | ✓    |      | ✓    | `HttpConfig`         |
+| `GrpcApplicationComponentProvider`        |     |      | ✓    |      | `GrpcConfig`         |
 
 ## Debug Mode
 
@@ -515,6 +558,10 @@ The parent application and its container are **frozen** after `bootstrap()`
 completes. No code should write to them again. Every request receives its own
 `ChildContainer` and `ChildApplication` that inherit from the frozen parent but
 write only to child-local state. When the request ends, the child is discarded.
+
+`Valkyrja\Application\Entry\Abstract\WorkerGrpc` holds the same invariant for
+gRPC. It bootstraps once, freezes the parent, and gives every call its own child
+container. A gRPC call takes the place of a request in each step below.
 
 ### Bootstrap (once, at worker startup)
 

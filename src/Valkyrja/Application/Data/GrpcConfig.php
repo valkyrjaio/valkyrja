@@ -10,11 +10,13 @@ declare(strict_types=1);
  * Released under the MIT License. See LICENSE.md for details.
  */
 
-namespace Valkyrja\Tests\Fixtures\Application\Data;
+namespace Valkyrja\Application\Data;
 
+use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\Contract\GrpcConfigContract;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Application\Provider\GrpcApplicationComponentProvider;
 use Valkyrja\Grpc\Middleware\Contract\CallReceivedMiddlewareContract;
 use Valkyrja\Grpc\Middleware\Contract\ResponseSentMiddlewareContract;
 use Valkyrja\Grpc\Middleware\Contract\RouteDispatchedMiddlewareContract;
@@ -23,7 +25,7 @@ use Valkyrja\Grpc\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Grpc\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Grpc\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
-final class GrpcConfigFixture implements GrpcConfigContract
+class GrpcConfig implements GrpcConfigContract
 {
     /**
      * @param non-empty-string                                  $namespace
@@ -48,15 +50,17 @@ final class GrpcConfigFixture implements GrpcConfigContract
     public function __construct(
         public readonly string $namespace = 'App',
         public readonly string $dir = __DIR__,
-        public readonly string $version = '1.0.0',
-        public readonly string $environment = 'testing',
+        public readonly string $version = ApplicationInfo::VERSION,
+        public readonly string $environment = 'production',
         public readonly bool $debugMode = false,
         public readonly string $timezone = 'UTC',
         public readonly string $key = 'some_secret_app_key',
         public readonly string $dataPath = 'App/Provider/Data',
         public readonly string $dataNamespace = 'App\\Provider\\Data',
         public readonly int $maxInboundMessages = GrpcConfigContract::DEFAULT_MAX_INBOUND_MESSAGES,
-        public readonly array $providers = [],
+        public readonly array $providers = [
+            new GrpcApplicationComponentProvider(),
+        ],
         public readonly array $callbacks = [],
         public readonly array $callReceivedMiddleware = [],
         public readonly array $routeMatchedMiddleware = [],
