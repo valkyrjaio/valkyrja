@@ -73,6 +73,7 @@ what lets the processor answer the broker directly.
 | `SqsClient`        | SQS        | processor  |
 | `BeanstalkdClient` | beanstalkd | processor  |
 | `DatabaseClient`   | a database | framework  |
+| `PubSubClient`     | Pub/Sub    | processor  |
 
 `SyncClient` is the zero-config default. It runs the job inline and blocks, and
 it runs the whole retry chain. There is no durable place to hold a retry delay,
@@ -176,3 +177,4 @@ A broker adapter needs its own package, and the framework does not require one:
 | AMQP       | `php-amqplib/php-amqplib` |
 | SQS        | `async-aws/sqs`           |
 | beanstalkd | `pda/pheanstalk`          |
+| Pub/Sub    | `google/cloud-pubsub`     |
