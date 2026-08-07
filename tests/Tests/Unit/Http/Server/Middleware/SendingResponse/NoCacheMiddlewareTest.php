@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware\SendingResponse;
 
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -24,7 +25,13 @@ final class NoCacheMiddlewareTest extends TestCase
 {
     public function testThroughHandler(): void
     {
-        $handler = new SendingResponseHandler();
+        $container = new Container();
+        $container->bindSingleton(
+            NoCacheResponseMiddleware::class,
+            static fn (): NoCacheResponseMiddleware => new NoCacheResponseMiddleware()
+        );
+
+        $handler = new SendingResponseHandler($container);
         $handler->add(NoCacheResponseMiddleware::class);
 
         $request  = new ServerRequest();

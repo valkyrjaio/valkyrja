@@ -25,6 +25,7 @@ use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
+use Valkyrja\Http\Server\Middleware\SendingResponse\NoCacheResponseMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ThrowableCaught\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\HttpServerServiceProvider;
@@ -51,6 +52,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ResponseStructMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(CacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(NoCacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(HttpServerConfigContract::class, new HttpServerServiceProvider()->publishers());
     }
 
@@ -181,6 +183,17 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(HttpServerConfigContract::class, $config = $this->container->getSingleton(HttpServerConfigContract::class));
         self::assertSame('/tmp/response-cache', $config->responseCacheFilePath);
+    }
+
+    public function testPublishNoCacheResponseMiddleware(): void
+    {
+        $callback = new HttpServerServiceProvider()->publishers()[NoCacheResponseMiddleware::class];
+        $callback($this->container);
+
+        self::assertInstanceOf(
+            NoCacheResponseMiddleware::class,
+            $this->container->getSingleton(NoCacheResponseMiddleware::class)
+        );
     }
 
     public function testPublishCacheResponseMiddleware(): void

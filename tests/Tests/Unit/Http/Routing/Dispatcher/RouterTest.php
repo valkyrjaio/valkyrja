@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Dispatcher;
 
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -43,6 +44,19 @@ final class RouterTest extends TestCase
         return 'invalid';
     }
 
+    /**
+     * A container that binds each middleware fixture, the same way an application binds its own.
+     */
+    private static function containerWithMiddleware(): Container
+    {
+        $container = new Container();
+
+        $container->bindSingleton(RouteMatchedMiddlewareChangedFixture::class, static fn (): RouteMatchedMiddlewareChangedFixture => new RouteMatchedMiddlewareChangedFixture());
+        $container->bindSingleton(RouteNotMatchedMiddlewareChangedFixture::class, static fn (): RouteNotMatchedMiddlewareChangedFixture => new RouteNotMatchedMiddlewareChangedFixture());
+
+        return $container;
+    }
+
     public function testNotFound(): void
     {
         $router  = new Router();
@@ -60,7 +74,7 @@ final class RouterTest extends TestCase
     {
         RouteNotMatchedMiddlewareChangedFixture::resetCounter();
 
-        $routeNotMatchedHandler = new RouteNotMatchedHandler();
+        $routeNotMatchedHandler = new RouteNotMatchedHandler(self::containerWithMiddleware());
         $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedFixture::class);
 
         $router  = new Router(routeNotMatchedHandler: $routeNotMatchedHandler);
@@ -100,7 +114,7 @@ final class RouterTest extends TestCase
     {
         RouteNotMatchedMiddlewareChangedFixture::resetCounter();
 
-        $routeNotMatchedHandler = new RouteNotMatchedHandler();
+        $routeNotMatchedHandler = new RouteNotMatchedHandler(self::containerWithMiddleware());
         $routeNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedFixture::class);
 
         $collection = new RouteCollection();
@@ -127,7 +141,7 @@ final class RouterTest extends TestCase
     {
         RouteMatchedMiddlewareChangedFixture::resetCounter();
 
-        $routeNotMatchedHandler = new RouteMatchedHandler();
+        $routeNotMatchedHandler = new RouteMatchedHandler(self::containerWithMiddleware());
         $routeNotMatchedHandler->add(RouteMatchedMiddlewareChangedFixture::class);
 
         $collection = new RouteCollection();
@@ -156,8 +170,11 @@ final class RouterTest extends TestCase
 
         $collection = new RouteCollection();
         $matcher    = new Matcher(collection: $collection);
-        $router     = new Router(matcher: $matcher);
-        $request    = new ServerRequest(
+        $router     = new Router(
+            routeMatchedHandler: new RouteMatchedHandler(self::containerWithMiddleware()),
+            matcher: $matcher
+        );
+        $request = new ServerRequest(
             uri: UriFactory::fromString('/'),
             method: RequestMethod::GET
         );

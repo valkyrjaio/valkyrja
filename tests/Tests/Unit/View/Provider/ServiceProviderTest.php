@@ -32,6 +32,7 @@ use Valkyrja\View\Data\ViewTwigConfig;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Factory\ViewResponseFactory;
 use Valkyrja\View\Orka\Constant\OrkaReplacement;
+use Valkyrja\View\Provider\ViewOrkaServiceProvider;
 use Valkyrja\View\Provider\ViewServiceProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\OrkaRenderer;
@@ -169,6 +170,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOrkaRenderer(): void
     {
+        // Orka is opt-in, so the application registers its replacement provider.
+        $this->container->register(new ViewOrkaServiceProvider());
+
         $this->container->setSingleton(ViewOrkaConfigContract::class, new ViewOrkaConfig(orkaPath: '/storage'));
 
         $callback = new ViewServiceProvider()->publishers()[OrkaRenderer::class];
@@ -179,6 +183,9 @@ final class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishOrkaRendererWithCustomReplacements(): void
     {
+        // Orka is opt-in, so the application registers its replacement provider.
+        $this->container->register(new ViewOrkaServiceProvider());
+
         $this->container->setSingleton(
             ViewOrkaConfigContract::class,
             new ViewOrkaConfig(

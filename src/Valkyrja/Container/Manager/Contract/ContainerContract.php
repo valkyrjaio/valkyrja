@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Manager\Contract;
 use Override;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Container\Enum\InvalidReferenceMode;
 
 interface ContainerContract extends ContainerInterface, ProvidersAwareContract
 {
@@ -125,7 +124,7 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     #[Override]
-    public function get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object;
+    public function get(string $id, array $arguments = []): object;
 
     /**
      * Get an aliased service from the container.
