@@ -12,12 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Queue\Message\Enum;
 
-/**
- * The settlement decision a consumed job unwinds with.
- *
- * A queue has no client awaiting bytes, so the pipeline's outbound value is a
- * closed set of outcomes the adapter reads and acts on — never a payload.
- */
 enum JobResult: string
 {
     /** Processed successfully; remove from the queue. */

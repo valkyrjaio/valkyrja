@@ -16,9 +16,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Queue\Message\Enum\JobResult;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-/**
- * Test the JobResult enum.
- */
 final class JobResultTest extends TestCase
 {
     /**

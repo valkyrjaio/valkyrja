@@ -15,13 +15,6 @@ namespace Valkyrja\Queue\Message\Job\Factory\Contract;
 use Valkyrja\Queue\Message\Job\Contract\JobContract;
 use Valkyrja\Queue\Message\Payload\Contract\PayloadContract;
 
-/**
- * Reads and writes the wire envelope.
- *
- * This is the one place in the design where the exact bytes matter: a job
- * published by this port must run unchanged on every other port, so the
- * envelope is a versioned contract rather than an implementation detail.
- */
 interface JobFactoryContract
 {
     /**

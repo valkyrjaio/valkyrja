@@ -15,17 +15,6 @@ namespace Valkyrja\Queue\Message\Job\Contract;
 use Valkyrja\Queue\Message\Attributes\Contract\AttributesContract;
 use Valkyrja\Queue\Message\Payload\Contract\PayloadContract;
 
-/**
- * The single message class for both directions.
- *
- * A producer builds a job and dispatches it; the consumer receives the same
- * job. There is no separate response envelope — the handler returns a
- * `JobResult` outcome, so the whole pipeline is job in, result out.
- *
- * A job is immutable: it is known at ingest and never mutated in place. The
- * framework only ever produces a new one via `with*`, exactly as Http's request
- * and Cli's input do.
- */
 interface JobContract
 {
     /**

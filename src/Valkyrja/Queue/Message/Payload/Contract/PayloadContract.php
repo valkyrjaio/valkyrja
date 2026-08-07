@@ -12,17 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Queue\Message\Payload\Contract;
 
-/**
- * The job body: a self-contained, language-agnostic JSON object.
- *
- * A payload carries everything the job needs and nothing that ties it to a
- * language — no class strings, no type hints, no decode hints. Binary data is
- * base64-encoded into a field the job itself defines.
- *
- * This mirrors the shape of Http's parsed JSON collection deliberately, but is
- * owned by Queue: the queue core never imports Http types, so a pull-only
- * deployment loads no Http stack.
- */
 interface PayloadContract
 {
     /**

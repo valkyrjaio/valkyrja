@@ -12,13 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Queue\Message\Attributes\Contract;
 
-/**
- * The envelope's headers: an immutable, case-insensitive multi-map.
- *
- * Attributes carry the cross-cutting metadata a producer stamps on every job —
- * tenant, trace id, region — which is why they are kept out of the payload and
- * given a first-class data class, exactly as Http gives one to headers.
- */
 interface AttributesContract
 {
     /**
