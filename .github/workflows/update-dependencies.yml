@@ -7,7 +7,7 @@ on:
 
 jobs:
   update-dependencies:
-    uses: valkyrjaio/.github/.github/workflows/_php-update-dependencies.yml@80d66c1e2b574520c47a2e585a7ec433b9c587b2
+    uses: valkyrjaio/.github/.github/workflows/_php-update-dependencies.yml@f0560559020d79edb410ef75387e081d75026e45
     secrets:
       VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
       VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
