@@ -148,9 +148,11 @@ Cli::run(new CliConfig(
 `InputFactory::fromGlobals()` assigns each `argv` token one role:
 
 - The first token is the **caller** — the binary name.
-- The first later token that does not start with `-` is the **command name**.
-  When no such token exists, `defaultCommandName` applies.
-- Every other token that does not start with `-` is an **argument** value.
+- The second token is the **command name**, when it is not an option token
+  and not `--`. When the second token is an option or `--`, no token sets the
+  command name, `defaultCommandName` applies, and every non-option token is
+  an argument.
+- Every later token that does not start with `-` is an **argument** value.
   Arguments bind to declared parameters by position.
 - Every token that starts with `-` is an **option**, wherever it appears on
   the line.
@@ -164,8 +166,8 @@ Option tokens follow these rules:
 - `-abc` expands to the three short flags `-a -b -c`. A combined group cannot
   carry a value.
 - `--` ends option parsing. Every later token is an argument, even one that
-  starts with `-`. A lone `-` is an argument by convention (it names standard
-  input).
+  starts with `-`. A later lone `-` is an argument by convention (it names
+  standard input); at the second position it sets the command name.
 
 ```
 php myapp user:greet Melech --shout -n=3 -- --literal-argument
@@ -830,7 +832,8 @@ A `Formatter` wraps text in ANSI escape codes built from `Format` objects:
 `TextColorFormat` (a `TextColor` case), `BackgroundColorFormat` (a
 `BackgroundColor` case), and `StyleFormat` (a `Style` case — `BOLD`,
 `UNDERSCORE`, `BLINK`, `INVERSE`, `CONCEAL`). Both color enums offer the
-eight base colors and their `LIGHT_*` variants:
+eight base colors, `DARK_GRAY`, and `LIGHT_RED` through `LIGHT_WHITE` — there
+is no `LIGHT_BLACK`:
 
 ```php
 use Valkyrja\Cli\Interaction\Enum\Style;
