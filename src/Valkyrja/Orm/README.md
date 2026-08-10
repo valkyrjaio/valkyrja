@@ -849,7 +849,7 @@ $statement->execute();
 $posts = $statement->fetchAllEntities(Post::class);
 ```
 
-`fetch()` and `fetchEntity()` read one row, and throw an `OrmFetchException` when no row remains. `fetchAll()` and `fetchAllEntities()` return an empty array when no row matches. `execute()` returns `false` on failure, and `getErrorMessage()` then holds the reason.
+`fetch()` and `fetchEntity()` read one row, and throw an `OrmFetchException` when no row remains. `fetchAll()` and `fetchAllEntities()` return an empty array when no row matches. A failed `execute()` throws a `PDOException` under the default `PDO::ERRMODE_EXCEPTION` options ([Configuration](#configuration)); `execute()` returns `false`, with `getErrorMessage()` holding the reason, only when the application overrides `PDO::ATTR_ERRMODE`.
 
 `query()` shortens the flow for a query with no bind parameters:
 
@@ -910,9 +910,11 @@ use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
 try {
     $repository->create($post);
 } catch (OrmThrowable $exception) {
-    // Every ORM failure lands here
+    // Every failure the component throws lands here
 }
 ```
+
+The ORM throwables cover the component's own checks. A driver-level failure — a duplicate key, a bad column — arrives as a `PDOException` instead, because every adapter's default options set `PDO::ERRMODE_EXCEPTION` ([Configuration](#configuration)), and `PDOException` does not implement `OrmThrowable`. Catch `PDOException` separately when you handle driver failures.
 
 The exceptions you meet in normal use:
 
