@@ -69,6 +69,47 @@ properties in depth.
 `CliConfigContract`, so your own subclass of `CliConfig` — with
 per-environment defaults baked in — works too.
 
+### Renaming the Built-In Commands and Options
+
+A custom config class is also how you rename the built-in commands and the
+global options. `CliServerServiceProvider` checks the config against five
+opt-in contracts in `Valkyrja\Cli\Server\Data\Contract`. When the config
+implements a contract, the provider reads the names from its properties. When
+it does not, the default names apply.
+
+| Contract                             | Properties                                                          | Renames                                    |
+| ------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------ |
+| `CliHelpCommandConfigContract`       | `helpCommandName`, `helpOptionName`, `helpOptionShortName`          | The `help` command and `--help`/`-h`       |
+| `CliVersionCommandConfigContract`    | `versionCommandName`, `versionOptionName`, `versionOptionShortName` | The `version` command and `--version`/`-v` |
+| `CliNoInteractionConfigContract`     | `noInteractionOptionName`, `noInteractionOptionShortName`           | `--no-interaction`/`-N`                    |
+| `CliQuietInteractionConfigContract`  | `quietOptionName`, `quietOptionShortName`                           | `--quiet`/`-q`                             |
+| `CliSilentInteractionConfigContract` | `silentOptionName`, `silentOptionShortName`                         | `--silent`/`-s`                            |
+
+Implement only the contracts you need. Each property holds a name without the
+leading dashes:
+
+```php
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Cli\Server\Data\Contract\CliQuietInteractionConfigContract;
+
+final class AppCliConfig extends CliConfig implements CliQuietInteractionConfigContract
+{
+    public string $quietOptionName = 'hush';
+
+    public string $quietOptionShortName = 'H';
+}
+```
+
+With this config, `--hush`/`-H` sets the quiet flag, and `--quiet`/`-q` no
+longer does.
+
+Warning: `helpCommandName` and `versionCommandName` only change where the
+option middleware routes `--help` and `--version`. `HelpCommand` and
+`VersionCommand` still register under `help` and `version` through their own
+`#[Route]` attributes. When you set a new command name, also register a route
+under that name — otherwise the option routes to a command that does not
+exist.
+
 ### Global Middleware
 
 `CliConfig` holds one array per middleware stage: `inputReceivedMiddleware`,
