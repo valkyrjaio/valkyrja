@@ -110,19 +110,16 @@ Use `isSingletonInstance()` to test for a resolved instance (see
 
 ## Resolving Services
 
-**`get(string $id, array $arguments = [], InvalidReferenceMode $mode = InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION): object`**
-— PSR-11 resolution. It checks singletons first, then services, then aliases,
-so the caller does not need to know the registration type. `$arguments` go to
-the service callable when the id resolves to a service.
+**`get(string $id, array $arguments = []): object`** — PSR-11 resolution. It
+checks singletons first, then services, then aliases, so the caller does not
+need to know the registration type. `$arguments` go to the service callable
+when the id resolves to a service.
 
-When the id is not registered at all, `$mode` decides the fallback:
-
-- `InvalidReferenceMode::NEW_INSTANCE_OR_THROW_EXCEPTION` (the default) —
-  when `$id` is an existing class, the container returns
-  `new $id(...$arguments)`, without registration and without caching.
-  Otherwise it throws `ContainerInvalidReferenceException`.
-- `InvalidReferenceMode::THROW_EXCEPTION` — the container throws
-  `ContainerInvalidReferenceException` immediately.
+Warning: every service needs a binding. The container builds nothing that a
+binding does not describe: `get()` throws
+`ContainerInvalidReferenceException` for an id that no cached instance, bound
+factory, or alias resolves. This rule holds for every class that a config
+names by class string — a middleware, an event, and a view replacement.
 
 **`getSingleton(string $id): object`** — Resolves a singleton. The first
 access invokes the binding or the publish callback and caches the result.
@@ -135,11 +132,26 @@ returns a fresh instance.
 **`getAliased(string $id, array $arguments = []): object`** — Resolves the
 service that the alias points to.
 
-The three type-specific methods throw `ContainerInvalidReferenceException`
-when the id is not registered as that type; they do not fall back to
-`new $id()`. When you know the registration type, prefer the specific
-method over `get()`. The saved lookup is small per call but adds up in a hot
-path such as route dispatch.
+**`getAliasedId(string $alias): string|null`** — Returns the id that the
+alias points to, and returns `null` when the id is not an alias. The method
+reads one hop; it does not follow a chain of aliases.
+
+The type-specific methods throw `ContainerInvalidReferenceException` when the
+id is not registered as that type. When you know the registration type,
+prefer the specific method over `get()`. The saved lookup is small per call
+but adds up in a hot path such as route dispatch.
+
+Warning: the state methods answer for the id that you give them, never for
+the alias target. To classify an alias, read the target with
+`getAliasedId()` first, then classify the target:
+
+```php
+$aliasedId = $container->getAliasedId($alias);
+
+if ($aliasedId !== null && $container->isSingletonInstance($aliasedId)) {
+    // The container holds a resolved instance for the target.
+}
+```
 
 ## Service Providers
 
