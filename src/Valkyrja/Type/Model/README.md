@@ -238,14 +238,18 @@ $updated = $user->modify(static function (UserModel $user): UserModel {
 
 ## Array Access and String Casts
 
-Offsets route through the same magic methods as property access, and a string
-cast returns the JSON representation:
+Offset reads and writes route through `__get` and `__set`, and a string cast
+returns the JSON representation. `isset` and `unset` on an offset do not use
+the magic methods: the base `Model` runs a plain `isset` / `unset` in its own
+scope, so `isset($user['name'])` reaches a protected property directly and
+never runs an `internalIssetCallables()` callable, and `unset` on a private
+subclass property raises an `Error`, because `Model` declares no `__unset`:
 
 ```php
 $user['name'];         // routes through __get
 $user['name'] = 'Bob'; // routes through __set
-isset($user['name']);
-unset($user['name']);
+isset($user['name']);  // plain isset in Model's scope — skips __isset
+unset($user['name']);  // plain unset — Error on a private subclass property
 
 (string) $user;        // {"name":"Bob",...}
 ```
