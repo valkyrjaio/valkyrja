@@ -703,8 +703,9 @@ registered only with `setSingleton()` has no entry at all.
 
 `setFromData()` merges: an incoming entry replaces an existing entry with
 the same id, and an entry the data does not carry stays as it is.
-[Child containers](#child-containers) take a `ContainerData` on
-construction.
+`ChildContainer` takes a `ContainerData` on construction;
+`NativeChildContainer` reads the parent directly and takes none (see
+[Child Containers](#child-containers)).
 
 ## Child Containers
 
