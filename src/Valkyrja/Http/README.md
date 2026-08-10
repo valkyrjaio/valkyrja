@@ -496,13 +496,16 @@ method each — `Get`, `Head`, `Post`, `Put`, `Patch`, `Delete`, `Options`,
 
 ```php
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as RequestMethodAttribute;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Patch;
+use Valkyrja\Http\Routing\Constant\Regex;
 
 // PATCH joins the default HEAD and GET.
 #[Patch]
 #[Route(path: '/users/{id}', name: 'users.update')]
+#[Parameter(name: 'id', regex: Regex::ID)]
 public function update(int $id): ResponseContract
 {
     return new JsonResponse(['id' => $id]);
@@ -511,6 +514,7 @@ public function update(int $id): ResponseContract
 // The base attribute adds several methods at once.
 #[RequestMethodAttribute(RequestMethod::PUT, RequestMethod::PATCH)]
 #[Route(path: '/users/{id}', name: 'users.replace')]
+#[Parameter(name: 'id', regex: Regex::ID)]
 public function replace(int $id): ResponseContract
 {
     return new JsonResponse(['id' => $id]);
@@ -918,6 +922,7 @@ case values, and re-encodes:
 
 ```php
 #[Route(path: '/users/{id}', name: 'users.show')]
+#[Parameter(name: 'id', regex: Regex::ID)]
 #[Route\ResponseStruct(UserResponseStruct::id)]
 public function show(int $id): ResponseContract
 {
@@ -1270,7 +1275,9 @@ visible in one place:
 
 ```php
 use Attribute;
+use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Constant\Regex;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class UserRoute extends Route
@@ -1288,6 +1295,7 @@ class UserRoute extends Route
 class UserController
 {
     #[UserRoute(path: '/{id}', name: 'show')]
+    #[Parameter(name: 'id', regex: Regex::ID)]
     public function show(): ResponseContract
     {
         // ...
