@@ -956,7 +956,13 @@ exception exists:
 - `Valkyrja\Event\Throwable\Exception\EventInvalidEventException` — a dispatch
   by class name resolved to a different type.
 
-Catch `EventThrowable` to handle any failure from this component:
+Warning: the missing-binding failure is a container failure.
+`ContainerInvalidReferenceException` implements the Container component's
+`ContainerThrowable`, not `EventThrowable`, so a catch of `EventThrowable`
+does not take it. Catch `Valkyrja\Throwable\Contract\ValkyrjaThrowable` to
+take both.
+
+Catch `EventThrowable` to handle the component's own throwables:
 
 ```php
 use Valkyrja\Event\Throwable\Contract\EventThrowable;
@@ -967,11 +973,6 @@ try {
     // Handle the failure.
 }
 ```
-
-Warning: the missing-binding failure is a container failure.
-`ContainerInvalidReferenceException` implements the Container component's
-`ContainerThrowable`, not `EventThrowable`, so the catch above does not take
-it. Catch `Valkyrja\Throwable\Contract\ValkyrjaThrowable` to take both.
 
 ## Service Registration
 
