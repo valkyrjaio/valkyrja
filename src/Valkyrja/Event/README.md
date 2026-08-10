@@ -65,10 +65,12 @@ way, and returns it.
 
 `dispatchById()` and `dispatchByIdIfHasListeners()` take a class name, not an
 event object. The dispatcher asks the container for that class name and passes
-the call-site arguments along. The container constructs an unbound event class
-itself and passes the call-site arguments to the constructor. A class name
-that the container cannot resolve throws a
-`ContainerInvalidReferenceException`.
+the call-site arguments along.
+
+Warning: a binding is required. The container builds nothing that a binding
+does not describe, so the dispatch throws a
+`ContainerInvalidReferenceException` when the container resolves nothing for
+the class name.
 
 Bind each event that you dispatch by class name. The binding is a callable, so
 you decide how the container builds the event:
