@@ -360,9 +360,14 @@ $user = UserModel::fromArray(['name' => 'Alice', 'nickname' => 'Al']);
 
 $user->asArray();               // ['name' => 'Alice']
 $user->asExposedArray();        // ['name' => 'Alice', 'nickname' => 'Al']
-$user->asExposedChangedArray(); // asChangedArray() plus the exposable properties
+$user->asExposedChangedArray(); // [] — nothing differs from the originals
 $user->asExposedOnlyArray();    // ['nickname' => 'Al']
 ```
+
+`asExposedChangedArray()` is `asChangedArray()` computed with the exposable
+properties exposed, so an exposable property appears only when its current
+value differs from its recorded original. Here `nickname` still equals the
+`'Al'` that `fromArray()` recorded, so the result is empty.
 
 `asExposedArray()` also accepts property names to limit the output, like
 `asArray()`.
