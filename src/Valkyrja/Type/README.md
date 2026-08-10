@@ -101,7 +101,8 @@ StringCaseFactory::allToSnakeCase('appName', 'appEnv'); // ['app_name', 'app_env
 ```
 
 Each `StringCaseFactory` conversion has an `allTo*` variant that converts
-many strings at once. `MbStringFactory` extends `StringFactory` with
+many strings at once — except `ucFirstLetter()`, whose variant is named
+`allUcFirstLetter()`. `MbStringFactory` extends `StringFactory` with
 multibyte-safe (UTF-8) `substr()`, `toTitleCase()`, `toLowerCase()`, and
 `toUpperCase()`.
 
