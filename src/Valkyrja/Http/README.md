@@ -360,6 +360,10 @@ public function show(
 }
 ```
 
+`#[Parameter]` is not repeatable, so a method takes one method-level
+`#[Parameter]` at most. For a path with several parameters — `/{year}/{month}`
+— place one attribute on each PHP parameter, or use `#[DynamicRoute]`.
+
 The `#[DynamicRoute]` attribute declares the parameters inline instead. Its
 `parameters` argument is required and takes `Parameter` data objects:
 
