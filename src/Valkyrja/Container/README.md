@@ -771,19 +771,21 @@ service that a child resolves first runs its callback with the child as the
 `$container` argument. The callback resolves its dependencies child-first, so
 it sees request-scoped services registered on the child.
 
-**A bound factory runs in the container that owns the binding.**
-`ChildContainer` copies the singleton markers and the publish callbacks from
-`ContainerData`, but not the service factories. A factory bound on the parent
-stays in the parent, and the child delegates the build to the parent, so the
-factory receives the parent as its `$container` argument. A factory bound on
-the child itself runs with the child. Either way, the built instance caches
-in the child's own instance map.
+**Under `ChildContainer`, a bound factory runs in the container that owns
+the binding.** `ChildContainer` copies the singleton markers and the publish
+callbacks from `ContainerData`, but not the service factories. A factory
+bound on the parent stays in the parent, and the child delegates the build
+to the parent, so the factory receives the parent as its `$container`
+argument. A factory bound on the child itself runs with the child. Either
+way, a built singleton caches in the child's own instance map, and a
+`bind()` factory caches nowhere.
 
-Warning: a factory bound on the parent resolves its dependencies from the
-parent. It cannot see a service that exists only on the child — a
-request-scoped `setSingleton()` included. When a service needs a
+Warning: under `ChildContainer`, a factory bound on the parent resolves its
+dependencies from the parent. It cannot see a service that exists only on the
+child — a request-scoped `setSingleton()` included. When a service needs a
 request-scoped dependency, register it through a provider's publish callback,
-which runs with the child.
+which runs with the child. `NativeChildContainer` behaves differently on this
+path ([Available Implementations](#available-implementations)).
 
 ### Available Implementations
 
