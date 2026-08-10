@@ -215,11 +215,8 @@ class AppHttp extends Http
 {
     public static function getRequest(): ServerRequestContract
     {
-        // Build the request from explicit values instead of the live superglobals.
-        return RequestFactory::fromGlobals(
-            server: $_SERVER,
-            query: $_GET,
-        );
+        // Build a request that parses an `application/json` body.
+        return RequestFactory::jsonFromGlobals();
     }
 }
 ```
