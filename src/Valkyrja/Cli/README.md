@@ -67,9 +67,7 @@ properties in depth.
 
 `CliConfig` is one way to start, not the only way. `Cli::run()` accepts any
 `CliConfigContract`, so your own subclass of `CliConfig` — with
-per-environment defaults baked in — works too. The
-[Application README's Configuration section](../Application/README.md#configuration)
-covers the custom config class.
+per-environment defaults baked in — works too.
 
 ### Global Middleware
 
@@ -915,9 +913,10 @@ prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 
 ### Exit Codes
 
-`ExitCode` follows the BSD sysexits convention. `InputHandler::run()` passes
-the code's integer value to `Exiter::exit()` after the `ProcessExiting`
-middleware runs:
+`ExitCode` mirrors most of the BSD sysexits codes. Two cases deviate:
+`sysexits.h` assigns 66 to a missing input and 67 to an unknown user, while
+`ExitCode` assigns 67 and 68. `InputHandler::run()` passes the code's integer
+value to `Exiter::exit()` after the `ProcessExiting` middleware runs:
 
 | Case             | Value | Meaning                           |
 | ---------------- | ----- | --------------------------------- |
