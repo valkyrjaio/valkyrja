@@ -46,21 +46,30 @@ application's real values in the config object. Create one config file per
 environment, or read the values from an env file in your own bootstrap. The
 constructor defaults are generic placeholders.
 
-The remaining constructor arguments:
+Every constructor argument, with its default and what it does:
 
-- `dataPath` and `dataNamespace` — where the framework loads generated data
-  classes from. The defaults are `App/Provider/Data` and
-  `App\Provider\Data`. See
-  [the route collection and debug mode](#the-route-collection-and-debug-mode).
-- `providers` — the `ComponentProviderContract` instances to boot. The default
-  is `[new HttpApplicationComponentProvider()]`, which wires every framework
-  service an HTTP application needs. Warning: the argument replaces the
-  default. When you pass your own list, include
-  `HttpApplicationComponentProvider` in it.
-- `callbacks` — callables the application runs at boot, each with the
-  signature `callable(ApplicationContract): void`.
-- Seven middleware arrays configure the global pipeline — see
-  [registering middleware globally](#registering-middleware-globally).
+| Property                   | Default                                    | What it does                                                                                                       |
+| -------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `namespace`                | `'App'`                                    | The application's root namespace                                                                                   |
+| `dir`                      | `__DIR__`                                  | The application's root directory — set it explicitly                                                               |
+| `version`                  | framework version                          | The application's version string                                                                                   |
+| `environment`              | `'production'`                             | The environment name                                                                                               |
+| `debugMode`                | `false`                                    | Enables the Whoops handler and fresh route collection (see [debug mode](#the-route-collection-and-debug-mode))     |
+| `timezone`                 | `'UTC'`                                    | PHP's default timezone, set at boot                                                                                |
+| `key`                      | `'some_secret_app_key'`                    | The application secret — always override this                                                                      |
+| `dataPath`                 | `'App/Provider/Data'`                      | Names the location of generated data classes; the framework does not read this property                            |
+| `dataNamespace`            | `'App\\Provider\\Data'`                    | Names the namespace of generated data classes; the framework does not read this property                           |
+| `providers`                | `[new HttpApplicationComponentProvider()]` | The `ComponentProviderContract` instances to boot                                                                  |
+| `callbacks`                | `[]`                                       | Callables the application runs at boot, each `callable(ApplicationContract): void`                                 |
+| seven `*Middleware` arrays | see defaults                               | The global pipeline, one array per stage — see [registering middleware globally](#registering-middleware-globally) |
+
+Warning: the `providers` argument replaces the default list. When you pass
+your own list, include `HttpApplicationComponentProvider` in it. The
+[Application README](../Application/README.md#configuration) covers the shared
+properties in depth, and its
+[Your Own Config Class](../Application/README.md#your-own-config-class)
+section shows a custom config class — the built-in `HttpConfig` is one way to
+start, not the only way.
 
 `Http::run()` boots the application, builds a `ServerRequest` from the
 superglobals with `RequestFactory::fromGlobals()`, resolves the
