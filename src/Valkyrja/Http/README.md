@@ -66,9 +66,8 @@ Every constructor argument, with its default and what it does:
 Warning: the `providers` argument replaces the default list. When you pass
 your own list, include `HttpApplicationComponentProvider` in it. The
 [Application README](../Application/README.md#configuration) covers the shared
-properties in depth, and covers the custom config class — the built-in
-`HttpConfig` is one way to start, not the only way. `Http::run()` accepts any
-`HttpConfigContract`.
+properties in depth. The built-in `HttpConfig` is one way to start, not the
+only way — `Http::run()` accepts any `HttpConfigContract`.
 
 `Http::run()` boots the application, builds a `ServerRequest` from the
 superglobals with `RequestFactory::fromGlobals()`, resolves the
