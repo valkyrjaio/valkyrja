@@ -791,7 +791,8 @@ wraps the body for JSONP.
 
 ### Redirect responses
 
-`RedirectResponse` takes a `UriContract`, not a string, and defaults to status 302. A constructor status that is not a redirect status throws:
+`RedirectResponse` takes a `UriContract`, not a string, and defaults to
+status 302. A constructor status that is not a redirect status throws:
 
 ```php
 use Valkyrja\Http\Message\Enum\StatusCode;
