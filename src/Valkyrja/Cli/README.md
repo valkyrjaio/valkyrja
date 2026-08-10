@@ -39,9 +39,31 @@ some shown values equal the constructor defaults. Pass a named argument to set
 a value, and omit the arguments you do not change. Convention: hold your
 application's real values in the config object. Create one config file per
 environment, or read the values from an env file in your own bootstrap. The
-constructor defaults are generic placeholders. See
-the [Application README](../Application/README.md#configuration) for the full
-property list.
+constructor defaults are generic placeholders.
+
+Every constructor argument, with its default and what it does:
+
+| Property                 | Default                                           | What it does                                                                       |
+| ------------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `namespace`              | `'App'`                                           | The application's root namespace                                                   |
+| `dir`                    | `__DIR__`                                         | The application's root directory — set it explicitly                               |
+| `version`                | framework version                                 | The application's version string                                                   |
+| `environment`            | `'production'`                                    | The environment name                                                               |
+| `debugMode`              | `false`                                           | Enables the Whoops throwable handler                                               |
+| `timezone`               | `'UTC'`                                           | PHP's default timezone, set at boot                                                |
+| `key`                    | `'some_secret_app_key'`                           | The application secret — always override this                                      |
+| `dataPath`               | `'App/Provider/Data'`                             | Names the location of generated data classes; the framework does not read this     |
+| `dataNamespace`          | `'App\\Provider\\Data'`                           | Names the namespace of generated data classes; the framework does not read this    |
+| `applicationName`        | `'valkyrja'`                                      | The binary name shown in help and version output                                   |
+| `defaultCommandName`     | `'list'`                                          | The command that runs when the input names no command                              |
+| `providers`              | `[new CliWithHttpApplicationComponentProvider()]` | The `ComponentProviderContract` instances to boot                                  |
+| `callbacks`              | `[]`                                              | Callables the application runs at boot, each `callable(ApplicationContract): void` |
+| six `*Middleware` arrays | see [Global Middleware](#global-middleware)       | The global pipeline, one array per stage                                           |
+
+Warning: the `providers` argument replaces the default list. When you pass
+your own list, include a component provider that wires the CLI services. The
+[Application README](../Application/README.md#configuration) covers the shared
+properties in depth.
 
 `CliConfig` is one way to start, not the only way. `Cli::run()` accepts any
 `CliConfigContract`, so your own subclass of `CliConfig` — with
