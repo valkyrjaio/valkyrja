@@ -938,9 +938,7 @@ $collection->addListener(
     )
 );
 
-$dispatcher = new EventDispatcher($collection, $container);
-
-$dispatcher->dispatch(new UserRegistered($user));
+$dispatcher = new EventDispatcher($collection);
 ```
 
 Pass the application's container when a handler resolves services or when you
