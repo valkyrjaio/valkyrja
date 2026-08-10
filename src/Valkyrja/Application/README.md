@@ -444,7 +444,7 @@ flowchart TD
 The core singletons are the config — under `ConfigContract` and under its
 concrete class — plus `ContainerContract` and `ApplicationContract`. When the
 config implements `CliConfigContract` or `HttpConfigContract`, the bootstrap
-registers that contract as an alias too.
+registers the same config object as a singleton under that contract too.
 
 The `ContainerData` branch is the extension point for the callbacks. The
 callbacks run before the container data loads. A callback that sets a prebuilt
