@@ -182,11 +182,13 @@ use Valkyrja\Orm\Data\EntityCast;
 new EntityCast(
     type: SomeEntity::class,   // Entity class or CastType
     column: 'foreign_key',     // Optional: column to use for retrieval
-    relationships: ['rel'],    // Optional: relationships to eager-load
+    relationships: ['rel'],    // Optional: the relationships
     convert: true,
     isArray: false,
 );
 ```
+
+The component stores `relationships` and reads nothing from it, so the list changes no query and loads no related entity.
 
 The `EntityRouteMatchedMiddleware` reads an `EntityCast` on a route parameter, finds the entity through its repository, and replaces the parameter value with the entity.
 
@@ -415,11 +417,16 @@ $repository->delete($post);
 $repository->forceDelete($post);
 ```
 
-A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows:
+A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows.
+
+Warning: a `Where` cannot render a bare `IS NULL`, because every clause renders a bind parameter, and MySQL and PostgreSQL do not accept a parameter after `IS`. Filter the live rows with a raw statement:
 
 ```php
-$live = $repository->allBy(new Where(new Value('deleted_at', null), Comparison::IS));
+$live = $orm->query('SELECT * FROM posts WHERE deleted_at IS NULL')
+    ->fetchAllEntities(Post::class);
 ```
+
+On MySQL, `Comparison::NULL_SAFE_EQUALS` also works: `new Where(new Value('deleted_at', null), Comparison::NULL_SAFE_EQUALS)` renders `deleted_at <=> :deleted_at`, and the null-safe equality matches the null rows. On SQLite, `Comparison::IS` works, because SQLite accepts a parameter after `IS`.
 
 ### Custom Repositories
 
@@ -452,7 +459,9 @@ public static function getRepository(): string
 }
 ```
 
-`createRepository()` resolves the class from the container with the manager, the entity class, and the metadata registry as arguments. The container constructs an unbound class directly, so a subclass that keeps the `Repository` constructor needs no registration. A repository with a different constructor needs its own container binding.
+The PDO managers resolve the class from the container with the manager, the entity class, and the metadata registry as arguments. The container constructs an unbound class directly, so a subclass that keeps the `Repository` constructor needs no registration. A repository with a different constructor needs its own container binding.
+
+Warning: the `NullManager` constructs the base `Repository` directly and never reads `getRepository()`, so a custom repository's methods are not available on a repository from the `NullManager`.
 
 ## Query Builder
 
@@ -634,7 +643,7 @@ use Valkyrja\Orm\Enum\Comparison;
 new Where(new Value('status', 'published'))                        // status = :status
 new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // id IN (:id0, :id1, :id2)
 new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // score >= :score
-new Where(new Value('deleted_at', null), Comparison::IS)           // deleted_at IS :deleted_at
+new Where(new Value('title', 'intro%'), Comparison::LIKE)          // title LIKE :title
 ```
 
 One subclass per clause type prefixes the rendered clause:
@@ -910,7 +919,7 @@ The exceptions you meet in normal use:
 | Exception                                 | Thrown when                                                              |
 | :---------------------------------------- | :----------------------------------------------------------------------- |
 | `OrmStatementPreparationFailureException` | `prepare()` fails to prepare the statement                               |
-| `OrmExecuteException`                     | `query()` or a repository write fails to execute                         |
+| `OrmExecuteException`                     | `query()` or a repository call fails to execute                          |
 | `OrmFetchException`                       | `fetch()` or `fetchEntity()` finds no row                                |
 | `OrmNoLastIdException`                    | `lastInsertId()` finds no id (`OrmNoPgsqlLastIdException` on PostgreSQL) |
 | `OrmUnregisteredEntityException`          | the registry holds no metadata for a dated or soft delete entity         |
@@ -1095,4 +1104,4 @@ The ORM service provider registers the following:
 | `PDO`                            | PDO factory (bound with `bind()`)        |
 | `Repository`                     | Repository factory (bound with `bind()`) |
 
-Every entry is a singleton except `PDO` and `Repository`. The provider registers those two with `bind()`, so each resolution invokes the factory callable and returns a fresh instance with the provided arguments. The manager implementations resolve these bindings internally.
+Every entry is a singleton except `PDO` and `Repository`. The provider registers those two with `bind()`, so each resolution invokes the factory callable and returns a fresh instance with the provided arguments. The provider resolves the `PDO` binding when it constructs each manager, and a PDO manager resolves the `Repository` binding when it creates a repository.
