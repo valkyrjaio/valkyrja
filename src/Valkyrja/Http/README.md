@@ -864,22 +864,21 @@ for common cases — `ContentType`, `Location`, `Referer`, and `SetCookie` in
 
 ### Setting cookies
 
-A cookie is a `Set-Cookie` header. Build it from the `Cookie` value class and
-the `SetCookie` header class:
+A cookie is a `Set-Cookie` header. Build a `Cookie` value object and attach it
+with `withCookie()` — the method adds the `SetCookie` header for you:
 
 ```php
-use Valkyrja\Http\Message\Header\SetCookie;
 use Valkyrja\Http\Message\Header\Value\Cookie;
 
 // $response is a ResponseContract
 $cookie   = new Cookie(name: 'theme', value: 'dark', expire: 1735689600);
-$headers  = $response->getHeaders()->withAddedHeaders(new SetCookie($cookie));
-$response = $response->withHeaders($headers);
+$response = $response->withCookie($cookie);
 ```
 
 `Cookie` defaults to `path: '/'`, `httpOnly: true`, and `SameSite::LAX`. Pass
-`secure: true` for HTTPS-only cookies, and `delete: true` to expire a cookie
-the client holds.
+`secure: true` for HTTPS-only cookies. To expire a cookie the client holds,
+pass the same cookie to `withoutCookie()` — it applies `delete: true` and
+sends the deletion header.
 
 ## Structs
 
