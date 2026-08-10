@@ -5,8 +5,9 @@
 The Type component provides typed value objects — wrappers around PHP values
 that validate on construction and serialize cleanly. Every type implements
 `TypeContract`. The component also contains a model system with property
-casting, a collection, JSON wrappers, identifier types, and support for the
-UUID, ULID, and VLID formats.
+casting, a collection, JSON wrappers, identifier types, support for the UUID,
+ULID, and VLID formats, and static factory and support classes for strings,
+arrays, objects, and enums.
 
 ## TypeContract
 
@@ -19,9 +20,21 @@ public function asFlatValue(): string|int|float|bool|null; // flattened for stor
 public function modify(callable $closure): static;         // returns a new, modified instance
 ```
 
-`modify()` passes the current value through the callable and returns a new
-instance. Every type also implements `JsonSerializable`, so `json_encode()`
-accepts a type directly.
+`modify()` passes the current value through the callable and builds a new
+instance with `fromValue()`; the original is unchanged:
+
+```php
+use Valkyrja\Type\String\StringT;
+
+$name  = new StringT('valkyrja');
+$upper = $name->modify(static fn (string $value): string => strtoupper($value));
+
+$upper->asValue(); // 'VALKYRJA'
+$name->asValue();  // 'valkyrja'
+```
+
+Every type also implements `JsonSerializable`, so `json_encode()` accepts a
+type directly and encodes `asValue()`.
 
 ## Primitive Wrappers
 
@@ -29,33 +42,178 @@ accepts a type directly.
 | :----------------- | :------- | :-------------------------------------------------- |
 | `StringT`          | `string` | String operations, see below                        |
 | `NonEmptyString`   | `string` | Throws `StringInvalidEmptyStringException` for `''` |
-| `BoolT`            | `bool`   |                                                     |
+| `BoolT`            | `bool`   | `fromValue()` applies the `(bool)` cast             |
 | `TrueT`            | `true`   | The constructor takes no argument                   |
 | `FalseT`           | `false`  | The constructor takes no argument                   |
 | `IntT`             | `int`    |                                                     |
 | `FloatT`           | `float`  |                                                     |
 | `NullT`            | `null`   | The constructor takes no argument                   |
-| `ArrayT`           | `array`  |                                                     |
+| `ArrayT`           | `array`  | `asFlatValue()` returns the JSON-encoded array      |
 | `NonEmptyArray`    | `array`  | Throws `ArrayInvalidNonEmptyException` for `[]`     |
 | `ObjectT`          | `object` | `asFlatValue()` returns the JSON-encoded object     |
 | `SerializedObject` | `object` | `asFlatValue()` returns the `serialize()` output    |
 
-### StringT
+## Strings
 
-Transformations return a new `StringT` instance: `replace()`, `replaceAll()`,
-`replaceAllWith()`, `substr()`, `toUpperCase()`, `toLowerCase()`,
-`toTitleCase()`, `toCapitalized()`, `toCapitalizedWords()`, `toSnakeCase()`,
-`toSlug()`, `toStudlyCase()`, `ucFirstLetter()`.
-
-Checks return `bool`: `startsWith()`, `startsWithAny()`, `endsWith()`,
-`endsWithAny()`, `contains()`, `containsAny()`, `isEmail()`, `isAlphabetic()`,
-`isLowercase()`, `isUppercase()`.
-
-The length checks also return `bool` and never throw:
+Transformations on `StringT` return a new instance; checks return `bool`:
 
 ```php
-public function min(int $min = 0): bool;   // true when the length is at least $min
-public function max(int $max = 256): bool; // true when the length is at most $max
+use Valkyrja\Type\String\StringT;
+
+$string = new StringT('Hello World');
+
+$string->toSnakeCase()->asValue();  // 'hello_world'
+$string->toSlug()->asValue();       // 'hello-world'
+$string->toStudlyCase()->asValue(); // 'HelloWorld'
+$string->contains('World');         // true
+$string->min(5);                    // true — the length is at least 5
+$string->max(5);                    // false — the length is over 5
+```
+
+Transformations: `replace()`, `replaceAll()`, `replaceAllWith()`, `substr()`,
+`toUpperCase()`, `toLowerCase()`, `toTitleCase()`, `toCapitalized()`,
+`toCapitalizedWords()`, `toSnakeCase()`, `toSlug()`, `toStudlyCase()`,
+`ucFirstLetter()`.
+
+Checks: `startsWith()`, `startsWithAny()`, `endsWith()`, `endsWithAny()`,
+`contains()`, `containsAny()`, `isEmail()`, `isAlphabetic()`,
+`isLowercase()`, `isUppercase()`, `min()`, `max()`.
+
+The length checks `min()` and `max()` return `bool` and never throw.
+
+### String Factories
+
+Every `StringT` operation is also a static method — the checks and
+replacements on `Valkyrja\Type\String\Factory\StringFactory`, the case
+conversions on `StringCaseFactory` — so the operations work without a wrapper
+instance. The factories add a few extras:
+
+```php
+use Valkyrja\Type\String\Factory\StringCaseFactory;
+use Valkyrja\Type\String\Factory\StringFactory;
+
+StringFactory::random(16);      // random hex string; the argument is the byte count
+StringFactory::randomMd5();     // MD5 of a random string
+StringFactory::randomBase64();  // base64 of a random string
+StringFactory::fromMixed($value); // stringify any value; arrays and objects JSON-encode
+
+StringCaseFactory::allToSnakeCase('appName', 'appEnv'); // ['app_name', 'app_env']
+```
+
+Each `StringCaseFactory` conversion has an `allTo*` variant that converts
+many strings at once. `MbStringFactory` extends `StringFactory` with
+multibyte-safe (UTF-8) `substr()`, `toTitleCase()`, `toLowerCase()`, and
+`toUpperCase()`.
+
+## Numbers
+
+`IntT` and `FloatT` wrap an `int` and a `float`. `fromValue()` accepts the
+native type, a string, a bool, or the other numeric type, and applies the
+matching PHP cast; an array becomes `1`/`0` by emptiness. Any other value
+throws `IntInvalidFromValueException` or `FloatInvalidFromValueException`:
+
+```php
+use Valkyrja\Type\Int\IntT;
+
+IntT::fromValue('42')->asValue(); // 42
+```
+
+## Booleans and Null
+
+`BoolT::fromValue()` applies the `(bool)` cast. `TrueT`, `FalseT`, and
+`NullT` always hold their fixed value; their `fromValue()` ignores the given
+value.
+
+## Arrays
+
+`ArrayT::fromValue()` decodes a JSON string and casts any other value with
+`(array)`. `asFlatValue()` returns the JSON-encoded string:
+
+```php
+use Valkyrja\Type\Array\ArrayT;
+
+new ArrayT([1, 2])->asFlatValue(); // '[1,2]'
+```
+
+### ArrayFactory
+
+`Valkyrja\Type\Array\Factory\ArrayFactory` provides the static array helpers
+that the wrappers and models build on:
+
+```php
+use Valkyrja\Type\Array\Factory\ArrayFactory;
+
+ArrayFactory::toString(['a' => 1]);              // '{"a":1}'
+ArrayFactory::fromString('{"a":1}');             // ['a' => 1]
+ArrayFactory::fromMixed($value);                 // string decodes as JSON, other values cast
+ArrayFactory::newWithoutNull(['a' => 1, 'b' => null]); // ['a' => 1]
+ArrayFactory::filterEmptyStrings('a', '', 'b');  // ['a', 'b'] with the original keys
+ArrayFactory::validateKeysAreStrings($array);    // throws ArrayInvalidStringKeysException
+ArrayFactory::determineIfKeysAreStrings($array); // bool
+
+// Read a nested value by dot notation, with an optional default and separator
+ArrayFactory::getValueDotNotation(['app' => ['name' => 'valkyrja']], 'app.name'); // 'valkyrja'
+```
+
+### ArrayOf Guards
+
+`Valkyrja\Type\Array\Support\ArrayOf` asserts that variadic values share one
+type. `strings()`, `ints()`, `floats()`, `booleans()`, `arrays()`,
+`objects()`, `enums()`, and `backedEnums()` rely on their parameter types, so
+a wrong value throws a `TypeError` under `strict_types`. `true()`, `false()`,
+and `null()` check each value and throw `ArrayInvalidTrueValueException`,
+`ArrayInvalidFalseValueException`, or `ArrayInvalidNullValueException`.
+
+## Objects
+
+`ObjectT::fromValue()` decodes a JSON string and casts any other value with
+`(object)`. `SerializedObject::fromValue()` unserializes a string — pass the
+allowed classes, or the result is a `__PHP_Incomplete_Class`:
+
+```php
+use stdClass;
+use Valkyrja\Type\Object\SerializedObject;
+
+$type = SerializedObject::fromValue($serialized, [stdClass::class]);
+```
+
+`modify()` on both clones the wrapped object before the closure runs, so the
+original object is never mutated.
+
+### ObjectFactory
+
+```php
+use Valkyrja\Type\Object\Enum\PropertyVisibilityFilter;
+use Valkyrja\Type\Object\Factory\ObjectFactory;
+
+ObjectFactory::toString($object);           // JSON encode
+ObjectFactory::fromString('{"a":1}');       // decode to an object
+ObjectFactory::toSerializedString($object); // serialize()
+ObjectFactory::fromSerializedString($string, [stdClass::class]);
+ObjectFactory::getProperties($object);      // the public properties
+ObjectFactory::getAllProperties($object, PropertyVisibilityFilter::PRIVATE_PROTECTED);
+ObjectFactory::toDeepArray($object);        // nested objects become arrays
+ObjectFactory::getValueDotNotation($object, 'address.city');
+```
+
+`PropertyVisibilityFilter` selects the visibilities that
+`getAllProperties()` returns: `ALL`, `PUBLIC`, `PROTECTED`, `PRIVATE`,
+`PUBLIC_PROTECTED`, `PUBLIC_PRIVATE`, or `PRIVATE_PROTECTED`.
+
+### Cls
+
+`Valkyrja\Type\Object\Support\Cls` provides class-name helpers:
+
+```php
+use Valkyrja\Type\Json\Json;
+use Valkyrja\Type\Object\Support\Cls;
+
+Cls::inherits($class, $parentOrInterface);   // is_a() by name
+Cls::validateInherits($class, $parent);      // throws InvalidObjectProvidedException
+Cls::hasProperty($class, 'name');            // property_exists()
+Cls::validateHasProperty($class, 'name');    // throws InvalidObjectPropertyProvidedException
+Cls::getName(Json::class);                   // 'Json'
+Cls::getNiceName(Json::class);               // 'ValkyrjaTypeJsonJson'
 ```
 
 ## Identifiers
@@ -67,26 +225,62 @@ public function max(int $max = 256): bool; // true when the length is at most $m
 | `IntId`    | `IntIdContract`    | `int`         |
 
 The contracts live in `Valkyrja\Type\Id\Contract`. Each one extends
-`TypeContract` directly — `StringIdContract` and `IntIdContract` do not extend
-`IdContract`.
+`TypeContract` directly — `StringIdContract` and `IntIdContract` do not
+extend `IdContract`. `fromValue()` accepts a string, an int, or a float and
+casts to the wrapped type (`IntId` also accepts a bool); any other value
+throws `IdInvalidFromValueException`.
 
-## Models
+## Enums
 
-`Valkyrja\Type\Model` provides a base model class with property access, mass
-assignment, array serialization, change tracking, and optional type casting.
-See the [Model README](Model/README.md).
+Apply the `Valkyrja\Type\Enum\Trait\Enumerable` trait to an enum to implement
+`Valkyrja\Type\Enum\Contract\EnumContract`, which extends `TypeContract` and
+PHP's `UnitEnum`:
 
-## UUID, ULID, and VLID
+```php
+use Valkyrja\Type\Enum\Contract\EnumContract;
+use Valkyrja\Type\Enum\Trait\Enumerable;
 
-The component provides typed identifiers for the UUID, ULID, and VLID
-(Valkyrja Universally Unique Lexicographically Sortable Identifier) formats,
-each with factories, validation, and version-specific exceptions. See the
-[UUID](Uuid/README.md), [ULID](Ulid/README.md), and [VLID](Vlid/README.md)
-READMEs. `Valkyrja\Type\Uid` holds the shared base factory and value object.
+enum Status: string implements EnumContract
+{
+    use Enumerable;
+
+    case active   = 'active';
+    case inactive = 'inactive';
+}
+
+Status::fromValue('active');   // Status::active
+Status::active->asFlatValue(); // 'active'
+json_encode(Status::active);   // '"active"'
+```
+
+`fromValue()` returns a given case unchanged. It throws
+`EnumInvalidValueException` for a value that is not a string or an int, and
+for a unit enum name that matches no case. A backed enum delegates to
+`::from()`, so an unknown value throws PHP's `ValueError`. `asFlatValue()`
+returns the backed value, or the case name for a unit enum. `modify()` throws
+`EnumCannotModifyException`.
+
+The `Arrayable` trait (contract `ArrayableContract`) adds cached
+introspection:
+
+```php
+Status::names();          // ['active', 'inactive']
+Status::values();         // ['active', 'inactive'] — the names for a unit enum
+Status::asArray();        // name => value
+Status::asReverseArray(); // value => name
+```
+
+The same helpers exist statically on `Valkyrja\Type\Enum\Support\Enumerable`
+for any enum class — `Enumerable::names(Status::class)`. The
+`Valkyrja\Type\Enum\Trait\JsonSerializable` trait gives an enum a
+`jsonSerialize()` that returns the backed value or name without the rest of
+`EnumContract`. `Valkyrja\Type\Enum\Type` is a plain enum of the primitive
+kind names (`array`, `object`, `string`, `int`, `float`, `bool`, `true`,
+`false`, `null`).
 
 ## Collections
 
-`Valkyrja\Type\Collection\Contract\CollectionContract` describes an
+`Valkyrja\Type\Collection\Collection` implements `CollectionContract`, an
 array-backed collection. Keys are `string|int`. Values are
 `string|int|float|bool|array|object|null`, shown as `TValue` below:
 
@@ -105,19 +299,68 @@ public function __toString(): string; // the JSON-encoded collection
 ```
 
 The magic methods `__get()`, `__set()`, `__isset()`, and `__unset()` mirror
-`get()`, `set()`, `has()`, and `remove()`.
+`get()`, `set()`, `has()`, and `remove()`:
+
+```php
+use Valkyrja\Type\Collection\Collection;
+
+$collection = new Collection(['a' => 1]);
+$collection->set('b', 2);
+
+$collection->get('a');    // 1
+$collection->get('c', 0); // 0 — the default
+$collection->exists(2);   // true — search by value
+$collection->b;           // 2
+(string) $collection;     // '{"a":1,"b":2}'
+```
 
 ## JSON
 
 `Json` wraps a decoded JSON array, and `JsonObject` wraps a decoded JSON
-object. For both, `asFlatValue()` returns the JSON-encoded string. The
-contracts are `JsonContract` and `JsonObjectContract` in
-`Valkyrja\Type\Json\Contract`.
+object. For both, `fromValue()` decodes a JSON string, and `asFlatValue()`
+returns the JSON-encoded string. The contracts are `JsonContract` and
+`JsonObjectContract` in `Valkyrja\Type\Json\Contract`:
 
-## Enums
+```php
+use Valkyrja\Type\Json\Json;
 
-`Valkyrja\Type\Enum\Contract\EnumContract` extends `TypeContract` and PHP's
-`UnitEnum`. Apply the `Valkyrja\Type\Enum\Trait\Enumerable` trait to an enum to
-implement it. `fromValue()` returns the matching case or throws
-`EnumInvalidValueException`. `asFlatValue()` returns the backed value, or the
-case name for a unit enum. `modify()` throws `EnumCannotModifyException`.
+$json = Json::fromValue('{"name":"Alice"}');
+$json->asValue();     // ['name' => 'Alice']
+$json->asFlatValue(); // '{"name":"Alice"}'
+```
+
+## Models
+
+`Valkyrja\Type\Model` provides a base model class with property access, mass
+assignment, array serialization, change tracking, and optional type casting.
+See the [Model README](Model/README.md).
+
+## UUID, ULID, and VLID
+
+The component provides typed identifiers for the UUID, ULID, and VLID
+(Valkyrja Universally Unique Lexicographically Sortable Identifier) formats,
+each with factories, validation, and version-specific exceptions. See the
+[UUID](Uuid/README.md), [ULID](Ulid/README.md), and [VLID](Vlid/README.md)
+READMEs. `Valkyrja\Type\Uid` holds the shared base: `UidFactory` (with
+`isValid()`, `validate()`, and the permissive `\w+` regex) and the `Uid`
+value object.
+
+## Exceptions
+
+Every exception in the component implements
+`Valkyrja\Type\Throwable\Contract\TypeThrowable`, and each subcomponent adds
+its own marker contract (for example
+`Valkyrja\Type\Uid\Throwable\Contract\UidThrowable`, which the UUID, ULID,
+and VLID exceptions also implement). Catch a marker contract to handle a
+whole family:
+
+```php
+use Valkyrja\Type\Throwable\Contract\TypeThrowable;
+use Valkyrja\Type\Uuid\UuidV4;
+
+try {
+    $uuid = UuidV4::fromValue($value);
+} catch (TypeThrowable $exception) {
+    // every Type component failure lands here
+}
+```

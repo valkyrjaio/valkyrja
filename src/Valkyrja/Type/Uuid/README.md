@@ -35,15 +35,17 @@ $v4   = new UuidV4();  // self-generates a new V4 UUID
 ```
 
 Each constructor validates a given string and throws the version-specific
-exception on failure. `fromValue()` throws `UuidInvalidFromValueException`
-when the value is not a string (for the self-generating classes, `null` is
-also accepted and triggers generation).
+exception on failure — `InvalidUuidException` from `Uuid`,
+`InvalidUuidV1Exception` through `InvalidUuidV8Exception` from the version
+classes. `fromValue()` throws `UuidInvalidFromValueException` when the value
+is not a string; the self-generating classes also accept `null`, which
+triggers generation.
 
 ## Generating UUIDs
 
 `UuidFactory` has entry points for versions 1, 3, 4, 5, and 6. It has no
 `v7()` or `v8()` method — call those factories directly. All methods return a
-plain `string`:
+plain `string` in the standard `xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx` form:
 
 ```php
 use Valkyrja\Type\Uuid\Factory\UuidFactory;
@@ -59,21 +61,76 @@ $v7 = UuidV7Factory::generate();          // optional node string
 $v8 = UuidV8Factory::generate();          // optional node string
 ```
 
+Generation notes:
+
+- **V1** encodes the current time, a random 2-byte clock sequence, and a
+  node. A given node string is hashed when it is not hexadecimal, and a
+  random 16-byte node is drawn when none is given — a MAC address is never
+  read. V6, V7, and V8 build on the V1 algorithm and accept the same
+  optional node.
+- **V3 and V5** are deterministic: the same namespace and name always
+  produce the same UUID. The namespace must be a valid UUID of any version;
+  an invalid namespace throws `InvalidUuidException`.
+- **V4** is 16 random bytes with the version and variant bits set.
+
+Name-based generation fits stable derived identifiers:
+
+```php
+use Valkyrja\Type\Uuid\Factory\UuidFactory;
+
+$namespace = '550e8400-e29b-41d4-a716-446655440000'; // one per application
+$userUuid  = UuidFactory::v5($namespace, 'user:42'); // always the same result
+```
+
 ## Validation
 
-Each factory exposes a static `validate()` method and a `REGEX` constant. The
-base factory validates any version; a version factory validates its own
-format only. On failure, `validate()` throws `InvalidUuidException` from the
-base factory or `InvalidUuidVnException` from a version factory:
+Each factory exposes a static `validate()` method, a `bool` `isValid()`
+method, and a `REGEX` constant. The base factory validates any version; a
+version factory validates its own format only. On failure, `validate()`
+throws `InvalidUuidException` from the base factory or
+`InvalidUuidVnException` from a version factory:
 
 ```php
 use Valkyrja\Type\Uuid\Factory\UuidFactory;
 use Valkyrja\Type\Uuid\Factory\UuidV4Factory;
 
-UuidFactory::validate($string);   // any version
-UuidV4Factory::validate($string); // V4 format only
+UuidFactory::validate($string);    // any version; throws on failure
+UuidV4Factory::validate($string);  // V4 format only; throws on failure
+UuidV4Factory::isValid($string);   // bool, never throws
 ```
 
 `Valkyrja\Type\Uuid\Enum\Version` is an int-backed enum with the cases `V1`
 and `V3` through `V8`. Each factory exposes its case as the `VERSION`
 constant.
+
+## Using a UUID in a Model Cast
+
+A UUID class is a `TypeContract`, so it works as a model cast target. Use
+`OriginalCast` to keep the instance on the property:
+
+```php
+use Valkyrja\Type\Data\OriginalCast;
+use Valkyrja\Type\Model\Abstract\CastableModel;
+use Valkyrja\Type\Uuid\UuidV4;
+
+class UserModel extends CastableModel
+{
+    public string $name;
+    public UuidV4 $uuid;
+
+    public static function getCastings(): array
+    {
+        return ['uuid' => new OriginalCast(UuidV4::class)];
+    }
+}
+
+$user = UserModel::fromArray([
+    'name' => 'Alice',
+    'uuid' => '550e8400-e29b-41d4-a716-446655440000',
+]);
+
+$user->uuid->asValue(); // the validated UUID string
+```
+
+An invalid UUID string fails the cast with `InvalidUuidV4Exception`, so the
+model never holds a malformed identifier.
