@@ -292,6 +292,10 @@ recording after the first mass assignment completes. The rules:
   nothing.
 - Any `__set` before the first mass assignment records too — for example, a
   write to a protected property from outside the class.
+- A recorded `null` does not hold. The guard checks the record with
+  `isset()`, which is `false` for `null`, so the next `__set` before the
+  first mass assignment replaces a recorded `null` original with its value —
+  and `asChangedArray()` then misses the change.
 - `__clone` also stops the recording. `withProperties()` clones before it
   sets, so it never records the properties it is given — not even on a model
   with no prior mass assignment. The clone keeps the originals recorded so
