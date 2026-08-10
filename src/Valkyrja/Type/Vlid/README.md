@@ -71,6 +71,7 @@ The four factory methods share one signature —
 return a plain `string`:
 
 ```php
+use DateTime;
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 
 $v1 = VlidFactory::v1();                // current time, uppercase

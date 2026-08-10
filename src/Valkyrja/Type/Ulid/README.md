@@ -39,6 +39,7 @@ validated instance, and `json_encode()` encodes the string.
 Both factory methods return a plain `string`:
 
 ```php
+use DateTime;
 use Valkyrja\Type\Ulid\Factory\UlidFactory;
 
 $ulid = UlidFactory::generate();                            // current time, uppercase
