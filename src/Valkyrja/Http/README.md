@@ -619,8 +619,28 @@ headers (`getHeaders()`), and the body stream (`getBody()`).
 ### JSON requests
 
 `JsonServerRequest` extends `ServerRequest` and parses a JSON body into its own
-collection. Build it with `RequestFactory::jsonFromGlobals()` in place of
-`fromGlobals()` at the entry point:
+collection. `RequestFactory::jsonFromGlobals()` builds it — but `Http::run()`
+always calls `RequestFactory::fromGlobals()`, and no config option changes
+that. To serve JSON requests, extend `Http` and override `getRequest()`:
+
+```php
+use Override;
+use Valkyrja\Application\Entry\Http;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Request\Factory\RequestFactory;
+
+class JsonHttp extends Http
+{
+    #[Override]
+    public static function getRequest(): ServerRequestContract
+    {
+        return RequestFactory::jsonFromGlobals();
+    }
+}
+```
+
+Call `JsonHttp::run()` in the entry file in place of `Http::run()`. A handler
+then reads the parsed JSON from the request:
 
 ```php
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
