@@ -329,10 +329,11 @@ for a secret is a production incident.
 
 ### Your Own Config Class
 
-The built-in config classes are one way to start, not the only way. The entry
-classes require a contract, never a concrete class: `Http::run()` requires an
-`HttpConfigContract`, and `Cli::run()` requires a `CliConfigContract`. Any
-class that fulfills the contract works.
+The built-in config classes are one way to start, not the only way.
+`Http::run()` requires an `HttpConfigContract`, and `Cli::run()` requires a
+`CliConfigContract` — any class that fulfills the contract works with those
+two. The worker entry classes are stricter: each worker `run()` requires the
+concrete `HttpConfig` class, so a config for a worker runtime must extend it.
 
 The simplest form extends a built-in class and bakes in your own defaults.
 The entry file then constructs one class per environment, and each class
@@ -368,7 +369,9 @@ A config class can also implement the contract directly, with no built-in
 parent. The contracts declare `get`-hooked properties, so any class that
 declares the properties fulfills them. Reach for this form when your config
 carries its own structure — computed values, your own value objects, or
-properties the built-in classes do not have.
+properties the built-in classes do not have. This form works with
+`Http::run()` and `Cli::run()` only; a worker `run()` rejects it, because the
+worker entry classes require the concrete `HttpConfig` class.
 
 ### Config Callbacks
 
