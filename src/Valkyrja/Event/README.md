@@ -133,20 +133,9 @@ does not describe, so the dispatch throws a
 `ContainerInvalidReferenceException` when the container resolves nothing for
 the class name.
 
-Bind each event that you dispatch by class name. The binding is a callable, so
-you decide how the container builds the event:
-
-```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-
-$container->bind(
-    UserRegistered::class,
-    static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered(),
-);
-```
-
-The container gives the call-site arguments to the binding, so a binding can
-construct the event from them:
+Bind each event that you dispatch by class name. The binding is a callable,
+and the container gives the call-site arguments to it, so the binding
+constructs the event from them:
 
 ```php
 $container->bind(
