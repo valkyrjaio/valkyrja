@@ -14,15 +14,31 @@ An entity extends the Model system from the Type component. That system gives th
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 
 $orm = $container->getSingleton(ManagerContract::class);
-
-$repository = $orm->createRepository(Post::class);
-$factory    = $orm->createQueryBuilder();
-$statement  = $orm->prepare('SELECT * FROM posts');
 ```
 
-The manager also controls the transaction: `beginTransaction()`, `inTransaction()`, `ensureTransaction()`, `commit()`, and `rollback()`. `ensureTransaction()` begins a transaction when none is in progress. `lastInsertId()` returns the id of the last inserted row. See the contract for the full method list.
+The contract declares every entry point:
 
-`prepare()` returns a statement that is not yet executed, so the caller binds values and calls `execute()`. `query()` prepares the statement and executes it in one step, and throws an `OrmExecuteException` when the execution fails.
+```php
+// Repositories and query builders
+public function createRepository(string $entity): RepositoryContract;
+public function createQueryBuilder(): QueryBuilderFactoryContract;
+
+// Transactions
+public function beginTransaction(): bool;
+public function inTransaction(): bool;
+public function ensureTransaction(): void;
+public function commit(): bool;
+public function rollback(): bool;
+
+// Raw queries
+public function prepare(string $query): StatementContract;
+public function query(string $query): StatementContract;
+
+// Identity
+public function lastInsertId(string $table, string $idField): string;
+```
+
+`prepare()` returns a statement that is not yet executed, so the caller binds values and calls `execute()`. `query()` prepares the statement and executes it in one step, and throws an `OrmExecuteException` when the execution fails. `lastInsertId()` returns the id of the last inserted row, and throws an `OrmNoLastIdException` when the connection reports none.
 
 | Class           | Description                      |
 | :-------------- | :------------------------------- |
@@ -33,7 +49,13 @@ The manager also controls the transaction: `beginTransaction()`, `inTransaction(
 
 The `defaultManager` config property selects the implementation that the container binds to `ManagerContract`.
 
+`PgsqlManager` overrides `lastInsertId()` to read the PostgreSQL sequence named `{table}_{idField}_seq`, which is the name that `SERIAL` and `BIGSERIAL` columns create. A table with a different sequence name cannot use the method.
+
+The `NullManager` supports testing: `prepare()` and `query()` return a `NullStatement`, the transaction methods report success, and `lastInsertId()` returns `'id'`. A `NullStatement` accepts every bind, executes to `true`, and fetches no rows, so repository code runs with no database.
+
 ## Entities
+
+### The Entity Contract
 
 `Valkyrja\Orm\Entity\Contract\EntityContract` extends both `CastableModelContract` and `ExposableModelContract` from the Type component:
 
@@ -53,11 +75,110 @@ public function asStorableArray(string ...$properties): array;
 public function asStorableChangedArray(): array;             // Only changed properties
 ```
 
-`asStorableChangedArray()` returns only the properties that changed since hydration, so an update writes only those columns. `getRepository()` names the repository class that `createRepository()` resolves for the entity.
+`asStorableArray()` returns the storable properties as a column-to-value array, and an optional property list narrows the result. `asStorableChangedArray()` returns only the properties that changed since hydration, so an update writes only those columns. `getIdValue()` returns the value of the id field, and throws an `OrmUnexpectedIdValueException` when the value is not an int and not a non-empty string. `getRepository()` names the repository class that `createRepository()` resolves for the entity.
+
+### Defining an Entity
+
+Extend the abstract `Entity` base class and implement `getTableName()`. The base class defaults `getIdField()` to `id` and `getRepository()` to the `Repository` class:
+
+```php
+use Override;
+use Valkyrja\Orm\Entity\Abstract\Entity;
+
+class Post extends Entity
+{
+    public int $id;
+    public string $title;
+    public string $status = 'draft';
+    public string|null $body = null;
+
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'posts';
+    }
+}
+```
+
+Override the other static methods when the entity departs from the defaults. `getRelationshipProperties()` names properties that hold related entities, and `getUnStorableFields()` names properties that never reach the database. Both lists are excluded from `asStorableArray()`:
+
+```php
+use Override;
+use Valkyrja\Orm\Entity\Abstract\Entity;
+
+class Post extends Entity
+{
+    public int $post_id;
+    public string $title;
+    public Author|null $author = null;
+    public string|null $editorNote = null;
+
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'posts';
+    }
+
+    #[Override]
+    public static function getIdField(): string
+    {
+        return 'post_id';
+    }
+
+    #[Override]
+    public static function getRelationshipProperties(): array
+    {
+        return ['author'];
+    }
+
+    #[Override]
+    public static function getUnStorableFields(): array
+    {
+        return ['editorNote'];
+    }
+}
+```
+
+### Property Casts
+
+An entity declares casts through the Type component's `getCastings()`. A cast converts the property through a Type class on hydration, and `asStorableArray()` writes the flat value back:
+
+```php
+use Override;
+use Valkyrja\Orm\Entity\Abstract\Entity;
+use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Int\IntT;
+
+class Score extends Entity
+{
+    public int $id;
+    public int|IntT|null $score = null;
+    public array|string|null $history = null;
+
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'scores';
+    }
+
+    #[Override]
+    public static function getCastings(): array
+    {
+        return [
+            'score'   => new Cast(IntT::class),
+            'history' => new Cast(IntT::class, isArray: true),
+        ];
+    }
+}
+```
+
+An array cast serializes the array to a string for storage, and throws an `OrmArrayCastingException` when the property value is not an array.
 
 `EntityCast` extends the Type component's `Cast` for relationship casting:
 
 ```php
+use Valkyrja\Orm\Data\EntityCast;
+
 new EntityCast(
     type: SomeEntity::class,   // Entity class or CastType
     column: 'foreign_key',     // Optional: column to use for retrieval
@@ -67,7 +188,9 @@ new EntityCast(
 );
 ```
 
-### Dates, Soft Delete, and Metadata
+The `EntityRouteMatchedMiddleware` reads an `EntityCast` on a route parameter, finds the entity through its repository, and replaces the parameter value with the entity.
+
+### Dated and Soft Delete Entities
 
 Implement one of these contracts to tell the repository to stamp a date. Each contract declares no method:
 
@@ -76,7 +199,50 @@ Implement one of these contracts to tell the repository to stamp a date. Each co
 | `DatedEntityContract`      | stamps the created date and the modified date on `create()`, and the modified date on `update()` |
 | `SoftDeleteEntityContract` | stamps the deleted date on `delete()` and keeps the row                                          |
 
-The abstract base classes `DatedEntity` and `SoftDeleteEntity` implement the contract and add the fields. The traits `DatedFields` and `SoftDeleteFields` add the fields alone.
+The abstract base classes `DatedEntity` and `SoftDeleteEntity` implement the contract and add the fields. The traits `DatedFields` and `SoftDeleteFields` add the fields alone. `DatedFields` declares `created_at` and `updated_at`, and `SoftDeleteFields` declares `deleted_at`:
+
+```php
+use Override;
+use Valkyrja\Orm\Entity\Abstract\DatedEntity;
+
+class Post extends DatedEntity
+{
+    public int $id;
+    public string $title;
+    // created_at and updated_at come from the DatedFields trait.
+
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'posts';
+    }
+}
+```
+
+An entity that needs both behaviors extends one base class and adds the other contract with its trait:
+
+```php
+use Override;
+use Valkyrja\Orm\Entity\Abstract\DatedEntity;
+use Valkyrja\Orm\Entity\Contract\SoftDeleteEntityContract;
+use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
+
+class Post extends DatedEntity implements SoftDeleteEntityContract
+{
+    use SoftDeleteFields;
+
+    public int $id;
+    public string $title;
+
+    #[Override]
+    public static function getTableName(): string
+    {
+        return 'posts';
+    }
+}
+```
+
+### Registering Entity Metadata
 
 The date format and the field names come from `Valkyrja\Orm\Registry\Contract\EntityMetadataRegistryContract`, because a data object holds no static method. The registry maps an entity class to an `EntityMetadata` data object through `has()`, `get()`, and `withEntity()`. The registry infers nothing: `get()` throws an `OrmUnregisteredEntityException` when the entity is not registered, and the repository throws the same exception when a contract implementation has no matching metadata.
 
@@ -94,7 +260,7 @@ $container->setSingleton(
 );
 ```
 
-Each part of `EntityMetadata` is optional:
+Each part of `EntityMetadata` is optional, and each part's arguments default to the common names:
 
 ```php
 new EntityMetadata(
@@ -110,7 +276,17 @@ new EntityMetadata(
 );
 ```
 
+An application with a different schema registers its own names:
+
+```php
+new EntityMetadata(
+    dated: new DatedMetadata(dateCreatedField: 'date_created', dateModifiedField: 'date_modified'),
+);
+```
+
 Warning: the entity must declare a property with the registered name. `asStorableArray()` reads the object properties, so a registered name that the entity does not declare becomes a dynamic property. Use your own entity, and not the `DatedFields` or `SoftDeleteFields` trait, when your names are not the defaults.
+
+### The Stored Date
 
 `DateFormat` holds the three formats that the ORM writes. Each one is ISO 8601, so a text sort of the column is a date sort and the date functions of the database read the value:
 
@@ -141,13 +317,103 @@ Obtain a repository through the manager:
 
 ```php
 $repository = $orm->createRepository(Post::class);
-$post       = $repository->find(1);
-$posts      = $repository->allBy(new Where(new Value('status', 'published')));
 ```
 
-`delete()` removes the row of an entity. For a `SoftDeleteEntityContract` entity it stamps the deleted date and keeps the row instead.
+Each write method builds a query, prepares it, binds the values, and executes it immediately. The component holds no unit of work, so there is no separate flush step. Wrap several writes in a [transaction](#transactions) when they must land together.
 
-`forceDelete()` always removes the row. Warning: the method destroys the data of a soft delete entity. Use the method only when a law or a data policy requires the removal, such as an erasure request.
+### Retrieving Entities
+
+`find()` matches the id field and returns the entity, or `null` when no row matches:
+
+```php
+$post = $repository->find(1);
+```
+
+`findBy()` takes where clauses and returns the first matching entity, or `null`:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+
+$post = $repository->findBy(new Where(new Value('slug', 'intro-to-orm')));
+```
+
+`all()` returns every row as an entity array, and `allBy()` filters with where clauses:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\Where\AndWhere;
+
+$posts = $repository->all();
+
+$published = $repository->allBy(
+    new Where(new Value('status', 'published')),
+    new AndWhere(new Value('author_id', 7)),
+);
+```
+
+The clauses render in order, so give the first clause no type (a plain `Where`) and give each later clause a type (`AndWhere`, `OrWhere`). The [where clause](#where-clauses) section lists every type.
+
+### Creating an Entity
+
+`create()` writes every storable property as an `INSERT`, reads `lastInsertId()`, and writes the new id back onto the entity:
+
+```php
+$post = new Post();
+$post->title = 'Intro to the ORM';
+
+$repository->create($post);
+
+$id = $post->id; // The id of the new row
+```
+
+For a `DatedEntityContract` entity the repository stamps the created date and the modified date before the write.
+
+Warning: PDO reports the last insert id as a string, and the repository writes that string onto the id property through `__set()`. Declare a set callable when the property is an `int`, so the assignment converts the value:
+
+```php
+public function setId(string|int $id): void
+{
+    $this->id = (int) $id;
+}
+
+#[Override]
+protected function internalSetCallables(): array
+{
+    return [
+        'id' => [$this, 'setId'],
+    ];
+}
+```
+
+### Updating an Entity
+
+`update()` writes only the properties that changed since hydration, as an `UPDATE` filtered on the id field:
+
+```php
+$post = $repository->find(1);
+$post->title = 'A better title';
+
+$repository->update($post);
+// UPDATE posts SET title = :title WHERE id = :id
+```
+
+For a `DatedEntityContract` entity the repository stamps the modified date before the write. The repository never writes the deleted date here, so an update does not delete an entity, and an update does not restore a deleted entity.
+
+### Deleting an Entity
+
+`delete()` removes the row of an entity. For a `SoftDeleteEntityContract` entity it stamps the deleted date and keeps the row instead:
+
+```php
+$repository->delete($post);
+```
+
+`forceDelete()` always removes the row. Warning: the method destroys the data of a soft delete entity. Use the method only when a law or a data policy requires the removal, such as an erasure request:
+
+```php
+$repository->forceDelete($post);
+```
 
 A read returns a soft-deleted row. The repository adds no filter, so exclude the row yourself when you want only the live rows:
 
@@ -155,9 +421,85 @@ A read returns a soft-deleted row. The repository adds no filter, so exclude the
 $live = $repository->allBy(new Where(new Value('deleted_at', null), Comparison::IS));
 ```
 
+### Custom Repositories
+
+`getRepository()` on the entity names the repository class. Extend `Repository` to add entity-specific methods, and name the subclass on the entity:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Repository\Repository;
+
+final class PostRepository extends Repository
+{
+    /**
+     * Get the published posts.
+     *
+     * @return Post[]
+     */
+    public function published(): array
+    {
+        return $this->allBy(new Where(new Value('status', 'published')));
+    }
+}
+```
+
+```php
+#[Override]
+public static function getRepository(): string
+{
+    return PostRepository::class;
+}
+```
+
+`createRepository()` resolves the class from the container with the manager, the entity class, and the metadata registry as arguments. The container constructs an unbound class directly, so a subclass that keeps the `Repository` constructor needs no registration. A repository with a different constructor needs its own container binding.
+
 ## Query Builder
 
-`createQueryBuilder()` returns a factory with one method per statement type: `select()`, `insert()`, `update()`, and `delete()`. Each method takes the table name and returns a typed builder. Every `with*` method returns a new instance, and every builder implements `Stringable`:
+`createQueryBuilder()` returns a factory with one method per statement type. Each method takes the table name and returns a typed builder:
+
+```php
+$factory = $orm->createQueryBuilder();
+
+$select = $factory->select('posts');
+$insert = $factory->insert('posts');
+$update = $factory->update('posts');
+$delete = $factory->delete('posts');
+```
+
+Every `with*` method returns a new instance, so a builder never mutates, and a shared base query stays safe to branch. Every builder implements `Stringable`, so a cast to `string` renders the SQL.
+
+All four builders share the methods of `QueryBuilderContract`:
+
+```php
+->withFrom(string $table): static
+->withAlias(string $alias): static
+->withJoin(Join ...$joins): static
+->withAddedJoin(Join ...$joins): static
+->withWhere(Where|WhereGroup ...$where): static
+->withAddedWhere(Where|WhereGroup ...$where): static
+```
+
+Each `with*` method replaces the current list, and each `withAdded*` method appends to it.
+
+`withAlias()` renders the alias after the table name in the insert, update, and delete builders. The select builder stores the alias and does not render it.
+
+### Select
+
+`SelectQueryBuilderContract` adds columns, group by, order by, limit, and offset:
+
+```php
+->withColumns(string ...$columns): static
+->withAddedColumns(string ...$columns): static
+->withGroupBy(string ...$groupBy): static
+->withAddedGroupBy(string ...$groupBy): static
+->withOrderBy(OrderBy ...$orderBy): static
+->withAddedOrderBy(OrderBy ...$orderBy): static
+->withLimit(int $limit): static
+->withOffset(int $offset): static
+```
+
+The columns default to `*`:
 
 ```php
 use Valkyrja\Orm\Data\Join\LeftJoin;
@@ -187,59 +529,397 @@ $select = $orm->createQueryBuilder()
 //     WHERE status = :status ORDER BY created_at DESC LIMIT 10
 ```
 
-The `Value` name is both the column name and the bind parameter in the rendered clause. See the contracts under `QueryBuilder/Contract/` for the full method lists — `QueryBuilderContract` for the shared from, alias, join, and where methods, `SelectQueryBuilderContract` for columns, group by, order by, limit, and offset, and `InsertQueryBuilderContract` and `UpdateQueryBuilderContract` for `withSet()`. The delete builder adds nothing to the shared methods.
+### Insert
 
-### Data Objects
+`InsertQueryBuilderContract` adds `withSet()` and `withAddedSet()`. Each `Value` name is a column, and each value renders as a bind parameter:
 
-`Value` binds a named parameter with its value:
+```php
+use Valkyrja\Orm\Data\Value;
+
+$insert = $orm->createQueryBuilder()
+    ->insert('posts')
+    ->withSet(
+        new Value('title', 'Intro to the ORM'),
+        new Value('status', 'published'),
+    );
+
+// (string) $insert renders:
+// INSERT INTO posts (title, status) VALUES (:title, :status)
+```
+
+### Update
+
+`UpdateQueryBuilderContract` adds the same `withSet()` and `withAddedSet()`. Each `Value` renders as a `column = :column` assignment:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+
+$update = $orm->createQueryBuilder()
+    ->update('posts')
+    ->withSet(new Value('status', 'archived'))
+    ->withWhere(new Where(new Value('id', 1)));
+
+// (string) $update renders:
+// UPDATE posts SET status = :status WHERE id = :id
+```
+
+### Delete
+
+The delete builder adds nothing to the shared methods:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+
+$delete = $orm->createQueryBuilder()
+    ->delete('posts')
+    ->withWhere(new Where(new Value('id', 1)));
+
+// (string) $delete renders:
+// DELETE FROM posts WHERE id = :id
+```
+
+### Joins
+
+`Join` renders a join clause from a table, the two columns, a `Comparison`, a `JoinOperator` (`ON` or `WHERE`), and a `JoinType`. One subclass per join type sets the type for you:
+
+| Class           | Renders as                                                |
+| :-------------- | :-------------------------------------------------------- |
+| `InnerJoin`     | `INNER JOIN comments ON posts.id = comments.post_id`      |
+| `LeftJoin`      | `LEFT JOIN comments ON posts.id = comments.post_id`       |
+| `RightJoin`     | `RIGHT JOIN comments ON posts.id = comments.post_id`      |
+| `OuterJoin`     | `OUTER JOIN comments ON posts.id = comments.post_id`      |
+| `FullOuterJoin` | `FULL OUTER JOIN comments ON posts.id = comments.post_id` |
+
+Each subclass takes the same arguments:
+
+```php
+use Valkyrja\Orm\Data\Join\InnerJoin;
+use Valkyrja\Orm\Enum\Comparison;
+use Valkyrja\Orm\Enum\JoinOperator;
+
+new InnerJoin(
+    table: 'comments',
+    column: 'posts.id',
+    joinColumn: 'comments.post_id',
+    comparison: Comparison::EQUALS,
+    operator: JoinOperator::ON,
+)
+// Renders as: INNER JOIN comments ON posts.id = comments.post_id
+```
+
+`JoinOperator` holds `ON` and `WHERE`, and the operator renders between the table and the first column. The base `Join` also takes a `JoinType`, and its `JoinType::DEFAULT` renders a bare `JOIN`. Use a subclass unless you build the type dynamically.
+
+### Values
+
+`Value` binds a named parameter with its value. The name is both the column name and the bind parameter in the rendered clause:
 
 ```php
 new Value(name: 'status', value: 'published')
 // Renders as :status with PDO binding
 ```
 
-The value may be a scalar, an array (renders as `(:name0, :name1, ...)`), or a nested `QueryBuilderContract` (renders as a subquery).
+The value may be a scalar, an array (renders as `(:name0, :name1, ...)`), or a nested `QueryBuilderContract` (renders as a subquery). An array's parameter suffixes come from its keys, so a list renders `:name0, :name1, ...` and the statement binds one parameter per element. The `Id` subclass defaults the name to `id`, so `new Id(1)` equals `new Value('id', 1)`.
 
-`Where` wraps a `Value` with a comparison operator and a clause type:
+### Where Clauses
+
+`Where` wraps a `Value` with a comparison operator and a clause type. The clause renders as the column name, the operator, and the bind parameter:
 
 ```php
-new Where(new Value('status', 'published'))                        // WHERE status = :status
-new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // WHERE id IN (:id0, :id1, :id2)
-new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // WHERE score >= :score
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Enum\Comparison;
+
+new Where(new Value('status', 'published'))                        // status = :status
+new Where(new Value('id', [1, 2, 3]), Comparison::IN)              // id IN (:id0, :id1, :id2)
+new Where(new Value('score', 50), Comparison::GREATER_THAN_EQUAL)  // score >= :score
+new Where(new Value('deleted_at', null), Comparison::IS)           // deleted_at IS :deleted_at
 ```
 
-The subclasses `AndWhere`, `OrWhere`, `NotWhere`, `AndNotWhere`, and `OrNotWhere` set the clause type. `WhereGroup` groups clauses into a parenthesized block:
+One subclass per clause type prefixes the rendered clause:
+
+| Class         | Renders as                 |
+| :------------ | :------------------------- |
+| `AndWhere`    | `AND status = :status`     |
+| `OrWhere`     | `OR status = :status`      |
+| `NotWhere`    | `NOT status = :status`     |
+| `AndNotWhere` | `AND NOT status = :status` |
+| `OrNotWhere`  | `OR NOT status = :status`  |
+
+The builder renders `WHERE` once, then each clause in order, separated by spaces. Give the first clause no type, because a leading `AndWhere` renders `WHERE AND`:
 
 ```php
-new WhereGroup(
-    new Where(new Value('a', 1)),
-    new OrWhere(new Value('b', 2)),
-)
-// Renders as: (a = :a OR b = :b)
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withWhere(
+        new Where(new Value('status', 'published')),
+        new AndWhere(new Value('author_id', 7)),
+    );
+
+// (string) $select renders:
+// SELECT * FROM posts WHERE status = :status AND author_id = :author_id
 ```
 
-`Valkyrja\Orm\Enum\Comparison` holds the comparison operators, from equality and range (`=`, `!=`, `>`, `>=`) through pattern and set (`LIKE`, `REGEXP`, `IN`) to bitwise and shift (`^`, `|`, `<<`, `>>`). See the enum for the full case list.
-
-`Join` renders a join clause; the example above shows it. The subclasses `InnerJoin`, `LeftJoin`, `RightJoin`, `OuterJoin`, and `FullOuterJoin` set the join type. `OrderBy` pairs a field with a `SortOrder`:
+`WhereGroup` groups clauses into a parenthesized block:
 
 ```php
-new OrderBy('created_at', SortOrder::DESC)
-// Renders as: created_at DESC
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\Where\AndWhere;
+use Valkyrja\Orm\Data\Where\OrWhere;
+use Valkyrja\Orm\Data\WhereGroup;
+use Valkyrja\Orm\Enum\Comparison;
+
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withWhere(
+        new Where(new Value('author_id', 7)),
+        new AndWhere(new Value('status', 'published')),
+        new WhereGroup(
+            new Where(new Value('title', '%orm%'), Comparison::LIKE),
+            new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
+        ),
+    );
+
+// The where part renders:
+// WHERE author_id = :author_id AND status = :status (title LIKE :title OR body LIKE :body)
+```
+
+Warning: a `WhereGroup` holds no clause type of its own, so the group renders with no `AND` or `OR` before its parentheses. Write the operator into the last clause before the group when the database requires one.
+
+A `Value` that holds a `QueryBuilderContract` renders as a subquery:
+
+```php
+$active = $orm->createQueryBuilder()
+    ->select('authors')
+    ->withColumns('id')
+    ->withWhere(new Where(new Value('active', true)));
+
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withWhere(new Where(new Value('author_id', $active), Comparison::IN));
+
+// (string) $select renders, on one line:
+// SELECT * FROM posts WHERE author_id IN
+//     (SELECT id FROM authors WHERE active = :active)
+```
+
+`bindValue()` skips a subquery `Value`, so bind the subquery's own values on the statement yourself — here, `new Value('active', true)`.
+
+### The Comparison Enum
+
+`Valkyrja\Orm\Enum\Comparison` holds the 27 comparison operators:
+
+| Case                 | Renders as    |
+| :------------------- | :------------ |
+| `EQUALS`             | `=`           |
+| `NULL_SAFE_EQUALS`   | `<=>`         |
+| `NOT_EQUAL`          | `!=`          |
+| `NOT_EQUAL_ALT`      | `<>`          |
+| `IN`                 | `IN`          |
+| `NOT_IN`             | `NOT_IN`      |
+| `LIKE`               | `LIKE`        |
+| `NOT_LIKE`           | `NOT LIKE`    |
+| `SOUNDS_LIKE`        | `SOUNDS LIKE` |
+| `RLIKE`              | `RLIKE`       |
+| `IS`                 | `IS`          |
+| `IS_NOT`             | `IS NOT`      |
+| `MOD`                | `%`           |
+| `MOD_ALT`            | `MOD`         |
+| `GREATER_THAN`       | `>`           |
+| `GREATER_THAN_EQUAL` | `>=`          |
+| `LESS_THAN`          | `<`           |
+| `LESS_THAN_EQUAL`    | `<=`          |
+| `RIGHT_SHIFT`        | `>>`          |
+| `LEFT_SHIFT`         | `<<`          |
+| `MEMBER_OF`          | `MEMBER_OF`   |
+| `REGEXP`             | `REGEXP`      |
+| `NOT_REGEXP`         | `NOT REGEXP`  |
+| `BITWISE_XOR`        | `^`           |
+| `LOGICAL_XOR`        | `XOR`         |
+| `BITWISE_OR`         | `\|`          |
+| `BITWISE_INVERSION`  | `~`           |
+
+### Group By, Order By, Limit, and Offset
+
+`withGroupBy()` takes column names, and `withOrderBy()` takes `OrderBy` objects. `OrderBy` pairs a field with a `SortOrder` (`ASC` or `DESC`), and the order defaults to `ASC`:
+
+```php
+use Valkyrja\Orm\Data\OrderBy;
+use Valkyrja\Orm\Enum\SortOrder;
+
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withColumns('author_id', 'COUNT(*)')
+    ->withGroupBy('author_id')
+    ->withOrderBy(new OrderBy('author_id', SortOrder::ASC))
+    ->withLimit(10)
+    ->withOffset(20);
+
+// (string) $select renders, on one line:
+// SELECT author_id, COUNT(*) FROM posts GROUP BY author_id
+//     ORDER BY author_id ASC LIMIT 10 OFFSET 20
+```
+
+### Counting Rows
+
+When the first column starts with `COUNT`, the select builder omits `GROUP BY`, `ORDER BY`, `LIMIT`, and `OFFSET`:
+
+```php
+$count = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withColumns('COUNT(*)')
+    ->withWhere(new Where(new Value('status', 'published')));
+
+// (string) $count renders:
+// SELECT COUNT(*) FROM posts WHERE status = :status
+```
+
+Execute the query and read the count from the statement. `getCount()` reads the `COUNT(*)` column, or the `count` column that PostgreSQL returns:
+
+```php
+$statement = $orm->prepare((string) $count);
+$statement->bindValue(new Value('status', 'published'));
+$statement->execute();
+
+$total = $statement->getCount();
+```
+
+### Binding and Executing a Built Query
+
+A builder renders SQL with named bind parameters, and it executes nothing. Prepare the rendered string, bind each `Value`, and execute. Reuse the same `Value` objects that built the query, so the names and the values stay in one place:
+
+```php
+$where  = new Where(new Value('status', 'published'));
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withWhere($where);
+
+$statement = $orm->prepare((string) $select);
+$statement->bindValue($where->value);
+$statement->execute();
+
+$posts = $statement->fetchAllEntities(Post::class);
 ```
 
 ## Statements
 
-`Valkyrja\Orm\Statement\Contract\StatementContract` wraps a prepared PDO statement. `bindValue()` binds a `Value`, and `execute()` runs the statement:
+`Valkyrja\Orm\Statement\Contract\StatementContract` wraps a prepared PDO statement:
 
 ```php
-$statement = $orm->prepare((string) $select);
+public function bindValue(Value $value): bool;
+public function execute(): bool;
+
+// Fetch results
+public function fetch(): array;                              // Single row as array
+public function fetchEntity(string $entity): EntityContract; // Single row as entity
+public function fetchColumn(int $columnNumber = 0): mixed;
+public function fetchAll(): array;                           // All rows as arrays
+public function fetchAllEntities(string $entity): array;     // All rows as entities
+
+// Metadata
+public function getCount(): int;
+public function getRowCount(): int;
+public function getColumnCount(): int;
+public function getColumnMeta(int $columnNumber): array;
+
+// Errors
+public function hasError(): bool;
+public function getErrorCode(): string;
+public function getErrorMessage(): string;
+```
+
+`bindValue()` binds the parameter with the PDO type that matches the PHP type — int, bool, null, or string. An array `Value` binds one parameter per element (`:name0`, `:name1`, ...). The full flow:
+
+```php
+$statement = $orm->prepare('SELECT * FROM posts WHERE status = :status');
 $statement->bindValue(new Value('status', 'published'));
 $statement->execute();
 
 $posts = $statement->fetchAllEntities(Post::class);
 ```
 
-`fetch()` and `fetchAll()` return rows as arrays, `fetchEntity()` and `fetchAllEntities()` return typed entities, and `fetchColumn()` returns a single column. The contract also exposes row, column, and error accessors — see the contract for the full method list.
+`fetch()` and `fetchEntity()` read one row, and throw an `OrmFetchException` when no row remains. `fetchAll()` and `fetchAllEntities()` return an empty array when no row matches. `execute()` returns `false` on failure, and `getErrorMessage()` then holds the reason.
+
+`query()` shortens the flow for a query with no bind parameters:
+
+```php
+$posts = $orm->query('SELECT * FROM posts')->fetchAllEntities(Post::class);
+```
+
+## Transactions
+
+The manager controls the transaction of the underlying connection. Wrap dependent writes so they land together or not at all:
+
+```php
+$orm->beginTransaction();
+
+try {
+    $repository->create($post);
+    $repository->create($comment);
+
+    $orm->commit();
+} catch (Throwable $exception) {
+    $orm->rollback();
+
+    throw $exception;
+}
+```
+
+`ensureTransaction()` begins a transaction only when none is in progress, so a helper method joins the caller's transaction instead of failing to nest one. `inTransaction()` reports the current state:
+
+```php
+$orm->ensureTransaction(); // Begins one, or joins the one in progress
+```
+
+## Route Entity Binding
+
+`EntityRouteMatchedMiddleware` is a route matched middleware from the Http Middleware component. It inspects each parameter of a matched dynamic route, and it acts when the parameter's cast type is an entity class:
+
+- A value that is already an entity passes through.
+- A non-empty string or int value loads the entity: an `EntityCast` with a `column` finds by that column, and any other cast finds by id.
+- A missing entity returns a 404 response, rendered from the `errors/404` view template.
+- A value of any other type returns a 400 response, rendered from the `errors/400` view template.
+
+On success the middleware replaces the parameter value with the loaded entity, so the route handler receives the entity instead of the raw id:
+
+```php
+use Valkyrja\Orm\Data\EntityCast;
+
+new EntityCast(type: Post::class, column: 'slug')
+// The route parameter value loads through findBy(new Where(new Value('slug', $value)))
+```
+
+## Exceptions
+
+Every exception in the component implements `Valkyrja\Orm\Throwable\Contract\OrmThrowable`, so one catch covers the whole component:
+
+```php
+use Valkyrja\Orm\Throwable\Contract\OrmThrowable;
+
+try {
+    $repository->create($post);
+} catch (OrmThrowable $exception) {
+    // Every ORM failure lands here
+}
+```
+
+The exceptions you meet in normal use:
+
+| Exception                                 | Thrown when                                                              |
+| :---------------------------------------- | :----------------------------------------------------------------------- |
+| `OrmStatementPreparationFailureException` | `prepare()` fails to prepare the statement                               |
+| `OrmExecuteException`                     | `query()` or a repository write fails to execute                         |
+| `OrmFetchException`                       | `fetch()` or `fetchEntity()` finds no row                                |
+| `OrmNoLastIdException`                    | `lastInsertId()` finds no id (`OrmNoPgsqlLastIdException` on PostgreSQL) |
+| `OrmUnregisteredEntityException`          | the registry holds no metadata for a dated or soft delete entity         |
+| `OrmUnexpectedIdValueException`           | `getIdValue()` finds a value that is not an int or a non-empty string    |
+| `OrmArrayCastingException`                | an array cast meets a value that is not an array                         |
+| `OrmInvalidColumnNumberException`         | `getColumnMeta()` receives a column number the result does not hold      |
+| `OrmUnsupportedCountException`            | `getCount()` reads a count that is not an int or a numeric string        |
+| `OrmInvalidMigrationFileException`        | a `SqlFileMigration` file path does not read                             |
+| `OrmMigrationExecutionException`          | a `SqlFileMigration` statement fails                                     |
 
 ## Schema and Migrations
 
@@ -251,17 +931,104 @@ A migration implements `MigrationContract`, which declares `run()` and `rollback
 | `TransactionalMigration` | Wraps each direction in a transaction, and rolls back on a `Throwable`   |
 | `SqlFileMigration`       | Executes SQL files; provide the run file path and the rollback file path |
 
+### Migration
+
+`Migration` receives the manager as `$this->orm`. Override both directions:
+
+```php
+use Override;
+use Valkyrja\Orm\Schema\Abstract\Migration;
+
+final class CreatePostsTable extends Migration
+{
+    #[Override]
+    public function run(): void
+    {
+        $this->orm->query('CREATE TABLE posts (id INT PRIMARY KEY, title VARCHAR(255))');
+    }
+
+    #[Override]
+    public function rollback(): void
+    {
+        $this->orm->query('DROP TABLE posts');
+    }
+}
+```
+
+### TransactionalMigration
+
+`TransactionalMigration` implements `run()` and `rollback()` for you. Each direction ensures a transaction, runs your migration, and commits. On a `Throwable` it rolls back, calls the matching failure hook, and rethrows. Override the protected migration methods instead:
+
+```php
+use Override;
+use Valkyrja\Orm\Schema\Abstract\TransactionalMigration;
+
+final class SeedStatuses extends TransactionalMigration
+{
+    #[Override]
+    protected function runMigration(): void
+    {
+        $this->orm->query("INSERT INTO statuses (name) VALUES ('draft')");
+    }
+
+    #[Override]
+    protected function rollbackMigration(): void
+    {
+        $this->orm->query("DELETE FROM statuses WHERE name = 'draft'");
+    }
+}
+```
+
+The hooks `runFailure(Throwable $exception)` and `rollbackFailure(Throwable $exception)` default to nothing. Override one to log or clean up before the rethrow.
+
+### SqlFileMigration
+
+`SqlFileMigration` extends `TransactionalMigration`, so each direction runs in a transaction. Provide the two file paths. The base class splits each file on `;` and executes each statement in order:
+
+```php
+use Override;
+use Valkyrja\Orm\Schema\Abstract\SqlFileMigration;
+
+final class CreateSchema extends SqlFileMigration
+{
+    #[Override]
+    protected function getRunMigrationFilePath(): string
+    {
+        return __DIR__ . '/sql/create-schema.sql';
+    }
+
+    #[Override]
+    protected function getRollbackMigrationFilePath(): string
+    {
+        return __DIR__ . '/sql/drop-schema.sql';
+    }
+}
+```
+
+An unreadable file throws an `OrmInvalidMigrationFileException`, and a failed statement throws an `OrmMigrationExecutionException`.
+
+### Schema Contracts
+
 The `Schema/Contract/` directory also declares a schema builder API — `SchemaContract`, `TableContract`, `ColumnContract`, `IndexContract`, and `ConstraintContract`. This component ships no implementation of those contracts.
 
 ## Configuration
 
-The component reads four config contracts. Your application config class implements only the contracts for the connections that it uses. Each connection contract prefixes its properties with the connection name, so one class can implement several of them at once.
+The component reads four config contracts. Your application config class implements only the contracts for the connections that it uses. Each connection contract prefixes its properties with the connection name, so one class can implement several of them at once. When the application config singleton implements a contract, the service provider registers it; otherwise the provider registers the default config class.
 
 ### `OrmConfigContract`
 
 | Property         | Default               | Description                               |
 | :--------------- | :-------------------- | :---------------------------------------- |
 | `defaultManager` | `MysqlManager::class` | Implementation bound to `ManagerContract` |
+
+Select the manager by naming its class:
+
+```php
+use Valkyrja\Orm\Data\OrmConfig;
+use Valkyrja\Orm\Manager\PgsqlManager;
+
+new OrmConfig(defaultManager: PgsqlManager::class);
+```
 
 ### `OrmMysqlConfigContract`
 
@@ -277,6 +1044,8 @@ The component reads four config contracts. Your application config class impleme
 | `mysqlEngine`   | `null`             | Storage engine      |
 | `mysqlOptions`  | PDO defaults       | PDO attribute array |
 
+`mysqlStrict` and `mysqlEngine` append `;strict=` and `;engine=` to the DSN when set, and a `null` leaves the flag out.
+
 ### `OrmPgsqlConfigContract`
 
 | Property        | Default            | Description         |
@@ -291,6 +1060,8 @@ The component reads four config contracts. Your application config class impleme
 | `pgsqlSslMode`  | `'prefer'`         | SSL mode            |
 | `pgsqlOptions`  | PDO defaults       | PDO attribute array |
 
+The provider applies `pgsqlSchema` with `SET search_path` after the connection opens. The default `pgsqlOptions` include `PDO::ATTR_PERSISTENT => true`, so PostgreSQL connections persist across requests unless you override the options.
+
 ### `OrmSqliteConfigContract`
 
 | Property         | Default             | Description         |
@@ -302,6 +1073,8 @@ The component reads four config contracts. Your application config class impleme
 | `sqlitePassword` | `'sqlite-password'` | Password            |
 | `sqliteCharset`  | `'utf8'`            | Character encoding  |
 | `sqliteOptions`  | PDO defaults        | PDO attribute array |
+
+Every adapter's default options set `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`, so a PDO-level failure throws instead of failing silently. The MySQL and SQLite defaults also disable emulated prepares, and every adapter disables stringified fetches, so an int column fetches as an int.
 
 ## Service Registration
 
