@@ -11,7 +11,7 @@ covers each in turn:
 - [Entry Points](#entry-points) — HTTP, CLI, and the persistent worker
   runtimes
 - [Configuration](#configuration) — the three config classes, environment
-  sourcing, and callbacks
+  sourcing, your own config class, and callbacks
 - [The Bootstrap Sequence](#the-bootstrap-sequence) — what `run()` does, step
   by step
 - [Accessing the Application](#accessing-the-application) — the
@@ -326,6 +326,49 @@ The framework does not populate `$_ENV`. Populate it with your web server, the
 worker runtime, or an env-file loader that runs before the config is built.
 Fail loudly for a required value, as the `key` line shows — a silent default
 for a secret is a production incident.
+
+### Your Own Config Class
+
+The built-in config classes are one way to start, not the only way. The entry
+classes require a contract, never a concrete class: `Http::run()` requires an
+`HttpConfigContract`, and `Cli::run()` requires a `CliConfigContract`. Any
+class that fulfills the contract works.
+
+The simplest form extends a built-in class and bakes in your own defaults.
+The entry file then constructs one class per environment, and each class
+carries the values that hold for that environment:
+
+```php
+// app/Config/ProductionHttpConfig.php
+use Valkyrja\Application\Data\HttpConfig;
+
+class ProductionHttpConfig extends HttpConfig
+{
+    public function __construct(string $key)
+    {
+        parent::__construct(
+            namespace:   'App',
+            dir:         dirname(__DIR__, 2),
+            environment: 'production',
+            debugMode:   false,
+            key:         $key,
+        );
+    }
+}
+```
+
+```php
+// app/public/index.php
+Http::run(new ProductionHttpConfig(
+    key: $_ENV['APP_KEY'] ?? throw new RuntimeException('APP_KEY is not set'),
+));
+```
+
+A config class can also implement the contract directly, with no built-in
+parent. The contracts declare `get`-hooked properties, so any class that
+declares the properties fulfills them. Reach for this form when your config
+carries its own structure — computed values, your own value objects, or
+properties the built-in classes do not have.
 
 ### Config Callbacks
 
