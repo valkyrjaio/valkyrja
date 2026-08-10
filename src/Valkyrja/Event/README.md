@@ -138,6 +138,8 @@ and the container gives the call-site arguments to it, so the binding
 constructs the event from them:
 
 ```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
 $container->bind(
     UserRegistered::class,
     static fn (ContainerContract $container, array $arguments): UserRegistered => new UserRegistered($arguments[0]),
