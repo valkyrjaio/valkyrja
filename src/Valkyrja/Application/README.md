@@ -349,7 +349,7 @@ class ProductionHttpConfig extends HttpConfig
     {
         parent::__construct(
             namespace:   'App',
-            dir:         dirname(__DIR__, 2),
+            dir:         dirname(__DIR__),
             environment: 'production',
             debugMode:   false,
             key:         $key,
