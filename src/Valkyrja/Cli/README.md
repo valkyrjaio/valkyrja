@@ -67,9 +67,9 @@ properties in depth.
 
 `CliConfig` is one way to start, not the only way. `Cli::run()` accepts any
 `CliConfigContract`, so your own subclass of `CliConfig` — with
-per-environment defaults baked in — works too. See
-[Your Own Config Class](../Application/README.md#your-own-config-class) in the
-Application README.
+per-environment defaults baked in — works too. The
+[Application README's Configuration section](../Application/README.md#configuration)
+covers the custom config class.
 
 ### Global Middleware
 
