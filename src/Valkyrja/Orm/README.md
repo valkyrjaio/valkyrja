@@ -900,6 +900,47 @@ new EntityCast(type: Post::class, column: 'slug')
 // The route parameter value loads through findBy(new Where(new Value('slug', $value)))
 ```
 
+The middleware does not run on its own: no service provider publishes it, and the container does not autowire its three constructor arguments. Bind it in a service provider, then name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
+use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
+
+class AppServiceProvider implements ServiceProviderContract
+{
+    public function publishers(): array
+    {
+        return [
+            EntityRouteMatchedMiddleware::class => [self::class, 'publishEntityRouteMatchedMiddleware'],
+        ];
+    }
+
+    public static function publishEntityRouteMatchedMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            EntityRouteMatchedMiddleware::class,
+            new EntityRouteMatchedMiddleware(
+                $container,
+                $container->getSingleton(ManagerContract::class),
+                $container->getSingleton(ViewResponseFactoryContract::class),
+            ),
+        );
+    }
+}
+```
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
+
+new HttpConfig(
+    routeMatchedMiddleware: [EntityRouteMatchedMiddleware::class],
+);
+```
+
 ## Exceptions
 
 Every exception in the component implements `Valkyrja\Orm\Throwable\Contract\OrmThrowable`, so one catch covers the whole component:
