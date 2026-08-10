@@ -349,11 +349,12 @@ value object.
 ## Exceptions
 
 Every exception in the component implements
-`Valkyrja\Type\Throwable\Contract\TypeThrowable`, and each subcomponent adds
-its own marker contract (for example
-`Valkyrja\Type\Uid\Throwable\Contract\UidThrowable`, which the UUID, ULID,
-and VLID exceptions also implement). Catch a marker contract to handle a
-whole family:
+`Valkyrja\Type\Throwable\Contract\TypeThrowable`. Five subcomponents —
+Object, Uid, Ulid, Uuid, and Vlid — add their own marker contract (for
+example `Valkyrja\Type\Uid\Throwable\Contract\UidThrowable`, which the UUID,
+ULID, and VLID exceptions also implement). The exceptions of the other
+subcomponents implement `TypeThrowable` only. Catch a marker contract to
+handle a whole family:
 
 ```php
 use Valkyrja\Type\Throwable\Contract\TypeThrowable;
