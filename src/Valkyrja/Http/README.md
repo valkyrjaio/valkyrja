@@ -1257,13 +1257,49 @@ public function dashboard(): ResponseContract
 `RequestReceived` and `RouteNotMatched` are global-only stages: the first runs
 before a route exists, and the second runs when no route matched.
 
-### Middleware for a group of routes
+### Sharing route defaults across a group
 
 The `#[Route\Middleware]` attribute declares `Attribute::TARGET_METHOD`, so a
-class-level placement fails. To give every route in a controller the same
-middleware, add the attribute to each routed method, or register the
-middleware globally. The class-level grouping attributes are `#[Route\Path]`
-and `#[Route\Name]`.
+class-level placement fails. The class-level grouping attributes are
+`#[Route\Path]` and `#[Route\Name]`.
+
+To share middleware — or any route default — across a group of routes, extend
+the `Route` attribute with the defaults baked in. The collector matches
+attributes by `instanceof`, so it collects a `Route` subclass like any other
+route. The subclass names what the group is, which keeps every shared default
+visible in one place:
+
+```php
+use Attribute;
+use Valkyrja\Http\Routing\Attribute\Route;
+
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+class UserRoute extends Route
+{
+    public function __construct(string $path, string $name)
+    {
+        parent::__construct(
+            path: '/users' . $path,
+            name: 'users.' . $name,
+            routeMatchedMiddleware: [AuthRouteMatchedMiddleware::class],
+        );
+    }
+}
+
+class UserController
+{
+    #[UserRoute(path: '/{id}', name: 'show')]
+    public function show(): ResponseContract
+    {
+        // ...
+    }
+}
+```
+
+Every `#[UserRoute]` route carries the `/users` path prefix, the `users.` name
+prefix, and the auth middleware. The same pattern applies to the `Route` data
+object for pre-built routes: extend it with your defaults and return the
+subclass from `getRoutes()`.
 
 ## Response caching
 
