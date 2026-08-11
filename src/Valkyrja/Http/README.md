@@ -21,8 +21,11 @@ The component has six parts:
 
 ## Configuration and entry point
 
-The `HttpConfig` class holds all configuration as constructor arguments, and
-every argument has a default. `Http::run()` is the entry point:
+The `HttpConfig` class holds the core configuration as constructor arguments,
+and every argument has a default. Two features read extra config contracts
+that an `HttpConfig` subclass implements: the cache directory for
+[response caching](#response-caching) and the default
+[HTTP client](#the-http-client). `Http::run()` is the entry point:
 
 ```php
 // public/index.php
