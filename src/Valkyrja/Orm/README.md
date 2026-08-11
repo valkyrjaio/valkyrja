@@ -705,7 +705,7 @@ clause types render as a prefix that joins the clause to the one before it.
 Warning: a `WhereGroup` holds no clause type of its own, so the group renders
 with no `AND` or `OR` before its parentheses. Place the group first in the
 list, where no operator is required. A group after another clause renders SQL
-that the database rejects; use a raw statement for that shape.
+that the database rejects. Use a raw statement for that shape.
 
 A `Value` that holds a `QueryBuilderContract` renders as a subquery:
 
