@@ -2,103 +2,168 @@
 
 ## Introduction
 
-The container is the backbone of a Valkyrja application. Every service,
-component, and object is registered in and resolved through it. Understanding
-the container means understanding how the entire framework is assembled — and
-how to extend it cleanly for your own application.
+The container registers and resolves every service in a Valkyrja application.
+It is **PSR-11 compliant**: any library that accepts
+`Psr\Container\ContainerInterface` can use it. Beyond PSR-11, the container
+adds an explicit binding model, three service types, and deferred loading.
 
-Valkyrja's container is **PSR-11 compliant**, meaning any library that accepts
-`Psr\Container\ContainerInterface` will work with it out of the box. Beyond
-PSR-11, Valkyrja's container adds an explicit binding model, three distinct
-service types, and deferred loading that makes the framework fast by default.
+This document covers each feature with a worked example:
+
+- [Binding Services](#binding-services) — the four binding methods and the
+  callable signature.
+- [Resolving Services](#resolving-services) — the five resolution methods.
+- [Inspecting the Container](#inspecting-the-container) — the state methods.
+- [Service Providers](#service-providers) — the registration convention, from
+  the publish callback to the application config.
+- [A Complete Example](#a-complete-example) — the full chain in one place.
+- [Container Data](#container-data) — capturing, seeding, and merging
+  bindings.
+- [Child Containers](#child-containers) — per-request isolation for the
+  persistent worker runtimes.
+- [Exceptions](#exceptions) — what the container throws, and when.
 
 ## Contracts
 
-Throughout Valkyrja's codebase, interfaces are called **contracts**. This naming
-is intentional and rooted in the framework's goal of language portability — the
-concept of a contract (a guaranteed set of behaviours that a type must fulfil)
-is universal across languages, where the word "interface" is not. When you see a
-class or file ending in `Contract`, it is an interface.
-
-This convention applies to your own code too. Binding against contracts rather
-than concrete classes is the recommended pattern — it keeps your application
-flexible, testable, and aligned with how the framework itself is structured, but
-it is not a hard and fast rule.
+Valkyrja calls an interface a **contract**; a class or file name that ends in
+`Contract` is an interface. Bind against a contract rather than a concrete
+class where you can — the framework itself does.
 
 ## Deferred Loading
 
-The most important thing to understand about Valkyrja's container is that
-**services are deferred by default**. When the application boots, the container
-does not instantiate anything. Instead, it builds a lightweight map — a record
-of which service IDs exist and how to resolve them when asked. A service is only
-created the first time it is actually requested for singletons, and each time it
-is requested in the case of services.
-
-This is what makes Valkyrja fast. The container carries virtually no boot-time
-overhead regardless of how many services are registered. Cost is paid only when
-a service is used.
+Services are **deferred by default**. At boot the container instantiates
+nothing. It stores a map of service ids and the callbacks that build them.
+The container creates a singleton on its first request and caches it. The
+container creates a service on every request. Boot cost therefore does not
+grow with the number of registered services.
 
 ## Service Types
 
-Valkyrja's container distinguishes between three types of registrations. Choosing
-the right type matters for both correctness and performance.
+The container has three registration types.
 
-**Singleton** — A single instance is created on first resolution and reused on
-every subsequent call. Use this for stateful services that should be shared
-across the application: database connections, loggers, the event dispatcher.
+**Singleton** — The container creates one instance on the first resolution and
+reuses it on every later call. Use this for shared stateful services: a
+database connection, a logger, the event dispatcher.
 
-**Service** — A new instance is created on every resolution. Use this for
-stateless objects or anywhere a fresh instance is required per caller.
+**Service** — The container creates a new instance on every resolution. Use
+this for stateless objects, or where each caller must own a fresh instance.
 
-**Alias** — A service ID that maps to another registered service ID. Resolving
-an alias resolves the underlying service transparently.
+**Alias** — A service id that maps to another registered service id. A
+resolution of the alias resolves the target service.
 
 ## Binding Services
 
-A **service provider** registers a service. This is the convention the framework
-follows everywhere. The provider holds the registration logic: a `publishers()`
-map, plus one static `publishX(ContainerContract $container): void` callback for
-each service it provides. The callback constructs the service and hands it to the
-container:
-
-```php
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-
-class UserServiceProvider implements ServiceProviderContract
-{
-    public function publishers(): array
-    {
-        return [
-            UserRepositoryContract::class => [self::class, 'publishUserRepository'],
-        ];
-    }
-
-    public static function publishUserRepository(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            UserRepositoryContract::class,
-            new UserRepository(
-                $container->getSingleton(DatabaseContract::class)
-            )
-        );
-    }
-}
-```
-
-This splits the work in two. The provider owns registration. The service class
-owns only its own behavior — it implements its contract and carries no
-registration code. `UserRepository` above is a plain class with a constructor.
-
-[Service Providers](#service-providers) describes the full pattern.
+In application code, a service provider registers most services;
+[Service Providers](#service-providers) shows the pattern. The methods below
+are what publish callbacks and boot code call.
 
 ### The Callable Signature
 
 `bind()` and `bindSingleton()` accept any `callable` with the signature
-`(ContainerContract $container, array $arguments): object`. A static factory
-method on the service class satisfies that signature, so you can pass one as an
-array callable:
+`(ContainerContract $container, array $arguments): object`. The container
+passes itself as the first argument, so the callable resolves its own
+dependencies from the container. The second argument carries the arguments
+that the caller passes to `getService()` or `get()`. Any callable with that
+signature works: a closure, an invokable object, or an array callable that
+points to a static method.
+
+### bind()
+
+`bind(string $id, callable $callable): static` binds a service id to a
+callable factory. Every call to `getService($id)` invokes the callable and
+returns a fresh instance. Choose `bind()` when each caller must own its
+instance — a builder that accumulates state, or an object built from
+per-call arguments:
 
 ```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+$container->bind(
+    QueryBuilderContract::class,
+    static function (ContainerContract $container, array $arguments): QueryBuilder {
+        [$table] = $arguments;
+
+        return new QueryBuilder(
+            connection: $container->getSingleton(ConnectionContract::class),
+            table: $table,
+        );
+    },
+);
+
+$users  = $container->getService(QueryBuilderContract::class, ['users']);
+$orders = $container->getService(QueryBuilderContract::class, ['orders']);
+// Two calls, two fresh instances.
+```
+
+### bindSingleton()
+
+`bindSingleton(string $id, callable $callable): static` is the same as
+`bind()`, but singleton-scoped. The container invokes the callable once on
+the first resolution and caches the result. Choose it for a shared service
+whose construction should wait until first use:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+$container->bindSingleton(
+    LoggerContract::class,
+    static fn (ContainerContract $container): FileLogger => new FileLogger(
+        path: '/storage/logs/app.log',
+    ),
+);
+
+$logger = $container->getSingleton(LoggerContract::class); // The first call builds and caches.
+$same   = $container->getSingleton(LoggerContract::class); // Later calls return the cached instance.
+```
+
+### bindAlias()
+
+`bindAlias(string $alias, string $id): static` maps one service id to another
+id. A resolution of the alias resolves the target. Use it to publish one
+implementation under two ids — its concrete class and its contract:
+
+```php
+$container->bindSingleton(
+    FileLogger::class,
+    static fn (ContainerContract $container): FileLogger => new FileLogger(
+        path: '/storage/logs/app.log',
+    ),
+);
+
+$container->bindAlias(LoggerContract::class, FileLogger::class);
+
+// Both ids resolve the same cached instance:
+$logger = $container->get(LoggerContract::class);
+$same   = $container->get(FileLogger::class);
+```
+
+`bindAlias()` stores the mapping only. The target id needs its own binding.
+The container checks the target when the alias resolves, not when you bind
+the alias.
+
+### setSingleton()
+
+`setSingleton(string $id, object $singleton): static` registers an
+already-constructed object. Use it when the instance exists before the
+container needs it — the config at boot, the request in a worker loop, or an
+instance a publish callback builds inline:
+
+```php
+$config = new AppConfig(environment: 'production');
+
+$container->setSingleton(AppConfig::class, $config);
+```
+
+A later `setSingleton()` for the same id replaces the instance.
+
+### The Static Factory Alternative
+
+A static factory method on the service class satisfies
+[the callable signature](#the-callable-signature), so an array callable can
+point to one:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
 class UserRepository implements UserRepositoryContract
 {
     public static function make(ContainerContract $container, array $arguments = []): static
@@ -113,20 +178,21 @@ $container->bind(UserRepositoryContract::class, [UserRepository::class, 'make'])
 ```
 
 This is a valid alternative, not the default. It moves registration into the
-service class, which otherwise has none. Prefer a service provider unless a
-class genuinely owns a construction step that callers must reuse.
+service class, so the class now carries construction knowledge that a
+provider would otherwise own. Prefer a service provider unless the class owns
+a construction step that callers must reuse.
 
-Neither approach uses reflection-based autowiring. Every dependency is declared
-in code.
+Neither approach uses reflection-based autowiring. Every dependency is
+declared in code.
 
 ### Every Service Needs a Binding
 
-The container resolves a service id through a cached instance, a bound factory,
-or an alias. It builds nothing that a binding does not describe.
+The container resolves a service id through a cached instance, a bound
+factory, or an alias. It builds nothing that a binding does not describe.
 
 Warning: `get()` throws `ContainerInvalidReferenceException` for a service id
-that none of the three resolves. The container does not construct the class that
-the id names.
+that none of the three resolves. The container does not construct the class
+that the id names.
 
 ```php
 // Wrong — nothing binds the middleware, so the container throws.
@@ -134,7 +200,7 @@ $handler->add(AuthMiddleware::class);
 ```
 
 ```php
-// Right — the service provider binds the middleware, and the handler resolves it.
+// Right — the binding describes the middleware, and the handler resolves it.
 $container->bindSingleton(
     AuthMiddleware::class,
     static fn (ContainerContract $container): AuthMiddleware => new AuthMiddleware(
@@ -146,71 +212,138 @@ $handler->add(AuthMiddleware::class);
 ```
 
 This rule holds for every class that a config names by class string — a
-middleware, an event, and a view replacement. One explicit place states how each
-service is built.
-
-### Binding Methods
-
-**`bind(string $id, callable $callable)`** — Binds a service ID to a callable
-factory. The callable receives the container and an optional arguments array and
-must return an object. Every call to `getService($id)` invokes the callable and
-returns a fresh instance. Any callable works — a closure, an invokable object, or
-an array callable that points to a static factory method.
-
-**`bindSingleton(string $id, callable $callable)`** — Same as `bind()`, but
-singleton-scoped. The callable is invoked once on first resolution and the result
-is cached; all subsequent calls return the same instance.
-
-**`bindAlias(string $alias, string $id)`** — Maps one service ID to another
-already registered in the container.
-
-**`setSingleton(string $id, object $instance)`** — Registers an
-already-constructed object directly. This is the method service providers use
-inside their publish callbacks when the instance is built inline.
-
-### Checking Registrations
-
-Before resolving, you can inspect what is registered:
-
-```php
-$container->has(string $id): bool                  // PSR-11; true if registered in any form
-$container->isSingleton(string $id): bool          // true if binding OR resolved instance exists
-$container->isSingletonBinding(string $id): bool   // true if callable binding exists (not yet resolved)
-$container->isSingletonInstance(string $id): bool  // true if already resolved and cached
-$container->isService(string $id): bool
-$container->isAlias(string $id): bool
-```
-
-`isSingleton` is equivalent to `isSingletonBinding || isSingletonInstance`. The
-two fine-grained methods are useful when you need to distinguish between "this
-singleton is registered but not yet built" and "this singleton is already live
-and can be reused" — which is exactly the distinction child containers rely on
-(see [Child Containers](#child-containers)).
+middleware, an event, and a view replacement. One explicit place states how
+each service is built.
 
 ## Resolving Services
 
-**`get(string $id): mixed`** — PSR-11 resolution. Works across all three types
-without the caller needing to know which type was registered. Slightly slower
-than the type-specific methods due to the additional lookup.
+### get()
 
-**`getSingleton(string $id): object`** — Resolves a singleton. On first access
-the container invokes the registered callable (or publish callback) and caches
-the result. All subsequent calls return the cached instance without any
-additional work.
+`get(string $id, array $arguments = []): object` is the PSR-11 resolution
+method. It checks singletons first, then services, then aliases, so the
+caller does not need to know the registration type. `$arguments` go to the
+service callable when the id resolves to a service, and forward through an
+alias to its target. A singleton resolution ignores `$arguments`. Use
+`get()` where the registration type is unknown — for example, a class string
+read from a config:
 
-**`getService(string $id): object`** — Resolves a service, always returning a
-fresh instance by invoking the registered callable.
+```php
+$middleware = $container->get($middlewareClass);
+```
 
-**`getAliased(string $alias): object`** — Resolves the service the alias points
-to.
+### getSingleton()
 
-**`getAliasedId(string $alias): string|null`** — Returns the id that the alias
-points to, and returns `null` when the id is not an alias. The method reads one
-hop. It does not follow a chain of aliases, so a caller that must reach the end
-of a chain calls the method again.
+`getSingleton(string $id): object` resolves a singleton. The first access
+invokes the binding or the publish callback and caches the result. Later
+calls return the cached instance. Use it for every shared service:
 
-Use this method to classify an alias. The state methods answer for the id that
-you give them, never for the alias target, so ask for the target first:
+```php
+$logger = $container->getSingleton(LoggerContract::class);
+```
+
+### getService()
+
+`getService(string $id, array $arguments = []): object` resolves a service.
+Every call invokes the registered callable with `$arguments` and returns a
+fresh instance:
+
+```php
+$query = $container->getService(QueryBuilderContract::class, ['users']);
+```
+
+Warning: `bindSingleton()` also stores its factory in the service map, so
+`getService()` accepts a singleton-bound id — and returns a fresh instance
+that never reaches the singleton cache. Resolve a singleton with
+`getSingleton()` or `get()`.
+
+### getAliased()
+
+`getAliased(string $id, array $arguments = []): object` resolves the service
+that the alias points to. Use it when the caller knows the id is an alias and
+wants to skip the singleton and service lookups:
+
+```php
+$logger = $container->getAliased(LoggerContract::class);
+```
+
+`getAliased()` publishes and resolves the target as `get()` does. It does
+not run a deferred publish callback registered under the alias id itself.
+Resolve an alias that a callback creates through `get()`, which runs the
+callback first.
+
+### getAliasedId()
+
+`getAliasedId(string $alias): string|null` returns the id that the alias
+points to, and returns `null` when the id is not an alias. The method reads
+one hop. It does not follow a chain of aliases, so a caller that must reach
+the end of a chain calls the method again.
+
+### Prefer the Specific Method
+
+The type-specific methods throw `ContainerInvalidReferenceException` when the
+id is not registered as that type. When you know the registration type,
+prefer the specific method over `get()`. The saved lookup is small per call
+but adds up in a hot path such as route dispatch.
+
+## Inspecting the Container
+
+Before a resolution, you can inspect what is registered:
+
+- `has(string $id): bool` — PSR-11; true when the id is registered in any
+  form, a deferred publish callback included.
+- `isSingleton(string $id): bool` — a singleton binding or a resolved
+  instance exists.
+- `isSingletonBinding(string $id): bool` — a singleton binding exists. The
+  binding does not clear on resolution, so the method can return `true` for a
+  resolved singleton.
+- `isSingletonInstance(string $id): bool` — the singleton is resolved and
+  cached.
+- `isService(string $id): bool` — a service binding exists. A
+  `bindSingleton()` id also stores its factory in the service map, so the
+  method returns `true` for a singleton binding too.
+- `isAlias(string $id): bool` — the id is an alias.
+- `isPublished(string $id): bool` — the id's publish callback ran, or a
+  boot-time `bind()`, `bindSingleton()`, or `setSingleton()` marked the id.
+  `bindAlias()` does not mark the id.
+
+`isSingleton($id)` equals `isSingletonBinding($id) || isSingletonInstance($id)`.
+
+No state method runs a deferred publish callback. Each method reports the
+current maps only, so `isAlias()` and `getAliasedId()` answer `false` and
+`null` for an alias that an unrun callback would create.
+
+### Conditional Registration
+
+Boot code uses `has()` to register a fallback only when no other binding
+exists:
+
+```php
+if (! $container->has(MetricsContract::class)) {
+    $container->setSingleton(MetricsContract::class, new NullMetrics());
+}
+```
+
+### Resolving Only a Built Instance
+
+A resolution triggers construction, so a caller that must not pay that cost
+checks `isSingletonInstance()` first. A shutdown hook is one example — it
+logs only when the logger is already built:
+
+```php
+if ($container->isSingletonInstance(LoggerContract::class)) {
+    $container->getSingleton(LoggerContract::class)->info('Shutting down.');
+}
+```
+
+The binding-versus-instance distinction is also what
+[child containers](#child-containers) use to decide when a parent instance is
+safe to reuse.
+
+### Classifying an Alias
+
+Warning: the state methods answer for the id that you give them, never for
+the alias target. To classify an alias, read the target with
+`getAliasedId()` first, then classify the target:
 
 ```php
 // Wrong — the state method answers for the alias, which holds no instance.
@@ -235,201 +368,249 @@ if ($container->isSingleton($id) && ! $container->isAlias($id)) {
 }
 ```
 
-When you know the type of what you are resolving, prefer the specific method
-over `get()`. The difference is small per call but meaningful at scale —
-especially in a hot path like route dispatch.
-
 ## Service Providers
 
-The primary way to register services is through **service providers**. A service
-provider is a class that declares which services it provides and how to
-construct them when they are first requested.
+A **service provider** registers a service. This is the convention the
+framework follows everywhere. The provider owns the registration logic; the
+service class implements its contract and carries no registration code.
 
 A service provider implements
-`Valkyrja\Container\Provider\Contract\ServiceProviderContract`. It defines
-the following things:
+`Valkyrja\Container\Provider\Contract\ServiceProviderContract`, which has one
+instance method, `publishers()`.
 
-**`publishers()`** — A map of service IDs to the static publish callbacks that
-register them. The keys are the service IDs the provider is responsible for;
-the container uses this map to defer loading until a service is first requested:
+### The publishers() Map
+
+`publishers()` returns a map from service ids to static publish callbacks.
+One provider can publish many services — one map entry and one callback per
+id:
 
 ```php
-public function publishers(): array
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
+class NotifierServiceProvider implements ServiceProviderContract
 {
-    return [
-        CacheContract::class => [self::class, 'publishCache'],
-    ];
+    public function publishers(): array
+    {
+        return [
+            NotifierContract::class     => [self::class, 'publishNotifier'],
+            NotifierLogContract::class  => [self::class, 'publishNotifierLog'],
+        ];
+    }
+
+    public static function publishNotifier(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            NotifierContract::class,
+            new SlackNotifier()
+        );
+    }
+
+    public static function publishNotifierLog(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            NotifierLogContract::class,
+            new NotifierLog(
+                $container->getSingleton(LoggerContract::class)
+            )
+        );
+    }
 }
 ```
 
-**The publish callback** — A static method that receives the container and
-registers the service. This is only ever called on the first request for that
-service:
+To swap an implementation, change the publish callback. The contract and the
+callers do not change.
+
+A publish callback can resolve other services from the container, as
+`publishNotifierLog()` does. Those services are themselves deferred; the
+resolution triggers their own publish callbacks when needed.
+
+### Deferred Publication
+
+The container stores the `publishers()` map and defers each callback. The
+first resolution of an id — through `get()`, `getSingleton()`, or
+`getService()` — runs the callback for that id and marks the id published. A
+callback runs at most once.
+
+A publish callback usually builds the instance inline with `setSingleton()`.
+A callback can instead call `bind()` when the service must stay fresh per
+resolution:
 
 ```php
-public static function publishCache(ContainerContract $container): void
+public static function publishQueryBuilder(ContainerContract $container): void
 {
-    $container->setSingleton(
-        CacheContract::class,
-        new RedisCache(
-            $container->getSingleton(RedisClientContract::class)
-        )
+    $container->bind(QueryBuilderContract::class, [self::class, 'createQueryBuilder']);
+}
+
+public static function createQueryBuilder(ContainerContract $container, array $arguments): QueryBuilder
+{
+    [$table] = $arguments;
+
+    return new QueryBuilder(
+        connection: $container->getSingleton(ConnectionContract::class),
+        table: $table,
     );
 }
 ```
 
-The publish callback can resolve other services from the container freely. Those
-services are themselves deferred — resolving them here triggers their own
-publish callbacks if they haven't been resolved yet.
+### Wiring Providers into the Application
 
-## Child Containers
-
-A child container is a per-request container that inherits the parent's frozen
-state at zero cost and writes only to its own local maps. This is the isolation
-mechanism used by Valkyrja's persistent worker entry points (FrankenPHP,
-OpenSwoole, RoadRunner) to ensure that request-scoped state never bleeds between
-concurrent requests.
-
-### The Parent/Child Invariant
-
-The parent container is bootstrapped once when the worker process starts and
-then **frozen** — nothing may write to it again. Each incoming request receives
-a fresh child container. The child checks its own maps first; if a service is
-not registered locally it falls back to the parent. When the request ends the
-child is discarded; the parent is unmodified.
-
-### ContainerData
-
-Before the request loop begins, the parent's `getData()` is captured once:
+A component provider hands the service providers to the application through
+`getContainerProviders()`:
 
 ```php
-$data = $app->getContainer()->getData();
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+
+class AppComponentProvider implements ComponentProviderContract
+{
+    public function getContainerProviders(ApplicationContract $app): array
+    {
+        return [new NotifierServiceProvider()];
+    }
+
+    // The other ComponentProviderContract methods are omitted here.
+}
 ```
 
-`getData()` returns a `ContainerData` value object. It is passed to every child
-on construction. Because PHP arrays are copy-on-write, each child gets its own
-logical copy of the maps at zero cost until it writes to one.
-
-### Resolution Order
-
-For each lookup the child follows this order:
-
-1. **Child's own maps** — anything registered or resolved locally this request
-2. **Parent** — read-only fallback; the parent is never written to through the child
-
-Singletons resolved in the child are cached in the child only. The parent's
-instance map is never modified after `bootstrap()`.
-
-For singleton resolution specifically, the child applies this three-step strategy:
-
-1. **Child has a cached instance** — return it directly (child-local write, highest priority)
-2. **Parent has a cached instance** — reuse it safely; the parent is frozen so the instance will not change
-3. **Child has a class binding** — create a fresh instance in the child's scope only
-
-`isPublished` follows the same child-first, parent-fallback pattern. If the
-parent has already published a service, the child treats it as published and
-does not re-publish it — preserving the parent's frozen state.
-
-### Available Implementations
-
-Two implementations are provided:
-
-Both implementations share the same invariant: neither triggers deferred
-resolution in the parent. A lookup on the child will reuse a parent singleton
-only if it is already a resolved instance (`isSingletonInstance`). Services that
-are still in the deferred map — registered but never force-resolved — are
-invisible to child containers. Ensure everything needed at request time is
-eagerly resolved in `bootstrapParentServices()` before the request loop begins.
-
-**`Valkyrja\Container\Manager\ChildContainer`** — The default. Delegates to the
-parent via `ContainerContract`, meaning it works with any parent that implements
-the contract. This is the portable, cross-language implementation.
-
-**`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. Reads fall
-back to the parent's maps via direct protected-field access rather than method
-calls, eliminating any risk of accidentally triggering deferred publishing or
-writing to parent state. Requires a concrete `Container` parent. Use only when
-profiling confirms a bottleneck at very high child construction rates.
-
-### Using a Child Container
+The app config's `providers` parameter lists the component providers. The
+default value holds the framework's own component provider, so a config that
+sets the parameter lists the framework provider again, then the
+application's:
 
 ```php
-use Valkyrja\Container\Data\ContainerData;
-use Valkyrja\Container\Manager\ChildContainer;
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 
-// Once, before the request loop:
-$parent = $app->getContainer();
-$data   = $parent->getData();
-
-// Per request, inside the loop:
-$child = new ChildContainer($parent, new ContainerData(
-    deferredCallback: $data->deferredCallback,
-    singletons: $data->singletons,
-));
-
-// Register request-scoped services on the child only:
-$child->setSingleton(RequestContract::class, $request);
-
-// Resolve as normal — falls back to parent transparently:
-$handler = $child->getSingleton(RequestHandlerContract::class);
+$config = new HttpConfig(
+    dir: __DIR__,
+    providers: [
+        new HttpApplicationComponentProvider(),
+        new AppComponentProvider(),
+    ],
+);
 ```
 
-In practice you will not construct child containers directly. The worker entry
-classes (`WorkerHttp` and its subclasses) handle this for every request. See the
-[Application README](../Application/README.md#persistent-worker-lifecycle) for
-the full lifecycle.
+At boot the application walks each component provider's
+`getComponentProviders()` depth-first, so a component provider can pull in
+the component providers it depends on. The framework then registers every
+collected service provider in the container. Registration stores the
+`publishers()` maps only; no callback runs until its id is first resolved.
 
-### Singleton State Methods
+### Manual Registration and Publication
 
-Child containers rely on the two fine-grained singleton state methods to decide
-how to handle a lookup:
+The container exposes the provider machinery directly.
 
-- `isSingletonBinding` — the service is registered as a singleton class but has
-  not yet been resolved. The child should create a fresh instance in its own
-  scope.
-- `isSingletonInstance` — the service has already been resolved and cached. If
-  only the parent has the instance, the child can reuse it safely (the parent is
-  frozen). If the child has its own instance, that takes priority.
+**`register(ServiceProviderContract $provider): void`** — Stores the
+provider's `publishers()` map. The wiring above calls this for you; call it
+yourself to register a provider outside the config chain — in a test, for
+example. It throws `ContainerInvalidPublishCallbackException` when a map
+entry is not callable.
 
-Both methods check the child's own state first, then fall back to the parent.
+The last registered callback for an id wins. A provider registered later
+replaces an earlier provider's callback for the same unpublished id, so an
+application provider can replace a framework service by publishing under the
+framework's id:
+
+```php
+class AppOrmServiceProvider implements ServiceProviderContract
+{
+    public function publishers(): array
+    {
+        // The framework provider publishes a default registry under this id.
+        // This provider registers later, so this callback replaces it.
+        return [
+            EntityRegistryContract::class => [self::class, 'publishEntityRegistry'],
+        ];
+    }
+
+    public static function publishEntityRegistry(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            EntityRegistryContract::class,
+            new EntityRegistry(entities: [User::class]),
+        );
+    }
+}
+```
+
+**`publish(string $id): void`** — Runs the id's publish callback now and
+marks the id published. When no callback exists, the method does nothing.
+Use it to publish a service eagerly — before a worker's request loop, for
+example — instead of on first resolution.
+
+**`isPublished(string $id): bool`** — Reports whether the id is published
+([Inspecting the Container](#inspecting-the-container)).
+
+### Binding Without a Provider
+
+A component provider can also bind a service directly, paired with a static
+factory ([The Static Factory Alternative](#the-static-factory-alternative)):
+
+```php
+public function getContainerProviders(ApplicationContract $app): array
+{
+    $app->getContainer()->bindSingleton(
+        NotifierContract::class,
+        [SlackNotifier::class, 'make']
+    );
+
+    return [];
+}
+```
+
+The two approaches combine in one application, but not for one id: a
+boot-time `bind()`, `bindSingleton()`, or `setSingleton()` marks the id as
+published, so a publish callback registered for the same id never runs.
+Register each id through one approach only.
 
 ## A Complete Example
 
-### Using a Service Provider
-
-This is the default. The provider registers the service. Each implementation is
-a plain class with a constructor and no registration code.
+The chain from a contract to a resolved service has five parts: the contract,
+an implementation, a service provider, a component provider, and the app
+config.
 
 ```php
-// 1. The contract
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
+// 1. The contract.
 interface NotifierContract
 {
     public function notify(string $message): void;
 }
 
-// 2. One possible implementation
+// 2. One implementation.
 class SlackNotifier implements NotifierContract
 {
-    public function __construct(private string $webhookUrl) {}
+    public function __construct(
+        protected string $webhookUrl,
+    ) {
+    }
 
     public function notify(string $message): void
     {
-        // send to Slack
+        // Send the message to the Slack webhook.
     }
 }
 
-// 3. Another possible implementation
-class TeamsNotifier implements NotifierContract
+// 3. Another implementation.
+class LogNotifier implements NotifierContract
 {
-    public function __construct() {}
+    public function __construct(
+        protected LoggerContract $logger,
+    ) {
+    }
 
     public function notify(string $message): void
     {
-        // send to Teams
+        $this->logger->info($message);
     }
 }
 
-// 4. The service provider — it owns the registration
+// 4. The service provider owns the registration.
 class NotifierServiceProvider implements ServiceProviderContract
 {
     public function publishers(): array
@@ -443,76 +624,240 @@ class NotifierServiceProvider implements ServiceProviderContract
     {
         $container->setSingleton(
             NotifierContract::class,
-            new TeamsNotifier()
+            new SlackNotifier(
+                webhookUrl: 'https://hooks.example.com/notify',
+            )
         );
     }
 }
 
-// 5. The component provider
+// 5. The component provider hands the service provider to the application.
 class AppComponentProvider implements ComponentProviderContract
 {
+    public function getComponentProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
     public function getContainerProviders(ApplicationContract $app): array
     {
         return [new NotifierServiceProvider()];
     }
-}
-```
 
-To swap the implementation, change the publish callback. The contract, the
-callers, and the two notifier classes stay as they are.
-
-### Binding without a Service Provider
-
-This is the alternative. Here the service class supplies a static factory, and
-the component provider binds it directly.
-
-```php
-// 1. The contract
-interface NotifierContract
-{
-    public function notify(string $message): void;
-}
-
-// 2. The implementation with a static make factory
-class SlackNotifier implements NotifierContract
-{
-    public function __construct(private string $webhookUrl) {}
-
-    public static function make(ContainerContract $container, array $arguments = []): static
+    public function getEventProviders(ApplicationContract $app): array
     {
-        $config = $container->getSingleton(HttpConfig::class);
-
-        return new static($config->key); // illustrative
+        return [];
     }
 
-    public function notify(string $message): void
+    public function getCliProviders(ApplicationContract $app): array
     {
-        // send to Slack
+        return [];
     }
-}
 
-// 3. The component provider
-class AppComponentProvider implements ComponentProviderContract
-{
-    public function getContainerProviders(ApplicationContract $app): array
+    public function getHttpProviders(ApplicationContract $app): array
     {
-        $app->getContainer()->bindSingleton(
-            NotifierContract::class,
-            [SlackNotifier::class, 'make']
-        );
-
         return [];
     }
 }
 ```
 
-With this in place, `NotifierContract::class` is known to the container at boot
-time, but `SlackNotifier` or `TeamsNotifier` (depending on implementation) is
-never instantiated until something calls
-`$container->getSingleton(NotifierContract::class)`
-or `$container->get(NotifierContract::class)`.
+The app config lists the component provider, as
+[Wiring Providers into the Application](#wiring-providers-into-the-application)
+shows. After boot, any caller resolves the notifier through its contract:
 
-> NOTE: These two methodologies can be used together, you don't need to choose
-> one or the other, and they can be used together. Be sure not to override a
-> contract with two separate implementations, as would be the case if these two
-> examples were combined.
+```php
+$notifier = $app->getContainer()->getSingleton(NotifierContract::class);
+
+$notifier->notify('The deploy is complete.');
+```
+
+The first `getSingleton()` call runs `publishNotifier()` and caches the
+instance. Nothing constructs `SlackNotifier` before that call. To swap to
+`LogNotifier`, change `publishNotifier()` to build a `LogNotifier` and
+resolve `LoggerContract` from the container — the contract, the callers, and
+both notifier classes stay as they are.
+
+## Container Data
+
+`ContainerData` is a readonly value object with four maps: `aliases`,
+`callbacks`, `services`, and `singletons`. Three operations move it in and
+out of a container:
+
+```php
+use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Manager\Container;
+
+// Capture a container's bindings:
+$data = $container->getData();
+
+// Seed a new container; new Container() starts empty:
+$seeded = new Container($data);
+
+// Merge into an existing container:
+$other->setFromData($data);
+```
+
+Warning: the data holds bindings, not instances. The `singletons` map holds
+singleton markers, so a resolved instance is not captured, and an id
+registered only with `setSingleton()` has no entry at all.
+
+`setFromData()` merges: an incoming entry replaces an existing entry with
+the same id, and an entry the data does not carry stays as it is.
+`ChildContainer` takes a `ContainerData` on construction;
+`NativeChildContainer` reads the parent directly and takes none (see
+[Child Containers](#child-containers)).
+
+## Child Containers
+
+A child container is a per-request container. It inherits the parent's state
+at no cost and writes only to its own local maps. This is the isolation
+mechanism that Valkyrja's persistent worker entry points (FrankenPHP,
+OpenSwoole, RoadRunner) use to keep request-scoped state out of the parent.
+
+### The Parent/Child Invariant
+
+The parent container bootstraps once when the worker process starts and is
+then **frozen** — nothing may write to it again. Each incoming request
+receives a fresh child container. The child checks its own maps first; when an
+id is not registered locally, the child falls back to the parent read-only.
+When the request ends, the child is discarded and the parent is unchanged.
+
+Deferred services stay available in a child. The child receives the parent's
+publish callbacks through `ContainerData`, so the first lookup of an
+unpublished service runs its callback with the child as the container. The
+service publishes into the child's own scope; the parent's maps do not change.
+
+`WorkerHttp::bootstrapParentServices()` exists for cost, not for correctness.
+A service that it force-resolves before the request loop is cached in the
+frozen parent once, and every child reuses that instance. A service left
+deferred publishes again in each child that requests it.
+
+### The Child's Copy of the Data
+
+Before the request loop begins, capture the parent's state once with
+`getData()` ([Container Data](#container-data)). Because PHP arrays are
+copy-on-write, each child gets its own logical copy at no cost until it
+writes to one.
+
+`ChildContainer` copies `callbacks` and `singletons` from the data. Alias and
+service lookups need no copy; they fall back through the parent's methods.
+
+A parent instance registered with `setSingleton()` has no entry in the data,
+and the child still reaches it: the singleton fallback reads the parent's
+cached instances directly.
+
+### Resolution Order
+
+Each lookup checks the child's own maps first, then falls back to the parent.
+For a singleton the child applies a three-step strategy:
+
+1. **The child has a cached instance** — return it.
+2. **The parent has a cached instance** — reuse it; the parent is frozen, so
+   the instance does not change.
+3. **The child has a singleton binding** — build the instance and cache it in
+   the child's own instance map. The parent's maps do not change.
+   [Where a Factory Runs](#where-a-factory-runs) states which container the
+   factory receives.
+
+`isPublished` follows the same child-first, parent-fallback pattern. When the
+parent has already published a service, the child does not publish it again.
+
+### Where a Factory Runs
+
+The container that a callable receives depends on the callable's kind.
+
+**A publish callback runs in the container that publishes it.** A deferred
+service that a child resolves first runs its callback with the child as the
+`$container` argument. The callback resolves its dependencies child-first, so
+it sees request-scoped services registered on the child.
+
+**Under `ChildContainer`, a bound factory runs in the container that owns
+the binding.** `ChildContainer` copies the singleton markers and the publish
+callbacks from `ContainerData`, but not the service factories. A factory
+bound on the parent stays in the parent, and the child delegates the build
+to the parent, so the factory receives the parent as its `$container`
+argument. A factory bound on the child itself runs with the child. Either
+way, a built singleton caches in the child's own instance map, and a
+`bind()` factory caches nowhere.
+
+Warning: under `ChildContainer`, a factory bound on the parent resolves its
+dependencies from the parent. It cannot see a service that exists only on the
+child — a request-scoped `setSingleton()` included. When a service needs a
+request-scoped dependency, register it through a provider's publish callback,
+which runs with the child. `NativeChildContainer` behaves differently on this
+path ([Available Implementations](#available-implementations)).
+
+### Available Implementations
+
+The component provides two implementations.
+
+**`Valkyrja\Container\Manager\ChildContainer`** — The default. It reads the
+parent through `ContainerContract` methods, so any contract implementation can
+be the parent. This is the portable, cross-language implementation. It
+delegates a parent-bound factory to the parent, so the factory receives the
+parent ([Where a Factory Runs](#where-a-factory-runs)).
+
+**`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. It reads
+the parent's protected maps directly, the publish callbacks included. Its
+constructor takes only a concrete `Container` parent and no `ContainerData`.
+
+Warning: the two implementations differ in behavior on the factory path, not
+only in speed. `NativeChildContainer` reads a parent-bound factory out of the
+parent's map and invokes the factory itself, so the factory receives the
+child and resolves its dependencies child-first. `ChildContainer` hands the
+same call to the parent, so the same factory receives the parent. Choose the
+implementation whose factory receiver your services need; the direct map
+access also removes the method-call overhead on the fallback path.
+
+### Using a Child Container
+
+```php
+use Valkyrja\Container\Manager\ChildContainer;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
+
+// Once, before the request loop:
+$parent = $app->getContainer();
+$data   = $parent->getData();
+
+// Per request, inside the loop:
+$child = new ChildContainer($parent, $data);
+
+// Register request-scoped services on the child only:
+$child->setSingleton(ServerRequestContract::class, $request);
+
+// Resolve as normal; the child falls back to the parent:
+$handler = $child->getSingleton(RequestHandlerContract::class);
+```
+
+In practice you do not construct child containers directly. The worker entry
+classes (`WorkerHttp` and its subclasses) do this for every request. See the
+[Application README](../Application/README.md#persistent-worker-lifecycle) for
+the full lifecycle.
+
+## Exceptions
+
+The container throws two exceptions, both under
+`Valkyrja\Container\Throwable\Exception`.
+
+**`ContainerInvalidReferenceException`** — A resolution method received an id
+that it cannot resolve: `get()` found no cached instance, bound factory, or
+alias for the id, or a type-specific method found no registration of its
+type. It extends the SPL `InvalidArgumentException`.
+
+**`ContainerInvalidPublishCallbackException`** — `register()` received a
+`publishers()` map entry that is not callable. It extends the SPL
+`RuntimeException`.
+
+Both implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`, so
+one catch covers everything the container throws:
+
+```php
+use Valkyrja\Container\Throwable\Contract\ContainerThrowable;
+
+try {
+    $service = $container->get($id);
+} catch (ContainerThrowable $throwable) {
+    // Handle any container failure.
+}
+```
