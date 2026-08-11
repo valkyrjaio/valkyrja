@@ -190,6 +190,43 @@ final class ListCommandTest extends TestCase
         self::assertStringContainsString($listRoute2Description, $obOutput);
     }
 
+    /**
+     * A route that declares no namespace option filters nothing instead of throwing.
+     */
+    public function testRunWithARouteThatDeclaresNoOptions(): void
+    {
+        $listRouteName = 'Route1name';
+        $listRoute     = $this->createMock(Route::class);
+        $listRoute->expects($this->once())
+            ->method('getName')
+            ->willReturn($listRouteName);
+        $listRoute->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('Route 1 description');
+
+        $outputFactory = $this->makeOutputFactory();
+        $collection    = $this->createMock(RouteCollectionContract::class);
+        $collection->expects($this->once())
+            ->method('all')
+            ->willReturn([$listRoute]);
+
+        $command = new ListCommand(
+            config: new CliConfig(),
+            route: $this->makeRouteWithoutOptions(),
+            collection: $collection,
+            outputFactory: $outputFactory,
+        );
+
+        $outputFromRun = $command->run();
+
+        ob_start();
+        $outputFromRun->writeMessages();
+        $obOutput = ob_get_clean();
+
+        self::assertStringContainsString('Commands:', $obOutput);
+        self::assertStringContainsString($listRouteName, $obOutput);
+    }
+
     public function testHelp(): void
     {
         $text = 'A command to list all the commands present within the Cli component.';
@@ -217,6 +254,18 @@ final class ListCommandTest extends TestCase
             description: 'List all commands',
             handler: static fn (): OutputContract => new PlainOutput(),
             options: [$option],
+        );
+    }
+
+    /**
+     * A route that declares no option, as a narrowed route or a stale compiled route can.
+     */
+    private function makeRouteWithoutOptions(): RouteContract
+    {
+        return new Route(
+            name: 'list',
+            description: 'List all commands',
+            handler: static fn (): OutputContract => new PlainOutput(),
         );
     }
 

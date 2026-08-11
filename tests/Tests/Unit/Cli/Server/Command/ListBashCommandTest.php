@@ -169,6 +169,38 @@ final class ListBashCommandTest extends TestCase
         self::assertSame("$listRouteName $listRoute2Name", $outputFromRun->getMessages()[0]->getText());
     }
 
+    /**
+     * A route that declares no namespace argument filters nothing instead of throwing.
+     */
+    public function testRunWithARouteThatDeclaresNoArguments(): void
+    {
+        $listRouteName = 'Route1name';
+        $listRoute     = $this->createMock(Route::class);
+        $listRoute->expects($this->once())
+            ->method('getName')
+            ->willReturn($listRouteName);
+
+        $output        = new Output();
+        $outputFactory = $this->createMock(OutputFactory::class);
+        $outputFactory->expects($this->once())
+            ->method('createOutput')
+            ->willReturn($output);
+        $collection = $this->createMock(RouteCollectionContract::class);
+        $collection->expects($this->once())
+            ->method('all')
+            ->willReturn([$listRoute]);
+
+        $command = new ListBashCommand(
+            route: $this->makeRouteWithoutArguments(),
+            collection: $collection,
+            outputFactory: $outputFactory
+        );
+
+        $outputFromRun = $command->run();
+
+        self::assertSame($listRouteName, $outputFromRun->getMessages()[0]->getText());
+    }
+
     public function testHelp(): void
     {
         $text = 'A command to list all the commands present within the Cli component for bash completion.';
@@ -200,6 +232,18 @@ final class ListBashCommandTest extends TestCase
             description: 'List all commands for bash completion',
             handler: static fn (): OutputContract => new Output(),
             arguments: [$applicationName, $namespaceArgument],
+        );
+    }
+
+    /**
+     * A route that declares no argument, as a narrowed route or a stale compiled route can.
+     */
+    private function makeRouteWithoutArguments(): RouteContract
+    {
+        return new Route(
+            name: 'list:bash',
+            description: 'List all commands for bash completion',
+            handler: static fn (): OutputContract => new Output(),
         );
     }
 }

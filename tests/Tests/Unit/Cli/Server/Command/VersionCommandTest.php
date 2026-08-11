@@ -97,6 +97,24 @@ final class VersionCommandTest extends TestCase
         self::assertStringNotContainsString('╭──', $obOutput);
     }
 
+    /**
+     * A route that declares neither option falls through to the banner instead of throwing.
+     */
+    public function testRunWithARouteThatDeclaresNoOptions(): void
+    {
+        $appName    = 'BareApp';
+        $appVersion = '5.0.0';
+
+        $command = new VersionCommand(
+            $this->makeOutputFactory(),
+            new CliConfig(namespace: $appName, version: $appVersion),
+            $this->makeRouteWithoutOptions(),
+        );
+        $output  = $command->run();
+
+        self::assertInstanceOf(Header::class, $output->getMessages()[0]);
+    }
+
     public function testHelp(): void
     {
         $text = 'A command to show the application version and info.';
@@ -126,6 +144,18 @@ final class VersionCommandTest extends TestCase
             description: 'Get the application version',
             handler: static fn (): OutputContract => new PlainOutput(),
             options: [$short, $plain],
+        );
+    }
+
+    /**
+     * A route that declares no option, as a narrowed route or a stale compiled route can.
+     */
+    private function makeRouteWithoutOptions(): RouteContract
+    {
+        return new Route(
+            name: 'version',
+            description: 'Get the application version',
+            handler: static fn (): OutputContract => new PlainOutput(),
         );
     }
 
