@@ -934,6 +934,41 @@ class AppServiceProvider implements ServiceProviderContract
 }
 ```
 
+`ComponentProviderContract` declares five methods, and no base class supplies a default, so `AppComponentProvider` implements all five:
+
+```php
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
+
+class AppComponentProvider implements ComponentProviderContract
+{
+    public function getComponentProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    public function getContainerProviders(ApplicationContract $app): array
+    {
+        return [new AppServiceProvider()];
+    }
+
+    public function getEventProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    public function getCliProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+
+    public function getHttpProviders(ApplicationContract $app): array
+    {
+        return [];
+    }
+}
+```
+
 A service provider reaches the container only through a `ComponentProviderContract` in the config `providers` array — the [Application README](../Application/README.md#component-providers) documents the mechanism. The config below names three: `HttpApplicationComponentProvider` (the framework HTTP components, which the default `providers` value supplies), `OrmComponentProvider` (the ORM services, including `ManagerContract`), and an `AppComponentProvider` that returns `new AppServiceProvider()` from `getContainerProviders()`:
 
 ```php
