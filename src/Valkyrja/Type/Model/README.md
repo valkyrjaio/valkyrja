@@ -537,8 +537,10 @@ custom type class:
 
 ```php
 use Valkyrja\Type\Data\ArrayCast;
+use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Data\OriginalArrayCast;
 use Valkyrja\Type\Data\OriginalCast;
+use Valkyrja\Type\Enum\CastType;
 
 public static function getCastings(): array
 {
