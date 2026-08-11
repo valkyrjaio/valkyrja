@@ -1422,10 +1422,10 @@ class AppHttpConfig extends HttpConfig implements HttpServerConfigContract
 }
 ```
 
-The subclass constructor replaces the parent's, so its `parent::__construct()`
-call must also carry the application's own values from
-[the entry point](#configuration-and-entry-point) — without them, `dir`,
-`key`, and the rest fall back to the framework defaults.
+The subclass constructor replaces the parent's. Without the application's own
+values, `dir`, `key`, and the rest fall back to the framework defaults. Carry
+the values from [the entry point](#configuration-and-entry-point) in the
+`parent::__construct()` call.
 
 The cache key is an MD5 hash of the request path and the request method. Each
 cache file holds the response as JSON. An entry expires after 1800 seconds. A
