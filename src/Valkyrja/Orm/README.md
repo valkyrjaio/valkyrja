@@ -16,6 +16,8 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 $orm = $container->getSingleton(ManagerContract::class);
 ```
 
+The binding exists when the application lists `OrmComponentProvider` in its config `providers` array ([Service Registration](#service-registration)).
+
 The contract declares every entry point:
 
 ```php
@@ -900,7 +902,7 @@ new EntityCast(type: Post::class, column: 'slug')
 // The route parameter value loads through findBy(new Where(new Value('slug', $value)))
 ```
 
-The middleware does not run on its own: no service provider publishes it, and the container does not autowire its three constructor arguments. Bind it in a service provider, then name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`:
+The middleware does not run on its own: no service provider publishes it, and the container does not autowire its three constructor arguments. Bind it in a service provider, register that provider through a component provider in the config `providers` array, then name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -932,11 +934,20 @@ class AppServiceProvider implements ServiceProviderContract
 }
 ```
 
+A service provider reaches the container only through a `ComponentProviderContract` in the config `providers` array — the [Application README](../Application/README.md#component-providers) documents the mechanism. The config below names three: `HttpApplicationComponentProvider` (the framework HTTP components, which the default `providers` value supplies), `OrmComponentProvider` (the ORM services, including `ManagerContract`), and an `AppComponentProvider` that returns `new AppServiceProvider()` from `getContainerProviders()`:
+
 ```php
 use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
+use Valkyrja\Orm\Provider\OrmComponentProvider;
 
 new HttpConfig(
+    providers: [
+        new HttpApplicationComponentProvider(),
+        new OrmComponentProvider(),
+        new AppComponentProvider(),
+    ],
     routeMatchedMiddleware: [EntityRouteMatchedMiddleware::class],
 );
 ```
@@ -1148,3 +1159,5 @@ The ORM service provider registers the following:
 | `Repository`                     | Repository factory (bound with `bind()`) |
 
 Every entry is a singleton except `PDO` and `Repository`. The provider registers those two with `bind()`, so each resolution invokes the factory callable and returns a fresh instance with the provided arguments. The provider resolves the `PDO` binding when it constructs each manager, and a PDO manager resolves the `Repository` binding when it creates a repository.
+
+The provider itself reaches the container through `Valkyrja\Orm\Provider\OrmComponentProvider`, which returns it from `getContainerProviders()`. The default config `providers` value does not include the ORM, so add `new OrmComponentProvider()` to the `providers` array to activate these registrations — the [Application README](../Application/README.md#component-providers) documents the mechanism.
