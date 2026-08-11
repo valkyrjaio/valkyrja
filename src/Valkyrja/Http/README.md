@@ -428,10 +428,9 @@ public function list(): ResponseContract
 }
 ```
 
-Two more `Parameter` arguments cover rarer shapes: `shouldCapture: false`
-constrains the segment with the regex but stores no value, and `value` holds
-the matched value at runtime — the matcher sets it, so route declarations do
-not.
+Two more `Parameter` arguments cover rarer shapes. `shouldCapture: false`
+constrains the segment with the regex but stores no value. `value` holds the
+matched value at runtime — the matcher sets it, so route declarations do not.
 
 #### The Regex constants
 
