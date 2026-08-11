@@ -1289,9 +1289,9 @@ the first two; the interaction options set the output flags:
    middleware runs. An output short-circuits to step 9.
 7. The route handler runs — `$handler($container, $route)` — then the
    `RouteDispatched` middleware runs on its output.
-8. A throwable from any step up to this point lands in the `ThrowableCaught`
-   middleware, which produces the error output. The steps below run outside
-   that guard.
+8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
+   middleware, which produces the error output. Boot, argv parsing, and the
+   steps below all run outside that guard.
 9. The output's messages write to the terminal.
 10. The `ProcessExiting` middleware runs, and `Exiter::exit()` ends the
     process with the output's exit code.
