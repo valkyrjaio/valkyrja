@@ -909,6 +909,7 @@ The middleware does not run on its own: no service provider publishes it, and th
 3. Name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`.
 
 ```php
+use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
@@ -917,6 +918,7 @@ use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 
 class AppServiceProvider implements ServiceProviderContract
 {
+    #[Override]
     public function publishers(): array
     {
         return [
@@ -941,31 +943,37 @@ class AppServiceProvider implements ServiceProviderContract
 `ComponentProviderContract` declares five methods, and no base class supplies a default, so `AppComponentProvider` implements all five:
 
 ```php
+use Override;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
 class AppComponentProvider implements ComponentProviderContract
 {
+    #[Override]
     public function getComponentProviders(ApplicationContract $app): array
     {
         return [];
     }
 
+    #[Override]
     public function getContainerProviders(ApplicationContract $app): array
     {
         return [new AppServiceProvider()];
     }
 
+    #[Override]
     public function getEventProviders(ApplicationContract $app): array
     {
         return [];
     }
 
+    #[Override]
     public function getCliProviders(ApplicationContract $app): array
     {
         return [];
     }
 
+    #[Override]
     public function getHttpProviders(ApplicationContract $app): array
     {
         return [];
