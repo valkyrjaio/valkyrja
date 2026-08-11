@@ -1380,8 +1380,32 @@ $config = new HttpConfig(
 ```
 
 The container publisher constructs the middleware. It takes the cache directory
-from `HttpServerConfig::$responseCacheFilePath` — with the framework's storage
-cache path as the fallback — and `debug` from the application's debug mode.
+from `HttpServerConfigContract::$responseCacheFilePath` — with the framework's
+storage cache path as the fallback — and `debug` from the application's debug
+mode. The publisher reads that contract from the config object passed to
+`Http::run()`, and the built-in `HttpConfig` does not implement it. To set the
+cache directory, extend `HttpConfig` and implement `HttpServerConfigContract`:
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Http\Server\Data\Contract\HttpServerConfigContract;
+use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
+
+class AppHttpConfig extends HttpConfig implements HttpServerConfigContract
+{
+    /**
+     * @param non-empty-string|null $responseCacheFilePath
+     */
+    public function __construct(
+        public readonly string|null $responseCacheFilePath = '/app/storage/cache/response',
+    ) {
+        parent::__construct(
+            requestReceivedMiddleware: [CacheResponseMiddleware::class],
+            responseSentMiddleware:    [CacheResponseMiddleware::class],
+        );
+    }
+}
+```
 
 The cache key is an MD5 hash of the request path and the request method. Each
 cache file holds the response as JSON. An entry expires after 1800 seconds. A
@@ -1453,13 +1477,33 @@ $body = $response->getBody()->getContents();
 
 Three implementations ship: `GuzzleClient` sends over Guzzle, `LogClient`
 writes each request to the log without sending, and `NullClient` does nothing.
-`HttpClientConfig` selects the default:
+The default is `GuzzleClient`.
+
+`HttpClientConfigContract::$defaultClient` selects the client. The container
+publisher reads that contract from the config object passed to `Http::run()`,
+and the built-in `HttpConfig` does not implement it. To select another client,
+extend `HttpConfig` and implement `HttpClientConfigContract`:
 
 ```php
-use Valkyrja\Http\Client\Data\HttpClientConfig;
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\Http;
+use Valkyrja\Http\Client\Data\Contract\HttpClientConfigContract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\LogClient;
 
-$config = new HttpClientConfig(defaultClient: LogClient::class);
+class AppHttpConfig extends HttpConfig implements HttpClientConfigContract
+{
+    /**
+     * @param class-string<ClientContract> $defaultClient
+     */
+    public function __construct(
+        public readonly string $defaultClient = LogClient::class,
+    ) {
+        parent::__construct();
+    }
+}
+
+Http::run(new AppHttpConfig());
 ```
 
 `LogClient` and `NullClient` stand in during development and in tests, so code
