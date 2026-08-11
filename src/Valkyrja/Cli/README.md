@@ -1,22 +1,22 @@
 # CLI
 
-## Introduction
+The CLI component maps command-line input to command methods and writes the
+result to the terminal. The component mirrors the structure of the HTTP
+component, with three renamed concepts:
 
-Valkyrja's CLI layer mirrors the HTTP layer in structure and philosophy. Where
-HTTP maps requests to controller methods, CLI maps input tokens to command
-methods. Where HTTP has a `RequestHandler`, CLI has an `InputHandler`. Commands
-are dispatched directly via a handler callable — no separate Dispatcher object —
-and the middleware pipeline follows the same chain-of-responsibility pattern.
-
-This design means that concepts you already understand from the HTTP layer —
-route providers, attribute-based registration, per-route middleware — carry over
-directly. The terminology shifts slightly: `Request` becomes `Input`, `Response`
-becomes `Output`, and `ResponseSent` becomes `ProcessExiting`. Everything else is
-structurally equivalent.
+| HTTP             | CLI            |
+| ---------------- | -------------- |
+| `Request`        | `Input`        |
+| `Response`       | `Output`       |
+| `RequestHandler` | `InputHandler` |
 
 ## Configuration
 
-CLI applications are bootstrapped using `CliConfig`:
+`CliConfig` configures a CLI application. Two properties are CLI-specific:
+
+- **`applicationName`** — the binary name shown in help and version output.
+- **`defaultCommandName`** — the command that runs when the input names no
+  command. The default is `list`.
 
 ```php
 use Valkyrja\Application\Data\CliConfig;
@@ -29,33 +29,152 @@ Cli::run(new CliConfig(
     debugMode:          false,
     timezone:           'UTC',
     key:                'your-application-key',
-    dataPath:           'App/Provider/Data',
-    dataNamespace:      'App\\Provider\\Data',
     applicationName:    'myapp',
     defaultCommandName: 'list',
 ));
 ```
 
-Two properties are specific to `CliConfig`:
+The example spells out the arguments that an application commonly sets, and
+some shown values equal the constructor defaults. Pass a named argument to set
+a value, and omit the arguments you do not change. Convention: hold your
+application's real values in the config object. Create one config file per
+environment, or read the values from an env file in your own bootstrap. The
+constructor defaults are generic placeholders.
 
-- **`applicationName`** — The name shown in version and help output. This is
-  typically the binary name (e.g. `myapp`, `cli`).
-- **`defaultCommandName`** — The command invoked when no command name is given
-  on the command line. Defaults to `list`.
+Every constructor argument, with its default and what it does:
 
-`CliConfig` can be used alongside HTTP components for applications that run
-CLI and HTTP side-by-side.
+| Property                 | Default                                           | What it does                                                                       |
+| ------------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `namespace`              | `'App'`                                           | The application's root namespace                                                   |
+| `dir`                    | `__DIR__`                                         | The application's root directory — set it explicitly                               |
+| `version`                | framework version                                 | The application's version string                                                   |
+| `environment`            | `'production'`                                    | The environment name                                                               |
+| `debugMode`              | `false`                                           | Enables the Whoops throwable handler                                               |
+| `timezone`               | `'UTC'`                                           | PHP's default timezone, set at boot                                                |
+| `key`                    | `'some_secret_app_key'`                           | The application secret — always override this                                      |
+| `dataPath`               | `'App/Provider/Data'`                             | Names the location of generated data classes; the framework does not read this     |
+| `dataNamespace`          | `'App\\Provider\\Data'`                           | Names the namespace of generated data classes; the framework does not read this    |
+| `applicationName`        | `'valkyrja'`                                      | The binary name shown in help and version output                                   |
+| `defaultCommandName`     | `'list'`                                          | The command that runs when the input names no command                              |
+| `providers`              | `[new CliWithHttpApplicationComponentProvider()]` | The `ComponentProviderContract` instances to boot                                  |
+| `callbacks`              | `[]`                                              | Callables the application runs at boot, each `callable(ApplicationContract): void` |
+| six `*Middleware` arrays | see [Global Middleware](#global-middleware)       | The global pipeline, one array per stage                                           |
+
+Warning: the `providers` argument replaces the default list. When you pass
+your own list, include a component provider that wires the CLI services. The
+[Application README](../Application/README.md#configuration) covers the shared
+properties in depth.
+
+`CliConfig` is one way to start, not the only way. `Cli::run()` accepts any
+`CliConfigContract`, so your own subclass of `CliConfig` — with
+per-environment defaults baked in — works too.
+
+### Renaming the Built-In Commands and Options
+
+A custom config class is also how you rename the built-in commands and the
+global options. `CliServerServiceProvider` checks the config against five
+opt-in contracts in `Valkyrja\Cli\Server\Data\Contract`. When the config
+implements a contract, the provider reads the names from its properties. When
+it does not, the default names apply.
+
+| Contract                             | Properties                                                          | Renames                                    |
+| ------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------ |
+| `CliHelpCommandConfigContract`       | `helpCommandName`, `helpOptionName`, `helpOptionShortName`          | The `help` command and `--help`/`-h`       |
+| `CliVersionCommandConfigContract`    | `versionCommandName`, `versionOptionName`, `versionOptionShortName` | The `version` command and `--version`/`-v` |
+| `CliNoInteractionConfigContract`     | `noInteractionOptionName`, `noInteractionOptionShortName`           | `--no-interaction`/`-N`                    |
+| `CliQuietInteractionConfigContract`  | `quietOptionName`, `quietOptionShortName`                           | `--quiet`/`-q`                             |
+| `CliSilentInteractionConfigContract` | `silentOptionName`, `silentOptionShortName`                         | `--silent`/`-s`                            |
+
+Implement only the contracts you need. Each property holds a name without the
+leading dashes:
+
+```php
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Cli\Server\Data\Contract\CliQuietInteractionConfigContract;
+
+final class AppCliConfig extends CliConfig implements CliQuietInteractionConfigContract
+{
+    public string $quietOptionName = 'hush';
+
+    public string $quietOptionShortName = 'H';
+}
+```
+
+With this config, `--hush`/`-H` sets the quiet flag, and `--quiet`/`-q` no
+longer does.
+
+Warning: `helpCommandName` and `versionCommandName` only change where the
+option middleware routes `--help` and `--version`. `HelpCommand` and
+`VersionCommand` still register under `help` and `version` through their own
+`#[Route]` attributes. When you set a new command name, also register a route
+under that name — otherwise the option routes to a command that does not
+exist.
+
+### Global Middleware
+
+`CliConfig` holds one array per middleware stage: `inputReceivedMiddleware`,
+`routeMatchedMiddleware`, `routeNotMatchedMiddleware`,
+`routeDispatchedMiddleware`, `throwableCaughtMiddleware`, and
+`processExitingMiddleware`. Middleware in these arrays runs on every
+invocation. Three of the arrays ship with defaults:
+
+| `CliConfig` array           | Default classes                                                                                                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inputReceivedMiddleware`   | `CheckForHelpOptionsMiddleware` (`--help`/`-h`), `CheckForVersionOptionsMiddleware` (`--version`/`-v`), `CheckGlobalInteractionOptionsMiddleware` (`--quiet`, `--silent`, `--no-interaction`) |
+| `routeNotMatchedMiddleware` | `CheckCommandForTypoMiddleware` (suggests a similar command name)                                                                                                                             |
+| `throwableCaughtMiddleware` | `LogThrowableCaughtMiddleware`, `OutputThrowableCaughtMiddleware`                                                                                                                             |
+
+The other three arrays default to empty. A passed array replaces the default,
+so list the defaults you keep:
+
+```php
+use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
+
+new CliConfig(
+    // ...
+    inputReceivedMiddleware: [
+        CheckForHelpOptionsMiddleware::class,
+        CheckForVersionOptionsMiddleware::class,
+        CheckGlobalInteractionOptionsMiddleware::class,
+        MaintenanceModeMiddleware::class,
+    ],
+);
+```
+
+See [Middleware](#middleware) for the stage contracts and worked examples.
+
+### Interaction Config
+
+`CliInteractionConfig` holds three output flags: `isInteractive` (default
+`true`), `isQuiet` (default `false`), and `isSilent` (default `false`). The
+`OutputFactory` copies the flags onto every output it creates, and the output
+uses them when it writes (see
+[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent)). The
+`CheckGlobalInteractionOptionsMiddleware` mutates the config when the input
+carries `--no-interaction`/`-N`, `--quiet`/`-q`, or `--silent`/`-s`, so every
+command honors those global options without any code of its own.
 
 ## Entry Point
 
-`Cli::run()` is the single entry point for a CLI application. It boots the
-application, resolves the `InputHandlerContract` from the container, and creates
-an `Input` from `$_SERVER['argv']`:
+`Cli::run()` boots the application, parses `$_SERVER['argv']` into an `Input`
+with `InputFactory::fromGlobals()`, resolves the `InputHandlerContract` from
+the container, and calls `InputHandler::run()`. The handler runs the
+middleware pipeline, writes the output messages, and calls `Exiter::exit()`
+with the output's exit code.
+
+A binary is one executable file that calls `Cli::run()`:
 
 ```php
-// cli (your binary)
+#!/usr/bin/env php
+<?php
+
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
+
+require __DIR__ . '/vendor/autoload.php';
 
 Cli::run(new CliConfig(
     dir:             __DIR__,
@@ -63,338 +182,782 @@ Cli::run(new CliConfig(
 ));
 ```
 
-Everything that follows — middleware, route matching, dispatch, output writing,
-and process exit — is managed by `InputHandler`.
+## Command-Line Syntax
+
+`InputFactory::fromGlobals()` assigns each `argv` token one role:
+
+- The first token is the **caller** — the binary name.
+- The second token is the **command name**, when it is not an option token
+  and not `--`. When the second token is an option or `--`, no token sets the
+  command name, `defaultCommandName` applies, and every non-option token is
+  an argument.
+- Every later token that does not start with `-` is an **argument** value.
+  Arguments bind to declared parameters by position.
+- Every token that starts with `-` is an **option**, wherever it appears on
+  the line.
+
+Option tokens follow these rules:
+
+- `--name=value` sets a long option value. The parser splits on the first `=`
+  only, so `--filter=a=b` keeps the value `a=b`.
+- `--name` with no `=` sets a long option with an empty value — a flag.
+- `-n=value` sets a short option value. `-n` sets a short flag.
+- `-abc` expands to the three short flags `-a -b -c`. A combined group cannot
+  carry a value.
+- `--` ends option parsing. Every later token is an argument, even one that
+  starts with `-`. A later lone `-` is an argument by convention (it names
+  standard input); at the second position it sets the command name.
+
+```
+php myapp user:greet Melech --shout -n=3 -- --literal-argument
+```
+
+The command is `user:greet`. The arguments are `Melech` and
+`--literal-argument`. The options are `shout` (empty value) and `n` with the
+value `3`.
 
 ## Routing
 
 ### Route Providers
 
-Commands are registered through **route providers** — classes that implement the
-CLI `ProviderContract` and return a list of controller classes and/or pre-built
-route objects. The framework iterates over all registered providers during
-bootstrap to build the command collection.
+A route provider implements `CliRouteProviderContract`. The contract declares
+two instance methods. `getControllerClasses()` returns classes that carry
+`#[Route]` attributes — the common way, because the command definition sits
+beside the command code. `getRoutes()` returns pre-built `RouteContract`
+objects — use it for commands built at runtime, or when you cannot annotate
+the class. One provider can use both. The framework's own provider registers
+the built-in commands:
 
 ```php
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
+use Valkyrja\Cli\Server\Command\HelpCommand;
+use Valkyrja\Cli\Server\Command\ListBashCommand;
+use Valkyrja\Cli\Server\Command\ListCommand;
+use Valkyrja\Cli\Server\Command\VersionCommand;
 
-class AppCommandProvider implements CliRouteProviderContract
+class CliRoutingCliRouteProvider implements CliRouteProviderContract
 {
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
         return [
-            UserCommands::class,
-            DatabaseCommands::class,
-            MakeCommands::class,
+            HelpCommand::class,
+            ListBashCommand::class,
+            ListCommand::class,
+            VersionCommand::class,
         ];
     }
 
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
         return [];
     }
 }
 ```
 
-When `getControllerClasses()` returns classes, the framework's
-`AttributeCollector` reflects on each class, extracts `#[Route]` attributes from
-its methods, and adds the resulting routes to the collection. When `getRoutes()`
-returns `Route` objects directly, those are processed and added as well.
-
-Route providers are wired into the application through a component provider's
-`getCliProviders()` method. The component provider itself is listed in
-`CliConfig`'s `providers` array, following the same hierarchy used for container
-and event providers.
-
-### Attribute-Based Registration
-
-The idiomatic way to define CLI commands is to annotate controller methods with
-the `#[Route]` attribute:
+A component provider returns route providers from its `getCliProviders()`
+method, and `CliConfig`'s `providers` array lists the component providers:
 
 ```php
-use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
-class UserCommands
+class AppComponentProvider implements ComponentProviderContract
 {
-    #[Route(name: 'user:create', description: 'Create a new user')]
-    public function create(): OutputContract
-    {
-        // php myapp user:create
-    }
+    // The other ComponentProviderContract methods return empty arrays.
 
-    #[Route(name: 'user:list', description: 'List all users')]
-    public function list(): OutputContract
+    public function getCliProviders(ApplicationContract $app): array
     {
-        // php myapp user:list
+        return [
+            new AppCliRouteProvider(),
+        ];
     }
 }
 ```
 
-The `#[Route]` attribute is repeatable — a single method can serve multiple
-command names by stacking attributes.
+At boot, the framework passes each controller class to the
+`AttributeRouteCollector`, which reflects the class and converts its
+`#[Route]` attributes into routes in the `RouteCollection`.
 
-### Route Parameters
+There is no compiled route file, and there is no separate matcher class. The
+`Router` queries the `RouteCollection` by command name, and `CliRoutingData`
+holds the collected routes in memory as closures.
 
-CLI routes support two kinds of parameters: **arguments** (positional) and *
-_options_* (named flags). Both are defined via companion attribute classes and
-are attached directly to the `#[Route]` declaration.
+### Pre-Built Routes
 
-#### Arguments
-
-Arguments are positional values passed on the command line. Declare them as
-`ArgumentParameter` objects in the `arguments` array of `#[Route]`:
-
-```php
-use Valkyrja\Cli\Routing\Attribute\Route;
-use Valkyrja\Cli\Routing\Attribute\ArgumentParameter;
-use Valkyrja\Cli\Routing\Enum\ArgumentMode;
-use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-
-#[Route(
-    name: 'user:show',
-    description: 'Show a user by ID',
-    arguments: [
-        new ArgumentParameter(
-            name:        'id',
-            mode:        ArgumentMode::REQUIRED,
-            valueMode:   ArgumentValueMode::DEFAULT,
-            description: 'The user ID',
-        ),
-    ]
-)]
-public function show(InputContract $input): OutputContract
-{
-    $id = $input->getArgument('id');
-    // ...
-}
-```
-
-`ArgumentMode` controls whether the argument is required or optional.
-`ArgumentValueMode::ARRAY` allows the argument to accept multiple values.
-
-| Enum                | Cases                  |
-| ------------------- | ---------------------- |
-| `ArgumentMode`      | `REQUIRED`, `OPTIONAL` |
-| `ArgumentValueMode` | `DEFAULT`, `ARRAY`     |
-
-#### Options
-
-Options are named flags, typically prefixed with `--`. Declare them as
-`OptionParameter` objects in the `options` array of `#[Route]`:
+`getRoutes()` returns `Valkyrja\Cli\Routing\Data\Route` objects. The
+constructor takes the same values as the `#[Route]` attribute, plus a required
+`handler`. A handler on a pre-built route may be a closure; an attribute
+cannot hold one, so attributed commands wire handlers with `#[RouteHandler]`
+instead:
 
 ```php
-use Valkyrja\Cli\Routing\Attribute\Route;
-use Valkyrja\Cli\Routing\Attribute\OptionParameter;
-use Valkyrja\Cli\Routing\Enum\OptionMode;
-use Valkyrja\Cli\Routing\Enum\OptionValueMode;
-
-#[Route(
-    name: 'user:export',
-    description: 'Export users to a file',
-    options: [
-        new OptionParameter(
-            name:        'format',
-            shortName:   'f',
-            mode:        OptionMode::OPTIONAL,
-            valueMode:   OptionValueMode::DEFAULT,
-            default:     'json',
-            description: 'Output format (json, csv)',
-        ),
-        new OptionParameter(
-            name:      'verbose',
-            shortName: 'v',
-            mode:      OptionMode::OPTIONAL,
-            valueMode: OptionValueMode::NONE,
-        ),
-    ]
-)]
-public function export(InputContract $input): OutputContract
-{
-    $format  = $input->getOption('format');
-    $verbose = $input->getOption('verbose');
-    // ...
-}
-```
-
-`OptionValueMode::NONE` means the flag takes no value (it is either present or
-absent). `OptionValueMode::ARRAY` accepts the option multiple times and collects
-values into an array.
-
-| Enum              | Cases                      |
-| ----------------- | -------------------------- |
-| `OptionMode`      | `REQUIRED`, `OPTIONAL`     |
-| `OptionValueMode` | `NONE`, `DEFAULT`, `ARRAY` |
-
-### Help Text
-
-The `#[Route]` attribute accepts a `helpText` callable that returns a
-`MessageContract`. This is rendered when a user calls `help <command>`:
-
-```php
-use Valkyrja\Cli\Interaction\Message\Message;
-
-#[Route(
-    name:        'db:migrate',
-    description: 'Run pending database migrations',
-    helpText:    fn() => new Message(
-        'Run all pending migrations. Use --dry-run to preview changes without applying them.'
-    ),
-)]
-public function migrate(InputContract $input): OutputContract { ... }
-```
-
-### Route Handlers
-
-Every command must have a **handler** — a callable with the signature:
-
-```php
-callable(ContainerContract $container): OutputContract
-```
-
-The `$container` gives the handler access to all registered services. The
-handler is responsible for resolving the command class from the container and
-calling it with any parsed arguments or options that the command method expects.
-
-The idiomatic way to wire a handler to a command method is the companion
-`#[RouteHandler]` attribute, placed on the same method as `#[Route]`:
-
-```php
-use Valkyrja\Cli\Routing\Attribute\Route;
-use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
-
-class UserCommands
-{
-    #[Route(name: 'user:create', description: 'Create a new user')]
-    #[RouteHandler([UserCommandProvider::class, 'createHandler'])]
-    public function create(): OutputContract { ... }
-}
-```
-
-The referenced static method on the provider receives the container and returns
-the output:
-
-```php
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Data\ArgumentParameter;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Data\Route;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-class UserCommandProvider implements CliRouteProviderContract
+class AppCliRouteProvider implements CliRouteProviderContract
 {
-    public static function getControllerClasses(): array
+    public function getControllerClasses(): array
     {
-        return [UserCommands::class];
+        return [
+            GreetCommand::class,
+        ];
     }
 
-    public static function getRoutes(): array
+    public function getRoutes(): array
     {
-        return [];
+        return [
+            new Route(
+                name:        'cache:clear',
+                description: 'Clear the application cache',
+                handler:     [self::class, 'cacheClearHandler'],
+                arguments:   [
+                    new ArgumentParameter(
+                        name:        'store',
+                        description: 'The cache store to clear',
+                        mode:        ArgumentMode::OPTIONAL,
+                    ),
+                ],
+                options:     [
+                    new OptionParameter(
+                        name:        'force',
+                        description: 'Clear without confirmation',
+                        shortNames:  ['f'],
+                    ),
+                ],
+            ),
+        ];
     }
 
-    public static function createHandler(ContainerContract $container): OutputContract
+    public static function cacheClearHandler(ContainerContract $container, RouteContract $route): OutputContract
     {
-        return $container->getSingleton(UserCommands::class)->create();
+        $store = $route->getArgument('store')->getFirstValue();
+
+        return $container->getSingleton(OutputFactoryContract::class)
+            ->createOutput()
+            ->withMessages(
+                new SuccessMessage($store === '' ? 'Cache cleared.' : "Cache `$store` cleared."),
+                new NewLine(),
+            );
+    }
+
+    public static function greetHandler(ContainerContract $container, RouteContract $route): OutputContract
+    {
+        return $container->getSingleton(GreetCommand::class)->run();
     }
 }
 ```
 
-The `#[Route]` attribute also accepts a `handler` parameter directly for inline
-definitions:
+`GreetCommand` is the attributed command shown under
+[Attribute Registration](#attribute-registration); its `#[RouteHandler]`
+points back at `greetHandler`.
+
+### Attribute Registration
+
+Annotate a controller method with `#[Route]` to register a command. The
+attribute constructor takes:
+
+| Parameter                                                                                                      | Purpose                                                          |
+| -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `name` (required)                                                                                              | The command name                                                 |
+| `description` (required)                                                                                       | The one-line description shown by `list` and `help`              |
+| `handler`                                                                                                      | The handler callable (usually set via `#[RouteHandler]` instead) |
+| `helpText`                                                                                                     | An array callable that returns a `MessageContract`               |
+| `routeMatchedMiddleware`, `routeDispatchedMiddleware`, `throwableCaughtMiddleware`, `processExitingMiddleware` | Per-route middleware class lists                                 |
+| `arguments`                                                                                                    | `ArgumentParameterContract[]`                                    |
+| `options`                                                                                                      | `OptionParameterContract[]`                                      |
+
+The attribute is repeatable — stack it to serve several command names from one
+method:
 
 ```php
-#[Route(
-    name:        'user:create',
-    description: 'Create a new user',
-    handler:     [UserCommandProvider::class, 'createHandler'],
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
+
+class ListCommand
+{
+    #[Route(name: 'list', description: 'List all commands')]
+    #[Route(name: 'commands', description: 'List all commands')]
+    #[RouteHandler([CliRoutingCliRouteProvider::class, 'listHandler'])]
+    public function run(): OutputContract
+    {
+        // php myapp list
+        // php myapp commands
+    }
+}
+```
+
+A complete attributed command declares its parameters, wires its handler, and
+reads its values from the matched route:
+
+```php
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
+use Valkyrja\Cli\Routing\Attribute\ArgumentParameter;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+
+use function strtoupper;
+
+class GreetCommand
+{
+    public function __construct(
+        protected RouteContract $route,
+        protected OutputFactoryContract $outputFactory,
+    ) {
+    }
+
+    public static function help(): MessageContract
+    {
+        return new Message('A command to greet a user by name.');
+    }
+
+    #[Route(name: 'user:greet', description: 'Greet a user', helpText: [self::class, 'help'])]
+    #[ArgumentParameter(name: 'name', description: 'The name to greet', mode: ArgumentMode::REQUIRED)]
+    #[OptionParameter(name: 'shout', description: 'Greet in upper case', shortNames: ['S'])]
+    #[RouteHandler([AppCliRouteProvider::class, 'greetHandler'])]
+    public function run(): OutputContract
+    {
+        // php myapp user:greet Melech
+        // php myapp user:greet Melech --shout
+        $name     = $this->route->getArgument('name')->getFirstValue();
+        $shout    = $this->route->getOption('shout')->hasFirstValue();
+        $greeting = "Hello, $name!";
+
+        return $this->outputFactory
+            ->createOutput()
+            ->withMessages(
+                new Message($shout ? strtoupper($greeting) : $greeting),
+                new NewLine(),
+            );
+    }
+}
+```
+
+The command class receives the matched `RouteContract` through its
+constructor, because the `Router` registers the route in the container before
+the handler runs. Register the command class itself in the container through a
+service provider, the same way the framework registers its built-in commands.
+The abstract `Valkyrja\Cli\Routing\Controller\Controller` is an optional base
+class whose constructor takes the `InputContract` and the
+`OutputFactoryContract`.
+
+### Route Handlers
+
+Every route has a handler with this signature:
+
+```php
+callable(ContainerContract $container, RouteContract $route): OutputContract
+```
+
+The `Router` calls the handler with the container and the matched route after
+the `RouteMatched` middleware has run. Wire the handler with the
+`#[RouteHandler]` attribute, or pass `handler:` to `#[Route]` directly. PHP
+attributes only accept constant expressions, so an attribute handler is always
+an array callable — a closure only works on a pre-built route. The handler
+resolves the command class from the container and calls it:
+
+```php
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Server\Command\ListCommand;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
+{
+    return $container->getSingleton(ListCommand::class)->run();
+}
+```
+
+The route carries the parsed argument and option values. Read them by
+parameter name:
+
+```php
+$commandName = $route->getOption('command')->getFirstValue();
+$appName     = $route->getArgument('applicationName')->getFirstValue();
+```
+
+`RouteContract::hasArgument()` and `hasOption()` report whether the route
+**declares** a parameter with that name — not whether the invocation provided
+a value. The parameter's `hasFirstValue()` reports whether a value arrived, so
+use it to test for an optional value or flag:
+
+```php
+$formatOption = $route->getOption('format');
+
+$format = $formatOption->hasFirstValue()
+    ? $formatOption->getFirstValue()
+    : $formatOption->getDefaultValue();
+```
+
+### Command Name Grouping
+
+The `#[Name]` attribute prepends or appends a segment to every `#[Route]` name
+it accompanies, joined with a dot. On the class it prefixes each method's
+route name; on a method it suffixes that method's route names. Use it to group
+a controller's commands without repeating the group in every `#[Route]`:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\Name;
+
+#[Name('user')]
+class UserCommands
+{
+    #[Route(name: 'greet', description: 'Greet a user')]
+    public function greet(): OutputContract
+    {
+        // Registered as `user.greet`
+    }
+}
+```
+
+### Arguments
+
+Arguments are positional values. Declare them as `ArgumentParameter` objects
+in the `arguments` array of `#[Route]`, or as repeatable attributes on the
+method. The constructor takes `name` and `description` (both required),
+`cast`, `mode`, and `valueMode`:
+
+| Enum                | Cases                  | Default    |
+| ------------------- | ---------------------- | ---------- |
+| `ArgumentMode`      | `REQUIRED`, `OPTIONAL` | `OPTIONAL` |
+| `ArgumentValueMode` | `DEFAULT`, `ARRAY`     | `DEFAULT`  |
+
+A `REQUIRED` argument must arrive. A `DEFAULT` argument takes at most one
+value. The `Router` binds input values to argument parameters in declaration
+order and validates each one; a violation throws
+`CliRoutingArgumentValuesValidationException`, which the `ThrowableCaught`
+stage turns into an error output.
+
+```php
+use Valkyrja\Cli\Routing\Attribute\ArgumentParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+
+#[Route(name: 'user:show', description: 'Show a user')]
+#[ArgumentParameter(
+    name:        'id',
+    description: 'The user id',
+    mode:        ArgumentMode::REQUIRED,
 )]
+public function run(): OutputContract
+{
+    // php myapp user:show 42       -> getFirstValue() === '42'
+    // php myapp user:show          -> validation exception, error output
+}
 ```
 
-#### Caching Trade-off
-
-How you express the handler determines whether it participates in Valkyrja's
-data file cache. The cache captures the full command collection in a generated
-PHP class so that production boots require no reflection.
-
-**Array callables can be cached.** A handler expressed as
-`[ClassName::class, 'method']` is a plain array — serializable, writable to a
-file, and loadable without loss of fidelity:
+An `ARRAY` argument collects all remaining positional values, so it must be
+the last declared argument:
 
 ```php
-handler: [UserCommandProvider::class, 'createHandler'],
+use Valkyrja\Cli\Routing\Attribute\ArgumentParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
+
+#[Route(name: 'files:process', description: 'Process files')]
+#[ArgumentParameter(
+    name:        'paths',
+    description: 'The file paths to process',
+    mode:        ArgumentMode::REQUIRED,
+    valueMode:   ArgumentValueMode::ARRAY,
+)]
+public function run(): OutputContract
+{
+    // php myapp files:process a.txt b.txt c.txt
+    foreach ($this->route->getArgument('paths')->getArguments() as $argument) {
+        $path = $argument->getValue();
+    }
+}
 ```
 
-**Closures cannot be cached.** A handler expressed as `static fn (...)` is an
-anonymous function — it cannot be serialized. Use closures during development or
-when inline definitions are clearer, but prefer array callables in production
-code that will be cached.
+### Options
 
-The HTTP routing component ships its own CLI command — `http:list` — registered
-via the `Http\Routing\Provider\CliRouteProvider`.
+Options are named flags. `OptionParameter` requires a `name` and a
+`description`. The other constructor arguments:
+
+| Argument           | Purpose                                                          |
+| ------------------ | ---------------------------------------------------------------- |
+| `valueDisplayName` | The value placeholder shown in help output (`--name=<display>`)  |
+| `cast`             | A type cast for the values (see [Value Casting](#value-casting)) |
+| `defaultValue`     | The fallback value (see below)                                   |
+| `shortNames`       | An array of one-letter aliases                                   |
+| `validValues`      | The allowed values; any other value fails validation             |
+| `mode`             | `OptionMode::OPTIONAL` (default) or `REQUIRED`                   |
+| `valueMode`        | `OptionValueMode::DEFAULT` (default), `NONE`, or `ARRAY`         |
+
+| Enum              | Cases                      | Default    |
+| ----------------- | -------------------------- | ---------- |
+| `OptionMode`      | `REQUIRED`, `OPTIONAL`     | `OPTIONAL` |
+| `OptionValueMode` | `NONE`, `DEFAULT`, `ARRAY` | `DEFAULT`  |
+
+The `Router` matches each input option against the declared parameters by long
+name or short name, then validates. A missing `REQUIRED` option, a repeated
+`DEFAULT` option, and a value outside `validValues` throw
+`CliRoutingOptionValuesValidationException`. A `NONE` option that receives a
+value throws `CliRoutingInvalidOptionWithValueException`. An option that no
+parameter declares binds to nothing; read it from the `InputContract` if you
+need it.
+
+A `DEFAULT` option takes one value:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+
+#[Route(name: 'user:export', description: 'Export users')]
+#[OptionParameter(
+    name:             'format',
+    description:      'The export format',
+    valueDisplayName: 'format',
+    defaultValue:     'json',
+    shortNames:       ['f'],
+    validValues:      ['json', 'csv'],
+)]
+public function run(): OutputContract
+{
+    // php myapp user:export --format=csv
+    // php myapp user:export -f=csv
+    // php myapp user:export --format=xml   -> validation exception
+    $formatOption = $this->route->getOption('format');
+
+    $format = $formatOption->hasFirstValue()
+        ? $formatOption->getFirstValue()
+        : $formatOption->getDefaultValue();
+}
+```
+
+`defaultValue` is informational: help output marks it among the valid values,
+and `getDefaultValue()` returns it. The framework does not insert it into a
+missing option, so apply the fallback yourself as shown.
+
+A `NONE` option takes no value — a pure flag. Test it with `hasFirstValue()`:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+
+#[Route(name: 'db:migrate', description: 'Run database migrations')]
+#[OptionParameter(
+    name:        'dry-run',
+    description: 'Preview without applying',
+    shortNames:  ['d'],
+    valueMode:   OptionValueMode::NONE,
+)]
+public function run(): OutputContract
+{
+    // php myapp db:migrate --dry-run
+    // php myapp db:migrate -d
+    $isDryRun = $this->route->getOption('dry-run')->hasFirstValue();
+}
+```
+
+An `ARRAY` option accepts repeated flags and collects every value:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Enum\OptionValueMode;
+
+#[Route(name: 'app:deploy', description: 'Deploy the application')]
+#[OptionParameter(
+    name:        'tag',
+    description: 'A tag to deploy',
+    shortNames:  ['t'],
+    valueMode:   OptionValueMode::ARRAY,
+)]
+public function run(): OutputContract
+{
+    // php myapp app:deploy --tag=web --tag=api -t=worker
+    foreach ($this->route->getOption('tag')->getOptions() as $option) {
+        $tag = $option->getValue();
+    }
+}
+```
+
+A `REQUIRED` option must arrive. The built-in `help` command declares one:
+
+```php
+use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Enum\OptionMode;
+
+new OptionParameter(
+    name:             'command',
+    description:      'The name of the command to get help for',
+    valueDisplayName: 'command',
+    mode:             OptionMode::REQUIRED,
+);
+// php myapp help --command=list
+```
+
+Reusable option parameters for the global options ship in
+`Valkyrja\Cli\Routing\Data\Option`: `HelpOptionParameter`,
+`VersionOptionParameter`, `QuietOptionParameter`, `SilentOptionParameter`, and
+`NoInteractionOptionParameter`. Each is a pre-configured `OptionParameter`
+you can add to a route's `options` array.
+
+### Value Casting
+
+Every parsed value is a string. Pass a `Cast` to a parameter to convert
+values, then read them with `getCastValues()`:
+
+```php
+use Valkyrja\Cli\Routing\Attribute\ArgumentParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Enum\CastType;
+
+#[Route(name: 'queue:work', description: 'Work the queue')]
+#[ArgumentParameter(
+    name:        'workers',
+    description: 'The worker count',
+    cast:        new Cast(CastType::int),
+    mode:        ArgumentMode::REQUIRED,
+)]
+public function run(): OutputContract
+{
+    // php myapp queue:work 4
+    [$workers] = $this->route->getArgument('workers')->getCastValues(); // int(4)
+}
+```
+
+`CastType` covers `string`, `int`, `float`, `bool`, `array`, `json`, and
+more. With `new Cast(CastType::int, convert: false)` the cast values stay
+wrapped in their `Valkyrja\Type` objects instead of converting to native
+values. Without a cast, `getCastValues()` returns the raw strings.
+
+### Help Text
+
+`#[Route]` accepts a `helpText` callable that returns a `MessageContract`.
+The callable must be an array callable — a closure throws
+`CliRoutingInvalidHelpTextCallableException`, and an attribute cannot hold a
+closure anyway. The `help` command renders it:
+
+```php
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Message\Message;
+
+public static function help(): MessageContract
+{
+    return new Message('A command to get help for a specific command.');
+}
+```
+
+```php
+#[Route(name: 'user:greet', description: 'Greet a user', helpText: [self::class, 'help'])]
+```
+
+`php myapp help --command=user:greet` shows the help text together with the
+command's declared arguments and options — their descriptions, modes, value
+display names, valid values, and default value. `php myapp user:greet --help`
+shows the same page, because the `CheckForHelpOptionsMiddleware` rewrites any
+input that carries `--help`/`-h` into a `help` invocation for that command.
 
 ## Input and Output
 
 ### Input
 
-`InputContract` represents the parsed command-line invocation. It exposes the
-command name, positional arguments, and named options:
+`InputContract` is the parsed invocation. `getArguments()` returns
+`ArgumentContract[]` in positional order. `getOption()` returns
+`OptionContract[]`, because a flag can repeat:
 
 ```php
-$commandName = $input->getCommandName();   // 'user:create'
-$id          = $input->getArgument('id');
-$format      = $input->getOption('format');
-$verbose     = $input->getOption('verbose') !== null;
+$name    = $input->getCaller();           // 'myapp'
+$command = $input->getCommandName();      // 'user:create'
+$args    = $input->getArguments();        // ArgumentContract[]
+$formats = $input->getOption('format');   // OptionContract[]
+$verbose = $input->hasOption('verbose');  // bool
 ```
 
-`Input` is created at the entry point via `InputFactory::fromGlobals()`, which
-parses `$_SERVER['argv']` into a structured object.
+An `ArgumentContract` carries `getValue()`. An `OptionContract` carries
+`getName()`, `getValue()`, `hasValue()`, and `getType()`
+(`OptionType::SHORT` or `LONG`). Prefer the route parameters in a command —
+they are validated and cast. Read the raw input for undeclared options or for
+positional values outside the declared parameters.
+
+The `InputHandler` registers the `InputContract` in the container, so any
+service can receive it. The `Router` registers the matched `RouteContract`,
+and the `InputHandler` registers the final `OutputContract` after dispatch.
 
 ### Output
 
-`OutputContract` carries the messages that will be written to stdout and the
-exit code that will be passed to `exit()`. Your command methods return an
-`OutputContract`:
+A command method returns an `OutputContract`, which carries messages and an
+exit code. Create one through the `OutputFactoryContract`:
 
 ```php
-use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 
-public function create(InputContract $input): OutputContract
-{
-    $user = $this->users->create($input->getArgument('name'));
-
-    return $this->outputFactory
-        ->createOutput()
-        ->withMessages(
-            new SuccessMessage('User created: ' . $user->name),
-        );
-}
+return $this->outputFactory
+    ->createOutput(exitCode: ExitCode::SUCCESS)
+    ->withMessages(new SuccessMessage('Done.'));
 ```
 
-Output implementations:
+| Output class   | Factory method         | Writes to                 |
+| -------------- | ---------------------- | ------------------------- |
+| `PlainOutput`  | `createPlainOutput()`  | stdout                    |
+| `FileOutput`   | `createFileOutput()`   | a file                    |
+| `StreamOutput` | `createStreamOutput()` | a PHP stream resource     |
+| `EmptyOutput`  | `createEmptyOutput()`  | nowhere (discards output) |
 
-| Class          | Description                       |
-| -------------- | --------------------------------- |
-| `PlainOutput`  | Standard stdout output            |
-| `FileOutput`   | Writes to a file                  |
-| `StreamOutput` | Writes to any PHP stream resource |
-| `EmptyOutput`  | Discards all output               |
+`createOutput()` returns the base `Output`, which echoes each message's
+formatted text to stdout. `PlainOutput` echoes the unformatted text. Every
+factory method accepts an `ExitCode|int` and any number of messages, and
+copies the interaction flags from the `CliInteractionConfig`.
+
+An output is immutable: `withMessages()` replaces the unwritten messages,
+`withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
+the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
+a command only queues messages. To flush early, call `writeMessages()` and
+keep the output it returns — it writes on a copy, so the output you called
+it on still carries the messages, and the handler writes them a second time.
 
 ### Messages
 
-The output message system is composable. Common message types:
+A message is text plus an optional formatter. The classes:
 
-| Class            | Description                               |
-| ---------------- | ----------------------------------------- |
-| `Message`        | Plain text                                |
-| `SuccessMessage` | Success-styled text (typically green)     |
-| `ErrorMessage`   | Error-styled text (typically red)         |
-| `WarningMessage` | Warning-styled text (typically yellow)    |
-| `Banner`         | Wrapped block, useful for section headers |
-| `NewLine`        | A blank line                              |
+| Message class    | Purpose                                                 |
+| ---------------- | ------------------------------------------------------- |
+| `Message`        | Plain text, with an optional formatter                  |
+| `SuccessMessage` | Success-styled text (white on green)                    |
+| `ErrorMessage`   | Error-styled text (white on red)                        |
+| `WarningMessage` | Warning-styled text (black on yellow)                   |
+| `Banner`         | A padded block around a message, in the message's style |
+| `NewLine`        | A line break                                            |
+| `Messages`       | A composite that concatenates other messages            |
+| `Header`         | The application info header the built-in commands print |
+| `Question`       | An interactive prompt (see [Questions](#questions))     |
+| `Progress`       | A message with a percentage and a completion flag       |
+
+Messages carry no line breaks of their own — compose with `NewLine`:
+
+```php
+use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+
+$output = $output->withAddedMessages(
+    new Banner(new ErrorMessage('Deployment failed.')),
+    new NewLine(),
+    new Message('Check the log for details.'),
+    new NewLine(),
+);
+```
+
+### Formatters
+
+A `Formatter` wraps text in ANSI escape codes built from `Format` objects:
+`TextColorFormat` (a `TextColor` case), `BackgroundColorFormat` (a
+`BackgroundColor` case), and `StyleFormat` (a `Style` case — `BOLD`,
+`UNDERSCORE`, `BLINK`, `INVERSE`, `CONCEAL`). Both color enums offer the
+eight base colors, `DARK_GRAY`, and `LIGHT_RED` through `LIGHT_WHITE` — there
+is no `LIGHT_BLACK`:
+
+```php
+use Valkyrja\Cli\Interaction\Enum\Style;
+use Valkyrja\Cli\Interaction\Enum\TextColor;
+use Valkyrja\Cli\Interaction\Format\StyleFormat;
+use Valkyrja\Cli\Interaction\Format\TextColorFormat;
+use Valkyrja\Cli\Interaction\Formatter\Formatter;
+use Valkyrja\Cli\Interaction\Message\Message;
+
+$message = new Message(
+    'Heads up!',
+    new Formatter(
+        new TextColorFormat(TextColor::CYAN),
+        new StyleFormat(Style::BOLD),
+    ),
+);
+```
+
+Ready-made formatters: `SuccessFormatter`, `ErrorFormatter`,
+`WarningFormatter`, `HighlightedTextFormatter` (yellow text), and
+`QuestionFormatter` (magenta text). Extend `Formatter` the same way to define
+your own house style.
+
+### Questions
+
+A `Question` is a message that prompts the user and reads a line from stdin
+when the output writes it. It pairs with an `Answer`, which holds the default
+response, the allowed responses, and an optional validation callable. The
+question's callable receives the output and the final answer, and returns the
+output to continue with:
+
+```php
+use Valkyrja\Cli\Interaction\Message\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Message\Question;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+
+$question = new Question(
+    'Drop all tables?',
+    static function (OutputContract $output, AnswerContract $answer): OutputContract {
+        if ($answer->getUserResponse() !== 'yes') {
+            return $output;
+        }
+
+        return $output->withAddedMessages(
+            new SuccessMessage('Tables dropped.'),
+            new NewLine(),
+        );
+    },
+    new Answer(defaultResponse: 'no', allowedResponses: ['yes', 'no']),
+);
+
+return $this->outputFactory
+    ->createOutput()
+    ->withMessages($question);
+```
+
+The rendered prompt lists the allowed responses and the default. An empty
+response takes the default. A response outside the allowed list re-asks the
+question, unless the validation callable accepts it. A non-interactive,
+quiet, or silent output does not read from stdin — the default response
+applies, so a scripted run never blocks.
+
+The default `QuestionWriter` on every output drives this flow. `getWriters()`
+and `withWriters()` expose the writer list; a custom `WriterContract` can
+intercept any message type the same way.
+
+### Interactivity, Quiet, and Silent
+
+Every output carries three flags, read from `CliInteractionConfig` at
+creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. A silent output
+writes nothing. A quiet output writes nothing while the exit code is
+`SUCCESS`, so errors still print. A non-interactive output skips question
+prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+`--silent`/`-s` set the flags for any command. `withIsInteractive()`,
+`withIsQuiet()`, and `withIsSilent()` override them per output.
 
 ### Exit Codes
 
-`OutputContract` carries an `ExitCode` enum value. `InputHandler::run()` calls
-`Exiter::exit()` with the integer value of that code after the `ProcessExiting`
-middleware has run. Valkyrja's exit codes follow the BSD SysExits convention:
+`ExitCode` mirrors most of the BSD sysexits codes. Two cases deviate:
+`sysexits.h` assigns 66 to a missing input and 67 to an unknown user, while
+`ExitCode` assigns 67 and 68. `InputHandler::run()` passes the code's integer
+value to `Exiter::exit()` after the `ProcessExiting` middleware runs:
 
 | Case             | Value | Meaning                           |
 | ---------------- | ----- | --------------------------------- |
@@ -416,34 +979,49 @@ middleware has run. Valkyrja's exit codes follow the BSD SysExits convention:
 | `CONFIG_ERROR`   | 78    | Configuration error               |
 | `AUTO_EXIT`      | 255   | Reserved                          |
 
-## The Middleware Pipeline
+`withExitCode()` also accepts a plain `int` for codes outside the enum. In a
+test, `Exiter::freeze()` makes `Exiter::exit()` echo the code instead of
+terminating the process; `Exiter::unfreeze()` restores it.
 
-Every CLI invocation passes through a six-stage middleware pipeline. The
-structure is identical to HTTP — each stage has a contract, middleware classes
-implement whatever contracts apply to them, and the handler chain propagates the
-call forward.
+## Middleware
 
-### Stage 1 — InputReceived
+Each stage has a contract, and a middleware class implements the contracts
+that apply to it. A middleware either forwards the call through the handler
+chain or short-circuits with an `OutputContract`. The stage handlers resolve
+each middleware class from the container, so register your middleware through
+a service provider, the same as a command class.
 
-`InputReceivedMiddlewareContract` fires the moment input enters the handler,
-before any route matching occurs. It receives the parsed `InputContract` and can
-either return a modified input (to continue) or return an `OutputContract`
-directly (short-circuiting the pipeline):
+### InputReceived
+
+`InputReceivedMiddlewareContract` fires before route matching. It returns an
+`InputContract` to continue — possibly rewritten, as the built-in help and
+version middleware do — or an `OutputContract` to short-circuit:
 
 ```php
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
-class EnvironmentCheckMiddleware implements InputReceivedMiddlewareContract
+class MaintenanceModeMiddleware implements InputReceivedMiddlewareContract
 {
+    public function __construct(
+        protected OutputFactoryContract $outputFactory,
+        protected bool $isDown = false,
+    ) {
+    }
+
     public function inputReceived(
         InputContract $input,
         InputReceivedHandlerContract $handler
     ): InputContract|OutputContract {
-        if (! $this->isConfigured()) {
+        if ($this->isDown) {
             return $this->outputFactory
-                ->createOutput(exitCode: ExitCode::CONFIG_ERROR)
-                ->withMessages(new ErrorMessage('Application is not configured.'));
+                ->createOutput(exitCode: ExitCode::UNAVAILABLE)
+                ->withMessages(new ErrorMessage('The application is down.'));
         }
 
         return $handler->inputReceived($input);
@@ -451,31 +1029,41 @@ class EnvironmentCheckMiddleware implements InputReceivedMiddlewareContract
 }
 ```
 
-`InputReceived` middleware is global — it runs on every invocation regardless of
-which command is matched. Configure it in `InputHandler`.
+### RouteMatched
 
-### Stage 2 — RouteMatched
-
-`RouteMatchedMiddlewareContract` fires after a command has been matched but
-before its handler is dispatched. It receives both the input and the matched
-`RouteContract`, and can return a modified route or short-circuit with an
-output:
+`RouteMatchedMiddlewareContract` fires after a command matches and before its
+handler runs. It returns the `RouteContract` to continue — possibly modified —
+or an `OutputContract` to short-circuit:
 
 ```php
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+
+use function str_starts_with;
 
 class ProductionGuardMiddleware implements RouteMatchedMiddlewareContract
 {
+    public function __construct(
+        protected OutputFactoryContract $outputFactory,
+        protected bool $isProduction = false,
+    ) {
+    }
+
     public function routeMatched(
         InputContract $input,
         RouteContract $route,
         RouteMatchedHandlerContract $handler
     ): RouteContract|OutputContract {
-        if ($this->isDestructive($route) && $this->isProduction()) {
+        if ($this->isProduction && str_starts_with($route->getName(), 'db:')) {
             return $this->outputFactory
                 ->createOutput(exitCode: ExitCode::NO_PERMISSION)
-                ->withMessages(new ErrorMessage('Cannot run destructive commands in production.'));
+                ->withMessages(new ErrorMessage('This command cannot run in production.'));
         }
 
         return $handler->routeMatched($input, $route);
@@ -483,80 +1071,86 @@ class ProductionGuardMiddleware implements RouteMatchedMiddlewareContract
 }
 ```
 
-Declared per-route via `routeMatchedMiddleware` in `#[Route]`.
+### RouteNotMatched
 
-### Stage 3 — RouteNotMatched
-
-`RouteNotMatchedMiddlewareContract` fires when the router cannot find a command
-matching the input. It receives the input and a default error output and is the
-right place to suggest similar commands or display a helpful error:
+`RouteNotMatchedMiddlewareContract` fires when no command matches. It
+receives the router's error output and returns the output to write:
 
 ```php
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
-class UnknownCommandMiddleware implements RouteNotMatchedMiddlewareContract
+class SuggestListMiddleware implements RouteNotMatchedMiddlewareContract
 {
     public function routeNotMatched(
         InputContract $input,
         OutputContract $output,
         RouteNotMatchedHandlerContract $handler
     ): OutputContract {
-        $name = $input->getCommandName();
+        $output = $output->withAddedMessages(
+            new NewLine(),
+            new Message('Run `myapp list` to see every command.'),
+            new NewLine(),
+        );
 
-        return $this->outputFactory
-            ->createOutput(exitCode: ExitCode::USAGE_ERROR)
-            ->withMessages(
-                new ErrorMessage("Unknown command: {$name}"),
-                new NewLine(),
-                new Message('Run `myapp list` to see available commands.'),
-            );
+        return $handler->routeNotMatched($input, $output);
     }
 }
 ```
 
-`RouteNotMatched` middleware is global — it applies to all unrecognised
-commands.
+### RouteDispatched
 
-### Stage 4 — RouteDispatched
-
-`RouteDispatchedMiddlewareContract` fires after the command's handler has been
-called and an output has been produced. It receives the input, the output, and
-the matched route. Use it for post-dispatch concerns: logging command execution,
-transforming output, appending timing information:
+`RouteDispatchedMiddlewareContract` fires after the handler produced an
+output. Use it for auditing or output transformation:
 
 ```php
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 class CommandAuditMiddleware implements RouteDispatchedMiddlewareContract
 {
+    public function __construct(
+        protected LoggerContract $logger,
+    ) {
+    }
+
     public function routeDispatched(
         InputContract $input,
         OutputContract $output,
         RouteContract $route,
         RouteDispatchedHandlerContract $handler
     ): OutputContract {
-        $this->audit->log($input->getCommandName());
+        $this->logger->info('Command ran: ' . $route->getName());
 
         return $handler->routeDispatched($input, $output, $route);
     }
 }
 ```
 
-Declared per-route via `routeDispatchedMiddleware` in `#[Route]`.
+### ThrowableCaught
 
-### Stage 5 — ThrowableCaught
-
-`ThrowableCaughtMiddlewareContract` fires when any `Throwable` is caught during
-command handling. It receives the input, a default error output, and the
-throwable:
+`ThrowableCaughtMiddlewareContract` fires when a throwable escapes any part
+of dispatch. It receives a default error output and the throwable, and
+returns the output to write:
 
 ```php
+use Throwable;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
-class CliErrorReportingMiddleware implements ThrowableCaughtMiddlewareContract
+class UsageHintMiddleware implements ThrowableCaughtMiddlewareContract
 {
     public function throwableCaught(
         InputContract $input,
@@ -564,116 +1158,156 @@ class CliErrorReportingMiddleware implements ThrowableCaughtMiddlewareContract
         Throwable $throwable,
         ThrowableCaughtHandlerContract $handler
     ): OutputContract {
-        $this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
+        $output = $output->withAddedMessages(
+            new NewLine(),
+            new Message('Run the command again with `--help` for usage.'),
+            new NewLine(),
+        );
 
         return $handler->throwableCaught($input, $output, $throwable);
     }
 }
 ```
 
-Declared per-route via `throwableCaughtMiddleware` in `#[Route]`, or globally in
-`InputHandler`.
+If no `ThrowableCaught` middleware changes the output, the `InputHandler`
+falls back to a default error banner with the command name and the exception
+message.
 
-If no `ThrowableCaught` middleware is registered, the `InputHandler` falls back
-to a default error output that displays the command name and the exception
-message in a styled banner.
+### ProcessExiting
 
-### Stage 6 — ProcessExiting
-
-`ProcessExitingMiddlewareContract` fires after the output has been written and just
-before `Exiter::exit()` is called with the exit code. It is the appropriate
-stage for deferred cleanup: closing database connections, flushing queued
-events, writing metrics:
+`ProcessExitingMiddlewareContract` fires after the output is written and
+before the process exits. It returns nothing — the output is already on the
+terminal — so use it for deferred cleanup:
 
 ```php
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ProcessExitingMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-class CleanupMiddleware implements ProcessExitingMiddlewareContract
+class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 {
+    public function __construct(
+        protected LoggerContract $logger,
+    ) {
+    }
+
     public function processExiting(
         InputContract $input,
         OutputContract $output,
         ProcessExitingHandlerContract $handler
     ): void {
-        $this->flushPendingEvents();
-        $this->closeConnections();
+        $this->logger->info('Process exiting.');
 
         $handler->processExiting($input, $output);
     }
 }
 ```
 
-Declared per-route via `processExitingMiddleware` in `#[Route]`, or globally in
-`InputHandler`.
+### Registering Middleware
 
-### Pipeline Summary
+Every stage accepts global middleware through its `CliConfig` array (see
+[Global Middleware](#global-middleware)). Four stages also accept per-route
+middleware through the matching `#[Route]` parameter, or through the
+repeatable `#[Middleware]` attribute, which sorts each class into every stage
+whose contract it implements:
 
-| Stage             | When it fires                                 | Can short-circuit | Scope     |
-| ----------------- | --------------------------------------------- | ----------------- | --------- |
-| `InputReceived`   | Before route matching                         | Yes               | Global    |
-| `RouteMatched`    | After match, before dispatch                  | Yes               | Per-route |
-| `RouteNotMatched` | When no command matches                       | No                | Global    |
-| `RouteDispatched` | After dispatch                                | No                | Per-route |
-| `ThrowableCaught` | When a throwable is caught                    | No                | Per-route |
-| `ProcessExiting`  | After output is written, before process exits | No                | Per-route |
+```php
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
+
+#[Route(
+    name:                   'db:migrate',
+    description:            'Run database migrations',
+    routeMatchedMiddleware: [ProductionGuardMiddleware::class],
+)]
+#[Middleware(CommandAuditMiddleware::class)]
+public function run(): OutputContract
+{
+    // ...
+}
+```
+
+| Stage             | Contract                            | When it fires                                | Per-route |
+| ----------------- | ----------------------------------- | -------------------------------------------- | --------- |
+| `InputReceived`   | `InputReceivedMiddlewareContract`   | Before route matching                        | No        |
+| `RouteMatched`    | `RouteMatchedMiddlewareContract`    | After match, before dispatch                 | Yes       |
+| `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                      | No        |
+| `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                               | Yes       |
+| `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                   | Yes       |
+| `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After output is written, before process exit | Yes       |
 
 ## Built-In Commands
 
-The framework registers several built-in commands via its own route providers.
-These are available in any application that includes the relevant component
-providers:
+| Command     | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| `list`      | Lists all registered commands with their descriptions |
+| `list:bash` | Outputs a bash-completion-compatible command list     |
+| `help`      | Displays help text for a given command                |
+| `version`   | Displays the application version                      |
+| `http:list` | Lists all registered HTTP routes (HTTP component)     |
 
-| Command          | Description                                           |
-| ---------------- | ----------------------------------------------------- |
-| `list`           | Lists all registered commands with their descriptions |
-| `list:bash`      | Outputs a bash-completion-compatible command list     |
-| `help`           | Displays help text for a given command                |
-| `-v` / `version` | Displays the application and framework version        |
-| `http:list`      | Lists all registered HTTP routes (HTTP component)     |
+```
+php myapp list                      # every command
+php myapp list -n=user              # only the `user:` namespace (--namespace)
+php myapp help --command=list       # help for one command
+php myapp list --help               # the same help page
+php myapp version                   # the version number
+php myapp list:bash myapp           # command names for bash completion
+```
 
-## Full Input Lifecycle
+The HTTP routing component registers `http:list` through its own provider,
+`Valkyrja\Http\Routing\Provider\HttpRoutingCliRouteProvider`.
 
-From `Cli::run()` to process exit, the lifecycle is:
+The global options work on every command. The `InputReceived` defaults handle
+the first two; the interaction options set the output flags:
 
-1. `CliConfig` is validated and the application is bootstrapped.
-2. Component providers register services into the container.
-3. Route providers register commands into the collection (or load the compiled
-   data file).
-4. `InputFactory::fromGlobals()` parses `$_SERVER['argv']` into an
-   `InputContract`.
-5. `InputHandler::run()` is called.
-6. `InputReceived` middleware runs (environment checks, global guards).
-7. The `Router` asks the `Matcher` to find a matching command.
-8. **If no command matches**: `RouteNotMatched` middleware runs and produces an
-   error output.
-9. **If a command matches**: `RouteMatched` middleware runs (access control,
-   production guards).
-10. The route's handler callable is invoked as `$handler($container)`. The
-    handler resolves the command class from the container and calls it.
-11. `RouteDispatched` middleware runs (auditing, output transformation).
-12. **If a throwable is caught** at any point: `ThrowableCaught` middleware
-    runs.
-13. The output's messages are written to stdout.
-14. `ProcessExiting` middleware runs (deferred cleanup).
-15. `Exiter::exit()` is called with the `ExitCode` integer value from the
-    output.
+| Option             | Short | Effect                                   |
+| ------------------ | ----- | ---------------------------------------- |
+| `--help`           | `-h`  | Shows the command's help page            |
+| `--version`        | `-v`  | Shows the application version            |
+| `--quiet`          | `-q`  | Suppresses output unless an error occurs |
+| `--silent`         | `-s`  | Suppresses all output                    |
+| `--no-interaction` | `-N`  | Answers every question with its default  |
 
-<p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/26.x/flow-charts/php/cli-lifecycle.svg" width="100%">
-</a></p>
+## Lifecycle
+
+1. `Cli::run()` boots the application, and the route providers fill the
+   `RouteCollection`.
+2. `InputFactory::fromGlobals()` parses `$_SERVER['argv']` into an
+   `InputContract`, and `InputHandler::run()` receives it.
+3. The `InputReceived` middleware runs. An output short-circuits to step 9.
+4. The `Router` matches the command name against the collection. On no match,
+   the `RouteNotMatched` middleware runs on an error output, and the flow
+   continues at step 9.
+5. The `Router` binds the input's arguments and options into the route's
+   declared parameters and validates them.
+6. The matched route registers in the container, and the `RouteMatched`
+   middleware runs. An output short-circuits to step 9.
+7. The route handler runs — `$handler($container, $route)` — then the
+   `RouteDispatched` middleware runs on its output.
+8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
+   middleware, which produces the error output. Boot, argv parsing, and the
+   steps below all run outside that guard.
+9. The output's messages write to the terminal.
+10. The `ProcessExiting` middleware runs, and `Exiter::exit()` ends the
+    process with the output's exit code.
 
 ```mermaid
 flowchart TD
     A([Cli::run]) --> B[Bootstrap - build Input from argv]
     B --> C[Stage 1 - InputReceived]
-    C -->|"short-circuit / throwable"| J[Stage 5 - ThrowableCaught]
+    C -->|"short-circuit"| H[Write output to stdout]
+    C -->|throwable| J[Stage 5 - ThrowableCaught]
     C --> D{"Router: command matched?"}
     D -->|"no match"| E["Stage 3 - RouteNotMatched (error output)"]
     D -->|matched| F[Stage 2 - RouteMatched]
-    E --> H[Write output to stdout]
-    F -->|"short-circuit / throwable"| J
-    F --> G[Route handler callable]
+    E -->|throwable| J
+    E --> H
+    F -->|"short-circuit"| H
+    F -->|throwable| J
+    F --> G["Route handler: handler(container, route)"]
     G -->|throwable| J
     G --> I[Stage 4 - RouteDispatched]
     I -->|throwable| J
