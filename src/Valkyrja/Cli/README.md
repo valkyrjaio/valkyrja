@@ -828,9 +828,9 @@ copies the interaction flags from the `CliInteractionConfig`.
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
-a command only queues messages. Call `writeMessages()` yourself to flush
-early — each message moves from the unwritten list to the written list, and
-never writes twice.
+a command only queues messages. To flush early, call `writeMessages()` and
+keep the output it returns — it writes on a copy, so the output you called
+it on still carries the messages, and the handler writes them a second time.
 
 ### Messages
 
