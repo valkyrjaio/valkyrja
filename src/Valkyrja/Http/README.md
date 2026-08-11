@@ -1040,9 +1040,20 @@ class MaintenanceModeMiddleware implements RequestReceivedMiddlewareContract
 }
 ```
 
-Two built-ins run at this stage: `CacheResponseMiddleware` replays cached
-responses (see [response caching](#response-caching)), and
-`RedirectTrailingSlashMiddleware` redirects `/users/` to `/users`.
+The framework ships two middleware for this stage and registers neither by
+default: `CacheResponseMiddleware` replays cached responses (see
+[response caching](#response-caching)), and `RedirectTrailingSlashMiddleware`
+redirects `/users/` to `/users`. List one in the `requestReceivedMiddleware`
+array to enable it:
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
+
+$config = new HttpConfig(
+    requestReceivedMiddleware: [RedirectTrailingSlashMiddleware::class],
+);
+```
 
 ### RouteMatched
 
@@ -1210,8 +1221,9 @@ class SecurityHeadersMiddleware implements SendingResponseMiddlewareContract
 }
 ```
 
-The built-in `NoCacheResponseMiddleware` runs at this stage — see
-[response caching](#response-caching).
+The framework ships `NoCacheResponseMiddleware` for this stage and does not
+register it by default — attach it to a route, as
+[response caching](#response-caching) shows.
 
 ### ResponseSent
 
