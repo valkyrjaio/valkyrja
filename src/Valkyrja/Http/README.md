@@ -48,20 +48,20 @@ constructor defaults are generic placeholders.
 
 Every constructor argument, with its default and what it does:
 
-| Property                   | Default                                    | What it does                                                                                                       |
-| -------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `namespace`                | `'App'`                                    | The application's root namespace                                                                                   |
-| `dir`                      | `__DIR__`                                  | The application's root directory — set it explicitly                                                               |
-| `version`                  | framework version                          | The application's version string                                                                                   |
-| `environment`              | `'production'`                             | The environment name                                                                                               |
-| `debugMode`                | `false`                                    | Enables the Whoops handler and fresh route collection (see [debug mode](#the-route-collection-and-debug-mode))     |
-| `timezone`                 | `'UTC'`                                    | PHP's default timezone, set at boot                                                                                |
-| `key`                      | `'some_secret_app_key'`                    | The application secret — always override this                                                                      |
-| `dataPath`                 | `'App/Provider/Data'`                      | Names the location of generated data classes; the framework does not read this property                            |
-| `dataNamespace`            | `'App\\Provider\\Data'`                    | Names the namespace of generated data classes; the framework does not read this property                           |
-| `providers`                | `[new HttpApplicationComponentProvider()]` | The `ComponentProviderContract` instances to boot                                                                  |
-| `callbacks`                | `[]`                                       | Callables the application runs at boot, each `callable(ApplicationContract): void`                                 |
-| seven `*Middleware` arrays | see defaults                               | The global pipeline, one array per stage — see [registering middleware globally](#registering-middleware-globally) |
+| Property                   | Default                                    | What it does                                                                                                                       |
+| -------------------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `namespace`                | `'App'`                                    | The application's root namespace                                                                                                   |
+| `dir`                      | `__DIR__`                                  | The application's root directory — set it explicitly                                                                               |
+| `version`                  | framework version                          | The application's version string                                                                                                   |
+| `environment`              | `'production'`                             | The environment name                                                                                                               |
+| `debugMode`                | `false`                                    | Enables the Whoops handler and fresh route collection (see [debug mode](#the-route-collection-and-debug-mode))                     |
+| `timezone`                 | `'UTC'`                                    | PHP's default timezone, set at boot                                                                                                |
+| `key`                      | `'some_secret_app_key'`                    | The application secret — always override this                                                                                      |
+| `dataPath`                 | `'App/Provider/Data'`                      | Names the location of generated data classes; the framework does not read this property                                            |
+| `dataNamespace`            | `'App\\Provider\\Data'`                    | Names the namespace of generated data classes; the framework does not read this property                                           |
+| `providers`                | `[new HttpApplicationComponentProvider()]` | The `ComponentProviderContract` instances to boot                                                                                  |
+| `callbacks`                | `[]`                                       | Callables the application runs at boot, each `callable(ApplicationContract): void`                                                 |
+| seven `*Middleware` arrays | `[]`, except the two stages with built-ins | The global pipeline, one array per stage — the defaults are in [registering middleware globally](#registering-middleware-globally) |
 
 Warning: the `providers` argument replaces the default list. When you pass
 your own list, include `HttpApplicationComponentProvider` in it. The
@@ -1260,12 +1260,17 @@ $config = new HttpConfig(
 ```
 
 Two stages carry built-in middleware, and the two behave differently. The
-`routeNotMatchedMiddleware` array replaces its default, so re-list
-`ViewRouteNotMatchedMiddleware` when you keep it. The framework registers the
-two `ThrowableCaught` built-ins itself, regardless of the config: the
-`throwableCaughtMiddleware` array adds middleware that runs before them. Do
-not re-list those two — a re-listed entry runs twice — and an empty array
-does not remove them:
+`routeNotMatchedMiddleware` array replaces its default,
+`[ViewRouteNotMatchedMiddleware::class]`, so re-list that class when you keep
+it. The framework registers the two `ThrowableCaught` built-ins itself,
+regardless of the config: the `throwableCaughtMiddleware` array adds
+middleware that runs before them. A re-listed built-in runs twice, so do not
+re-list those two, and an empty array does not remove them.
+
+Warning: the `throwableCaughtMiddleware` default lists those same two
+classes, so a plain `new HttpConfig()` logs the throwable twice and renders
+the error view twice. Pass `throwableCaughtMiddleware: []` to run each
+built-in once:
 
 | Stage             | `HttpConfig` property       | Per-route argument          | Built-in middleware                                                                 |
 | ----------------- | --------------------------- | --------------------------- | ----------------------------------------------------------------------------------- |
