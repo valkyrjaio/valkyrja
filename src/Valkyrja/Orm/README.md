@@ -697,10 +697,10 @@ $select = $orm->createQueryBuilder()
 // WHERE (title LIKE :title OR body LIKE :body) AND author_id = :author_id AND status = :status
 ```
 
-Each `Where` class has one place in a list. A plain `Where` opens a list, and
-it opens the inner list of a group the same way. Every clause after the first
-is an `AndWhere` or an `OrWhere`, because the clause type renders as a prefix
-that joins the clause to the one before it.
+Each `Where` class has one place in a list. A `Where` or a `NotWhere` opens a
+list, and it opens the inner list of a group the same way. Every later clause
+is an `AndWhere`, an `OrWhere`, an `AndNotWhere`, or an `OrNotWhere`. Those
+clause types render as a prefix that joins the clause to the one before it.
 
 Warning: a `WhereGroup` holds no clause type of its own, so the group renders
 with no `AND` or `OR` before its parentheses. Place the group first in the
