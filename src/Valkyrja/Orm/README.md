@@ -357,7 +357,7 @@ $published = $repository->allBy(
 );
 ```
 
-The clauses render in order. Open the list with a `Where` or a `NotWhere`, and give each later clause a joining type (`AndWhere`, `OrWhere`). The [where clause](#where-clauses) section lists every type and states the placement rule.
+The clauses render in order. Open the list with a `Where` or a `NotWhere`, and give each later clause a joining type (`AndWhere`, `OrWhere`). The [where clause](#where-clauses) section lists every type and states the placement rule. That section also covers `WhereGroup`, but `findBy()` and `allBy()` accept only `Where` arguments, so a grouped condition needs the [query builder](#query-builder).
 
 ### Creating an Entity
 
