@@ -212,7 +212,7 @@ class UserRouteProvider implements HttpRouteProviderContract
 
     public static function indexHandler(ContainerContract $container, RouteContract $route): ResponseContract
     {
-        return $container->getSingleton(UserController::class)->index();
+        return $container->get(UserController::class)->index();
     }
 
     public static function showHandler(ContainerContract $container, RouteContract $route): ResponseContract
@@ -220,7 +220,7 @@ class UserRouteProvider implements HttpRouteProviderContract
         /** @var DynamicRouteContract $route */
         $id = (int) $route->getParameter('id')->getValue();
 
-        return $container->getSingleton(UserController::class)->show($id);
+        return $container->get(UserController::class)->show($id);
     }
 }
 ```
@@ -289,8 +289,10 @@ arguments.
 
 Every route has a handler with the signature
 `callable(ContainerContract $container, RouteContract $route): ResponseContract`.
-The handler resolves the controller from the container and calls it. A route
-without a handler returns an empty `Response`. Wire a handler with
+The handler resolves the controller with `ContainerContract::get()` and calls
+it. `get()` returns the registered service, or falls back to a new instance
+when nothing registered the id — so a controller without dependencies needs no
+registration. A route without a handler returns an empty `Response`. Wire a handler with
 `#[RouteHandler([UserRouteProvider::class, 'showHandler'])]` on the routed
 method, or pass the `handler` argument of `#[Route]` directly:
 
@@ -320,7 +322,7 @@ public static function showHandler(ContainerContract $container, RouteContract $
     /** @var DynamicRouteContract $route */
     $id = (int) $route->getParameter('id')->getValue();
 
-    return $container->getSingleton(UserController::class)->show($id);
+    return $container->get(UserController::class)->show($id);
 }
 ```
 
