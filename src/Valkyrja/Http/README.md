@@ -1389,7 +1389,9 @@ from `HttpServerConfigContract::$responseCacheFilePath` — with the framework's
 storage cache path as the fallback — and `debug` from the application's debug
 mode. The publisher reads that contract from the config object passed to
 `Http::run()`, and the built-in `HttpConfig` does not implement it. To set the
-cache directory, extend `HttpConfig` and implement `HttpServerConfigContract`:
+cache directory, extend `HttpConfig` and implement `HttpServerConfigContract`.
+One subclass can implement several such contracts — the same class can also
+carry [`HttpClientConfigContract`](#the-http-client) to select the client:
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
