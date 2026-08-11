@@ -67,7 +67,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
         $app = $container->getSingleton(ApplicationContract::class);
 
         $requestReceived = $container->getSingleton(RequestReceivedHandlerContract::class);
-        $exception       = $container->getSingleton(ThrowableCaughtHandlerContract::class);
+        $throwableCaught = $container->getSingleton(ThrowableCaughtHandlerContract::class);
         $sendingResponse = $container->getSingleton(SendingResponseHandlerContract::class);
         $responseSent    = $container->getSingleton(ResponseSentHandlerContract::class);
 
@@ -77,7 +77,7 @@ class HttpServerServiceProvider implements ServiceProviderContract
                 container: $container,
                 router: $container->getSingleton(RouterContract::class),
                 requestReceivedHandler: $requestReceived,
-                throwableCaughtHandler: $exception,
+                throwableCaughtHandler: $throwableCaught,
                 sendingResponseHandler: $sendingResponse,
                 responseSentHandler: $responseSent,
                 debug: $app->getDebugMode()
