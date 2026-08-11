@@ -1341,7 +1341,7 @@ class UserRoute extends Route
         parent::__construct(
             path: '/users' . $path,
             name: 'users.' . $name,
-            routeMatchedMiddleware: [AuthRouteMatchedMiddleware::class],
+            routeMatchedMiddleware: [AuthMiddleware::class],
         );
     }
 }
