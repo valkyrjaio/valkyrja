@@ -902,7 +902,11 @@ new EntityCast(type: Post::class, column: 'slug')
 // The route parameter value loads through findBy(new Where(new Value('slug', $value)))
 ```
 
-The middleware does not run on its own: no service provider publishes it, and the container does not autowire its three constructor arguments. Bind it in a service provider, register that provider through a component provider in the config `providers` array, then name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`:
+The middleware does not run on its own: no service provider publishes it, and the container does not autowire its three constructor arguments. The middleware needs three steps:
+
+1. Bind it in a service provider.
+2. Register that provider through a component provider in the config `providers` array.
+3. Name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`.
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -1199,4 +1203,4 @@ The ORM service provider registers the following:
 
 Every entry is a singleton except `PDO` and `Repository`. The provider registers those two with `bind()`, so each resolution invokes the factory callable and returns a fresh instance with the provided arguments. The provider resolves the `PDO` binding when it constructs each manager, and a PDO manager resolves the `Repository` binding when it creates a repository.
 
-The provider itself reaches the container through `Valkyrja\Orm\Provider\OrmComponentProvider`, which returns it from `getContainerProviders()`. The default config `providers` value does not include the ORM, so add `new OrmComponentProvider()` to the `providers` array to activate these registrations — the [Application README](../Application/README.md#component-providers) documents the mechanism.
+The provider itself reaches the container through `Valkyrja\Orm\Provider\OrmComponentProvider`, which returns it from `getContainerProviders()`. The default config `providers` value does not include the ORM, so add `new OrmComponentProvider()` to the `providers` array to activate these registrations. The [Application README](../Application/README.md#component-providers) documents the mechanism.
