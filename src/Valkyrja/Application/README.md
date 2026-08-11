@@ -1,282 +1,470 @@
 # The Application
 
-## Introduction
+The application class, `Valkyrja\Application\Kernel\Valkyrja`, ties a Valkyrja
+project together. It holds the container, carries the config, and collects the
+component providers. An entry class bootstraps it once at the entry point.
 
-The `Application` class — `Valkyrja\Application\Kernel\Valkyrja` — is the
-central object that ties a Valkyrja project together. It holds the container,
-carries the configuration, coordinates component loading, and exposes the
-runtime environment to every part of the framework.
+This component also carries the entry classes, the config classes, the
+`Directory` path helper, and the built-in component providers. This document
+covers each in turn:
 
-In practice you will rarely interact with the application object directly. Its
-role is structural: it exists to be bootstrapped once at the entry point, then
-live quietly in the container while the rest of the framework does its work.
-Understanding what it does and how it is assembled makes everything else in the
-framework predictable.
+- [Entry Points](#entry-points) — HTTP, CLI, and the persistent worker
+  runtimes
+- [Configuration](#configuration) — the three config classes, environment
+  sourcing, your own config class, and callbacks
+- [The Bootstrap Sequence](#the-bootstrap-sequence) — what `run()` does, step
+  by step
+- [Accessing the Application](#accessing-the-application) — the
+  `ApplicationContract` surface
+- [The Provider Hierarchy](#the-provider-hierarchy) — component providers and
+  how to write one
+- [Built-in Component Providers](#built-in-component-providers) — the shipped
+  aggregators
+- [Directories](#directories) — path resolution through `Directory`
+- [Framework Information](#framework-information) — the `ApplicationInfo`
+  constants
+- [Exceptions](#exceptions) — the component's throwable hierarchy
+- [Debug Mode](#debug-mode) — what `debugMode` enables
+- [Persistent Worker Lifecycle](#persistent-worker-lifecycle) — request
+  isolation in a long-running process
 
-## Entry Classes
+## Entry Points
 
-You do not instantiate `Valkyrja` directly. The entry classes handle this:
+Do not instantiate `Valkyrja` directly. Use an entry class:
 
-- `Valkyrja\Application\Entry\Http` — for traditional PHP-FPM / CGI web
-  applications
-- `Valkyrja\Application\Entry\Cli` — for console applications
-- Persistent worker entry classes — for long-running worker runtimes (
-  see [Persistent Worker Lifecycle](#persistent-worker-lifecycle))
+- `Valkyrja\Application\Entry\Http` — PHP-FPM / CGI web applications
+- `Valkyrja\Application\Entry\Cli` — console applications
+- Worker entry classes — persistent worker runtimes (see
+  [Persistent Worker Lifecycle](#persistent-worker-lifecycle))
 
-The following worker runtime integrations are available as separate packages,
-each extending `Valkyrja\Application\Entry\Abstract\WorkerHttp`:
+Every entry class extends `Valkyrja\Application\Entry\Abstract\App`, which
+holds the shared bootstrap. Each bootstrap step on `App` is a public static
+method, so a subclass overrides one step without copying the rest.
 
-| Package               | Class                                | Runtime                                                          |
-| --------------------- | ------------------------------------ | ---------------------------------------------------------------- |
-| `valkyrja/frankenphp` | `Valkyrja\FrankenPhp\FrankenPhpHttp` | [FrankenPHP](https://frankenphp.dev/docs/worker/)                |
-| `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | [OpenSwoole](https://openswoole.com/)                            |
-| `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | [RoadRunner](https://docs.roadrunner.dev/docs/php-worker/worker) |
+### HTTP (PHP-FPM / CGI)
 
-### Standard (PHP-FPM / CGI)
-
-`Http` and `Cli` expose a single static `run()` method. Call it with your
-configuration object and the framework handles everything from bootstrap to
-response:
+`Http::run()` takes an `HttpConfigContract`, bootstraps the application, and
+dispatches the current request through the HTTP request handler:
 
 ```php
 // app/public/index.php
 use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Entry\Http;
 
+require __DIR__ . '/../vendor/autoload.php';
+
 Http::run(new HttpConfig(
-    dir: __DIR__ . '/..',
+    namespace:   'App',
+    dir:         __DIR__ . '/..',
+    environment: 'production',
+    debugMode:   false,
+    timezone:    'UTC',
+    key:         'your-application-key',
 ));
 ```
+
+### CLI
+
+`Cli::run()` takes a `CliConfigContract`, bootstraps the application, and
+dispatches the input built from `$_SERVER['argv']` through the CLI input
+handler:
 
 ```php
 // app/bin/cli
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Entry\Cli;
 
+require __DIR__ . '/../vendor/autoload.php';
+
 Cli::run(new CliConfig(
-    dir: __DIR__ . '/..',
-    applicationName: 'myapp',
+    namespace:          'App',
+    dir:                __DIR__ . '/..',
+    environment:        'production',
+    debugMode:          false,
+    timezone:           'UTC',
+    key:                'your-application-key',
+    applicationName:    'myapp',
+    defaultCommandName: 'list',
 ));
 ```
 
-These entry classes exist so that improvements to the bootstrap sequence
-propagate to all projects without requiring manual updates to your entry point
-files.
+The examples spell out the arguments that an application commonly sets, and
+some shown values equal the constructor defaults. Pass a named argument to set
+a value, and omit the arguments you do not change.
+
+### Persistent Workers
+
+The worker entry classes live in this package. Each extends
+`Valkyrja\Application\Entry\Abstract\WorkerHttp` and adds its runtime's
+request loop:
+
+| Class                                                  | Runtime                                                          |
+| ------------------------------------------------------ | ---------------------------------------------------------------- |
+| `Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp` | [FrankenPHP](https://frankenphp.dev/docs/worker/)                |
+| `Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp` | [OpenSwoole](https://openswoole.com/)                            |
+| `Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp` | [RoadRunner](https://docs.roadrunner.dev/docs/php-worker/worker) |
+
+Each worker class exposes the same static `run()` method as `Http`, and each
+takes the concrete `HttpConfig` class. `run()` bootstraps once, then serves
+every request from the same process (see
+[Persistent Worker Lifecycle](#persistent-worker-lifecycle) for the isolation
+model).
+
+#### FrankenPHP
+
+FrankenPHP runs the entry file as its worker script. Point the `worker`
+directive of your Caddyfile at this file:
+
+```php
+// app/public/index.php — the FrankenPHP worker script
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+FrankenPhpHttp::run(new HttpConfig(
+    dir: __DIR__ . '/..',
+));
+```
+
+The loop reads `$_SERVER['MAX_REQUESTS']` through `getMaxRequests()`. The
+worker exits after that many requests, and `0` (the default) means no limit.
+The request closure catches every throwable, so one failed request does not
+stop the worker. The loop runs `gc_collect_cycles()` after each request, so
+garbage collection does not trigger in the middle of a response.
+
+#### OpenSwoole
+
+OpenSwoole requires the `openswoole` extension and the `openswoole/core`
+package. The entry file is a long-running server process:
+
+```php
+// app/bin/swoole
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+OpenSwooleHttp::run(new HttpConfig(
+    dir: __DIR__ . '/..',
+));
+```
+
+The default server listens on `127.0.0.1:9501`. Override `getSwooleServer()`
+in a subclass to change the address:
+
+```php
+use OpenSwoole\Http\Server;
+use Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp;
+
+class AppSwooleHttp extends OpenSwooleHttp
+{
+    public static function getSwooleServer(): Server
+    {
+        return new Server('0.0.0.0', 8080);
+    }
+}
+```
+
+Override `onStart()` to run code when the server starts. The class converts
+each OpenSwoole request into a framework request, dispatches it through an
+isolated child application, and writes the framework response back through the
+OpenSwoole response.
+
+#### RoadRunner
+
+RoadRunner requires the `spiral/roadrunner-http` package. The entry file is
+the PHP worker that the RoadRunner server starts:
+
+```php
+// app/worker.php — the RoadRunner worker script
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
+
+require __DIR__ . '/vendor/autoload.php';
+
+RoadRunnerHttp::run(new HttpConfig(
+    dir: __DIR__,
+));
+```
+
+Point the `server.command` of your `.rr.yaml` at this file:
+
+```yaml
+server:
+  command: 'php worker.php'
+```
+
+The loop waits on the RoadRunner relay for each request and exits when the
+relay closes. The class converts each RoadRunner request into a framework
+request, dispatches it through an isolated child application, and responds
+through the worker relay.
+
+### Customizing an Entry Class
+
+`Http::getRequest()` builds the request from the PHP superglobals, and
+`Cli::getInput()` builds the input from `$_SERVER['argv']`. Override either in
+a subclass to change how the framework reads its input:
+
+```php
+use Valkyrja\Application\Entry\Http;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Request\Factory\RequestFactory;
+
+class AppHttp extends Http
+{
+    public static function getRequest(): ServerRequestContract
+    {
+        // Build a request that parses an `application/json` body.
+        return RequestFactory::jsonFromGlobals();
+    }
+}
+```
+
+The same pattern applies to the other bootstrap steps: `getContainer()`
+returns the container to use, `getApplication()` returns the application to
+use, and `getThrowableHandler()` returns the debug-mode throwable handler.
 
 ## Configuration
 
-The application is configured through typed PHP objects. There is no `.env`
-reader, no flat array configuration, and no magic key-value registry.
-Configuration is PHP — typed, IDE-visible, statically analyzable, and fast.
+Configuration is a typed PHP object. There is no `.env` reader and no flat
+array registry. Three config classes exist, one per entry type. `HttpConfig`
+and `CliConfig` do not extend `Config` — each implements its own contract
+(`HttpConfigContract`, `CliConfigContract`) and repeats the base properties.
+Both contracts extend `ConfigContract`, and the entry classes discriminate on
+the contract: `Http::run()` requires an `HttpConfigContract`, and `Cli::run()`
+requires a `CliConfigContract`.
 
-### Base Configuration
+Convention: hold your application's real values in the config object that the
+entry point builds. Create one config file per environment, or read the values
+from an env file in your own bootstrap, and pass them as constructor
+arguments. The constructor defaults are generic placeholders, not production
+values.
 
-`Valkyrja\Application\Data\Config` carries properties common to all application
-types:
+### Base Properties
 
-| Property        | Default                 | Description                                                  |
-| --------------- | ----------------------- | ------------------------------------------------------------ |
-| `namespace`     | `'App'`                 | Your application's root namespace                            |
-| `dir`           | `__DIR__`               | The application's root directory (set this explicitly)       |
-| `version`       | framework version       | Your application version string                              |
-| `environment`   | `'production'`          | The current environment name                                 |
-| `debugMode`     | `false`                 | Bypass data cache; enable verbose error output               |
-| `timezone`      | `'UTC'`                 | PHP's default timezone, set at boot                          |
-| `key`           | `'some_secret_app_key'` | Application secret key — **always override this**            |
-| `dataPath`      | `'App/Provider/Data'`   | Relative path where generated data cache classes are written |
-| `dataNamespace` | `'App\\Provider\\Data'` | PHP namespace for generated data cache classes               |
-| `providers`     | framework defaults      | The component providers to load, in order                    |
-| `callbacks`     | `[]`                    | Callables invoked on the application after bootstrap         |
+`Valkyrja\Application\Data\Config` carries the properties that all three
+classes share:
 
-Because configuration is plain PHP, any property can be set from any source:
+| Property        | Default                          | Description                                          |
+| --------------- | -------------------------------- | ---------------------------------------------------- |
+| `namespace`     | `'App'`                          | The application's root namespace                     |
+| `dir`           | `__DIR__`                        | The application's root directory — set it explicitly |
+| `version`       | `ApplicationInfo::VERSION`       | The application's version string                     |
+| `environment`   | `'production'`                   | The environment name                                 |
+| `debugMode`     | `false`                          | Enable the Whoops throwable handler                  |
+| `timezone`      | `'UTC'`                          | PHP's default timezone, set at boot                  |
+| `key`           | `'some_secret_app_key'`          | The application secret key — always override it      |
+| `dataPath`      | `'App/Provider/Data'`            | The framework does not read this property            |
+| `dataNamespace` | `'App\\Provider\\Data'`          | The framework does not read this property            |
+| `providers`     | `[ApplicationComponentProvider]` | The component providers to load                      |
+| `callbacks`     | `[]`                             | Callables the bootstrap invokes with the application |
+
+Every property is `public readonly`, so any code that holds the config reads
+the values directly (`$config->environment`). The bootstrap registers the
+config in the container — see
+[Accessing the Application](#accessing-the-application).
+
+### HTTP Properties
+
+`Valkyrja\Application\Data\HttpConfig` repeats the base properties, changes
+the `providers` default to `[HttpApplicationComponentProvider]`, and adds
+seven middleware lists. Each entry is a middleware class name.
+
+| Property                    | Default                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| `requestReceivedMiddleware` | `[]`                                                                          |
+| `routeMatchedMiddleware`    | `[]`                                                                          |
+| `routeNotMatchedMiddleware` | `[ViewRouteNotMatchedMiddleware::class]`                                      |
+| `routeDispatchedMiddleware` | `[]`                                                                          |
+| `throwableCaughtMiddleware` | `[LogThrowableCaughtMiddleware::class, ViewThrowableCaughtMiddleware::class]` |
+| `sendingResponseMiddleware` | `[]`                                                                          |
+| `responseSentMiddleware`    | `[]`                                                                          |
+
+### CLI Properties
+
+`Valkyrja\Application\Data\CliConfig` repeats the base properties, changes the
+`providers` default to `[CliWithHttpApplicationComponentProvider]`, and adds
+two names and six middleware lists:
+
+| Property                    | Default                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| `applicationName`           | `'valkyrja'` — the binary name in version and help output                       |
+| `defaultCommandName`        | `'list'` — the command run when no command argument is given                    |
+| `inputReceivedMiddleware`   | help, version, and global-interaction option checks                             |
+| `routeMatchedMiddleware`    | `[]`                                                                            |
+| `routeNotMatchedMiddleware` | `[CheckCommandForTypoMiddleware::class]`                                        |
+| `routeDispatchedMiddleware` | `[]`                                                                            |
+| `throwableCaughtMiddleware` | `[LogThrowableCaughtMiddleware::class, OutputThrowableCaughtMiddleware::class]` |
+| `processExitingMiddleware`  | `[]`                                                                            |
+
+### Sourcing Values From the Environment
+
+Because the config is plain PHP, any source can supply a value. Read the
+environment in the entry file itself, or in a bootstrap file the entry file
+includes:
 
 ```php
-new Config(
+// app/public/index.php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Entry\Http;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+Http::run(new HttpConfig(
+    dir:         __DIR__ . '/..',
     environment: $_ENV['APP_ENV'] ?? 'production',
     debugMode:   ($_ENV['APP_DEBUG'] ?? 'false') === 'true',
     key:         $_ENV['APP_KEY'] ?? throw new RuntimeException('APP_KEY is not set'),
+));
+```
+
+The framework does not populate `$_ENV`. Populate it with your web server, the
+worker runtime, or an env-file loader that runs before the config is built.
+Fail loudly for a required value, as the `key` line shows — a silent default
+for a secret is a production incident.
+
+### Your Own Config Class
+
+The built-in config classes are one way to start, not the only way.
+`Http::run()` requires an `HttpConfigContract`, and `Cli::run()` requires a
+`CliConfigContract` — any class that fulfills the contract works with those
+two. The worker entry classes are stricter: each worker `run()` requires the
+concrete `HttpConfig` class, so a config for a worker runtime must extend it.
+
+The simplest form extends a built-in class and bakes in your own defaults.
+The entry file then constructs one class per environment, and each class
+carries the values that hold for that environment:
+
+```php
+// app/Config/ProductionHttpConfig.php
+use Valkyrja\Application\Data\HttpConfig;
+
+class ProductionHttpConfig extends HttpConfig
+{
+    public function __construct(string $key)
+    {
+        parent::__construct(
+            namespace:   'App',
+            dir:         dirname(__DIR__),
+            environment: 'production',
+            debugMode:   false,
+            key:         $key,
+        );
+    }
+}
+```
+
+```php
+// app/public/index.php
+Http::run(new ProductionHttpConfig(
+    key: $_ENV['APP_KEY'] ?? throw new RuntimeException('APP_KEY is not set'),
+));
+```
+
+A config class can also implement the contract directly, with no built-in
+parent. The contracts declare `get`-hooked properties, so any class that
+declares the properties fulfills them. Reach for this form when your config
+carries its own structure — computed values, your own value objects, or
+properties the built-in classes do not have. This form works with
+`Http::run()` and `Cli::run()` only; a worker `run()` rejects it, because the
+worker entry classes require the concrete `HttpConfig` class.
+
+### Config Callbacks
+
+The `callbacks` array holds callables of the shape
+`callable(ApplicationContract):void`. The bootstrap invokes each one with the
+application after the core singletons register and before the container data
+loads. The callbacks run on every boot — use them only for work that must
+happen each time.
+
+Their main use case is pre-registering a prebuilt `ContainerData` singleton.
+When a callback sets one, the bootstrap skips the service-provider
+registration step and fills the container from the prebuilt object (see
+[The Bootstrap Sequence](#the-bootstrap-sequence)):
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Data\ContainerData;
+
+new HttpConfig(
+    callbacks: [
+        static function (ApplicationContract $app): void {
+            /** @var ContainerData $data */
+            $data = require __DIR__ . '/../data/container-data.php';
+
+            $app->getContainer()->setSingleton(ContainerData::class, $data);
+        },
+    ],
 );
 ```
 
-### HTTP Configuration
-
-`HttpConfig` extends `Config` with no additional properties of its own. Its
-purpose is to act as a typed discriminator — `Http::run()` enforces that it
-receives an `HttpConfig` rather than a base `Config` — and to carry a default
-`providers` list that includes the HTTP-specific component providers.
-
-### CLI Configuration
-
-`CliConfig` extends `Config` with these additional properties:
-
-| Property             | Default            | Description                                         |
-| -------------------- | ------------------ | --------------------------------------------------- |
-| `applicationName`    | `'valkyrja'`       | The binary name, shown in version and help output   |
-| `defaultCommandName` | `'list'`           | The command run when no command argument is given   |
-| `http`               | `new HttpConfig()` | An embedded `HttpConfig` for HTTP services from CLI |
-
-The embedded `http` property means a CLI application can access HTTP routing
-services — useful for commands that generate HTTP route data or interact with
-HTTP-specific configuration.
-
-> Note: In order for your cli application to be able to use HTTP services, you
-> must include the HTTP component in your application's component providers.
+`ContainerData` is a readonly value object with four maps — `aliases`,
+`callbacks`, `services`, and `singletons` — the same maps the container
+snapshots after a full provider registration. Any source can supply the
+object: a required PHP file, a generated class, or a cache.
 
 ## The Bootstrap Sequence
 
-When `run()` is called, `App::start()` executes in order:
+`run()` calls `App::start()`, which bootstraps the application:
 
-1. **`APP_START` is defined.** The constant is set to the current microtime,
-   giving you a precise benchmark reference point available anywhere in the
-   application.
-
-2. **The base path is set.** `Directory::$basePath` is set to `config->dir`. All
-   framework path resolution — including generated data file locations — uses
-   this as its root.
-
-3. **The container is created.** A new `Container` instance is instantiated.
-
-4. **The application is instantiated.** `Valkyrja` is created with the container
-   and the config. The timezone is set immediately from `config->timezone`.
-
-5. **Core singletons are registered.** `Config`, the concrete config subclass,
-   `ContainerContract`, and `ApplicationContract` are injected directly into the
-   container as singletons. If `CliConfig` is in use, its
-   embedded `HttpConfig` is also registered.
-
-6. **Provider callbacks are published.** The `callbacks` array from your config
-   is iterated and each callable is invoked with the application instance. These
-   run unconditionally, cached or not — use them only for work that genuinely
-   must happen on every boot.
-
-7. **Components are loaded.** The container data is populated, either from the
-   data cache or from providers (see below).
-
-### Bootstrap Flowchart
+1. When `debugMode` is `true`, `start()` enables a default Whoops handler
+   before any other step, so a bootstrap failure renders a stack trace.
+2. `start()` defines the `APP_START` constant with the current microtime,
+   unless an earlier entry defined it. Measure elapsed time against it.
+3. `start()` sets `Directory::$basePath` from `config->dir` (see
+   [Directories](#directories)).
+4. `getContainer()` creates the container, and `getApplication()` creates the
+   application. The application's constructor sets PHP's default timezone from
+   `config->timezone`.
+5. `bootstrapServices()` registers the core singletons.
+6. The application invokes each config callback with itself.
+7. `loadContainerData()` fills the container, through the `ContainerData` gate
+   described below.
 
 ```mermaid
 flowchart TD
-    A(["Http::run / Cli::run"]) --> B[App::start]
-    B --> C["1 - Define APP_START constant"]
-    C --> D["2 - Set base path from config->dir"]
-    D --> E["3 - Create Container"]
-    E --> F["4 - Instantiate Valkyrja, set timezone"]
-    F --> G["5 - Register core singletons\nConfig, ContainerContract, ApplicationContract"]
-    G --> H["6 - Run provider callbacks"]
-    H --> I{"Data cache exists\nand debugMode = false?"}
-    I -->|Yes| J["7 - Load data cache class\nno reflection, single step"]
-    I -->|No| K["7 - Iterate component providers\nbuild deferred service map"]
-    J --> L([Container ready])
+    A(["Http::run / Cli::run"]) --> B{"debugMode?"}
+    B -->|true| C["Enable the default Whoops handler"]
+    B -->|false| D["Define the APP_START constant"]
+    C --> D
+    D --> E["Set Directory::$basePath from config->dir"]
+    E --> F["Create the container, create the application, set the timezone"]
+    F --> G["Register the core singletons"]
+    G --> H["Invoke config->callbacks with the application"]
+    H --> I{"Is ContainerData already a singleton?"}
+    I -->|No| J["Register every service provider,\nsnapshot the result as ContainerData"]
+    I -->|Yes| K["Use the existing ContainerData singleton"]
+    J --> L["container->setFromData(containerData)"]
     K --> L
+    L --> M(["Container ready — the entry class dispatches"])
 ```
 
-## Component Loading and the Data Cache
+The core singletons are the config — under `ConfigContract` and under its
+concrete class — plus `ContainerContract` and `ApplicationContract`. When the
+config implements `CliConfigContract` or `HttpConfigContract`, the bootstrap
+registers the same config object as a singleton under that contract too.
 
-After the application is instantiated, Valkyrja populates the container. This is
-where its performance model becomes tangible.
+The `ContainerData` branch is the extension point for the callbacks. The
+callbacks run before the container data loads. A callback that sets a prebuilt
+`ContainerData` singleton skips the service-provider registration step. When no
+callback does, `ContainerServiceProvider::publishData()` registers every
+service provider from `getContainerProviders()` and snapshots the container as
+`ContainerData`.
 
-### Without the Data Cache
+After `start()` returns, the entry class finishes the boot:
 
-When `debugMode` is `true` or no data cache class exists, the application loads
-components fresh. It calls `getContainerProviders()` on the application, which
-collects all container service providers from every registered component
-provider and registers them into the container's deferred service map. Routes
-and listeners are loaded from `getHttpProviders()`, `getCliProviders()`, and
-`getEventProviders()` when those services are first accessed.
-
-Nothing is instantiated during this phase — the container maps service IDs to
-their resolution logic. Cost is paid only when a service is requested.
-
-### With the Data Cache
-
-When a data cache class exists and `debugMode` is `false`, the framework loads
-the pre-generated class directly. The container is populated in a single step
-with no provider iteration, no binding logic, and no reflection. This is what
-makes Valkyrja faster than a micro-framework in production.
-
-Regenerate the cache after any deployment that changes providers, routes, or
-services:
-
-```bash
-php app/bin/cli data:generate        # CLI routing data
-php app/bin/cli http:data:generate   # HTTP routing data
-```
-
-> Note: That a service provider must exist that provides the data classes
-> respective for each of the components you expect to load data from with debug
-> mode disabled. Otherwise, even with debug mode disabled, the default data
-> class will be generated via the same logic loop as without the data cache.
-
-## The Provider Hierarchy
-
-Understanding the provider hierarchy makes the entire system predictable.
-
-```
-config->providers[]
-  └── ComponentProvider          implements ComponentProviderContract
-        ├── getComponentProviders()  → ComponentProvider[]  (dependencies, loaded after declaring component)
-        ├── getContainerProviders()  → ServiceProvider[]
-        ├── getEventProviders()      → EventProvider[]
-        ├── getCliProviders()        → CliRouteProvider[]
-        └── getHttpProviders()       → HttpRouteProvider[]
-```
-
-> Note: These are recommended names for the classes.
->
-> ServiceProvider implements
-> Valkyrja\Container\Provider\Contract\ProviderContract or extends
-> Valkyrja\Container\Provider\Provider
-> EventProvider implements Valkyrja\Event\Provider\Contract\ProviderContract or
-> extends Valkyrja\Event\Provider\Provider
-> HttpRouteProvider implements
-> Valkyrja\Http\Routing\Provider\Contract\ProviderContract or extends
-> Valkyrja\Http\Routing\Provider\Provider
-> CliRouteProvider implements
-> Valkyrja\Cli\Routing\Provider\Contract\ProviderContract or extends
-> Valkyrja\Cli\Routing\Provider\Provider
-
-**Component providers** are the top-level unit, listed in `config->providers`.
-Each represents a logical component of your application — your own app code, a
-package, or a framework component. A component provider may optionally implement
-`PublishableProviderContract`, which adds a `publish(ApplicationContract $app)`
-method that **always runs, cached or not**. Use this only for registrations that
-truly cannot be deferred.
-
-> Note: The `publish` callback is called before the container is filled with any
-> services. You must be cautious to list your callbacks after any callbacks
-> that would load the container with data. You also do not need to use the
-> contract if you do not wish to, as you will define the callback explicitly in
-> the config. However, this can allow you to quickly see any component providers
-> that do have callbacks
-
-**Sub-component providers** are returned by `getComponentProviders()`. They
-declare which other component providers this component depends on. The framework
-expands these into the flat provider list in the order they are returned,
-positioned after the declaring component. This means the declaring component's
-own registrations are processed first, followed by those of its dependencies —
-ensuring any explicit binding in the declaring component takes precedence over
-what a dependency registers.
-
-**Service providers** live inside component providers and are returned by
-`getContainerProviders()`. They declare which services they provide and publish
-them on first, or any (services and callables), access.
-
-**Route providers** (CLI and HTTP) live inside component providers and are
-returned by `getCliProviders()` and `getHttpProviders()`. They declare which
-controller classes and pre-built route objects to register into the route
-collection.
-
-**Event providers** live inside component providers and are returned by
-`getEventProviders()`. They declare which listener classes and pre-built
-listener objects to register into the event collection.
-
-The key rule: **anything that can be deferred should be deferred.** Registering
-services, routes, or listeners in `publish()` defeats the caching mechanism
-entirely.
+1. When `debugMode` is `true`, the entry class registers a
+   `WhoopsThrowableHandler` as the `ThrowableHandlerContract` singleton and
+   enables it (see [Debug Mode](#debug-mode)).
+2. `Http` resolves `RequestHandlerContract` and runs the request from
+   `getRequest()`. `Cli` resolves `InputHandlerContract` and runs the input
+   from `getInput()`. A worker enters its request loop.
 
 ## Accessing the Application
 
-The application instance is registered in the container as
+The bootstrap registers the application in the container as
 `ApplicationContract`. Resolve it from any service provider:
 
 ```php
@@ -284,187 +472,131 @@ use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 $app = $container->getSingleton(ApplicationContract::class);
 
-$app->getContainer();     // ContainerContract
-$app->getDebugMode();     // bool
-$app->getEnvironment();   // string
-$app->getVersion();       // string
+$app->getContainer();   // ContainerContract
+$app->getDebugMode();   // bool   — config->debugMode
+$app->getEnvironment(); // string — config->environment
+$app->getVersion();     // string — config->version
+```
+
+The full `ApplicationContract` surface:
+
+| Method                       | Returns                       | Description                                            |
+| ---------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `getContainer()`             | `ContainerContract`           | The container                                          |
+| `publishProviderCallbacks()` | `void`                        | Invoke each config callback — the bootstrap calls this |
+| `getProviders()`             | `ComponentProviderContract[]` | The expanded, flat component provider list             |
+| `getContainerProviders()`    | `ServiceProviderContract[]`   | Every component's service providers, merged            |
+| `getEventProviders()`        | `ListenerProviderContract[]`  | Every component's listener providers, merged           |
+| `getCliProviders()`          | `CliRouteProviderContract[]`  | Every component's CLI route providers, merged          |
+| `getHttpProviders()`         | `HttpRouteProviderContract[]` | Every component's HTTP route providers, merged         |
+| `getDebugMode()`             | `bool`                        | `config->debugMode`                                    |
+| `getEnvironment()`           | `string`                      | `config->environment`                                  |
+| `getVersion()`               | `string`                      | `config->version`                                      |
+
+The config is a singleton too. Resolve it under `ConfigContract` for the
+shared properties, or under the entry-specific contract for the full set:
+
+```php
+use Valkyrja\Application\Data\Contract\ConfigContract;
+use Valkyrja\Application\Data\Contract\HttpConfigContract;
+
+$config = $container->getSingleton(ConfigContract::class);
+
+$config->key; // the application secret key
+
+// In an HTTP application the same object also resolves under HttpConfigContract:
+$httpConfig = $container->getSingleton(HttpConfigContract::class);
+
+$httpConfig->routeNotMatchedMiddleware; // the middleware class list
 ```
 
 In practice, most code should depend on specific services rather than on the
 application object. The application is a framework-level concern.
 
-## Component Providers
+## The Provider Hierarchy
 
-**Component providers** are the top-level organisational unit of a Valkyrja
-application. A component provider implements
-`Valkyrja\Application\Provider\Contract\ComponentProviderContract`. It groups
-the service providers, CLI route providers, HTTP route providers, event listener
-providers, and sub-component providers that make up a logical component of your
-application.
+A component provider is the top-level unit, listed in `config->providers`. It
+implements `Valkyrja\Application\Provider\Contract\ComponentProviderContract`,
+which has five methods:
 
-Component providers are registered in your config's `providers` array. When the
-application boots, it calls `getComponentProviders()` on each config provider to
-expand the full flat provider list, then calls `getContainerProviders()`,
-`getEventProviders()`, `getCliProviders()`, and `getHttpProviders()` on every
-provider in that flat list to collect all child providers.
+```text
+config->providers[]
+  └── ComponentProviderContract
+        ├── getComponentProviders() → ComponentProviderContract[] (dependencies)
+        ├── getContainerProviders() → ServiceProviderContract[]
+        ├── getEventProviders()     → ListenerProviderContract[]
+        ├── getCliProviders()       → CliRouteProviderContract[]
+        └── getHttpProviders()      → HttpRouteProviderContract[]
+```
+
+Each method receives the `ApplicationContract` and returns instances of the
+matching contract:
+
+| Method                    | Element contract                                                    | Registers             |
+| ------------------------- | ------------------------------------------------------------------- | --------------------- |
+| `getComponentProviders()` | `Valkyrja\Application\Provider\Contract\ComponentProviderContract`  | Dependency components |
+| `getContainerProviders()` | `Valkyrja\Container\Provider\Contract\ServiceProviderContract`      | Container services    |
+| `getEventProviders()`     | `Valkyrja\Event\Provider\Contract\ListenerProviderContract`         | Event listeners       |
+| `getCliProviders()`       | `Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract`   | CLI commands          |
+| `getHttpProviders()`      | `Valkyrja\Http\Routing\Provider\Contract\HttpRouteProviderContract` | HTTP routes           |
+
+**Service providers** map service ids to resolution logic in the container.
+**Route providers** (CLI and HTTP) register commands and routes. **Listener
+providers** register event listeners. Each component's own README documents
+its provider contract. The application collects each kind lazily, on the first
+call to the matching `get*Providers()` method, and caches the result. Nothing
+is instantiated at collection time — cost is paid when a service is first
+requested.
+
+### Writing a Component Provider
+
+A typical application declares one component provider of its own, returns its
+child providers from the five methods, and lists the component provider in the
+config after a built-in aggregator:
 
 ```php
+namespace App\Provider;
+
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 
 class AppComponentProvider implements ComponentProviderContract
 {
-    // Declare components this provider depends on.
-    // This component's own registrations are processed first, then the
-    // sub-components load after — so this component's bindings take
-    // precedence and can override anything a dependency declares.
     public function getComponentProviders(ApplicationContract $app): array
     {
+        // Components this component depends on. They register before this one.
         return [
-            new SomeDependencyComponentProvider(),
+            new BlogComponentProvider(),
         ];
     }
 
     public function getContainerProviders(ApplicationContract $app): array
     {
-        return [
-            new CacheServiceProvider(),
-            new MailServiceProvider(),
-        ];
-    }
-
-    public function getHttpProviders(ApplicationContract $app): array
-    {
-        return [
-            new AppRouteProvider(),
-        ];
+        return [new AppServiceProvider()];
     }
 
     public function getEventProviders(ApplicationContract $app): array
     {
-        return [
-            new AppEventProvider(),
-        ];
+        return [new AppListenerProvider()];
     }
 
     public function getCliProviders(ApplicationContract $app): array
     {
-        return [];
+        return [new AppCliRouteProvider()];
+    }
+
+    public function getHttpProviders(ApplicationContract $app): array
+    {
+        return [new AppHttpRouteProvider()];
     }
 }
 ```
 
-### Dependency Loading Order
-
-When the application calls `getProviders()`, it builds the flat provider list by
-first collecting all entries from `config->providers` in order, then appending
-the results of `getComponentProviders()` for each of those entries in the same
-order. This means:
-
-1. The declaring component appears first in the flat list.
-2. Its declared sub-components follow immediately after, in the order they are
-   returned from `getComponentProviders()`.
-3. Each provider's own `getContainerProviders()`, `getEventProviders()`,
-   `getCliProviders()`, and `getHttpProviders()` are called in flat-list order.
-
-Because the declaring component is processed first (its own service, route, and
-event providers are collected and registered before its sub-components'), and
-because sub-components are loaded after, any registration made by the declaring
-component takes effect before the sub-components' registrations are processed.
-This guarantees that a component can **override** anything a dependency
-declares: the component's own bindings are in place first, and a sub-component
-can only add new registrations on top — it cannot silently replace an explicit
-registration the parent made.
-
-If you need a dependency's registration to be overridable by your component,
-declare it in `getComponentProviders()` rather than listing it before your
-component in `config->providers`. Providers listed directly in
-`config->providers` before your component would have their own registrations
-processed first, giving them precedence.
-
-A component provider may additionally implement
-`PublishableComponentProviderContract`, which adds a
-`publish(ApplicationContract $app)` method that **runs on every boot, cached or
-not**. Use this only for registrations that genuinely cannot be deferred.
-Binding services or routes here defeats the caching mechanism entirely.
-
-## Built-in Application Component Providers
-
-The framework ships four ready-made aggregator component providers in
-`Valkyrja\Application\Provider`. Each declares a curated set of framework
-sub-components via `getComponentProviders()` and returns `[]` from all other
-methods. Use one as your sole entry in `config->providers` (alongside your own
-app provider), or compose them as sub-components of your own top-level
-aggregator.
-
-### `ApplicationComponentProvider`
-
-The widest bundle — includes every framework component: Container, all CLI
-components (Interaction, Middleware, Routing, Server), Event, all HTTP
-components (Message, Middleware, Routing, RoutingCli, Server), Log, and View.
-
-Use this when your entry point is neither purely CLI nor purely HTTP, or when
-you need the full framework surface without any trimming. It is the default for
-base `Config`.
+Return `[]` from a method whose kind the component does not provide. Then list
+the provider in the config:
 
 ```php
-use Valkyrja\Application\Provider\ApplicationComponentProvider;
-
-new Config(providers: [
-    new ApplicationComponentProvider(),
-    new AppComponentProvider(),
-]);
-```
-
-### `CliApplicationComponentProvider`
-
-A bare CLI-only bundle — includes Container, CLI Interaction, Middleware,
-Routing, Server, Event, and Log. Omits every HTTP component and
-View entirely.
-
-Use this when building a pure console application that has no HTTP surface and
-does not need to generate or serve HTTP routes.
-
-```php
-use Valkyrja\Application\Provider\CliApplicationComponentProvider;
-
-new CliConfig(providers: [
-    new CliApplicationComponentProvider(),
-    new AppComponentProvider(),
-]);
-```
-
-### `CliWithHttpApplicationComponentProvider`
-
-A CLI application that runs alongside an HTTP application — includes all CLI
-components plus the full HTTP stack (Message, Middleware, Routing, RoutingCli,
-Server, Log), but omits View.
-
-This is the **default for `CliConfig`**. Use it when your CLI commands need to
-work with HTTP routing data — for example, commands that generate HTTP route
-cache files or interact with HTTP-specific configuration — but the process never
-actually serves HTTP responses.
-
-```php
-use Valkyrja\Application\Provider\CliWithHttpApplicationComponentProvider;
-
-new CliConfig(providers: [
-    new CliWithHttpApplicationComponentProvider(),
-    new AppComponentProvider(),
-]);
-```
-
-### `HttpApplicationComponentProvider`
-
-An HTTP-optimised bundle — includes Container, Event, the full HTTP
-stack (Message, Middleware, Routing, RoutingCli, Server), Log, and View. Omits
-all CLI-specific components (Interaction, Middleware, Routing, Server).
-
-This is the **default for `HttpConfig`**. Use it for traditional web
-applications and persistent HTTP workers where CLI tooling is not needed inside
-the web process itself.
-
-```php
+use Valkyrja\Application\Data\HttpConfig;
 use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
 
 new HttpConfig(providers: [
@@ -473,149 +605,289 @@ new HttpConfig(providers: [
 ]);
 ```
 
-### Choosing the right built-in provider
+Passing a `providers` value replaces the default list. Include an aggregator
+(or the framework component providers you need) explicitly, because the
+framework's own services register through the same mechanism.
 
-| Provider                                  | CLI | HTTP | View | Typical entry config |
-| ----------------------------------------- | --- | ---- | ---- | -------------------- |
-| `ApplicationComponentProvider`            | ✓   | ✓    | ✓    | `Config`             |
-| `CliApplicationComponentProvider`         | ✓   |      |      | custom `CliConfig`   |
-| `CliWithHttpApplicationComponentProvider` | ✓   | ✓    |      | `CliConfig`          |
-| `HttpApplicationComponentProvider`        |     | ✓    | ✓    | `HttpConfig`         |
+### Loading Order
+
+**Sub-component providers**, returned by `getComponentProviders()`, declare the
+components a component depends on. `Valkyrja::collectProviders()` expands the
+list depth-first: it adds each sub-provider before the provider that declares
+it. A component's dependencies therefore register first, and the declaring
+component registers after them. List order in `config->providers` is preserved
+for the top-level entries.
+
+For the config above the flat list is: the aggregator's dependencies, the
+aggregator, `BlogComponentProvider`, `AppComponentProvider`. The expansion
+does not dedupe: a provider declared in two places appears twice in the flat
+list.
+
+## Built-in Component Providers
+
+The framework ships four aggregators in `Valkyrja\Application\Provider`. Each
+declares framework components through `getComponentProviders()` and returns
+`[]` from the other four methods.
+
+| Provider                                  | Composition                                                                                         | Default for  |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------ |
+| `ApplicationComponentProvider`            | Container, Event                                                                                    | `Config`     |
+| `CliApplicationComponentProvider`         | `ApplicationComponentProvider` + CLI Interaction, Middleware, Routing, Server + Log                 | —            |
+| `CliWithHttpApplicationComponentProvider` | `CliApplicationComponentProvider` + HTTP Message, Middleware, Routing, RoutingCli, Server           | `CliConfig`  |
+| `HttpApplicationComponentProvider`        | `ApplicationComponentProvider` + HTTP Message, Middleware, Routing, RoutingCli, Server + Log + View | `HttpConfig` |
+
+Choose by application shape:
+
+- `ApplicationComponentProvider` is the minimal core: the container and the
+  event components only. Use it when you compose every other component
+  yourself.
+- `CliApplicationComponentProvider` serves a pure console application with no
+  HTTP surface.
+- `CliWithHttpApplicationComponentProvider` serves a console application whose
+  commands work with HTTP routing data — the common case for an application
+  that has both a web and a console entry.
+- `HttpApplicationComponentProvider` serves a web application; it has no CLI
+  components.
+
+List an aggregator alongside your own provider:
+
+```php
+use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Application\Provider\HttpApplicationComponentProvider;
+
+new HttpConfig(providers: [
+    new HttpApplicationComponentProvider(),
+    new AppComponentProvider(),
+]);
+```
+
+## Directories
+
+`Valkyrja\Application\Directory\Directory` resolves every framework path. The
+bootstrap sets `Directory::$basePath` from `config->dir`, and each helper
+builds an absolute path from it. Each helper takes an optional path to append:
+
+```php
+use Valkyrja\Application\Directory\Directory;
+
+Directory::basePath();                 // /path/to/app
+Directory::publicPath('index.php');    // /path/to/app/public/index.php
+Directory::storagePath();              // /path/to/app/storage
+Directory::logsStoragePath('app.log'); // /path/to/app/storage/logs/app.log
+```
+
+| Helper                        | Resolves to (relative to the base path) |
+| ----------------------------- | --------------------------------------- |
+| `basePath()`                  | ``                                      |
+| `appPath()`                   | `app`                                   |
+| `dataPath()`                  | `data`                                  |
+| `envPath()`                   | `env`                                   |
+| `publicPath()`                | `public`                                |
+| `resourcesPath()`             | `resources`                             |
+| `srcPath()`                   | `src`                                   |
+| `storagePath()`               | `storage`                               |
+| `frameworkStoragePath()`      | `storage/framework`                     |
+| `frameworkStorageCachePath()` | `storage/framework/cache`               |
+| `logsStoragePath()`           | `storage/logs`                          |
+| `testsPath()`                 | `tests`                                 |
+| `vendorPath()`                | `vendor`                                |
+
+Each segment name comes from a public static property (`$appPath`,
+`$storagePath`, and so on). Assign a property before the paths are used to
+rename a directory:
+
+```php
+use Valkyrja\Application\Directory\Directory;
+
+Directory::$storagePath = 'var';
+
+Directory::logsStoragePath('app.log'); // /path/to/app/var/logs/app.log
+```
+
+`Directory::path()` is the joining helper: it prepends a `/` to a relative
+path and passes through an empty or absolute one.
+
+## Framework Information
+
+`Valkyrja\Application\Constant\ApplicationInfo` carries the framework's own
+identity constants:
+
+| Constant                  | Holds                              |
+| ------------------------- | ---------------------------------- |
+| `VERSION`                 | The framework version string       |
+| `VERSION_BUILD_DATE_TIME` | The build datetime of that version |
+| `ASCII`                   | The Valkyrja ASCII-art banner      |
+| `ICON`                    | The default CLI banner icon        |
+
+`ApplicationInfo::VERSION` is the default for `config->version`, so an
+application that does not set `version` reports the framework version from
+`ApplicationContract::getVersion()`. Set `version` to report your
+application's own version.
+
+## Exceptions
+
+Every exception this component throws implements
+`Valkyrja\Application\Throwable\Contract\ApplicationThrowable`, which extends
+the framework-wide `ValkyrjaThrowable`. Two abstract bases exist for the
+component's exceptions: `ApplicationInvalidArgumentException` and
+`ApplicationRuntimeException` in
+`Valkyrja\Application\Throwable\Exception\Abstract`.
+
+Catch `ApplicationThrowable` to handle every exception from this component,
+or `ValkyrjaThrowable` to handle every framework exception, without masking
+unrelated errors.
 
 ## Debug Mode
 
-Setting `debugMode: true` has two effects:
+`debugMode: true` enables the Whoops throwable handler in two places:
 
-1. The data cache is bypassed entirely — components always load fresh from
-   providers on every request.
-2. Valkyrja installs Whoops as the throwable handler, rendering detailed stack
-   traces in the browser or terminal.
+1. `App::start()` enables a default handler first, before any other bootstrap
+   step, so a bootstrap failure renders a stack trace.
+2. After bootstrap, the entry class registers a `WhoopsThrowableHandler` as the
+   `ThrowableHandlerContract` singleton and enables it.
 
-Never run with `debugMode: true` in production. The performance difference is
-significant enough, and Whoops output may expose internal details that should
-remain private.
+That is the whole effect — `debugMode` changes no other bootstrap behavior.
+Override `getThrowableHandler()` in an entry subclass to use a different
+handler.
+
+Warning: Whoops output exposes internal details. Never set `debugMode: true`
+in production.
 
 ## Persistent Worker Lifecycle
 
-Persistent worker runtimes (where a single PHP process handles many requests
-without restarting) require a different architecture from PHP-FPM. In PHP-FPM
-every request gets a clean process. In a worker, state accumulated during one
-request will bleed into the next unless it is explicitly isolated.
+In a persistent worker runtime, one PHP process handles many requests. State
+from one request bleeds into the next unless the framework isolates it.
+`Valkyrja\Application\Entry\Abstract\WorkerHttp` implements the isolation; the
+three concrete classes in the table above supply each runtime's request loop.
 
-Valkyrja's abstract worker entry class,
-`Valkyrja\Application\Entry\Abstract\WorkerHttp`,
-implements the isolation pattern. Concrete subclasses integrate with a specific
-worker runtime. The abstract class provides the `bootstrap()` and `handle()`
-methods; subclasses supply the request loop and any runtime-specific request
-conversion.
-
-### The Invariant
-
-The parent application and its container are **frozen** after `bootstrap()`
-completes. No code should write to them again. Every request receives its own
-`ChildContainer` and `ChildApplication` that inherit from the frozen parent but
-write only to child-local state. When the request ends, the child is discarded.
-
-### Bootstrap (once, at worker startup)
-
-```php
-$app = static::bootstrap($config, $env);
-
-$container = $app->getContainer();
-$data      = $container->getData(); // captured once, reused each request
-```
-
-`bootstrap()` runs the full application bootstrap sequence and then calls
-`bootstrapParentServices()`. The returned `$app` and the snapshot `$data`
-are captured in the closure or loop scope before any request arrives.
-
-`getData()` returns a `ContainerData` value object holding the parent
-container's maps. It is captured **once**, outside the request loop, and
-passed to every child. Because PHP arrays are copy-on-write, each child gets
-its own logical copy at zero cost until it writes to one of the maps.
-
-### Per-Request Handling
-
-```php
-// Inside the worker request loop:
-static::handle($app, $data, $request);
-```
-
-`handle()` creates a fresh `ChildContainer` and `ChildApplication` for each
-request:
-
-```
-ChildContainer($parent, $data)     ← inherits parent maps; writes stay local
-ChildApplication($app, $container) ← owns child container; delegates everything else to parent
-```
-
-`ChildApplication` owns the child container and returns it from `getContainer()`.
-Every other method — `getEnvironment()`, `getVersion()`, `getProviders()`,
-`getDebugMode()`, and so on — delegates directly to the parent application. No
-re-bootstrapping occurs. The child is a thin wrapper that swaps in a fresh
-container while keeping the rest of the parent's state intact.
-
-The child container checks its own maps first and falls back to the parent via
-the `ContainerContract` interface. Singletons resolved in the child are cached
-in the child only. The parent's `instances` map is never written to after
-`bootstrap()`.
-
-### Lifecycle Flowchart
-
-<p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://raw.githubusercontent.com/valkyrjaio/art/refs/heads/26.x/flow-charts/php/worker-http-lifecycle.svg" width="100%">
-</a></p>
+The invariant: **the parent application and its container are frozen after
+`bootstrap()` returns.** Every request gets its own `ChildContainer` and
+`ChildApplication`, and the worker discards both when the request ends.
 
 ```mermaid
 flowchart TD
     A(["Worker process starts"]) --> B["bootstrap(config)"]
-    B --> C["Full app bootstrap\n(providers, data cache, etc.)"]
-    C --> D["bootstrapParentServices()\nforce-resolve shared singletons"]
-    D --> E["getData()\ncapture ContainerData snapshot"]
-    E --> F(["Parent frozen — request loop begins"])
-    F --> G["Runtime delivers request"]
-    G --> H["handle(app, data, request)"]
-    H --> I["new ChildContainer(parent, data)\nnew ChildApplication(app, container)"]
-    I --> J["Register request-scoped singletons\non child container"]
-    J --> K["Dispatch request"]
-    K --> L["Child discarded"]
-    L --> F
+    B --> C["Full bootstrap sequence, throwable handler,\nbootstrapParentServices()"]
+    C --> D["container->getData()\ncapture the ContainerData snapshot once"]
+    D --> E(["Parent frozen — the request loop begins"])
+    E --> F["The runtime delivers a request"]
+    F --> G["handle(app, data, request)"]
+    G --> H["New ChildContainer(parent, data)\nNew ChildApplication(app, childContainer)"]
+    H --> I["Dispatch the request"]
+    I --> J["Discard the child"]
+    J --> E
 ```
 
-### Customising Bootstrap
+### Bootstrap (once, at worker startup)
 
-Override `bootstrapParentServices()` to force-resolve services that are
-expensive to create and safe to share across requests — for example, the route
-collection:
+`bootstrap()` takes one `HttpConfigContract` and returns the application:
 
 ```php
-protected static function bootstrapParentServices(ApplicationContract $app): void
+$app = static::bootstrap($config);
+
+$container = $app->getContainer();
+$data      = $container->getData(); // captured once, reused for each request
+```
+
+`getData()` returns a `ContainerData` value object that holds the parent
+container's maps. PHP arrays are copy-on-write, so each child receives a
+logical copy at no cost until the child writes to a map.
+
+### Per-Request Handling
+
+`handle($app, $data, $request)` serves one request, in four overridable steps:
+
+1. `getChildContainer()` creates a `ChildContainer` from the parent and the
+   `ContainerData` snapshot.
+2. `getChildApplication()` wraps the parent application and the child
+   container in a `ChildApplication`.
+3. `bootstrapChildContainer()` registers the child application and the child
+   container as the child's `ApplicationContract` and `ContainerContract`
+   singletons, so request-scoped resolution stays in the child.
+4. `handleRequest()` resolves `RequestHandlerContract` from the child and runs
+   the request.
+
+The `ChildContainer` reads its own maps first and falls back to the parent
+through `ContainerContract`. A singleton resolved in the child stays in the
+child. The `ChildApplication` returns the child container from
+`getContainer()` and delegates every other `ApplicationContract` method to the
+parent.
+
+`FrankenPhpHttp` uses `handle()` directly, because the PHP SAPI emits the
+response. `OpenSwooleHttp` and `RoadRunnerHttp` mirror the same pipeline but
+return the framework response, because their runtimes emit it: each dispatches
+through the child's request handler, applies the sending-response middleware,
+sets the response as the child's `ResponseContract` singleton, and terminates
+the handler before the runtime writes the response out.
+
+### Customizing the Parent
+
+Override `bootstrapParentServices()` to force-resolve services that are
+expensive to create and safe to share. A service resolved here lives in the
+frozen parent; a service not resolved here is created fresh in each request's
+child. The base implementation resolves the route collection.
+
+### Swapping the Child Container
+
+Two `ChildContainer` implementations exist in `Valkyrja\Container\Manager`:
+
+- `ChildContainer` (the default) delegates to the parent through
+  `ContainerContract`, so any parent that implements the contract works.
+- `NativeChildContainer` reads the parent's protected fields directly for a
+  lower construction cost. It requires a concrete `Container` parent and takes
+  no `ContainerData`. Use it only when profiling shows a bottleneck at child
+  construction.
+
+To swap the implementation, override `getChildContainer()` in your concrete
+worker subclass.
+
+### A Complete Worker Subclass
+
+One subclass combines both extension points — extra parent services and a
+different child container:
+
+```php
+namespace App\Entry;
+
+use Valkyrja\Application\Entry\FrankenPhp\FrankenPhpHttp;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Data\ContainerData;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Manager\NativeChildContainer;
+use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract;
+
+class AppWorkerHttp extends FrankenPhpHttp
 {
-    $container = $app->getContainer();
-    $container->getSingleton(CollectionContract::class);
-    $container->getSingleton(MyExpensiveSharedService::class);
+    public static function bootstrapParentServices(ApplicationContract $app): void
+    {
+        parent::bootstrapParentServices($app);
+
+        // Share the route matcher across requests instead of rebuilding it per child.
+        $app->getContainer()->getSingleton(MatcherContract::class);
+    }
+
+    public static function getChildContainer(ApplicationContract $app, ContainerData $data): ContainerContract
+    {
+        $parent = $app->getContainer();
+
+        assert($parent instanceof Container);
+
+        return new NativeChildContainer($parent);
+    }
 }
 ```
 
-Anything resolved here lives in the frozen parent and is shared (read-only)
-across all requests. Anything not resolved here will be created fresh in each
-request's child container, which is correct but pays the creation cost on
-every request.
+The entry file then calls the subclass instead of the shipped class:
 
-### Child Container Variants
+```php
+// app/public/index.php — the FrankenPHP worker script
+use App\Entry\AppWorkerHttp;
+use Valkyrja\Application\Data\HttpConfig;
 
-Two `ChildContainer` implementations are available:
+require __DIR__ . '/../vendor/autoload.php';
 
-- **`Valkyrja\Container\Manager\ChildContainer`** (default) — delegates to the
-  parent via `ContainerContract`. Works with any parent that implements the
-  contract and is portable to any language or runtime.
-
-- **`Valkyrja\Container\Manager\NativeChildContainer`** — accesses the parent's
-  protected fields directly for slightly lower overhead at construction.
-  Requires
-  a concrete `Container` parent and is PHP-only. Use only when profiling
-  confirms
-  a bottleneck at worker child construction rates.
-
-The abstract worker entry class uses `ChildContainer` by default. Swap in
-`NativeChildContainer` by overriding `handle()` in your concrete subclass.
+AppWorkerHttp::run(new HttpConfig(
+    dir: __DIR__ . '/..',
+));
+```
