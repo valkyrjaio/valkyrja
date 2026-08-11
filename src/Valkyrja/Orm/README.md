@@ -357,7 +357,7 @@ $published = $repository->allBy(
 );
 ```
 
-The clauses render in order, so give the first clause no type (a plain `Where`) and give each later clause a type (`AndWhere`, `OrWhere`). The [where clause](#where-clauses) section lists every type.
+The clauses render in order. Open the list with a `Where` or a `NotWhere`, and give each later clause a joining type (`AndWhere`, `OrWhere`). The [where clause](#where-clauses) section lists every type and states the placement rule.
 
 ### Creating an Entity
 
@@ -658,7 +658,7 @@ One subclass per clause type prefixes the rendered clause:
 | `AndNotWhere` | `AND NOT status = :status` |
 | `OrNotWhere`  | `OR NOT status = :status`  |
 
-The builder renders `WHERE` once, then each clause in order, separated by spaces. Give the first clause no type, because a leading `AndWhere` renders `WHERE AND`:
+The builder renders `WHERE` once, then each clause in order, separated by spaces. Open the list with a `Where` or a `NotWhere`. A joining type cannot open the list, because a leading `AndWhere` renders `WHERE AND`:
 
 ```php
 $select = $orm->createQueryBuilder()
