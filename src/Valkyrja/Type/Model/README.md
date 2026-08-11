@@ -322,9 +322,11 @@ JSON-encoded string. `asValue()` returns the model itself.
 ## Exposing Properties
 
 The base `Model` has no `expose()` or `unexpose()` method. Those methods come
-from the `Exposable` trait, which implements `ExposableModelContract`. Use
-the trait when serialization must include a name that the property collection
-misses — for example, a private property with a registered get callable:
+from the `Exposable` trait, which supplies the methods that
+`ExposableModelContract` declares. The class that uses the trait must still
+declare `implements ExposableModelContract`. Use the trait when serialization
+must include a name that the property collection misses — for example, a
+private property with a registered get callable:
 
 ```php
 use Valkyrja\Type\Model\Abstract\Model;
@@ -405,9 +407,10 @@ serialization crosses a trust boundary:
 
 ```php
 use Valkyrja\Type\Model\Abstract\Model;
+use Valkyrja\Type\Model\Contract\ExposableModelContract;
 use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
-class UserModel extends Model
+class UserModel extends Model implements ExposableModelContract
 {
     use ProtectedExposable;
 
