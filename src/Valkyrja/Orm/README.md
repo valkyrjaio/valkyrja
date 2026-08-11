@@ -761,6 +761,8 @@ $select = $orm->createQueryBuilder()
 | `BITWISE_OR`         | `\|`          |
 | `BITWISE_INVERSION`  | `~`           |
 
+Warning: `NOT_IN` and `MEMBER_OF` render with an underscore where the SQL keyword carries a space, and no driver accepts the rendered clause. Use a raw statement for a `NOT IN` filter or a `MEMBER OF` filter.
+
 ### Group By, Order By, Limit, and Offset
 
 `withGroupBy()` takes column names, and `withOrderBy()` takes `OrderBy` objects. `OrderBy` pairs a field with a `SortOrder` (`ASC` or `DESC`), and the order defaults to `ASC`:
