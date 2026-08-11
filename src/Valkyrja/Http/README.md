@@ -265,7 +265,7 @@ routed method — the route's [handler](#route-handlers) does that, and a route
 without a handler returns an empty `Response`. Wire the handler with
 `#[RouteHandler]`, as every routed method in this README does. The named
 handlers follow the `indexHandler` and `showHandler` pattern from
-[pre-built routes](#pre-built-routes-from-getroutes): a handler reads the
+[pre-built routes](#pre-built-routes-from-getroutes). A handler reads the
 matched values from the route and calls the routed method with them.
 
 Stack the attribute to serve several paths from one method. Each attribute
