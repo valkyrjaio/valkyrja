@@ -15,19 +15,25 @@ namespace Valkyrja\Tests\Functional\Cli\Server\Command;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
 use Valkyrja\Attribute\Collector\Collector;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Header;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
+use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
+use Valkyrja\Cli\Routing\Constant\OptionName;
+use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
+use Valkyrja\Cli\Server\Constant\CommandName;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
@@ -37,13 +43,6 @@ use Valkyrja\Tests\Functional\Abstract\TestCase;
 use function array_map;
 use function implode;
 
-/**
- * Parameter presence for the built-in commands, over a real dispatch.
- *
- * A route keeps every parameter it declares, so a declared parameter is present
- * on the route whether or not the command line spelled it. Each test dispatches
- * an argv array through the real router and asserts the branch the command took.
- */
 final class CommandParameterPresenceTest extends TestCase
 {
     /** @var non-empty-string */
@@ -85,6 +84,27 @@ final class CommandParameterPresenceTest extends TestCase
         );
         self::assertStringContainsString(needle: 'Built on Valkyrja v', haystack: $text);
         self::assertStringNotContainsString(needle: '╭──', haystack: $text);
+    }
+
+    /**
+     * The global `--version` flag routes to the version command with no option
+     * spelled, so it renders the same banner that a bare `version` renders.
+     */
+    public function testGlobalVersionFlagRoutesToTheBareVersionCommand(): void
+    {
+        $output = $this->dispatch(['cli', '--version'], withInputMiddleware: true);
+
+        self::assertInstanceOf(Header::class, $output->getMessages()[0]);
+    }
+
+    /**
+     * The short spelling of the global flag routes the same way.
+     */
+    public function testGlobalVersionShortFlagRoutesToTheBareVersionCommand(): void
+    {
+        $output = $this->dispatch(['cli', '-v'], withInputMiddleware: true);
+
+        self::assertInstanceOf(Header::class, $output->getMessages()[0]);
     }
 
     /**
@@ -135,9 +155,10 @@ final class CommandParameterPresenceTest extends TestCase
     /**
      * Dispatch an argv array through the real router and return the output.
      *
-     * @param non-empty-string[] $argv The argv
+     * @param non-empty-string[] $argv                The argv
+     * @param bool               $withInputMiddleware Run the default input-received middleware first
      */
-    private function dispatch(array $argv): OutputContract
+    private function dispatch(array $argv, bool $withInputMiddleware = false): OutputContract
     {
         $reflector      = new Reflector();
         $routeCollector = new AttributeRouteCollector(
@@ -179,7 +200,27 @@ final class CommandParameterPresenceTest extends TestCase
             outputFactory: $outputFactory
         );
 
-        return $router->dispatch(InputFactory::fromGlobals($argv, 'cli', 'list'));
+        $input = InputFactory::fromGlobals($argv, 'cli', 'list');
+
+        if ($withInputMiddleware) {
+            $container->setSingleton(
+                CheckForVersionOptionsMiddleware::class,
+                new CheckForVersionOptionsMiddleware(
+                    commandName: CommandName::VERSION,
+                    optionName: OptionName::VERSION,
+                    optionShortName: OptionShortName::VERSION
+                )
+            );
+
+            $inputAfterMiddleware = new InputReceivedHandler($container, CheckForVersionOptionsMiddleware::class)
+                ->inputReceived($input);
+
+            self::assertInstanceOf(InputContract::class, $inputAfterMiddleware);
+
+            $input = $inputAfterMiddleware;
+        }
+
+        return $router->dispatch($input);
     }
 
     /**
