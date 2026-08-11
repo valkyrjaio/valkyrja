@@ -851,7 +851,7 @@ $statement->execute();
 $posts = $statement->fetchAllEntities(Post::class);
 ```
 
-`fetch()` and `fetchEntity()` read one row, and throw an `OrmFetchException` when no row remains. `fetchAll()` and `fetchAllEntities()` return an empty array when no row matches. A failed `execute()` throws a `PDOException` under the default `PDO::ERRMODE_EXCEPTION` options ([Configuration](#configuration)); `execute()` returns `false`, with `getErrorMessage()` holding the reason, only when the application overrides `PDO::ATTR_ERRMODE`.
+`fetch()` and `fetchEntity()` read one row, and throw an `OrmFetchException` when no row remains. `fetchAll()` and `fetchAllEntities()` return an empty array when no row matches. A failed `execute()` throws a `PDOException` under the default `PDO::ERRMODE_EXCEPTION` options ([Configuration](#configuration)). `execute()` returns `false`, with `getErrorMessage()` holding the reason, only when the application overrides `PDO::ATTR_ERRMODE`.
 
 `query()` shortens the flow for a query with no bind parameters:
 
@@ -969,7 +969,11 @@ class AppComponentProvider implements ComponentProviderContract
 }
 ```
 
-A service provider reaches the container only through a `ComponentProviderContract` in the config `providers` array — the [Application README](../Application/README.md#component-providers) documents the mechanism. The config below names three: `HttpApplicationComponentProvider` (the framework HTTP components, which the default `providers` value supplies), `OrmComponentProvider` (the ORM services, including `ManagerContract`), and an `AppComponentProvider` that returns `new AppServiceProvider()` from `getContainerProviders()`:
+A service provider reaches the container only through a `ComponentProviderContract` in the config `providers` array. The [Application README](../Application/README.md#component-providers) documents the mechanism. The config below names three component providers:
+
+- `HttpApplicationComponentProvider` — the framework HTTP components. The default `providers` value supplies it.
+- `OrmComponentProvider` — the ORM services, including `ManagerContract`.
+- `AppComponentProvider` — the class above, which returns `new AppServiceProvider()` from `getContainerProviders()`.
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
