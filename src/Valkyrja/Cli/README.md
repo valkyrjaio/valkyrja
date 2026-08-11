@@ -1253,9 +1253,7 @@ php myapp list                      # every command
 php myapp list -n=user              # only the `user:` namespace (--namespace)
 php myapp help --command=list       # help for one command
 php myapp list --help               # the same help page
-php myapp version                   # the version banner
-php myapp version --short           # the version number only
-php myapp version --plain           # version info without the banner
+php myapp version                   # the version number
 php myapp list:bash myapp           # command names for bash completion
 ```
 
