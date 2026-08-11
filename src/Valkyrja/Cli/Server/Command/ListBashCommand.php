@@ -72,8 +72,10 @@ class ListBashCommand
         $routes    = $this->collection->all();
         $colonAt   = false;
 
-        if ($this->route->hasArgument('namespace')) {
-            $namespace = $this->route->getArgument('namespace')->getFirstValue();
+        $namespaceArgument = $this->route->getArgument('namespace');
+
+        if ($namespaceArgument->hasFirstValue()) {
+            $namespace = $namespaceArgument->getFirstValue();
             $colonAt   = strpos($namespace, ':');
 
             $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));

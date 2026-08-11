@@ -13,9 +13,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 
 use Valkyrja\Application\Data\CliConfig;
+use Valkyrja\Cli\Interaction\Option\Option;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListCommand;
@@ -33,16 +36,10 @@ final class ListCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasOption')
-            ->willReturn(false);
-        $route->expects($this->never())
-            ->method('getOption');
 
         $command = new ListCommand(
             config: new CliConfig(),
-            route: $route,
+            route: $this->makeRoute(),
             collection: $collection,
             outputFactory: $outputFactory,
         );
@@ -63,21 +60,10 @@ final class ListCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
-        $option = $this->createMock(OptionParameter::class);
-        $option->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn('non-existent namespace');
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasOption')
-            ->willReturn(true);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->willReturn($option);
 
         $command = new ListCommand(
             config: new CliConfig(),
-            route: $route,
+            route: $this->makeRoute('non-existent namespace'),
             collection: $collection,
             outputFactory: $outputFactory,
         );
@@ -121,22 +107,10 @@ final class ListCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2]);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasOption')
-            ->willReturn(false);
-        $route->expects($this->never())
-            ->method('getOption');
-        $route->expects($this->once())
-            ->method('getDescription')
-            ->willReturn('List all commands');
-        $route->expects($this->once())
-            ->method('getName')
-            ->willReturn('list');
 
         $command = new ListCommand(
             config: new CliConfig(namespace: $appName, version: $appVersion),
-            route: $route,
+            route: $this->makeRoute(),
             collection: $collection,
             outputFactory: $outputFactory,
         );
@@ -194,27 +168,10 @@ final class ListCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2, $listRoute3]);
-        $option = $this->createMock(OptionParameter::class);
-        $option->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($namespace);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasOption')
-            ->willReturn(true);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->willReturn($option);
-        $route->expects($this->once())
-            ->method('getDescription')
-            ->willReturn('List all commands');
-        $route->expects($this->once())
-            ->method('getName')
-            ->willReturn('list');
 
         $command = new ListCommand(
             config: new CliConfig(namespace: $appName, version: $appVersion),
-            route: $route,
+            route: $this->makeRoute($namespace),
             collection: $collection,
             outputFactory: $outputFactory,
         );
@@ -239,6 +196,28 @@ final class ListCommandTest extends TestCase
 
         self::assertSame($text, ListCommand::help()->getText());
         self::assertSame($text, ListCommand::help()->getFormattedText());
+    }
+
+    /**
+     * A route that declares the namespace option, and carries a value only when one was spelled out.
+     */
+    private function makeRoute(string $namespace = ''): RouteContract
+    {
+        $option = new OptionParameter(
+            name: 'namespace',
+            description: 'An optional namespace to filter commands by'
+        );
+
+        if ($namespace !== '') {
+            $option = $option->withOptions(new Option('namespace', $namespace));
+        }
+
+        return new Route(
+            name: 'list',
+            description: 'List all commands',
+            handler: static fn (): OutputContract => new PlainOutput(),
+            options: [$option],
+        );
     }
 
     private function makeOutputFactory(): OutputFactoryContract

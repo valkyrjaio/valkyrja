@@ -12,10 +12,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 
+use Valkyrja\Cli\Interaction\Argument\Argument;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -33,15 +36,9 @@ final class ListBashCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([]);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasArgument')
-            ->willReturn(false);
-        $route->expects($this->never())
-            ->method('getArgument');
 
         $command = new ListBashCommand(
-            route: $route,
+            route: $this->makeRoute(),
             collection: $collection,
             outputFactory: $outputFactory
         );
@@ -74,15 +71,9 @@ final class ListBashCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2]);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasArgument')
-            ->willReturn(false);
-        $route->expects($this->never())
-            ->method('getArgument');
 
         $command = new ListBashCommand(
-            route: $route,
+            route: $this->makeRoute(),
             collection: $collection,
             outputFactory: $outputFactory
         );
@@ -123,20 +114,9 @@ final class ListBashCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2, $listRoute3]);
-        $argument = $this->createMock(ArgumentParameter::class);
-        $argument->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($namespace);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasArgument')
-            ->willReturn(true);
-        $route->expects($this->once())
-            ->method('getArgument')
-            ->willReturn($argument);
 
         $command = new ListBashCommand(
-            route: $route,
+            route: $this->makeRoute($namespace),
             collection: $collection,
             outputFactory: $outputFactory
         );
@@ -177,20 +157,9 @@ final class ListBashCommandTest extends TestCase
         $collection->expects($this->once())
             ->method('all')
             ->willReturn([$listRoute, $listRoute2, $listRoute3]);
-        $argument = $this->createMock(ArgumentParameter::class);
-        $argument->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($namespace);
-        $route = $this->createMock(Route::class);
-        $route->expects($this->once())
-            ->method('hasArgument')
-            ->willReturn(true);
-        $route->expects($this->once())
-            ->method('getArgument')
-            ->willReturn($argument);
 
         $command = new ListBashCommand(
-            route: $route,
+            route: $this->makeRoute($namespace),
             collection: $collection,
             outputFactory: $outputFactory
         );
@@ -206,5 +175,31 @@ final class ListBashCommandTest extends TestCase
 
         self::assertSame($text, ListBashCommand::help()->getText());
         self::assertSame($text, ListBashCommand::help()->getFormattedText());
+    }
+
+    /**
+     * A route that declares the namespace argument, and carries a value only when one was spelled out.
+     */
+    private function makeRoute(string $namespace = ''): RouteContract
+    {
+        $applicationName = new ArgumentParameter(
+            name: 'applicationName',
+            description: 'The application name'
+        );
+        $namespaceArgument = new ArgumentParameter(
+            name: 'namespace',
+            description: 'An optional namespace to filter commands by'
+        );
+
+        if ($namespace !== '') {
+            $namespaceArgument = $namespaceArgument->withArguments(new Argument($namespace));
+        }
+
+        return new Route(
+            name: 'list:bash',
+            description: 'List all commands for bash completion',
+            handler: static fn (): OutputContract => new Output(),
+            arguments: [$applicationName, $namespaceArgument],
+        );
     }
 }
