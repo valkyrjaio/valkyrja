@@ -15,6 +15,9 @@ namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Application\Data\Contract\HttpConfigContract;
 use Valkyrja\Application\Data\HttpConfig;
+use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Provider\HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Server\Data\Contract\HttpServerConfigContract;
@@ -32,6 +35,7 @@ use Valkyrja\Http\Server\Provider\HttpServerServiceProvider;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\PhpUnit\Abstract\ServiceProviderTestCase;
 use Valkyrja\Tests\Fixtures\Http\Server\Data\HttpServerConfigFixture;
+use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\View\Factory\Contract\ViewResponseFactoryContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
@@ -88,6 +92,43 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(
             RequestHandler::class,
             $container->getSingleton(RequestHandlerContract::class)
+        );
+    }
+
+    public function testPublishRequestHandlerRunsEachConfiguredThrowableCaughtMiddlewareOnce(): void
+    {
+        $logger              = self::createMock(LoggerContract::class);
+        $viewResponseFactory = self::createMock(ViewResponseFactoryContract::class);
+
+        $logger->expects($this->once())->method('throwable');
+        $viewResponseFactory->expects($this->once())
+            ->method('createResponseFromView')
+            ->willReturn(new Response());
+
+        $handler = $this->publishThrowableCaughtHandlerFor(new HttpConfig(), $logger, $viewResponseFactory);
+
+        $handler->throwableCaught(new ServerRequest(), new Response(), new ValkyrjaRuntimeExceptionFixture());
+    }
+
+    public function testPublishRequestHandlerAddsNoThrowableCaughtMiddlewareOfItsOwn(): void
+    {
+        $logger              = self::createMock(LoggerContract::class);
+        $viewResponseFactory = self::createMock(ViewResponseFactoryContract::class);
+
+        $logger->expects($this->never())->method('throwable');
+        $viewResponseFactory->expects($this->never())->method('createResponseFromView');
+
+        $handler = $this->publishThrowableCaughtHandlerFor(
+            new HttpConfig(throwableCaughtMiddleware: []),
+            $logger,
+            $viewResponseFactory
+        );
+
+        $response = new Response();
+
+        self::assertSame(
+            $response,
+            $handler->throwableCaught(new ServerRequest(), $response, new ValkyrjaRuntimeExceptionFixture())
         );
     }
 
@@ -223,5 +264,33 @@ final class ServiceProviderTest extends ServiceProviderTestCase
             CacheResponseMiddleware::class,
             $this->container->getSingleton(CacheResponseMiddleware::class)
         );
+    }
+
+    /**
+     * Publish the request handler for a config, and return the throwable caught handler it was given.
+     */
+    private function publishThrowableCaughtHandlerFor(
+        HttpConfig $config,
+        LoggerContract $logger,
+        ViewResponseFactoryContract $viewResponseFactory
+    ): ThrowableCaughtHandlerContract {
+        $container = $this->container;
+
+        $container->setSingleton(HttpConfigContract::class, $config);
+        $container->setSingleton(LoggerContract::class, $logger);
+        $container->setSingleton(ViewResponseFactoryContract::class, $viewResponseFactory);
+        $container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
+
+        HttpServerServiceProvider::publishLogThrowableCaughtMiddleware($container);
+        HttpServerServiceProvider::publishViewThrowableCaughtMiddleware($container);
+
+        HttpMiddlewareServiceProvider::publishRequestReceivedHandler($container);
+        HttpMiddlewareServiceProvider::publishThrowableCaughtHandler($container);
+        HttpMiddlewareServiceProvider::publishSendingResponseHandler($container);
+        HttpMiddlewareServiceProvider::publishResponseSentHandler($container);
+
+        HttpServerServiceProvider::publishRequestHandler($container);
+
+        return $container->getSingleton(ThrowableCaughtHandlerContract::class);
     }
 }
