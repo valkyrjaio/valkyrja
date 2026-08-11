@@ -826,7 +826,8 @@ $redirect = $factory->createRouteRedirectResponse('users.show', ['id' => 42]);
 ### The response factory
 
 `ResponseFactoryContract` builds responses behind one injectable contract, so a
-service does not construct response classes itself. Every argument is optional:
+service does not construct response classes itself. Every argument is
+optional, except the `$callback` of `createJsonpResponse()`:
 
 ```php
 use Valkyrja\Http\Message\Response\Factory\Contract\ResponseFactoryContract;
