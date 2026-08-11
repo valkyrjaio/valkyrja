@@ -148,7 +148,7 @@ ArrayFactory::toString(['a' => 1]);              // '{"a":1}'
 ArrayFactory::fromString('{"a":1}');             // ['a' => 1]
 ArrayFactory::fromMixed($value);                 // string decodes as JSON, other values cast
 ArrayFactory::newWithoutNull(['a' => 1, 'b' => null]); // ['a' => 1]
-ArrayFactory::filterEmptyStrings('a', '', 'b');  // ['a', 'b'] with the original keys
+ArrayFactory::filterEmptyStrings('a', '', 'b');  // [0 => 'a', 2 => 'b'] — keys are kept
 ArrayFactory::validateKeysAreStrings($array);    // throws ArrayInvalidStringKeysException
 ArrayFactory::determineIfKeysAreStrings($array); // bool
 
