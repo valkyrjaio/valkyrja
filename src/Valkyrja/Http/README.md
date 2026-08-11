@@ -1171,7 +1171,7 @@ class ReportThrowableMiddleware implements ThrowableCaughtMiddlewareContract
 }
 ```
 
-Two built-ins register at this stage by default:
+The framework always registers two built-ins at this stage:
 `LogThrowableCaughtMiddleware` logs the throwable, and
 `ViewThrowableCaughtMiddleware` renders an error view.
 
@@ -1259,18 +1259,23 @@ $config = new HttpConfig(
 );
 ```
 
-Two stages carry defaults; the arrays replace them, so re-list a default you
-keep:
+Two stages carry built-in middleware, and the two behave differently. The
+`routeNotMatchedMiddleware` array replaces its default, so re-list
+`ViewRouteNotMatchedMiddleware` when you keep it. The framework registers the
+two `ThrowableCaught` built-ins itself, regardless of the config: the
+`throwableCaughtMiddleware` array adds middleware that runs before them. Do
+not re-list those two — a re-listed entry runs twice — and an empty array
+does not remove them:
 
-| Stage             | `HttpConfig` property       | Per-route argument          | Default middleware                                              |
-| ----------------- | --------------------------- | --------------------------- | --------------------------------------------------------------- |
-| `RequestReceived` | `requestReceivedMiddleware` | —                           | —                                                               |
-| `RouteMatched`    | `routeMatchedMiddleware`    | `routeMatchedMiddleware`    | —                                                               |
-| `RouteNotMatched` | `routeNotMatchedMiddleware` | —                           | `ViewRouteNotMatchedMiddleware`                                 |
-| `RouteDispatched` | `routeDispatchedMiddleware` | `routeDispatchedMiddleware` | —                                                               |
-| `ThrowableCaught` | `throwableCaughtMiddleware` | `throwableCaughtMiddleware` | `LogThrowableCaughtMiddleware`, `ViewThrowableCaughtMiddleware` |
-| `SendingResponse` | `sendingResponseMiddleware` | `sendingResponseMiddleware` | —                                                               |
-| `ResponseSent`    | `responseSentMiddleware`    | `responseSentMiddleware`    | —                                                               |
+| Stage             | `HttpConfig` property       | Per-route argument          | Built-in middleware                                                                 |
+| ----------------- | --------------------------- | --------------------------- | ----------------------------------------------------------------------------------- |
+| `RequestReceived` | `requestReceivedMiddleware` | —                           | —                                                                                   |
+| `RouteMatched`    | `routeMatchedMiddleware`    | `routeMatchedMiddleware`    | —                                                                                   |
+| `RouteNotMatched` | `routeNotMatchedMiddleware` | —                           | `ViewRouteNotMatchedMiddleware` — the array replaces it                             |
+| `RouteDispatched` | `routeDispatchedMiddleware` | `routeDispatchedMiddleware` | —                                                                                   |
+| `ThrowableCaught` | `throwableCaughtMiddleware` | `throwableCaughtMiddleware` | `LogThrowableCaughtMiddleware`, `ViewThrowableCaughtMiddleware` — always registered |
+| `SendingResponse` | `sendingResponseMiddleware` | `sendingResponseMiddleware` | —                                                                                   |
+| `ResponseSent`    | `responseSentMiddleware`    | `responseSentMiddleware`    | —                                                                                   |
 
 ### Attaching middleware to one route
 
