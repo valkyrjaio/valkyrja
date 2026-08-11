@@ -69,13 +69,13 @@ class VersionCommand
         /** @var string $version */
         $version = $this->config->version;
 
-        if ($this->route->hasOption('short')) {
+        if ($this->route->getOption('short')->hasFirstValue()) {
             return $this->outputFactory
                 ->createOutput()
                 ->withMessages(new Message($version));
         }
 
-        if ($this->route->hasOption('plain')) {
+        if ($this->route->getOption('plain')->hasFirstValue()) {
             return $this->outputFactory
                 ->createOutput()
                 ->withMessages(
