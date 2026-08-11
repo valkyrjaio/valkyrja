@@ -685,19 +685,27 @@ use Valkyrja\Orm\Enum\Comparison;
 $select = $orm->createQueryBuilder()
     ->select('posts')
     ->withWhere(
-        new Where(new Value('author_id', 7)),
-        new AndWhere(new Value('status', 'published')),
         new WhereGroup(
             new Where(new Value('title', '%orm%'), Comparison::LIKE),
             new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
         ),
+        new AndWhere(new Value('author_id', 7)),
+        new AndWhere(new Value('status', 'published')),
     );
 
 // The where part renders:
-// WHERE author_id = :author_id AND status = :status (title LIKE :title OR body LIKE :body)
+// WHERE (title LIKE :title OR body LIKE :body) AND author_id = :author_id AND status = :status
 ```
 
-Warning: a `WhereGroup` holds no clause type of its own, so the group renders with no `AND` or `OR` before its parentheses. Write the operator into the last clause before the group when the database requires one.
+Each `Where` class has one place in a list. A plain `Where` opens a list, and
+it opens the inner list of a group the same way. Every clause after the first
+is an `AndWhere` or an `OrWhere`, because the clause type renders as a prefix
+that joins the clause to the one before it.
+
+Warning: a `WhereGroup` holds no clause type of its own, so the group renders
+with no `AND` or `OR` before its parentheses. Place the group first in the
+list, where no operator is required. A group after another clause renders SQL
+that the database rejects; use a raw statement for that shape.
 
 A `Value` that holds a `QueryBuilderContract` renders as a subquery:
 
