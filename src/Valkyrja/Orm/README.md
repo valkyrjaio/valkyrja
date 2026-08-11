@@ -1019,7 +1019,7 @@ The exceptions you meet in normal use:
 | `OrmUnexpectedIdValueException`           | `getIdValue()` finds a value that is not an int or a non-empty string    |
 | `OrmArrayCastingException`                | an array cast meets a value that is not an array                         |
 | `OrmInvalidColumnNumberException`         | `getColumnMeta()` receives a column number the result does not hold      |
-| `OrmUnsupportedCountException`            | `getCount()` reads a count that is not an int or a numeric string        |
+| `OrmUnsupportedCountException`            | `getCount()` reads a count that is not an int and not a string           |
 | `OrmInvalidMigrationFileException`        | a `SqlFileMigration` file path does not read                             |
 | `OrmMigrationExecutionException`          | a `SqlFileMigration` statement fails                                     |
 
