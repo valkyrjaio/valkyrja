@@ -761,7 +761,7 @@ $select = $orm->createQueryBuilder()
 | `BITWISE_OR`         | `\|`          |
 | `BITWISE_INVERSION`  | `~`           |
 
-Warning: `NOT_IN` and `MEMBER_OF` render with an underscore where the SQL keyword carries a space, and no driver accepts the rendered clause. Use a raw statement for a `NOT IN` filter or a `MEMBER OF` filter.
+Warning: `NOT_IN` and `MEMBER_OF` render with an underscore where the SQL keyword carries a space, and no driver accepts the rendered clause. Write a `NOT IN` filter as a `NotWhere` or an `AndNotWhere` with `Comparison::IN`. Use a raw statement for a `MEMBER OF` filter.
 
 ### Group By, Order By, Limit, and Offset
 
