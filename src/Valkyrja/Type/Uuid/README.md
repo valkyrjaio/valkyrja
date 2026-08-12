@@ -3,8 +3,9 @@
 ## Introduction
 
 The UUID subcomponent generates and validates Universally Unique Identifiers.
-Versions 1, 3, 4, and 5 follow RFC 4122; the version 6, 7, and 8 formats come
-from RFC 9562. Each version is a typed value object that wraps a validated
+Versions 1, 3, 4, and 5 follow RFC 4122, and version 6 follows RFC 9562.
+The version 7 and 8 factories emit a reordered version 1 layout, not the
+RFC 9562 layouts (see the generation table). Each version is a typed value object that wraps a validated
 UUID string and implements `TypeContract<string>` through
 `Valkyrja\Type\Uuid\Contract\UuidContract` (`asValue()` and `asFlatValue()`
 both return `string`). Each version has a thin contract — `UuidV1Contract`, and
