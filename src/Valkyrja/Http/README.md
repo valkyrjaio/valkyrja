@@ -1577,10 +1577,11 @@ List `CacheResponseMiddleware` last in that array to keep the other middleware
 running.
 
 Warning: `NoCacheResponseMiddleware` does not keep a response out of this
-cache. `CacheResponseMiddleware` never reads a response header, so the
-`Cache-Control`, `Pragma`, and `Expires` headers only reach the browser. To
-keep a sensitive route out of the cache, extend `CacheResponseMiddleware` and
-override `shouldNotCache()`:
+cache. `CacheResponseMiddleware` stores every response header in the cache
+file, but it inspects none for the cache decision, so the `Cache-Control`,
+`Pragma`, and `Expires` headers only reach the browser. To keep a sensitive
+route out of the cache, extend `CacheResponseMiddleware` and override
+`shouldNotCache()`:
 
 ```php
 use Override;
