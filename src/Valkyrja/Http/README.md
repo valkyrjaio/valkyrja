@@ -1089,6 +1089,26 @@ $config = new HttpConfig(
 );
 ```
 
+Warning: `CacheResponseMiddleware` has a container publisher, and
+`RedirectTrailingSlashMiddleware` does not. The stage handler resolves each
+class-string with `ContainerContract::get()`, which throws for an id that no
+binding resolves. Bind `RedirectTrailingSlashMiddleware` in a service provider
+before you list it. Add this callback to a `publishers()` map, as
+[pre-built routes](#pre-built-routes-from-getroutes) shows:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
+
+public static function publishRedirectTrailingSlashMiddleware(ContainerContract $container): void
+{
+    $container->setSingleton(
+        RedirectTrailingSlashMiddleware::class,
+        new RedirectTrailingSlashMiddleware()
+    );
+}
+```
+
 ### RouteMatched
 
 `RouteMatchedMiddlewareContract` runs after the router matched a route and
@@ -1296,8 +1316,14 @@ class AuditLogMiddleware implements ResponseSentMiddlewareContract
 ### Registering middleware globally
 
 Every stage is configurable through a class-string array on `HttpConfig`. The
-stage handlers resolve each class-string from the container, so a middleware
-with constructor dependencies needs a container service registration:
+stage handlers resolve each class-string with `ContainerContract::get()`, and
+`get()` throws `ContainerInvalidReferenceException` for an id that no binding
+resolves. Every listed middleware therefore needs a container service
+registration, with or without constructor dependencies. The framework
+publishes its own built-ins, except `RedirectTrailingSlashMiddleware` (see
+[RequestReceived](#requestreceived)). Bind your middleware in a service
+provider, as [pre-built routes](#pre-built-routes-from-getroutes) shows for a
+controller:
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
