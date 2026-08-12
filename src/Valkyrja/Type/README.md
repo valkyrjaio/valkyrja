@@ -264,9 +264,9 @@ for a unit enum name that matches no case. A backed enum delegates to
 returns the backed value, or the case name for a unit enum. `modify()` throws
 `EnumCannotModifyException`.
 
-The `Arrayable` trait is a separate opt-in that implements
-`ArrayableContract` and adds cached introspection. The `Status` enum above
-uses it:
+The `Arrayable` trait is a separate opt-in that supplies the methods that
+`ArrayableContract` declares, with cached introspection. The `Status` enum
+above uses the trait and declares the contract:
 
 ```php
 Status::names();          // ['active', 'inactive']
