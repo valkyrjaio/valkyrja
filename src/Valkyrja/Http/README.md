@@ -117,7 +117,7 @@ pre-built route from `getRoutes()`. Choose by how the route is written:
   routes.
 
 A component provider returns the route providers from its `getHttpProviders()`
-method and is listed in the `providers` array of `HttpConfig`:
+method:
 
 ```php
 use Override;
@@ -135,7 +135,7 @@ class AppComponentProvider implements ComponentProviderContract
     #[Override]
     public function getContainerProviders(ApplicationContract $app): array
     {
-        return [];
+        return [new UserServiceProvider()];
     }
 
     #[Override]
@@ -157,6 +157,12 @@ class AppComponentProvider implements ComponentProviderContract
     }
 }
 ```
+
+The `getContainerProviders()` method returns the service providers that bind
+the controllers and the middleware in the container.
+[Pre-built routes](#pre-built-routes-from-getroutes) defines
+`UserServiceProvider`. The `providers` array of `HttpConfig` lists the
+component provider:
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
