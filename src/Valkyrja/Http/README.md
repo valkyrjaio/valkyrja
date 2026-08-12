@@ -1523,7 +1523,7 @@ A cache hit returns before route matching, so only the `SendingResponse` and
 
 Warning: the `ResponseSent` side calls the next middleware only when it stores
 a new entry. When the cache file already exists, or when the status code is
-5xx, `responseSent()` returns without calling the handler, and the middleware
+5xx, `responseSent()` returns without calling the handler. The middleware
 listed after `CacheResponseMiddleware` in `responseSentMiddleware` never run.
 List `CacheResponseMiddleware` last in that array to keep the other middleware
 running.
