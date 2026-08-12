@@ -292,7 +292,7 @@ Warning: the entity must declare a property with the registered name. `asStorabl
 
 ### The Stored Date
 
-`DateFormat` holds the three formats that the ORM writes. Each one is ISO 8601, so a text sort of the column is a date sort and the date functions of the database read the value:
+`DateFormat` holds the three formats that the ORM writes. Each one puts the largest unit first, so a text sort of the column is a date sort and the date functions of the database read the value:
 
 | Constant                  | Format          | Column type   |
 | :------------------------ | :-------------- | :------------ |
