@@ -769,8 +769,10 @@ $contents = $body->getContents();
 ```
 
 The constructor takes a `PhpWrapper` case or a stream path, a `Mode` case, and
-a `ModeTranslation` case. Warning: rewind a stream after writing — a response
-body sends from the current position.
+a `ModeTranslation` case. Warning: `getContents()` reads from the current
+position, and a write leaves the position at the end. Rewind a stream after a
+write before you read it back. `Response::sendBody()` rewinds a seekable body
+itself before it sends the contents.
 
 ### Building a request in a test
 
