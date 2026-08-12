@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   release:
-    uses: valkyrjaio/.github/.github/workflows/_php-create-release.yml@f0560559020d79edb410ef75387e081d75026e45
+    uses: valkyrjaio/.github/.github/workflows/_php-create-release.yml@61e6314e4ea0cf692c383e2d31cc94e4996e5331
     secrets:
       VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
       VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
