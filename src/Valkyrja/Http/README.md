@@ -485,17 +485,17 @@ matched value at runtime — the matcher sets it, so route declarations do not.
 
 The `Regex` constant class ships patterns for common shapes:
 
-| Constant                                           | Matches                                 |
-| -------------------------------------------------- | --------------------------------------- |
-| `Regex::NUM`, `Regex::ID`                          | digits                                  |
-| `Regex::SLUG`                                      | letters, digits, and dashes             |
-| `Regex::ALPHA`                                     | letters                                 |
-| `Regex::ALPHA_LOWERCASE`, `Regex::ALPHA_UPPERCASE` | one case of letters                     |
-| `Regex::ALPHA_NUM`, `Regex::ALPHA_NUM_UNDERSCORE`  | letters and digits, plus the underscore |
-| `Regex::UUID`, `Regex::UUID_V1` … `Regex::UUID_V8` | a UUID, any or one version              |
-| `Regex::ULID`                                      | a ULID                                  |
-| `Regex::VLID`, `Regex::VLID_V1` … `Regex::VLID_V4` | a VLID, any or one version              |
-| `Regex::ANY`                                       | anything                                |
+| Constant                                                             | Matches                                          |
+| -------------------------------------------------------------------- | ------------------------------------------------ |
+| `Regex::NUM`, `Regex::ID`                                            | digits                                           |
+| `Regex::SLUG`                                                        | letters, digits, and dashes                      |
+| `Regex::ALPHA`                                                       | letters                                          |
+| `Regex::ALPHA_LOWERCASE`, `Regex::ALPHA_UPPERCASE`                   | one case of letters                              |
+| `Regex::ALPHA_NUM`, `Regex::ALPHA_NUM_UNDERSCORE`                    | letters and digits, plus the underscore          |
+| `Regex::UUID`, `Regex::UUID_V1`, `Regex::UUID_V3` … `Regex::UUID_V8` | a UUID, any or one version (no `UUID_V2` exists) |
+| `Regex::ULID`                                                        | a ULID                                           |
+| `Regex::VLID`, `Regex::VLID_V1` … `Regex::VLID_V4`                   | a VLID, any or one version                       |
+| `Regex::ANY`                                                         | anything                                         |
 
 The `RequestMethod` enum has one case per HTTP method, each backed by its
 method name, plus `ANY`.
