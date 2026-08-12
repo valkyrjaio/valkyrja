@@ -233,9 +233,9 @@ throws `IdInvalidFromValueException`.
 
 ## Enums
 
-Apply the `Valkyrja\Type\Enum\Trait\Enumerable` trait to an enum to implement
-`Valkyrja\Type\Enum\Contract\EnumContract`, which extends `TypeContract` and
-PHP's `UnitEnum`:
+The `Valkyrja\Type\Enum\Trait\Enumerable` trait supplies the methods that
+`Valkyrja\Type\Enum\Contract\EnumContract` declares. The contract extends
+`TypeContract` and PHP's `UnitEnum`, and the enum declares it:
 
 ```php
 use Valkyrja\Type\Enum\Contract\ArrayableContract;
