@@ -1318,9 +1318,9 @@ class SecurityHeadersMiddleware implements SendingResponseMiddlewareContract
 ```
 
 One path skips this stage. In debug mode the `RequestHandler` rethrows a
-caught throwable before the `ThrowableCaught` stage runs, so no response
-exists and the `SendingResponse` and `ResponseSent` stages never run on that
-path. See [HttpResponseException](#httpresponseexception).
+caught throwable before the `ThrowableCaught` stage runs. No response exists,
+so the `SendingResponse` and `ResponseSent` stages never run on that path. See
+[HttpResponseException](#httpresponseexception).
 
 The framework ships `NoCacheResponseMiddleware` for this stage and does not
 register it by default — attach it to a route, as
