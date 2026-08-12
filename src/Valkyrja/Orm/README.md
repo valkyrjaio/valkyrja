@@ -405,6 +405,17 @@ $repository->update($post);
 
 For a `DatedEntityContract` entity the repository stamps the modified date before the write. The repository never writes the deleted date here, so an update does not delete an entity, and an update does not restore a deleted entity.
 
+Warning: `update()` on an entity with no changed property renders an empty `SET` list, and no driver accepts the statement:
+
+```php
+$post = $repository->find(1);
+
+$repository->update($post);
+// UPDATE posts SET  WHERE id = :id
+```
+
+The modified-date stamp counts as a change, so a `DatedEntityContract` entity does not reach the failure. For any other entity, call `update()` only after a property changed.
+
 ### Deleting an Entity
 
 `delete()` removes the row of an entity. For a `SoftDeleteEntityContract` entity it stamps the deleted date and keeps the row instead:
