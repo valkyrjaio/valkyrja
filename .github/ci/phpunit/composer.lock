@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27d0ff3f8b7f48f5ffedbec4d0333311",
+    "content-hash": "ac89340d64ad2f59776929f43b1d3c2a",
     "packages": [],
     "packages-dev": [
         {
@@ -4048,16 +4048,16 @@
         },
         {
             "name": "valkyrja/ci-phpunit",
-            "version": "v26.6.4",
+            "version": "v26.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-phpunit-php.git",
-                "reference": "54bf980bafd078bbe12956da7fbbde6473c634a2"
+                "reference": "d3816b88d52b8255eb8faac0ad00ae2919334321"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/54bf980bafd078bbe12956da7fbbde6473c634a2",
-                "reference": "54bf980bafd078bbe12956da7fbbde6473c634a2",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-phpunit-php/zipball/d3816b88d52b8255eb8faac0ad00ae2919334321",
+                "reference": "d3816b88d52b8255eb8faac0ad00ae2919334321",
                 "shasum": ""
             },
             "require": {
@@ -4093,9 +4093,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-phpunit-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.6.4"
+                "source": "https://github.com/valkyrjaio/ci-phpunit-php/tree/v26.6.5"
             },
-            "time": "2026-08-11T10:45:37+00:00"
+            "time": "2026-08-12T10:55:50+00:00"
         }
     ],
     "aliases": [],
