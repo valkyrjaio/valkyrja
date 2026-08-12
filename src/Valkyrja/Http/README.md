@@ -1416,9 +1416,9 @@ public function dashboard(): ResponseContract
 ```
 
 The stage handlers resolve per-route middleware with `ContainerContract::get()`,
-the same as global middleware. Bind each listed class in a service provider, as
+the same as global middleware. An unbound class throws when its stage runs.
+Bind each listed class in a service provider, as
 [Registering middleware globally](#registering-middleware-globally) describes.
-An unbound class throws when its stage runs.
 
 `RequestReceived` and `RouteNotMatched` are global-only stages: the first runs
 before a route exists, and the second runs when no route matched.
