@@ -342,6 +342,8 @@ use Valkyrja\Orm\Data\Where;
 $post = $repository->findBy(new Where(new Value('slug', 'intro-to-orm')));
 ```
 
+`findBy()` renders no `LIMIT`, so the statement fetches and hydrates every matching row before the repository returns the first. When the filter matches many rows, use the [query builder](#query-builder) with `withLimit(1)` instead.
+
 `all()` returns every row as an entity array, and `allBy()` filters with where clauses:
 
 ```php
