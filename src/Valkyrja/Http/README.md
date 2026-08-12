@@ -1764,3 +1764,8 @@ flowchart TD
     K --> L[ResponseSent middleware]
     L --> M([Process ends])
 ```
+
+The `throwable` edges show non-debug dispatch. In debug mode the
+`RequestHandler` rethrows the caught throwable, so the `ThrowableCaught`,
+`SendingResponse`, and `ResponseSent` stages never run on that path. See
+[SendingResponse](#sendingresponse).
