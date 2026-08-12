@@ -363,20 +363,9 @@ The clauses render in order. Open the list with a `Where` or a `NotWhere`, and g
 
 ### Creating an Entity
 
-`create()` writes every storable property as an `INSERT`, reads `lastInsertId()`, and writes the new id back onto the entity:
+`create()` writes every storable property as an `INSERT`, reads `lastInsertId()`, and writes the new id back onto the entity.
 
-```php
-$post = new Post();
-$post->title = 'Intro to the ORM';
-
-$repository->create($post);
-
-$id = $post->id; // The id of the new row
-```
-
-For a `DatedEntityContract` entity the repository stamps the created date and the modified date before the write.
-
-Warning: PDO reports the last insert id as a string, and the repository writes that string onto the id property through `__set()`. Declare a set callable when the property is an `int`, so the assignment converts the value:
+Warning: PDO reports the last insert id as a string, and the repository writes that string onto the id property through `__set()`. A string assigned to a typed `int` property raises a `TypeError`. Declare a set callable when the property is an `int`, so the assignment converts the value:
 
 ```php
 public function setId(string|int $id): void
@@ -392,6 +381,19 @@ protected function internalSetCallables(): array
     ];
 }
 ```
+
+The `Post` in [Defining an Entity](#defining-an-entity) declares `public int $id;`, so it needs this callable. With the callable declared, the flow runs:
+
+```php
+$post = new Post();
+$post->title = 'Intro to the ORM';
+
+$repository->create($post);
+
+$id = $post->id; // The id of the new row
+```
+
+For a `DatedEntityContract` entity the repository stamps the created date and the modified date before the write.
 
 ### Updating an Entity
 
