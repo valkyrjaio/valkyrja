@@ -1514,6 +1514,13 @@ it. In debug mode the middleware still writes the cache, but it never reads it.
 A cache hit returns before route matching, so only the `SendingResponse` and
 `ResponseSent` stages still run.
 
+Warning: the `ResponseSent` side calls the next middleware only when it stores
+a new entry. When the cache file already exists, or when the status code is
+5xx, `responseSent()` returns without calling the handler, and the middleware
+listed after `CacheResponseMiddleware` in `responseSentMiddleware` never run.
+List `CacheResponseMiddleware` last in that array to keep the other middleware
+running.
+
 To keep a sensitive route out of the cache, add `NoCacheResponseMiddleware` to
 that route. It sets the `Cache-Control`, `Pragma`, and `Expires` headers:
 
