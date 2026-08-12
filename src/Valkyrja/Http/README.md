@@ -1532,9 +1532,11 @@ values, `dir`, `key`, and the rest fall back to the framework defaults. Carry
 the values from [the entry point](#configuration-and-entry-point) in the
 `parent::__construct()` call.
 
-The cache key is an MD5 hash of the request path and the request method. Each
-cache file holds the response as JSON. An entry expires after 1800 seconds. A
-response with a 5xx status code is never cached.
+The cache key is an MD5 hash of the request path and the request method. The
+key ignores the query string, the request headers, and the caller's identity.
+The middleware replays a cached response to every later caller of the same
+path and method. Each cache file holds the response as JSON. An entry expires
+after 1800 seconds. A response with a 5xx status code is never cached.
 
 An existing cache file is never rewritten. The middleware stores a new response
 for a path and method only after the old entry expires and a later read deletes
