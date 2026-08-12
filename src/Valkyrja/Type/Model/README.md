@@ -119,6 +119,8 @@ transform a value before it is stored. The callable runs for every write that
 goes through `__set`, so mass assignment is covered too:
 
 ```php
+use InvalidArgumentException;
+
 protected function internalSetCallables(): array
 {
     return [
