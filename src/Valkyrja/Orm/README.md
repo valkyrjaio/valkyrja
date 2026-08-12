@@ -461,7 +461,20 @@ public static function getRepository(): string
 }
 ```
 
-The PDO managers resolve the class from the container with the manager, the entity class, and the metadata registry as arguments. The container constructs an unbound class directly, so a subclass that keeps the `Repository` constructor needs no registration. A repository with a different constructor needs its own container binding.
+The PDO managers resolve the class from the container with the manager, the entity class, and the metadata registry as arguments. The [service provider](#service-registration) binds only the base `Repository`, and the container does not construct an unbound class, so every custom repository needs its own binding. The container throws a `ContainerInvalidReferenceException` for a repository class that has no binding. Bind the subclass with a factory that reads the three arguments:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+$container->bind(
+    PostRepository::class,
+    static function (ContainerContract $container, array $arguments): PostRepository {
+        [$manager, $entity, $registry] = $arguments;
+
+        return new PostRepository($manager, $entity, $registry);
+    }
+);
+```
 
 Warning: the `NullManager` constructs the base `Repository` directly and never reads `getRepository()`, so a custom repository's methods are not available on a repository from the `NullManager`.
 
