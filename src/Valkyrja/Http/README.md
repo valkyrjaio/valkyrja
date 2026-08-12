@@ -228,6 +228,38 @@ class UserRouteProvider implements HttpRouteProviderContract
 }
 ```
 
+The handlers resolve `UserController` with `ContainerContract::get()`, and
+`get()` throws `ContainerInvalidReferenceException` for an id that no binding
+resolves. A service provider binds the controller:
+
+```php
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
+class UserServiceProvider implements ServiceProviderContract
+{
+    public function publishers(): array
+    {
+        return [
+            UserController::class => [self::class, 'publishUserController'],
+        ];
+    }
+
+    public static function publishUserController(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            UserController::class,
+            new UserController()
+        );
+    }
+}
+```
+
+Return the provider from `getContainerProviders()` in the
+[component provider](#route-providers). The
+[Container README](../Container/README.md#service-providers) covers the
+service provider pattern in depth.
+
 Both constructors take the same optional arguments as the `#[Route]`
 attribute: `requestMethods`, the five per-route middleware arrays,
 `requestStruct`, and `responseStruct`.
@@ -293,11 +325,13 @@ arguments.
 Every route has a handler with the signature
 `callable(ContainerContract $container, RouteContract $route): ResponseContract`.
 The handler resolves the controller with `ContainerContract::get()` and calls
-it. `get()` returns the registered service, or falls back to a new instance
-when nothing registered the id — so a controller without dependencies needs no
-registration. A route without a handler returns an empty `Response`. Wire a handler with
-`#[RouteHandler([UserRouteProvider::class, 'showHandler'])]` on the routed
-method, or pass the `handler` argument of `#[Route]` directly:
+it. `get()` returns the registered service, and it throws
+`ContainerInvalidReferenceException` when nothing registered the id, so every
+controller that a handler resolves needs a service registration.
+[Pre-built routes](#pre-built-routes-from-getroutes) shows the provider that
+binds `UserController`. A route without a handler returns an empty `Response`.
+Wire a handler with `#[RouteHandler([UserRouteProvider::class, 'showHandler'])]`
+on the routed method, or pass the `handler` argument of `#[Route]` directly:
 
 ```php
 use Valkyrja\Http\Routing\Attribute\Route;
