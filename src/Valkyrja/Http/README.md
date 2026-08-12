@@ -1018,9 +1018,10 @@ enum UserResponseStruct: string implements ResponseStructContract
 ```
 
 `ResponseStructMiddleware` (a `RouteDispatched` middleware, in
-`Server\Middleware\RouteMatched`) shapes the outgoing response. It acts only on
-a `JsonResponseContract` response. It decodes the body, keys the data by the
-case values, and re-encodes:
+`Server\Middleware\RouteMatched`) shapes the outgoing response. Register the
+middleware globally or per route for the struct to take effect. The middleware
+acts only on a `JsonResponseContract` response. It decodes the body, keys the
+data by the case values, and re-encodes:
 
 ```php
 #[Route(path: '/users/{id}', name: 'users.show')]
