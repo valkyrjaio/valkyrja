@@ -1095,21 +1095,34 @@ Warning: `CacheResponseMiddleware` has a container publisher, and
 `RedirectTrailingSlashMiddleware` does not. The stage handler resolves each
 class-string with `ContainerContract::get()`, which throws for an id that no
 binding resolves. Bind `RedirectTrailingSlashMiddleware` in a service provider
-before you list it. Add this callback to a `publishers()` map, as
-[pre-built routes](#pre-built-routes-from-getroutes) shows:
+before you list it:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 
-public static function publishRedirectTrailingSlashMiddleware(ContainerContract $container): void
+class MiddlewareServiceProvider implements ServiceProviderContract
 {
-    $container->setSingleton(
-        RedirectTrailingSlashMiddleware::class,
-        new RedirectTrailingSlashMiddleware()
-    );
+    public function publishers(): array
+    {
+        return [
+            RedirectTrailingSlashMiddleware::class => [self::class, 'publishRedirectTrailingSlashMiddleware'],
+        ];
+    }
+
+    public static function publishRedirectTrailingSlashMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            RedirectTrailingSlashMiddleware::class,
+            new RedirectTrailingSlashMiddleware()
+        );
+    }
 }
 ```
+
+Return the provider from `getContainerProviders()`, as
+[pre-built routes](#pre-built-routes-from-getroutes) shows.
 
 ### RouteMatched
 
