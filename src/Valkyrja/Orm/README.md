@@ -414,7 +414,7 @@ $repository->update($post);
 // UPDATE posts SET  WHERE id = :id
 ```
 
-The modified-date stamp counts as a change, so a `DatedEntityContract` entity does not reach the failure. For any other entity, call `update()` only after a property changed.
+The modified-date stamp counts as a change only when the new stamp differs from the stored value. `DateFormat::DEFAULT` holds second precision, so a `DatedEntityContract` entity fetched and updated inside the same second, with no other changed property, also reaches the failure. Call `update()` only after a property changed.
 
 ### Deleting an Entity
 
