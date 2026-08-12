@@ -423,8 +423,10 @@ class UserModel extends Model implements ExposableModelContract
     }
 }
 
-$user->asArray();        // ['name' => ...]
-$user->asExposedArray(); // ['name' => ..., 'lastName' => ...]
+$user = UserModel::fromArray(['name' => 'Alice', 'lastName' => 'Smith']);
+
+$user->asArray();        // ['name' => 'Alice']
+$user->asExposedArray(); // ['name' => 'Alice', 'lastName' => 'Smith']
 ```
 
 ### Choosing an Exposure Setup
