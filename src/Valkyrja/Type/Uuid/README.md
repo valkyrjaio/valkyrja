@@ -37,9 +37,9 @@ $v4   = new UuidV4();  // self-generates a new V4 UUID
 Each constructor validates a given string and throws the version-specific
 exception on failure — `InvalidUuidException` from `Uuid`,
 `InvalidUuidV1Exception` and `InvalidUuidV3Exception` through
-`InvalidUuidV8Exception` from the version classes. `fromValue()` throws `UuidInvalidFromValueException` when the value
-is not a string; the self-generating classes also accept `null`, which
-triggers generation.
+`InvalidUuidV8Exception` from the version classes. `fromValue()` throws
+`UuidInvalidFromValueException` when the value is not a string; the
+self-generating classes also accept `null`, which triggers generation.
 
 ## Generating UUIDs
 
