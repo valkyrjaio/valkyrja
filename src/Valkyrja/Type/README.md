@@ -238,11 +238,14 @@ Apply the `Valkyrja\Type\Enum\Trait\Enumerable` trait to an enum to implement
 PHP's `UnitEnum`:
 
 ```php
+use Valkyrja\Type\Enum\Contract\ArrayableContract;
 use Valkyrja\Type\Enum\Contract\EnumContract;
+use Valkyrja\Type\Enum\Trait\Arrayable;
 use Valkyrja\Type\Enum\Trait\Enumerable;
 
-enum Status: string implements EnumContract
+enum Status: string implements EnumContract, ArrayableContract
 {
+    use Arrayable;
     use Enumerable;
 
     case active   = 'active';
@@ -261,8 +264,9 @@ for a unit enum name that matches no case. A backed enum delegates to
 returns the backed value, or the case name for a unit enum. `modify()` throws
 `EnumCannotModifyException`.
 
-The `Arrayable` trait (contract `ArrayableContract`) adds cached
-introspection:
+The `Arrayable` trait is a separate opt-in that implements
+`ArrayableContract` and adds cached introspection. The `Status` enum above
+uses it:
 
 ```php
 Status::names();          // ['active', 'inactive']
