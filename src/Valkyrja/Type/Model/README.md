@@ -258,9 +258,10 @@ For the public `name` property:
 $user['name'];         // routes through __get
 $user['name'] = 'Bob'; // routes through __set
 isset($user['name']);  // plain isset in Model's scope — no callable runs
-unset($user['name']);  // plain unset — removes the public property
 
 (string) $user;        // {"name":"Bob",...}
+
+unset($user['name']);  // plain unset — the property leaves every later output
 ```
 
 ## Serializing to Arrays
