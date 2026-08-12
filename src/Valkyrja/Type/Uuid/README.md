@@ -7,8 +7,8 @@ Versions 1, 3, 4, and 5 follow RFC 4122; the version 6, 7, and 8 formats come
 from RFC 9562. Each version is a typed value object that wraps a validated
 UUID string and implements `TypeContract<string>` through
 `Valkyrja\Type\Uuid\Contract\UuidContract` (`asValue()` and `asFlatValue()`
-both return `string`). Each version has a thin contract, `UuidV1Contract`
-through `UuidV8Contract`.
+both return `string`). Each version has a thin contract — `UuidV1Contract`, and
+`UuidV3Contract` through `UuidV8Contract`.
 
 ## Value Objects
 
@@ -36,8 +36,8 @@ $v4   = new UuidV4();  // self-generates a new V4 UUID
 
 Each constructor validates a given string and throws the version-specific
 exception on failure — `InvalidUuidException` from `Uuid`,
-`InvalidUuidV1Exception` through `InvalidUuidV8Exception` from the version
-classes. `fromValue()` throws `UuidInvalidFromValueException` when the value
+`InvalidUuidV1Exception` and `InvalidUuidV3Exception` through
+`InvalidUuidV8Exception` from the version classes. `fromValue()` throws `UuidInvalidFromValueException` when the value
 is not a string; the self-generating classes also accept `null`, which
 triggers generation.
 
