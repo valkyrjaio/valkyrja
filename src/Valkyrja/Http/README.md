@@ -241,11 +241,13 @@ The handlers resolve `UserController` with `ContainerContract::get()`, and
 resolves. A service provider binds the controller:
 
 ```php
+use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 
 class UserServiceProvider implements ServiceProviderContract
 {
+    #[Override]
     public function publishers(): array
     {
         return [
@@ -941,6 +943,7 @@ the query params, `ParsedBodyRequestStruct` the parsed body, and
 `JsonRequestStruct` the parsed JSON body:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Request\Trait\ParsedBodyRequestStruct;
@@ -953,6 +956,7 @@ enum CreateUserRequestStruct implements RequestStructContract
 
     case username;
 
+    #[Override]
     public static function getValidationRules(ServerRequestContract $request): array
     {
         $username = $request->getParsedBody()->get(self::username->name);
@@ -1057,6 +1061,7 @@ matching. Return a modified request to continue, or a response to short-circuit
 the pipeline:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -1071,6 +1076,7 @@ class MaintenanceModeMiddleware implements RequestReceivedMiddlewareContract
     ) {
     }
 
+    #[Override]
     public function requestReceived(
         ServerRequestContract $request,
         RequestReceivedHandlerContract $handler
@@ -1106,12 +1112,14 @@ binding resolves. Bind `RedirectTrailingSlashMiddleware` in a service provider
 before you list it:
 
 ```php
+use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
 use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 
 class MiddlewareServiceProvider implements ServiceProviderContract
 {
+    #[Override]
     public function publishers(): array
     {
         return [
@@ -1139,6 +1147,7 @@ before the handler dispatches. Return a modified route to continue, or a
 response to short-circuit:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -1150,6 +1159,7 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 class AuthMiddleware implements RouteMatchedMiddlewareContract
 {
+    #[Override]
     public function routeMatched(
         ServerRequestContract $request,
         RouteContract $route,
@@ -1175,6 +1185,7 @@ route under a different request method. Replace it to serve a custom error
 body:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\JsonResponse;
@@ -1183,6 +1194,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
 class JsonNotFoundMiddleware implements RouteNotMatchedMiddlewareContract
 {
+    #[Override]
     public function routeNotMatched(
         ServerRequestContract $request,
         ResponseContract $response,
@@ -1204,6 +1216,7 @@ class JsonNotFoundMiddleware implements RouteNotMatchedMiddlewareContract
 response. It receives the request, the response, and the matched route:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -1213,6 +1226,7 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 class RouteNameHeaderMiddleware implements RouteDispatchedMiddlewareContract
 {
+    #[Override]
     public function routeDispatched(
         ServerRequestContract $request,
         ResponseContract $response,
@@ -1237,6 +1251,7 @@ dispatch. It receives the error response the handler built and the throwable
 itself. Report the throwable, or replace the response:
 
 ```php
+use Override;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -1251,6 +1266,7 @@ class ReportThrowableMiddleware implements ThrowableCaughtMiddlewareContract
     ) {
     }
 
+    #[Override]
     public function throwableCaught(
         ServerRequestContract $request,
         ResponseContract $response,
@@ -1275,6 +1291,7 @@ it is written to the output. Every path through the pipeline reaches this
 stage, so it is the place for universal headers:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
@@ -1283,6 +1300,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
 class SecurityHeadersMiddleware implements SendingResponseMiddlewareContract
 {
+    #[Override]
     public function sendingResponse(
         ServerRequestContract $request,
         ResponseContract $response,
@@ -1309,6 +1327,7 @@ It returns nothing — the client sees no effect — so it is the place for
 deferred work:
 
 ```php
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ResponseSentMiddlewareContract;
@@ -1322,6 +1341,7 @@ class AuditLogMiddleware implements ResponseSentMiddlewareContract
     ) {
     }
 
+    #[Override]
     public function responseSent(
         ServerRequestContract $request,
         ResponseContract $response,
