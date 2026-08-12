@@ -1,6 +1,17 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.11.3...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.11.4...26.x)
+
+## [v26.11.4](https://github.com/valkyrjaio/valkyrja/compare/v26.11.3...v26.11.4) - 2026-08-12
+
+* [Cli] docs: Rewrite the README to match the code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1141
+* [Container] docs: Rewrite the README to match the code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1139
+* [Event] docs: Rewrite the README to match the code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1137
+* [Application] docs: Rewrite the README to match the code by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1136
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1192
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1193
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1195
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1196
 
 ## [v26.11.3](https://github.com/valkyrjaio/valkyrja/compare/v26.11.2...v26.11.3) - 2026-08-10
 
