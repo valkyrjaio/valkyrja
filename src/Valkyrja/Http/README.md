@@ -1549,8 +1549,38 @@ listed after `CacheResponseMiddleware` in `responseSentMiddleware` never run.
 List `CacheResponseMiddleware` last in that array to keep the other middleware
 running.
 
-To keep a sensitive route out of the cache, add `NoCacheResponseMiddleware` to
-that route. It sets the `Cache-Control`, `Pragma`, and `Expires` headers:
+Warning: `NoCacheResponseMiddleware` does not keep a response out of this
+cache. `CacheResponseMiddleware` never reads a response header, so the
+`Cache-Control`, `Pragma`, and `Expires` headers only reach the browser. To
+keep a sensitive route out of the cache, extend `CacheResponseMiddleware` and
+override `shouldNotCache()`:
+
+```php
+use Override;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
+
+class AppCacheResponseMiddleware extends CacheResponseMiddleware
+{
+    #[Override]
+    protected function shouldNotCache(
+        ServerRequestContract $request,
+        ResponseContract $response
+    ): bool {
+        return $request->getUri()->getPath() === '/account'
+            || parent::shouldNotCache($request, $response);
+    }
+}
+```
+
+A response that is never stored is never replayed, so this one override covers
+the read side too. The container publisher covers only `CacheResponseMiddleware`
+itself. Bind the subclass in a service provider, and list the subclass in both
+middleware arrays in place of the parent.
+
+To tell the browser not to store a response, add `NoCacheResponseMiddleware`
+to that route. It sets the `Cache-Control`, `Pragma`, and `Expires` headers:
 
 ```php
 use Valkyrja\Http\Server\Middleware\SendingResponse\NoCacheResponseMiddleware;
