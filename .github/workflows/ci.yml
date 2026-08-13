@@ -5,6 +5,10 @@ on:
     branches: [ 'master', '*.x' ]
 
   pull_request:
+    # A `branches` filter is deliberately absent. The filter matches the base branch, and a stacked
+    # pull request bases on its parent's branch, so a filter of `master` and `*.x` gives that pull
+    # request no gate until the parent merges. Every pull request runs the gate, whatever it targets.
+
     # `edited` is deliberately absent. It fires for a title or description edit, and this workflow
     # checks file content, which an edit cannot change. Running it on an edit would cost the full
     # tool suite for a typo. Guarding the jobs on `github.event.changes` instead does not work and
@@ -13,7 +17,6 @@ on:
     # report success without running the tools, so an edit on a red pull request would turn it
     # green. Pull request metadata is checked by `pr.yml`, which does subscribe to `edited`.
     types: [ opened, synchronize, reopened ]
-    branches: [ 'master', '*.x' ]
 
 permissions:
   pull-requests: write
