@@ -743,9 +743,10 @@ group:
 | `AndNotWhereGroup` | `AND NOT (status = :status)` |
 | `OrNotWhereGroup`  | `OR NOT (status = :status)`  |
 
-A plain `WhereGroup` renders no clause type, so it opens a list. Each other
-class renders the clause type before the parentheses, so it follows another
-clause:
+A `WhereGroup` or a `NotWhereGroup` opens a list. An `AndWhereGroup`, an
+`OrWhereGroup`, an `AndNotWhereGroup`, or an `OrNotWhereGroup` follows another
+clause. Those clause types render as a prefix that joins the group to the
+clause before it:
 
 ```php
 use Valkyrja\Orm\Data\Value;
