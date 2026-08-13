@@ -39,7 +39,7 @@ final class ComparisonTest extends TestCase
     public function testInOperators(): void
     {
         self::assertSame('IN', Comparison::IN->value);
-        self::assertSame('NOT_IN', Comparison::NOT_IN->value);
+        self::assertSame('NOT IN', Comparison::NOT_IN->value);
     }
 
     public function testLikeOperators(): void
@@ -79,7 +79,7 @@ final class ComparisonTest extends TestCase
     public function testSpecialOperators(): void
     {
         self::assertSame('<=>', Comparison::NULL_SAFE_EQUALS->value);
-        self::assertSame('MEMBER_OF', Comparison::MEMBER_OF->value);
+        self::assertSame('MEMBER OF', Comparison::MEMBER_OF->value);
         self::assertSame('REGEXP', Comparison::REGEXP->value);
         self::assertSame('NOT REGEXP', Comparison::NOT_REGEXP->value);
     }
