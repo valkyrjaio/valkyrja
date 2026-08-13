@@ -852,8 +852,16 @@ scope and it never throws. A singleton the parent already resolved still comes
 back, because the child reads the parent's instances directly.
 
 The guard asks the parent the same questions the parent's own `get()` asks, in
-the same order: is a publish callback registered and unrun, is an instance
-cached, is a singleton bound. `isDeferred()` reports the first of those.
+the same order:
+
+1. Is a publish callback registered and still unrun? `isDeferred()` reports the
+   registration, and `isPublished()` reports the run.
+2. Is an instance cached?
+3. Is a singleton bound?
+
+The two child containers answer `isDeferred()` differently. `ChildContainer`
+copies the callbacks, so it answers for its own map. `NativeChildContainer`
+copies nothing, so it answers for the child and the parent.
 
 ### Using a Child Container
 
@@ -899,7 +907,9 @@ type. It extends the SPL `InvalidArgumentException`.
 alias that only the parent declares would make the parent build and cache the
 target for the first time
 ([Where an Alias Resolves](#where-an-alias-resolves)). It extends the SPL
-`RuntimeException`.
+`RuntimeException`. The same lookup raises
+`ContainerInvalidReferenceException` for a cyclic chain of parent aliases,
+because such a chain reaches no target.
 
 All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:

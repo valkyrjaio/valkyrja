@@ -87,22 +87,6 @@ class NativeChildContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param class-string $id The service id
-     *
-     * @psalm-suppress MoreSpecificImplementedParamType
-     */
-    #[Override]
-    public function has(string $id): bool
-    {
-        return $this->isDeferred($id)
-            || $this->isSingleton($id)
-            || $this->isService($id)
-            || $this->isAlias($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
      * @param class-string $id The provided service id
      */
     #[Override]
@@ -122,19 +106,6 @@ class NativeChildContainer extends Container
     {
         return isset($this->published[$id])
             || isset($this->parent->published[$id]);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    #[Override]
-    protected function publishUnpublishedProvided(string $id): void
-    {
-        if ($this->isDeferred($id) && ! $this->isPublished($id)) {
-            $this->publish($id);
-        }
     }
 
     /**
