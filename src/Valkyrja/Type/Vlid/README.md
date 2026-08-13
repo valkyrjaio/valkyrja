@@ -3,10 +3,11 @@
 ## Introduction
 
 The VLID subcomponent generates and validates Valkyrja Universally Unique
-Lexicographically Sortable Identifiers — a Valkyrja-specific extension of the
-ULID format with microsecond time precision (`DateTimeInterface` format
-`'Uu'`). Every VLID starts with a 13-character Crockford Base32 timestamp,
-then a version digit at index 13, then the version's random segment:
+Lexicographically Sortable Identifiers. The VLID format is a
+Valkyrja-specific extension of the ULID format with microsecond time
+precision (`DateTimeInterface` format `'Uu'`). Every VLID starts with a
+13-character Crockford Base32 timestamp, then a version digit at index 13,
+then the version's random segment:
 
 ```
 04YKM75VZG2A8 1 KTFKRFQJ3B69
@@ -20,7 +21,7 @@ then a version digit at index 13, then the version's random segment:
 
 The four versions differ only in the length of the random segment. Each
 random part encodes 20 bits in 4 characters. Pick the version by how many
-identifiers one microsecond must hold — more random bits collide less, at the
+identifiers one microsecond must hold. More random bits collide less, at the
 cost of a longer identifier:
 
 | Version | Random chars | Random bits | Total length |
@@ -66,9 +67,9 @@ triggers generation.
 
 ## Generating VLIDs
 
-The four factory methods share one signature —
-`(DateTimeInterface|null $dateTime = null, bool $lowerCase = false)` — and
-return a plain `string`:
+The four factory methods share one signature and return a plain `string`. The
+signature is
+`(DateTimeInterface|null $dateTime = null, bool $lowerCase = false)`:
 
 ```php
 use DateTime;

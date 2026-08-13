@@ -9,8 +9,8 @@ Unix-millisecond layout, and version 8 is the free-form version (see the
 generation table). Each version is a typed value object that wraps a
 validated UUID string and implements `TypeContract<string>` through
 `Valkyrja\Type\Uuid\Contract\UuidContract` (`asValue()` and `asFlatValue()`
-both return `string`). Each version has a thin contract — `UuidV1Contract`, and
-`UuidV3Contract` through `UuidV8Contract`.
+both return `string`). Each version has a thin contract. The contracts are
+`UuidV1Contract`, and `UuidV3Contract` through `UuidV8Contract`.
 
 ## Value Objects
 
@@ -37,16 +37,16 @@ $v4   = new UuidV4();  // self-generates a new V4 UUID
 ```
 
 Each constructor validates a given string and throws the version-specific
-exception on failure — `InvalidUuidException` from `Uuid`,
-`InvalidUuidV1Exception` and `InvalidUuidV3Exception` through
-`InvalidUuidV8Exception` from the version classes. `fromValue()` throws
+exception on failure. `Uuid` throws `InvalidUuidException`. The version
+classes throw `InvalidUuidV1Exception`, and `InvalidUuidV3Exception` through
+`InvalidUuidV8Exception`. `fromValue()` throws
 `UuidInvalidFromValueException` when the value is not a string; the
 self-generating classes also accept `null`, which triggers generation.
 
 ## Generating UUIDs
 
 `UuidFactory` has entry points for versions 1, 3, 4, 5, and 6. It has no
-`v7()` or `v8()` method — call those factories directly. All methods return a
+`v7()` or `v8()` method. Call those factories directly. All methods return a
 plain `string` in the standard `xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx` form:
 
 ```php
@@ -67,8 +67,8 @@ Generation notes:
 
 - **V1** encodes the current time, a random 2-byte clock sequence, and a
   node. A given node string is hashed when it is not hexadecimal, and a
-  random 16-byte node is drawn when none is given — a MAC address is never
-  read. V6, V7, and V8 build on the V1 algorithm and accept the same
+  random 16-byte node is drawn when none is given. The factory never reads a
+  MAC address. V6, V7, and V8 build on the V1 algorithm and accept the same
   optional node.
 - **V3 and V5** are deterministic: the same namespace and name always
   produce the same UUID. The namespace must be a valid UUID of any version;
