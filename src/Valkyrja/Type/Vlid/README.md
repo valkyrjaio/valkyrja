@@ -4,118 +4,134 @@
 
 The VLID subcomponent generates and validates Valkyrja Universally Unique
 Lexicographically Sortable Identifiers — a Valkyrja-specific extension of the
-ULID format designed for higher time precision and controlled randomness.
+ULID format with microsecond time precision (`DateTimeInterface` format
+`'Uu'`). Every VLID starts with a 13-character Crockford Base32 timestamp,
+then a version digit at index 13, then the version's random segment:
 
-The key difference from ULID is **microsecond** timestamp precision rather than
-millisecond. VLID encodes the current time down to the microsecond, trades a
-small amount of randomness for that extra precision, and remains 128 bits total.
-Four versions (V1–V4) are provided, each with a different balance of random bits.
-The version digit is embedded directly in the identifier itself at position 14.
-
-## The VlidContract
-
-`Valkyrja\Type\Vlid\Contract\VlidContract` extends `TypeContract<string>`:
-
-```php
-public function asValue(): string;
-public function asFlatValue(): string;
 ```
-
-Each version has its own contract (`VlidV1Contract` through `VlidV4Contract`)
-extending `VlidContract`.
-
-## Value Objects
-
-```php
-use Valkyrja\Type\Vlid\Vlid;
-use Valkyrja\Type\Vlid\VlidV1;
-
-$vlid = new Vlid('01ARZ3NDEKTSV14RRFFQ69G5F');
-$v1   = new VlidV1('01ARZ3NDEKTSV14RRFFQ69G5F');
-
-// Or from an unknown value:
-$vlid = Vlid::fromValue($someValue);
+04YKM75VZG2A8 1 KTFKRFQJ3B69
+|-----------| ^ |----------|
+  timestamp   |  randomness
+  13 chars    |  12 chars (V1)
+        version digit
 ```
-
-| Class    | Contract         |
-| :------- | :--------------- |
-| `Vlid`   | `VlidContract`   |
-| `VlidV1` | `VlidV1Contract` |
-| `VlidV2` | `VlidV2Contract` |
-| `VlidV3` | `VlidV3Contract` |
-| `VlidV4` | `VlidV4Contract` |
-
-## Generating VLIDs
-
-All generation goes through `VlidFactory` or a version-specific factory:
-
-```php
-use Valkyrja\Type\Vlid\Factory\VlidFactory;
-
-// Generate from current time (microsecond precision)
-$v1 = VlidFactory::v1();
-$v2 = VlidFactory::v2();
-$v3 = VlidFactory::v3();
-$v4 = VlidFactory::v4();
-
-// Generate lowercase
-$v1 = VlidFactory::v1(lowerCase: true);
-
-// Generate from a specific datetime
-$v1 = VlidFactory::v1(new DateTime('2024-01-01 12:00:00.123456'));
-```
-
-All methods return a plain `string`.
 
 ## Versions
 
-The four VLID versions differ in how many random bits follow the version digit.
-A higher version number means more random bits and slightly less deterministic
-ordering at the same microsecond:
+The four versions differ only in the length of the random segment. Each
+random part encodes 20 bits in 4 characters. Pick the version by how many
+identifiers one microsecond must hold — more random bits collide less, at the
+cost of a longer identifier:
 
-| Version | Version digit | Random segment length |
-| :------ | :------------ | :-------------------- |
-| V1      | `1`           | 12 chars (60 bits)    |
-| V2      | `2`           | varies                |
-| V3      | `3`           | varies                |
-| V4      | `4`           | varies                |
+| Version | Random chars | Random bits | Total length |
+| :------ | :----------- | :---------- | :----------- |
+| V1      | 12           | 60          | 26           |
+| V2      | 16           | 80          | 30           |
+| V3      | 8            | 40          | 22           |
+| V4      | 4            | 20          | 18           |
 
-The version digit is embedded at character position 14 of the identifier (0-indexed),
-immediately following the 13-character microsecond timestamp.
+`Valkyrja\Type\Vlid\Enum\Version` is an int-backed enum with the cases `V1`
+through `V4`, whose values are the version digits. Each factory exposes its
+case as the `VERSION` constant.
 
 ## Comparison with ULID
 
-| Property       | ULID                     | VLID                     |
-| :------------- | :----------------------- | :----------------------- |
-| Time precision | Milliseconds             | Microseconds             |
-| Time encoding  | 10 chars (48 bits)       | 13 chars (~65 bits)      |
-| Random bits    | 80 bits (16 chars)       | 60 bits (12 chars) — V1  |
-| Versions       | 1                        | 4 (V1–V4)                |
-| Version in ID  | No                       | Yes (position 14)        |
-| Total length   | 26 chars                 | 26 chars                 |
-| Encoding       | Crockford Base32         | Crockford Base32         |
-| Monotonic      | Yes (within millisecond) | Yes (within microsecond) |
+| Property       | ULID             | VLID                          |
+| :------------- | :--------------- | :---------------------------- |
+| Time precision | Milliseconds     | Microseconds                  |
+| Time encoding  | 10 chars         | 13 chars                      |
+| Versions       | 1                | 4, digit embedded at index 13 |
+| Total length   | 26 chars         | 18–30 chars by version        |
+| Encoding       | Crockford Base32 | Crockford Base32              |
+
+## Value Objects
+
+`Vlid` and `VlidV1` through `VlidV4` implement `TypeContract<string>` through
+`VlidContract` (`asValue()` and `asFlatValue()` both return `string`), plus a
+thin per-version contract. Every constructor takes `string|null`:
+
+```php
+use Valkyrja\Type\Vlid\Vlid;
+use Valkyrja\Type\Vlid\VlidV2;
+
+$vlid = new Vlid();                             // self-generates a V1 VLID
+$vlid = new Vlid('04YKM75VZG2A81KTFKRFQJ3B69'); // validates any version
+$v2   = new VlidV2();                           // self-generates a V2 VLID
+```
+
+The constructor validates a given string and throws `InvalidVlidException`
+(or `InvalidVlidVnException` from a version class) on failure. `fromValue()`
+throws `VlidInvalidFromValueException` when the value is not a string; `null`
+triggers generation.
+
+## Generating VLIDs
+
+The four factory methods share one signature —
+`(DateTimeInterface|null $dateTime = null, bool $lowerCase = false)` — and
+return a plain `string`:
+
+```php
+use DateTime;
+use Valkyrja\Type\Vlid\Factory\VlidFactory;
+
+$v1 = VlidFactory::v1();                // current time, uppercase
+$v2 = VlidFactory::v2(lowerCase: true); // lowercase
+$v3 = VlidFactory::v3(new DateTime('2024-01-01 12:00:00.123456'));
+$v4 = VlidFactory::v4();
+```
+
+The version factories (`VlidV1Factory` through `VlidV4Factory`) expose the
+same generation as `generate()` with the same signature.
+
+Like the ULID factory, each VLID factory increments the previous random value
+when it generates again at the same microsecond, so the identifiers stay
+sorted.
 
 ## Validation
+
+Each factory exposes `validate()`, the `bool` `isValid()`, and its pattern as
+the `REGEX` constant. The base factory validates any version; a version
+factory validates its own format only:
 
 ```php
 use Valkyrja\Type\Vlid\Factory\VlidFactory;
 use Valkyrja\Type\Vlid\Factory\VlidV1Factory;
 
-VlidFactory::validate($string);   // validates any VLID version
-VlidV1Factory::validate($string); // validates V1 format only
+VlidFactory::validate($string);   // any version; throws InvalidVlidException
+VlidV1Factory::validate($string); // V1 only; throws InvalidVlidV1Exception
+VlidFactory::isValid($string);    // bool, never throws
 ```
 
-Throws `InvalidVlidException` (or `InvalidVlidVnException` for version-specific
-factories) on failure. Each factory exposes a `REGEX` constant with its pattern.
+Validation is case-insensitive, so a lowercase VLID validates.
 
-## Version Enum
+## Using a VLID in a Model Cast
 
-`Valkyrja\Type\Vlid\Enum\Version`:
+A VLID class is a `TypeContract`, so it works as a model cast target. Use
+`OriginalCast` to keep the instance on the property:
 
-| Case | Value |
-| :--- | :---- |
-| `V1` | `1`   |
-| `V2` | `2`   |
-| `V3` | `3`   |
-| `V4` | `4`   |
+```php
+use Valkyrja\Type\Data\OriginalCast;
+use Valkyrja\Type\Model\Abstract\CastableModel;
+use Valkyrja\Type\Vlid\VlidV1;
+
+class EventModel extends CastableModel
+{
+    public string $name;
+    public VlidV1 $id;
+
+    public static function getCastings(): array
+    {
+        return ['id' => new OriginalCast(VlidV1::class)];
+    }
+}
+
+$event = EventModel::fromArray([
+    'name' => 'user.created',
+    'id'   => '04YKM75VZG2A81KTFKRFQJ3B69',
+]);
+
+$event->id->asValue(); // the validated VLID string
+```
+
+An invalid string fails the cast with `InvalidVlidV1Exception`, so the model
+never holds a malformed identifier.
