@@ -72,7 +72,7 @@ your own list, include `HttpApplicationComponentProvider` in it. The
 properties in depth, and its
 [Your Own Config Class](../Application/README.md#your-own-config-class)
 section covers the custom config class. The built-in `HttpConfig` is one way
-to start, not the only way — `Http::run()` accepts any `HttpConfigContract`.
+to start, not the only way. `Http::run()` accepts any `HttpConfigContract`.
 
 `Http::run()` boots the application, builds a `ServerRequest` from the
 superglobals with `RequestFactory::fromGlobals()`, resolves the
@@ -179,7 +179,7 @@ $config = new HttpConfig(
 ### Pre-built routes from getRoutes()
 
 A static route is a `Route` data object. A dynamic route is a `DynamicRoute`
-data object with `Parameter` data objects. Pass `regex: ''` — the `Processor`
+data object with `Parameter` data objects. Pass `regex: ''`. The `Processor`
 builds the full match regex from the path and the parameters:
 
 ```php
@@ -306,8 +306,8 @@ class UserController
 ```
 
 The attribute declares the route. It does not make the framework call the
-routed method — the route's [handler](#route-handlers) does that, and a route
-without a handler returns an empty `Response`. Wire the handler with
+routed method. The route's [handler](#route-handlers) makes that call. A
+route without a handler returns an empty `Response`. Wire the handler with
 `#[RouteHandler]`, as every routed method in this README does. The named
 handlers follow the `indexHandler` and `showHandler` pattern from
 [pre-built routes](#pre-built-routes-from-getroutes). A handler reads the
@@ -396,7 +396,7 @@ public function show(string $slug): ResponseContract
 }
 ```
 
-Or place it on the PHP parameter itself — both spots collect the same way:
+Or place it on the PHP parameter itself. Both spots collect the same way:
 
 ```php
 #[Route(path: '/articles/{slug}', name: 'articles.show')]
@@ -410,8 +410,9 @@ public function show(
 ```
 
 `#[Parameter]` is not repeatable, so a method takes one method-level
-`#[Parameter]` at most. For a path with several parameters — `/{year}/{month}`
-— place one attribute on each PHP parameter, or use `#[DynamicRoute]`.
+`#[Parameter]` at most. For a path with several parameters, place one
+attribute on each PHP parameter, or use `#[DynamicRoute]`. The path
+`/{year}/{month}` is one example.
 
 The `#[DynamicRoute]` attribute declares the parameters inline instead. Its
 `parameters` argument is required and takes `Parameter` data objects:
@@ -479,7 +480,8 @@ public function list(): ResponseContract
 
 Two more `Parameter` arguments cover rarer shapes. `shouldCapture: false`
 constrains the segment with the regex but stores no value. `value` holds the
-matched value at runtime — the matcher sets it, so route declarations do not.
+matched value at runtime. The matcher sets `value`, so a route declaration
+does not set it.
 
 #### The Regex constants
 
@@ -564,8 +566,8 @@ class AdminController
 
 The attribute adds request methods to a route, apart from the `#[Route]`
 declaration. Shorthand subclasses in `Attribute\Route\RequestMethod` add one
-method each — `Get`, `Head`, `Post`, `Put`, `Patch`, `Delete`, `Options`,
-`Connect`, `Trace` — and `Any` adds all nine:
+method each. The subclasses are `Get`, `Head`, `Post`, `Put`, `Patch`,
+`Delete`, `Options`, `Connect`, and `Trace`. `Any` adds all nine:
 
 ```php
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -634,7 +636,7 @@ $path = $url->getUrl('users.index', []);          // /users
 ### The server request
 
 `RequestFactory::fromGlobals()` builds the `ServerRequest` at the entry point.
-The object is immutable — every `with*` method returns a new instance. The
+The object is immutable. Every `with*` method returns a new instance. The
 getters return typed param collections, not arrays:
 
 | Getter               | Returns                             | Source     |
@@ -666,10 +668,11 @@ headers (`getHeaders()`), and the body stream (`getBody()`).
 
 ### JSON requests
 
-`JsonServerRequest` extends `ServerRequest` and parses a JSON body into its own
-collection. `RequestFactory::jsonFromGlobals()` builds it — but `Http::run()`
-always calls `RequestFactory::fromGlobals()`, and no config option changes
-that. To serve JSON requests, extend `Http` and override `getRequest()`:
+`JsonServerRequest` extends `ServerRequest` and parses a JSON body into its
+own collection. `RequestFactory::jsonFromGlobals()` builds the
+`JsonServerRequest`. `Http::run()` always calls
+`RequestFactory::fromGlobals()` instead, and no config option changes that
+call. To serve JSON requests, extend `Http` and override `getRequest()`:
 
 ```php
 use Override;
@@ -890,8 +893,8 @@ $jsonp    = $factory->createJsonpResponse('callback', ['user' => 'melech']);
 $redirect = $factory->createRedirectResponse('/dashboard');
 ```
 
-`createRedirectResponse()` accepts a URI string — the factory parses it into a
-`Uri`.
+`createRedirectResponse()` accepts a URI string. The factory parses the string
+into a `Uri`.
 
 ### Setting response headers
 
@@ -911,13 +914,13 @@ $response = $response->withHeaders($headers);
 ```
 
 A `Header` takes the name and one or more values. Named header classes exist
-for common cases — `ContentType`, `Location`, `Referer`, and `SetCookie` in
-`Http\Message\Header`.
+for common cases. `ContentType`, `Location`, `Referer`, and `SetCookie` are
+in `Http\Message\Header`.
 
 ### Setting cookies
 
 A cookie is a `Set-Cookie` header. Build a `Cookie` value object and attach it
-with `withCookie()` — the method adds the `SetCookie` header for you:
+with `withCookie()`. The method adds the `SetCookie` header for you:
 
 ```php
 use Valkyrja\Http\Message\Header\Value\Cookie;
@@ -929,8 +932,8 @@ $response = $response->withCookie($cookie);
 
 `Cookie` defaults to `path: '/'`, `httpOnly: true`, and `SameSite::LAX`. Pass
 `secure: true` for HTTPS-only cookies. To expire a cookie the client holds,
-pass the same cookie to `withoutCookie()` — it applies `delete: true` and
-sends the deletion header.
+pass the same cookie to `withoutCookie()`. The method applies `delete: true`
+and sends the deletion header.
 
 ## Structs
 
@@ -971,9 +974,9 @@ enum CreateUserRequestStruct implements RequestStructContract
 }
 ```
 
-Attach a struct to a route with an enum case — an instance of the contract,
-never a `::class` string. Any case of the enum works, because the middleware
-calls only static methods:
+Attach a struct to a route with an enum case. The enum case is an instance of
+the contract, never a `::class` string. Any case of the enum works, because
+the middleware calls only static methods:
 
 ```php
 #[Route(path: '/users', name: 'users.store', requestMethods: [RequestMethod::POST])]
@@ -1142,15 +1145,15 @@ class AuthMiddleware implements RouteMatchedMiddlewareContract
 }
 ```
 
-`RequestStructMiddleware` runs at this stage — see
+`RequestStructMiddleware` runs at this stage. See
 [request structs](#request-structs).
 
 ### RouteNotMatched
 
 `RouteNotMatchedMiddlewareContract` runs when no route matches. The router
-passes a default 404 response — or a 405 response when the path matches a
-route under a different request method. Replace it to serve a custom error
-body:
+passes a default 404 response. The router passes a 405 response when the path
+matches a route under a different request method. Replace the response to
+serve a custom error body:
 
 ```php
 use Override;
@@ -1209,7 +1212,7 @@ class RouteNameHeaderMiddleware implements RouteDispatchedMiddlewareContract
 }
 ```
 
-`ResponseStructMiddleware` runs at this stage — see
+`ResponseStructMiddleware` runs at this stage. See
 [response structs](#response-structs).
 
 ### ThrowableCaught
@@ -1290,14 +1293,14 @@ so the `SendingResponse` and `ResponseSent` stages never run on that path. See
 [HttpResponseException](#httpresponseexception).
 
 The framework ships `NoCacheResponseMiddleware` for this stage and does not
-register it by default — attach it to a route, as
+register the middleware by default. Attach the middleware to a route, as
 [response caching](#response-caching) shows.
 
 ### ResponseSent
 
 `ResponseSentMiddlewareContract` runs after the client received the response.
-It returns nothing — the client sees no effect — so it is the place for
-deferred work:
+The middleware returns nothing, and the client sees no effect. This stage is
+therefore the place for deferred work:
 
 ```php
 use Override;
@@ -1376,9 +1379,9 @@ built-in once:
 ### Attaching middleware to one route
 
 Five stages are also configurable per route. The `#[Route\Middleware]`
-attribute is the short form — the collector reads the contracts the class
-implements and assigns it to the matching pipeline stages. The attribute is
-repeatable:
+attribute is the short form. The collector reads the contracts the class
+implements, and the collector assigns the class to the matching pipeline
+stages. The attribute is repeatable:
 
 ```php
 use Valkyrja\Http\Routing\Attribute\Route;
@@ -1426,7 +1429,7 @@ The `#[Route\Middleware]` attribute declares `Attribute::TARGET_METHOD`, so a
 class-level placement fails. The class-level grouping attributes are
 `#[Route\Path]` and `#[Route\Name]`.
 
-To share middleware — or any route default — across a group of routes, extend
+To share middleware, or any route default, across a group of routes, extend
 the `Route` attribute with the defaults baked in. The collector matches
 attributes by `instanceof`, so it collects a `Route` subclass like any other
 route. The subclass names what the group is, which keeps every shared default
@@ -1485,14 +1488,15 @@ $config = new HttpConfig(
 );
 ```
 
-The container publisher constructs the middleware. It takes the cache directory
-from `HttpServerConfigContract::$responseCacheFilePath` — with the framework's
-storage cache path as the fallback — and `debug` from the application's debug
-mode. The publisher reads that contract from the config object passed to
-`Http::run()`, and the built-in `HttpConfig` does not implement it. To set the
-cache directory, extend `HttpConfig` and implement `HttpServerConfigContract`.
-One subclass can implement several such contracts — the same class can also
-carry [`HttpClientConfigContract`](#the-http-client) to select the client:
+The container publisher constructs the middleware. The publisher takes the
+cache directory from `HttpServerConfigContract::$responseCacheFilePath`, and
+`debug` from the application's debug mode. The framework's storage cache path
+is the fallback for the cache directory. The publisher reads that contract
+from the config object passed to `Http::run()`, and the built-in `HttpConfig`
+does not implement it. To set the cache directory, extend `HttpConfig` and
+implement `HttpServerConfigContract`. One subclass can implement several such
+contracts. The same class can also carry
+[`HttpClientConfigContract`](#the-http-client) to select the client:
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
@@ -1610,7 +1614,7 @@ the response, and the `SendingResponse` and `ResponseSent` stages still follow.
 
 `Http\Client` sends outbound requests behind one contract:
 `ClientContract::sendRequest()` takes a `RequestContract` and returns a
-`ResponseContract` — the same message classes the server side uses:
+`ResponseContract`. The server side uses the same message classes:
 
 ```php
 use Valkyrja\Http\Client\Manager\Contract\ClientContract;
@@ -1667,8 +1671,8 @@ Http::run(new AppHttpConfig());
 ```
 
 As with the [response-caching config](#response-caching), pass the
-application's own values to `parent::__construct()` — the subclass constructor
-replaces the parent's.
+application's own values to `parent::__construct()`. The subclass constructor
+replaces the parent's constructor.
 
 `LogClient` and `NullClient` stand in during development and in tests, so code
 that depends on `ClientContract` runs without a network.

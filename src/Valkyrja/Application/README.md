@@ -229,11 +229,11 @@ use, and `getThrowableHandler()` returns the debug-mode throwable handler.
 
 Configuration is a typed PHP object. There is no `.env` reader and no flat
 array registry. Three config classes exist, one per entry type. `HttpConfig`
-and `CliConfig` do not extend `Config` — each implements its own contract
-(`HttpConfigContract`, `CliConfigContract`) and repeats the base properties.
-Both contracts extend `ConfigContract`, and the entry classes discriminate on
-the contract: `Http::run()` requires an `HttpConfigContract`, and `Cli::run()`
-requires a `CliConfigContract`.
+and `CliConfig` do not extend `Config`. Each of the two classes implements its
+own contract (`HttpConfigContract`, `CliConfigContract`) and repeats the base
+properties. Both contracts extend `ConfigContract`, and the entry classes
+discriminate on the contract: `Http::run()` requires an `HttpConfigContract`,
+and `Cli::run()` requires a `CliConfigContract`.
 
 Convention: hold your application's real values in the config object that the
 entry point builds. Create one config file per environment, or read the values
@@ -262,7 +262,7 @@ classes share:
 
 Every property is `public readonly`, so any code that holds the config reads
 the values directly (`$config->environment`). The bootstrap registers the
-config in the container — see
+config in the container. See
 [Accessing the Application](#accessing-the-application).
 
 ### HTTP Properties
@@ -321,16 +321,17 @@ Http::run(new HttpConfig(
 
 The framework does not populate `$_ENV`. Populate it with your web server, the
 worker runtime, or an env-file loader that runs before the config is built.
-Fail loudly for a required value, as the `key` line shows — a silent default
+Fail loudly for a required value, as the `key` line shows. A silent default
 for a secret is a production incident.
 
 ### Your Own Config Class
 
 The built-in config classes are one way to start, not the only way.
 `Http::run()` requires an `HttpConfigContract`, and `Cli::run()` requires a
-`CliConfigContract` — any class that fulfills the contract works with those
-two. The worker entry classes are stricter: each worker `run()` requires the
-concrete `HttpConfig` class, so a config for a worker runtime must extend it.
+`CliConfigContract`. Any class that fulfills the contract works with those two
+entry classes. The worker entry classes are stricter: each worker `run()`
+requires the concrete `HttpConfig` class, so a config for a worker runtime
+must extend it.
 
 The simplest form extends a built-in class and bakes in your own defaults.
 The entry file then constructs one class per environment, and each class
@@ -365,18 +366,18 @@ Http::run(new ProductionHttpConfig(
 A config class can also implement the contract directly, with no built-in
 parent. The contracts declare `get`-hooked properties, so any class that
 declares the properties fulfills them. Reach for this form when your config
-carries its own structure — computed values, your own value objects, or
-properties the built-in classes do not have. This form works with
-`Http::run()` and `Cli::run()` only; a worker `run()` rejects it, because the
-worker entry classes require the concrete `HttpConfig` class.
+carries its own structure. That structure can hold computed values, your own
+value objects, or properties the built-in classes do not have. This form works
+with `Http::run()` and `Cli::run()` only; a worker `run()` rejects it, because
+the worker entry classes require the concrete `HttpConfig` class.
 
 ### Config Callbacks
 
 The `callbacks` array holds callables of the shape
 `callable(ApplicationContract):void`. The bootstrap invokes each one with the
 application after the core singletons register and before the container data
-loads. The callbacks run on every boot — use them only for work that must
-happen each time.
+loads. The callbacks run on every boot. Use the callbacks only for work that
+must happen each time.
 
 Their main use case is pre-registering a prebuilt `ContainerData` singleton.
 When a callback sets one, the bootstrap skips the service-provider
@@ -400,9 +401,9 @@ new HttpConfig(
 );
 ```
 
-`ContainerData` is a readonly value object with four maps — `aliases`,
-`callbacks`, `services`, and `singletons` — the same maps the container
-snapshots after a full provider registration. Any source can supply the
+`ContainerData` is a readonly value object with four maps: `aliases`,
+`callbacks`, `services`, and `singletons`. The container snapshots the same
+four maps after a full provider registration. Any source can supply the
 object: a required PHP file, a generated class, or a cache.
 
 ## The Bootstrap Sequence
@@ -441,10 +442,11 @@ flowchart TD
     L --> M(["Container ready — the entry class dispatches"])
 ```
 
-The core singletons are the config — under `ConfigContract` and under its
-concrete class — plus `ContainerContract` and `ApplicationContract`. When the
-config implements `CliConfigContract` or `HttpConfigContract`, the bootstrap
-registers the same config object as a singleton under that contract too.
+The core singletons are the config, `ContainerContract`, and
+`ApplicationContract`. The bootstrap registers the config under
+`ConfigContract` and under its concrete class. When the config implements
+`CliConfigContract` or `HttpConfigContract`, the bootstrap registers the same
+config object as a singleton under that contract too.
 
 The `ContainerData` branch is the extension point for the callbacks. The
 callbacks run before the container data loads. A callback that sets a prebuilt
@@ -545,8 +547,8 @@ matching contract:
 providers** register event listeners. Each component's own README documents
 its provider contract. The application collects each kind lazily, on the first
 call to the matching `get*Providers()` method, and caches the result. Nothing
-is instantiated at collection time — cost is paid when a service is first
-requested.
+is instantiated at collection time. The framework pays the cost when a service
+is first requested.
 
 ### Writing a Component Provider
 
@@ -644,8 +646,8 @@ Choose by application shape:
 - `CliApplicationComponentProvider` serves a pure console application with no
   HTTP surface.
 - `CliWithHttpApplicationComponentProvider` serves a console application whose
-  commands work with HTTP routing data — the common case for an application
-  that has both a web and a console entry.
+  commands work with HTTP routing data. An application that has both a web and
+  a console entry is the common case.
 - `HttpApplicationComponentProvider` serves a web application; it has no CLI
   components.
 
@@ -746,7 +748,7 @@ unrelated errors.
 2. After bootstrap, the entry class registers a `WhoopsThrowableHandler` as the
    `ThrowableHandlerContract` singleton and enables it.
 
-That is the whole effect — `debugMode` changes no other bootstrap behavior.
+That is the whole effect. `debugMode` changes no other bootstrap behavior.
 Override `getThrowableHandler()` in an entry subclass to use a different
 handler.
 
@@ -843,8 +845,8 @@ worker subclass.
 
 ### A Complete Worker Subclass
 
-One subclass combines both extension points — extra parent services and a
-different child container:
+One subclass combines both extension points. The subclass adds extra parent
+services and a different child container:
 
 ```php
 namespace App\Entry;
