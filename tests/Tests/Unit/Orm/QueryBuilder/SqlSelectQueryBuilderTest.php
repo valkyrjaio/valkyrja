@@ -17,6 +17,12 @@ use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\Where\AndWhere;
+use Valkyrja\Orm\Data\Where\OrWhere;
+use Valkyrja\Orm\Data\WhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndNotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\OrWhereGroup;
 use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\JoinOperator;
 use Valkyrja\Orm\Enum\SortOrder;
@@ -119,6 +125,78 @@ final class SqlSelectQueryBuilderTest extends TestCase
         $query = (string) $newBuilder;
 
         self::assertSame('SELECT * FROM users WHERE status = :status AND role = :role', $query);
+    }
+
+    public function testWithWhereAddsUntypedGroupFirst(): void
+    {
+        $newBuilder = $this->builder->withWhere(
+            new WhereGroup(
+                new Where(new Value('title', '%orm%'), Comparison::LIKE),
+                new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
+            ),
+            new AndWhere(new Value('status', 'active')),
+        );
+
+        $query = (string) $newBuilder;
+
+        self::assertSame(
+            'SELECT * FROM users WHERE (title LIKE :title OR body LIKE :body) AND status = :status',
+            $query
+        );
+    }
+
+    public function testWithWhereAddsAndGroupAfterAnotherClause(): void
+    {
+        $newBuilder = $this->builder->withWhere(
+            new Where(new Value('status', 'active')),
+            new AndWhereGroup(
+                new Where(new Value('title', '%orm%'), Comparison::LIKE),
+                new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
+            ),
+        );
+
+        $query = (string) $newBuilder;
+
+        self::assertSame(
+            'SELECT * FROM users WHERE status = :status AND (title LIKE :title OR body LIKE :body)',
+            $query
+        );
+    }
+
+    public function testWithWhereAddsOrGroupAfterAnotherClause(): void
+    {
+        $newBuilder = $this->builder->withWhere(
+            new Where(new Value('status', 'active')),
+            new OrWhereGroup(
+                new Where(new Value('title', '%orm%'), Comparison::LIKE),
+                new AndWhere(new Value('body', '%orm%'), Comparison::LIKE),
+            ),
+        );
+
+        $query = (string) $newBuilder;
+
+        self::assertSame(
+            'SELECT * FROM users WHERE status = :status OR (title LIKE :title AND body LIKE :body)',
+            $query
+        );
+    }
+
+    public function testWithWhereAddsAndNotGroupAfterAnotherClause(): void
+    {
+        $newBuilder = $this->builder->withWhere(
+            new Where(new Value('status', 'active')),
+            new AndNotWhereGroup(
+                new Where(new Value('title', '%orm%'), Comparison::LIKE),
+                new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
+            ),
+        );
+
+        $query = (string) $newBuilder;
+
+        self::assertSame(
+            'SELECT * FROM users WHERE status = :status AND NOT (title LIKE :title OR body LIKE :body)',
+            $query
+        );
     }
 
     public function testWithJoinAddsJoinClause(): void

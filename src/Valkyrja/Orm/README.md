@@ -731,10 +731,74 @@ clause is an `AndWhere`, an `OrWhere`, an `AndNotWhere`, or an `OrNotWhere`.
 Those clause types render as a prefix that joins the clause to the one before
 it.
 
-Warning: a `WhereGroup` holds no clause type of its own, so the group renders
-with no `AND` or `OR` before its parentheses. Place the group first in the
-list, where no operator is required. A group after another clause renders SQL
-that the database rejects. Use a raw statement for that shape.
+A group follows the same rule. One class per clause type prefixes the rendered
+group:
+
+| Class              | Renders as                   |
+| :----------------- | :--------------------------- |
+| `WhereGroup`       | `(status = :status)`         |
+| `AndWhereGroup`    | `AND (status = :status)`     |
+| `OrWhereGroup`     | `OR (status = :status)`      |
+| `NotWhereGroup`    | `NOT (status = :status)`     |
+| `AndNotWhereGroup` | `AND NOT (status = :status)` |
+| `OrNotWhereGroup`  | `OR NOT (status = :status)`  |
+
+A `WhereGroup` or a `NotWhereGroup` opens a list. An `AndWhereGroup`, an
+`OrWhereGroup`, an `AndNotWhereGroup`, or an `OrNotWhereGroup` follows another
+clause. Those clause types render as a prefix that joins the group to the
+clause before it:
+
+```php
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\Where\OrWhere;
+use Valkyrja\Orm\Data\WhereGroup\AndWhereGroup;
+use Valkyrja\Orm\Enum\Comparison;
+
+$select = $orm->createQueryBuilder()
+    ->select('posts')
+    ->withWhere(
+        new Where(new Value('status', 'published')),
+        new AndWhereGroup(
+            new Where(new Value('title', '%orm%'), Comparison::LIKE),
+            new OrWhere(new Value('body', '%orm%'), Comparison::LIKE),
+        ),
+    );
+
+// The where part renders:
+// WHERE status = :status AND (title LIKE :title OR body LIKE :body)
+```
+
+Warning: a group in the wrong position renders SQL that the database rejects.
+A joining group cannot open the list, because a leading `AndWhereGroup` renders
+`WHERE AND (…)`. A `WhereGroup` or a `NotWhereGroup` cannot follow another
+clause, because neither one renders a joining operator before the parentheses.
+
+Warning: a group that holds no clause renders empty parentheses, and the
+database rejects that SQL. Give every group one `Where` or more.
+
+The six classes cover every `WhereType` case, so the class name is the only
+place a group states its clause type. To pick the type at run time, select the
+class:
+
+```php
+use Valkyrja\Orm\Data\WhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndNotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\NotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\OrNotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\OrWhereGroup;
+use Valkyrja\Orm\Enum\WhereType;
+
+$group = match ($whereType) {
+    WhereType::AND     => new AndWhereGroup(...$where),
+    WhereType::OR      => new OrWhereGroup(...$where),
+    WhereType::NOT     => new NotWhereGroup(...$where),
+    WhereType::AND_NOT => new AndNotWhereGroup(...$where),
+    WhereType::OR_NOT  => new OrNotWhereGroup(...$where),
+    WhereType::DEFAULT => new WhereGroup(...$where),
+};
+```
 
 A `Value` that holds a `QueryBuilderContract` renders as a subquery:
 

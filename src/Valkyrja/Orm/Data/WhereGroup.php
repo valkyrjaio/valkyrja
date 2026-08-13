@@ -14,11 +14,15 @@ namespace Valkyrja\Orm\Data;
 
 use Override;
 use Stringable;
+use Valkyrja\Orm\Enum\WhereType;
 
 use function implode;
 
 readonly class WhereGroup implements Stringable
 {
+    /** @var WhereType */
+    protected const WhereType TYPE = WhereType::DEFAULT;
+
     /** @var Where[] */
     public array $where;
 
@@ -36,6 +40,11 @@ readonly class WhereGroup implements Stringable
     #[Override]
     public function __toString(): string
     {
-        return '(' . implode(' ', $this->where) . ')';
+        $type = static::TYPE->value;
+
+        return ($type === '' ? '' : "$type ")
+            . '('
+            . implode(' ', $this->where)
+            . ')';
     }
 }
