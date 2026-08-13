@@ -769,9 +769,10 @@ $select = $orm->createQueryBuilder()
 // WHERE status = :status AND (title LIKE :title OR body LIKE :body)
 ```
 
-Warning: a plain `WhereGroup` after another clause renders no operator between
-the two clauses, and the database rejects that SQL. Use one of the other
-classes in that position.
+Warning: a group in the wrong position renders SQL that the database rejects.
+A joining group cannot open the list, because a leading `AndWhereGroup` renders
+`WHERE AND (…)`. A `WhereGroup` or a `NotWhereGroup` cannot follow another
+clause, because the group then renders with no operator before it.
 
 The six classes cover every `WhereType` case, so the class name is the only
 place a group states its clause type. To pick the type at run time, select the
