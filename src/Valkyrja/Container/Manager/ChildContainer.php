@@ -86,18 +86,6 @@ class ChildContainer extends Container
      * @param class-string $id The provided service id
      */
     #[Override]
-    public function isDeferred(string $id): bool
-    {
-        return parent::isDeferred($id)
-            || $this->parent->isDeferred($id);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The provided service id
-     */
-    #[Override]
     public function isPublished(string $id): bool
     {
         return parent::isPublished($id)

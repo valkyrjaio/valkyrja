@@ -383,13 +383,36 @@ final class ChildContainerTest extends TestCase
         $child->getAliased('providedAlias');
     }
 
-    public function testIsDeferredFromParent(): void
+    public function testIsDeferredReportsOnlyTheChildsOwnCallbacks(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        // A child built without the parent's callbacks cannot run them
+        $child = new ChildContainer($this->parent, new ContainerData());
+
+        // has() reads isDeferred(), so a true here would promise a get() that fails
+        self::assertFalse($child->isDeferred(ProvidedFixture::class));
+        self::assertFalse($child->has(ProvidedFixture::class));
+    }
+
+    public function testIsDeferredFromCopiedCallbacks(): void
     {
         $this->parent->register(new PublishingProviderFixture());
         $child = $this->createChild();
 
         self::assertTrue($child->isDeferred(ProvidedFixture::class));
         self::assertFalse($child->isDeferred(SingletonFixture::class));
+    }
+
+    public function testGetAliasedDelegatesWhenTheParentAlreadyPublished(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->get(ProvidedFixture::class);
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        $child = $this->createChild();
+
+        // The callback ran, so the already-published arm delegates
+        self::assertTrue($this->parent->isPublished(ProvidedFixture::class));
+        self::assertInstanceOf(ProvidedFixture::class, $child->getAliased('providedAlias'));
     }
 
     public function testGetAliasedThrowsForAnUnresolvedParentSingleton(): void
