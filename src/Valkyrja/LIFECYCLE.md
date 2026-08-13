@@ -299,10 +299,11 @@ Two implementations are available for the per-request child container:
 - **`ChildContainer`** (default) — delegates to the parent via
   `ContainerContract`. Portable and works with any parent that implements the
   contract.
-- **`NativeChildContainer`** — accesses the parent's protected fields directly.
-  Requires a concrete `Container` parent. It lowers construction overhead, and
-  it also detects a parent write more exactly, because it reads the parent's
-  published map. The two differ in behavior, not in speed alone.
+- **`NativeChildContainer`** — accesses the parent's protected fields directly
+  for lower construction overhead. Requires a concrete `Container` parent. It
+  does not follow the alias rule above: it resolves a parent-declared alias in
+  the child, so the alias does not select the parent's scope. The two differ in
+  behavior, not in speed alone.
 
 ## Focus on Configuration
 

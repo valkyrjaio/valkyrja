@@ -732,10 +732,11 @@ reaches directly. A service that it force-resolves before the request loop is
 cached in the frozen parent once, and every child reuses that instance. A
 service left deferred publishes again in each child that requests it.
 
-Warning: the method is about correctness for a service the child reaches
-through an alias that only the parent declares. The parent resolves that
-target, so it must already hold it
-([Where an Alias Resolves](#where-an-alias-resolves)).
+Warning: the method is about correctness for a **singleton or deferred** target
+that the child reaches through an alias that only the parent declares. The
+parent resolves that target, so it would cache it during the request loop
+([Where an Alias Resolves](#where-an-alias-resolves)). A plain `bind()` target
+caches nothing and needs no force-resolution.
 
 ### The Child's Copy of the Data
 
@@ -833,7 +834,7 @@ $child->get(SlackNotifier::class);     // built by the child's binding
 $child->get(NotifierContract::class);  // built by the parent's binding
 ```
 
-The example binds a service. The singleton strategy above takes precedence over
+The example binds a service. The three-step strategy above takes precedence over
 an alias. When the parent holds a resolved instance and the child holds none, a
 direct child lookup reuses the parent's instance.
 
