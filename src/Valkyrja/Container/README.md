@@ -834,7 +834,7 @@ $child->get(NotifierContract::class);  // built by the parent's binding
 ```
 
 The example binds a service. The singleton strategy above takes precedence over
-an alias: when the parent holds a resolved instance and the child holds none, a
+an alias. When the parent holds a resolved instance and the child holds none, a
 direct child lookup reuses the parent's instance.
 
 Warning: the parent must already answer the target without caching it. When the

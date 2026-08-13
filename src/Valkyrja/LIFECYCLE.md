@@ -285,11 +285,11 @@ Anything resolved here lives in the frozen parent and is shared read-only across
 all requests. Anything not resolved here is created fresh in each request's child
 container — correct but paying the creation cost per request.
 
-Warning: a service that a child reaches through an alias that only the parent
-declares must be resolved here. The parent resolves that target, so the parent
-must already hold it. `ChildContainer` throws
-`ContainerUnresolvedParentAliasException` rather than write to the frozen
-parent. See
+Warning: resolve here any **singleton or deferred** target that a child reaches
+through an alias that only the parent declares. The parent resolves that
+target, so it would cache it during the request loop. `ChildContainer` throws
+`ContainerUnresolvedParentAliasException` instead. A plain `bind()` target
+caches nothing and needs no force-resolution. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 
 ### Child Container Variants
@@ -299,10 +299,10 @@ Two implementations are available for the per-request child container:
 - **`ChildContainer`** (default) — delegates to the parent via
   `ContainerContract`. Portable and works with any parent that implements the
   contract.
-- **`NativeChildContainer`** — accesses the parent's protected fields directly
-  for lower construction overhead. Requires a concrete `Container` parent.
-  Use only when profiling confirms a bottleneck at very high child construction
-  rates.
+- **`NativeChildContainer`** — accesses the parent's protected fields directly.
+  Requires a concrete `Container` parent. It lowers construction overhead, and
+  it also detects a parent write more exactly, because it reads the parent's
+  published map. The two differ in behavior, not in speed alone.
 
 ## Focus on Configuration
 
