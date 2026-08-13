@@ -285,6 +285,13 @@ Anything resolved here lives in the frozen parent and is shared read-only across
 all requests. Anything not resolved here is created fresh in each request's child
 container — correct but paying the creation cost per request.
 
+Warning: a service that a child reaches through an alias that only the parent
+declares must be resolved here. The parent resolves that target, so the parent
+must already hold it. `ChildContainer` throws
+`ContainerUnresolvedParentAliasException` rather than write to the frozen
+parent. See
+[Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
+
 ### Child Container Variants
 
 Two implementations are available for the per-request child container:

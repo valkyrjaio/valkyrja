@@ -147,17 +147,17 @@ class ChildContainer extends Container
             return null;
         }
 
-        $this->assertParentResolvesWithoutWriting($id);
+        $this->validateParentAliasResolution($id);
 
         return $this->parent->getAliased($id, $arguments);
     }
 
     /**
-     * Assert that the parent answers an alias without caching anything new.
+     * Validate that the parent answers an alias without caching anything new.
      *
      * @param class-string $id The alias
      */
-    protected function assertParentResolvesWithoutWriting(string $id): void
+    protected function validateParentAliasResolution(string $id): void
     {
         $seen    = [];
         $current = $id;
@@ -170,7 +170,7 @@ class ChildContainer extends Container
             $seen[$aliasedId] = true;
             $current          = $aliasedId;
 
-            if ($this->doesParentCache($current)) {
+            if ($this->isUnresolvedInParent($current)) {
                 throw new ContainerUnresolvedParentAliasException($id, $current);
             }
 
@@ -187,7 +187,7 @@ class ChildContainer extends Container
      *
      * @param class-string $id The service id
      */
-    protected function doesParentCache(string $id): bool
+    protected function isUnresolvedInParent(string $id): bool
     {
         if ($this->parent->isSingletonInstance($id)) {
             return false;

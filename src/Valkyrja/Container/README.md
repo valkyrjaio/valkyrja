@@ -727,10 +727,15 @@ publish callbacks through `ContainerData`, so the first lookup of an
 unpublished service runs its callback with the child as the container. The
 service publishes into the child's own scope; the parent's maps do not change.
 
-`WorkerHttp::bootstrapParentServices()` exists for cost, not for correctness.
-A service that it force-resolves before the request loop is cached in the
-frozen parent once, and every child reuses that instance. A service left
-deferred publishes again in each child that requests it.
+`WorkerHttp::bootstrapParentServices()` is about cost for a service the child
+reaches directly. A service that it force-resolves before the request loop is
+cached in the frozen parent once, and every child reuses that instance. A
+service left deferred publishes again in each child that requests it.
+
+Warning: the method is about correctness for a service the child reaches
+through an alias that only the parent declares. The parent resolves that
+target, so it must already hold it
+([Where an Alias Resolves](#where-an-alias-resolves)).
 
 ### The Child's Copy of the Data
 
@@ -795,10 +800,21 @@ The component provides two implementations.
 parent through `ContainerContract` methods, so any contract implementation can
 be the parent. This is the portable, cross-language implementation. It
 delegates a parent-bound factory to the parent, so the factory receives the
-parent ([Where a Factory Runs](#where-a-factory-runs)), and it follows the
-alias rule below.
+parent ([Where a Factory Runs](#where-a-factory-runs)).
 
-#### Where an Alias Resolves
+**`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. It reads
+the parent's protected maps directly, the publish callbacks included. Its
+constructor takes only a concrete `Container` parent and no `ContainerData`.
+
+Warning: the two implementations differ in behavior on the factory path, not
+only in speed. `NativeChildContainer` reads a parent-bound factory out of the
+parent's map and invokes the factory itself, so the factory receives the
+child and resolves its dependencies child-first. `ChildContainer` hands the
+same call to the parent, so the same factory receives the parent. Choose the
+implementation whose factory receiver your services need; the direct map
+access also removes the method-call overhead on the fallback path.
+
+### Where an Alias Resolves
 
 An alias resolves in the container that declares it, so **where you declare an
 alias selects the resolution scope.** A child lookup of an alias that only the
@@ -817,9 +833,9 @@ $child->get(SlackNotifier::class);     // built by the child's binding
 $child->get(NotifierContract::class);  // built by the parent's binding
 ```
 
-The example binds a service, because the singleton strategy above takes
-precedence over an alias: when the parent holds a resolved instance and the
-child holds none, a direct child lookup reuses the parent's instance.
+The example binds a service. The singleton strategy above takes precedence over
+an alias: when the parent holds a resolved instance and the child holds none, a
+direct child lookup reuses the parent's instance.
 
 Warning: the parent must already answer the target without caching it. When the
 parent would build and cache the target for the first time, `ChildContainer`
@@ -830,18 +846,6 @@ frozen parent. Force-resolve that target in `bootstrapParentServices()`.
 parent-declared alias in the child, so the alias does not select the parent's
 scope and it never throws. A singleton the parent already resolved still comes
 back, because the child reads the parent's instances directly.
-
-**`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. It reads
-the parent's protected maps directly, the publish callbacks included. Its
-constructor takes only a concrete `Container` parent and no `ContainerData`.
-
-Warning: the two implementations differ in behavior on the factory path, not
-only in speed. `NativeChildContainer` reads a parent-bound factory out of the
-parent's map and invokes the factory itself, so the factory receives the
-child and resolves its dependencies child-first. `ChildContainer` hands the
-same call to the parent, so the same factory receives the parent. Choose the
-implementation whose factory receiver your services need; the direct map
-access also removes the method-call overhead on the fallback path.
 
 ### Using a Child Container
 
