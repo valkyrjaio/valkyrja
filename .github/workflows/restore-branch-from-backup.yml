@@ -7,7 +7,7 @@ run-name: "Restore ${{ github.ref_name }} from ${{ github.ref_name }}-backup"
 
 jobs:
   restore:
-    uses: valkyrjaio/.github/.github/workflows/_restore-branch-from-backup.yml@61e6314e4ea0cf692c383e2d31cc94e4996e5331
+    uses: valkyrjaio/.github/.github/workflows/_restore-branch-from-backup.yml@79ee782d868e5a879e1f46157d975152da779bf7
     permissions:
       contents: write
     secrets:
