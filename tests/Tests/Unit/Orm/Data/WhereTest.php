@@ -118,6 +118,22 @@ final class WhereTest extends TestCase
         self::assertSame('status IN (:status0, :status1)', (string) $where);
     }
 
+    public function testToStringWithNotIn(): void
+    {
+        $value = new Value('status', ['active', 'pending']);
+        $where = new Where($value, Comparison::NOT_IN);
+
+        self::assertSame('status NOT IN (:status0, :status1)', (string) $where);
+    }
+
+    public function testToStringWithMemberOf(): void
+    {
+        $value = new Value('interests', 'sports');
+        $where = new Where($value, Comparison::MEMBER_OF);
+
+        self::assertSame('interests MEMBER OF :interests', (string) $where);
+    }
+
     public function testReadonlyClass(): void
     {
         $reflection = new ReflectionClass(Where::class);

@@ -19,7 +19,7 @@ enum Comparison: string
     case NOT_EQUAL          = '!=';
     case NOT_EQUAL_ALT      = '<>';
     case IN                 = 'IN';
-    case NOT_IN             = 'NOT_IN';
+    case NOT_IN             = 'NOT IN';
     case LIKE               = 'LIKE';
     case NOT_LIKE           = 'NOT LIKE';
     case SOUNDS_LIKE        = 'SOUNDS LIKE';
@@ -34,7 +34,7 @@ enum Comparison: string
     case LESS_THAN_EQUAL    = '<=';
     case RIGHT_SHIFT        = '>>';
     case LEFT_SHIFT         = '<<';
-    case MEMBER_OF          = 'MEMBER_OF';
+    case MEMBER_OF          = 'MEMBER OF';
     case REGEXP             = 'REGEXP';
     case NOT_REGEXP         = 'NOT REGEXP';
     case BITWISE_XOR        = '^';

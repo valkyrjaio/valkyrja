@@ -766,7 +766,7 @@ $select = $orm->createQueryBuilder()
 | `NOT_EQUAL`          | `!=`          |
 | `NOT_EQUAL_ALT`      | `<>`          |
 | `IN`                 | `IN`          |
-| `NOT_IN`             | `NOT_IN`      |
+| `NOT_IN`             | `NOT IN`      |
 | `LIKE`               | `LIKE`        |
 | `NOT_LIKE`           | `NOT LIKE`    |
 | `SOUNDS_LIKE`        | `SOUNDS LIKE` |
@@ -781,15 +781,13 @@ $select = $orm->createQueryBuilder()
 | `LESS_THAN_EQUAL`    | `<=`          |
 | `RIGHT_SHIFT`        | `>>`          |
 | `LEFT_SHIFT`         | `<<`          |
-| `MEMBER_OF`          | `MEMBER_OF`   |
+| `MEMBER_OF`          | `MEMBER OF`   |
 | `REGEXP`             | `REGEXP`      |
 | `NOT_REGEXP`         | `NOT REGEXP`  |
 | `BITWISE_XOR`        | `^`           |
 | `LOGICAL_XOR`        | `XOR`         |
 | `BITWISE_OR`         | `\|`          |
 | `BITWISE_INVERSION`  | `~`           |
-
-Warning: `NOT_IN` and `MEMBER_OF` render with an underscore where the SQL keyword carries a space, and no driver accepts the rendered clause. Write a `NOT IN` filter as a `NotWhere` or an `AndNotWhere` with `Comparison::IN`. Use a raw statement for a `MEMBER OF` filter.
 
 ### Group By, Order By, Limit, and Offset
 
