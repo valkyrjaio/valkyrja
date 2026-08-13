@@ -28,7 +28,7 @@ jobs:
   trailing-newline-check:
     name: Trailing Newline Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@f0560559020d79edb410ef75387e081d75026e45
+    uses: valkyrjaio/.github/.github/workflows/_trailing-newline-check.yml@79ee782d868e5a879e1f46157d975152da779bf7
     permissions:
       pull-requests: write
       contents: read
@@ -39,7 +39,7 @@ jobs:
   markdown-check:
     name: Markdown Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_markdown-check.yml@f0560559020d79edb410ef75387e081d75026e45
+    uses: valkyrjaio/.github/.github/workflows/_markdown-check.yml@79ee782d868e5a879e1f46157d975152da779bf7
     permissions:
       pull-requests: write
       contents: read
@@ -56,7 +56,7 @@ jobs:
   copyright-header-check:
     name: Copyright Header Check
     if: github.event_name == 'pull_request'
-    uses: valkyrjaio/.github/.github/workflows/_copyright-header-check.yml@f0560559020d79edb410ef75387e081d75026e45
+    uses: valkyrjaio/.github/.github/workflows/_copyright-header-check.yml@79ee782d868e5a879e1f46157d975152da779bf7
     permissions:
       pull-requests: write
       contents: read
@@ -68,7 +68,7 @@ jobs:
   # as `CI / Tools / <Tool> / …`.
   tools:
     name: Tools
-    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@f0560559020d79edb410ef75387e081d75026e45
+    uses: valkyrjaio/.github/.github/workflows/_php-ci-tools.yml@79ee782d868e5a879e1f46157d975152da779bf7
     with:
       php-version: '8.4'
       additional-directory: '.github/ci/root-and-suggested'
