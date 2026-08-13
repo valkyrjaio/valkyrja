@@ -69,5 +69,5 @@ When enabled:
 
 Valkyrja installs `WhoopsThrowableHandler` automatically when `debugMode: true`
 is set in your application configuration. In production, `debugMode` should
-always be `false` — Whoops output may expose internals you do not want visible
+always be `false`. Whoops output may expose internals you do not want visible
 to users.
