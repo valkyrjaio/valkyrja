@@ -163,6 +163,22 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->child->has(ProvidedFixture::class));
     }
 
+    public function testIsDeferredFromParent(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+
+        self::assertTrue($this->child->isDeferred(ProvidedFixture::class));
+        self::assertFalse($this->child->isDeferred(SingletonFixture::class));
+    }
+
+    public function testIsDeferredFromChild(): void
+    {
+        $this->child->register(new PublishingProviderFixture());
+
+        self::assertTrue($this->child->isDeferred(ProvidedFixture::class));
+        self::assertFalse($this->parent->isDeferred(ProvidedFixture::class));
+    }
+
     public function testIsPublishedFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);

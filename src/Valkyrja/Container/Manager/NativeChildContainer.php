@@ -94,11 +94,22 @@ class NativeChildContainer extends Container
     #[Override]
     public function has(string $id): bool
     {
-        return isset($this->callbacks[$id])
-            || isset($this->parent->callbacks[$id])
+        return $this->isDeferred($id)
             || $this->isSingleton($id)
             || $this->isService($id)
             || $this->isAlias($id);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The provided service id
+     */
+    #[Override]
+    public function isDeferred(string $id): bool
+    {
+        return isset($this->callbacks[$id])
+            || isset($this->parent->callbacks[$id]);
     }
 
     /**
@@ -121,7 +132,7 @@ class NativeChildContainer extends Container
     #[Override]
     protected function publishUnpublishedProvided(string $id): void
     {
-        if ((isset($this->callbacks[$id]) || isset($this->parent->callbacks[$id])) && ! $this->isPublished($id)) {
+        if ($this->isDeferred($id) && ! $this->isPublished($id)) {
             $this->publish($id);
         }
     }

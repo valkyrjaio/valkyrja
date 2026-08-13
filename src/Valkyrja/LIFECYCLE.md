@@ -267,7 +267,7 @@ handle(app, data, request)
 | `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | OpenSwoole |
 | `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | RoadRunner |
 
-### Customising Bootstrap
+### Customizing Bootstrap
 
 Override `bootstrapParentServices()` to force-resolve services that are
 expensive to create and safe to share across requests:
