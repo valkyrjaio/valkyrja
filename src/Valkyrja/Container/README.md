@@ -26,7 +26,7 @@ This document covers each feature with a worked example:
 
 Valkyrja calls an interface a **contract**; a class or file name that ends in
 `Contract` is an interface. Bind against a contract rather than a concrete
-class where you can — the framework itself does.
+class where you can. The framework itself does.
 
 ## Deferred Loading
 
@@ -71,8 +71,8 @@ points to a static method.
 `bind(string $id, callable $callable): static` binds a service id to a
 callable factory. Every call to `getService($id)` invokes the callable and
 returns a fresh instance. Choose `bind()` when each caller must own its
-instance — a builder that accumulates state, or an object built from
-per-call arguments:
+instance. A builder that accumulates state is one example. An object built
+from per-call arguments is another:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -119,7 +119,8 @@ $same   = $container->getSingleton(LoggerContract::class); // Later calls return
 
 `bindAlias(string $alias, string $id): static` maps one service id to another
 id. A resolution of the alias resolves the target. Use it to publish one
-implementation under two ids — its concrete class and its contract:
+implementation under two ids. The two ids are the concrete class and the
+contract:
 
 ```php
 $container->bindSingleton(
@@ -144,8 +145,8 @@ the alias.
 
 `setSingleton(string $id, object $singleton): static` registers an
 already-constructed object. Use it when the instance exists before the
-container needs it — the config at boot, the request in a worker loop, or an
-instance a publish callback builds inline:
+container needs it. The config at boot, the request in a worker loop, and an
+instance that a publish callback builds inline are three examples:
 
 ```php
 $config = new AppConfig(environment: 'production');
@@ -211,9 +212,9 @@ $container->bindSingleton(
 $handler->add(AuthMiddleware::class);
 ```
 
-This rule holds for every class that a config names by class string — a
-middleware, an event, and a view replacement. One explicit place states how
-each service is built.
+This rule holds for every class that a config names by class string. The rule
+covers a middleware, an event, and a view replacement. One explicit place
+states how each service is built.
 
 ## Resolving Services
 
@@ -224,8 +225,8 @@ method. It checks singletons first, then services, then aliases, so the
 caller does not need to know the registration type. `$arguments` go to the
 service callable when the id resolves to a service, and forward through an
 alias to its target. A singleton resolution ignores `$arguments`. Use
-`get()` where the registration type is unknown — for example, a class string
-read from a config:
+`get()` where the registration type is unknown. A class string read from a
+config is one example:
 
 ```php
 $middleware = $container->get($middlewareClass);
@@ -252,9 +253,9 @@ $query = $container->getService(QueryBuilderContract::class, ['users']);
 ```
 
 Warning: `bindSingleton()` also stores its factory in the service map, so
-`getService()` accepts a singleton-bound id — and returns a fresh instance
-that never reaches the singleton cache. Resolve a singleton with
-`getSingleton()` or `get()`.
+`getService()` accepts a singleton-bound id. `getService()` then returns a
+fresh instance that never reaches the singleton cache. Resolve a singleton
+with `getSingleton()` or `get()`.
 
 ### getAliased()
 
@@ -326,8 +327,8 @@ if (! $container->has(MetricsContract::class)) {
 ### Resolving Only a Built Instance
 
 A resolution triggers construction, so a caller that must not pay that cost
-checks `isSingletonInstance()` first. A shutdown hook is one example — it
-logs only when the logger is already built:
+checks `isSingletonInstance()` first. A shutdown hook is one example. The
+hook logs only when the logger is already built:
 
 ```php
 if ($container->isSingletonInstance(LoggerContract::class)) {
@@ -381,8 +382,8 @@ instance method, `publishers()`.
 ### The publishers() Map
 
 `publishers()` returns a map from service ids to static publish callbacks.
-One provider can publish many services — one map entry and one callback per
-id:
+One provider can publish many services. Each id takes one map entry and one
+callback:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -428,9 +429,9 @@ resolution triggers their own publish callbacks when needed.
 ### Deferred Publication
 
 The container stores the `publishers()` map and defers each callback. The
-first resolution of an id — through `get()`, `getSingleton()`, or
-`getService()` — runs the callback for that id and marks the id published. A
-callback runs at most once.
+first resolution of an id runs the callback for that id and marks the id
+published. The resolution can come through `get()`, `getSingleton()`, or
+`getService()`. A callback runs at most once.
 
 A publish callback usually builds the instance inline with `setSingleton()`.
 A callback can instead call `bind()` when the service must stay fresh per
@@ -503,7 +504,7 @@ The container exposes the provider machinery directly.
 
 **`register(ServiceProviderContract $provider): void`** — Stores the
 provider's `publishers()` map. The wiring above calls this for you; call it
-yourself to register a provider outside the config chain — in a test, for
+yourself to register a provider outside the config chain. A test is one
 example. It throws `ContainerInvalidPublishCallbackException` when a map
 entry is not callable.
 
@@ -536,8 +537,8 @@ class AppOrmServiceProvider implements ServiceProviderContract
 
 **`publish(string $id): void`** — Runs the id's publish callback now and
 marks the id published. When no callback exists, the method does nothing.
-Use it to publish a service eagerly — before a worker's request loop, for
-example — instead of on first resolution.
+Use it to publish a service eagerly instead of on first resolution. A
+publish before a worker's request loop is one example.
 
 **`isPublished(string $id): bool`** — Reports whether the id is published
 ([Inspecting the Container](#inspecting-the-container)).
@@ -674,7 +675,7 @@ $notifier->notify('The deploy is complete.');
 The first `getSingleton()` call runs `publishNotifier()` and caches the
 instance. Nothing constructs `SlackNotifier` before that call. To swap to
 `LogNotifier`, change `publishNotifier()` to build a `LogNotifier` and
-resolve `LoggerContract` from the container — the contract, the callers, and
+resolve `LoggerContract` from the container. The contract, the callers, and
 both notifier classes stay as they are.
 
 ## Container Data
@@ -716,11 +717,12 @@ OpenSwoole, RoadRunner) use to keep request-scoped state out of the parent.
 
 ### The Parent/Child Invariant
 
-The parent container bootstraps once when the worker process starts and is
-then **frozen** — nothing may write to it again. Each incoming request
-receives a fresh child container. The child checks its own maps first; when an
-id is not registered locally, the child falls back to the parent read-only.
-When the request ends, the child is discarded and the parent is unchanged.
+The parent container bootstraps once when the worker process starts. The
+parent is then **frozen**. Nothing may write to the parent again. Each
+incoming request receives a fresh child container. The child checks its own
+maps first; when an id is not registered locally, the child falls back to the
+parent read-only. When the request ends, the child is discarded and the
+parent is unchanged.
 
 Deferred services stay available in a child. The child receives the parent's
 publish callbacks through `ContainerData`, so the first lookup of an
@@ -751,13 +753,13 @@ cached instances directly.
 Each lookup checks the child's own maps first, then falls back to the parent.
 For a singleton the child applies a three-step strategy:
 
-1. **The child has a cached instance** — return it.
-2. **The parent has a cached instance** — reuse it; the parent is frozen, so
-   the instance does not change.
-3. **The child has a singleton binding** — build the instance and cache it in
-   the child's own instance map. The parent's maps do not change.
-   [Where a Factory Runs](#where-a-factory-runs) states which container the
-   factory receives.
+1. **The child has a cached instance.** The child returns that instance.
+2. **The parent has a cached instance.** The child reuses that instance. The
+   parent is frozen, so the instance does not change.
+3. **The child has a singleton binding.** The child builds the instance and
+   caches it in the child's own instance map. The parent's maps do not
+   change. [Where a Factory Runs](#where-a-factory-runs) states which
+   container the factory receives.
 
 `isPublished` follows the same child-first, parent-fallback pattern. When the
 parent has already published a service, the child does not publish it again.
@@ -781,11 +783,12 @@ way, a built singleton caches in the child's own instance map, and a
 `bind()` factory caches nowhere.
 
 Warning: under `ChildContainer`, a factory bound on the parent resolves its
-dependencies from the parent. It cannot see a service that exists only on the
-child — a request-scoped `setSingleton()` included. When a service needs a
-request-scoped dependency, register it through a provider's publish callback,
-which runs with the child. `NativeChildContainer` behaves differently on this
-path ([Available Implementations](#available-implementations)).
+dependencies from the parent. The factory cannot see a service that exists
+only on the child. A request-scoped `setSingleton()` registers such a
+service. When a service needs a request-scoped dependency, register it
+through a provider's publish callback, which runs with the child.
+`NativeChildContainer` behaves differently on this path
+([Available Implementations](#available-implementations)).
 
 ### Available Implementations
 
