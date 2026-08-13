@@ -789,6 +789,8 @@ $select = $orm->createQueryBuilder()
 | `BITWISE_OR`         | `\|`          |
 | `BITWISE_INVERSION`  | `~`           |
 
+Warning: a `MEMBER_OF` clause renders its operand without the parentheses that MySQL requires, so the rendered clause fails to parse. Use a raw statement for a `MEMBER OF` filter.
+
 ### Group By, Order By, Limit, and Offset
 
 `withGroupBy()` takes column names, and `withOrderBy()` takes `OrderBy` objects. `OrderBy` pairs a field with a `SortOrder` (`ASC` or `DESC`), and the order defaults to `ASC`:
