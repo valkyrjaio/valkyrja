@@ -15,9 +15,13 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Command;
 use Valkyrja\Application\Constant\ApplicationInfo;
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Cli\Interaction\Message\Header;
+use Valkyrja\Cli\Interaction\Option\Option;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Server\Command\VersionCommand;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -93,6 +97,24 @@ final class VersionCommandTest extends TestCase
         self::assertStringNotContainsString('╭──', $obOutput);
     }
 
+    /**
+     * A route that declares neither option falls through to the banner instead of throwing.
+     */
+    public function testRunWithARouteThatDeclaresNoOptions(): void
+    {
+        $appName    = 'BareApp';
+        $appVersion = '5.0.0';
+
+        $command = new VersionCommand(
+            $this->makeOutputFactory(),
+            new CliConfig(namespace: $appName, version: $appVersion),
+            $this->makeRouteWithoutOptions(),
+        );
+        $output  = $command->run();
+
+        self::assertInstanceOf(Header::class, $output->getMessages()[0]);
+    }
+
     public function testHelp(): void
     {
         $text = 'A command to show the application version and info.';
@@ -101,26 +123,40 @@ final class VersionCommandTest extends TestCase
         self::assertSame($text, VersionCommand::help()->getFormattedText());
     }
 
+    /**
+     * A route that declares both options, and carries only the ones spelled out.
+     */
     private function makeRoute(bool $isShort = false, bool $isPlain = false): RouteContract
     {
-        $route = $this->createMock(RouteContract::class);
+        $short = new OptionParameter(name: 'short', description: 'Output the version number only');
+        $plain = new OptionParameter(name: 'plain', description: 'Output version info without the banner');
 
-        $route->expects($this->exactly($isShort ? 1 : 2))
-            ->method('hasOption')
-            ->willReturnMap([
-                ['short', $isShort],
-                ['plain', $isPlain],
-            ]);
-
-        if (! $isShort && ! $isPlain) {
-            $route->expects($this->once())->method('getDescription')->willReturn('Get the application version');
-            $route->expects($this->once())->method('getName')->willReturn('version');
-        } else {
-            $route->expects($this->never())->method('getDescription');
-            $route->expects($this->never())->method('getName');
+        if ($isShort) {
+            $short = $short->withOptions(new Option('short'));
         }
 
-        return $route;
+        if ($isPlain) {
+            $plain = $plain->withOptions(new Option('plain'));
+        }
+
+        return new Route(
+            name: 'version',
+            description: 'Get the application version',
+            handler: static fn (): OutputContract => new PlainOutput(),
+            options: [$short, $plain],
+        );
+    }
+
+    /**
+     * A route that declares no option, as a narrowed route or a stale compiled route can.
+     */
+    private function makeRouteWithoutOptions(): RouteContract
+    {
+        return new Route(
+            name: 'version',
+            description: 'Get the application version',
+            handler: static fn (): OutputContract => new PlainOutput(),
+        );
     }
 
     private function makeOutputFactory(): OutputFactoryContract

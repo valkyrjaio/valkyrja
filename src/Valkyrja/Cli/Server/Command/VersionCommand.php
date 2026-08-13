@@ -69,13 +69,13 @@ class VersionCommand
         /** @var string $version */
         $version = $this->config->version;
 
-        if ($this->route->hasOption('short')) {
+        if ($this->hasSpelledOption('short')) {
             return $this->outputFactory
                 ->createOutput()
                 ->withMessages(new Message($version));
         }
 
-        if ($this->route->hasOption('plain')) {
+        if ($this->hasSpelledOption('plain')) {
             return $this->outputFactory
                 ->createOutput()
                 ->withMessages(
@@ -92,5 +92,16 @@ class VersionCommand
             ->withMessages(
                 new Header($namespace, $version, $this->route),
             );
+    }
+
+    /**
+     * Determine if the input spelled an option that the route declares.
+     *
+     * @param non-empty-string $name The option name
+     */
+    protected function hasSpelledOption(string $name): bool
+    {
+        return $this->route->hasOption($name)
+            && $this->route->getOption($name)->hasFirstValue();
     }
 }

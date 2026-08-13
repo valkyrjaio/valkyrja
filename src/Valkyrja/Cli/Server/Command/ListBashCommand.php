@@ -73,10 +73,14 @@ class ListBashCommand
         $colonAt   = false;
 
         if ($this->route->hasArgument('namespace')) {
-            $namespace = $this->route->getArgument('namespace')->getFirstValue();
-            $colonAt   = strpos($namespace, ':');
+            $namespaceArgument = $this->route->getArgument('namespace');
 
-            $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
+            if ($namespaceArgument->hasFirstValue()) {
+                $namespace = $namespaceArgument->getFirstValue();
+                $colonAt   = strpos($namespace, ':');
+
+                $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
+            }
         }
 
         $routesForBash = array_map(

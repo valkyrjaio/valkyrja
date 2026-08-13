@@ -74,8 +74,12 @@ class ListCommand
         $routes    = $this->collection->all();
 
         if ($this->route->hasOption('namespace')) {
-            $namespace = $this->route->getOption('namespace')->getFirstValue();
-            $routes    = $this->filterRoutesByNamespace($routes, $namespace);
+            $namespaceOption = $this->route->getOption('namespace');
+
+            if ($namespaceOption->hasFirstValue()) {
+                $namespace = $namespaceOption->getFirstValue();
+                $routes    = $this->filterRoutesByNamespace($routes, $namespace);
+            }
         }
 
         if ($routes === []) {
