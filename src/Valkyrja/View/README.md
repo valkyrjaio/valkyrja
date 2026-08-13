@@ -2,11 +2,12 @@
 
 ## Introduction
 
-The View component renders templates and produces HTTP responses from them. It
-supports three rendering backends — pure PHP, Orka (Valkyrja's own compiled
-template syntax), and Twig — and exposes a uniform `RendererContract` interface
-across all three. Switching renderers requires only a configuration change; the
-template code that calls the renderer does not change.
+The View component renders templates and produces HTTP responses from them.
+The component supports three rendering backends: pure PHP, Orka (Valkyrja's
+own compiled template syntax), and Twig. The component exposes a uniform
+`RendererContract` interface across all three backends. Switching renderers
+requires only a configuration change; the template code that calls the
+renderer does not change.
 
 ## Renderers
 
@@ -107,9 +108,9 @@ $container->register(new ViewOrkaServiceProvider());
 application that renders with `PhpRenderer` or `TwigRenderer` carries none of
 them.
 
-The provider binds what the default config selects — the core set, and the debug
-set that `orkaReplacements` defaults to. Bind each replacement that you add
-beyond those.
+The provider binds what the default config selects. That selection is the core
+set, and the debug set that `orkaReplacements` defaults to. Bind each
+replacement that you add beyond those.
 
 Configure the Orka renderer through `ViewOrkaConfigContract`:
 
