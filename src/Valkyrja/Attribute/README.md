@@ -8,7 +8,7 @@ Reflection component internally and returns instantiated attribute objects,
 optionally filtered by attribute type.
 
 This is the component that makes `#[Route]`, `#[Listener]`, and every other
-Valkyrja attribute work — route providers and event providers pass their
+Valkyrja attribute work. Route providers and event providers pass their
 controller and listener classes through the collector to discover and build
 their routing and listener maps.
 
@@ -51,8 +51,8 @@ class (or its descendants, using the default
 `ReflectionAttribute::IS_INSTANCEOF` flag). Pass `null` to collect all
 attributes.
 
-All methods return an array of instantiated attribute objects — not
-`ReflectionAttribute` instances.
+All methods return an array of instantiated attribute objects. The methods do
+not return `ReflectionAttribute` instances.
 
 ## Reflection-Aware Attributes
 
