@@ -2,12 +2,12 @@
 
 ## Introduction
 
-The Type component provides typed value objects — wrappers around PHP values
-that validate on construction and serialize cleanly. Every type implements
-`TypeContract`. The component also contains a model system with property
-casting, a collection, JSON wrappers, identifier types, support for the UUID,
-ULID, and VLID formats, and static factory and support classes for strings,
-arrays, objects, and enums.
+The Type component provides typed value objects. Each type wraps a PHP value,
+validates the value on construction, and serializes cleanly. Every type
+implements `TypeContract`. The component also contains a model system with
+property casting, a collection, JSON wrappers, identifier types, support for
+the UUID, ULID, and VLID formats, and static factory and support classes for
+strings, arrays, objects, and enums.
 
 ## TypeContract
 
@@ -83,10 +83,10 @@ The length checks `min()` and `max()` return `bool` and never throw.
 
 ### String Factories
 
-Every `StringT` operation is also a static method — the checks and
-replacements on `Valkyrja\Type\String\Factory\StringFactory`, the case
-conversions on `StringCaseFactory` — so the operations work without a wrapper
-instance. The factories add a few extras:
+Every `StringT` operation is also a static method, so the operations work
+without a wrapper instance. The checks and the replacements are on
+`Valkyrja\Type\String\Factory\StringFactory`. The case conversions are on
+`StringCaseFactory`. The factories add a few extras:
 
 ```php
 use Valkyrja\Type\String\Factory\StringCaseFactory;
@@ -101,10 +101,10 @@ StringCaseFactory::allToSnakeCase('appName', 'appEnv'); // ['app_name', 'app_env
 ```
 
 Each `StringCaseFactory` conversion has an `allTo*` variant that converts
-many strings at once — except `ucFirstLetter()`, whose variant is named
-`allUcFirstLetter()`. `MbStringFactory` extends `StringFactory` with
-multibyte-safe (UTF-8) `substr()`, `toTitleCase()`, `toLowerCase()`, and
-`toUpperCase()`.
+many strings at once. The variant of `ucFirstLetter()` is the exception, and
+that variant has the name `allUcFirstLetter()`. `MbStringFactory` extends
+`StringFactory` with multibyte-safe (UTF-8) `substr()`, `toTitleCase()`,
+`toLowerCase()`, and `toUpperCase()`.
 
 ## Numbers
 
@@ -168,7 +168,7 @@ and `null()` check each value and throw `ArrayInvalidTrueValueException`,
 ## Objects
 
 `ObjectT::fromValue()` decodes a JSON string and casts any other value with
-`(object)`. `SerializedObject::fromValue()` unserializes a string — pass the
+`(object)`. `SerializedObject::fromValue()` unserializes a string. Pass the
 allowed classes, or the result is a `__PHP_Incomplete_Class`:
 
 ```php
@@ -226,10 +226,10 @@ Cls::getNiceName(Json::class);               // 'ValkyrjaTypeJsonJson'
 | `IntId`    | `IntIdContract`    | `int`         |
 
 The contracts live in `Valkyrja\Type\Id\Contract`. Each one extends
-`TypeContract` directly — `StringIdContract` and `IntIdContract` do not
-extend `IdContract`. `fromValue()` accepts a string, an int, or a float and
-casts to the wrapped type (`IntId` also accepts a bool); any other value
-throws `IdInvalidFromValueException`.
+`TypeContract` directly. `StringIdContract` and `IntIdContract` do not extend
+`IdContract`. `fromValue()` accepts a string, an int, or a float and casts to
+the wrapped type (`IntId` also accepts a bool); any other value throws
+`IdInvalidFromValueException`.
 
 ## Enums
 
@@ -276,7 +276,7 @@ Status::asReverseArray(); // value => name
 ```
 
 The same helpers exist statically on `Valkyrja\Type\Enum\Support\Enumerable`
-for any enum class — `Enumerable::names(Status::class)`. The
+for any enum class. `Enumerable::names(Status::class)` is one example. The
 `Valkyrja\Type\Enum\Trait\JsonSerializable` trait gives an enum a
 `jsonSerialize()` that returns the backed value or name without the rest of
 `EnumContract`. `Valkyrja\Type\Enum\Type` is a plain enum of the primitive
@@ -353,12 +353,12 @@ value object.
 ## Exceptions
 
 Every exception in the component implements
-`Valkyrja\Type\Throwable\Contract\TypeThrowable`. Five subcomponents —
-Object, Uid, Ulid, Uuid, and Vlid — add their own marker contract (for
-example `Valkyrja\Type\Uid\Throwable\Contract\UidThrowable`, which the UUID,
-ULID, and VLID exceptions also implement). The exceptions of the other
-subcomponents implement `TypeThrowable` only. Catch a marker contract to
-handle a whole family:
+`Valkyrja\Type\Throwable\Contract\TypeThrowable`. Five subcomponents add
+their own marker contract. The five subcomponents are Object, Uid, Ulid,
+Uuid, and Vlid. `Valkyrja\Type\Uid\Throwable\Contract\UidThrowable` is one
+example, and the UUID, ULID, and VLID exceptions also implement that
+contract. The exceptions of the other subcomponents implement `TypeThrowable`
+only. Catch a marker contract to handle a whole family:
 
 ```php
 use Valkyrja\Type\Throwable\Contract\TypeThrowable;
