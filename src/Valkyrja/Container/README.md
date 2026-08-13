@@ -891,7 +891,7 @@ the full lifecycle.
 
 ## Exceptions
 
-The container throws three exceptions, all under
+The container throws four exceptions, all under
 `Valkyrja\Container\Throwable\Exception`.
 
 **`ContainerInvalidReferenceException`** — A resolution method received an id
@@ -911,7 +911,7 @@ target for the first time
 `ContainerInvalidReferenceException` for a cyclic chain of parent aliases,
 because such a chain reaches no target.
 
-All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
+All four implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:
 
 ```php

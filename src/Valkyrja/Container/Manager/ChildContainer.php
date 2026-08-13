@@ -16,6 +16,7 @@ use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentServiceException;
 use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 
 class ChildContainer extends Container
@@ -124,6 +125,11 @@ class ChildContainer extends Container
     protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
+            // Delegating runs the parent's publish step, which writes to the frozen parent.
+            if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+                throw new ContainerUnpublishedParentServiceException($id);
+            }
+
             return $this->parent->getService($id, $arguments);
         }
 

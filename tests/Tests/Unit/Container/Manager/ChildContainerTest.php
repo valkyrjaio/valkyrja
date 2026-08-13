@@ -15,7 +15,9 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentServiceException;
 use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -239,6 +241,23 @@ final class ChildContainerTest extends TestCase
 
         self::assertInstanceOf(ServiceFixture::class, $instance);
         self::assertNotSame($instance, $this->child->getService(ServiceFixture::class));
+    }
+
+    public function testGetServiceThrowsWhenTheParentWouldPublish(): void
+    {
+        // A hydrated parent carries services and callbacks with no published map
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [ServiceFixture::class => static function (ContainerContract $container): void {
+                $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+            }],
+            services: [ServiceFixture::class => [ServiceFixture::class, 'make']],
+        ));
+        // A child without the callbacks cannot publish locally, so it would delegate
+        $child = new ChildContainer($this->parent, new ContainerData());
+
+        $this->expectException(ContainerUnpublishedParentServiceException::class);
+
+        $child->getService(ServiceFixture::class);
     }
 
     public function testGetServiceFromChild(): void
