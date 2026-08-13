@@ -1106,40 +1106,7 @@ $config = new HttpConfig(
 );
 ```
 
-Warning: `CacheResponseMiddleware` has a container publisher, and
-`RedirectTrailingSlashMiddleware` does not. The stage handler resolves each
-class-string with `ContainerContract::get()`, which throws for an id that no
-binding resolves. Bind `RedirectTrailingSlashMiddleware` in a service provider
-before you list it:
-
-```php
-use Override;
-use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
-use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
-
-class MiddlewareServiceProvider implements ServiceProviderContract
-{
-    #[Override]
-    public function publishers(): array
-    {
-        return [
-            RedirectTrailingSlashMiddleware::class => [self::class, 'publishRedirectTrailingSlashMiddleware'],
-        ];
-    }
-
-    public static function publishRedirectTrailingSlashMiddleware(ContainerContract $container): void
-    {
-        $container->setSingleton(
-            RedirectTrailingSlashMiddleware::class,
-            new RedirectTrailingSlashMiddleware()
-        );
-    }
-}
-```
-
-Return the provider from `getContainerProviders()`, as
-[pre-built routes](#pre-built-routes-from-getroutes) shows.
+The framework publishes both classes, so the config entry is all you add.
 
 ### RouteMatched
 
@@ -1369,10 +1336,8 @@ stage handlers resolve each class-string with `ContainerContract::get()`, and
 `get()` throws `ContainerInvalidReferenceException` for an id that no binding
 resolves. Every listed middleware therefore needs a container service
 registration, with or without constructor dependencies. The framework
-publishes its own built-ins, except `RedirectTrailingSlashMiddleware` (see
-[RequestReceived](#requestreceived)). Bind your middleware in a service
-provider, as [pre-built routes](#pre-built-routes-from-getroutes) shows for a
-controller:
+publishes its own built-ins. Bind your middleware in a service provider, as
+[pre-built routes](#pre-built-routes-from-getroutes) shows for a controller:
 
 ```php
 use Valkyrja\Application\Data\HttpConfig;
