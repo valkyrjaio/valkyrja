@@ -3,9 +3,10 @@
 ## Introduction
 
 The Validation component provides a rule-based validation system. Rules are
-composable objects — each rule wraps a subject value, defines what constitutes
-valid input, and produces an error message when the subject fails. A `Validator`
-groups rules by subject key, runs them all, and collects the failures.
+composable objects. Each rule wraps a subject value, defines what constitutes
+valid input, and produces an error message when the subject fails. A
+`Validator` groups rules by subject key, runs them all, and collects the
+failures.
 
 There is no magic: rules are instantiated explicitly, subjects are passed
 directly, and errors are plain strings. The system is deliberately simple and
@@ -100,10 +101,10 @@ public function getFirstErrorMessage(): string;
 ```
 
 Rules are passed to `setRules()` as an array of `string => RuleContract[]`
-pairs, where the string key is a descriptor for the subject — used as the key in
-the error messages array. `validateRules()` iterates every rule, catches
-`ValidationException`, and collects the failures. It returns `true` if all rules
-passed and `false` if any failed.
+pairs, where the string key is a descriptor for the subject. The error
+messages array uses that key. `validateRules()` iterates every rule, catches
+`ValidationException`, and collects the failures. It returns `true` if all
+rules passed and `false` if any failed.
 
 ## A Complete Example
 
