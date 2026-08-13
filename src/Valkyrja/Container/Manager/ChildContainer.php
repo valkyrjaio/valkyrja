@@ -15,6 +15,8 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 
 class ChildContainer extends Container
 {
@@ -137,10 +139,68 @@ class ChildContainer extends Container
     #[Override]
     protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
     {
-        if (! parent::isAlias($id) && $this->parent->isAlias($id)) {
-            return $this->parent->getAliased($id, $arguments);
+        if (parent::isAlias($id)) {
+            return parent::getAliasedWithoutChecks($id, $arguments);
         }
 
-        return parent::getAliasedWithoutChecks($id, $arguments);
+        if (! $this->parent->isAlias($id)) {
+            return null;
+        }
+
+        $this->assertParentResolvesWithoutWriting($id);
+
+        return $this->parent->getAliased($id, $arguments);
+    }
+
+    /**
+     * Assert that the parent answers an alias without caching anything new.
+     *
+     * @param class-string $id The alias
+     */
+    protected function assertParentResolvesWithoutWriting(string $id): void
+    {
+        $seen    = [];
+        $current = $id;
+
+        while (($aliasedId = $this->parent->getAliasedId($current)) !== null) {
+            if (isset($seen[$aliasedId])) {
+                throw new ContainerInvalidReferenceException($id);
+            }
+
+            $seen[$aliasedId] = true;
+            $current          = $aliasedId;
+
+            if ($this->doesParentCache($current)) {
+                throw new ContainerUnresolvedParentAliasException($id, $current);
+            }
+
+            // The parent answers a singleton or a service before it follows an
+            // alias, so it never reaches the rest of the chain.
+            if ($this->parent->isSingletonInstance($current) || $this->parent->isService($current)) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * Check whether the parent would cache a given id for the first time.
+     *
+     * @param class-string $id The service id
+     */
+    protected function doesParentCache(string $id): bool
+    {
+        if ($this->parent->isSingletonInstance($id)) {
+            return false;
+        }
+
+        if ($this->parent->isSingletonBinding($id)) {
+            return true;
+        }
+
+        // A publish callback the parent holds and has not run. An id the parent
+        // does not hold at all is not this exception's business.
+        return $this->parent->has($id)
+            && ! $this->parent->isService($id)
+            && ! $this->parent->isAlias($id);
     }
 }

@@ -795,7 +795,41 @@ The component provides two implementations.
 parent through `ContainerContract` methods, so any contract implementation can
 be the parent. This is the portable, cross-language implementation. It
 delegates a parent-bound factory to the parent, so the factory receives the
-parent ([Where a Factory Runs](#where-a-factory-runs)).
+parent ([Where a Factory Runs](#where-a-factory-runs)), and it follows the
+alias rule below.
+
+#### Where an Alias Resolves
+
+An alias resolves in the container that declares it, so **where you declare an
+alias selects the resolution scope.** A child lookup of an alias that only the
+parent declares resolves in the parent. This is the one way to reach the
+parent's copy of a service that the child also binds:
+
+```php
+// Once, at bootstrap. The child never declares this alias.
+$parent->bind(SlackNotifier::class, [SlackNotifier::class, 'make']);
+$parent->bindAlias(NotifierContract::class, SlackNotifier::class);
+
+// Per request, the child binds its own.
+$child->bind(SlackNotifier::class, [SlackNotifier::class, 'make']);
+
+$child->get(SlackNotifier::class);     // built by the child's binding
+$child->get(NotifierContract::class);  // built by the parent's binding
+```
+
+The example binds a service, because the singleton strategy above takes
+precedence over an alias: when the parent holds a resolved instance and the
+child holds none, a direct child lookup reuses the parent's instance.
+
+Warning: the parent must already answer the target without caching it. When the
+parent would build and cache the target for the first time, `ChildContainer`
+throws `ContainerUnresolvedParentAliasException` instead of writing to the
+frozen parent. Force-resolve that target in `bootstrapParentServices()`.
+
+`NativeChildContainer` does not follow this rule. It resolves a
+parent-declared alias in the child, so the alias does not select the parent's
+scope and it never throws. A singleton the parent already resolved still comes
+back, because the child reads the parent's instances directly.
 
 **`Valkyrja\Container\Manager\NativeChildContainer`** — PHP-specific. It reads
 the parent's protected maps directly, the publish callbacks included. Its
@@ -837,7 +871,7 @@ the full lifecycle.
 
 ## Exceptions
 
-The container throws two exceptions, both under
+The container throws three exceptions, all under
 `Valkyrja\Container\Throwable\Exception`.
 
 **`ContainerInvalidReferenceException`** — A resolution method received an id
@@ -849,8 +883,14 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-Both implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`, so
-one catch covers everything the container throws:
+**`ContainerUnresolvedParentAliasException`** — A `ChildContainer` lookup of an
+alias that only the parent declares would make the parent build and cache the
+target for the first time
+([Where an Alias Resolves](#where-an-alias-resolves)). It extends the SPL
+`RuntimeException`.
+
+All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
+so one catch covers everything the container throws:
 
 ```php
 use Valkyrja\Container\Throwable\Contract\ContainerThrowable;
