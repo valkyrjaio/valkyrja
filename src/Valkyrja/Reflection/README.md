@@ -34,9 +34,9 @@ public function getDependencies(ReflectionFunctionAbstract $reflection): array;
 public function getDependenciesFromParameters(ReflectionParameter ...$parameters): array;
 ```
 
-Both return `array<string, class-string>` — only parameters that are typed with
-a class are included. Built-in types (`int`, `string`, etc.), enums, and untyped
-parameters are excluded automatically.
+Both methods return `array<string, class-string>`. The returned map includes
+only parameters that are typed with a class. Built-in types (`int`, `string`,
+etc.), enums, and untyped parameters are excluded automatically.
 
 These methods are used internally by the container's attribute collector and
 anywhere the framework needs to resolve constructor arguments without explicit
