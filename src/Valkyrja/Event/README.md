@@ -19,9 +19,9 @@ data for one occurrence in the application.
 A **listener** connects one event class to one **handler**. A handler is a
 callable that the dispatcher invokes when the event is dispatched.
 
-The **dispatcher** —
-`Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract` — finds the
-listeners for an event and invokes each handler in order.
+The **dispatcher** finds the listeners for an event and invokes each handler
+in order. The dispatcher contract is
+`Valkyrja\Event\Dispatcher\Contract\EventDispatcherContract`.
 
 The **listener collection** holds every registered listener. The collection
 matches listeners by the event's exact class name, so a listener registered
@@ -87,8 +87,8 @@ $dispatcher->dispatchIfHasListeners(new UserRegistered($user));
 ```
 
 **`dispatchById()`** — dispatch by class name. The container resolves the
-class name into the event, and the dispatcher then invokes the listeners —
-see [Resolving Events From the Container](#resolving-events-from-the-container).
+class name into the event, and the dispatcher then invokes the listeners. See
+[Resolving Events From the Container](#resolving-events-from-the-container).
 The dispatcher throws an `EventInvalidEventException` when the container
 returns a different type.
 
@@ -172,8 +172,8 @@ The `$arguments` array holds the dispatched event under the `event` key.
 ### Resolving Dependencies
 
 The dispatcher passes the container into every handler, so a handler resolves
-its dependencies at invocation time — nothing is constructed before the event
-is dispatched:
+its dependencies at invocation time. No dependency is constructed before the
+event is dispatched:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -192,15 +192,15 @@ class WelcomeMailListener
 ```
 
 Warning: the container has no autowiring. Bind each service that a handler
-resolves — `get()` throws a `ContainerInvalidReferenceException` for an
-unbound class. Register the binding in a service provider, the same way the
+resolves. `get()` throws a `ContainerInvalidReferenceException` for an unbound
+class. Register the binding in a service provider, the same way the
 [complete example](#a-complete-example) does.
 
 ### Return Values
 
 A handler can return a value. When the event implements
 `DispatchCollectableEventContract`, the dispatcher passes the return value to
-the event's `addDispatch()` method — see
+the event's `addDispatch()` method. See
 [Collecting Listener Return Values](#collecting-listener-return-values). The
 dispatcher otherwise discards the value.
 
@@ -275,14 +275,14 @@ $event->getUser(); // $user
 ```
 
 The dispatcher also gives the arguments to the container, so an event that
-does not implement the contract can still read them through its binding — see
+does not implement the contract can still read them through its binding. See
 [Resolving Events From the Container](#resolving-events-from-the-container).
 
 ## Collecting Listener Return Values
 
-By default, the dispatcher discards each handler's return value. To collect
-the return values — for example, in a pipeline where each listener contributes
-one part of a result — implement
+By default, the dispatcher discards each handler's return value. A pipeline
+where each listener contributes one part of a result needs those values. To
+collect the return values, implement
 `Valkyrja\Event\Contract\DispatchCollectableEventContract`:
 
 ```php
@@ -401,8 +401,8 @@ flagged order.
 
 ## Registering Listeners
 
-Listeners register through a listener provider — a class that implements
-`Valkyrja\Event\Provider\Contract\ListenerProviderContract`:
+Listeners register through a listener provider. A listener provider is a class
+that implements `Valkyrja\Event\Provider\Contract\ListenerProviderContract`:
 
 ```php
 public function getListenerClasses(): array;
@@ -429,10 +429,10 @@ one event.
 optional handler. A companion `#[ListenerHandler]` attribute on the same class
 or method can supply the handler instead.
 
-Warning: a `#[Listener]` with no handler — none on the attribute and no
-companion `#[ListenerHandler]` — registers a listener whose handler does
-nothing and returns `null`. The dispatch reports no error. Always supply a
-handler.
+Warning: a `#[Listener]` with no handler registers a listener whose handler
+does nothing and returns `null`. A `#[Listener]` has no handler when neither
+the attribute nor a companion `#[ListenerHandler]` supplies one. The dispatch
+reports no error. Always supply a handler.
 
 PHP permits a closure in an attribute argument only from PHP 8.5. This
 package supports PHP 8.4, so an attribute handler is an array callable, and
@@ -489,8 +489,7 @@ class NotificationService
 
 Warning: the `get(self::class)` call resolves `NotificationService` from the
 container, so `NotificationService` needs a binding of its own. The container
-has no autowiring — see
-[Resolving Dependencies](#resolving-dependencies).
+has no autowiring. See [Resolving Dependencies](#resolving-dependencies).
 
 **The handler as the third argument** — pass the handler on the `#[Listener]`
 attribute in place of a `#[ListenerHandler]`:
@@ -543,10 +542,11 @@ class AppListenerProvider implements ListenerProviderContract
 ### Manual Registration
 
 Return constructed listeners from `getListeners()`. Each one is a
-`Valkyrja\Event\Data\Listener` — or any `ListenerContract` implementation —
-built from an event class name, a unique listener name, and a handler. The
-handler may be any callable here, including a closure, though a closure makes
-the listener set uncacheable — see [Caching Trade-off](#caching-trade-off):
+`Valkyrja\Event\Data\Listener`, built from an event class name, a unique
+listener name, and a handler. Any `ListenerContract` implementation serves in
+place of `Listener`. The handler may be any callable here, including a
+closure. A closure makes the listener set uncacheable, as
+[Caching Trade-off](#caching-trade-off) describes:
 
 ```php
 use Valkyrja\Container\Manager\Contract\ContainerContract;
@@ -807,10 +807,10 @@ collects the handler's return value on the event.
 
 ## The Listener Collection
 
-The listener collection —
-`Valkyrja\Event\Collection\Contract\ListenerCollectionContract` — holds every
-registered listener. The providers fill it at boot, and its full API is open
-at runtime. Resolve it from the container:
+The listener collection holds every registered listener. The collection
+contract is `Valkyrja\Event\Collection\Contract\ListenerCollectionContract`.
+The providers fill the collection at boot, and its full API is open at
+runtime. Resolve the collection from the container:
 
 ```php
 use Valkyrja\Event\Collection\Contract\ListenerCollectionContract;
@@ -847,9 +847,10 @@ $collection->removeListenerById('audit.user_registered');
 $collection->removeListenersForEventById(UserRegistered::class);
 ```
 
-`setListenersForEventById()` re-keys each given listener to the event id —
-through `withEventId()` — and adds it. Warning: the method does not remove the
-listeners already registered for that event. To replace them, remove first:
+`setListenersForEventById()` re-keys each given listener to the event id, and
+adds the listener. The re-key goes through `withEventId()`. Warning: the
+method does not remove the listeners already registered for that event. To
+replace them, remove first:
 
 ```php
 $collection->removeListenersForEventById(UserRegistered::class);
@@ -870,7 +871,7 @@ $collection->getEventsWithListeners();                        // array<class-str
 ### Snapshots
 
 `getData()` snapshots the collection as an `EventData` object, and
-`setFromData()` restores one. The data cache uses this pair — see
+`setFromData()` restores one. The data cache uses this pair. See
 [Service Registration](#service-registration).
 
 ## The Listener Data Object
@@ -902,11 +903,12 @@ is itself a `ListenerContract`.
 
 ## Scanning Classes for Listeners
 
-The attribute collector —
-`Valkyrja\Event\Collector\Contract\ListenerCollectorContract`, implemented by
-`AttributeListenerCollector` — turns attributed classes into listeners. The
-framework calls it when it builds the collection. Call it yourself to scan
-classes programmatically:
+The attribute collector turns attributed classes into listeners. The
+collector contract is
+`Valkyrja\Event\Collector\Contract\ListenerCollectorContract`, and
+`AttributeListenerCollector` implements the contract. The framework calls the
+collector when the framework builds the collection. Call the collector
+yourself to scan classes programmatically:
 
 ```php
 use Valkyrja\Event\Collector\Contract\ListenerCollectorContract;
@@ -921,7 +923,8 @@ foreach ($collector->getListeners(NotificationService::class, AuditLog::class) a
 ## Standalone Usage
 
 The dispatcher works without the full framework. Both constructor parameters
-carry defaults — an empty `ListenerCollection` and a bare `Container`:
+carry defaults. The defaults are an empty `ListenerCollection` and a bare
+`Container`:
 
 ```php
 use Valkyrja\Event\Collection\ListenerCollection;
@@ -942,16 +945,16 @@ $dispatcher = new EventDispatcher($collection);
 ```
 
 Pass the application's container when a handler resolves services or when you
-dispatch by class name — the default bare `Container` holds no bindings, so
-both throw against it.
+dispatch by class name. The default bare `Container` holds no bindings, so
+both operations throw against the default container.
 
 ## Exceptions
 
 Every exception the component throws implements
 `Valkyrja\Event\Throwable\Contract\EventThrowable`, which extends the
-framework-wide `ValkyrjaThrowable`. Two abstract bases group the kinds —
-`EventInvalidArgumentException` and `EventRuntimeException` — and one concrete
-exception exists:
+framework-wide `ValkyrjaThrowable`. Two abstract bases group the kinds. The
+bases are `EventInvalidArgumentException` and `EventRuntimeException`. One
+concrete exception exists:
 
 - `Valkyrja\Event\Throwable\Exception\EventInvalidEventException` — a dispatch
   by class name resolved to a different type.
@@ -986,9 +989,9 @@ The Event service provider registers the following singletons:
 | `EventData`                  | The generated listener data                            |
 
 The component's own `EventComponentProvider` wires the `EventServiceProvider`
-into the container providers. Every framework bundle provider — including
-`ApplicationComponentProvider` — declares the Event component, so an
-application built from a bundle needs no extra wiring for these services.
+into the container providers. Every framework bundle provider declares the
+Event component, so an application built from a bundle needs no extra wiring
+for these services. `ApplicationComponentProvider` is one bundle provider.
 
 In debug mode, the framework builds the listener collection fresh on every
 boot: it collects each listener provider from the application, scans the
