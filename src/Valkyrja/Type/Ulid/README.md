@@ -68,7 +68,7 @@ Crockford Base32 excludes the ambiguous characters `I`, `L`, `O`, and `U`:
 ```
 
 The `VALID_CHARACTERS` constant on `UlidFactory` holds the set in both cases.
-The `REGEX` constant is `[0-7][valid_chars]{25}` — the leading `[0-7]` keeps
+The `REGEX` constant is `[0-7][valid_chars]{25}`. The leading `[0-7]` keeps
 the timestamp within 48 bits. `validate()` throws; `isValid()` returns a
 `bool`:
 
