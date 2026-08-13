@@ -2,11 +2,14 @@ name: PR
 
 on:
   pull_request:
+    # A `branches` filter is deliberately absent. The filter matches the base branch, and a stacked
+    # pull request bases on its parent's branch, so a filter of `master` and `*.x` gives that pull
+    # request no checks until the parent merges. Every pull request runs, whatever it targets.
+
     # `edited` fires for a title or description edit, and for a base-branch change — which is how
     # GitHub reports the auto-retarget a stacked pull request gets when its parent merges. Both are
     # pull request metadata, and this workflow checks pull request metadata, so both belong here.
     types: [ opened, synchronize, reopened, edited ]
-    branches: [ 'master', '*.x' ]
 
 permissions:
   pull-requests: write
