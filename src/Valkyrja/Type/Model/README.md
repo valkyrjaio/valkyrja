@@ -2,12 +2,12 @@
 
 ## Introduction
 
-A model is a typed object representation of structured data — a database row,
-an API payload, a request body. The base class handles property access, mass
-assignment, array serialization, change tracking, and optional type casting.
-Models implement `TypeContract`, so a model can go anywhere a typed value is
-expected. `ModelContract` also extends `ArrayAccess` and `Stringable`, so
-array syntax and string casts work on every model.
+A model is a typed object representation of structured data. A database row,
+an API payload, and a request body are examples. The base class handles
+property access, mass assignment, array serialization, change tracking, and
+optional type casting. Models implement `TypeContract`, so a model can go
+anywhere a typed value is expected. `ModelContract` also extends `ArrayAccess`
+and `Stringable`, so array syntax and string casts work on every model.
 
 ## Defining a Model
 
@@ -227,8 +227,8 @@ originals when it is the first mass assignment. `withProperties()` never
 records the properties it is given, because the clone happens before the set.
 See [When Original Values Are Recorded](#when-original-values-are-recorded).
 
-`modify()` — from `TypeContract` — clones the model and passes the clone to
-a closure:
+`modify()` comes from `TypeContract`. The method clones the model and passes
+the clone to a closure:
 
 ```php
 $updated = $user->modify(static function (UserModel $user): UserModel {
@@ -300,16 +300,16 @@ recording after the first mass assignment completes. The rules:
 - `fromArray()` and `updateProperties()` each count as a mass assignment.
   The properties that the first call sets are recorded; later calls record
   nothing.
-- Any `__set` before the first mass assignment records too — for example, a
-  write to a protected property from outside the class.
+- Any `__set` before the first mass assignment records too. A write to a
+  protected property from outside the class is one example.
 - A recorded `null` does not hold. The guard checks the record with
   `isset()`, which is `false` for `null`, so the next `__set` before the
-  first mass assignment replaces a recorded `null` original with its value —
-  and `asChangedArray()` then misses the change.
+  first mass assignment replaces a recorded `null` original with its value.
+  `asChangedArray()` then misses the change.
 - `__clone` also stops the recording. `withProperties()` clones before it
-  sets, so it never records the properties it is given — not even on a model
-  with no prior mass assignment. The clone keeps the originals recorded so
-  far.
+  sets, so it never records the properties it is given. This holds even on a
+  model with no prior mass assignment. The clone keeps the originals recorded
+  so far.
 - A direct assignment to a public property bypasses `__set` and is never
   recorded.
 
@@ -328,8 +328,8 @@ The base `Model` has no `expose()` or `unexpose()` method. Those methods come
 from the `Exposable` trait, which supplies the methods that
 `ExposableModelContract` declares. The class that uses the trait must still
 declare `implements ExposableModelContract`. Use the trait when serialization
-must include a name that the property collection misses — for example, a
-private property with a registered get callable:
+must include a name that the property collection misses. A private property
+with a registered get callable is one example:
 
 ```php
 use Valkyrja\Type\Model\Abstract\Model;
@@ -385,8 +385,8 @@ value differs from its recorded original. Here `nickname` still equals the
 `asArray()`.
 
 `expose()` and `unexpose()` control the exposure manually. An exposed name
-stays in every serialization — `asArray()` and `json_encode()` both — until
-it is unexposed:
+stays in every serialization until the name is unexposed. `asArray()` and
+`json_encode()` both include the exposed name:
 
 ```php
 $user->expose('nickname');
@@ -404,9 +404,9 @@ exposing adds nothing for them.
 
 The `ProtectedExposable` trait uses `Exposable` and changes the property
 source: `asArray()` returns only the public properties plus the currently
-exposed names. Protected and private properties stay out of every output —
-`json_encode()` included — until exposed. Use it for a model whose default
-serialization crosses a trust boundary:
+exposed names. Protected and private properties stay out of every output
+until exposed. The output of `json_encode()` is included. Use the trait for a
+model whose default serialization crosses a trust boundary:
 
 ```php
 use Valkyrja\Type\Model\Abstract\Model;
@@ -485,9 +485,10 @@ For each property with a cast, mass assignment:
 4. Stores `asValue()` of the result by default (`convert: true`), or the
    type instance itself (`convert: false`).
 
-Casting applies only during mass assignment — `fromArray()`, `fromValue()`,
-`updateProperties()`, and `withProperties()`. A direct property write is
-never cast. To adjust every cast result before it is stored, override the
+Casting applies only during mass assignment. The mass assignment methods are
+`fromArray()`, `fromValue()`, `updateProperties()`, and `withProperties()`. A
+direct property write is never cast. To adjust every cast result before it is
+stored, override the
 `internalModifyCastPropertyValue(TypeContract $type): TypeContract` hook.
 
 ### The Cast Class
@@ -536,9 +537,9 @@ result of that type class:
 
 ### Casting to Models, Enums, and Custom Types
 
-Any class that implements `TypeContract` is a valid cast target — another
-model, an enum that uses the `Enumerable` trait, an identifier type, or a
-custom type class:
+Any class that implements `TypeContract` is a valid cast target. Another
+model, an enum that uses the `Enumerable` trait, an identifier type, and a
+custom type class are examples:
 
 ```php
 use Valkyrja\Type\Data\ArrayCast;
@@ -569,10 +570,11 @@ component for usage.
 ## Indexed Models
 
 An indexed model maps property names to integer offsets, so the model can
-serialize to a compact positional array — a cache entry or a wire format
-where repeated string keys would waste space. Extend `IndexedModel`, or apply
-the `Indexable` trait and implement `IndexedModelContract`. Override only
-`getIndexes()` — `getReversedIndexes()` flips and caches it automatically:
+serialize to a compact positional array. A cache entry and a wire format are
+two examples. Repeated string keys would waste space in each one. Extend
+`IndexedModel`, or apply the `Indexable` trait and implement
+`IndexedModelContract`. Override only `getIndexes()`. `getReversedIndexes()`
+flips and caches the indexes automatically:
 
 ```php
 use Valkyrja\Type\Model\Abstract\IndexedModel;
