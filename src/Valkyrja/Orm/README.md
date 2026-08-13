@@ -753,7 +753,7 @@ $select = $orm->createQueryBuilder()
 //     (SELECT id FROM authors WHERE active = :active)
 ```
 
-`bindValue()` skips a subquery `Value`, so bind the subquery's own values on the statement yourself — here, `new Value('active', true)`.
+`bindValue()` skips a subquery `Value`, so bind the subquery's own values on the statement yourself. In the example above, bind `new Value('active', true)`.
 
 ### The Comparison Enum
 
@@ -880,7 +880,7 @@ public function getErrorCode(): string;
 public function getErrorMessage(): string;
 ```
 
-`bindValue()` binds the parameter with the PDO type that matches the PHP type — int, bool, null, or string. An array `Value` binds one parameter per element (`:name0`, `:name1`, ...). The full flow:
+`bindValue()` binds the parameter with the PDO type that matches the PHP type. That PDO type is int, bool, null, or string. An array `Value` binds one parameter per element (`:name0`, `:name1`, ...). The full flow:
 
 ```php
 $statement = $orm->prepare('SELECT * FROM posts WHERE status = :status');
@@ -945,7 +945,7 @@ The middleware does not run on its own: no service provider publishes it, and th
 
 1. Bind it in a service provider.
 2. Register that provider through a component provider in the config `providers` array.
-3. Name the class in `routeMatchedMiddleware` — globally in `HttpConfig`, or per route through the `routeMatchedMiddleware` parameter of `#[Route]`.
+3. Name the class in `routeMatchedMiddleware`. Use `HttpConfig` to apply the middleware to every route, or the `routeMatchedMiddleware` parameter of `#[Route]` to apply the middleware to one route.
 
 ```php
 use Override;
@@ -1056,7 +1056,7 @@ try {
 }
 ```
 
-The ORM throwables cover the component's own checks. A driver-level failure — a duplicate key, a bad column — arrives as a `PDOException` instead, because every adapter's default options set `PDO::ERRMODE_EXCEPTION` ([Configuration](#configuration)), and `PDOException` does not implement `OrmThrowable`. Catch `PDOException` separately when you handle driver failures.
+The ORM throwables cover the component's own checks. A driver-level failure arrives as a `PDOException` instead, because every adapter's default options set `PDO::ERRMODE_EXCEPTION` ([Configuration](#configuration)), and `PDOException` does not implement `OrmThrowable`. A duplicate key and a bad column are two driver-level failures. Catch `PDOException` separately when you handle driver failures.
 
 The exceptions you meet in normal use:
 
@@ -1162,7 +1162,7 @@ An unreadable file throws an `OrmInvalidMigrationFileException`, and a failed st
 
 ### Schema Contracts
 
-The `Schema/Contract/` directory also declares a schema builder API — `SchemaContract`, `TableContract`, `ColumnContract`, `IndexContract`, and `ConstraintContract`. This component ships no implementation of those contracts.
+The `Schema/Contract/` directory also declares a schema builder API. That API has five contracts: `SchemaContract`, `TableContract`, `ColumnContract`, `IndexContract`, and `ConstraintContract`. This component ships no implementation of those contracts.
 
 ## Configuration
 
