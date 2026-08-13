@@ -772,7 +772,7 @@ $select = $orm->createQueryBuilder()
 Warning: a group in the wrong position renders SQL that the database rejects.
 A joining group cannot open the list, because a leading `AndWhereGroup` renders
 `WHERE AND (…)`. A `WhereGroup` or a `NotWhereGroup` cannot follow another
-clause, because the group then renders with no operator before it.
+clause, because neither one renders a joining operator before the parentheses.
 
 The six classes cover every `WhereType` case, so the class name is the only
 place a group states its clause type. To pick the type at run time, select the
