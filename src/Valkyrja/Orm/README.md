@@ -779,6 +779,12 @@ place a group states its clause type. To pick the type at run time, select the
 class:
 
 ```php
+use Valkyrja\Orm\Data\WhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndNotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\AndWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\NotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\OrNotWhereGroup;
+use Valkyrja\Orm\Data\WhereGroup\OrWhereGroup;
 use Valkyrja\Orm\Enum\WhereType;
 
 $group = match ($whereType) {
