@@ -14,7 +14,10 @@ namespace Valkyrja\Tests\Functional\Cli\Server\Command;
 
 use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Application\Data\Contract\CliConfigContract;
+use Valkyrja\Application\Data\Contract\ConfigContract;
 use Valkyrja\Attribute\Collector\Collector;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
@@ -26,14 +29,13 @@ use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Collection\RouteCollection;
 use Valkyrja\Cli\Routing\Collector\AttributeRouteCollector;
-use Valkyrja\Cli\Routing\Constant\OptionName;
-use Valkyrja\Cli\Routing\Constant\OptionShortName;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Command\ListBashCommand;
 use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Cli\Server\Command\VersionCommand;
-use Valkyrja\Cli\Server\Constant\CommandName;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForHelpOptionsMiddleware;
 use Valkyrja\Cli\Server\Middleware\InputReceived\CheckForVersionOptionsMiddleware;
+use Valkyrja\Cli\Server\Middleware\InputReceived\CheckGlobalInteractionOptionsMiddleware;
 use Valkyrja\Cli\Server\Provider\CliServerServiceProvider;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
@@ -58,6 +60,7 @@ final class CommandParameterPresenceTest extends TestCase
     {
         $output = $this->dispatch(['cli', 'version']);
 
+        self::assertCount(1, $output->getMessages());
         self::assertInstanceOf(Header::class, $output->getMessages()[0]);
     }
 
@@ -94,6 +97,7 @@ final class CommandParameterPresenceTest extends TestCase
     {
         $output = $this->dispatch(['cli', '--version'], withInputMiddleware: true);
 
+        self::assertCount(1, $output->getMessages());
         self::assertInstanceOf(Header::class, $output->getMessages()[0]);
     }
 
@@ -104,6 +108,7 @@ final class CommandParameterPresenceTest extends TestCase
     {
         $output = $this->dispatch(['cli', '-v'], withInputMiddleware: true);
 
+        self::assertCount(1, $output->getMessages());
         self::assertInstanceOf(Header::class, $output->getMessages()[0]);
     }
 
@@ -176,20 +181,23 @@ final class CommandParameterPresenceTest extends TestCase
         );
 
         $outputFactory = new OutputFactory();
+        $config        = new CliConfig(namespace: self::APP_NAMESPACE, version: self::APP_VERSION);
 
         $container = new Container();
-        $container->setSingleton(
-            CliConfigContract::class,
-            new CliConfig(namespace: self::APP_NAMESPACE, version: self::APP_VERSION)
-        );
+        $container->setSingleton(CliConfigContract::class, $config);
+        $container->setSingleton(ConfigContract::class, $config);
+        $container->setSingleton(CliInteractionConfigContract::class, new CliInteractionConfig());
         $container->setSingleton(OutputFactoryContract::class, $outputFactory);
         $container->setSingleton(RouteCollectionContract::class, $collection);
         $container->setFromData(
             new ContainerData(
                 callbacks: [
-                    ListBashCommand::class => [CliServerServiceProvider::class, 'publishListBashCommand'],
-                    ListCommand::class     => [CliServerServiceProvider::class, 'publishListCommand'],
-                    VersionCommand::class  => [CliServerServiceProvider::class, 'publishVersionCommand'],
+                    ListBashCommand::class                         => [CliServerServiceProvider::class, 'publishListBashCommand'],
+                    ListCommand::class                             => [CliServerServiceProvider::class, 'publishListCommand'],
+                    VersionCommand::class                          => [CliServerServiceProvider::class, 'publishVersionCommand'],
+                    CheckForHelpOptionsMiddleware::class           => [CliServerServiceProvider::class, 'publishCheckForHelpOptionsMiddleware'],
+                    CheckForVersionOptionsMiddleware::class        => [CliServerServiceProvider::class, 'publishCheckForVersionOptionsMiddleware'],
+                    CheckGlobalInteractionOptionsMiddleware::class => [CliServerServiceProvider::class, 'publishCheckGlobalInteractionOptionsMiddleware'],
                 ]
             )
         );
@@ -203,16 +211,9 @@ final class CommandParameterPresenceTest extends TestCase
         $input = InputFactory::fromGlobals($argv, 'cli', 'list');
 
         if ($withInputMiddleware) {
-            $container->setSingleton(
-                CheckForVersionOptionsMiddleware::class,
-                new CheckForVersionOptionsMiddleware(
-                    commandName: CommandName::VERSION,
-                    optionName: OptionName::VERSION,
-                    optionShortName: OptionShortName::VERSION
-                )
-            );
+            self::assertContains(CheckForVersionOptionsMiddleware::class, $config->inputReceivedMiddleware);
 
-            $inputAfterMiddleware = new InputReceivedHandler($container, CheckForVersionOptionsMiddleware::class)
+            $inputAfterMiddleware = new InputReceivedHandler($container, ...$config->inputReceivedMiddleware)
                 ->inputReceived($input);
 
             self::assertInstanceOf(InputContract::class, $inputAfterMiddleware);
