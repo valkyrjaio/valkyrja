@@ -86,6 +86,18 @@ class ChildContainer extends Container
      * @param class-string $id The provided service id
      */
     #[Override]
+    public function isDeferred(string $id): bool
+    {
+        return parent::isDeferred($id)
+            || $this->parent->isDeferred($id);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The provided service id
+     */
+    #[Override]
     public function isPublished(string $id): bool
     {
         return parent::isPublished($id)
@@ -189,18 +201,16 @@ class ChildContainer extends Container
      */
     protected function isUnresolvedInParent(string $id): bool
     {
+        // The parent publishes before it reads any map, so this test comes first.
+        // It is the same test publishUnpublishedProvided() makes.
+        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+            return true;
+        }
+
         if ($this->parent->isSingletonInstance($id)) {
             return false;
         }
 
-        if ($this->parent->isSingletonBinding($id)) {
-            return true;
-        }
-
-        // A publish callback the parent holds and has not run. An id the parent
-        // does not hold at all is not this exception's business.
-        return $this->parent->has($id)
-            && ! $this->parent->isService($id)
-            && ! $this->parent->isAlias($id);
+        return $this->parent->isSingletonBinding($id);
     }
 }

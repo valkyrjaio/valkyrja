@@ -352,6 +352,46 @@ final class ChildContainerTest extends TestCase
         $child->getAliased('outer');
     }
 
+    public function testGetAliasedThrowsForATargetHeldAsBothCallbackAndAlias(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('outer', ProvidedFixture::class);
+        $this->parent->bindAlias(ProvidedFixture::class, SingletonFixture::class);
+        $child = $this->createChild();
+
+        $this->expectException(ContainerUnresolvedParentAliasException::class);
+
+        $child->getAliased('outer');
+    }
+
+    public function testGetAliasedThrowsForAHydratedParentThatLostItsPublishedMap(): void
+    {
+        $boot = new Container();
+        $boot->register(new PublishingProviderFixture());
+        $boot->get(ProvidedFixture::class);
+
+        // ContainerData carries no published map, so the callback looks unrun
+        $this->parent->setFromData($boot->getData());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        $child = $this->createChild();
+
+        self::assertTrue($this->parent->isDeferred(ProvidedFixture::class));
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
+
+        $this->expectException(ContainerUnresolvedParentAliasException::class);
+
+        $child->getAliased('providedAlias');
+    }
+
+    public function testIsDeferredFromParent(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $child = $this->createChild();
+
+        self::assertTrue($child->isDeferred(ProvidedFixture::class));
+        self::assertFalse($child->isDeferred(SingletonFixture::class));
+    }
+
     public function testGetAliasedThrowsForAnUnresolvedParentSingleton(): void
     {
         $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);

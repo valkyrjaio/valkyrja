@@ -302,6 +302,9 @@ Before a resolution, you can inspect what is registered:
   `bindSingleton()` id also stores its factory in the service map, so the
   method returns `true` for a singleton binding too.
 - `isAlias(string $id): bool` — the id is an alias.
+- `isDeferred(string $id): bool` — a publish callback is registered for the id.
+  The method reports the registration, not whether the callback ran; pair it
+  with `isPublished()` to find a service that is registered and still unrun.
 - `isPublished(string $id): bool` — the id's publish callback ran, or a
   boot-time `bind()`, `bindSingleton()`, or `setSingleton()` marked the id.
   `bindAlias()` does not mark the id.
@@ -847,6 +850,10 @@ frozen parent. Force-resolve that target in `bootstrapParentServices()`.
 parent-declared alias in the child, so the alias does not select the parent's
 scope and it never throws. A singleton the parent already resolved still comes
 back, because the child reads the parent's instances directly.
+
+The guard asks the parent the same questions the parent's own `get()` asks, in
+the same order: is a publish callback registered and unrun, is an instance
+cached, is a singleton bound. `isDeferred()` reports the first of those.
 
 ### Using a Child Container
 
