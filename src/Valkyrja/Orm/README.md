@@ -774,6 +774,9 @@ A joining group cannot open the list, because a leading `AndWhereGroup` renders
 `WHERE AND (…)`. A `WhereGroup` or a `NotWhereGroup` cannot follow another
 clause, because neither one renders a joining operator before the parentheses.
 
+Warning: a group that holds no clause renders empty parentheses, and the
+database rejects that SQL. Give every group one `Where` or more.
+
 The six classes cover every `WhereType` case, so the class name is the only
 place a group states its clause type. To pick the type at run time, select the
 class:
