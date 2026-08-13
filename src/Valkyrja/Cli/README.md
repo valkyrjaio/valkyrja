@@ -66,8 +66,8 @@ your own list, include a component provider that wires the CLI services. The
 properties in depth.
 
 `CliConfig` is one way to start, not the only way. `Cli::run()` accepts any
-`CliConfigContract`, so your own subclass of `CliConfig` — with
-per-environment defaults baked in — works too.
+`CliConfigContract`, so your own subclass of `CliConfig` works too. The
+subclass can hold per-environment defaults.
 
 ### Renaming the Built-In Commands and Options
 
@@ -107,8 +107,8 @@ Warning: `helpCommandName` and `versionCommandName` only change where the
 option middleware routes `--help` and `--version`. `HelpCommand` and
 `VersionCommand` still register under `help` and `version` through their own
 `#[Route]` attributes. When you set a new command name, also register a route
-under that name — otherwise the option routes to a command that does not
-exist.
+under that name. Without that route, the option routes to a command that does
+not exist.
 
 ### Global Middleware
 
@@ -186,7 +186,7 @@ Cli::run(new CliConfig(
 
 `InputFactory::fromGlobals()` assigns each `argv` token one role:
 
-- The first token is the **caller** — the binary name.
+- The first token is the **caller**. The caller is the binary name.
 - The second token is the **command name**, when it is not an option token
   and not `--`. When the second token is an option or `--`, no token sets the
   command name, `defaultCommandName` applies, and every non-option token is
@@ -200,7 +200,8 @@ Option tokens follow these rules:
 
 - `--name=value` sets a long option value. The parser splits on the first `=`
   only, so `--filter=a=b` keeps the value `a=b`.
-- `--name` with no `=` sets a long option with an empty value — a flag.
+- `--name` with no `=` sets a long option with an empty value. An option with
+  an empty value is a flag.
 - `-n=value` sets a short option value. `-n` sets a short flag.
 - `-abc` expands to the three short flags `-a -b -c`. A combined group cannot
   carry a value.
@@ -222,11 +223,11 @@ value `3`.
 
 A route provider implements `CliRouteProviderContract`. The contract declares
 two instance methods. `getControllerClasses()` returns classes that carry
-`#[Route]` attributes — the common way, because the command definition sits
-beside the command code. `getRoutes()` returns pre-built `RouteContract`
-objects — use it for commands built at runtime, or when you cannot annotate
-the class. One provider can use both. The framework's own provider registers
-the built-in commands:
+`#[Route]` attributes. This method is the common way, because the command
+definition sits beside the command code. `getRoutes()` returns pre-built
+`RouteContract` objects. Use `getRoutes()` for commands built at runtime, or
+when you cannot annotate the class. One provider can use both. The framework's
+own provider registers the built-in commands:
 
 ```php
 use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
@@ -375,8 +376,8 @@ attribute constructor takes:
 | `arguments`                                                                                                    | `ArgumentParameterContract[]`                                    |
 | `options`                                                                                                      | `OptionParameterContract[]`                                      |
 
-The attribute is repeatable — stack it to serve several command names from one
-method:
+The attribute is repeatable. Stack the attribute to serve several command
+names from one method:
 
 ```php
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
@@ -470,7 +471,7 @@ The `Router` calls the handler with the container and the matched route after
 the `RouteMatched` middleware has run. Wire the handler with the
 `#[RouteHandler]` attribute, or pass `handler:` to `#[Route]` directly. PHP
 attributes only accept constant expressions, so an attribute handler is always
-an array callable — a closure only works on a pre-built route. The handler
+an array callable. A closure only works on a pre-built route. The handler
 resolves the command class from the container and calls it:
 
 ```php
@@ -494,9 +495,10 @@ $appName     = $route->getArgument('applicationName')->getFirstValue();
 ```
 
 `RouteContract::hasArgument()` and `hasOption()` report whether the route
-**declares** a parameter with that name — not whether the invocation provided
-a value. The parameter's `hasFirstValue()` reports whether a value arrived, so
-use it to test for an optional value or flag:
+**declares** a parameter with that name. These methods do not report whether
+the invocation provided a value. The parameter's `hasFirstValue()` reports
+whether a value arrived, so use `hasFirstValue()` to test for an optional
+value or flag:
 
 ```php
 $formatOption = $route->getOption('format');
@@ -649,7 +651,8 @@ public function run(): OutputContract
 and `getDefaultValue()` returns it. The framework does not insert it into a
 missing option, so apply the fallback yourself as shown.
 
-A `NONE` option takes no value — a pure flag. Test it with `hasFirstValue()`:
+A `NONE` option takes no value. This option is a pure flag. Test the option
+with `hasFirstValue()`:
 
 ```php
 use Valkyrja\Cli\Routing\Attribute\OptionParameter;
@@ -749,9 +752,9 @@ values. Without a cast, `getCastValues()` returns the raw strings.
 ### Help Text
 
 `#[Route]` accepts a `helpText` callable that returns a `MessageContract`.
-The callable must be an array callable — a closure throws
+The callable must be an array callable. A closure throws
 `CliRoutingInvalidHelpTextCallableException`, and an attribute cannot hold a
-closure anyway. The `help` command renders it:
+closure anyway. The `help` command renders the returned message:
 
 ```php
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
@@ -768,10 +771,11 @@ public static function help(): MessageContract
 ```
 
 `php myapp help --command=user:greet` shows the help text together with the
-command's declared arguments and options — their descriptions, modes, value
-display names, valid values, and default value. `php myapp user:greet --help`
-shows the same page, because the `CheckForHelpOptionsMiddleware` rewrites any
-input that carries `--help`/`-h` into a `help` invocation for that command.
+command's declared arguments and options. The page shows each parameter's
+description, mode, value display name, valid values, and default value.
+`php myapp user:greet --help` shows the same page, because the
+`CheckForHelpOptionsMiddleware` rewrites any input that carries `--help`/`-h`
+into a `help` invocation for that command.
 
 ## Input and Output
 
@@ -791,9 +795,9 @@ $verbose = $input->hasOption('verbose');  // bool
 
 An `ArgumentContract` carries `getValue()`. An `OptionContract` carries
 `getName()`, `getValue()`, `hasValue()`, and `getType()`
-(`OptionType::SHORT` or `LONG`). Prefer the route parameters in a command —
-they are validated and cast. Read the raw input for undeclared options or for
-positional values outside the declared parameters.
+(`OptionType::SHORT` or `LONG`). Prefer the route parameters in a command,
+because the route parameters are validated and cast. Read the raw input for
+undeclared options or for positional values outside the declared parameters.
 
 The `InputHandler` registers the `InputContract` in the container, so any
 service can receive it. The `Router` registers the matched `RouteContract`,
@@ -829,8 +833,9 @@ An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
 a command only queues messages. To flush early, call `writeMessages()` and
-keep the output it returns — it writes on a copy, so the output you called
-it on still carries the messages, and the handler writes them a second time.
+keep the output that the call returns. The method writes on a copy, so the
+output you called the method on still carries the messages, and the handler
+writes those messages a second time.
 
 ### Messages
 
@@ -849,7 +854,7 @@ A message is text plus an optional formatter. The classes:
 | `Question`       | An interactive prompt (see [Questions](#questions))     |
 | `Progress`       | A message with a percentage and a completion flag       |
 
-Messages carry no line breaks of their own — compose with `NewLine`:
+Messages carry no line breaks of their own. Compose with `NewLine`:
 
 ```php
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -871,8 +876,8 @@ A `Formatter` wraps text in ANSI escape codes built from `Format` objects:
 `TextColorFormat` (a `TextColor` case), `BackgroundColorFormat` (a
 `BackgroundColor` case), and `StyleFormat` (a `Style` case — `BOLD`,
 `UNDERSCORE`, `BLINK`, `INVERSE`, `CONCEAL`). Both color enums offer the
-eight base colors, `DARK_GRAY`, and `LIGHT_RED` through `LIGHT_WHITE` — there
-is no `LIGHT_BLACK`:
+eight base colors, `DARK_GRAY`, and `LIGHT_RED` through `LIGHT_WHITE`. There
+is no `LIGHT_BLACK` case:
 
 ```php
 use Valkyrja\Cli\Interaction\Enum\Style;
@@ -935,7 +940,7 @@ return $this->outputFactory
 The rendered prompt lists the allowed responses and the default. An empty
 response takes the default. A response outside the allowed list re-asks the
 question, unless the validation callable accepts it. A non-interactive,
-quiet, or silent output does not read from stdin — the default response
+quiet, or silent output does not read from stdin. The default response
 applies, so a scripted run never blocks.
 
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
@@ -993,9 +998,10 @@ a service provider, the same as a command class.
 
 ### InputReceived
 
-`InputReceivedMiddlewareContract` fires before route matching. It returns an
-`InputContract` to continue — possibly rewritten, as the built-in help and
-version middleware do — or an `OutputContract` to short-circuit:
+`InputReceivedMiddlewareContract` fires before route matching. The middleware
+returns an `InputContract` to continue, or an `OutputContract` to
+short-circuit. The middleware can rewrite the `InputContract`, as the
+built-in help and version middleware do:
 
 ```php
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
@@ -1032,8 +1038,9 @@ class MaintenanceModeMiddleware implements InputReceivedMiddlewareContract
 ### RouteMatched
 
 `RouteMatchedMiddlewareContract` fires after a command matches and before its
-handler runs. It returns the `RouteContract` to continue — possibly modified —
-or an `OutputContract` to short-circuit:
+handler runs. The middleware returns the `RouteContract` to continue, or an
+`OutputContract` to short-circuit. The middleware can modify the
+`RouteContract`:
 
 ```php
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
@@ -1176,8 +1183,8 @@ message.
 ### ProcessExiting
 
 `ProcessExitingMiddlewareContract` fires after the output is written and
-before the process exits. It returns nothing — the output is already on the
-terminal — so use it for deferred cleanup:
+before the process exits. The middleware returns nothing, because the output
+is already on the terminal. Use this stage for deferred cleanup:
 
 ```php
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
@@ -1285,8 +1292,8 @@ the first two; the interaction options set the output flags:
    declared parameters and validates them.
 6. The matched route registers in the container, and the `RouteMatched`
    middleware runs. An output short-circuits to step 9.
-7. The route handler runs — `$handler($container, $route)` — then the
-   `RouteDispatched` middleware runs on its output.
+7. The route handler runs as `$handler($container, $route)`. Then the
+   `RouteDispatched` middleware runs on the handler's output.
 8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
    middleware, which produces the error output. Boot, argv parsing, and the
    steps below all run outside that guard.
