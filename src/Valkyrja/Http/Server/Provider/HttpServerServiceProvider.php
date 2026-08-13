@@ -28,6 +28,7 @@ use Valkyrja\Http\Server\Data\HttpServerConfig;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
+use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
@@ -190,21 +191,35 @@ class HttpServerServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * Publish the RedirectTrailingSlashMiddleware service.
+     *
+     * @param ContainerContract $container The container
+     */
+    public static function publishRedirectTrailingSlashMiddleware(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            RedirectTrailingSlashMiddleware::class,
+            new RedirectTrailingSlashMiddleware()
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     #[Override]
     public function publishers(): array
     {
         return [
-            HttpServerConfigContract::class      => [self::class, 'publishConfig'],
-            RequestHandlerContract::class        => [self::class, 'publishRequestHandler'],
-            LogThrowableCaughtMiddleware::class  => [self::class, 'publishLogThrowableCaughtMiddleware'],
-            ViewThrowableCaughtMiddleware::class => [self::class, 'publishViewThrowableCaughtMiddleware'],
-            RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
-            ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
-            ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
-            CacheResponseMiddleware::class       => [self::class, 'publishCacheResponseMiddleware'],
-            NoCacheResponseMiddleware::class     => [self::class, 'publishNoCacheResponseMiddleware'],
+            HttpServerConfigContract::class        => [self::class, 'publishConfig'],
+            RequestHandlerContract::class          => [self::class, 'publishRequestHandler'],
+            LogThrowableCaughtMiddleware::class    => [self::class, 'publishLogThrowableCaughtMiddleware'],
+            ViewThrowableCaughtMiddleware::class   => [self::class, 'publishViewThrowableCaughtMiddleware'],
+            RequestStructMiddleware::class         => [self::class, 'publishRequestStructMiddleware'],
+            ResponseStructMiddleware::class        => [self::class, 'publishResponseStructMiddleware'],
+            ViewRouteNotMatchedMiddleware::class   => [self::class, 'publishViewRouteNotMatchedMiddleware'],
+            CacheResponseMiddleware::class         => [self::class, 'publishCacheResponseMiddleware'],
+            NoCacheResponseMiddleware::class       => [self::class, 'publishNoCacheResponseMiddleware'],
+            RedirectTrailingSlashMiddleware::class => [self::class, 'publishRedirectTrailingSlashMiddleware'],
         ];
     }
 }

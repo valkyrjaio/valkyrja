@@ -22,6 +22,7 @@ use Valkyrja\Http\Server\Data\HttpServerConfig;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\CacheResponseMiddleware;
+use Valkyrja\Http\Server\Middleware\RequestReceived\RedirectTrailingSlashMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\RequestStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteMatched\ResponseStructMiddleware;
 use Valkyrja\Http\Server\Middleware\RouteNotMatched\ViewRouteNotMatchedMiddleware;
@@ -53,6 +54,7 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(ViewRouteNotMatchedMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(CacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(NoCacheResponseMiddleware::class, new HttpServerServiceProvider()->publishers());
+        self::assertArrayHasKey(RedirectTrailingSlashMiddleware::class, new HttpServerServiceProvider()->publishers());
         self::assertArrayHasKey(HttpServerConfigContract::class, new HttpServerServiceProvider()->publishers());
     }
 
@@ -193,6 +195,23 @@ final class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(
             NoCacheResponseMiddleware::class,
             $this->container->getSingleton(NoCacheResponseMiddleware::class)
+        );
+    }
+
+    public function testPublishRedirectTrailingSlashMiddleware(): void
+    {
+        $container = $this->container;
+
+        self::assertFalse($container->has(RedirectTrailingSlashMiddleware::class));
+
+        $callback = new HttpServerServiceProvider()->publishers()[RedirectTrailingSlashMiddleware::class];
+        $callback($this->container);
+
+        self::assertTrue($container->has(RedirectTrailingSlashMiddleware::class));
+        self::assertTrue($container->isSingleton(RedirectTrailingSlashMiddleware::class));
+        self::assertInstanceOf(
+            RedirectTrailingSlashMiddleware::class,
+            $container->getSingleton(RedirectTrailingSlashMiddleware::class)
         );
     }
 
