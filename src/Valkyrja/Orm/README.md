@@ -789,7 +789,7 @@ $select = $orm->createQueryBuilder()
 | `BITWISE_OR`         | `\|`          |
 | `BITWISE_INVERSION`  | `~`           |
 
-Warning: a `MEMBER_OF` clause renders its operand without the parentheses that MySQL requires, so the rendered clause fails to parse. Use a raw statement for a `MEMBER OF` filter.
+Warning: a `MEMBER_OF` clause renders an operand that MySQL's `MEMBER OF(json_array)` grammar does not accept, so the rendered clause fails to parse. Use a raw statement for a `MEMBER OF` filter.
 
 ### Group By, Order By, Limit, and Offset
 
