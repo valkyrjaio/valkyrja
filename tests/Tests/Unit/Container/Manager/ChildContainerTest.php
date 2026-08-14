@@ -553,6 +553,21 @@ final class ChildContainerTest extends TestCase
         self::assertInstanceOf(ProvidedFixture::class, $child->getAliased('providedAlias'));
     }
 
+    public function testGetAliasedNamesTheHopItStoppedAt(): void
+    {
+        $this->parent->bindAlias('first', 'second');
+        $this->parent->bindAlias('second', SingletonFixture::class);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $child = $this->createChild();
+
+        // The alias is 'first' and the walk stopped at the terminal id, not at 'second'
+        $this->expectExceptionMessage(
+            'Alias `first` reaches `' . SingletonFixture::class . '`, which the parent container has not resolved.'
+        );
+
+        $child->getAliased('first');
+    }
+
     public function testGetAliasedThrowsForAnUnresolvedParentSingleton(): void
     {
         $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);

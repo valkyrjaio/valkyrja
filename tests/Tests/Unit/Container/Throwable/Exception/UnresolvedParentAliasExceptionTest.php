@@ -25,7 +25,7 @@ final class UnresolvedParentAliasExceptionTest extends TestCase
         $exception = new ContainerUnresolvedParentAliasException($alias, $aliasedId);
 
         self::assertSame(
-            "Alias `$alias` points to `$aliasedId`, which the parent container has not resolved. "
+            "Alias `$alias` reaches `$aliasedId`, which the parent container has not resolved. "
             . 'Force-resolve it in bootstrapParentServices() before the request loop begins.',
             $exception->getMessage()
         );

@@ -744,9 +744,9 @@ of delegating.
   `ContainerUnpublishedParentTargetException` when the parent holds an unrun
   publish callback for the id.
 - A lookup through an alias that only the parent declares raises
-  `ContainerUnresolvedParentAliasException` when the parent holds an unrun
-  publish callback for the target, or a singleton binding it has not resolved
-  ([Where an Alias Resolves](#where-an-alias-resolves)).
+  `ContainerUnresolvedParentAliasException`. Two parent states raise it: an
+  unrun publish callback for the target, and a singleton binding the parent has
+  not resolved ([Where an Alias Resolves](#where-an-alias-resolves)).
 
 A parent that answers without writing delegates as before, and so does an id the
 child can answer from its own maps.

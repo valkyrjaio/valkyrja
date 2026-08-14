@@ -282,18 +282,22 @@ protected static function bootstrapParentServices(ApplicationContract $app): voi
 ```
 
 Anything resolved here lives in the frozen parent and is shared read-only across
-all requests. A child that holds the publish callback creates anything left
-unresolved fresh in its own scope — correct, but paying the creation cost per
-request.
+all requests. A child that holds the publish callback for a deferred service
+creates it fresh in its own scope. That is correct, and it pays the creation
+cost on every request.
 
 Warning: resolve here any id that a child must reach through the parent while
-the parent would write to answer it. A direct lookup raises
-`ContainerUnpublishedParentTargetException` when the parent holds an unrun
-publish callback for the id. A lookup through an alias that only the parent
-declares raises `ContainerUnresolvedParentAliasException` when the parent holds
-an unrun publish callback for the target, or a singleton binding it has not
-resolved. A child that can answer the id from its own maps resolves it and never
-reaches the parent. See
+the parent would write to answer it. The child refuses instead:
+
+- A direct lookup raises `ContainerUnpublishedParentTargetException` when the
+  parent holds an unrun publish callback for the id.
+- A lookup through an alias that only the parent declares raises
+  `ContainerUnresolvedParentAliasException`. Two parent states raise it: an
+  unrun publish callback for the target, and a singleton binding the parent has
+  not resolved.
+
+A child that can answer the id from its own maps resolves it and never reaches
+the parent. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 
 ### Child Container Variants
