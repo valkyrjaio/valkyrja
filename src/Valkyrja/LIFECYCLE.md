@@ -278,9 +278,10 @@ protected static function bootstrapParentServices(ApplicationContract $app): voi
     $container = $app->getContainer();
     $container->getSingleton(CollectionContract::class);
     $container->getSingleton(MyExpensiveSharedService::class);
-    // A provider whose publish callback calls bind() registers a service, not a
-    // singleton, so publish it instead of resolving it.
-    $container->publish(PdoContract::class);
+    // OrmServiceProvider publishes PDO with bind(), so it registers a service and
+    // not a singleton. Publishing it moves the factory into the parent, where
+    // every child then reaches it. It shares no instance.
+    $container->publish(PDO::class);
 }
 ```
 

@@ -25,7 +25,7 @@ final class UnpublishedParentTargetExceptionTest extends TestCase
 
         self::assertSame(
             "`$id` is registered in the parent container and its publish callback has not run. "
-            . 'Force-resolve it in bootstrapParentServices(), or give the child the publish callbacks.',
+            . 'Resolve or publish it in bootstrapParentServices(), or give the child the publish callbacks.',
             $exception->getMessage()
         );
     }

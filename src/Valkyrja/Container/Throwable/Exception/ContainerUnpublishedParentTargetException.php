@@ -23,7 +23,7 @@ class ContainerUnpublishedParentTargetException extends ContainerRuntimeExceptio
     public function __construct(string $id, int $code = 0, Throwable|null $previous = null)
     {
         $message = "`$id` is registered in the parent container and its publish callback has not run. "
-            . 'Force-resolve it in bootstrapParentServices(), or give the child the publish callbacks.';
+            . 'Resolve or publish it in bootstrapParentServices(), or give the child the publish callbacks.';
 
         parent::__construct($message, $code, $previous);
     }

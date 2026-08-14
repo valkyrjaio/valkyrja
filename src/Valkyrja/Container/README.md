@@ -925,8 +925,9 @@ because such a chain reaches no target.
 **`ContainerUnpublishedParentTargetException`** — A `ChildContainer` lookup
 would delegate an id to a parent that still holds an unrun publish callback for
 it, so the parent would publish during the request loop. It covers a service
-and a singleton alike. Force-resolve the id in `bootstrapParentServices()`, or
-give the child the publish callbacks. It extends the SPL `RuntimeException`.
+and a singleton alike. Resolve the id in `bootstrapParentServices()`, or call
+`publish()` there when the publisher binds a service rather than a singleton,
+or give the child the publish callbacks. It extends the SPL `RuntimeException`.
 
 All four implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:
