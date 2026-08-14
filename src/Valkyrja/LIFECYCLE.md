@@ -283,9 +283,10 @@ public static function bootstrapParentServices(ApplicationContract $app): void
     // A singleton resolves once here, and every child reuses that instance.
     $container->getSingleton(MyExpensiveSharedService::class);
 
-    // OrmServiceProvider publishes PDO with bind(), so PDO is a service and not
-    // a singleton. Publishing puts the factory in the parent, and every child
-    // then reaches the factory. Each child still builds its own instance.
+    // With OrmServiceProvider registered, PDO is published by bind(), so PDO is a
+    // service and not a singleton. Publishing puts the factory in the parent, and
+    // every child then reaches the factory. Each child still builds its own
+    // instance. Warning: publish() returns quietly for an id no provider registers.
     $container->publish(\PDO::class);
 }
 ```
