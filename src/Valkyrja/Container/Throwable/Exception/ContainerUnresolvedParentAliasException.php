@@ -19,15 +19,15 @@ class ContainerUnresolvedParentAliasException extends ContainerRuntimeException
 {
     /**
      * @param class-string $alias     The alias the parent declares
-     * @param class-string $aliasedId The id the alias walk reached
+     * @param class-string $reachedId The id the alias walk reached
      */
     public function __construct(
         string $alias,
-        string $aliasedId,
+        string $reachedId,
         int $code = 0,
         Throwable|null $previous = null
     ) {
-        $message = "Alias `$alias` reaches `$aliasedId`, which the parent container has not resolved. "
+        $message = "Alias `$alias` reaches `$reachedId`, which the parent container has not resolved. "
             . 'Force-resolve it in bootstrapParentServices() before the request loop begins.';
 
         parent::__construct($message, $code, $previous);
