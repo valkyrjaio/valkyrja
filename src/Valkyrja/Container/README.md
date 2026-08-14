@@ -737,15 +737,19 @@ service left deferred publishes again in each child that holds its callback and
 requests it.
 
 Warning: the method is about correctness whenever a child must reach an id
-through a parent that would build or publish it for the first time. Two parent
-states do that: an unrun publish callback, and a singleton binding the parent
-has not resolved. Delegating would write to the frozen parent, so the child
-refuses instead. A direct lookup the child cannot answer raises
-`ContainerUnpublishedParentTargetException`, and a lookup through an alias that
-only the parent declares raises `ContainerUnresolvedParentAliasException`
-([Where an Alias Resolves](#where-an-alias-resolves)). A target the parent has
-already resolved delegates as before, and so does an id the child can answer
-from its own maps.
+through a parent that would write while answering it. The child refuses instead
+of delegating.
+
+- A direct lookup the child cannot answer raises
+  `ContainerUnpublishedParentTargetException` when the parent holds an unrun
+  publish callback for the id.
+- A lookup through an alias that only the parent declares raises
+  `ContainerUnresolvedParentAliasException` when the parent holds an unrun
+  publish callback for the target, or a singleton binding it has not resolved
+  ([Where an Alias Resolves](#where-an-alias-resolves)).
+
+A parent that answers without writing delegates as before, and so does an id the
+child can answer from its own maps.
 
 ### The Child's Copy of the Data
 

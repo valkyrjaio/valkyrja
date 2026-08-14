@@ -287,13 +287,13 @@ unresolved fresh in its own scope — correct, but paying the creation cost per
 request.
 
 Warning: resolve here any id that a child must reach through the parent while
-the parent would build or publish it for the first time. Two parent states do
-that: an unrun publish callback, and a singleton binding the parent has not
-resolved. Delegating would write to the frozen parent, so the child refuses
-instead. A direct lookup raises `ContainerUnpublishedParentTargetException`. A
-lookup through an alias that only the parent declares raises
-`ContainerUnresolvedParentAliasException`. A child that can answer the id from
-its own maps resolves it and never reaches the parent. See
+the parent would write to answer it. A direct lookup raises
+`ContainerUnpublishedParentTargetException` when the parent holds an unrun
+publish callback for the id. A lookup through an alias that only the parent
+declares raises `ContainerUnresolvedParentAliasException` when the parent holds
+an unrun publish callback for the target, or a singleton binding it has not
+resolved. A child that can answer the id from its own maps resolves it and never
+reaches the parent. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 
 ### Child Container Variants
@@ -305,10 +305,10 @@ Two implementations are available for the per-request child container:
   contract.
 - **`NativeChildContainer`** — accesses the parent's protected fields directly
   for lower construction overhead. Requires a concrete `Container` parent. It
-  raises neither refusal above: it resolves a parent-declared alias in the
-  child, so the alias does not select the parent's scope, and it delegates a
-  direct lookup without the publish check. The two differ in behavior, not in
-  speed alone.
+  raises neither refusal above. It resolves a parent-declared alias in the
+  child, so the alias does not select the parent's scope, and it answers a
+  direct lookup from the parent's maps rather than delegating to the parent. The
+  two differ in behavior, not in speed alone.
 
 ## Focus on Configuration
 
