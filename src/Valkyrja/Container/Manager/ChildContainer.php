@@ -109,6 +109,8 @@ class ChildContainer extends Container
         // Parent already has a resolved instance — reuse it (frozen, safe)
         // and the child has none of its own
         if (! parent::isSingletonInstance($id) && $this->parent->isSingletonInstance($id)) {
+            $this->validateParentAnswersWithoutPublishing($id);
+
             return $this->parent->getSingleton($id);
         }
 
@@ -125,10 +127,7 @@ class ChildContainer extends Container
     protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
-            // Delegating runs the parent's publish step, which writes to the frozen parent.
-            if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
-                throw new ContainerUnpublishedParentServiceException($id);
-            }
+            $this->validateParentAnswersWithoutPublishing($id);
 
             return $this->parent->getService($id, $arguments);
         }
@@ -156,6 +155,20 @@ class ChildContainer extends Container
         $this->validateParentAliasResolution($id);
 
         return $this->parent->getAliased($id, $arguments);
+    }
+
+    /**
+     * Validate that the parent answers a given id without running a publish callback.
+     *
+     * @param class-string $id The service id
+     */
+    protected function validateParentAnswersWithoutPublishing(string $id): void
+    {
+        // Every delegation runs the parent's publish step first, and that writes
+        // to the frozen parent.
+        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+            throw new ContainerUnpublishedParentServiceException($id);
+        }
     }
 
     /**

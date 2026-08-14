@@ -260,6 +260,41 @@ final class ChildContainerTest extends TestCase
         $child->getService(ServiceFixture::class);
     }
 
+    public function testGetSingletonThrowsWhenTheParentWouldPublish(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+            services: [SingletonFixture::class => [SingletonFixture::class, 'make']],
+        ));
+        // Caching through getSingleton() never marks the id published
+        $this->parent->getSingleton(SingletonFixture::class);
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [SingletonFixture::class => static function (ContainerContract $container): void {
+                $container->setSingleton(SingletonFixture::class, new SingletonFixture());
+            }],
+        ));
+        $child = new ChildContainer($this->parent, new ContainerData());
+
+        $this->expectException(ContainerUnpublishedParentServiceException::class);
+
+        $child->getSingleton(SingletonFixture::class);
+    }
+
+    public function testGetServiceDelegatesWhenTheParentAlreadyPublished(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [ServiceFixture::class => static function (ContainerContract $container): void {
+                $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+            }],
+        ));
+        $this->parent->get(ServiceFixture::class);
+        $child = new ChildContainer($this->parent, new ContainerData());
+
+        // The callback ran, so the guard lets the delegation through
+        self::assertTrue($this->parent->isPublished(ServiceFixture::class));
+        self::assertInstanceOf(ServiceFixture::class, $child->getService(ServiceFixture::class));
+    }
+
     public function testGetServiceFromChild(): void
     {
         $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
