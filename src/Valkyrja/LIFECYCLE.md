@@ -269,19 +269,22 @@ handle(app, data, request)
 
 ### Customizing Bootstrap
 
-Override `bootstrapParentServices()` to force-resolve services that are
-expensive to create and safe to share across requests:
+Override `bootstrapParentServices()` to prepare in the parent whatever a child
+would otherwise reach through it:
 
 ```php
-protected static function bootstrapParentServices(ApplicationContract $app): void
+public static function bootstrapParentServices(ApplicationContract $app): void
 {
     $container = $app->getContainer();
+
+    // A singleton resolves once here, and every child reuses that instance.
     $container->getSingleton(CollectionContract::class);
     $container->getSingleton(MyExpensiveSharedService::class);
-    // OrmServiceProvider publishes PDO with bind(), so it registers a service and
-    // not a singleton. Publishing it moves the factory into the parent, where
-    // every child then reaches it. It shares no instance.
-    $container->publish(PDO::class);
+
+    // OrmServiceProvider publishes PDO with bind(), so PDO is a service and not
+    // a singleton. Publishing registers the factory in the parent, which every
+    // child then reaches. Each child still builds its own instance.
+    $container->publish(\PDO::class);
 }
 ```
 

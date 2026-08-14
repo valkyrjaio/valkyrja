@@ -28,7 +28,7 @@ class ContainerUnresolvedParentAliasException extends ContainerRuntimeException
         Throwable|null $previous = null
     ) {
         $message = "Alias `$alias` reaches `$reachedId`, which the parent container has not resolved. "
-            . 'Force-resolve it in bootstrapParentServices() before the request loop begins.';
+            . 'Resolve or publish it in bootstrapParentServices() before the request loop begins.';
 
         parent::__construct($message, $code, $previous);
     }
