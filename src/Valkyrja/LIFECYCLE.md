@@ -281,7 +281,6 @@ public static function bootstrapParentServices(ApplicationContract $app): void
     $container = $app->getContainer();
 
     // A singleton resolves once here, and every child reuses that instance.
-    $container->getSingleton(RouteCollectionContract::class);
     $container->getSingleton(MyExpensiveSharedService::class);
 
     // OrmServiceProvider publishes PDO with bind(), so PDO is a service and not

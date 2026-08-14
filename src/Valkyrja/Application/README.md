@@ -822,12 +822,14 @@ the handler before the runtime writes the response out.
 
 ### Customizing the Parent
 
-Override `bootstrapParentServices()` to prepare in the parent whatever a child
-would otherwise reach through it. An id resolved here lives in the frozen
-parent. An id left unprepared is built fresh in each child that can answer it,
-and refused in each child that cannot
-([Where an Alias Resolves](../Container/README.md#where-an-alias-resolves)). The
-base implementation resolves the route collection, so an override calls
+Override `bootstrapParentServices()` to prepare in the parent whatever the
+parent would otherwise write while answering a child. An id resolved here lives
+in the frozen parent. A child still delegates any other id to the parent, and
+the parent answers it as before. The child refuses only when the parent holds an
+unrun publish callback for that id, or an unresolved singleton binding behind a
+parent-declared alias
+([Exceptions](../Container/README.md#exceptions)). The base implementation
+resolves the route collection, so an override calls
 `parent::bootstrapParentServices($app)` first.
 
 ### Swapping the Child Container
