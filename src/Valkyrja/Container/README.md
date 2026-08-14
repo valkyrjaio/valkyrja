@@ -731,10 +731,11 @@ unpublished service runs its callback with the child as the container. The
 service publishes into the child's own scope; the parent's maps do not change.
 
 `WorkerHttp::bootstrapParentServices()` is about cost for an id a child can
-answer itself. The child holds the publish callback for it, or it holds the
-singleton binding from the data. An id that the method force-resolves before the
-request loop is cached in the frozen parent once, and every child reuses that
-instance. An id left unresolved is built again in each child that requests it.
+answer itself. A child answers an id when the child holds the publish callback,
+or the singleton binding from the data. An id that the method force-resolves
+before the request loop is cached in the frozen parent once, and every child
+reuses that instance. An id left unresolved is built again in each child that
+requests it.
 
 Warning: the method is about correctness whenever a child must reach an id
 through a parent that would write while answering it. The child refuses instead

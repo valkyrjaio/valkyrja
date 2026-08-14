@@ -278,13 +278,16 @@ protected static function bootstrapParentServices(ApplicationContract $app): voi
     $container = $app->getContainer();
     $container->getSingleton(CollectionContract::class);
     $container->getSingleton(MyExpensiveSharedService::class);
+    // A provider whose publish callback calls bind() registers a service, not a
+    // singleton, so publish it instead of resolving it.
+    $container->publish(PdoContract::class);
 }
 ```
 
 Anything resolved here lives in the frozen parent and is shared read-only across
-all requests. A child that can answer an id itself builds it fresh in its own
-scope, whether it holds the publish callback or the singleton binding. That is
-correct, and it pays the creation cost on every request.
+all requests. A child that holds the publish callback, or the singleton binding
+from the data, builds the id fresh in the child's own scope. That is correct,
+and the build costs time on every request.
 
 Warning: resolve here any id that a child must reach through the parent while
 the parent would write to answer it. The child refuses instead:
