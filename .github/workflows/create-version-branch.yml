@@ -6,7 +6,7 @@ run-name: Create new version for upcoming yearly release
 
 jobs:
   create:
-    uses: valkyrjaio/.github/.github/workflows/_php-create-version-branch.yml@79ee782d868e5a879e1f46157d975152da779bf7
+    uses: valkyrjaio/.github/.github/workflows/_php-create-version-branch.yml@2a54db0be129227cbb1d5c0f0e230a2e809e04cf
     secrets:
       VALKYRJA_GHA_APP_ID: ${{ secrets.VALKYRJA_GHA_APP_ID }}
       VALKYRJA_GHA_PRIVATE_KEY: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
