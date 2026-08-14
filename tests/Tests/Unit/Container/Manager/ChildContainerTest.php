@@ -17,7 +17,7 @@ use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
-use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentServiceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentTargetException;
 use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -255,7 +255,7 @@ final class ChildContainerTest extends TestCase
         // A child without the callbacks cannot publish locally, so it would delegate
         $child = new ChildContainer($this->parent, new ContainerData());
 
-        $this->expectException(ContainerUnpublishedParentServiceException::class);
+        $this->expectException(ContainerUnpublishedParentTargetException::class);
 
         $child->getService(ServiceFixture::class);
     }
@@ -275,9 +275,32 @@ final class ChildContainerTest extends TestCase
         ));
         $child = new ChildContainer($this->parent, new ContainerData());
 
-        $this->expectException(ContainerUnpublishedParentServiceException::class);
+        $this->expectException(ContainerUnpublishedParentTargetException::class);
 
         $child->getSingleton(SingletonFixture::class);
+    }
+
+    public function testGetSingletonPrefersTheChildsOwnBindingOverARefusal(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+            services: [SingletonFixture::class => [SingletonFixture::class, 'make']],
+        ));
+        $this->parent->getSingleton(SingletonFixture::class);
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [SingletonFixture::class => static function (ContainerContract $container): void {
+                $container->setSingleton(SingletonFixture::class, new SingletonFixture());
+            }],
+        ));
+
+        $child = new ChildContainer($this->parent, new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+        ));
+        $child->bind(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        // The child resolves it without the parent write, so no refusal
+        self::assertInstanceOf(SingletonFixture::class, $child->getSingleton(SingletonFixture::class));
+        self::assertFalse($this->parent->isPublished(SingletonFixture::class));
     }
 
     public function testGetServiceDelegatesWhenTheParentAlreadyPublished(): void

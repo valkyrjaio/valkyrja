@@ -12,19 +12,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Throwable\Exception;
 
-use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentServiceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentTargetException;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
-final class UnpublishedParentServiceExceptionTest extends TestCase
+final class UnpublishedParentTargetExceptionTest extends TestCase
 {
     public function testMessage(): void
     {
         $id = self::class;
 
-        $exception = new ContainerUnpublishedParentServiceException($id);
+        $exception = new ContainerUnpublishedParentTargetException($id);
 
         self::assertSame(
-            "Service `$id` is registered in the parent container and its publish callback has not run. "
+            "`$id` is registered in the parent container and its publish callback has not run. "
             . 'Force-resolve it in bootstrapParentServices(), or give the child the publish callbacks.',
             $exception->getMessage()
         );

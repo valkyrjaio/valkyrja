@@ -16,7 +16,7 @@ use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
-use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentServiceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentTargetException;
 use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 
 class ChildContainer extends Container
@@ -109,7 +109,11 @@ class ChildContainer extends Container
         // Parent already has a resolved instance — reuse it (frozen, safe)
         // and the child has none of its own
         if (! parent::isSingletonInstance($id) && $this->parent->isSingletonInstance($id)) {
-            $this->validateParentAnswersWithoutPublishing($id);
+            if ($this->doesParentPublish($id)) {
+                // The child's own binding reaches the same id without the write.
+                return parent::getSingletonWithoutChecks($id)
+                    ?? throw new ContainerUnpublishedParentTargetException($id);
+            }
 
             return $this->parent->getSingleton($id);
         }
@@ -127,7 +131,9 @@ class ChildContainer extends Container
     protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
-            $this->validateParentAnswersWithoutPublishing($id);
+            if ($this->doesParentPublish($id)) {
+                throw new ContainerUnpublishedParentTargetException($id);
+            }
 
             return $this->parent->getService($id, $arguments);
         }
@@ -158,17 +164,14 @@ class ChildContainer extends Container
     }
 
     /**
-     * Validate that the parent answers a given id without running a publish callback.
+     * Check whether a delegation would run the parent's publish callback.
      *
      * @param class-string $id The service id
      */
-    protected function validateParentAnswersWithoutPublishing(string $id): void
+    protected function doesParentPublish(string $id): bool
     {
-        // Every delegation runs the parent's publish step first, and that writes
-        // to the frozen parent.
-        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
-            throw new ContainerUnpublishedParentServiceException($id);
-        }
+        return $this->parent->isDeferred($id)
+            && ! $this->parent->isPublished($id);
     }
 
     /**

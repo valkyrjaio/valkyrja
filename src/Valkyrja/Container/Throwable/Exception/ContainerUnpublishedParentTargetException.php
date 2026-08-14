@@ -15,14 +15,14 @@ namespace Valkyrja\Container\Throwable\Exception;
 use Throwable;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerRuntimeException;
 
-class ContainerUnpublishedParentServiceException extends ContainerRuntimeException
+class ContainerUnpublishedParentTargetException extends ContainerRuntimeException
 {
     /**
      * @param class-string $id The service id
      */
     public function __construct(string $id, int $code = 0, Throwable|null $previous = null)
     {
-        $message = "Service `$id` is registered in the parent container and its publish callback has not run. "
+        $message = "`$id` is registered in the parent container and its publish callback has not run. "
             . 'Force-resolve it in bootstrapParentServices(), or give the child the publish callbacks.';
 
         parent::__construct($message, $code, $previous);

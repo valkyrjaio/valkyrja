@@ -736,15 +736,13 @@ request loop is cached in the frozen parent once, and every child reuses that
 instance. A service left deferred publishes again in each child that requests
 it.
 
-Warning: the method is about correctness for a service the child must reach
-through the parent. That covers a service the child holds no callback for, and
-any target behind an alias that only the parent declares.
-
-Warning: the method is about correctness for a **singleton or deferred** target
-that the child reaches through an alias that only the parent declares. The
-parent resolves that target, so it would cache it during the request loop
-([Where an Alias Resolves](#where-an-alias-resolves)). A plain `bind()` target
-caches nothing and needs no force-resolution.
+Warning: the method is about correctness whenever a child delegates an id to a
+parent that still holds an unrun publish callback for it. Delegating would run
+that callback in the frozen parent, so the child refuses with
+`ContainerUnpublishedParentTargetException`. That covers a direct lookup and a
+lookup through an alias that only the parent declares
+([Where an Alias Resolves](#where-an-alias-resolves)). A target the parent has
+already published delegates as before.
 
 ### The Child's Copy of the Data
 
@@ -916,11 +914,11 @@ target for the first time
 `ContainerInvalidReferenceException` for a cyclic chain of parent aliases,
 because such a chain reaches no target.
 
-**`ContainerUnpublishedParentServiceException`** — A `ChildContainer` lookup
-would delegate a service to a parent that still holds an unrun publish callback
-for it, so the parent would publish during the request loop. Force-resolve the
-service in `bootstrapParentServices()`, or give the child the publish
-callbacks. It extends the SPL `RuntimeException`.
+**`ContainerUnpublishedParentTargetException`** — A `ChildContainer` lookup
+would delegate an id to a parent that still holds an unrun publish callback for
+it, so the parent would publish during the request loop. It covers a service
+and a singleton alike. Force-resolve the id in `bootstrapParentServices()`, or
+give the child the publish callbacks. It extends the SPL `RuntimeException`.
 
 All four implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:
