@@ -275,15 +275,18 @@ would otherwise reach through it:
 ```php
 public static function bootstrapParentServices(ApplicationContract $app): void
 {
+    // The base resolves the route collection, so keep it.
+    parent::bootstrapParentServices($app);
+
     $container = $app->getContainer();
 
     // A singleton resolves once here, and every child reuses that instance.
-    $container->getSingleton(CollectionContract::class);
+    $container->getSingleton(RouteCollectionContract::class);
     $container->getSingleton(MyExpensiveSharedService::class);
 
     // OrmServiceProvider publishes PDO with bind(), so PDO is a service and not
-    // a singleton. Publishing registers the factory in the parent, which every
-    // child then reaches. Each child still builds its own instance.
+    // a singleton. Publishing puts the factory in the parent, and every child
+    // then reaches the factory. Each child still builds its own instance.
     $container->publish(\PDO::class);
 }
 ```
