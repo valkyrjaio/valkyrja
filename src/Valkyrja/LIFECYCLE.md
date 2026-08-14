@@ -282,9 +282,9 @@ protected static function bootstrapParentServices(ApplicationContract $app): voi
 ```
 
 Anything resolved here lives in the frozen parent and is shared read-only across
-all requests. Anything not resolved here is created fresh in each request's child
-container, when the child holds the publish callback for it — correct but paying
-the creation cost per request.
+all requests. When the child holds the publish callback, anything not resolved
+here is created fresh in each request's child container — correct but paying the
+creation cost per request.
 
 Warning: resolve here any **singleton or deferred** target that a child reaches
 through an alias that only the parent declares. The parent resolves that

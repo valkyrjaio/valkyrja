@@ -109,10 +109,22 @@ class ChildContainer extends Container
         // Parent already has a resolved instance — reuse it (frozen, safe)
         // and the child has none of its own
         if (! parent::isSingletonInstance($id) && $this->parent->isSingletonInstance($id)) {
-            // Delegating would run the parent's publish callback, so answer from the
-            // child instead. A null lets get() try the child's other maps.
             if ($this->isUnpublishedInParent($id)) {
-                return parent::getSingletonWithoutChecks($id);
+                // Delegating would run the parent's publish callback, so answer from
+                // the child instead.
+                $instance = parent::getSingletonWithoutChecks($id);
+
+                if ($instance !== null) {
+                    return $instance;
+                }
+
+                // get() tries the child's service and alias maps after this, and
+                // getSingleton() does not, so refuse only when neither can answer.
+                if (parent::isService($id) || parent::isAlias($id)) {
+                    return null;
+                }
+
+                throw new ContainerUnpublishedParentTargetException($id);
             }
 
             return $this->parent->getSingleton($id);

@@ -281,6 +281,28 @@ final class ChildContainerTest extends TestCase
         $child->get(SingletonFixture::class);
     }
 
+    public function testGetSingletonPrefersTheChildsOwnSingletonBinding(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+            services: [SingletonFixture::class => [SingletonFixture::class, 'make']],
+        ));
+        $this->parent->getSingleton(SingletonFixture::class);
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [SingletonFixture::class => static function (ContainerContract $container): void {
+                $container->setSingleton(SingletonFixture::class, new SingletonFixture());
+            }],
+        ));
+
+        $child = new ChildContainer($this->parent, new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+        ));
+        $child->bind(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        self::assertInstanceOf(SingletonFixture::class, $child->getSingleton(SingletonFixture::class));
+        self::assertFalse($this->parent->isPublished(SingletonFixture::class));
+    }
+
     public function testGetPrefersTheChildsOwnBindingOverARefusal(): void
     {
         $this->parent->setFromData(new ContainerData(
