@@ -736,13 +736,15 @@ request loop is cached in the frozen parent once, and every child reuses that
 instance. A service left deferred publishes again in each child that requests
 it.
 
-Warning: the method is about correctness whenever a child delegates an id to a
-parent that still holds an unrun publish callback for it. Delegating would run
-that callback in the frozen parent, so the child refuses with
-`ContainerUnpublishedParentTargetException`. That covers a direct lookup and a
-lookup through an alias that only the parent declares
+Warning: the method is about correctness whenever a child must reach an id
+through a parent that still holds an unrun publish callback for it. Delegating
+would run that callback in the frozen parent, so the child refuses instead. A
+direct lookup the child cannot answer raises
+`ContainerUnpublishedParentTargetException`, and a lookup through an alias that
+only the parent declares raises `ContainerUnresolvedParentAliasException`
 ([Where an Alias Resolves](#where-an-alias-resolves)). A target the parent has
-already published delegates as before.
+already published delegates as before, and so does an id the child can answer
+from its own maps.
 
 ### The Child's Copy of the Data
 

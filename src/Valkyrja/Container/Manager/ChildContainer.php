@@ -109,10 +109,10 @@ class ChildContainer extends Container
         // Parent already has a resolved instance — reuse it (frozen, safe)
         // and the child has none of its own
         if (! parent::isSingletonInstance($id) && $this->parent->isSingletonInstance($id)) {
-            if ($this->doesParentPublish($id)) {
-                // The child's own binding reaches the same id without the write.
-                return parent::getSingletonWithoutChecks($id)
-                    ?? throw new ContainerUnpublishedParentTargetException($id);
+            // Delegating would run the parent's publish callback, so answer from the
+            // child instead. A null lets get() try the child's other maps.
+            if ($this->isUnpublishedInParent($id)) {
+                return parent::getSingletonWithoutChecks($id);
             }
 
             return $this->parent->getSingleton($id);
@@ -131,7 +131,7 @@ class ChildContainer extends Container
     protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
-            if ($this->doesParentPublish($id)) {
+            if ($this->isUnpublishedInParent($id)) {
                 throw new ContainerUnpublishedParentTargetException($id);
             }
 
@@ -164,11 +164,11 @@ class ChildContainer extends Container
     }
 
     /**
-     * Check whether a delegation would run the parent's publish callback.
+     * Check whether the parent holds a publish callback it has not run.
      *
      * @param class-string $id The service id
      */
-    protected function doesParentPublish(string $id): bool
+    protected function isUnpublishedInParent(string $id): bool
     {
         return $this->parent->isDeferred($id)
             && ! $this->parent->isPublished($id);

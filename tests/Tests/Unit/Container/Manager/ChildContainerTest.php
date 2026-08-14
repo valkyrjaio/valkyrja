@@ -277,10 +277,11 @@ final class ChildContainerTest extends TestCase
 
         $this->expectException(ContainerUnpublishedParentTargetException::class);
 
-        $child->getSingleton(SingletonFixture::class);
+        // get() reaches the service delegation, which is where the refusal lives
+        $child->get(SingletonFixture::class);
     }
 
-    public function testGetSingletonPrefersTheChildsOwnBindingOverARefusal(): void
+    public function testGetPrefersTheChildsOwnBindingOverARefusal(): void
     {
         $this->parent->setFromData(new ContainerData(
             singletons: [SingletonFixture::class => SingletonFixture::class],
@@ -293,13 +294,11 @@ final class ChildContainerTest extends TestCase
             }],
         ));
 
-        $child = new ChildContainer($this->parent, new ContainerData(
-            singletons: [SingletonFixture::class => SingletonFixture::class],
-        ));
+        // The child holds only a bind(), which get() reaches after the singleton path
+        $child = new ChildContainer($this->parent, new ContainerData());
         $child->bind(SingletonFixture::class, [SingletonFixture::class, 'make']);
 
-        // The child resolves it without the parent write, so no refusal
-        self::assertInstanceOf(SingletonFixture::class, $child->getSingleton(SingletonFixture::class));
+        self::assertInstanceOf(SingletonFixture::class, $child->get(SingletonFixture::class));
         self::assertFalse($this->parent->isPublished(SingletonFixture::class));
     }
 
