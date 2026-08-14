@@ -144,6 +144,12 @@ class ChildContainer extends Container
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
             if ($this->isUnpublishedInParent($id)) {
+                // get() tries the child's alias map after this, and getService()
+                // does not, so refuse only when that cannot answer either.
+                if (parent::isAlias($id)) {
+                    return null;
+                }
+
                 throw new ContainerUnpublishedParentTargetException($id);
             }
 
@@ -224,8 +230,7 @@ class ChildContainer extends Container
     protected function isUnresolvedInParent(string $id): bool
     {
         // The parent publishes before it reads any map, so this test comes first.
-        // It is the same test publishUnpublishedProvided() makes.
-        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+        if ($this->isUnpublishedInParent($id)) {
             return true;
         }
 

@@ -730,10 +730,11 @@ publish callbacks through `ContainerData`, so the first lookup of an
 unpublished service runs its callback with the child as the container. The
 service publishes into the child's own scope; the parent's maps do not change.
 
-`WorkerHttp::bootstrapParentServices()` is about cost when the child holds the
-publish callback. A service that it force-resolves before the request loop is
-cached in the frozen parent once, and every child reuses that instance. A
-service left deferred publishes again in each child that requests it.
+`WorkerHttp::bootstrapParentServices()` is about cost while every child holds
+the publish callback. A service that it force-resolves before the request loop
+is cached in the frozen parent once, and every child reuses that instance. A
+service left deferred publishes again in each child that holds its callback and
+requests it.
 
 Warning: the method is about correctness whenever a child must reach an id
 through a parent that still holds an unrun publish callback for it. Delegating

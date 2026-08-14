@@ -277,8 +277,48 @@ final class ChildContainerTest extends TestCase
 
         $this->expectException(ContainerUnpublishedParentTargetException::class);
 
-        // get() reaches the service delegation, which is where the refusal lives
         $child->get(SingletonFixture::class);
+    }
+
+    public function testGetSingletonThrowsWhenNothingInTheChildCanAnswer(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+            services: [SingletonFixture::class => [SingletonFixture::class, 'make']],
+        ));
+        $this->parent->getSingleton(SingletonFixture::class);
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [SingletonFixture::class => static function (ContainerContract $container): void {
+                $container->setSingleton(SingletonFixture::class, new SingletonFixture());
+            }],
+        ));
+        $child = new ChildContainer($this->parent, new ContainerData());
+
+        // getSingleton() has no service or alias step, so the refusal must fire here
+        $this->expectException(ContainerUnpublishedParentTargetException::class);
+
+        $child->getSingleton(SingletonFixture::class);
+    }
+
+    public function testGetPrefersTheChildsOwnAliasOverARefusal(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            singletons: [SingletonFixture::class => SingletonFixture::class],
+            services: [SingletonFixture::class => [SingletonFixture::class, 'make']],
+        ));
+        $this->parent->getSingleton(SingletonFixture::class);
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [SingletonFixture::class => static function (ContainerContract $container): void {
+                $container->setSingleton(SingletonFixture::class, new SingletonFixture());
+            }],
+        ));
+
+        $child = new ChildContainer($this->parent, new ContainerData());
+        $child->bind('childTarget', [SingletonFixture::class, 'make']);
+        $child->bindAlias(SingletonFixture::class, 'childTarget');
+
+        self::assertInstanceOf(SingletonFixture::class, $child->get(SingletonFixture::class));
+        self::assertFalse($this->parent->isPublished(SingletonFixture::class));
     }
 
     public function testGetSingletonPrefersTheChildsOwnSingletonBinding(): void
