@@ -319,10 +319,13 @@ Two implementations are available for the per-request child container:
   contract.
 - **`NativeChildContainer`** — accesses the parent's protected fields directly
   for lower construction overhead. Requires a concrete `Container` parent. It
-  raises neither refusal above. It resolves a parent-declared alias in the
-  child, so the alias does not select the parent's scope, and it answers a
-  direct lookup from the parent's maps rather than delegating to the parent. The
-  two differ in behavior, not in speed alone.
+  follows the same alias rule, so it raises
+  `ContainerUnresolvedParentAliasException` too. It answers a direct lookup from
+  the parent's maps rather than delegating, so it never raises
+  `ContainerUnpublishedParentTargetException`. The two also differ on the factory
+  receiver: a factory bound on the parent receives the child here, and the parent
+  under `ChildContainer`. A parent-declared alias is the exception, because both
+  hand that call to the parent.
 
 ## Focus on Configuration
 

@@ -842,10 +842,13 @@ Two `ChildContainer` implementations exist in `Valkyrja\Container\Manager`:
   `ContainerContract`, so any parent that implements the contract works.
 - `NativeChildContainer` reads the parent's protected fields directly for a
   lower construction cost. It requires a concrete `Container` parent and takes
-  no `ContainerData`. It answers from the parent's maps rather than delegating,
-  so it raises neither refusal. It also resolves a parent-declared alias in the
-  child, so that alias does not select the parent's scope there. Choose the
-  behavior your services need, not the construction cost alone.
+  no `ContainerData`. It raises the alias refusal, and not the direct-lookup one,
+  because it answers a direct lookup from the parent's maps rather than
+  delegating. The two also differ on the factory receiver: a factory bound on
+  the parent receives the child here, and the parent under `ChildContainer`. A
+  parent-declared alias is the exception, because both hand that call to the
+  parent. Choose the behavior your services need, not the construction cost
+  alone.
 
 To swap the implementation, override `getChildContainer()` in your concrete
 worker subclass.

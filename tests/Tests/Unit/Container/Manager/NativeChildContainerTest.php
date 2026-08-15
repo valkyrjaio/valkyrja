@@ -12,8 +12,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\NativeChildContainer;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
 use Valkyrja\Tests\Fixtures\Container\ServiceFixture;
@@ -281,6 +285,151 @@ final class NativeChildContainerTest extends TestCase
         $instance = $this->child->getAliased('svcAlias');
 
         self::assertInstanceOf(ServiceFixture::class, $instance);
+    }
+
+    public function testGetAliasedFromParentReusesAResolvedSingleton(): void
+    {
+        $parentInstance = new SingletonFixture();
+        $this->parent->setSingleton(SingletonFixture::class, $parentInstance);
+        $this->parent->bindAlias('singletonAlias', SingletonFixture::class);
+
+        self::assertSame($parentInstance, $this->child->getAliased('singletonAlias'));
+    }
+
+    public function testGetAliasedThrowsForAnUnresolvedParentSingleton(): void
+    {
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $this->parent->bindAlias('singletonAlias', SingletonFixture::class);
+
+        $this->expectException(ContainerUnresolvedParentAliasException::class);
+
+        $this->child->getAliased('singletonAlias');
+    }
+
+    public function testGetAliasedThrowsForAnUnpublishedParentTarget(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+
+        $this->expectException(ContainerUnresolvedParentAliasException::class);
+
+        $this->child->getAliased('providedAlias');
+    }
+
+    public function testGetAliasedFromChildResolvesInTheChild(): void
+    {
+        $this->child->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->child->bindAlias('childAlias', ServiceFixture::class);
+
+        $instance = $this->child->getAliased('childAlias');
+
+        self::assertInstanceOf(ServiceFixture::class, $instance);
+        self::assertSame($this->child, $instance->getContainer());
+    }
+
+    public function testGetThrowsWhenNoContainerHasTheAlias(): void
+    {
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $this->child->get(SingletonFixture::class);
+    }
+
+    public function testGetAliasedFollowsAParentAliasChain(): void
+    {
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('second', ServiceFixture::class);
+        $this->parent->bindAlias('first', 'second');
+
+        self::assertInstanceOf(ServiceFixture::class, $this->child->getAliased('first'));
+    }
+
+    public function testGetAliasedWalksAParentAliasChainToAnUnboundId(): void
+    {
+        $this->parent->bindAlias('first', 'second');
+        $this->parent->bindAlias('second', ServiceFixture::class);
+
+        // The walk runs out of aliases, so the parent reports the reference
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $this->child->getAliased('first');
+    }
+
+    public function testGetAliasedThrowsForAHydratedParentThatLostItsPublishedMap(): void
+    {
+        // ContainerData carries no published map, so a publisher that binds leaves
+        // the service map set and the published map empty
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [ServiceFixture::class => static function (ContainerContract $container): void {
+                $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+            }],
+            services: [ServiceFixture::class => [ServiceFixture::class, 'make']],
+        ));
+        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
+
+        self::assertTrue($this->parent->isService(ServiceFixture::class));
+        self::assertFalse($this->parent->isPublished(ServiceFixture::class));
+
+        $this->expectException(ContainerUnresolvedParentAliasException::class);
+
+        $this->child->getAliased('svcAlias');
+    }
+
+    public function testGetAliasedFromParentReachesTheParentsOwnCopy(): void
+    {
+        $parentInstance = new SingletonFixture();
+        $this->parent->setSingleton(SingletonFixture::class, $parentInstance);
+        $this->parent->bindAlias('fromParent', SingletonFixture::class);
+
+        $childInstance = new SingletonFixture();
+        $this->child->setSingleton(SingletonFixture::class, $childInstance);
+
+        self::assertSame($childInstance, $this->child->get(SingletonFixture::class));
+        self::assertSame($parentInstance, $this->child->get('fromParent'));
+    }
+
+    public function testGetAliasedFromParentReusesAForceResolvedSingletonBinding(): void
+    {
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $this->parent->bindAlias('singletonAlias', SingletonFixture::class);
+        $parentInstance = $this->parent->getSingleton(SingletonFixture::class);
+
+        self::assertSame($parentInstance, $this->child->getAliased('singletonAlias'));
+    }
+
+    public function testOnlyAParentDeclaredAliasRunsTheFactoryInTheParent(): void
+    {
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('parentAlias', ServiceFixture::class);
+        $this->child->bindAlias('childAlias', ServiceFixture::class);
+
+        self::assertSame($this->parent, $this->child->getAliased('parentAlias')->getContainer());
+        self::assertSame($this->child, $this->child->getAliased('childAlias')->getContainer());
+        self::assertSame($this->child, $this->child->getService(ServiceFixture::class)->getContainer());
+    }
+
+    public function testGetAliasedDelegatesWhenTheParentAlreadyPublished(): void
+    {
+        $this->parent->setFromData(new ContainerData(
+            callbacks: [ServiceFixture::class => static function (ContainerContract $container): void {
+                $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+            }],
+        ));
+        $this->parent->get(ServiceFixture::class);
+        $this->parent->bindAlias('svcAlias', ServiceFixture::class);
+
+        self::assertTrue($this->parent->isPublished(ServiceFixture::class));
+
+        self::assertInstanceOf(ServiceFixture::class, $this->child->getAliased('svcAlias'));
+    }
+
+    public function testGetAliasedStopsOnACyclicParentAliasChain(): void
+    {
+        $this->parent->bindAlias('first', 'second');
+        $this->parent->bindAlias('second', 'first');
+
+        $this->expectException(ContainerInvalidReferenceException::class);
+
+        $this->child->getAliased('first');
     }
 
     // -----------------------------------------------------------------------

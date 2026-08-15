@@ -828,7 +828,9 @@ Warning: the two implementations differ in behavior on the factory path, not
 only in speed. `NativeChildContainer` reads a parent-bound factory out of the
 parent's map and invokes the factory itself, so the factory receives the
 child and resolves its dependencies child-first. `ChildContainer` hands the
-same call to the parent, so the same factory receives the parent. Choose the
+same call to the parent, so the same factory receives the parent. A
+parent-declared alias is the exception, and
+[Where an Alias Resolves](#where-an-alias-resolves) states it. Choose the
 implementation whose factory receiver your services need; the direct map
 access also removes the method-call overhead on the fallback path.
 
@@ -856,14 +858,24 @@ an alias. When the parent holds a resolved instance and the child holds none, a
 direct child lookup reuses the parent's instance.
 
 Warning: the parent must already answer the target without caching it. When the
-parent would build and cache the target for the first time, `ChildContainer`
+parent would build and cache the target for the first time, a child container
 throws `ContainerUnresolvedParentAliasException` instead of writing to the
 frozen parent. Resolve or publish that target in `bootstrapParentServices()`.
 
-`NativeChildContainer` does not follow this rule. It resolves a
-parent-declared alias in the child, so the alias does not select the parent's
-scope and it never throws. A singleton the parent already resolved still comes
-back, because the child reads the parent's instances directly.
+Both implementations follow this rule and apply the same guard.
+`ChildContainer` reads the parent through `ContainerContract`, and
+`NativeChildContainer` reads the parent's maps. Both ask the same questions in
+the same order.
+
+Warning: a **parent-declared** alias hands the call to the parent in both
+implementations, so a parent-bound factory receives the parent. This is the one
+path where `NativeChildContainer` gives the parent for a lookup it could have
+answered itself.
+
+Off that path the receiver follows the implementation, not the alias.
+`NativeChildContainer` invokes a parent-bound factory itself and gives it the
+child. `ChildContainer` hands the same call to the parent and gives it the
+parent.
 
 The guard asks the parent the same questions the parent's own `get()` asks, in
 the same order:
@@ -873,9 +885,11 @@ the same order:
 2. Is an instance cached?
 3. Is a singleton bound?
 
-The two child containers answer `isDeferred()` differently. `ChildContainer`
-copies the callbacks, so it answers for its own map. `NativeChildContainer`
-copies nothing, so it answers for the child and the parent.
+Both containers ask the parent these questions the same way. They answer
+`isDeferred()` about **themselves** differently, because they hold different
+state. `ChildContainer` copies the callbacks, so it answers for its own map.
+`NativeChildContainer` copies nothing, so it answers for the child and the
+parent.
 
 ### Using a Child Container
 
@@ -917,7 +931,7 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-**`ContainerUnresolvedParentAliasException`** — A `ChildContainer` lookup of an
+**`ContainerUnresolvedParentAliasException`** — A child container lookup of an
 alias that only the parent declares would make the parent build and cache the
 target for the first time
 ([Where an Alias Resolves](#where-an-alias-resolves)). It extends the SPL
