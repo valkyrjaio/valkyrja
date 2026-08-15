@@ -1,6 +1,14 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.12.0...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.13.0...26.x)
+
+## [v26.13.0](https://github.com/valkyrjaio/valkyrja/compare/v26.12.0...v26.13.0) - 2026-08-15
+
+* [Container] fix(#1169)!: Refuse a child delegation that would write to the parent by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1172
+* [Container] fix(#1170): Delegate a parent-declared alias in the native child container by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1176
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1213
+* [Workflow] ci: Update .github workflow refs to v26.25.0 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1214
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1215
 
 ## [v26.12.0](https://github.com/valkyrjaio/valkyrja/compare/v26.11.4...v26.12.0) - 2026-08-14
 
