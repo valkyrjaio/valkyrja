@@ -98,7 +98,7 @@ class Container implements ContainerContract
     #[Override]
     public function has(string $id): bool
     {
-        return isset($this->callbacks[$id])
+        return $this->isDeferred($id)
             || $this->isSingleton($id)
             || $this->isService($id)
             || $this->isAlias($id);

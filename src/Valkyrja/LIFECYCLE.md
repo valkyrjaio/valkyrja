@@ -267,23 +267,48 @@ handle(app, data, request)
 | `valkyrja/openswoole` | `Valkyrja\OpenSwoole\OpenSwooleHttp` | OpenSwoole |
 | `valkyrja/roadrunner` | `Valkyrja\RoadRunner\RoadRunnerHttp` | RoadRunner |
 
-### Customising Bootstrap
+### Customizing Bootstrap
 
-Override `bootstrapParentServices()` to force-resolve services that are
-expensive to create and safe to share across requests:
+Override `bootstrapParentServices()` to prepare in the parent whatever a child
+would otherwise reach through it:
 
 ```php
-protected static function bootstrapParentServices(ApplicationContract $app): void
+public static function bootstrapParentServices(ApplicationContract $app): void
 {
+    // The base resolves the route collection, so keep it.
+    parent::bootstrapParentServices($app);
+
     $container = $app->getContainer();
-    $container->getSingleton(CollectionContract::class);
+
+    // A singleton resolves once here, and every child reuses that instance.
     $container->getSingleton(MyExpensiveSharedService::class);
+
+    // With OrmServiceProvider registered, PDO is published by bind(), so PDO is a
+    // service and not a singleton. Publishing puts the factory in the parent, and
+    // every child then reaches the factory. Each child still builds its own
+    // instance. Warning: publish() returns quietly for an id no provider registers.
+    $container->publish(\PDO::class);
 }
 ```
 
 Anything resolved here lives in the frozen parent and is shared read-only across
-all requests. Anything not resolved here is created fresh in each request's child
-container — correct but paying the creation cost per request.
+all requests. A child that holds the publish callback, or the singleton binding
+from the data, builds the id fresh in the child's own scope. That is correct,
+and the build costs time on every request.
+
+Warning: resolve here any id that a child must reach through the parent while
+the parent would write to answer it. The child refuses instead:
+
+- A direct lookup raises `ContainerUnpublishedParentTargetException` when the
+  parent holds an unrun publish callback for the id.
+- A lookup through an alias that only the parent declares raises
+  `ContainerUnresolvedParentAliasException`. Two parent states raise it: an
+  unrun publish callback for the target, and a singleton binding the parent has
+  not resolved.
+
+A child that can answer the id from its own maps resolves it and never reaches
+the parent. See
+[Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 
 ### Child Container Variants
 
@@ -293,9 +318,11 @@ Two implementations are available for the per-request child container:
   `ContainerContract`. Portable and works with any parent that implements the
   contract.
 - **`NativeChildContainer`** — accesses the parent's protected fields directly
-  for lower construction overhead. Requires a concrete `Container` parent.
-  Use only when profiling confirms a bottleneck at very high child construction
-  rates.
+  for lower construction overhead. Requires a concrete `Container` parent. It
+  raises neither refusal above. It resolves a parent-declared alias in the
+  child, so the alias does not select the parent's scope, and it answers a
+  direct lookup from the parent's maps rather than delegating to the parent. The
+  two differ in behavior, not in speed alone.
 
 ## Focus on Configuration
 

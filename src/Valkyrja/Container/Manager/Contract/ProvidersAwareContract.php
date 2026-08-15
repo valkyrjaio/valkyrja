@@ -24,6 +24,13 @@ interface ProvidersAwareContract
     public function register(ServiceProviderContract $provider): void;
 
     /**
+     * Determine whether a publish callback is registered for a given service.
+     *
+     * @param class-string $id The provided service id
+     */
+    public function isDeferred(string $id): bool;
+
+    /**
      * Determine whether a given service is published.
      *
      * @param class-string $id The provided service id

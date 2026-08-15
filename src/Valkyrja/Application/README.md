@@ -824,10 +824,15 @@ the handler before the runtime writes the response out.
 
 ### Customizing the Parent
 
-Override `bootstrapParentServices()` to force-resolve services that are
-expensive to create and safe to share. A service resolved here lives in the
-frozen parent; a service not resolved here is created fresh in each request's
-child. The base implementation resolves the route collection.
+Override `bootstrapParentServices()` to prepare in the parent whatever the
+parent would otherwise write while answering a child. An id resolved here lives
+in the frozen parent. A child still delegates any other id to the parent, and
+the parent answers it as before. The child refuses only when the parent holds an
+unrun publish callback for that id, or an unresolved singleton binding behind a
+parent-declared alias
+([Exceptions](../Container/README.md#exceptions)). The base implementation
+resolves the route collection, so an override calls
+`parent::bootstrapParentServices($app)` first.
 
 ### Swapping the Child Container
 
@@ -837,8 +842,10 @@ Two `ChildContainer` implementations exist in `Valkyrja\Container\Manager`:
   `ContainerContract`, so any parent that implements the contract works.
 - `NativeChildContainer` reads the parent's protected fields directly for a
   lower construction cost. It requires a concrete `Container` parent and takes
-  no `ContainerData`. Use it only when profiling shows a bottleneck at child
-  construction.
+  no `ContainerData`. It answers from the parent's maps rather than delegating,
+  so it raises neither refusal. It also resolves a parent-declared alias in the
+  child, so that alias does not select the parent's scope there. Choose the
+  behavior your services need, not the construction cost alone.
 
 To swap the implementation, override `getChildContainer()` in your concrete
 worker subclass.

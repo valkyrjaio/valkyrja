@@ -15,6 +15,9 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnpublishedParentTargetException;
+use Valkyrja\Container\Throwable\Exception\ContainerUnresolvedParentAliasException;
 
 class ChildContainer extends Container
 {
@@ -106,6 +109,24 @@ class ChildContainer extends Container
         // Parent already has a resolved instance — reuse it (frozen, safe)
         // and the child has none of its own
         if (! parent::isSingletonInstance($id) && $this->parent->isSingletonInstance($id)) {
+            if ($this->isUnpublishedInParent($id)) {
+                // Delegating would run the parent's publish callback, so answer from
+                // the child instead.
+                $instance = parent::getSingletonWithoutChecks($id);
+
+                if ($instance !== null) {
+                    return $instance;
+                }
+
+                // get() tries the child's service and alias maps after this, and
+                // getSingleton() does not, so refuse only when neither can answer.
+                if (parent::isService($id) || parent::isAlias($id)) {
+                    return null;
+                }
+
+                throw new ContainerUnpublishedParentTargetException($id);
+            }
+
             return $this->parent->getSingleton($id);
         }
 
@@ -122,6 +143,16 @@ class ChildContainer extends Container
     protected function getServiceWithoutChecks(string $id, array $arguments = []): object|null
     {
         if (! parent::isService($id) && $this->parent->isService($id)) {
+            if ($this->isUnpublishedInParent($id)) {
+                // get() tries the child's alias map after this, and getService()
+                // does not, so refuse only when that cannot answer either.
+                if (parent::isAlias($id)) {
+                    return null;
+                }
+
+                throw new ContainerUnpublishedParentTargetException($id);
+            }
+
             return $this->parent->getService($id, $arguments);
         }
 
@@ -137,10 +168,76 @@ class ChildContainer extends Container
     #[Override]
     protected function getAliasedWithoutChecks(string $id, array $arguments = []): object|null
     {
-        if (! parent::isAlias($id) && $this->parent->isAlias($id)) {
-            return $this->parent->getAliased($id, $arguments);
+        if (parent::isAlias($id)) {
+            return parent::getAliasedWithoutChecks($id, $arguments);
         }
 
-        return parent::getAliasedWithoutChecks($id, $arguments);
+        if (! $this->parent->isAlias($id)) {
+            return null;
+        }
+
+        $this->validateParentAliasResolution($id);
+
+        return $this->parent->getAliased($id, $arguments);
+    }
+
+    /**
+     * Check whether the parent holds a publish callback it has not run.
+     *
+     * @param class-string $id The service id
+     */
+    protected function isUnpublishedInParent(string $id): bool
+    {
+        return $this->parent->isDeferred($id)
+            && ! $this->parent->isPublished($id);
+    }
+
+    /**
+     * Validate that the parent answers an alias without caching anything new.
+     *
+     * @param class-string $id The alias
+     */
+    protected function validateParentAliasResolution(string $id): void
+    {
+        $seen    = [];
+        $current = $id;
+
+        while (($aliasedId = $this->parent->getAliasedId($current)) !== null) {
+            if (isset($seen[$aliasedId])) {
+                throw new ContainerInvalidReferenceException($id);
+            }
+
+            $seen[$aliasedId] = true;
+            $current          = $aliasedId;
+
+            if ($this->isUnresolvedInParent($current)) {
+                throw new ContainerUnresolvedParentAliasException($id, $current);
+            }
+
+            // The parent answers a singleton or a service before it follows an
+            // alias, so it never reaches the rest of the chain.
+            if ($this->parent->isSingletonInstance($current) || $this->parent->isService($current)) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * Check whether the parent would cache a given id for the first time.
+     *
+     * @param class-string $id The service id
+     */
+    protected function isUnresolvedInParent(string $id): bool
+    {
+        // The parent publishes before it reads any map, so this test comes first.
+        if ($this->isUnpublishedInParent($id)) {
+            return true;
+        }
+
+        if ($this->parent->isSingletonInstance($id)) {
+            return false;
+        }
+
+        return $this->parent->isSingletonBinding($id);
     }
 }

@@ -303,6 +303,9 @@ Before a resolution, you can inspect what is registered:
   `bindSingleton()` id also stores its factory in the service map, so the
   method returns `true` for a singleton binding too.
 - `isAlias(string $id): bool` — the id is an alias.
+- `isDeferred(string $id): bool` — a publish callback is registered for the id.
+  The method reports the registration, not whether the callback ran; pair it
+  with `isPublished()` to find a service that is registered and still unrun.
 - `isPublished(string $id): bool` — the id's publish callback ran, or a
   boot-time `bind()`, `bindSingleton()`, or `setSingleton()` marked the id.
   `bindAlias()` does not mark the id.
@@ -729,10 +732,27 @@ publish callbacks through `ContainerData`, so the first lookup of an
 unpublished service runs its callback with the child as the container. The
 service publishes into the child's own scope; the parent's maps do not change.
 
-`WorkerHttp::bootstrapParentServices()` exists for cost, not for correctness.
-A service that it force-resolves before the request loop is cached in the
-frozen parent once, and every child reuses that instance. A service left
-deferred publishes again in each child that requests it.
+`WorkerHttp::bootstrapParentServices()` is about cost for an id a child can
+answer itself. A child answers an id when the child holds the publish callback,
+or the singleton binding from the data. An id that the method force-resolves
+before the request loop is cached in the frozen parent once, and every child
+reuses that instance. An id left unresolved is built again in each child that
+requests it.
+
+Warning: the method is about correctness whenever a child must reach an id
+through a parent that would write while answering it. The child refuses instead
+of delegating.
+
+- A direct lookup the child cannot answer raises
+  `ContainerUnpublishedParentTargetException` when the parent holds an unrun
+  publish callback for the id.
+- A lookup through an alias that only the parent declares raises
+  `ContainerUnresolvedParentAliasException`. Two parent states raise it: an
+  unrun publish callback for the target, and a singleton binding the parent has
+  not resolved ([Where an Alias Resolves](#where-an-alias-resolves)).
+
+A parent that answers without writing delegates as before, and so does an id the
+child can answer from its own maps.
 
 ### The Child's Copy of the Data
 
@@ -812,6 +832,51 @@ same call to the parent, so the same factory receives the parent. Choose the
 implementation whose factory receiver your services need; the direct map
 access also removes the method-call overhead on the fallback path.
 
+### Where an Alias Resolves
+
+An alias resolves in the container that declares it, so **where you declare an
+alias selects the resolution scope.** A child lookup of an alias that only the
+parent declares resolves in the parent. This is the one way to reach the
+parent's copy of a service that the child also binds:
+
+```php
+// Once, at bootstrap. The child never declares this alias.
+$parent->bind(SlackNotifier::class, [SlackNotifier::class, 'make']);
+$parent->bindAlias(NotifierContract::class, SlackNotifier::class);
+
+// Per request, the child binds its own.
+$child->bind(SlackNotifier::class, [SlackNotifier::class, 'make']);
+
+$child->get(SlackNotifier::class);     // built by the child's binding
+$child->get(NotifierContract::class);  // built by the parent's binding
+```
+
+The example binds a service. The three-step strategy above takes precedence over
+an alias. When the parent holds a resolved instance and the child holds none, a
+direct child lookup reuses the parent's instance.
+
+Warning: the parent must already answer the target without caching it. When the
+parent would build and cache the target for the first time, `ChildContainer`
+throws `ContainerUnresolvedParentAliasException` instead of writing to the
+frozen parent. Resolve or publish that target in `bootstrapParentServices()`.
+
+`NativeChildContainer` does not follow this rule. It resolves a
+parent-declared alias in the child, so the alias does not select the parent's
+scope and it never throws. A singleton the parent already resolved still comes
+back, because the child reads the parent's instances directly.
+
+The guard asks the parent the same questions the parent's own `get()` asks, in
+the same order:
+
+1. Is a publish callback registered and still unrun? `isDeferred()` reports the
+   registration, and `isPublished()` reports the run.
+2. Is an instance cached?
+3. Is a singleton bound?
+
+The two child containers answer `isDeferred()` differently. `ChildContainer`
+copies the callbacks, so it answers for its own map. `NativeChildContainer`
+copies nothing, so it answers for the child and the parent.
+
 ### Using a Child Container
 
 ```php
@@ -840,7 +905,7 @@ the full lifecycle.
 
 ## Exceptions
 
-The container throws two exceptions, both under
+The container throws four exceptions, all under
 `Valkyrja\Container\Throwable\Exception`.
 
 **`ContainerInvalidReferenceException`** — A resolution method received an id
@@ -852,8 +917,26 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-Both implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`, so
-one catch covers everything the container throws:
+**`ContainerUnresolvedParentAliasException`** — A `ChildContainer` lookup of an
+alias that only the parent declares would make the parent build and cache the
+target for the first time
+([Where an Alias Resolves](#where-an-alias-resolves)). It extends the SPL
+`RuntimeException`. The same lookup raises
+`ContainerInvalidReferenceException` for a cyclic chain of parent aliases,
+because such a chain reaches no target.
+
+**`ContainerUnpublishedParentTargetException`** — A `ChildContainer` lookup
+would delegate an id to a parent that still holds an unrun publish callback for
+it, so the parent would publish during the request loop. It covers a service
+and a singleton alike. It extends the SPL `RuntimeException`. Three remedies
+answer it:
+
+- Resolve the id in `bootstrapParentServices()`.
+- Call `publish()` there instead, when the publisher binds a service.
+- Give the child the publish callbacks.
+
+All four implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
+so one catch covers everything the container throws:
 
 ```php
 use Valkyrja\Container\Throwable\Contract\ContainerThrowable;

@@ -53,6 +53,16 @@ trait ProvidersAware
      *
      * @param class-string $id The service id
      */
+    public function isDeferred(string $id): bool
+    {
+        return isset($this->callbacks[$id]);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     */
     public function isPublished(string $id): bool
     {
         return isset($this->published[$id]);
@@ -96,7 +106,7 @@ trait ProvidersAware
      */
     protected function publishUnpublishedProvided(string $id): void
     {
-        if (isset($this->callbacks[$id]) && ! $this->isPublished($id)) {
+        if ($this->isDeferred($id) && ! $this->isPublished($id)) {
             $this->publish($id);
         }
     }
