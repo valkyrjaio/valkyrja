@@ -22,7 +22,6 @@ use function trim;
 
 /**
  * @phpstan-consistent-constructor
- *  Will be overridden if need be
  */
 class Component implements ComponentContract
 {
