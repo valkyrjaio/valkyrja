@@ -23,9 +23,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * An application config that implements every cache contract at once.
- *
- * The adapter contracts prefix each property with the adapter name, so one class
- * can carry the settings for several adapters without a name collision.
  */
 final class CacheConfigFixture extends Config implements CacheConfigContract, CacheRedisConfigContract, CacheLogConfigContract, CacheNullConfigContract
 {

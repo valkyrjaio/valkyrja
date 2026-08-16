@@ -17,10 +17,7 @@ use Valkyrja\Orm\Entity\Abstract\Entity;
 use Valkyrja\Orm\Entity\Contract\SoftDeleteEntityContract;
 
 /**
- * Entity to use to test the soft delete with a field that is not the default.
- *
- * The field keeps the name that the framework used before the convention
- * change, which shows that an application with an older schema still works.
+ * Tests soft deletion with a field named as it was before the convention change.
  */
 final class SoftDeleteEntityCustomFieldFixture extends Entity implements SoftDeleteEntityContract
 {

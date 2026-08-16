@@ -24,15 +24,7 @@ use function ob_get_level;
 use function ob_start;
 
 /**
- * Smoke-test FrankenPhpHttp subclass.
- *
- * Drives the real run() loop end to end — the request is built for a target
- * route and dispatched through the real handle() pipeline, which emits the
- * response through the PHP SAPI (as FrankenPHP's worker runtime would capture
- * it) — while doubling only the runtime-bound seams: bootstrap() returns the
- * pre-booted application, getRequest() targets the route, and
- * handleFrankenPhpRequest() invokes the handler once, capturing the emitted SAPI
- * output, and stops the loop.
+ * Drives FrankenPhpHttp's real run() loop end to end, doubling only the runtime-bound seams.
  */
 final class FrankenPhpHttpSmokeFixture extends FrankenPhpHttp
 {

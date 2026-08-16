@@ -18,9 +18,7 @@ use Valkyrja\Application\Provider\Contract\ComponentProviderContract;
 use Valkyrja\Tests\Fixtures\Event\Provider\ListenerProviderFixture;
 
 /**
- * A component provider that intentionally returns the same sub-providers as
- * existing test providers, so that deduplication tests can verify array_unique
- * eliminates the duplicates.
+ * Returns sub-providers that existing test providers also return, so deduplication can be asserted.
  */
 final class DuplicateSubProviderFixture implements ComponentProviderContract
 {

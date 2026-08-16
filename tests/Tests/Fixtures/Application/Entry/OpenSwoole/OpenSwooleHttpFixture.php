@@ -25,14 +25,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response as FrameworkResponse;
 
 /**
- * Testable OpenSwooleHttp subclass.
- *
- * Overrides the runtime seams so the entry can be driven without the OpenSwoole
- * event loop or a live connection: bootstrap() returns an injected application,
- * startServer() records that the (blocking) start was reached, handleSwooleRequest()
- * returns an injected framework response, and the request/response I/O seams
- * (rawContent()/status()/header()/end()) record their arguments instead of
- * touching a non-live OpenSwoole request or response.
+ * Drives OpenSwooleHttp without the OpenSwoole event loop or a live connection.
  */
 final class OpenSwooleHttpFixture extends OpenSwooleHttp
 {

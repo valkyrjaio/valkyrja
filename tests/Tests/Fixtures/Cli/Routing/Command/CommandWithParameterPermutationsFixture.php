@@ -28,10 +28,7 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
- * Command fixture exercising the argument/option mode and value-mode permutations not
- * covered by CommandWithAllAttributesFixture (which only covers REQUIRED + ARRAY): an
- * optional single-value argument, an optional single-value long-only option, and a
- * valueless (NONE) flag option.
+ * Exercises the CLI argument and option permutations that CommandWithAllAttributesFixture leaves uncovered.
  */
 final class CommandWithParameterPermutationsFixture
 {

@@ -21,9 +21,6 @@ use Valkyrja\Mail\Mailer\NullMailer;
 
 /**
  * An application config that implements every mail contract at once.
- *
- * The adapter contracts prefix each property with the adapter name, so one class
- * can carry the settings for several adapters without a name collision.
  */
 final class MailConfigFixture extends Config implements MailConfigContract, MailMailgunConfigContract, MailPhpMailerConfigContract
 {

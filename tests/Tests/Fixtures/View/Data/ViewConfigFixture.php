@@ -25,9 +25,6 @@ use Valkyrja\View\Renderer\OrkaRenderer;
 
 /**
  * An application config that implements every view contract at once.
- *
- * The renderer contracts prefix each property with the renderer name, so one
- * class can carry the settings for several renderers without a name collision.
  */
 final class ViewConfigFixture extends Config implements ViewConfigContract, ViewPhpConfigContract, ViewOrkaConfigContract, ViewTwigConfigContract
 {

@@ -16,8 +16,7 @@ use Override;
 use Valkyrja\Cli\Server\Support\Exiter;
 
 /**
- * Records the exit seam call made by Exiter when it is not frozen, so tests can
- * exercise the unfrozen arm without terminating the test process.
+ * Records Exiter's unfrozen exit seam call without terminating the test process.
  */
 final class ExiterRecorderFixture extends Exiter
 {

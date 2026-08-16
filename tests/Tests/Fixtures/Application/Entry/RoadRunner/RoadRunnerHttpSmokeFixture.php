@@ -20,14 +20,7 @@ use Valkyrja\Application\Entry\RoadRunner\RoadRunnerHttp;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 
 /**
- * Smoke-test RoadRunnerHttp subclass.
- *
- * Drives the real run() loop end to end — request conversion, dispatch, and
- * response marshaling all run for real against a booted app — while doubling
- * only the relay-bound seams: bootstrap() returns the pre-booted application,
- * getWorker()/waitForRequest() feed one real request then stop, and
- * sendRoadRunnerResponse() records the emitted status/body/headers instead of
- * writing back to a non-live worker.
+ * Drives RoadRunnerHttp's real run() loop end to end, doubling only the relay-bound seams.
  */
 final class RoadRunnerHttpSmokeFixture extends RoadRunnerHttp
 {

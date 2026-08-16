@@ -19,9 +19,7 @@ use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Constant\Regex;
 
 /**
- * Controller fixture exercising a matrix of attribute-defined dynamic routes so the
- * attribute construction path can be asserted to produce the same regex as direct
- * construction.
+ * Exercises a matrix of attribute-defined dynamic routes against direct construction.
  */
 final class RoutingCombinationsControllerFixture
 {

@@ -22,9 +22,6 @@ use Valkyrja\Orm\Manager\SqliteManager;
 
 /**
  * An application config that implements every orm contract at once.
- *
- * The connection contracts prefix each property with the connection name, so one
- * class can carry the settings for several connections without a name collision.
  */
 final class OrmConfigFixture extends Config implements OrmConfigContract, OrmMysqlConfigContract, OrmPgsqlConfigContract, OrmSqliteConfigContract
 {

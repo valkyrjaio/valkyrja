@@ -18,13 +18,7 @@ use Override;
 use Valkyrja\Application\Entry\OpenSwoole\OpenSwooleHttp;
 
 /**
- * Smoke-test OpenSwooleHttp subclass.
- *
- * Leaves the request conversion and dispatch pipeline real (bootstrap, request
- * building, and handleSwooleRequest() all run for real against a booted app);
- * only the irreducible OpenSwoole I/O seams are doubled — the raw body is fed in
- * and the emitted status/headers/body are recorded — so a full onRequest() round
- * trip can be asserted without a live OpenSwoole connection.
+ * Drives a full OpenSwooleHttp onRequest() round trip, doubling only the OpenSwoole I/O seams.
  */
 final class OpenSwooleHttpSmokeFixture extends OpenSwooleHttp
 {
