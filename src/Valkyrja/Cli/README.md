@@ -944,8 +944,9 @@ quiet, or silent output does not read from stdin. The default response
 applies, so a scripted run never blocks.
 
 The default response also applies when the stdin stream does not open, and
-when a read from it fails. A run with no console therefore behaves the same
-as `--no-interaction`, and a question never makes it fail. Read
+when a read from it reaches the end of input or fails. A container whose
+stdin is closed or empty therefore behaves the same as `--no-interaction`,
+and a question never makes such a run fail. Read
 `hasBeenAnswered()` on the answer to know whether the user gave a response.
 
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
