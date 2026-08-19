@@ -119,7 +119,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write to the stream: no diagnostic available');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: no diagnostic available');
 
         $output->writeMessages();
     }
@@ -130,7 +130,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write to the stream: no diagnostic available');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: no diagnostic available');
 
         $output->writeMessages();
     }
@@ -141,7 +141,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write to the stream: Write of 4 bytes failed with errno=32');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: Write of 4 bytes failed with errno=32');
 
         $output->writeMessages();
     }
