@@ -14,6 +14,6 @@ namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
 use Valkyrja\Cli\Interaction\Throwable\Exception\Abstract\CliInteractionRuntimeException;
 
-class CliInteractionUnwritableFileException extends CliInteractionRuntimeException
+class CliInteractionFileWriteException extends CliInteractionRuntimeException
 {
 }
