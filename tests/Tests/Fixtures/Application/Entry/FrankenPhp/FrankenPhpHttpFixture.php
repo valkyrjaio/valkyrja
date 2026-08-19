@@ -22,13 +22,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Request\ServerRequest;
 
 /**
- * Testable FrankenPhpHttp subclass.
- *
- * Overrides the runtime seams so run()'s request loop can be driven without the
- * FrankenPHP worker runtime: bootstrap() returns an injected application,
- * handle() records calls (and optionally throws to exercise the catch branch),
- * getMaxRequests() returns a configured bound, and handleFrankenPhpRequest()
- * invokes the handler and returns queued keep-running values.
+ * Drives FrankenPhpHttp's request loop without the FrankenPHP worker runtime.
  */
 final class FrankenPhpHttpFixture extends FrankenPhpHttp
 {

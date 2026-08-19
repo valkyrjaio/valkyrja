@@ -28,14 +28,7 @@ use function ob_get_level;
 use function ob_start;
 
 /**
- * Testable WorkerHttp subclass.
- *
- * Overrides:
- *   - bootstrapParentServices(): tracks call count; skips real service resolution
- *     so tests don't require the full HTTP provider stack.
- *   - getChildContainer(): records every child container created per request.
- *   - getChildApplication(): records every child application created per request.
- *   - handleRequest(): no-op; tests verify isolation, not dispatch.
+ * Records WorkerHttp's per-request containers and applications without the full HTTP provider stack.
  */
 final class WorkerHttpFixture extends WorkerHttp
 {
@@ -92,14 +85,11 @@ final class WorkerHttpFixture extends WorkerHttp
 
     /**
      * @inheritDoc
-     *
-     * No-op: skips CollectionContract resolution so tests run without the full
-     * HTTP provider stack. Tracks the call count so tests can assert it was
-     * called exactly once (during bootstrap, not per request).
      */
     #[Override]
     public static function bootstrapParentServices(ApplicationContract $app): void
     {
+        // Counted so a test can assert bootstrap runs once, not once per request.
         self::$bootstrapParentServicesCallCount++;
 
         parent::bootstrapParentServices($app);
@@ -127,8 +117,6 @@ final class WorkerHttpFixture extends WorkerHttp
 
     /**
      * @inheritDoc
-     *
-     * Records the created container before returning it.
      */
     #[Override]
     public static function getChildContainer(ApplicationContract $app, ContainerData $data): ContainerContract
@@ -142,8 +130,6 @@ final class WorkerHttpFixture extends WorkerHttp
 
     /**
      * @inheritDoc
-     *
-     * Records the created child application before returning it.
      */
     #[Override]
     public static function getChildApplication(ApplicationContract $app, ContainerContract $container): ApplicationContract
@@ -157,8 +143,6 @@ final class WorkerHttpFixture extends WorkerHttp
 
     /**
      * @inheritDoc
-     *
-     * No-op: tests verify isolation, not actual request dispatch.
      */
     #[Override]
     public static function handleRequest(ContainerContract $container, ServerRequestContract $request): void

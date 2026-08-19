@@ -16,9 +16,7 @@ use Override;
 use Valkyrja\Http\Message\File\Factory\UploadedFileFactory;
 
 /**
- * Drives the SAPI seam of UploadedFileFactory, so tests can exercise
- * isValidSapiEnvironmentForUploads() for SAPIs other than the one PHPUnit
- * itself runs under.
+ * Drives UploadedFileFactory's SAPI seam for SAPIs other than the one PHPUnit runs under.
  */
 final class UploadedFileFactorySapiFixture extends UploadedFileFactory
 {

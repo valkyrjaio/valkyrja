@@ -96,11 +96,6 @@ class ChildContainer extends Container
     /**
      * @inheritDoc
      *
-     * Singleton resolution order:
-     *   1. Child's own cached instance
-     *   2. Parent's cached instance (already resolved, safe to reuse)
-     *   3. Create fresh in child from local binding (isolates from parent)
-     *
      * @param class-string $id The service id
      */
     #[Override]

@@ -23,9 +23,6 @@ use Valkyrja\Jwt\Manager\NullJwt;
 
 /**
  * An application config that implements every jwt contract at once.
- *
- * The algorithm contracts prefix each property with the algorithm name, so one
- * class can carry the keys for several algorithms without a name collision.
  */
 final class JwtConfigFixture extends Config implements JwtConfigContract, JwtHsConfigContract, JwtRsConfigContract, JwtEdDsaConfigContract
 {

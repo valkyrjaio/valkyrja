@@ -20,9 +20,6 @@ use Valkyrja\Sms\Messenger\NullMessenger;
 
 /**
  * An application config that implements every sms contract at once.
- *
- * The adapter contracts prefix each property with the adapter name, so one class
- * can carry the settings for several adapters without a name collision.
  */
 final class SmsConfigFixture extends Config implements SmsConfigContract, SmsVonageConfigContract
 {

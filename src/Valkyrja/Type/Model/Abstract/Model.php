@@ -28,7 +28,6 @@ use const ARRAY_FILTER_USE_BOTH;
 
 /**
  * @phpstan-consistent-constructor
- *  Will be overridden if need be
  */
 abstract class Model implements ModelContract
 {

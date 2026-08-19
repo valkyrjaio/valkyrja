@@ -28,9 +28,7 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
- * Command fixture exercising a full matrix of argument and option modes/value-modes so the
- * attribute construction path can be asserted to convert every permutation into the
- * expected data-class parameters. Mirrors the Java CliRoutingCombinationsController.
+ * Exercises a full matrix of CLI argument and option modes so attribute construction can be asserted.
  */
 final class CommandWithParameterCombinationsFixture
 {

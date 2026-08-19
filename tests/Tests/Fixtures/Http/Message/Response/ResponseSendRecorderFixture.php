@@ -16,8 +16,7 @@ use Override;
 use Valkyrja\Http\Message\Response\Response;
 
 /**
- * Records the native I/O seam calls made by Response when sending, so tests
- * can assert on them without shadowing global functions in the namespace.
+ * Records Response's native I/O seam calls without shadowing global functions in the namespace.
  */
 final class ResponseSendRecorderFixture extends Response
 {

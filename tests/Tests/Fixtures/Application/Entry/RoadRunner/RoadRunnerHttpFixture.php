@@ -25,15 +25,7 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 
 /**
- * Testable RoadRunnerHttp subclass.
- *
- * Overrides the runtime seams so run()'s worker loop can be driven without the
- * RoadRunner relay: bootstrap() returns an injected application, getWorker()
- * returns an injected worker, waitForRequest() returns queued requests (null
- * ends the loop), getRequestFromRoadRunnerRequest() returns a stub request,
- * handleRoadRunnerRequest() returns an injected framework response, and
- * sendRoadRunnerResponse() records the emitted status/body/headers instead of
- * writing back to a non-live worker.
+ * Drives RoadRunnerHttp's worker loop without the RoadRunner relay.
  */
 final class RoadRunnerHttpFixture extends RoadRunnerHttp
 {
