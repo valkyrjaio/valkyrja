@@ -21,6 +21,7 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteExcept
 use function error_clear_last;
 use function error_get_last;
 use function fwrite;
+use function stream_get_meta_data;
 use function strlen;
 use function substr;
 
@@ -76,7 +77,7 @@ class StreamOutput extends Output implements StreamOutputContract
      * @inheritDoc
      *
      * A short write is not a failure. A non-blocking stream and a full pipe both take the rest of
-     * the data on a later call, so the loop offers the remainder until the stream stops taking it.
+     * the data on a later call. The loop offers the remainder until the stream stops taking it.
      *
      * @throws CliInteractionStreamWriteException When the stream stops taking the data
      */
@@ -93,7 +94,8 @@ class StreamOutput extends Output implements StreamOutputContract
             $written = $this->fwrite($this->stream, substr($data, $offset));
 
             if ($written === false || $written === 0) {
-                $reason = error_get_last()['message'] ?? 'no diagnostic available';
+                $mode   = stream_get_meta_data($this->stream)['mode'];
+                $reason = error_get_last()['message'] ?? "the stream mode is `$mode`";
 
                 throw new CliInteractionStreamWriteException(
                     "Unable to write the whole message to the stream: $reason"

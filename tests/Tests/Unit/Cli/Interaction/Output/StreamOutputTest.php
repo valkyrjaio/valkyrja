@@ -119,7 +119,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write the whole message to the stream: no diagnostic available');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream mode is `rb`');
 
         $output->writeMessages();
     }
@@ -130,7 +130,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write the whole message to the stream: no diagnostic available');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream mode is `w+b`');
 
         $output->writeMessages();
     }
