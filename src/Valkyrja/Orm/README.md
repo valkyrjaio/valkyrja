@@ -176,7 +176,7 @@ class Score extends Entity
 
 An array cast serializes the array to a string for storage, and throws an `OrmArrayCastingException` when the property value is not an array.
 
-`EntityCast` extends the Type component's `Cast` for relationship casting:
+`EntityCast` extends the Type component's `Cast` for entity casting:
 
 ```php
 use Valkyrja\Orm\Data\EntityCast;
@@ -184,13 +184,12 @@ use Valkyrja\Orm\Data\EntityCast;
 new EntityCast(
     type: SomeEntity::class,   // Entity class or CastType
     column: 'foreign_key',     // Optional: column to use for retrieval
-    relationships: ['rel'],    // Optional: the relationships
     convert: true,
     isArray: false,
 );
 ```
 
-The component stores `relationships` and reads nothing from it, so the list changes no query and loads no related entity.
+The cast loads one entity, and the cast loads no related entity. Add a method to a [custom repository](#custom-repositories) to load a relationship. The repository is where the application chooses the join type, or chooses to read the related entity from its own repository.
 
 The `EntityRouteMatchedMiddleware` reads an `EntityCast` on a route parameter, finds the entity through its repository, and replaces the parameter value with the entity.
 

@@ -47,21 +47,6 @@ final class EntityCastTest extends TestCase
         self::assertSame('user_id', $cast->column);
     }
 
-    public function testRelationshipsPropertyDefaultsToNull(): void
-    {
-        $cast = new EntityCast(CastType::string);
-
-        self::assertNull($cast->relationships);
-    }
-
-    public function testRelationshipsPropertyCanBeSet(): void
-    {
-        $relationships = ['users', 'posts'];
-        $cast          = new EntityCast(CastType::string, null, $relationships);
-
-        self::assertSame($relationships, $cast->relationships);
-    }
-
     public function testConvertPropertyDefaultsToTrue(): void
     {
         $cast = new EntityCast(CastType::string);
@@ -71,7 +56,7 @@ final class EntityCastTest extends TestCase
 
     public function testConvertPropertyCanBeSet(): void
     {
-        $cast = new EntityCast(CastType::string, null, null, false);
+        $cast = new EntityCast(CastType::string, null, false);
 
         self::assertFalse($cast->convert);
     }
@@ -85,25 +70,22 @@ final class EntityCastTest extends TestCase
 
     public function testIsArrayPropertyCanBeSet(): void
     {
-        $cast = new EntityCast(CastType::string, null, null, true, true);
+        $cast = new EntityCast(CastType::string, null, true, true);
 
         self::assertTrue($cast->isArray);
     }
 
     public function testAllPropertiesCanBeSetTogether(): void
     {
-        $relationships = ['users', 'comments'];
-        $cast          = new EntityCast(
+        $cast = new EntityCast(
             type: CastType::int,
             column: 'entity_id',
-            relationships: $relationships,
             convert: false,
             isArray: true
         );
 
         self::assertSame(CastType::int->value, $cast->type);
         self::assertSame('entity_id', $cast->column);
-        self::assertSame($relationships, $cast->relationships);
         self::assertFalse($cast->convert);
         self::assertTrue($cast->isArray);
     }

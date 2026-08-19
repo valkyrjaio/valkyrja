@@ -564,8 +564,7 @@ public static function getCastings(): array
 ### Entity Casting in the ORM
 
 The ORM extends `Cast` with `Valkyrja\Orm\Data\EntityCast`, which adds a
-`column` name and a `relationships` list for entity properties. See the ORM
-component for usage.
+`column` name for entity properties. See the ORM component for usage.
 
 ## Indexed Models
 
