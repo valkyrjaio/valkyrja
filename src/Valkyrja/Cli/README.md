@@ -947,8 +947,8 @@ The default response also applies when the stdin stream does not open, and
 when a read from it reaches the end of input or fails. A container whose
 stdin is closed or empty therefore behaves the same as `--no-interaction`,
 and a question never makes such a run fail. `ask()` returns the supplied
-answer unchanged in each of these cases, and only `withUserResponse()` sets
-the answered flag.
+answer unchanged in each of these cases, and sets the answered flag only
+when a response arrives.
 
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
 and `withWriters()` expose the writer list; a custom `WriterContract` can
