@@ -18,6 +18,7 @@ use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputDiagnosticFwriteFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputFalseFwriteFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputPartialFwriteFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputShortFwriteFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -125,13 +126,24 @@ final class StreamOutputTest extends TestCase
         $output->writeMessages();
     }
 
+    public function testOutputMessageThrowsWhenTheWriteFails(): void
+    {
+        $output = new StreamOutputFalseFwriteFixture($this->createStream())
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionStreamWriteException::class);
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: the write failed');
+
+        $output->writeMessages();
+    }
+
     public function testOutputMessageThrowsWhenTheStreamStopsTakingData(): void
     {
         $output = new StreamOutputShortFwriteFixture($this->createStream())
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream took nothing');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream took no byte of the offer');
 
         $output->writeMessages();
     }

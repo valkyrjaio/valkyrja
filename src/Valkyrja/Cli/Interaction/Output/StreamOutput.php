@@ -78,8 +78,8 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * @inheritDoc
      *
-     * A short write is not a failure. A non-blocking stream and a full pipe both take the rest of
-     * the data on a later call. The loop offers the remainder until the stream stops taking it.
+     * A short write is not a failure. A non-blocking stream takes a large message over several
+     * calls, so the loop offers the remainder while the stream takes part of it.
      *
      * @throws CliInteractionUnwritableStreamException When the stream mode has no write intent
      * @throws CliInteractionStreamWriteException      When the stream stops taking the data
@@ -99,7 +99,10 @@ class StreamOutput extends Output implements StreamOutputContract
             $written = $this->fwrite($this->stream, substr($data, $offset));
 
             if ($written === false || $written === 0) {
-                $reason = error_get_last()['message'] ?? 'the stream took nothing';
+                $default = $written === false
+                    ? 'the write failed'
+                    : 'the stream took no byte of the offer';
+                $reason  = error_get_last()['message'] ?? $default;
 
                 throw new CliInteractionStreamWriteException(
                     "Unable to write the whole message to the stream: $reason"
