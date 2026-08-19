@@ -826,10 +826,19 @@ copies the interaction flags from the `CliInteractionConfig`.
 destination. `FileOutput` appends to the filepath, and it makes the file when
 the file does not exist. `StreamOutput` writes to the stream resource at the
 current position. Each message is one write, so a sequence of messages
-concatenates. A write that fails throws
-`CliInteractionUnwritableFileException` or
-`CliInteractionUnwritableStreamException`, which the `ThrowableCaught`
-middleware receives.
+concatenates.
+
+`FileOutput` never truncates. The file keeps the messages from each earlier
+run, and the caller owns truncation. Delete the file before you construct the
+output when a run must start from an empty file.
+
+A write that stores less than the whole message throws
+`CliInteractionFileWriteException` or `CliInteractionStreamWriteException`.
+Warning: `InputHandler::run()` writes the messages after `handle()` returns, so
+this throwable escapes `run()`. The `ThrowableCaught` middleware does not
+receive it, and the process does not reach `Exiter::exit()`. Only an early
+`writeMessages()` inside a command puts the throwable in the path of that
+middleware.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
