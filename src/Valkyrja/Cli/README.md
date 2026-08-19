@@ -832,8 +832,12 @@ concatenates.
 run, and the caller owns truncation. Delete the file before you construct the
 output when a run must start from an empty file.
 
-A write that stores less than the whole message throws
-`CliInteractionFileWriteException` or `CliInteractionStreamWriteException`.
+`StreamOutput` writes the remainder when a stream takes part of the data,
+because a non-blocking stream and a full pipe both take the rest on a later
+call. A write that stores less than the whole message throws
+`CliInteractionFileWriteException`, and a stream that stops taking the data
+throws `CliInteractionStreamWriteException`. Each message carries the
+diagnostic of the failed write.
 Warning: `InputHandler::run()` writes the messages after `handle()` returns, so
 this throwable escapes `run()`. The `ThrowableCaught` middleware does not
 receive it, and the process does not reach `Exiter::exit()`. Only an early
