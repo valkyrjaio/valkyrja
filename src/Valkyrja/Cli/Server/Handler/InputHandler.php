@@ -99,7 +99,14 @@ class InputHandler implements InputHandlerContract
             $output = $this->getOutputFromThrowable($input, $throwable);
             $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
 
-            $output->writeMessages();
+            try {
+                $output->writeMessages();
+            } catch (Throwable $recoveryThrowable) {
+                // A middleware can return an output whose destination is the one that just failed.
+                $output = $this->getOutputFromThrowable($input, $recoveryThrowable);
+
+                $output->writeMessages();
+            }
         }
 
         $this->exit($input, $output);

@@ -271,6 +271,46 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('takes no write', (string) $runOutput);
     }
 
+    public function testRunFallsBackToStdoutWhenTheRecoveryWriteAlsoFails(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        // The middleware routes the recovery output back to the destination that just failed.
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->willReturn(new StreamOutput($readOnly)->withMessages(new Message('Recovery.')));
+
+        $inputHandler = new InputHandler(
+            container: new Container(),
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+    }
+
     public function testHandleExitHandler(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
