@@ -42,6 +42,10 @@ interface QuestionContract extends MessageContract
 
     /**
      * Ask the question and get an updated Answer with the response.
+     *
+     * The Answer comes back unchanged when no response arrives. An empty line, a stdin stream that
+     * does not open, and a read that fails all give this result, because each one leaves the
+     * question unanswered. Read AnswerContract::hasBeenAnswered() to know whether the user answered.
      */
     public function ask(): AnswerContract;
 }

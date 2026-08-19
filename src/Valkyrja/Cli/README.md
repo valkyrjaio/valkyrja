@@ -943,6 +943,11 @@ question, unless the validation callable accepts it. A non-interactive,
 quiet, or silent output does not read from stdin. The default response
 applies, so a scripted run never blocks.
 
+The default response also applies when the stdin stream does not open, and
+when a read from it fails. A run with no console therefore behaves the same
+as `--no-interaction`, and a question never makes it fail. Read
+`hasBeenAnswered()` on the answer to know whether the user gave a response.
+
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
 and `withWriters()` expose the writer list; a custom `WriterContract` can
 intercept any message type the same way.

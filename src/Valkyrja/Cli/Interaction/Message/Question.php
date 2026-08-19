@@ -99,14 +99,12 @@ class Question extends Message implements QuestionContract
         $handle = $this->fopen(filename: 'php://stdin', mode: 'rb');
 
         if ($handle === false) {
-            // TODO: Determine if we want to throw RuntimeException (UnhandledStreamQuestionException) here
             return $answer;
         }
 
         $line = $this->fgets($handle);
 
         if ($line === false) {
-            // TODO: Determine if we want to throw RuntimeException (UnhandledLineQuestionException) here
             return $answer;
         }
 
