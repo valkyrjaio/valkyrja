@@ -825,26 +825,27 @@ copies the interaction flags from the `CliInteractionConfig`.
 `FileOutput` and `StreamOutput` write the same formatted text to a different
 destination. `FileOutput` appends to the filepath, and it makes the file when
 the file does not exist. `StreamOutput` writes to the stream resource at the
-current position. Each message is one write, so a sequence of messages
-concatenates.
+current position. A sequence of messages concatenates.
 
 `FileOutput` never truncates. The file keeps the messages from each earlier
 run, and the caller owns truncation. Delete the file before you construct the
 output when a run must start from an empty file.
 
-`StreamOutput` writes the remainder when a stream takes part of the data. A
-non-blocking stream and a full pipe both take the rest on a later call. A
-stream that stops taking the data throws
-`CliInteractionStreamWriteException`. A file write that stores less than the
-whole message throws `CliInteractionFileWriteException`. Each throwable
-carries the diagnostic of the failed write, when PHP records one. A stream
-throwable names the stream mode when PHP records no diagnostic.
+`StreamOutput` offers the remainder again while the stream takes part of the
+data, because a non-blocking stream takes a large message over several calls.
+A stream that takes no byte of an offer throws
+`CliInteractionStreamWriteException`, which covers a stream that failed and a
+stream whose buffer is full. A file write that stores less than the whole
+message throws `CliInteractionFileWriteException`. Each throwable carries the
+diagnostic of the failed write, when PHP records one.
 
-Warning: `InputHandler::run()` writes the messages after `handle()` returns, so
-a write throwable escapes `run()`. The `ThrowableCaught` middleware does not
-receive it, and the process does not reach `Exiter::exit()`. Only an early
-`writeMessages()` inside a command puts the throwable in the path of that
-middleware.
+`StreamOutput` throws `CliInteractionUnwritableStreamException` before it
+writes, when the stream mode carries no write intent.
+
+`InputHandler::run()` writes the messages after `handle()` returns, and it
+routes a write throwable to the `ThrowableCaught` middleware. The recovery
+output writes to stdout, so the process still reaches `Exiter::exit()` and
+still carries the command's exit code.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
