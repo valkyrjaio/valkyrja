@@ -1,6 +1,12 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.13.3...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.13.4...26.x)
+
+## [v26.13.4](https://github.com/valkyrjaio/valkyrja/compare/v26.13.3...v26.13.4) - 2026-08-19
+
+* [Comment] docs: Remove the prose from type and override doc blocks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1219
+* [Workflow] ci: Update .github workflow refs to v26.25.1 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1228
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1227
 
 ## [v26.13.3](https://github.com/valkyrjaio/valkyrja/compare/v26.13.2...v26.13.3) - 2026-08-18
 
