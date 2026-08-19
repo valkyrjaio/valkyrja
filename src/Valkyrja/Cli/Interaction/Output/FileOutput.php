@@ -79,6 +79,8 @@ class FileOutput extends Output implements FileOutputContract
     {
         $data = $message->getFormattedText();
 
+        error_clear_last();
+
         if ($this->filePutContents($this->filepath, $data) !== strlen($data)) {
             $reason = error_get_last()['message'] ?? 'no diagnostic available';
 
@@ -93,7 +95,6 @@ class FileOutput extends Output implements FileOutputContract
      *
      * This call suppresses the diagnostic, because the return value reports the failure. An enabled
      * error handler turns the diagnostic into an ErrorException, which would replace the throwable.
-     * The clear keeps an earlier suppressed diagnostic out of the reason the caller reads.
      *
      * @param non-empty-string $filepath The filepath
      * @param string           $data     The data
@@ -102,8 +103,6 @@ class FileOutput extends Output implements FileOutputContract
      */
     protected function filePutContents(string $filepath, string $data): int|false
     {
-        error_clear_last();
-
         return @file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
     }
 }

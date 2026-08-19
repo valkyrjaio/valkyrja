@@ -15,8 +15,6 @@ namespace Valkyrja\Tests\Fixtures\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
-use function error_clear_last;
-
 /**
  * Testable StreamOutput class whose stream stops taking data after one byte.
  */
@@ -27,8 +25,6 @@ final class StreamOutputShortFwriteFixture extends StreamOutput
     #[Override]
     protected function fwrite($stream, string $data): int|false
     {
-        error_clear_last();
-
         $this->calls++;
 
         return $this->calls === 1 ? 1 : 0;

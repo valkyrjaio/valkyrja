@@ -88,12 +88,16 @@ class StreamOutput extends Output implements StreamOutputContract
         $offset = 0;
 
         while ($offset < $length) {
+            error_clear_last();
+
             $written = $this->fwrite($this->stream, substr($data, $offset));
 
             if ($written === false || $written === 0) {
                 $reason = error_get_last()['message'] ?? 'no diagnostic available';
 
-                throw new CliInteractionStreamWriteException("Unable to write to the stream: $reason");
+                throw new CliInteractionStreamWriteException(
+                    "Unable to write the whole message to the stream: $reason"
+                );
             }
 
             $offset += $written;
@@ -105,7 +109,6 @@ class StreamOutput extends Output implements StreamOutputContract
      *
      * This call suppresses the diagnostic, because the return value reports the failure. An enabled
      * error handler turns the diagnostic into an ErrorException, which would replace the throwable.
-     * The clear keeps an earlier suppressed diagnostic out of the reason the caller reads.
      *
      * @param resource $stream The stream
      * @param string   $data   The data
@@ -114,8 +117,6 @@ class StreamOutput extends Output implements StreamOutputContract
      */
     protected function fwrite($stream, string $data): int|false
     {
-        error_clear_last();
-
         return @fwrite(stream: $stream, data: $data);
     }
 }
