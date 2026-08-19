@@ -16,6 +16,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputDiagnosticFwriteFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputPartialFwriteFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputShortFwriteFixture;
@@ -109,7 +110,7 @@ final class StreamOutputTest extends TestCase
         self::assertSame('text', stream_get_contents($stream));
     }
 
-    public function testOutputMessageThrowsWhenTheStreamTakesNothing(): void
+    public function testOutputMessageThrowsWhenTheStreamModeTakesNoWrite(): void
     {
         $stream = fopen(filename: 'php://memory', mode: 'rb');
 
@@ -118,8 +119,8 @@ final class StreamOutputTest extends TestCase
         $output = new StreamOutput($stream)
             ->withAddedMessage(new Message('text'));
 
-        $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream mode is `rb`');
+        $this->expectException(CliInteractionUnwritableStreamException::class);
+        $this->expectExceptionMessage('The stream mode `rb` takes no write');
 
         $output->writeMessages();
     }
@@ -130,7 +131,7 @@ final class StreamOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream mode is `w+b`');
+        $this->expectExceptionMessage('Unable to write the whole message to the stream: the stream took nothing');
 
         $output->writeMessages();
     }
@@ -144,6 +145,26 @@ final class StreamOutputTest extends TestCase
         $this->expectExceptionMessage('Unable to write the whole message to the stream: Write of 4 bytes failed with errno=32');
 
         $output->writeMessages();
+    }
+
+    public function testOutputMessageDoesNotRecordAMessageAFailedWriteDidNotStore(): void
+    {
+        $stream = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($stream);
+
+        $output = new StreamOutput($stream);
+
+        try {
+            $output->writeMessage(new Message('text'));
+        } catch (CliInteractionUnwritableStreamException) {
+            self::assertFalse($output->hasWrittenMessage());
+            self::assertSame([], $output->getWrittenMessages());
+
+            return;
+        }
+
+        self::fail('The write did not throw.');
     }
 
     public function testStream(): void

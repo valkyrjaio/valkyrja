@@ -17,12 +17,14 @@ use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
 
 use function error_clear_last;
 use function error_get_last;
 use function fwrite;
 use function stream_get_meta_data;
 use function strlen;
+use function strpbrk;
 use function substr;
 
 class StreamOutput extends Output implements StreamOutputContract
@@ -79,11 +81,14 @@ class StreamOutput extends Output implements StreamOutputContract
      * A short write is not a failure. A non-blocking stream and a full pipe both take the rest of
      * the data on a later call. The loop offers the remainder until the stream stops taking it.
      *
-     * @throws CliInteractionStreamWriteException When the stream stops taking the data
+     * @throws CliInteractionUnwritableStreamException When the stream mode has no write intent
+     * @throws CliInteractionStreamWriteException      When the stream stops taking the data
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
+        $this->verifyWritable();
+
         $data   = $message->getFormattedText();
         $length = strlen($data);
         $offset = 0;
@@ -94,8 +99,7 @@ class StreamOutput extends Output implements StreamOutputContract
             $written = $this->fwrite($this->stream, substr($data, $offset));
 
             if ($written === false || $written === 0) {
-                $mode   = stream_get_meta_data($this->stream)['mode'];
-                $reason = error_get_last()['message'] ?? "the stream mode is `$mode`";
+                $reason = error_get_last()['message'] ?? 'the stream took nothing';
 
                 throw new CliInteractionStreamWriteException(
                     "Unable to write the whole message to the stream: $reason"
@@ -104,6 +108,32 @@ class StreamOutput extends Output implements StreamOutputContract
 
             $offset += $written;
         }
+    }
+
+    /**
+     * Verify the stream takes a write.
+     *
+     * A stream opened in a read mode takes nothing and raises no diagnostic, so the write reports
+     * no cause. This check names the condition instead.
+     *
+     * @throws CliInteractionUnwritableStreamException When the stream mode has no write intent
+     */
+    protected function verifyWritable(): void
+    {
+        $mode = $this->getMode();
+
+        // Every writable fopen mode carries one of these characters, and a read mode carries none.
+        if (strpbrk($mode, 'waxc+') === false) {
+            throw new CliInteractionUnwritableStreamException("The stream mode `$mode` takes no write");
+        }
+    }
+
+    /**
+     * Get the mode of the stream.
+     */
+    protected function getMode(): string
+    {
+        return stream_get_meta_data($this->stream)['mode'];
     }
 
     /**
