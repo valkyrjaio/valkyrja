@@ -189,7 +189,7 @@ new EntityCast(
 );
 ```
 
-The cast loads one entity, and the cast loads no related entity. Add a method to a [custom repository](#custom-repositories) to load a relationship. The repository is where the application chooses the join type, or chooses to read the related entity from its own repository.
+The cast holds no relationship list, and the ORM loads no related entity. Add a method to a [custom repository](#custom-repositories) to load a relationship. The repository is where the application chooses the join type, or chooses to read the related entity from its own repository.
 
 The `EntityRouteMatchedMiddleware` reads an `EntityCast` on a route parameter, finds the entity through its repository, and replaces the parameter value with the entity.
 
