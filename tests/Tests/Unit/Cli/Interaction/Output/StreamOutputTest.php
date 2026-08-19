@@ -13,9 +13,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputFalseFwriteFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputShortFwriteFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
@@ -74,12 +76,39 @@ final class StreamOutputTest extends TestCase
         );
     }
 
-    public function testOutputMessageThrowsWhenTheStreamIsUnwritable(): void
+    public function testOutputMessageWritesTheFormattedText(): void
+    {
+        $stream = $this->createStream();
+
+        $output = new StreamOutput($stream)
+            ->withAddedMessage(new SuccessMessage('text'));
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        rewind($stream);
+
+        self::assertSame("\e[97;42mtext\e[39;49m", stream_get_contents($stream));
+    }
+
+    public function testOutputMessageThrowsWhenTheWriteFails(): void
     {
         $output = new StreamOutputFalseFwriteFixture($this->createStream())
             ->withAddedMessage(new Message('text'));
 
-        $this->expectException(CliInteractionUnwritableStreamException::class);
+        $this->expectException(CliInteractionStreamWriteException::class);
+        $this->expectExceptionMessage('Unable to write to the stream');
+
+        $output->writeMessages();
+    }
+
+    public function testOutputMessageThrowsWhenTheWriteIsShort(): void
+    {
+        $output = new StreamOutputShortFwriteFixture($this->createStream())
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionStreamWriteException::class);
         $this->expectExceptionMessage('Unable to write to the stream');
 
         $output->writeMessages();

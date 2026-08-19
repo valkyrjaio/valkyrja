@@ -16,9 +16,10 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
 
 use function fwrite;
+use function strlen;
 
 class StreamOutput extends Output implements StreamOutputContract
 {
@@ -71,18 +72,23 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * @inheritDoc
      *
-     * @throws CliInteractionUnwritableStreamException When the stream cannot be written to
+     * @throws CliInteractionStreamWriteException When the write does not store the whole message
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        if ($this->fwrite($this->stream, $message->getFormattedText()) === false) {
-            throw new CliInteractionUnwritableStreamException('Unable to write to the stream');
+        $data = $message->getFormattedText();
+
+        if ($this->fwrite($this->stream, $data) !== strlen($data)) {
+            throw new CliInteractionStreamWriteException('Unable to write to the stream');
         }
     }
 
     /**
      * Write data to a stream.
+     *
+     * The diagnostic is suppressed because the return value reports the failure. An enabled error
+     * handler turns the diagnostic into an ErrorException, which would replace the throwable.
      *
      * @param resource $stream The stream
      * @param string   $data   The data
@@ -91,6 +97,6 @@ class StreamOutput extends Output implements StreamOutputContract
      */
     protected function fwrite($stream, string $data): int|false
     {
-        return fwrite(stream: $stream, data: $data);
+        return @fwrite(stream: $stream, data: $data);
     }
 }

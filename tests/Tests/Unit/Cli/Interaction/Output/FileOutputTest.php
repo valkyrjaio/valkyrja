@@ -14,9 +14,11 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableFileException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputFalseFilePutContentsFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputShortFilePutContentsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function file_get_contents;
@@ -69,15 +71,43 @@ final class FileOutputTest extends TestCase
         );
     }
 
-    public function testOutputMessageThrowsWhenTheFileIsUnwritable(): void
+    public function testOutputMessageWritesTheFormattedText(): void
+    {
+        $filepath = $this->getFilepath();
+        $message  = new SuccessMessage('text');
+
+        $output = new FileOutput($filepath)
+            ->withAddedMessage($message);
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        self::assertSame("\e[97;42mtext\e[39;49m", file_get_contents($filepath));
+    }
+
+    public function testOutputMessageThrowsWhenTheWriteFails(): void
     {
         $filepath = $this->getFilepath();
 
         $output = new FileOutputFalseFilePutContentsFixture($filepath)
             ->withAddedMessage(new Message('text'));
 
-        $this->expectException(CliInteractionUnwritableFileException::class);
-        $this->expectExceptionMessage("Unable to write to file $filepath");
+        $this->expectException(CliInteractionFileWriteException::class);
+        $this->expectExceptionMessage("Unable to write to the file `$filepath`");
+
+        $output->writeMessages();
+    }
+
+    public function testOutputMessageThrowsWhenTheWriteIsShort(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $output = new FileOutputShortFilePutContentsFixture($filepath)
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionFileWriteException::class);
+        $this->expectExceptionMessage("Unable to write to the file `$filepath`");
 
         $output->writeMessages();
     }

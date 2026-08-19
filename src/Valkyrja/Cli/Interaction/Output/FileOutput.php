@@ -16,9 +16,10 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
-use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableFileException;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
 
 use function file_put_contents;
+use function strlen;
 
 use const FILE_APPEND;
 
@@ -69,18 +70,23 @@ class FileOutput extends Output implements FileOutputContract
     /**
      * @inheritDoc
      *
-     * @throws CliInteractionUnwritableFileException When the filepath cannot be written to
+     * @throws CliInteractionFileWriteException When the write does not store the whole message
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        if ($this->filePutContents($this->filepath, $message->getFormattedText()) === false) {
-            throw new CliInteractionUnwritableFileException("Unable to write to file $this->filepath");
+        $data = $message->getFormattedText();
+
+        if ($this->filePutContents($this->filepath, $data) !== strlen($data)) {
+            throw new CliInteractionFileWriteException("Unable to write to the file `$this->filepath`");
         }
     }
 
     /**
      * Append data to a file.
+     *
+     * The diagnostic is suppressed because the return value reports the failure. An enabled error
+     * handler turns the diagnostic into an ErrorException, which would replace the throwable.
      *
      * @param non-empty-string $filepath The filepath
      * @param string           $data     The data
@@ -89,6 +95,6 @@ class FileOutput extends Output implements FileOutputContract
      */
     protected function filePutContents(string $filepath, string $data): int|false
     {
-        return file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
+        return @file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
     }
 }
