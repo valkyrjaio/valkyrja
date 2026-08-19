@@ -16,6 +16,11 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableFileException;
+
+use function file_put_contents;
+
+use const FILE_APPEND;
 
 class FileOutput extends Output implements FileOutputContract
 {
@@ -63,10 +68,27 @@ class FileOutput extends Output implements FileOutputContract
 
     /**
      * @inheritDoc
+     *
+     * @throws CliInteractionUnwritableFileException When the filepath cannot be written to
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        // TODO: Implement
+        if ($this->filePutContents($this->filepath, $message->getFormattedText()) === false) {
+            throw new CliInteractionUnwritableFileException("Unable to write to file $this->filepath");
+        }
+    }
+
+    /**
+     * Append data to a file.
+     *
+     * @param non-empty-string $filepath The filepath
+     * @param string           $data     The data
+     *
+     * @return int<0, max>|false
+     */
+    protected function filePutContents(string $filepath, string $data): int|false
+    {
+        return file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
     }
 }

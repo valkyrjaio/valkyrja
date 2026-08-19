@@ -16,6 +16,9 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
+
+use function fwrite;
 
 class StreamOutput extends Output implements StreamOutputContract
 {
@@ -67,10 +70,27 @@ class StreamOutput extends Output implements StreamOutputContract
 
     /**
      * @inheritDoc
+     *
+     * @throws CliInteractionUnwritableStreamException When the stream cannot be written to
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        // TODO: Implement
+        if ($this->fwrite($this->stream, $message->getFormattedText()) === false) {
+            throw new CliInteractionUnwritableStreamException('Unable to write to the stream');
+        }
+    }
+
+    /**
+     * Write data to a stream.
+     *
+     * @param resource $stream The stream
+     * @param string   $data   The data
+     *
+     * @return int|false
+     */
+    protected function fwrite($stream, string $data): int|false
+    {
+        return fwrite(stream: $stream, data: $data);
     }
 }

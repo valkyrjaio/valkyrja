@@ -822,6 +822,15 @@ formatted text to stdout. `PlainOutput` echoes the unformatted text. Every
 factory method accepts an `ExitCode|int` and any number of messages, and
 copies the interaction flags from the `CliInteractionConfig`.
 
+`FileOutput` and `StreamOutput` write the same formatted text to a different
+destination. `FileOutput` appends to the filepath, and it makes the file when
+the file does not exist. `StreamOutput` writes to the stream resource at the
+current position. Each message is one write, so a sequence of messages
+concatenates. A write that fails throws
+`CliInteractionUnwritableFileException` or
+`CliInteractionUnwritableStreamException`, which the `ThrowableCaught`
+middleware receives.
+
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so

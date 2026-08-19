@@ -12,17 +12,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
-use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputFalseFwriteFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
 use function fopen;
 use function ob_get_clean;
 use function ob_start;
+use function rewind;
+use function stream_get_contents;
 
 /**
- * Test the FileOutput class.
+ * Test the StreamOutput class.
  */
 final class StreamOutputTest extends TestCase
 {
@@ -30,13 +33,16 @@ final class StreamOutputTest extends TestCase
     {
         $text    = 'text';
         $message = new Message($text);
+        $stream  = $this->createStream();
 
-        $output = new StreamOutput(fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb'))
+        $output = new StreamOutput($stream)
             ->withAddedMessage($message);
 
         ob_start();
         $outputWritten = $output->writeMessages();
         $contents      = ob_get_clean();
+
+        rewind($stream);
 
         self::assertSame([$message], $outputWritten->getMessages());
         self::assertCount(1, $outputWritten->getWrittenMessages());
@@ -44,12 +50,45 @@ final class StreamOutputTest extends TestCase
         self::assertTrue($outputWritten->hasWrittenMessage());
         self::assertFalse($outputWritten->hasUnwrittenMessage());
         self::assertEmpty($contents);
+        self::assertSame($message->getFormattedText(), stream_get_contents($stream));
     }
 
-    public function testFilePath(): void
+    public function testOutputMessageAppends(): void
     {
-        $stream  = fopen(filename: Directory::storagePath('stream-output-test.txt'), mode: 'wrb');
-        $stream2 = fopen(filename: Directory::storagePath('stream-output-test2.txt'), mode: 'wrb');
+        $first  = new Message('first');
+        $second = new Message('second');
+        $stream = $this->createStream();
+
+        $output = new StreamOutput($stream)
+            ->withAddedMessages($first, $second);
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        rewind($stream);
+
+        self::assertSame(
+            $first->getFormattedText() . $second->getFormattedText(),
+            stream_get_contents($stream)
+        );
+    }
+
+    public function testOutputMessageThrowsWhenTheStreamIsUnwritable(): void
+    {
+        $output = new StreamOutputFalseFwriteFixture($this->createStream())
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionUnwritableStreamException::class);
+        $this->expectExceptionMessage('Unable to write to the stream');
+
+        $output->writeMessages();
+    }
+
+    public function testStream(): void
+    {
+        $stream  = $this->createStream();
+        $stream2 = $this->createStream();
 
         $output  = (new StreamOutput($stream));
         $output2 = $output->withStream($stream2);
@@ -57,5 +96,17 @@ final class StreamOutputTest extends TestCase
         self::assertNotSame($output, $output2);
         self::assertSame($stream, $output->getStream());
         self::assertSame($stream2, $output2->getStream());
+    }
+
+    /**
+     * @return resource
+     */
+    private function createStream()
+    {
+        $stream = fopen(filename: 'php://memory', mode: 'wb+');
+
+        self::assertNotFalse($stream);
+
+        return $stream;
     }
 }
