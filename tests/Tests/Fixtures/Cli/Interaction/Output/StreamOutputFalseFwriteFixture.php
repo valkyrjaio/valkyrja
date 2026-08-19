@@ -16,7 +16,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
 /**
- * Testable StreamOutput class with an unwritable stream.
+ * Testable StreamOutput class whose stream write fails.
  */
 final class StreamOutputFalseFwriteFixture extends StreamOutput
 {

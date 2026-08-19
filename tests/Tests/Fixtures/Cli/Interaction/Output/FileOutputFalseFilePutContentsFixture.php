@@ -16,7 +16,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 
 /**
- * Testable FileOutput class with an unwritable filepath.
+ * Testable FileOutput class whose file write fails.
  */
 final class FileOutputFalseFilePutContentsFixture extends FileOutput
 {
