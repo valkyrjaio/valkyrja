@@ -18,6 +18,8 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
 
+use function error_clear_last;
+use function error_get_last;
 use function file_put_contents;
 use function strlen;
 
@@ -78,15 +80,20 @@ class FileOutput extends Output implements FileOutputContract
         $data = $message->getFormattedText();
 
         if ($this->filePutContents($this->filepath, $data) !== strlen($data)) {
-            throw new CliInteractionFileWriteException("Unable to write to the file `$this->filepath`");
+            $reason = error_get_last()['message'] ?? 'no diagnostic available';
+
+            throw new CliInteractionFileWriteException(
+                "Unable to write the whole message to the file `$this->filepath`: $reason"
+            );
         }
     }
 
     /**
      * Append data to a file.
      *
-     * The diagnostic is suppressed because the return value reports the failure. An enabled error
-     * handler turns the diagnostic into an ErrorException, which would replace the throwable.
+     * This call suppresses the diagnostic, because the return value reports the failure. An enabled
+     * error handler turns the diagnostic into an ErrorException, which would replace the throwable.
+     * The clear keeps an earlier suppressed diagnostic out of the reason the caller reads.
      *
      * @param non-empty-string $filepath The filepath
      * @param string           $data     The data
@@ -95,6 +102,8 @@ class FileOutput extends Output implements FileOutputContract
      */
     protected function filePutContents(string $filepath, string $data): int|false
     {
+        error_clear_last();
+
         return @file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
     }
 }

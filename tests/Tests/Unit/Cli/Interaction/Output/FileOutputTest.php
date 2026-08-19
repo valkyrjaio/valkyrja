@@ -17,7 +17,6 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputFalseFilePutContentsFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputShortFilePutContentsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -86,15 +85,15 @@ final class FileOutputTest extends TestCase
         self::assertSame("\e[97;42mtext\e[39;49m", file_get_contents($filepath));
     }
 
-    public function testOutputMessageThrowsWhenTheWriteFails(): void
+    public function testOutputMessageThrowsAndReportsTheDiagnosticWhenTheWriteFails(): void
     {
-        $filepath = $this->getFilepath();
+        $filepath = Directory::storagePath('missing/file-output-test.txt');
 
-        $output = new FileOutputFalseFilePutContentsFixture($filepath)
+        $output = new FileOutput($filepath)
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionFileWriteException::class);
-        $this->expectExceptionMessage("Unable to write to the file `$filepath`");
+        $this->expectExceptionMessage("Unable to write the whole message to the file `$filepath`: file_put_contents");
 
         $output->writeMessages();
     }
@@ -107,7 +106,9 @@ final class FileOutputTest extends TestCase
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionFileWriteException::class);
-        $this->expectExceptionMessage("Unable to write to the file `$filepath`");
+        $this->expectExceptionMessage(
+            "Unable to write the whole message to the file `$filepath`: no diagnostic available"
+        );
 
         $output->writeMessages();
     }
