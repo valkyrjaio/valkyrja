@@ -16,21 +16,22 @@ use Override;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
 use function error_clear_last;
+use function trigger_error;
+
+use const E_USER_WARNING;
 
 /**
- * Testable StreamOutput class whose stream stops taking data after one byte.
+ * Testable StreamOutput class whose stream raises a diagnostic and takes nothing.
  */
-final class StreamOutputShortFwriteFixture extends StreamOutput
+final class StreamOutputDiagnosticFwriteFixture extends StreamOutput
 {
-    protected int $calls = 0;
-
     #[Override]
     protected function fwrite($stream, string $data): int|false
     {
         error_clear_last();
 
-        $this->calls++;
+        @trigger_error('Write of 4 bytes failed with errno=32 Broken pipe', E_USER_WARNING);
 
-        return $this->calls === 1 ? 1 : 0;
+        return false;
     }
 }

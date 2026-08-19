@@ -18,8 +18,11 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
 
+use function error_clear_last;
+use function error_get_last;
 use function fwrite;
 use function strlen;
+use function substr;
 
 class StreamOutput extends Output implements StreamOutputContract
 {
@@ -72,23 +75,37 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * @inheritDoc
      *
-     * @throws CliInteractionStreamWriteException When the write does not store the whole message
+     * A short write is not a failure. A non-blocking stream and a full pipe both take the rest of
+     * the data on a later call, so the loop offers the remainder until the stream stops taking it.
+     *
+     * @throws CliInteractionStreamWriteException When the stream stops taking the data
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        $data = $message->getFormattedText();
+        $data   = $message->getFormattedText();
+        $length = strlen($data);
+        $offset = 0;
 
-        if ($this->fwrite($this->stream, $data) !== strlen($data)) {
-            throw new CliInteractionStreamWriteException('Unable to write to the stream');
+        while ($offset < $length) {
+            $written = $this->fwrite($this->stream, substr($data, $offset));
+
+            if ($written === false || $written === 0) {
+                $reason = error_get_last()['message'] ?? 'no diagnostic available';
+
+                throw new CliInteractionStreamWriteException("Unable to write to the stream: $reason");
+            }
+
+            $offset += $written;
         }
     }
 
     /**
      * Write data to a stream.
      *
-     * The diagnostic is suppressed because the return value reports the failure. An enabled error
-     * handler turns the diagnostic into an ErrorException, which would replace the throwable.
+     * This call suppresses the diagnostic, because the return value reports the failure. An enabled
+     * error handler turns the diagnostic into an ErrorException, which would replace the throwable.
+     * The clear keeps an earlier suppressed diagnostic out of the reason the caller reads.
      *
      * @param resource $stream The stream
      * @param string   $data   The data
@@ -97,6 +114,8 @@ class StreamOutput extends Output implements StreamOutputContract
      */
     protected function fwrite($stream, string $data): int|false
     {
+        error_clear_last();
+
         return @fwrite(stream: $stream, data: $data);
     }
 }

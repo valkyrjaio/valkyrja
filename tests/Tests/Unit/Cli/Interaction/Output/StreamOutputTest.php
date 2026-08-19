@@ -16,7 +16,8 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
-use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputFalseFwriteFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputDiagnosticFwriteFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputPartialFwriteFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputShortFwriteFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -92,24 +93,55 @@ final class StreamOutputTest extends TestCase
         self::assertSame("\e[97;42mtext\e[39;49m", stream_get_contents($stream));
     }
 
-    public function testOutputMessageThrowsWhenTheWriteFails(): void
+    public function testOutputMessageWritesTheRemainderOfAShortWrite(): void
     {
-        $output = new StreamOutputFalseFwriteFixture($this->createStream())
+        $stream = $this->createStream();
+
+        $output = new StreamOutputPartialFwriteFixture($stream)
+            ->withAddedMessage(new Message('text'));
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        rewind($stream);
+
+        self::assertSame('text', stream_get_contents($stream));
+    }
+
+    public function testOutputMessageThrowsWhenTheStreamTakesNothing(): void
+    {
+        $stream = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($stream);
+
+        $output = new StreamOutput($stream)
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write to the stream');
+        $this->expectExceptionMessage('Unable to write to the stream: no diagnostic available');
 
         $output->writeMessages();
     }
 
-    public function testOutputMessageThrowsWhenTheWriteIsShort(): void
+    public function testOutputMessageThrowsWhenTheStreamStopsTakingData(): void
     {
         $output = new StreamOutputShortFwriteFixture($this->createStream())
             ->withAddedMessage(new Message('text'));
 
         $this->expectException(CliInteractionStreamWriteException::class);
-        $this->expectExceptionMessage('Unable to write to the stream');
+        $this->expectExceptionMessage('Unable to write to the stream: no diagnostic available');
+
+        $output->writeMessages();
+    }
+
+    public function testOutputMessageReportsTheDiagnosticOfAFailedWrite(): void
+    {
+        $output = new StreamOutputDiagnosticFwriteFixture($this->createStream())
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionStreamWriteException::class);
+        $this->expectExceptionMessage('Unable to write to the stream: Write of 4 bytes failed with errno=32');
 
         $output->writeMessages();
     }

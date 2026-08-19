@@ -15,14 +15,16 @@ namespace Valkyrja\Tests\Fixtures\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
+use function substr;
+
 /**
- * Testable StreamOutput class whose stream write fails.
+ * Testable StreamOutput class whose stream takes one byte per call.
  */
-final class StreamOutputFalseFwriteFixture extends StreamOutput
+final class StreamOutputPartialFwriteFixture extends StreamOutput
 {
     #[Override]
     protected function fwrite($stream, string $data): int|false
     {
-        return false;
+        return parent::fwrite($stream, substr($data, 0, 1));
     }
 }
