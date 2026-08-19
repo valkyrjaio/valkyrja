@@ -462,6 +462,82 @@ final class EntityRouteMatchedMiddlewareTest extends TestCase
         self::assertInstanceOf(DynamicRouteContract::class, $result);
     }
 
+    public function testRouteMatchedWithEntityCastAndEmptyColumn(): void
+    {
+        $this->container->expects($this->never())->method('get');
+        $this->responseFactory->expects($this->never())->method('createResponseFromView');
+
+        $request    = self::createStub(ServerRequestContract::class);
+        $route      = $this->createMock(DynamicRouteContract::class);
+        $handler    = $this->createMock(RouteMatchedHandlerContract::class);
+        $parameter  = $this->createMock(ParameterContract::class);
+        $repository = $this->createMock(RepositoryContract::class);
+        $entity     = self::createStub(EntityContract::class);
+
+        $entityClass = EntityFixture::class;
+        $cast        = new EntityCast(type: $entityClass, column: '');
+
+        $parameter
+            ->expects($this->never())
+            ->method('getName');
+
+        $parameter
+            ->expects($this->once())
+            ->method('hasCast')
+            ->willReturn(true);
+
+        $parameter
+            ->expects($this->exactly(2))
+            ->method('getCast')
+            ->willReturn($cast);
+
+        $parameter
+            ->expects($this->once())
+            ->method('getValue')
+            ->willReturn('john-doe');
+
+        $parameter
+            ->expects($this->once())
+            ->method('withValue')
+            ->with($entity)
+            ->willReturnSelf();
+
+        $route
+            ->expects($this->exactly(2))
+            ->method('getParameters')
+            ->willReturn([$parameter]);
+
+        $route
+            ->expects($this->once())
+            ->method('withParameters')
+            ->willReturnSelf();
+
+        $this->orm
+            ->expects($this->once())
+            ->method('createRepository')
+            ->with($entityClass)
+            ->willReturn($repository);
+
+        $repository
+            ->expects($this->never())
+            ->method('findBy');
+
+        $repository
+            ->expects($this->once())
+            ->method('find')
+            ->with('john-doe')
+            ->willReturn($entity);
+
+        $handler
+            ->expects($this->once())
+            ->method('routeMatched')
+            ->willReturn($route);
+
+        $result = $this->middleware->routeMatched($request, $route, $handler);
+
+        self::assertInstanceOf(DynamicRouteContract::class, $result);
+    }
+
     public function testRouteMatchedWithEntityFoundById(): void
     {
         $this->container->expects($this->never())->method('get');
