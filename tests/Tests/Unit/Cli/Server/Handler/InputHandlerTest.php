@@ -18,6 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
@@ -28,6 +29,7 @@ use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function fopen;
 use function ob_get_clean;
 use function ob_start;
 
@@ -234,6 +236,39 @@ final class InputHandlerTest extends TestCase
         Exiter::unfreeze();
 
         self::assertSame($output->getMessages()[0]->getFormattedText() . '0', $runOutput);
+    }
+
+    public function testRunRoutesAWriteThrowableThroughTheThrowableCaughtHandler(): void
+    {
+        $stream = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($stream);
+
+        $output = new StreamOutput($stream)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $inputHandler = new InputHandler(
+            container: new Container(),
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('takes no write', (string) $runOutput);
     }
 
     public function testHandleExitHandler(): void

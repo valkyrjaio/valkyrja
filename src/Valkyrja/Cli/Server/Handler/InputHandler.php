@@ -93,7 +93,14 @@ class InputHandler implements InputHandlerContract
     {
         $output = $this->handle($input);
 
-        $output->writeMessages();
+        try {
+            $output->writeMessages();
+        } catch (Throwable $throwable) {
+            $output = $this->getOutputFromThrowable($input, $throwable);
+            $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
+
+            $output->writeMessages();
+        }
 
         $this->exit($input, $output);
 
