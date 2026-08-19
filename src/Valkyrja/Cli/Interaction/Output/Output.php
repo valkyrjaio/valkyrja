@@ -288,13 +288,11 @@ class Output implements OutputContract
     #[Override]
     public function writeMessage(MessageContract $message): static
     {
-        $this->setMessageAsWritten($message);
-
-        if ($this->isSilent || ($this->isQuiet && $this->exitCode === ExitCode::SUCCESS)) {
-            return $this;
+        if (! $this->isSilent && ! ($this->isQuiet && $this->exitCode === ExitCode::SUCCESS)) {
+            $this->outputMessage($message);
         }
 
-        $this->outputMessage($message);
+        $this->setMessageAsWritten($message);
 
         return $this;
     }
