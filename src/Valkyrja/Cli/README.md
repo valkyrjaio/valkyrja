@@ -832,12 +832,13 @@ concatenates.
 run, and the caller owns truncation. Delete the file before you construct the
 output when a run must start from an empty file.
 
-`StreamOutput` writes the remainder when a stream takes part of the data,
-because a non-blocking stream and a full pipe both take the rest on a later
-call. A stream that stops taking the data throws
+`StreamOutput` writes the remainder when a stream takes part of the data. A
+non-blocking stream and a full pipe both take the rest on a later call. A
+stream that stops taking the data throws
 `CliInteractionStreamWriteException`. A file write that stores less than the
 whole message throws `CliInteractionFileWriteException`. Each throwable
-carries the diagnostic of the failed write.
+carries the diagnostic of the failed write, when PHP records one. A stream
+throwable names the stream mode when PHP records no diagnostic.
 
 Warning: `InputHandler::run()` writes the messages after `handle()` returns, so
 a write throwable escapes `run()`. The `ThrowableCaught` middleware does not
